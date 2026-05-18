@@ -41,7 +41,7 @@ export default function Home() {
           <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight drop-shadow-lg">
             Where Stories<br />Come to Life!
           </h1>
-          <p className="text-xl md:text-2xl text-purple-100 mb-10 leading-relaxed">
+          <p className="text-xl md:text-2xl text-purple-100 mb-10 leading-relaxed drop-shadow-md">
             Discover magical bilingual books, fun activities, and reading adventures
             for curious minds of all ages with Eva
           </p>
@@ -74,12 +74,15 @@ export default function Home() {
       </section>
 
       {/* Featured Books */}
-      <section className="py-16 px-4 bg-gradient-to-b from-white to-purple-50">
+      <section className="py-20 px-4 bg-gradient-to-b from-white to-purple-50">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-gray-800 text-center mb-3">Featured Books</h2>
-          <p className="text-gray-500 text-center mb-10 text-lg">
-            Discover our carefully selected collection of magical stories
-          </p>
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Featured Books</h2>
+            <p className="text-gray-500 text-lg max-w-2xl mx-auto">
+              Discover our carefully selected collection of magical stories
+            </p>
+            <div className="w-20 h-1 bg-gradient-to-r from-orange-400 to-pink-400 mx-auto mt-6 rounded-full" />
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
             {featuredBooks.map(book => (
               <BookCard key={book.id} book={book} />
@@ -94,22 +97,25 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold text-gray-800 text-center mb-3">How It Works</h2>
-          <p className="text-gray-500 text-center mb-12 text-lg">Three simple steps to magical reading</p>
+      <section className="py-20 px-4 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">How It Works</h2>
+            <p className="text-gray-500 text-lg">Three simple steps to magical reading</p>
+            <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto mt-6 rounded-full" />
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { step: '1', emoji: '🔍', title: 'Browse', desc: 'Explore our collection of bilingual books and activities' },
               { step: '2', emoji: '✨', title: 'Choose', desc: 'Pick the perfect story or activity for your child\'s age' },
               { step: '3', emoji: '🎉', title: 'Enjoy!', desc: 'Start reading, playing, and learning together' },
             ].map(item => (
-              <div key={item.step} className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4 shadow-lg">
+              <div key={item.step} className="relative text-center p-8 bg-white rounded-2xl shadow-lg">
+                <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg">
                   {item.step}
                 </div>
-                <div className="text-4xl mb-3">{item.emoji}</div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">{item.title}</h3>
+                <div className="text-6xl mb-4 mt-4">{item.emoji}</div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-3">{item.title}</h3>
                 <p className="text-gray-500 leading-relaxed">{item.desc}</p>
               </div>
             ))}
@@ -118,10 +124,13 @@ export default function Home() {
       </section>
 
       {/* Parent Testimonials — Week 1 Improvement */}
-      <section className="py-16 px-4 bg-gradient-to-b from-purple-50 to-white">
+      <section className="py-20 px-4 bg-gradient-to-b from-purple-50 to-white">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-gray-800 text-center mb-3">What Parents Say</h2>
-          <p className="text-gray-500 text-center mb-10 text-lg">Real families, real magic</p>
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">What Parents Say</h2>
+            <p className="text-gray-500 text-lg">Real families, real magic</p>
+            <div className="w-20 h-1 bg-gradient-to-r from-purple-400 to-pink-400 mx-auto mt-6 rounded-full" />
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {testimonials.map((t, i) => (
               <div key={i} className="bg-white rounded-2xl p-6 shadow-md border border-purple-50">
@@ -142,32 +151,40 @@ export default function Home() {
       </section>
 
       {/* Fun Activities Preview */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-20 px-4 bg-gradient-to-br from-yellow-50 to-orange-50">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-gray-800 text-center mb-3">Fun Activities with Eva</h2>
-          <p className="text-gray-500 text-center mb-10 text-lg">Learning comes alive through play!</p>
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Fun Activities with Eva</h2>
+            <p className="text-gray-500 text-lg">Learning comes alive through play!</p>
+            <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 mx-auto mt-6 rounded-full" />
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             {[
               { emoji: '✍️', badge: 'New', title: 'Story Builder Challenge', desc: 'Create your own magical stories by choosing characters and settings.', ages: '6-8' },
               { emoji: '🎨', badge: 'Popular', title: "Eva's Coloring Adventure", desc: 'Choose a theme and color it with your favorite colors. Perfect for creative fun!', ages: '3-5' },
               { emoji: '✂️', badge: '', title: "Eva's Craft Corner", desc: 'Create bookmarks, character masks, and other fun crafts to enhance your reading experience.', ages: '6-8' },
             ].map((act, i) => (
-              <div key={i} className="card p-6">
-                <div className="flex items-start justify-between mb-3">
-                  <span className="text-4xl">{act.emoji}</span>
-                  {act.badge && (
-                    <span className={`text-xs font-bold px-2 py-1 rounded-full ${act.badge === 'New' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}`}>
-                      {act.badge}
-                    </span>
-                  )}
-                </div>
-                <h3 className="font-bold text-gray-800 text-lg mb-2">{act.title}</h3>
-                <p className="text-gray-500 text-sm mb-4 leading-relaxed">{act.desc}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-purple-600 font-medium bg-purple-50 px-2 py-1 rounded-full">Ages: {act.ages}</span>
-                  <Link to="/activities" className="text-sm font-semibold text-purple-600 hover:text-purple-800 transition-colors">
-                    Try it →
-                  </Link>
+              <div key={i} className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
+                {act.badge && (
+                  <span
+                    className={`absolute top-4 right-4 z-10 text-xs font-bold px-2 py-1 rounded-full ${
+                      act.badge === 'New' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'
+                    }`}
+                  >
+                    {act.badge}
+                  </span>
+                )}
+                <div className="h-2 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400" />
+                <div className="p-6">
+                  <span className="text-4xl block mb-3">{act.emoji}</span>
+                  <h3 className="font-bold text-gray-800 text-lg mb-2">{act.title}</h3>
+                  <p className="text-gray-500 text-sm mb-4 leading-relaxed">{act.desc}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-purple-600 font-medium bg-purple-50 px-2 py-1 rounded-full">Ages: {act.ages}</span>
+                    <Link to="/activities" className="text-sm font-semibold text-purple-600 hover:text-purple-800 transition-colors">
+                      Try it →
+                    </Link>
+                  </div>
                 </div>
               </div>
             ))}

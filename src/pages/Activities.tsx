@@ -61,37 +61,42 @@ export default function Activities() {
   return (
     <main>
       {/* Header */}
-      <section className="bg-gradient-to-b from-green-50 to-white py-14 px-4">
+      <section className="bg-gradient-to-b from-green-50 to-white py-16 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Fun Activities with Eva</h1>
           <p className="text-gray-500 text-lg">Learning comes alive through play!</p>
+          <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 mx-auto mt-6 rounded-full" />
         </div>
       </section>
 
       {/* Activities Grid */}
-      <section className="py-12 px-4">
+      <section className="py-14 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {activities.map((act, i) => (
-              <div key={i} className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-50">
-                <div className="flex items-start justify-between mb-4">
-                  <span className="text-5xl">{act.emoji}</span>
-                  {act.badge && (
-                    <span className={`text-xs font-bold px-2 py-1 rounded-full ${act.badgeColor}`}>
-                      {act.badge}
-                    </span>
-                  )}
-                </div>
-                <span className="text-xs text-purple-600 font-medium bg-purple-50 px-2 py-1 rounded-full mb-3 inline-block">
-                  {act.category}
-                </span>
-                <h3 className="font-bold text-gray-800 text-xl mb-2">{act.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed mb-4">{act.desc}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-500">Ages: <strong>{act.ages}</strong></span>
-                  <button className="text-sm font-semibold text-purple-600 border border-purple-200 px-4 py-1.5 rounded-full hover:bg-purple-50 transition-colors">
-                    Try This Activity →
-                  </button>
+              <div
+                key={i}
+                className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-50"
+              >
+                {act.badge && (
+                  <span className={`absolute top-4 right-4 z-10 text-xs font-bold px-2 py-1 rounded-full ${act.badgeColor}`}>
+                    {act.badge}
+                  </span>
+                )}
+                <div className="h-2 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400" />
+                <div className="p-6">
+                  <span className="text-5xl block mb-4">{act.emoji}</span>
+                  <span className="text-xs text-purple-600 font-medium bg-purple-50 px-2 py-1 rounded-full mb-3 inline-block">
+                    {act.category}
+                  </span>
+                  <h3 className="font-bold text-gray-800 text-xl mb-2">{act.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed mb-4">{act.desc}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-500">Ages: <strong>{act.ages}</strong></span>
+                    <button className="text-sm font-semibold text-purple-600 border border-purple-200 px-4 py-1.5 rounded-full hover:bg-purple-50 transition-colors">
+                      Try This Activity →
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
