@@ -160,20 +160,14 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             {[
-              { emoji: '✍️', badge: 'New', title: 'Story Builder Challenge', desc: 'Create your own magical stories by choosing characters and settings.', ages: '6-8' },
-              { emoji: '🎨', badge: 'Popular', title: "Eva's Coloring Adventure", desc: 'Choose a theme and color it with your favorite colors. Perfect for creative fun!', ages: '3-5' },
-              { emoji: '✂️', badge: '', title: "Eva's Craft Corner", desc: 'Create bookmarks, character masks, and other fun crafts to enhance your reading experience.', ages: '6-8' },
+              { emoji: '✍️', slug: 'story-builder', title: 'Story Dice Creator', desc: 'Roll the dice to mix characters, settings, and plot twists into a brand-new story.', ages: '6-9' },
+              { emoji: '🎭', slug: 'character-workshop', title: 'Character Workshop', desc: 'Step-by-step character builder — type, name, look, personality, powers, and backstory.', ages: '6-9' },
+              { emoji: '📓', slug: 'adventure-journal', title: 'Reading Journal', desc: "Record books you've read, favorite characters, and your thoughts. Saves to your device.", ages: '6-9' },
             ].map((act, i) => (
               <div key={i} className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
-                {act.badge && (
-                  <span
-                    className={`absolute top-4 right-4 z-10 text-xs font-bold px-2 py-1 rounded-full ${
-                      act.badge === 'New' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'
-                    }`}
-                  >
-                    {act.badge}
-                  </span>
-                )}
+                <span className="absolute top-4 right-4 z-10 text-xs font-bold px-2 py-1 rounded-full bg-green-100 text-green-700">
+                  Live
+                </span>
                 <div className="h-2 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400" />
                 <div className="p-6">
                   <span className="text-4xl block mb-3">{act.emoji}</span>
@@ -181,7 +175,7 @@ export default function Home() {
                   <p className="text-gray-500 text-sm mb-4 leading-relaxed">{act.desc}</p>
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-purple-600 font-medium bg-purple-50 px-2 py-1 rounded-full">Ages: {act.ages}</span>
-                    <Link to="/activities" className="text-sm font-semibold text-purple-600 hover:text-purple-800 transition-colors">
+                    <Link to={`/activities/${act.slug}`} className="text-sm font-semibold text-purple-600 hover:text-purple-800 transition-colors">
                       Try it →
                     </Link>
                   </div>

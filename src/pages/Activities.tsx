@@ -1,59 +1,92 @@
+import { Link } from 'react-router-dom';
 import EmailSignup from '../components/EmailSignup';
 
-const activities = [
+type Activity = {
+  emoji: string;
+  badge: string;
+  badgeColor: string;
+  title: string;
+  desc: string;
+  ages: string;
+  category: string;
+  slug?: string; // present means demo is live
+};
+
+const activities: Activity[] = [
   {
     emoji: '✍️',
-    badge: 'New',
+    badge: 'Live',
     badgeColor: 'bg-green-100 text-green-700',
-    title: 'Story Builder Challenge',
-    desc: 'Create your own magical stories by choosing characters and settings. Watch your story come to life!',
-    ages: '6-8',
+    title: 'Story Dice Creator',
+    desc: 'Roll the dice to mix characters, settings, and plot twists into a brand-new story every time.',
+    ages: '6-9',
     category: 'Creative Writing',
+    slug: 'story-builder',
+  },
+  {
+    emoji: '🎭',
+    badge: 'Live',
+    badgeColor: 'bg-green-100 text-green-700',
+    title: "Character Creation Workshop",
+    desc: 'Step-by-step character builder — type, name, look, personality, powers, and backstory.',
+    ages: '6-9',
+    category: 'Creative Writing',
+    slug: 'character-workshop',
+  },
+  {
+    emoji: '📓',
+    badge: 'Live',
+    badgeColor: 'bg-green-100 text-green-700',
+    title: 'Adventure Reading Journal',
+    desc: "A simple journal to record books you've read, your favorite characters and scenes. Saves to your device.",
+    ages: '6-9',
+    category: 'Reading',
+    slug: 'adventure-journal',
   },
   {
     emoji: '🎨',
-    badge: 'Popular',
+    badge: 'Soon',
     badgeColor: 'bg-orange-100 text-orange-700',
     title: "Eva's Coloring Adventure",
-    desc: 'Choose a theme and color it with your favorite colors. Perfect for creative fun!',
-    ages: '3-5',
+    desc: 'In-browser coloring book — pick a scene, pick your palette, color it in. Saves what you make.',
+    ages: '3-7',
     category: 'Art & Creativity',
   },
   {
     emoji: '✂️',
-    badge: '',
-    badgeColor: '',
+    badge: 'Soon',
+    badgeColor: 'bg-orange-100 text-orange-700',
     title: "Eva's Craft Corner",
-    desc: 'Create bookmarks, character masks, and other fun crafts to enhance your reading experience with step-by-step instructions.',
-    ages: '6-8',
+    desc: 'Step-by-step craft instructions — bookmarks, masks, story dioramas built from common materials.',
+    ages: '6-9',
     category: 'Crafts',
   },
   {
-    emoji: '🧩',
-    badge: '',
-    badgeColor: '',
-    title: 'Character Matching Game',
-    desc: 'Match characters from Eva\'s stories with their key traits and adventures in this fun memory game.',
-    ages: '5-8',
-    category: 'Games',
+    emoji: '🔖',
+    badge: 'Soon',
+    badgeColor: 'bg-orange-100 text-orange-700',
+    title: 'Bookmark Designer',
+    desc: 'Design and print your own bookmarks with themes from the books, plus a quote you choose.',
+    ages: '5-9',
+    category: 'Crafts',
   },
   {
-    emoji: '📖',
-    badge: '',
-    badgeColor: '',
+    emoji: '🎯',
+    badge: 'Soon',
+    badgeColor: 'bg-orange-100 text-orange-700',
     title: 'Reading Bingo',
-    desc: 'Complete reading challenges and mark off your bingo card. A fun way to build reading habits!',
+    desc: 'Complete reading challenges across a bingo board — five in a row earns a celebration.',
     ages: '6-9',
     category: 'Reading',
   },
   {
-    emoji: '🎭',
-    badge: '',
-    badgeColor: '',
-    title: 'Story Retelling Theater',
-    desc: 'Act out your favorite scenes from Eva\'s books. Builds comprehension, confidence, and creativity!',
-    ages: '4-8',
-    category: 'Drama',
+    emoji: '🧩',
+    badge: 'Soon',
+    badgeColor: 'bg-orange-100 text-orange-700',
+    title: 'Puzzle Paradise',
+    desc: 'Word puzzles and riddles based on the stories — a thinking workout that builds vocabulary.',
+    ages: '7-9',
+    category: 'Games',
   },
 ];
 
@@ -76,26 +109,35 @@ export default function Activities() {
             {activities.map((act, i) => (
               <div
                 key={i}
-                className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-50"
+                className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-50 flex flex-col"
               >
-                {act.badge && (
-                  <span className={`absolute top-4 right-4 z-10 text-xs font-bold px-2 py-1 rounded-full ${act.badgeColor}`}>
-                    {act.badge}
-                  </span>
-                )}
+                <span className={`absolute top-4 right-4 z-10 text-xs font-bold px-2 py-1 rounded-full ${act.badgeColor}`}>
+                  {act.badge}
+                </span>
                 <div className="h-2 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400" />
-                <div className="p-6">
+                <div className="p-6 flex-1 flex flex-col">
                   <span className="text-5xl block mb-4">{act.emoji}</span>
-                  <span className="text-xs text-purple-600 font-medium bg-purple-50 px-2 py-1 rounded-full mb-3 inline-block">
+                  <span className="text-xs text-purple-600 font-medium bg-purple-50 px-2 py-1 rounded-full mb-3 inline-block self-start">
                     {act.category}
                   </span>
                   <h3 className="font-bold text-gray-800 text-xl mb-2">{act.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed mb-4">{act.desc}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-500">Ages: <strong>{act.ages}</strong></span>
-                    <button className="text-sm font-semibold text-purple-600 border border-purple-200 px-4 py-1.5 rounded-full hover:bg-purple-50 transition-colors">
-                      Try This Activity →
-                    </button>
+                  <p className="text-gray-500 text-sm leading-relaxed mb-4 flex-1">{act.desc}</p>
+                  <div className="flex items-center justify-between mt-auto">
+                    <span className="text-xs text-gray-500">
+                      Ages: <strong>{act.ages}</strong>
+                    </span>
+                    {act.slug ? (
+                      <Link
+                        to={`/activities/${act.slug}`}
+                        className="text-sm font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 px-4 py-1.5 rounded-full shadow-sm transition-all"
+                      >
+                        Try Now →
+                      </Link>
+                    ) : (
+                      <span className="text-sm font-medium text-gray-400 px-4 py-1.5 rounded-full border border-gray-200">
+                        Coming Soon
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>

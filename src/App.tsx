@@ -7,6 +7,10 @@ import Activities from './pages/Activities';
 import Resources from './pages/Resources';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import DemoPage from './pages/DemoPage';
+import StoryBuilderDemo from './demos/StoryBuilderDemo';
+import CharacterWorkshopDemo from './demos/CharacterWorkshopDemo';
+import AdventureJournalDemo from './demos/AdventureJournalDemo';
 
 export default function App() {
   return (
@@ -18,6 +22,9 @@ export default function App() {
           <Route path="/home" element={<Navigate to="/" replace />} />
           <Route path="/books" element={<Books />} />
           <Route path="/activities" element={<Activities />} />
+          <Route path="/activities/story-builder" element={<DemoPage><StoryBuilderDemo /></DemoPage>} />
+          <Route path="/activities/character-workshop" element={<DemoPage><CharacterWorkshopDemo /></DemoPage>} />
+          <Route path="/activities/adventure-journal" element={<DemoPage><AdventureJournalDemo /></DemoPage>} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
