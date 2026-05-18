@@ -20,14 +20,15 @@ export default function Books() {
   return (
     <main>
       {/* Header */}
-      <section className="bg-gradient-to-b from-purple-50 to-white py-14 px-4">
+      <section className="bg-gradient-to-b from-purple-50 to-white py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
             Our Magical Book Collection
           </h1>
-          <p className="text-gray-500 text-lg mb-8">
+          <p className="text-gray-500 text-lg">
             Explore stories that inspire, educate, and delight young readers
           </p>
+          <div className="w-20 h-1 bg-gradient-to-r from-orange-400 to-pink-400 mx-auto mt-6 mb-8 rounded-full" />
 
           {/* Search */}
           <div className="relative max-w-md mx-auto mb-6">

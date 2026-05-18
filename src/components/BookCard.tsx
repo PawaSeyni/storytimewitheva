@@ -15,7 +15,8 @@ export default function BookCard({ book }: BookCardProps) {
         <div className="relative bg-gradient-to-br from-purple-100 via-pink-50 to-yellow-50 p-8 flex items-center justify-center min-h-[140px]">
           <span className="text-6xl">{book.emoji}</span>
           {book.featured && (
-            <span className="absolute top-3 left-3 bg-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+            <span className="absolute top-3 right-3 z-10 bg-gradient-to-r from-yellow-400 to-orange-400 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1">
+              <span className="text-sm leading-none">⭐</span>
               Featured
             </span>
           )}
