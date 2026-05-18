@@ -11,6 +11,11 @@ import DemoPage from './pages/DemoPage';
 import StoryBuilderDemo from './demos/StoryBuilderDemo';
 import CharacterWorkshopDemo from './demos/CharacterWorkshopDemo';
 import AdventureJournalDemo from './demos/AdventureJournalDemo';
+import BingoDemo from './demos/BingoDemo';
+import BookmarkCraftsDemo from './demos/BookmarkCraftsDemo';
+import CraftCornerDemo from './demos/CraftCornerDemo';
+import ColoringDemo from './demos/ColoringDemo';
+import PuzzleAdventuresDemo from './demos/PuzzleAdventuresDemo';
 
 export default function App() {
   return (
@@ -25,6 +30,11 @@ export default function App() {
           <Route path="/activities/story-builder" element={<DemoPage><StoryBuilderDemo /></DemoPage>} />
           <Route path="/activities/character-workshop" element={<DemoPage><CharacterWorkshopDemo /></DemoPage>} />
           <Route path="/activities/adventure-journal" element={<DemoPage><AdventureJournalDemo /></DemoPage>} />
+          <Route path="/activities/bingo" element={<DemoPage><BingoDemo /></DemoPage>} />
+          <Route path="/activities/bookmark-designer" element={<DemoPage><BookmarkCraftsDemo /></DemoPage>} />
+          <Route path="/activities/craft-corner" element={<DemoPage><CraftCornerDemo /></DemoPage>} />
+          <Route path="/activities/coloring" element={<DemoPage><ColoringDemo /></DemoPage>} />
+          <Route path="/activities/puzzles" element={<DemoPage><PuzzleAdventuresDemo /></DemoPage>} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
