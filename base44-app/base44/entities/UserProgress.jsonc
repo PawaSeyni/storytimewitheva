@@ -1,0 +1,54 @@
+{
+  "name": "UserProgress",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user"
+    },
+    "item_id": {
+      "type": "string",
+      "description": "ID of the book or activity"
+    },
+    "item_type": {
+      "type": "string",
+      "enum": [
+        "book",
+        "activity"
+      ],
+      "description": "Type of item"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "read",
+        "want_to_read",
+        "completed",
+        "favorited"
+      ],
+      "description": "User status for this item"
+    },
+    "item_title": {
+      "type": "string",
+      "description": "Cached title for display"
+    },
+    "item_emoji": {
+      "type": "string",
+      "description": "Cached emoji for display"
+    }
+  },
+  "required": [
+    "user_email",
+    "item_id",
+    "item_type",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "created_by": "{{user.email}}"
+    },
+    "write": {
+      "created_by": "{{user.email}}"
+    }
+  }
+}
