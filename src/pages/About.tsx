@@ -1,9 +1,15 @@
 import { Link } from 'react-router-dom';
 import EmailSignup from '../components/EmailSignup';
+import Seo from '../components/Seo';
 
 export default function About() {
   return (
     <main>
+      <Seo
+        title="About Eva Gallo"
+        description="Eva Gallo writes multicultural picture books for children ages 3–9. Before she was an author, she spent thirty years in public health. Her stories begin in night and end in morning."
+        path="/about"
+      />
       {/* Header */}
       <section className="bg-gradient-to-b from-amber-50 to-white py-14 px-4">
         <div className="max-w-3xl mx-auto text-center">

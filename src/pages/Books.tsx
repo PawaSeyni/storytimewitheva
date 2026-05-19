@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { books } from '../data/books';
 import BookCard from '../components/BookCard';
 import EmailSignup from '../components/EmailSignup';
+import Seo from '../components/Seo';
 
 export default function Books() {
   const [search, setSearch] = useState('');
@@ -19,6 +20,11 @@ export default function Books() {
 
   return (
     <main>
+      <Seo
+        title="Our Magical Book Collection"
+        description="Browse all 11 books in the Eva Gallo Collection — multicultural picture books for children ages 3–9 about quiet wonder, kindness, and curiosity."
+        path="/books"
+      />
       {/* Header */}
       <section className="bg-gradient-to-b from-purple-50 to-white py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">

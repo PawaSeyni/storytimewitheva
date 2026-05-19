@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Seo from '../components/Seo';
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
@@ -11,6 +12,11 @@ export default function Contact() {
 
   return (
     <main>
+      <Seo
+        title="Contact"
+        description="Get in touch with Story Time with Eva. Questions about the books, school visits, or just want to say hi? Send a message and we'll get back to you."
+        path="/contact"
+      />
       {/* Header */}
       <section className="bg-gradient-to-b from-pink-50 to-white py-14 px-4">
         <div className="max-w-3xl mx-auto text-center">

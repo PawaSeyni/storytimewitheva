@@ -70,6 +70,14 @@ progresses — it's the canonical "what's done / what's not" record.
 - [x] `BookCard` updated to render `<img>` with `loading="lazy"` + hover zoom
 - [x] Modal updated to show full cover image at top + subtitle line
 
+### Phase 7 — SEO basics
+- [x] `react-helmet-async` installed (+4 packages, ~5 KB gzipped)
+- [x] `index.html` upgraded with default `<title>`, description, keywords, theme-color, canonical, OG, Twitter card — what every crawler sees at first paint
+- [x] `src/components/Seo.tsx` reusable component (title + description + image + path + bare + noindex props)
+- [x] Per-route SEO on Home, Books, Activities, About, Contact, Resources, Profile (noindex), and every DemoPage (derived from activity slug)
+- [x] `public/robots.txt` — Allow-all + Disallow /profile + sitemap pointer
+- [x] `public/sitemap.xml` — 14 routes (home + books + activities + 8 demos + resources + about + contact). Profile excluded.
+
 ---
 
 ## 🚫 Intentionally skipped (from Base44)

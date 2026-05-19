@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import ActivityStatusButton from '../components/ActivityStatusButton';
+import Seo from '../components/Seo';
 import { getActivityBySlug } from '../data/activities';
 
 interface DemoPageProps {
@@ -15,6 +16,13 @@ export default function DemoPage({ children }: DemoPageProps) {
 
   return (
     <main className="py-8 px-4">
+      {activity && (
+        <Seo
+          title={activity.title}
+          description={`${activity.desc} Free interactive activity for ages ${activity.ages}.`}
+          path={`/activities/${activity.slug}`}
+        />
+      )}
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
           <Link

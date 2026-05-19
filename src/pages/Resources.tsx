@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import EmailSignup from '../components/EmailSignup';
+import Seo from '../components/Seo';
 
 const resources = [
   {
@@ -73,6 +74,11 @@ export default function Resources() {
 
   return (
     <main>
+      <Seo
+        title="Parent Resources"
+        description="Reading tips, child-development milestones, and activity ideas for parents and teachers. Helping you make every reading session magical."
+        path="/resources"
+      />
       {/* Header */}
       <section className="bg-gradient-to-b from-blue-50 to-white py-14 px-4">
         <div className="max-w-3xl mx-auto text-center">

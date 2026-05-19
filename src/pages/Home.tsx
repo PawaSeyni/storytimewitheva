@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { books } from '../data/books';
 import BookCard from '../components/BookCard';
 import EmailSignup from '../components/EmailSignup';
+import Seo from '../components/Seo';
 
 const testimonials = [
   {
@@ -29,6 +30,12 @@ const featuredBooks = books.filter(b => b.featured);
 export default function Home() {
   return (
     <main>
+      <Seo
+        title="Story Time with Eva — Multicultural Picture Books for Curious Minds"
+        bare
+        description="The Eva Gallo Collection — picture books for children ages 3–9 about quiet wonder, nighttime magic, and morning homecoming. Read with us and explore free activities."
+        path="/"
+      />
       {/* Hero Section */}
       <section className="hero-bg min-h-[85vh] flex items-center justify-center relative overflow-hidden px-4 py-20">
         {/* Floating decorative elements */}

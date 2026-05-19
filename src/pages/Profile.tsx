@@ -4,6 +4,7 @@ import { BookOpen, BookMarked, CheckCircle2, Star, User, Trash2 } from 'lucide-r
 import { books } from '../data/books';
 import { activities } from '../data/activities';
 import { loadProgress, clearProgress, type Progress } from '../lib/progress';
+import Seo from '../components/Seo';
 
 interface StatCardProps {
   icon: typeof BookOpen;
@@ -117,6 +118,12 @@ export default function Profile() {
 
   return (
     <main>
+      <Seo
+        title="My Profile"
+        description="Your reading progress on Story Time with Eva — books read, want-to-read list, and activities completed. Saved locally on this device."
+        path="/profile"
+        noindex
+      />
       <section className="bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 py-12 px-4">
         <div className="max-w-3xl mx-auto">
           <div className="bg-white rounded-3xl shadow-lg p-6 md:p-8 mb-8 flex items-center gap-6">

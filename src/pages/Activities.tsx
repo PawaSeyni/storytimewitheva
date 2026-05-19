@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CheckCircle2 } from 'lucide-react';
 import EmailSignup from '../components/EmailSignup';
+import Seo from '../components/Seo';
 import { activities } from '../data/activities';
 import { isActivityCompleted, loadProgress, type Progress } from '../lib/progress';
 
@@ -20,6 +21,11 @@ export default function Activities() {
 
   return (
     <main>
+      <Seo
+        title="Fun Activities with Eva"
+        description="8 free interactive activities to do with kids: story dice, character builder, reading journal, coloring book, reading bingo, puzzles, crafts, and more. Ages 3–9."
+        path="/activities"
+      />
       {/* Header */}
       <section className="bg-gradient-to-b from-green-50 to-white py-16 px-4">
         <div className="max-w-3xl mx-auto text-center">
