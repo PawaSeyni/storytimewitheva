@@ -72,11 +72,21 @@ progresses — it's the canonical "what's done / what's not" record.
 
 ### Phase 7 — SEO basics
 - [x] `react-helmet-async` installed (+4 packages, ~5 KB gzipped)
-- [x] `index.html` upgraded with default `<title>`, description, keywords, theme-color, canonical, OG, Twitter card — what every crawler sees at first paint
+- [x] `index.html` carries only truly-invariant defaults (charset, viewport, theme-color, favicon, og:type/site_name/locale, twitter:card, fallback title + description for no-JS clients)
+- [x] All per-route-variable tags (title, description, og:title/url/image/desc, twitter:* content, canonical) live exclusively in Helmet so they appear exactly once in the DOM
 - [x] `src/components/Seo.tsx` reusable component (title + description + image + path + bare + noindex props)
 - [x] Per-route SEO on Home, Books, Activities, About, Contact, Resources, Profile (noindex), and every DemoPage (derived from activity slug)
 - [x] `public/robots.txt` — Allow-all + Disallow /profile + sitemap pointer
 - [x] `public/sitemap.xml` — 14 routes (home + books + activities + 8 demos + resources + about + contact). Profile excluded.
+
+**Known limitation:** the static `<meta name="description">` fallback in `index.html`
+is duplicated by Helmet's per-route description on subroutes (so two
+`<meta name="description">` exist on `/activities/bingo`, for example). This is
+intentional — most non-JS social scrapers need the static fallback to get any
+description at all, and modern JS-rendering crawlers (Googlebot, FB scraper)
+correctly pick the more specific Helmet version. A future improvement, if perfect
+per-route OG unfurls become important, would be build-time prerendering (e.g.
+`vite-plugin-prerender` or migrating to Astro). Tracked in Backlog → Mid-term.
 
 ---
 
@@ -122,6 +132,7 @@ Prioritize roughly top-to-bottom. Add new items as discovered.
 
 ### Mid-term (meaningful work)
 - [ ] Custom domain (e.g. `storytimewitheva.com`) attached to Netlify, DNS, HTTPS
+- [ ] Build-time prerendering for perfect per-route OG unfurls on non-JS scrapers (e.g. `vite-plugin-prerender` or migrate to Astro). Currently each subroute's description duplicates the static homepage fallback in the DOM — modern crawlers handle this correctly but a non-JS Twitterbot would only see the static one.
 - [ ] Multilingual support (ES/FR) restored — likely via a language context + translation files
 - [ ] Lightweight global search (subset of Base44's, no modal — inline page-search)
 - [ ] Toast notification component to replace `alert()` calls
