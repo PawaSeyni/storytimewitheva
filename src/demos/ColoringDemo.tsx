@@ -2,21 +2,28 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import type { MouseEvent as ReactMouseEvent, TouchEvent as ReactTouchEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { RefreshCw, Download, Eraser, Palette } from 'lucide-react';
+import { useLanguage, useTranslation, type Language } from '../lib/language';
 
-const COLOR_PALETTE = [
-  { name: 'Red', color: '#FF6B6B' },
-  { name: 'Orange', color: '#FFA07A' },
-  { name: 'Yellow', color: '#FFD93D' },
-  { name: 'Green', color: '#6BCF7F' },
-  { name: 'Blue', color: '#4D96FF' },
-  { name: 'Purple', color: '#9D84B7' },
-  { name: 'Pink', color: '#FFB6D9' },
-  { name: 'Brown', color: '#A0826D' },
-  { name: 'Black', color: '#2C3333' },
-  { name: 'White', color: '#FFFFFF' },
-  { name: 'Sky', color: '#89CFF0' },
-  { name: 'Lime', color: '#BFFF00' },
-];
+const COLOR_PALETTE_KEYS = [
+  'red', 'orange', 'yellow', 'green', 'blue', 'purple',
+  'pink', 'brown', 'black', 'white', 'sky', 'lime',
+] as const;
+type ColorKey = (typeof COLOR_PALETTE_KEYS)[number];
+
+const COLOR_VALUES: Record<ColorKey, string> = {
+  red: '#FF6B6B',
+  orange: '#FFA07A',
+  yellow: '#FFD93D',
+  green: '#6BCF7F',
+  blue: '#4D96FF',
+  purple: '#9D84B7',
+  pink: '#FFB6D9',
+  brown: '#A0826D',
+  black: '#2C3333',
+  white: '#FFFFFF',
+  sky: '#89CFF0',
+  lime: '#BFFF00',
+};
 
 type DrawFn = (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => void;
 
@@ -196,22 +203,136 @@ const drawRainbow: DrawFn = (ctx, canvas) => {
   drawCloud(cx + 160, baseY - 10);
 };
 
-const TEMPLATES = [
-  { name: 'Happy Sun', emoji: '☀️', draw: drawSun },
-  { name: 'Cute Butterfly', emoji: '🦋', draw: drawButterfly },
-  { name: 'Friendly Star', emoji: '⭐', draw: drawStar },
-  { name: 'Happy Flower', emoji: '🌸', draw: drawFlower },
-  { name: 'Cute Heart', emoji: '💝', draw: drawHeart },
-  { name: 'Rainbow', emoji: '🌈', draw: drawRainbow },
+type ThemeKey = 'sun' | 'butterfly' | 'star' | 'flower' | 'heart' | 'rainbow';
+
+const THEME_META: { key: ThemeKey; emoji: string; draw: DrawFn }[] = [
+  { key: 'sun', emoji: '☀️', draw: drawSun },
+  { key: 'butterfly', emoji: '🦋', draw: drawButterfly },
+  { key: 'star', emoji: '⭐', draw: drawStar },
+  { key: 'flower', emoji: '🌸', draw: drawFlower },
+  { key: 'heart', emoji: '💝', draw: drawHeart },
+  { key: 'rainbow', emoji: '🌈', draw: drawRainbow },
 ];
 
+const TRANSLATIONS = {
+  en: {
+    heading: "Eva's Coloring Adventure",
+    subheading: 'Pick a color and tap to paint! Let your creativity shine!',
+    howToPlay: '✨ How to Play',
+    howToPlaySteps: [
+      'Choose a theme below and click "New Drawing"',
+      'Pick a color from the palette',
+      'Tap or click on the canvas to paint',
+      'Use the eraser to fix mistakes',
+      "Download your masterpiece when you're done!",
+    ],
+    chooseTheme: 'Choose Theme:',
+    newDrawing: 'New Drawing',
+    selectColor: 'Select Color:',
+    eraser: 'Eraser',
+    startOver: 'Start Over',
+    saveArt: 'Save Art',
+    brushSize: 'Brush Size:',
+    eraserLabel: 'Eraser',
+    selectColorLabel: 'Select Color',
+    themes: {
+      sun: { name: 'Happy Sun', short: 'Sun' },
+      butterfly: { name: 'Cute Butterfly', short: 'Butterfly' },
+      star: { name: 'Friendly Star', short: 'Star' },
+      flower: { name: 'Happy Flower', short: 'Flower' },
+      heart: { name: 'Cute Heart', short: 'Heart' },
+      rainbow: { name: 'Rainbow', short: 'Rainbow' },
+    },
+    colors: {
+      red: 'Red', orange: 'Orange', yellow: 'Yellow', green: 'Green',
+      blue: 'Blue', purple: 'Purple', pink: 'Pink', brown: 'Brown',
+      black: 'Black', white: 'White', sky: 'Sky', lime: 'Lime',
+    },
+    downloadFilename: 'eva-coloring-art.png',
+  },
+  es: {
+    heading: 'Aventura para colorear con Eva',
+    subheading: '¡Elige un color y toca para pintar! ¡Deja brillar tu creatividad!',
+    howToPlay: '✨ Cómo se juega',
+    howToPlaySteps: [
+      'Elige un tema abajo y pulsa «Nuevo dibujo»',
+      'Escoge un color de la paleta',
+      'Toca o haz clic en el lienzo para pintar',
+      'Usa la goma para arreglar errores',
+      '¡Descarga tu obra maestra cuando acabes!',
+    ],
+    chooseTheme: 'Elige tema:',
+    newDrawing: 'Nuevo dibujo',
+    selectColor: 'Selecciona color:',
+    eraser: 'Goma',
+    startOver: 'Empezar de nuevo',
+    saveArt: 'Guardar arte',
+    brushSize: 'Tamaño del pincel:',
+    eraserLabel: 'Goma',
+    selectColorLabel: 'Selecciona color',
+    themes: {
+      sun: { name: 'Sol feliz', short: 'Sol' },
+      butterfly: { name: 'Mariposa bonita', short: 'Mariposa' },
+      star: { name: 'Estrella amigable', short: 'Estrella' },
+      flower: { name: 'Flor feliz', short: 'Flor' },
+      heart: { name: 'Corazón bonito', short: 'Corazón' },
+      rainbow: { name: 'Arcoíris', short: 'Arcoíris' },
+    },
+    colors: {
+      red: 'Rojo', orange: 'Naranja', yellow: 'Amarillo', green: 'Verde',
+      blue: 'Azul', purple: 'Morado', pink: 'Rosa', brown: 'Marrón',
+      black: 'Negro', white: 'Blanco', sky: 'Celeste', lime: 'Lima',
+    },
+    downloadFilename: 'arte-para-colorear-eva.png',
+  },
+  fr: {
+    heading: "L'aventure coloriage d'Eva",
+    subheading: 'Choisis une couleur et tape pour peindre ! Laisse parler ta créativité !',
+    howToPlay: '✨ Comment ça marche',
+    howToPlaySteps: [
+      'Choisis un thème ci-dessous et clique sur « Nouveau dessin »',
+      'Choisis une couleur dans la palette',
+      'Tape ou clique sur la toile pour peindre',
+      'Utilise la gomme pour corriger',
+      'Télécharge ton chef-d\'œuvre quand tu as fini !',
+    ],
+    chooseTheme: 'Choisis le thème :',
+    newDrawing: 'Nouveau dessin',
+    selectColor: 'Choisis la couleur :',
+    eraser: 'Gomme',
+    startOver: 'Recommencer',
+    saveArt: 'Sauvegarder',
+    brushSize: 'Taille du pinceau :',
+    eraserLabel: 'Gomme',
+    selectColorLabel: 'Choisis la couleur',
+    themes: {
+      sun: { name: 'Soleil joyeux', short: 'Soleil' },
+      butterfly: { name: 'Joli papillon', short: 'Papillon' },
+      star: { name: 'Étoile amicale', short: 'Étoile' },
+      flower: { name: 'Fleur joyeuse', short: 'Fleur' },
+      heart: { name: 'Joli cœur', short: 'Cœur' },
+      rainbow: { name: 'Arc-en-ciel', short: 'Arc-en-ciel' },
+    },
+    colors: {
+      red: 'Rouge', orange: 'Orange', yellow: 'Jaune', green: 'Vert',
+      blue: 'Bleu', purple: 'Violet', pink: 'Rose', brown: 'Marron',
+      black: 'Noir', white: 'Blanc', sky: 'Ciel', lime: 'Citron',
+    },
+    downloadFilename: 'coloriage-eva.png',
+  },
+} satisfies Record<Language, unknown>;
+
 export default function ColoringDemo() {
+  const t = useTranslation(TRANSLATIONS);
+  const { language: _language } = useLanguage();
+  void _language;
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [selectedColor, setSelectedColor] = useState(COLOR_PALETTE[0].color);
+  const [selectedColor, setSelectedColor] = useState<string>(COLOR_VALUES.red);
   const [brushSize, setBrushSize] = useState(20);
   const [isEraser, setIsEraser] = useState(false);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [selectedTheme, setSelectedTheme] = useState(0);
+  const [selectedThemeIdx, setSelectedThemeIdx] = useState(0);
 
   const generateColoringPage = useCallback(() => {
     const canvas = canvasRef.current;
@@ -222,8 +343,8 @@ export default function ColoringDemo() {
     canvas.height = 600;
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    TEMPLATES[selectedTheme].draw(ctx, canvas);
-  }, [selectedTheme]);
+    THEME_META[selectedThemeIdx].draw(ctx, canvas);
+  }, [selectedThemeIdx]);
 
   useEffect(() => {
     generateColoringPage();
@@ -284,7 +405,7 @@ export default function ColoringDemo() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const link = document.createElement('a');
-    link.download = 'eva-coloring-art.png';
+    link.download = t.downloadFilename;
     link.href = canvas.toDataURL();
     link.click();
   };
@@ -292,39 +413,37 @@ export default function ColoringDemo() {
   return (
     <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
-        <h3 className="text-3xl font-bold text-purple-700 mb-2">Eva's Coloring Adventure</h3>
-        <p className="text-gray-600">Pick a color and tap to paint! Let your creativity shine!</p>
+        <h3 className="text-3xl font-bold text-purple-700 mb-2">{t.heading}</h3>
+        <p className="text-gray-600">{t.subheading}</p>
         <div className="text-5xl my-4 animate-bounce">🎨</div>
       </div>
 
       <div className="bg-gradient-to-r from-blue-400 to-cyan-400 text-white rounded-2xl p-6 mb-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10" />
         <div className="relative z-10">
-          <h4 className="text-2xl font-bold mb-3 flex items-center gap-2 drop-shadow-md">✨ How to Play</h4>
+          <h4 className="text-2xl font-bold mb-3 flex items-center gap-2 drop-shadow-md">{t.howToPlay}</h4>
           <ol className="list-decimal list-inside space-y-2 text-lg drop-shadow-md">
-            <li>Choose a theme below and click "New Drawing"</li>
-            <li>Pick a color from the palette</li>
-            <li>Tap or click on the canvas to paint</li>
-            <li>Use the eraser to fix mistakes</li>
-            <li>Download your masterpiece when you're done!</li>
+            {t.howToPlaySteps.map((step, idx) => (
+              <li key={idx}>{step}</li>
+            ))}
           </ol>
         </div>
       </div>
 
       <div className="mb-6">
-        <label className="block text-sm font-bold text-purple-700 mb-3">Choose Theme:</label>
+        <label className="block text-sm font-bold text-purple-700 mb-3">{t.chooseTheme}</label>
         <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
-          {TEMPLATES.map((theme, index) => (
+          {THEME_META.map((theme, index) => (
             <Button
-              key={index}
-              onClick={() => setSelectedTheme(index)}
-              variant={selectedTheme === index ? 'default' : 'outline'}
+              key={theme.key}
+              onClick={() => setSelectedThemeIdx(index)}
+              variant={selectedThemeIdx === index ? 'default' : 'outline'}
               className={`text-xs md:text-sm flex flex-col items-center gap-1 h-auto py-3 ${
-                selectedTheme === index ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' : ''
+                selectedThemeIdx === index ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' : ''
               }`}
             >
               <span className="text-2xl">{theme.emoji}</span>
-              <span className="text-xs">{theme.name.split(' ')[0]}</span>
+              <span className="text-xs">{t.themes[theme.key].short}</span>
             </Button>
           ))}
         </div>
@@ -336,28 +455,31 @@ export default function ColoringDemo() {
           className="w-full max-w-md bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold px-8 py-6 rounded-full text-lg shadow-lg min-h-[56px]"
         >
           <RefreshCw className="w-5 h-5 mr-2" />
-          New Drawing
+          {t.newDrawing}
         </Button>
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-bold text-purple-700 mb-3">Select Color:</label>
+        <label className="block text-sm font-bold text-purple-700 mb-3">{t.selectColor}</label>
         <div className="grid grid-cols-6 md:grid-cols-12 gap-2 mb-4">
-          {COLOR_PALETTE.map((colorItem) => (
-            <button
-              key={colorItem.color}
-              type="button"
-              onClick={() => {
-                setSelectedColor(colorItem.color);
-                setIsEraser(false);
-              }}
-              className={`w-full aspect-square rounded-xl transition-all hover:scale-110 ${
-                selectedColor === colorItem.color && !isEraser ? 'ring-4 ring-purple-500 scale-110' : 'ring-2 ring-gray-300'
-              }`}
-              style={{ backgroundColor: colorItem.color }}
-              title={colorItem.name}
-            />
-          ))}
+          {COLOR_PALETTE_KEYS.map((key) => {
+            const value = COLOR_VALUES[key];
+            return (
+              <button
+                key={key}
+                type="button"
+                onClick={() => {
+                  setSelectedColor(value);
+                  setIsEraser(false);
+                }}
+                className={`w-full aspect-square rounded-xl transition-all hover:scale-110 ${
+                  selectedColor === value && !isEraser ? 'ring-4 ring-purple-500 scale-110' : 'ring-2 ring-gray-300'
+                }`}
+                style={{ backgroundColor: value }}
+                title={t.colors[key]}
+              />
+            );
+          })}
         </div>
       </div>
 
@@ -368,23 +490,23 @@ export default function ColoringDemo() {
           className={isEraser ? 'bg-gradient-to-r from-gray-400 to-gray-600 text-white' : ''}
         >
           <Eraser className="w-4 h-4 mr-2" />
-          Eraser
+          {t.eraser}
         </Button>
         <Button onClick={generateColoringPage} variant="outline">
           <RefreshCw className="w-4 h-4 mr-2" />
-          Start Over
+          {t.startOver}
         </Button>
         <Button
           onClick={downloadImage}
           className="bg-gradient-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white"
         >
           <Download className="w-4 h-4 mr-2" />
-          Save Art
+          {t.saveArt}
         </Button>
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-bold text-purple-700 mb-2">Brush Size: {brushSize}px</label>
+        <label className="block text-sm font-bold text-purple-700 mb-2">{t.brushSize} {brushSize}px</label>
         <input
           type="range"
           min="5"
@@ -412,7 +534,7 @@ export default function ColoringDemo() {
 
       <div className="flex items-center justify-center gap-3 mt-4 bg-white rounded-full py-3 px-6 shadow-lg">
         <Palette className="w-5 h-5 text-purple-600" />
-        <span className="font-semibold text-gray-700">{isEraser ? 'Eraser' : 'Select Color'}</span>
+        <span className="font-semibold text-gray-700">{isEraser ? t.eraserLabel : t.selectColorLabel}</span>
         <div
           className="w-10 h-10 rounded-full border-4 border-purple-300 shadow-md"
           style={{ backgroundColor: isEraser ? 'white' : selectedColor }}
