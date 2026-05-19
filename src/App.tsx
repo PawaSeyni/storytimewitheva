@@ -7,6 +7,7 @@ import Activities from './pages/Activities';
 import Resources from './pages/Resources';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Profile from './pages/Profile';
 import DemoPage from './pages/DemoPage';
 import StoryBuilderDemo from './demos/StoryBuilderDemo';
 import CharacterWorkshopDemo from './demos/CharacterWorkshopDemo';
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="/resources" element={<Resources />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>

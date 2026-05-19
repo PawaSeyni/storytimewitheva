@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Book } from '../data/books';
+import BookStatusButton from './BookStatusButton';
 
 interface BookCardProps {
   book: Book;
@@ -10,7 +11,7 @@ export default function BookCard({ book }: BookCardProps) {
 
   return (
     <>
-      <div className="card group cursor-pointer" onClick={() => setShowModal(true)}>
+      <div className="card group cursor-pointer flex flex-col" onClick={() => setShowModal(true)}>
         {/* Card Header */}
         <div className="relative bg-gradient-to-br from-purple-100 via-pink-50 to-yellow-50 p-8 flex items-center justify-center min-h-[140px]">
           <span className="text-6xl">{book.emoji}</span>
@@ -23,7 +24,7 @@ export default function BookCard({ book }: BookCardProps) {
         </div>
 
         {/* Card Body */}
-        <div className="p-5">
+        <div className="p-5 flex flex-col flex-1">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xs bg-purple-100 text-purple-700 font-medium px-2 py-0.5 rounded-full">
               {book.ageRange}
@@ -33,11 +34,16 @@ export default function BookCard({ book }: BookCardProps) {
           <h3 className="font-bold text-gray-800 text-lg mb-1 group-hover:text-purple-700 transition-colors">
             {book.title}
           </h3>
-          <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-4">
+          <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-3">
             {book.description}
           </p>
 
-          <div className="flex gap-2">
+          {/* Reading-progress toggles */}
+          <div className="mb-3" onClick={(e) => e.stopPropagation()}>
+            <BookStatusButton bookId={book.id} compact />
+          </div>
+
+          <div className="flex gap-2 mt-auto">
             <button
               onClick={e => { e.stopPropagation(); setShowModal(true); }}
               className="flex-1 py-2 text-sm font-semibold text-purple-600 border border-purple-200 rounded-full hover:bg-purple-50 transition-colors"

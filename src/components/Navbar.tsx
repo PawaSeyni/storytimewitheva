@@ -8,6 +8,7 @@ const navLinks = [
   { to: '/resources', label: 'Resources', hint: 'Parent resources' },
   { to: '/about', label: 'About', hint: 'Learn about us' },
   { to: '/contact', label: 'Contact', hint: 'Contact us' },
+  { to: '/profile', label: 'Profile', hint: 'Your reading progress' },
 ];
 
 export default function Navbar() {
