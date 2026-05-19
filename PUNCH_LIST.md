@@ -8,6 +8,46 @@ progresses — it's the canonical "what's done / what's not" record.
 **GitHub repo:** https://github.com/PawaSeyni/storytimewitheva
 **Netlify project:** storytimewitheva (Pawa Data Services team)
 **Base44 source:** preserved verbatim under `base44-app/` on `main`
+**Local path:** `/Users/papasnguer/Desktop/Organized/17_Completed_Books_Archive/Completed Books/Eva/storytimewitheva`
+
+---
+
+## 🚦 Release gates (active work)
+
+Three gates to get to a real launch. Top-to-bottom priority. Detailed task list lives in the task tracker (#12 onward).
+
+### Gate A — Lead-capture pipeline (BLOCKING for marketing, target: this week)
+
+Without this, every dollar of paid traffic is wasted: form looks fine but throws away the email and never delivers the promised PDF.
+
+- [ ] **A1** Confirm Mailchimp audience + tag scheme (source, language, requested asset)
+- [ ] **A2** Upload `Bilingual_Starter_Kit_Optimized_Fixed.pdf` → `public/bilingual-starter-kit.pdf`, verify public URL serves
+- [ ] **A3** Wire `EmailSignup.tsx` to Mailchimp (embedded form post, no API key needed)
+- [ ] **A4** Build welcome automation in Mailchimp: confirm → PDF link → 3-touch drip
+- [ ] **A5** End-to-end test signup flow in EN / ES / FR
+
+Bonus lead magnets already sitting in `/Eva/Story_Time_With_Eva_Optimized_PDFs/`:
+Parents Guide (EN/ES/FR), Bilingual Flashcards, Bedtime Routine Chart (EN/ES/FR) — usable as
+nurture-sequence sends after the starter kit.
+
+### Gate B — Site truthfulness (BLOCKING for launch, not for sales)
+
+Things that currently lie to the visitor.
+
+- [ ] **B1** Resources page: write 6 articles or hide cards until content exists (currently 6 cards with stub `<button>` that goes nowhere)
+- [ ] **B2** Wire Contact form to Netlify Forms (free, ~5 min)
+- [ ] **B3** Confirm `hello@storytimewitheva.com` is real + monitored, or swap address
+- [ ] **B4** Replace Instagram placeholder URL (currently links to instagram.com root)
+- [ ] **B5** Debug react-helmet-async not injecting meta tags on production. `<title>`, `og:locale`, `og:title`, canonical all fall back to index.html static defaults across every route. `html lang` updates correctly (via LanguageProvider useEffect) so HelmetProvider mounts, but Helmet's children aren't reaching the head. Likely Vite minification or HelmetProvider+StrictMode interaction.
+
+### Gate C — Pre-launch polish
+
+Nice-to-have before turning on paid traffic.
+
+- [ ] **C1** Custom domain (`storytimewitheva.com`) attached, DNS, HTTPS, update SITE_URL in `Seo.tsx`, sitemap, robots
+- [ ] **C2** Add Plausible analytics
+- [ ] **C3** Replace `alert()` placeholders with toast component (~3-4 calls)
+- [ ] **C4** Update this PUNCH_LIST as gates close
 
 ---
 
@@ -63,7 +103,7 @@ progresses — it's the canonical "what's done / what's not" record.
 ### Phase 6 — Real Eva Gallo book content
 - [x] Replaced placeholder books.ts with 11 real Eva Gallo Collection titles
 - [x] 8 Amazon-live titles with real subtitles, descriptions, ASIN-based URLs
-- [x] 3 newer titles (Colors Mixed Up, Rainbow Symphony, Tower) sourced from local KDP metadata
+- [x] 3 newer titles (Colors Mixed Up, Rainbow Symphony, Tower) sourced from local KDP metadata; "Buy" falls back to author page until they're listed
 - [x] Replaced emoji "covers" with real cover images
 - [x] 8 books hot-link Amazon's CDN (m.media-amazon.com)
 - [x] 3 not-yet-on-Amazon books use locally hosted 800×800 JPGs (~165 KB each) under `src/assets/covers/`
@@ -73,26 +113,27 @@ progresses — it's the canonical "what's done / what's not" record.
 ### Phase 7 — SEO basics
 - [x] `react-helmet-async` installed (+4 packages, ~5 KB gzipped)
 - [x] `index.html` carries only truly-invariant defaults (charset, viewport, theme-color, favicon, og:type/site_name/locale, twitter:card, fallback title + description for no-JS clients)
-- [x] All per-route-variable tags (title, description, og:title/url/image/desc, twitter:* content, canonical) live exclusively in Helmet so they appear exactly once in the DOM
-- [x] `src/components/Seo.tsx` reusable component (title + description + image + path + bare + noindex props)
-- [x] Per-route SEO on Home, Books, Activities, About, Contact, Resources, Profile (noindex), and every DemoPage (derived from activity slug)
+- [x] All per-route-variable tags (title, description, og:title/url/image/desc, twitter:* content, canonical) defined in `src/components/Seo.tsx`
+- [x] Per-route SEO on Home, Books, Activities, About, Contact, Resources, Profile (noindex), and every DemoPage
 - [x] `public/robots.txt` — Allow-all + Disallow /profile + sitemap pointer
 - [x] `public/sitemap.xml` — 14 routes (home + books + activities + 8 demos + resources + about + contact). Profile excluded.
 
-**Known limitation:** the static `<meta name="description">` fallback in `index.html`
-is duplicated by Helmet's per-route description on subroutes (so two
-`<meta name="description">` exist on `/activities/bingo`, for example). This is
-intentional — most non-JS social scrapers need the static fallback to get any
-description at all, and modern JS-rendering crawlers (Googlebot, FB scraper)
-correctly pick the more specific Helmet version. A future improvement, if perfect
-per-route OG unfurls become important, would be build-time prerendering (e.g.
-`vite-plugin-prerender` or migrating to Astro). Tracked in Backlog → Mid-term.
+⚠️ **Known regression as of 2026-05-19** — Helmet stopped injecting meta tags on production. See Gate B5.
 
 ### Phase 8 — Lighthouse audit (PageSpeed Insights / Mobile)
 - [x] `@netlify/plugin-lighthouse` configured in `netlify.toml` for 5 audited routes (/, /books, /activities, /activities/story-builder, /about). Plugin runs but report HTML isn't surfaced in Netlify's free-tier UI — used PageSpeed Insights manually for visibility.
 - [x] Round 1 contrast fixes: bumped EmailSignup button bg from orange-400 → -600, footer copyright text from gray-500 → -400. Accessibility 94 → still 94 (orange-600 + white = 2.97:1, not enough).
 - [x] Round 2 contrast + heading fixes: bumped button to bg-orange-700 (4.92:1, passes AA), and changed Footer column headings `<h4>` → `<h3>` so the page hierarchy is h1→h2→h3 (was skipping h3).
 - [x] **Final mobile scores: Performance 95, Accessibility 100, Best Practices 100, SEO 100.**
+
+### Phase 9 — Multilingual (EN / ES / FR) — shipped 2026-05-19
+- [x] `src/lib/language.tsx` — LanguageContext, `useLanguage()`, `useTranslation()`, localStorage persistence, navigator.language detection on first visit, `<html lang>` set via useEffect
+- [x] `src/components/LanguageSwitcher.tsx` — 3-flag pill cluster (EN/ES/FR), top-right of Navbar, vertical variant in mobile menu
+- [x] All marketing pages localized (Home, Books, Activities, About, Contact, Resources, Profile)
+- [x] All shared components localized (Navbar, Footer, EmailSignup, BookCard, BookStatusButton, ActivityStatusButton, Seo)
+- [x] `src/data/books.ts` and `src/data/activities.ts` restructured with `Record<Language, string>` for translatable fields; `useBooks() / useActivities() / useBook(id) / useActivity(slug)` hooks
+- [x] All 8 demos translated: Character Workshop, Story Builder, Adventure Journal, Bingo (4 themes × 24 items × 3 languages), Bookmark Designer (12 animals + 12 countries × 3), Craft Corner (6 crafts), Coloring (6 themes + 12 colors), Puzzle Paradise (per-language scrambles + 5 riddles + matching pairs + logic puzzle)
+- [x] `Seo.tsx` sets `og:locale` per language (`en_US` / `es_ES` / `fr_FR`)
 
 ---
 
@@ -103,50 +144,43 @@ reason so we don't accidentally redo them without checking the trade-off.
 
 | Skipped | Why |
 |---|---|
-| Spanish / French translations on all pages and demos | Site is English-only for now. Each demo has its English strings inlined; adding back would mean either restoring translation blocks or wiring a language-context provider. |
 | `@base44/sdk` and `@base44/vite-plugin` | Base44-specific backend client. We're static-hosted on Netlify. |
 | `AuthContext`, `ProtectedRoute`, `UserNotRegisteredError`, `app-params.js`, `base44Client.js` | Auth pieces that only work inside Base44's runtime. |
 | `UserProgress` entity (Base44 backend storage) | We use `localStorage` for progress tracking instead. |
-| `BookStatusButton`, `ActivityStatusButton` (server-backed tracking) | Will be reimplemented as localStorage-backed components. |
+| `BookStatusButton`, `ActivityStatusButton` (server-backed tracking) | Reimplemented as localStorage-backed components. |
 | `ProtectedRoute` route guards | No auth on the static site. |
 | AI puzzle generator (`base44.integrations.Core.InvokeLLM`) | Replaced with hand-curated static hints per puzzle. |
 | shadcn `Dialog` primitive (used in CraftCorner) | Replaced with inline expanded detail panel to avoid the full Radix Dialog dep. |
 | `AgeSelector` component (lazy-loaded on Home) | Recommended only after we have real reader segments. |
 | `RecommendationEngine` component (lazy-loaded on Home) | Same — needs real data and tracking signal. |
 | `GlobalSearch` modal | Useful, but adds non-trivial state + keyboard handling. Defer until books grow. |
-| `NewsletterSignup` from Base44 | We keep our existing `EmailSignup` component (already wired). |
+| `NewsletterSignup` from Base44 | We keep our existing `EmailSignup` component (Gate A wires it to Mailchimp). |
 | `PerformanceUtils`, lazy-loading scaffolding, `batchEntityRequests` | Over-engineered for a small static site. |
 | Trust-badge content "10,000+ Happy Families" / "4.9/5 Parent Rating" / "100+ Free Activities" | Replaced with our truthful "6+ Magical Books / 3 Languages / 4.9/5 Amazon Rating" stats. |
 | `framer-motion`, `canvas-confetti`, `three.js`, `react-leaflet`, `jspdf`, `html2canvas`, `react-quill`, `recharts`, `react-day-picker`, `embla-carousel`, `vaul`, `react-resizable-panels` | All Base44 deps not actually needed by any ported demo. Bundle stays lean. |
-| Toast notifications (`window.showToast`) | Using `alert()` placeholders where needed. Can swap for a real toast later. |
+| Toast notifications (`window.showToast`) | Still using `alert()` placeholders. See Gate C3 for swap. |
 | `ActivityDemo` page (Base44's dedicated demo viewer) | Replaced with one route per demo under `/activities/{slug}`. |
 | 45 of 49 shadcn primitives under `src/components/ui/` | Only ported the 4 we actually use (Button, Card, Input, Textarea). |
 
 ---
 
-## 📋 Backlog (not started)
+## 📋 Long-term backlog (beyond Gate C)
 
-Prioritize roughly top-to-bottom. Add new items as discovered.
+Add new items as discovered. Prioritize roughly top-to-bottom within each cluster.
 
-### Near-term (high signal, low risk)
-- [ ] **Profile page + localStorage tracking** (in progress — see Phase 5 below once shipped)
-- [ ] Real book content from Eva Gallo collection (current `src/data/books.ts` may be placeholder)
-- [ ] Replace emoji book "covers" with actual cover image assets
-- [ ] SEO basics: `sitemap.xml`, `robots.txt`, per-route `<title>` and `<meta>` (use react-helmet-async or inline)
-- [ ] Open Graph tags so links share well on social
-- [ ] Run Netlify Lighthouse plugin, address red flags
+### Content & content-ops
+- [ ] Write the 6 real Resources articles (currently stubs — Gate B1 might just hide them)
+- [ ] Per-language Resources articles (EN/ES/FR) once article structure exists
+- [ ] Update books.ts as Colors Mixed Up / Rainbow Symphony / Tower hit Amazon — swap author-page fallback for real ASIN URLs
 
-### Mid-term (meaningful work)
-- [ ] Custom domain (e.g. `storytimewitheva.com`) attached to Netlify, DNS, HTTPS
-- [ ] Build-time prerendering for perfect per-route OG unfurls on non-JS scrapers (e.g. `vite-plugin-prerender` or migrate to Astro). Currently each subroute's description duplicates the static homepage fallback in the DOM — modern crawlers handle this correctly but a non-JS Twitterbot would only see the static one.
-- [ ] Multilingual support (ES/FR) restored — likely via a language context + translation files
+### Engineering
+- [ ] Build-time prerendering for perfect per-route OG unfurls on non-JS scrapers (`vite-plugin-prerender` or migrate to Astro). Currently each subroute's description duplicates the static homepage fallback in the DOM — modern crawlers handle this correctly but a non-JS Twitterbot would only see the static one.
 - [ ] Lightweight global search (subset of Base44's, no modal — inline page-search)
-- [ ] Toast notification component to replace `alert()` calls
-- [ ] Accessibility audit (axe-core or Lighthouse a11y), fix focus management on demo modals
+- [ ] Accessibility audit (axe-core), fix focus management on demo modals
 - [ ] Mobile responsiveness pass — particularly the wide demo layouts (Bookmark Designer, Bingo grid)
-- [ ] Analytics (Plausible, Fathom, or GA4)
+- [ ] Lazy-load demo bundles per route to keep initial JS payload lean as i18n bumped bundle 88KB → 136KB gz
 
-### Long-term / nice-to-have
+### Product
 - [ ] Real book recommendation logic (subset of Base44's `RecommendationEngine`, no backend)
 - [ ] User-generated puzzle bank (currently 3 scrambles, 5 riddles, 4 matches, 1 logic — could grow)
 - [ ] Coloring demo: add more template scenes, save-to-localStorage gallery
@@ -164,23 +198,32 @@ Prioritize roughly top-to-bottom. Add new items as discovered.
 storytimewitheva/
 ├── src/
 │   ├── App.tsx              ← routes
-│   ├── main.tsx
-│   ├── index.css            ← .btn-primary, .hero-bg, star-float keyframe
+│   ├── main.tsx             ← HelmetProvider + LanguageProvider + BrowserRouter
+│   ├── index.css
+│   ├── lib/
+│   │   ├── language.tsx     ← LanguageContext, useTranslation, LANGUAGE_LABELS
+│   │   └── progress.ts      ← localStorage progress tracking
 │   ├── components/
 │   │   ├── Navbar.tsx, Footer.tsx, BookCard.tsx, EmailSignup.tsx
+│   │   ├── LanguageSwitcher.tsx, Seo.tsx
 │   │   └── ui/              ← Button, Card, Input, Textarea (shadcn-shaped shims)
-│   ├── data/books.ts
-│   ├── pages/               ← Home, Books, Activities, About, Contact, Resources, DemoPage
-│   └── demos/               ← 8 ported demos as TSX
+│   ├── data/
+│   │   ├── books.ts         ← 11 books with Record<Language, string> fields + useBooks/useBook hooks
+│   │   └── activities.ts    ← 8 activities with same pattern + useActivities/useActivity hooks
+│   ├── pages/               ← Home, Books, Activities, About, Contact, Resources, Profile, DemoPage
+│   └── demos/               ← 8 demos (all i18n-aware)
+├── public/
+│   ├── robots.txt, sitemap.xml, favicon.svg, icons.svg
+│   └── (TODO: bilingual-starter-kit.pdf — Gate A2)
 ├── base44-app/              ← original Base44 export (not built, kept for reference)
 ├── netlify.toml
-├── tailwind.config.js       ← purple primary + orange/pink/yellow accents
-├── vite.config.ts           ← @/ alias to ./src
+├── tailwind.config.js
+├── vite.config.ts
 └── PUNCH_LIST.md            ← this file
 ```
 
 ### Conventions that survived all the ports
-- **English-only** strings, inlined. No translation blocks in ported code.
+- **Three languages** (en/es/fr) inlined per component via `TRANSLATIONS` object + `useTranslation(TRANSLATIONS)`. No i18next, no JSON files.
 - **`localStorage`** for any persisted state. No backend, no auth.
 - **`@/components/ui/{name}`** for shim imports — match shadcn API surface.
 - **`/activities/{slug}`** for each interactive demo.
@@ -188,25 +231,37 @@ storytimewitheva/
 
 ### Mounted-FS quirks (Cowork sandbox only)
 - `git add` and `git commit` from the sandbox bash leave stale `.git/index.lock` files that the sandbox can't delete (EPERM). Workaround: hand off the actual `git commit` + `git push` to the user's Mac terminal.
-- `vite build` fails to clear an existing `dist/` (same EPERM). Workaround: build to a fresh `outDir` under `/sessions/jolly-kind-hawking/mnt/outputs/storytimewitheva-dist-vN/` and ignore the in-tree `dist/`.
+- `vite build` fails to clear an existing `dist/` (same EPERM). Workaround: build to a fresh `outDir` under `/tmp/dist-check` and ignore the in-tree `dist/`.
 - The handoff command pattern that works:
   ```bash
-  cd "/Users/papasnguer/Desktop/Completed Books/Eva/storytimewitheva" && \
+  cd "/Users/papasnguer/Desktop/Organized/17_Completed_Books_Archive/Completed Books/Eva/storytimewitheva" && \
   rm -f .git/index.lock .git/HEAD.lock && \
   git add <files> && \
   git commit -m "..." && \
   git push origin main
   ```
 
-### Bundle budget (as of last update)
-- 1,780 modules transformed
-- **88 kB JS gzipped** (301 kB raw)
-- **8 kB CSS gzipped** (53 kB raw)
-- Build ~2.4 s, Netlify deploy ~12 s
+### Bundle budget (as of 2026-05-19, post-i18n)
+- 1,795 modules transformed
+- **136 kB JS gzipped** (~438 kB raw) — up from 88 kB pre-i18n; +48 kB for 3 languages × 8 demos
+- **8.3 kB CSS gzipped** (55 kB raw)
+- Build ~2.5 s, Netlify deploy ~12 s
+
+### Lead magnets on hand (Gate A inputs)
+- **Primary:** `/Eva/Bilingual_Starter_Kit_Optimized_Fixed.pdf` (1.2 MB, 20 pages)
+- **Nurture sends:**
+  - `Story_Time_With_Eva_Optimized_PDFs/Parents_Guide_Bilingual_Reading_Optimized.pdf` (749 KB)
+  - `Story_Time_With_Eva_Optimized_PDFs/Parents_Guide_Bilingual_Reading_ES_Optimized.pdf` (761 KB)
+  - `Story_Time_With_Eva_Optimized_PDFs/Parents_Guide_Bilingual_Reading_FR_Optimized.pdf` (788 KB)
+  - `Story_Time_With_Eva_Optimized_PDFs/Bilingual_Flashcard_Set_Optimized.pdf` (1.1 MB)
+  - `Story_Time_With_Eva_Optimized_PDFs/Bedtime_Routine_Chart_Optimized.pdf` (214 KB)
+  - `Story_Time_With_Eva_Optimized_PDFs/Bedtime_Routine_Chart_ES_Optimized.pdf` (202 KB)
+  - `Story_Time_With_Eva_Optimized_PDFs/Bedtime_Routine_Chart_FR_Optimized.pdf` (205 KB)
 
 ---
 
 ## Update log
 
 - **2026-05-18** — Initial site stand-up, GitHub + Netlify wired. Phase 0–3 of base44 import. 8 demos live.
-- _(Add entries here as PR descriptions when phases land)_
+- **2026-05-19** — Phase 9: full EN/ES/FR i18n shipped across all marketing pages, components, data, and all 8 demos. Bundle 88 KB → 136 KB JS gz. Deep punch-list review uncovered: EmailSignup is fake (no ESP wired), lead magnet PDF was never uploaded, Contact form is fake, Resources "Read More" buttons are stubs, react-helmet-async regressed on production. New 3-gate structure (A/B/C) created with 14 tracked tasks targeting "ASAP, Gate A this week" launch path. Mailchimp picked as ESP. Primary lead magnet identified: `Bilingual_Starter_Kit_Optimized_Fixed.pdf`.
+- _(Add entries here as gates close)_
