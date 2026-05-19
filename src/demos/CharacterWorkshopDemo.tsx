@@ -4,28 +4,199 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Sparkles, Pencil } from 'lucide-react';
+import { useTranslation } from '../lib/language';
 
-const TYPES = [
-  { icon: '🦸', name: 'Hero' },
-  { icon: '🐉', name: 'Creature' },
-  { icon: '👑', name: 'Royalty' },
-  { icon: '🧙', name: 'Wizard' },
-  { icon: '🤖', name: 'Robot' },
-  { icon: '🧚', name: 'Fairy' },
-] as const;
+const TRANSLATIONS = {
+  en: {
+    title: "Eva's Character Creation Workshop",
+    subtitle: 'Follow these fun steps to bring your character to life!',
+    howToPlay: '✨ How to Play ✨',
+    howToList: [
+      'Follow each step to design your unique character',
+      'Choose their type, give them a name, and design their look',
+      'Pick personality traits and special powers',
+      'Create their backstory and goals',
+      'See your complete character summary at the end!',
+    ],
+    step1: 'Choose Your Character Type',
+    step2: 'Give Them a Name',
+    step3: 'Design Their Look',
+    step4: 'Create Their Personality',
+    step5: 'Give Them Special Powers',
+    step6: 'Create Their Story',
+    step7: 'Draw Your Character!',
+    types: ['Hero', 'Creature', 'Royalty', 'Wizard', 'Robot', 'Fairy'],
+    traits: ['Friendly', 'Brave', 'Smart', 'Funny', 'Kind', 'Mysterious', 'Energetic', 'Gentle'],
+    namePlaceholder: "Type your character's name here...",
+    colors: 'Colors:',
+    colorsPlaceholder: 'What colors will they wear?',
+    eyes: 'Eyes:',
+    eyesPlaceholder: 'Big? Small? Sparkly?',
+    features: 'Hair/Features:',
+    featuresPlaceholder: 'Curly hair? Wings? Horns?',
+    outfit: 'Outfit:',
+    outfitPlaceholder: 'What do they wear?',
+    appearanceTip: '🌟 Characters with unique features are easier to remember!',
+    pickTraits: 'Pick 3 personality traits!',
+    traitsSelected: 'selected',
+    powersPlaceholder: 'What makes your character special?',
+    homeLabel: '🏠 Where do they live?',
+    homePlaceholder: 'A castle? The forest? Space?',
+    lovesLabel: '❤️ What do they love?',
+    lovesPlaceholder: 'Adventure? Reading? Helping others?',
+    fearsLabel: '😰 What are they afraid of?',
+    fearsPlaceholder: 'Even heroes have fears!',
+    goalLabel: "🎯 What's their goal?",
+    goalPlaceholder: 'What do they want to achieve?',
+    drawTip: 'Grab some paper and colored pencils to draw your character!',
+    seeSummary: 'See My Character Summary!',
+    summaryHeading: '🎉 Your Amazing Character! 🎉',
+    name: 'Name',
+    type: 'Type',
+    appearance: 'Appearance',
+    personality: 'Personality',
+    powers: 'Powers',
+    home: 'Home',
+    loves: 'Loves',
+    fears: 'Fears',
+    goal: 'Goal',
+    defaultCharName: 'My Character',
+    yourCharacter: 'your character',
+    summaryClosingPrefix: '✨ Now you\'re ready to write stories about',
+    summaryClosingSuffix: '! ✨',
+    colorsSuffix: 'colors',
+    eyesSuffix: 'eyes',
+    wearing: 'wearing',
+  },
+  es: {
+    title: 'Taller de creación de personajes con Eva',
+    subtitle: '¡Sigue estos pasos divertidos para dar vida a tu personaje!',
+    howToPlay: '✨ Cómo jugar ✨',
+    howToList: [
+      'Sigue cada paso para diseñar tu personaje único',
+      'Elige su tipo, dale un nombre y diseña su aspecto',
+      'Elige rasgos de personalidad y poderes especiales',
+      'Crea su historia y sus metas',
+      '¡Mira el resumen completo de tu personaje al final!',
+    ],
+    step1: 'Elige el tipo de personaje',
+    step2: 'Dale un nombre',
+    step3: 'Diseña su aspecto',
+    step4: 'Crea su personalidad',
+    step5: 'Dale poderes especiales',
+    step6: 'Crea su historia',
+    step7: '¡Dibuja tu personaje!',
+    types: ['Héroe', 'Criatura', 'Realeza', 'Mago', 'Robot', 'Hada'],
+    traits: ['Amable', 'Valiente', 'Inteligente', 'Divertido', 'Bondadoso', 'Misterioso', 'Enérgico', 'Tierno'],
+    namePlaceholder: 'Escribe el nombre de tu personaje aquí...',
+    colors: 'Colores:',
+    colorsPlaceholder: '¿Qué colores llevará?',
+    eyes: 'Ojos:',
+    eyesPlaceholder: '¿Grandes? ¿Pequeños? ¿Brillantes?',
+    features: 'Pelo / rasgos:',
+    featuresPlaceholder: '¿Pelo rizado? ¿Alas? ¿Cuernos?',
+    outfit: 'Ropa:',
+    outfitPlaceholder: '¿Qué lleva puesto?',
+    appearanceTip: '🌟 ¡Los personajes con rasgos únicos son más fáciles de recordar!',
+    pickTraits: '¡Elige 3 rasgos de personalidad!',
+    traitsSelected: 'elegidos',
+    powersPlaceholder: '¿Qué hace especial a tu personaje?',
+    homeLabel: '🏠 ¿Dónde vive?',
+    homePlaceholder: '¿En un castillo? ¿El bosque? ¿El espacio?',
+    lovesLabel: '❤️ ¿Qué le encanta?',
+    lovesPlaceholder: '¿La aventura? ¿Leer? ¿Ayudar a los demás?',
+    fearsLabel: '😰 ¿A qué le tiene miedo?',
+    fearsPlaceholder: '¡Hasta los héroes tienen miedos!',
+    goalLabel: '🎯 ¿Cuál es su meta?',
+    goalPlaceholder: '¿Qué quiere conseguir?',
+    drawTip: '¡Coge papel y lápices de colores para dibujar a tu personaje!',
+    seeSummary: '¡Ver el resumen de mi personaje!',
+    summaryHeading: '🎉 ¡Tu increíble personaje! 🎉',
+    name: 'Nombre',
+    type: 'Tipo',
+    appearance: 'Apariencia',
+    personality: 'Personalidad',
+    powers: 'Poderes',
+    home: 'Hogar',
+    loves: 'Le encanta',
+    fears: 'Miedos',
+    goal: 'Meta',
+    defaultCharName: 'Mi personaje',
+    yourCharacter: 'tu personaje',
+    summaryClosingPrefix: '✨ ¡Ya estás listo para escribir historias sobre',
+    summaryClosingSuffix: '! ✨',
+    colorsSuffix: 'de colores',
+    eyesSuffix: 'ojos',
+    wearing: 'con',
+  },
+  fr: {
+    title: 'Atelier de création de personnages avec Eva',
+    subtitle: 'Suis ces étapes amusantes pour donner vie à ton personnage !',
+    howToPlay: '✨ Comment jouer ✨',
+    howToList: [
+      'Suis chaque étape pour concevoir ton personnage unique',
+      'Choisis son type, donne-lui un nom et dessine son apparence',
+      'Choisis des traits de personnalité et des pouvoirs spéciaux',
+      'Crée son histoire et ses objectifs',
+      'Vois le résumé complet de ton personnage à la fin !',
+    ],
+    step1: 'Choisis le type de personnage',
+    step2: 'Donne-lui un nom',
+    step3: 'Dessine son apparence',
+    step4: 'Crée sa personnalité',
+    step5: 'Donne-lui des pouvoirs spéciaux',
+    step6: 'Crée son histoire',
+    step7: 'Dessine ton personnage !',
+    types: ['Héros', 'Créature', 'Royauté', 'Magicien', 'Robot', 'Fée'],
+    traits: ['Sympa', 'Courageux', 'Malin', 'Drôle', 'Gentil', 'Mystérieux', 'Énergique', 'Doux'],
+    namePlaceholder: 'Écris le nom de ton personnage ici...',
+    colors: 'Couleurs :',
+    colorsPlaceholder: 'Quelles couleurs portera-t-il ?',
+    eyes: 'Yeux :',
+    eyesPlaceholder: 'Grands ? Petits ? Pétillants ?',
+    features: 'Cheveux / particularités :',
+    featuresPlaceholder: 'Cheveux frisés ? Ailes ? Cornes ?',
+    outfit: 'Tenue :',
+    outfitPlaceholder: 'Que porte-t-il ?',
+    appearanceTip: '🌟 Les personnages aux traits uniques sont plus faciles à retenir !',
+    pickTraits: 'Choisis 3 traits de personnalité !',
+    traitsSelected: 'choisis',
+    powersPlaceholder: 'Qu\'est-ce qui rend ton personnage spécial ?',
+    homeLabel: '🏠 Où vit-il ?',
+    homePlaceholder: 'Un château ? La forêt ? L\'espace ?',
+    lovesLabel: "❤️ Qu'est-ce qu'il adore ?",
+    lovesPlaceholder: "L'aventure ? La lecture ? Aider les autres ?",
+    fearsLabel: '😰 De quoi a-t-il peur ?',
+    fearsPlaceholder: 'Même les héros ont des peurs !',
+    goalLabel: '🎯 Quel est son objectif ?',
+    goalPlaceholder: 'Que veut-il accomplir ?',
+    drawTip: 'Prends du papier et des crayons de couleur pour dessiner ton personnage !',
+    seeSummary: 'Voir le résumé de mon personnage !',
+    summaryHeading: '🎉 Ton incroyable personnage ! 🎉',
+    name: 'Nom',
+    type: 'Type',
+    appearance: 'Apparence',
+    personality: 'Personnalité',
+    powers: 'Pouvoirs',
+    home: 'Maison',
+    loves: 'Adore',
+    fears: 'A peur de',
+    goal: 'Objectif',
+    defaultCharName: 'Mon personnage',
+    yourCharacter: 'ton personnage',
+    summaryClosingPrefix: "✨ Maintenant tu es prêt à écrire des histoires sur",
+    summaryClosingSuffix: ' ! ✨',
+    colorsSuffix: 'comme couleurs',
+    eyesSuffix: 'yeux',
+    wearing: 'avec',
+  },
+};
 
-const TRAITS = [
-  { icon: '😊', name: 'Friendly' },
-  { icon: '💪', name: 'Brave' },
-  { icon: '🤓', name: 'Smart' },
-  { icon: '😂', name: 'Funny' },
-  { icon: '🤗', name: 'Kind' },
-  { icon: '🎭', name: 'Mysterious' },
-  { icon: '⚡', name: 'Energetic' },
-  { icon: '🌸', name: 'Gentle' },
-] as const;
+const TYPE_ICONS = ['🦸', '🐉', '👑', '🧙', '🤖', '🧚'];
+const TRAIT_ICONS = ['😊', '💪', '🤓', '😂', '🤗', '🎭', '⚡', '🌸'];
 
 export default function CharacterWorkshopDemo() {
+  const t = useTranslation(TRANSLATIONS);
   const [selectedType, setSelectedType] = useState('');
   const [selectedTraits, setSelectedTraits] = useState<string[]>([]);
   const [charName, setCharName] = useState('');
@@ -42,7 +213,7 @@ export default function CharacterWorkshopDemo() {
 
   const toggleTrait = (trait: string) => {
     if (selectedTraits.includes(trait)) {
-      setSelectedTraits(selectedTraits.filter(t => t !== trait));
+      setSelectedTraits(selectedTraits.filter(x => x !== trait));
     } else if (selectedTraits.length < 3) {
       setSelectedTraits([...selectedTraits, trait]);
     }
@@ -65,38 +236,34 @@ export default function CharacterWorkshopDemo() {
   return (
     <div className="bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
-        <h3 className="text-3xl font-bold mb-2 text-purple-700">Eva's Character Creation Workshop</h3>
-        <p className="text-gray-700 mb-4">Follow these fun steps to bring your character to life!</p>
+        <h3 className="text-3xl font-bold mb-2 text-purple-700">{t.title}</h3>
+        <p className="text-gray-700 mb-4">{t.subtitle}</p>
         <div className="text-5xl mb-4">🎨✨</div>
       </div>
 
       <div className="bg-gradient-to-r from-purple-400 to-pink-400 text-white rounded-2xl p-6 mb-6 text-center">
-        <h4 className="text-2xl font-bold mb-3">✨ How to Play ✨</h4>
+        <h4 className="text-2xl font-bold mb-3">{t.howToPlay}</h4>
         <ol className="list-decimal list-inside space-y-2 text-lg text-left max-w-2xl mx-auto">
-          <li>Follow each step to design your unique character</li>
-          <li>Choose their type, give them a name, and design their look</li>
-          <li>Pick personality traits and special powers</li>
-          <li>Create their backstory and goals</li>
-          <li>See your complete character summary at the end!</li>
+          {t.howToList.map((line, i) => <li key={i}>{line}</li>)}
         </ol>
       </div>
 
       {/* Step 1: Character Type */}
       <div className="bg-gradient-to-r from-yellow-200 to-orange-200 rounded-2xl p-6 mb-6 border-4 border-orange-300">
-        <StepHeader n={1} title="Choose Your Character Type" />
+        <StepHeader n={1} title={t.step1} />
         <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
-          {TYPES.map((type) => (
+          {t.types.map((typeName, i) => (
             <Card
-              key={type.icon}
-              onClick={() => setSelectedType(type.name)}
+              key={TYPE_ICONS[i]}
+              onClick={() => setSelectedType(typeName)}
               className={`p-4 text-center cursor-pointer transition-all hover:scale-105 ${
-                selectedType === type.name
+                selectedType === typeName
                   ? 'bg-gradient-to-br from-pink-400 to-red-400 text-white ring-4 ring-pink-300'
                   : 'bg-white hover:bg-pink-50'
               }`}
             >
-              <div className="text-3xl mb-1">{type.icon}</div>
-              <div className="font-medium text-xs">{type.name}</div>
+              <div className="text-3xl mb-1">{TYPE_ICONS[i]}</div>
+              <div className="font-medium text-xs">{typeName}</div>
             </Card>
           ))}
         </div>
@@ -104,71 +271,71 @@ export default function CharacterWorkshopDemo() {
 
       {/* Step 2: Name */}
       <div className="bg-gradient-to-r from-blue-200 to-purple-200 rounded-2xl p-6 mb-6 border-4 border-purple-300">
-        <StepHeader n={2} title="Give Them a Name" />
+        <StepHeader n={2} title={t.step2} />
         <Input
           value={charName}
           onChange={(e) => setCharName(e.target.value)}
-          placeholder="Type your character's name here..."
+          placeholder={t.namePlaceholder}
           className="text-lg border-2 border-purple-400 focus:border-purple-600"
         />
       </div>
 
       {/* Step 3: Appearance */}
       <div className="bg-gradient-to-r from-green-200 to-cyan-200 rounded-2xl p-6 mb-6 border-4 border-cyan-300">
-        <StepHeader n={3} title="Design Their Look" />
+        <StepHeader n={3} title={t.step3} />
         <div className="space-y-3">
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">Colors:</label>
-            <Input value={colors} onChange={(e) => setColors(e.target.value)} placeholder="What colors will they wear?" />
+            <label className="block text-sm font-bold text-gray-700 mb-1">{t.colors}</label>
+            <Input value={colors} onChange={(e) => setColors(e.target.value)} placeholder={t.colorsPlaceholder} />
           </div>
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">Eyes:</label>
-            <Input value={eyes} onChange={(e) => setEyes(e.target.value)} placeholder="Big? Small? Sparkly?" />
+            <label className="block text-sm font-bold text-gray-700 mb-1">{t.eyes}</label>
+            <Input value={eyes} onChange={(e) => setEyes(e.target.value)} placeholder={t.eyesPlaceholder} />
           </div>
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">Hair/Features:</label>
-            <Input value={features} onChange={(e) => setFeatures(e.target.value)} placeholder="Curly hair? Wings? Horns?" />
+            <label className="block text-sm font-bold text-gray-700 mb-1">{t.features}</label>
+            <Input value={features} onChange={(e) => setFeatures(e.target.value)} placeholder={t.featuresPlaceholder} />
           </div>
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">Outfit:</label>
-            <Input value={outfit} onChange={(e) => setOutfit(e.target.value)} placeholder="What do they wear?" />
+            <label className="block text-sm font-bold text-gray-700 mb-1">{t.outfit}</label>
+            <Input value={outfit} onChange={(e) => setOutfit(e.target.value)} placeholder={t.outfitPlaceholder} />
           </div>
         </div>
         <div className="mt-4 bg-green-300 text-green-900 p-3 rounded-lg font-semibold text-sm">
-          🌟 Characters with unique features are easier to remember!
+          {t.appearanceTip}
         </div>
       </div>
 
       {/* Step 4: Personality */}
       <div className="bg-gradient-to-r from-pink-200 to-rose-200 rounded-2xl p-6 mb-6 border-4 border-rose-300">
-        <StepHeader n={4} title="Create Their Personality" />
-        <p className="text-gray-700 mb-3">Pick 3 personality traits!</p>
+        <StepHeader n={4} title={t.step4} />
+        <p className="text-gray-700 mb-3">{t.pickTraits}</p>
         <div className="grid grid-cols-4 md:grid-cols-8 gap-2 mb-3">
-          {TRAITS.map((trait) => (
+          {t.traits.map((traitName, i) => (
             <Card
-              key={trait.icon}
-              onClick={() => toggleTrait(trait.name)}
+              key={TRAIT_ICONS[i]}
+              onClick={() => toggleTrait(traitName)}
               className={`p-3 text-center cursor-pointer transition-all hover:scale-105 ${
-                selectedTraits.includes(trait.name)
+                selectedTraits.includes(traitName)
                   ? 'bg-gradient-to-br from-purple-400 to-pink-400 text-white ring-4 ring-purple-300'
                   : 'bg-white hover:bg-purple-50'
               }`}
             >
-              <div className="text-2xl mb-1">{trait.icon}</div>
-              <div className="font-medium text-xs">{trait.name}</div>
+              <div className="text-2xl mb-1">{TRAIT_ICONS[i]}</div>
+              <div className="font-medium text-xs">{traitName}</div>
             </Card>
           ))}
         </div>
-        <div className="text-sm text-gray-600 text-center">{selectedTraits.length}/3 selected</div>
+        <div className="text-sm text-gray-600 text-center">{selectedTraits.length}/3 {t.traitsSelected}</div>
       </div>
 
       {/* Step 5: Powers */}
       <div className="bg-gradient-to-r from-indigo-200 to-blue-200 rounded-2xl p-6 mb-6 border-4 border-blue-300">
-        <StepHeader n={5} title="Give Them Special Powers" />
+        <StepHeader n={5} title={t.step5} />
         <Textarea
           value={powers}
           onChange={(e) => setPowers(e.target.value)}
-          placeholder="What makes your character special?"
+          placeholder={t.powersPlaceholder}
           rows={3}
           className="border-2 border-blue-400"
         />
@@ -176,33 +343,33 @@ export default function CharacterWorkshopDemo() {
 
       {/* Step 6: Story */}
       <div className="bg-gradient-to-r from-purple-200 to-pink-200 rounded-2xl p-6 mb-6 border-4 border-pink-300">
-        <StepHeader n={6} title="Create Their Story" />
+        <StepHeader n={6} title={t.step6} />
         <div className="space-y-3">
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">🏠 Where do they live?</label>
-            <Input value={home} onChange={(e) => setHome(e.target.value)} placeholder="A castle? The forest? Space?" />
+            <label className="block text-sm font-bold text-gray-700 mb-1">{t.homeLabel}</label>
+            <Input value={home} onChange={(e) => setHome(e.target.value)} placeholder={t.homePlaceholder} />
           </div>
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">❤️ What do they love?</label>
-            <Input value={loves} onChange={(e) => setLoves(e.target.value)} placeholder="Adventure? Reading? Helping others?" />
+            <label className="block text-sm font-bold text-gray-700 mb-1">{t.lovesLabel}</label>
+            <Input value={loves} onChange={(e) => setLoves(e.target.value)} placeholder={t.lovesPlaceholder} />
           </div>
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">😰 What are they afraid of?</label>
-            <Input value={fears} onChange={(e) => setFears(e.target.value)} placeholder="Even heroes have fears!" />
+            <label className="block text-sm font-bold text-gray-700 mb-1">{t.fearsLabel}</label>
+            <Input value={fears} onChange={(e) => setFears(e.target.value)} placeholder={t.fearsPlaceholder} />
           </div>
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">🎯 What's their goal?</label>
-            <Input value={goal} onChange={(e) => setGoal(e.target.value)} placeholder="What do they want to achieve?" />
+            <label className="block text-sm font-bold text-gray-700 mb-1">{t.goalLabel}</label>
+            <Input value={goal} onChange={(e) => setGoal(e.target.value)} placeholder={t.goalPlaceholder} />
           </div>
         </div>
       </div>
 
       {/* Step 7: Draw */}
       <div className="bg-gradient-to-r from-yellow-200 to-lime-200 rounded-2xl p-6 mb-6 border-4 border-lime-300">
-        <StepHeader n={7} title="Draw Your Character!" />
+        <StepHeader n={7} title={t.step7} />
         <div className="bg-white rounded-xl p-8 text-center border-4 border-dashed border-purple-400">
           <Pencil className="w-16 h-16 mx-auto mb-4 text-purple-500" />
-          <p className="text-gray-700 text-lg">Grab some paper and colored pencils to draw your character!</p>
+          <p className="text-gray-700 text-lg">{t.drawTip}</p>
         </div>
       </div>
 
@@ -212,32 +379,34 @@ export default function CharacterWorkshopDemo() {
           className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold text-lg px-8 py-6 rounded-full shadow-lg"
         >
           <Sparkles className="w-5 h-5 mr-2" />
-          See My Character Summary!
+          {t.seeSummary}
         </Button>
       </div>
 
       {showSummary && (
         <div id="summary-section" className="mt-8 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl p-8">
-          <h3 className="text-3xl font-bold text-center mb-6">🎉 Your Amazing Character! 🎉</h3>
+          <h3 className="text-3xl font-bold text-center mb-6">{t.summaryHeading}</h3>
           <div className="space-y-3 text-lg">
-            <p><strong>📛 Name:</strong> {charName || 'My Character'}</p>
-            {selectedType && <p><strong>✨ Type:</strong> {selectedType}</p>}
+            <p><strong>📛 {t.name}:</strong> {charName || t.defaultCharName}</p>
+            {selectedType && <p><strong>✨ {t.type}:</strong> {selectedType}</p>}
             {(colors || eyes || features || outfit) && (
               <p>
-                <strong>🎨 Appearance:</strong>{' '}
-                {colors && `${colors} colors`}
-                {eyes && `, ${eyes} eyes`}
+                <strong>🎨 {t.appearance}:</strong>{' '}
+                {colors && `${colors} ${t.colorsSuffix}`}
+                {eyes && `, ${eyes} ${t.eyesSuffix}`}
                 {features && `, ${features}`}
-                {outfit && `, wearing ${outfit}`}
+                {outfit && `, ${t.wearing} ${outfit}`}
               </p>
             )}
-            {selectedTraits.length > 0 && <p><strong>💫 Personality:</strong> {selectedTraits.join(', ')}</p>}
-            {powers && <p><strong>⚡ Powers:</strong> {powers}</p>}
-            {home && <p><strong>🏠 Home:</strong> {home}</p>}
-            {loves && <p><strong>❤️ Loves:</strong> {loves}</p>}
-            {fears && <p><strong>😰 Fears:</strong> {fears}</p>}
-            {goal && <p><strong>🎯 Goal:</strong> {goal}</p>}
-            <p className="text-center mt-6 text-xl">✨ Now you're ready to write stories about {charName || 'your character'}! ✨</p>
+            {selectedTraits.length > 0 && <p><strong>💫 {t.personality}:</strong> {selectedTraits.join(', ')}</p>}
+            {powers && <p><strong>⚡ {t.powers}:</strong> {powers}</p>}
+            {home && <p><strong>🏠 {t.home}:</strong> {home}</p>}
+            {loves && <p><strong>❤️ {t.loves}:</strong> {loves}</p>}
+            {fears && <p><strong>😰 {t.fears}:</strong> {fears}</p>}
+            {goal && <p><strong>🎯 {t.goal}:</strong> {goal}</p>}
+            <p className="text-center mt-6 text-xl">
+              {t.summaryClosingPrefix} {charName || t.yourCharacter}{t.summaryClosingSuffix}
+            </p>
           </div>
         </div>
       )}
