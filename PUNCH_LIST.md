@@ -88,6 +88,12 @@ correctly pick the more specific Helmet version. A future improvement, if perfec
 per-route OG unfurls become important, would be build-time prerendering (e.g.
 `vite-plugin-prerender` or migrating to Astro). Tracked in Backlog → Mid-term.
 
+### Phase 8 — Lighthouse audit (PageSpeed Insights / Mobile)
+- [x] `@netlify/plugin-lighthouse` configured in `netlify.toml` for 5 audited routes (/, /books, /activities, /activities/story-builder, /about). Plugin runs but report HTML isn't surfaced in Netlify's free-tier UI — used PageSpeed Insights manually for visibility.
+- [x] Round 1 contrast fixes: bumped EmailSignup button bg from orange-400 → -600, footer copyright text from gray-500 → -400. Accessibility 94 → still 94 (orange-600 + white = 2.97:1, not enough).
+- [x] Round 2 contrast + heading fixes: bumped button to bg-orange-700 (4.92:1, passes AA), and changed Footer column headings `<h4>` → `<h3>` so the page hierarchy is h1→h2→h3 (was skipping h3).
+- [x] **Final mobile scores: Performance 95, Accessibility 100, Best Practices 100, SEO 100.**
+
 ---
 
 ## 🚫 Intentionally skipped (from Base44)
