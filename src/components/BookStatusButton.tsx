@@ -1,6 +1,40 @@
 import { useEffect, useState } from 'react';
 import { BookMarked, CheckCircle2 } from 'lucide-react';
 import { getBookStatus, loadProgress, setBookStatus, type BookStatus } from '../lib/progress';
+import { useTranslation } from '../lib/language';
+
+const TRANSLATIONS = {
+  en: {
+    read: 'Read',
+    markRead: 'Mark Read',
+    onList: 'On List',
+    wantToRead: 'Want to Read',
+    ariaMarkAsRead: 'Mark as read',
+    ariaMarkAsNotRead: 'Mark as not read',
+    ariaAddToWant: 'Add to want-to-read',
+    ariaRemoveFromWant: 'Remove from want-to-read',
+  },
+  es: {
+    read: 'Leído',
+    markRead: 'Marcar leído',
+    onList: 'En lista',
+    wantToRead: 'Quiero leer',
+    ariaMarkAsRead: 'Marcar como leído',
+    ariaMarkAsNotRead: 'Marcar como no leído',
+    ariaAddToWant: 'Añadir a por leer',
+    ariaRemoveFromWant: 'Quitar de por leer',
+  },
+  fr: {
+    read: 'Lu',
+    markRead: 'Marquer lu',
+    onList: 'Sur la liste',
+    wantToRead: 'À lire',
+    ariaMarkAsRead: 'Marquer comme lu',
+    ariaMarkAsNotRead: 'Marquer comme non lu',
+    ariaAddToWant: 'Ajouter à la liste à lire',
+    ariaRemoveFromWant: 'Retirer de la liste à lire',
+  },
+};
 
 interface BookStatusButtonProps {
   bookId: string;
@@ -10,6 +44,7 @@ interface BookStatusButtonProps {
 
 export default function BookStatusButton({ bookId, compact = false }: BookStatusButtonProps) {
   const [status, setStatus] = useState<BookStatus>(null);
+  const t = useTranslation(TRANSLATIONS);
 
   useEffect(() => {
     const sync = () => setStatus(getBookStatus(loadProgress(), bookId));
@@ -40,7 +75,7 @@ export default function BookStatusButton({ bookId, compact = false }: BookStatus
           toggle('read');
         }}
         aria-pressed={readActive}
-        aria-label={readActive ? 'Mark as not read' : 'Mark as read'}
+        aria-label={readActive ? t.ariaMarkAsNotRead : t.ariaMarkAsRead}
         className={`${base} ${
           readActive
             ? 'bg-green-500 border-green-500 text-white shadow-sm'
@@ -48,7 +83,7 @@ export default function BookStatusButton({ bookId, compact = false }: BookStatus
         }`}
       >
         <CheckCircle2 className={compact ? 'w-3.5 h-3.5' : 'w-4 h-4'} />
-        {readActive ? 'Read' : 'Mark Read'}
+        {readActive ? t.read : t.markRead}
       </button>
       <button
         type="button"
@@ -57,7 +92,7 @@ export default function BookStatusButton({ bookId, compact = false }: BookStatus
           toggle('want_to_read');
         }}
         aria-pressed={wantActive}
-        aria-label={wantActive ? 'Remove from want-to-read' : 'Add to want-to-read'}
+        aria-label={wantActive ? t.ariaRemoveFromWant : t.ariaAddToWant}
         className={`${base} ${
           wantActive
             ? 'bg-blue-500 border-blue-500 text-white shadow-sm'
@@ -65,7 +100,7 @@ export default function BookStatusButton({ bookId, compact = false }: BookStatus
         }`}
       >
         <BookMarked className={compact ? 'w-3.5 h-3.5' : 'w-4 h-4'} />
-        {wantActive ? 'On List' : 'Want to Read'}
+        {wantActive ? t.onList : t.wantToRead}
       </button>
     </div>
   );

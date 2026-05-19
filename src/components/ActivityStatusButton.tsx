@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react';
 import { CheckCircle2 } from 'lucide-react';
 import { isActivityCompleted, loadProgress, setActivityCompleted } from '../lib/progress';
+import { useTranslation } from '../lib/language';
+
+const TRANSLATIONS = {
+  en: { completed: 'Completed!', markCompleted: 'Mark Completed' },
+  es: { completed: '¡Completada!', markCompleted: 'Marcar como completada' },
+  fr: { completed: 'Terminée !', markCompleted: 'Marquer comme terminée' },
+};
 
 interface ActivityStatusButtonProps {
   slug: string;
@@ -8,6 +15,7 @@ interface ActivityStatusButtonProps {
 
 export default function ActivityStatusButton({ slug }: ActivityStatusButtonProps) {
   const [done, setDone] = useState(false);
+  const t = useTranslation(TRANSLATIONS);
 
   useEffect(() => {
     const sync = () => setDone(isActivityCompleted(loadProgress(), slug));
@@ -34,7 +42,7 @@ export default function ActivityStatusButton({ slug }: ActivityStatusButtonProps
       }`}
     >
       <CheckCircle2 className="w-4 h-4" />
-      {done ? 'Completed!' : 'Mark Completed'}
+      {done ? t.completed : t.markCompleted}
     </button>
   );
 }

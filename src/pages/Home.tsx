@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { books } from '../data/books';
+import { useBooks } from '../data/books';
 import BookCard from '../components/BookCard';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
@@ -128,10 +128,10 @@ const TRANSLATIONS = {
   },
 };
 
-const featuredBooks = books.filter(b => b.featured);
-
 export default function Home() {
   const t = useTranslation(TRANSLATIONS);
+  const books = useBooks();
+  const featuredBooks = books.filter(b => b.featured);
 
   const stats = [
     { number: '6+', label: t.statBooks, emoji: '📚' },

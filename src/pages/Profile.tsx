@@ -1,10 +1,83 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpen, BookMarked, CheckCircle2, Star, User, Trash2 } from 'lucide-react';
-import { books } from '../data/books';
-import { activities } from '../data/activities';
+import { useBooks } from '../data/books';
+import { useActivities } from '../data/activities';
 import { loadProgress, clearProgress, type Progress } from '../lib/progress';
 import Seo from '../components/Seo';
+import { useTranslation } from '../lib/language';
+
+const TRANSLATIONS = {
+  en: {
+    seoTitle: 'My Profile',
+    seoDesc: 'Your reading progress on Story Time with Eva — books read, want-to-read list, and activities completed. Saved locally on this device.',
+    heading: 'My Reading Profile',
+    blurb: 'Your progress is saved on this device.',
+    achievement: 'achievement',
+    achievements: 'achievements',
+    unlocked: 'unlocked',
+    booksReadLabel: 'Books Read',
+    wantToReadLabel: 'Want to Read',
+    activitiesDoneLabel: 'Activities Done',
+    emptyBooksRead: 'No books marked as read yet.',
+    emptyWantToRead: 'Nothing on your reading list yet.',
+    emptyActivities: 'No activities completed yet.',
+    browseCollection: 'Browse the collection',
+    tryActivity: 'Try an activity',
+    booksReadSection: 'Books Read',
+    wantToReadSection: 'Want to Read',
+    activitiesSection: 'Completed Activities',
+    clearProgress: 'Clear all progress',
+    clearConfirm: 'Clear all your reading progress? This cannot be undone.',
+    deviceNote: 'Tip: progress is saved to this browser only. Clearing your browser data or using a different device will reset it.',
+  },
+  es: {
+    seoTitle: 'Mi perfil',
+    seoDesc: 'Tu progreso de lectura en Story Time with Eva — libros leídos, lista por leer y actividades completadas. Se guarda en este dispositivo.',
+    heading: 'Mi perfil de lectura',
+    blurb: 'Tu progreso se guarda en este dispositivo.',
+    achievement: 'logro',
+    achievements: 'logros',
+    unlocked: 'desbloqueado',
+    booksReadLabel: 'Libros leídos',
+    wantToReadLabel: 'Por leer',
+    activitiesDoneLabel: 'Actividades hechas',
+    emptyBooksRead: 'Aún no has marcado libros como leídos.',
+    emptyWantToRead: 'Tu lista por leer está vacía.',
+    emptyActivities: 'Aún no has completado actividades.',
+    browseCollection: 'Ver la colección',
+    tryActivity: 'Probar una actividad',
+    booksReadSection: 'Libros leídos',
+    wantToReadSection: 'Por leer',
+    activitiesSection: 'Actividades completadas',
+    clearProgress: 'Borrar todo el progreso',
+    clearConfirm: '¿Borrar todo tu progreso de lectura? No se puede deshacer.',
+    deviceNote: 'Consejo: el progreso se guarda solo en este navegador. Borrar los datos del navegador o usar otro dispositivo lo reiniciará.',
+  },
+  fr: {
+    seoTitle: 'Mon profil',
+    seoDesc: 'Votre progression de lecture sur Story Time with Eva — livres lus, liste à lire et activités terminées. Sauvegardé localement sur cet appareil.',
+    heading: 'Mon profil de lecture',
+    blurb: 'Votre progression est sauvegardée sur cet appareil.',
+    achievement: 'succès',
+    achievements: 'succès',
+    unlocked: 'débloqué',
+    booksReadLabel: 'Livres lus',
+    wantToReadLabel: 'À lire',
+    activitiesDoneLabel: 'Activités faites',
+    emptyBooksRead: 'Aucun livre marqué comme lu pour l\'instant.',
+    emptyWantToRead: 'Rien sur votre liste à lire pour l\'instant.',
+    emptyActivities: 'Aucune activité terminée pour l\'instant.',
+    browseCollection: 'Voir la collection',
+    tryActivity: 'Essayer une activité',
+    booksReadSection: 'Livres lus',
+    wantToReadSection: 'À lire',
+    activitiesSection: 'Activités terminées',
+    clearProgress: 'Tout effacer',
+    clearConfirm: 'Effacer toute votre progression de lecture ? Cette action est définitive.',
+    deviceNote: 'Astuce : la progression est sauvegardée uniquement dans ce navigateur. Vider les données du navigateur ou utiliser un autre appareil la réinitialise.',
+  },
+};
 
 interface StatCardProps {
   icon: typeof BookOpen;
@@ -27,7 +100,6 @@ function StatCard({ icon: Icon, count, label, color, bgColor }: StatCardProps) {
 type ProgressItem = {
   id: string;
   title: string;
-  /** Either an emoji string (for activities) or an image URL (for books). */
   thumb: string;
   thumbType: 'emoji' | 'image';
 };
@@ -79,6 +151,9 @@ function ItemList({ items, emptyMsg, emptyCta }: ItemListProps) {
 
 export default function Profile() {
   const [progress, setProgress] = useState<Progress>(() => loadProgress());
+  const t = useTranslation(TRANSLATIONS);
+  const activities = useActivities();
+  const books = useBooks();
 
   useEffect(() => {
     const sync = () => setProgress(loadProgress());
@@ -110,7 +185,7 @@ export default function Profile() {
     progress.booksRead.length + progress.booksWantToRead.length + progress.activitiesCompleted.length > 0;
 
   const handleClear = () => {
-    if (window.confirm('Clear all your reading progress? This cannot be undone.')) {
+    if (window.confirm(t.clearConfirm)) {
       clearProgress();
       setProgress(loadProgress());
     }
@@ -118,12 +193,7 @@ export default function Profile() {
 
   return (
     <main>
-      <Seo
-        title="My Profile"
-        description="Your reading progress on Story Time with Eva — books read, want-to-read list, and activities completed. Saved locally on this device."
-        path="/profile"
-        noindex
-      />
+      <Seo title={t.seoTitle} description={t.seoDesc} path="/profile" noindex />
       <section className="bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 py-12 px-4">
         <div className="max-w-3xl mx-auto">
           <div className="bg-white rounded-3xl shadow-lg p-6 md:p-8 mb-8 flex items-center gap-6">
@@ -131,12 +201,12 @@ export default function Profile() {
               <User className="w-10 h-10" />
             </div>
             <div className="flex-1">
-              <h1 className="text-2xl font-bold text-gray-900">My Reading Profile</h1>
-              <p className="text-gray-500 text-sm">Your progress is saved on this device.</p>
+              <h1 className="text-2xl font-bold text-gray-900">{t.heading}</h1>
+              <p className="text-gray-500 text-sm">{t.blurb}</p>
               <div className="mt-2 flex items-center gap-1">
                 <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                 <span className="text-sm text-gray-600 font-medium">
-                  {totalAchievements} achievement{totalAchievements === 1 ? '' : 's'} unlocked
+                  {totalAchievements} {totalAchievements === 1 ? t.achievement : t.achievements} {t.unlocked}
                 </span>
               </div>
             </div>
@@ -146,21 +216,21 @@ export default function Profile() {
             <StatCard
               icon={CheckCircle2}
               count={booksRead.length}
-              label="Books Read"
+              label={t.booksReadLabel}
               color="text-green-600"
               bgColor="bg-green-50"
             />
             <StatCard
               icon={BookMarked}
               count={booksWantToRead.length}
-              label="Want to Read"
+              label={t.wantToReadLabel}
               color="text-blue-600"
               bgColor="bg-blue-50"
             />
             <StatCard
               icon={Star}
               count={activitiesDone.length}
-              label="Activities Done"
+              label={t.activitiesDoneLabel}
               color="text-orange-600"
               bgColor="bg-orange-50"
             />
@@ -169,34 +239,34 @@ export default function Profile() {
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white rounded-2xl shadow p-6">
               <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-green-500" /> Books Read
+                <CheckCircle2 className="w-5 h-5 text-green-500" /> {t.booksReadSection}
               </h2>
               <ItemList
                 items={booksRead}
-                emptyMsg="No books marked as read yet."
-                emptyCta={{ label: 'Browse the collection', to: '/books' }}
+                emptyMsg={t.emptyBooksRead}
+                emptyCta={{ label: t.browseCollection, to: '/books' }}
               />
             </div>
 
             <div className="bg-white rounded-2xl shadow p-6">
               <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <BookMarked className="w-5 h-5 text-blue-500" /> Want to Read
+                <BookMarked className="w-5 h-5 text-blue-500" /> {t.wantToReadSection}
               </h2>
               <ItemList
                 items={booksWantToRead}
-                emptyMsg="Nothing on your reading list yet."
-                emptyCta={{ label: 'Browse the collection', to: '/books' }}
+                emptyMsg={t.emptyWantToRead}
+                emptyCta={{ label: t.browseCollection, to: '/books' }}
               />
             </div>
 
             <div className="bg-white rounded-2xl shadow p-6 md:col-span-2">
               <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <Star className="w-5 h-5 text-orange-500" /> Completed Activities
+                <Star className="w-5 h-5 text-orange-500" /> {t.activitiesSection}
               </h2>
               <ItemList
                 items={activitiesDone}
-                emptyMsg="No activities completed yet."
-                emptyCta={{ label: 'Try an activity', to: '/activities' }}
+                emptyMsg={t.emptyActivities}
+                emptyCta={{ label: t.tryActivity, to: '/activities' }}
               />
             </div>
           </div>
@@ -209,15 +279,12 @@ export default function Profile() {
                 className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-red-600 transition-colors"
               >
                 <Trash2 className="w-4 h-4" />
-                Clear all progress
+                {t.clearProgress}
               </button>
             </div>
           )}
 
-          <p className="mt-8 text-center text-xs text-gray-400">
-            Tip: progress is saved to this browser only. Clearing your browser data or using a different device
-            will reset it.
-          </p>
+          <p className="mt-8 text-center text-xs text-gray-400">{t.deviceNote}</p>
         </div>
       </section>
     </main>

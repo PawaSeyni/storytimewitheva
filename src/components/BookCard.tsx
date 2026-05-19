@@ -1,34 +1,64 @@
 import { useState } from 'react';
-import type { Book } from '../data/books';
+import type { LocalizedBook } from '../data/books';
 import BookStatusButton from './BookStatusButton';
+import { useTranslation } from '../lib/language';
+
+const TRANSLATIONS = {
+  en: {
+    featured: 'Featured',
+    discoverMore: 'Discover More ✨',
+    buy: '🛒 Buy',
+    buyOnAmazon: '🛒 Buy on Amazon',
+    close: 'Close',
+    theme: 'Theme',
+    coverAlt: 'book cover',
+  },
+  es: {
+    featured: 'Destacado',
+    discoverMore: 'Descubrir más ✨',
+    buy: '🛒 Comprar',
+    buyOnAmazon: '🛒 Comprar en Amazon',
+    close: 'Cerrar',
+    theme: 'Tema',
+    coverAlt: 'portada del libro',
+  },
+  fr: {
+    featured: 'En vedette',
+    discoverMore: 'Découvrir plus ✨',
+    buy: '🛒 Acheter',
+    buyOnAmazon: '🛒 Acheter sur Amazon',
+    close: 'Fermer',
+    theme: 'Thème',
+    coverAlt: 'couverture du livre',
+  },
+};
 
 interface BookCardProps {
-  book: Book;
+  book: LocalizedBook;
 }
 
 export default function BookCard({ book }: BookCardProps) {
   const [showModal, setShowModal] = useState(false);
+  const t = useTranslation(TRANSLATIONS);
 
   return (
     <>
       <div className="card group cursor-pointer flex flex-col" onClick={() => setShowModal(true)}>
-        {/* Card Header — real cover image */}
         <div className="relative bg-gray-100 aspect-square overflow-hidden">
           <img
             src={book.coverImage}
-            alt={`${book.title} — book cover`}
+            alt={`${book.title} — ${t.coverAlt}`}
             loading="lazy"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
           {book.featured && (
             <span className="absolute top-3 right-3 z-10 bg-gradient-to-r from-yellow-400 to-orange-400 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1">
               <span className="text-sm leading-none">⭐</span>
-              Featured
+              {t.featured}
             </span>
           )}
         </div>
 
-        {/* Card Body */}
         <div className="p-5 flex flex-col flex-1">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xs bg-purple-100 text-purple-700 font-medium px-2 py-0.5 rounded-full">
@@ -46,7 +76,6 @@ export default function BookCard({ book }: BookCardProps) {
             {book.description}
           </p>
 
-          {/* Reading-progress toggles */}
           <div className="mb-3" onClick={(e) => e.stopPropagation()}>
             <BookStatusButton bookId={book.id} compact />
           </div>
@@ -56,7 +85,7 @@ export default function BookCard({ book }: BookCardProps) {
               onClick={e => { e.stopPropagation(); setShowModal(true); }}
               className="flex-1 py-2 text-sm font-semibold text-purple-600 border border-purple-200 rounded-full hover:bg-purple-50 transition-colors"
             >
-              Discover More ✨
+              {t.discoverMore}
             </button>
             <a
               href={book.amazonUrl}
@@ -65,13 +94,12 @@ export default function BookCard({ book }: BookCardProps) {
               onClick={e => e.stopPropagation()}
               className="btn-amazon text-xs px-3 py-2"
             >
-              🛒 Buy
+              {t.buy}
             </a>
           </div>
         </div>
       </div>
 
-      {/* Modal */}
       {showModal && (
         <div
           className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto"
@@ -83,7 +111,7 @@ export default function BookCard({ book }: BookCardProps) {
           >
             <img
               src={book.coverImage}
-              alt={`${book.title} — book cover`}
+              alt={`${book.title} — ${t.coverAlt}`}
               className="w-full aspect-square object-cover"
             />
             <div className="p-6 md:p-8 text-center">
@@ -99,7 +127,7 @@ export default function BookCard({ book }: BookCardProps) {
               </div>
               <p className="text-gray-600 leading-relaxed mb-3">{book.description}</p>
               <div className="bg-purple-50 rounded-xl px-4 py-2 inline-block">
-                <span className="text-sm text-purple-700 font-medium">Theme: {book.theme}</span>
+                <span className="text-sm text-purple-700 font-medium">{t.theme}: {book.theme}</span>
               </div>
 
               <div className="flex flex-col gap-3 mt-6">
@@ -109,13 +137,13 @@ export default function BookCard({ book }: BookCardProps) {
                   rel="noopener noreferrer"
                   className="w-full py-3 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-full text-center shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-lg"
                 >
-                  🛒 Buy on Amazon
+                  {t.buyOnAmazon}
                 </a>
                 <button
                   onClick={() => setShowModal(false)}
                   className="w-full py-3 border-2 border-gray-200 text-gray-500 font-medium rounded-full hover:bg-gray-50 transition-colors"
                 >
-                  Close
+                  {t.close}
                 </button>
               </div>
             </div>
