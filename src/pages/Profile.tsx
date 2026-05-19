@@ -23,8 +23,16 @@ function StatCard({ icon: Icon, count, label, color, bgColor }: StatCardProps) {
   );
 }
 
+type ProgressItem = {
+  id: string;
+  title: string;
+  /** Either an emoji string (for activities) or an image URL (for books). */
+  thumb: string;
+  thumbType: 'emoji' | 'image';
+};
+
 interface ItemListProps {
-  items: { id: string; emoji: string; title: string }[];
+  items: ProgressItem[];
   emptyMsg: string;
   emptyCta?: { label: string; to: string };
 }
@@ -49,7 +57,18 @@ function ItemList({ items, emptyMsg, emptyCta }: ItemListProps) {
           key={item.id}
           className="flex items-center gap-3 p-3 bg-white rounded-xl shadow-sm border border-gray-100"
         >
-          <span className="text-2xl flex-shrink-0">{item.emoji}</span>
+          {item.thumbType === 'image' ? (
+            <img
+              src={item.thumb}
+              alt=""
+              className="w-10 h-10 rounded-md object-cover flex-shrink-0"
+              loading="lazy"
+            />
+          ) : (
+            <span className="text-2xl flex-shrink-0" aria-hidden>
+              {item.thumb}
+            </span>
+          )}
           <span className="text-gray-800 font-medium text-sm">{item.title}</span>
         </li>
       ))}
@@ -70,20 +89,20 @@ export default function Profile() {
     };
   }, []);
 
-  const booksRead = progress.booksRead
+  const booksRead: ProgressItem[] = progress.booksRead
     .map((id) => books.find((b) => b.id === id))
     .filter((b): b is (typeof books)[number] => Boolean(b))
-    .map((b) => ({ id: b.id, emoji: b.emoji, title: b.title }));
+    .map((b) => ({ id: b.id, thumb: b.coverImage, thumbType: 'image', title: b.title }));
 
-  const booksWantToRead = progress.booksWantToRead
+  const booksWantToRead: ProgressItem[] = progress.booksWantToRead
     .map((id) => books.find((b) => b.id === id))
     .filter((b): b is (typeof books)[number] => Boolean(b))
-    .map((b) => ({ id: b.id, emoji: b.emoji, title: b.title }));
+    .map((b) => ({ id: b.id, thumb: b.coverImage, thumbType: 'image', title: b.title }));
 
-  const activitiesDone = progress.activitiesCompleted
+  const activitiesDone: ProgressItem[] = progress.activitiesCompleted
     .map((slug) => activities.find((a) => a.slug === slug))
     .filter((a): a is (typeof activities)[number] => Boolean(a))
-    .map((a) => ({ id: a.slug, emoji: a.emoji, title: a.title }));
+    .map((a) => ({ id: a.slug, thumb: a.emoji, thumbType: 'emoji', title: a.title }));
 
   const totalAchievements = booksRead.length + activitiesDone.length;
   const hasAnyProgress =

@@ -51,6 +51,25 @@ progresses — it's the canonical "what's done / what's not" record.
 - [x] Home page activity preview surfaces the 3 reading/writing demos with direct deep-links
 - [x] DemoPage wrapper provides back-to-Activities affordance on every demo route
 
+### Phase 5 — Profile + localStorage tracking
+- [x] `src/lib/progress.ts` typed load/save helpers + `progresschange` event
+- [x] `src/data/activities.ts` canonical activity list shared across pages
+- [x] `BookStatusButton` (Read / Want-to-Read toggle pair) on every BookCard
+- [x] `ActivityStatusButton` (Mark Completed toggle) on every DemoPage
+- [x] `/profile` page with 3 buckets + empty-state CTAs + Clear-all-progress
+- [x] Profile link added to Navbar
+- [x] Activities grid shows "Completed" badge + "Open Again →" on finished demos
+
+### Phase 6 — Real Eva Gallo book content
+- [x] Replaced placeholder books.ts with 11 real Eva Gallo Collection titles
+- [x] 8 Amazon-live titles with real subtitles, descriptions, ASIN-based URLs
+- [x] 3 newer titles (Colors Mixed Up, Rainbow Symphony, Tower) sourced from local KDP metadata
+- [x] Replaced emoji "covers" with real cover images
+- [x] 8 books hot-link Amazon's CDN (m.media-amazon.com)
+- [x] 3 not-yet-on-Amazon books use locally hosted 800×800 JPGs (~165 KB each) under `src/assets/covers/`
+- [x] `BookCard` updated to render `<img>` with `loading="lazy"` + hover zoom
+- [x] Modal updated to show full cover image at top + subtitle line
+
 ---
 
 ## 🚫 Intentionally skipped (from Base44)
