@@ -53,7 +53,7 @@ export default function EmailSignup() {
             />
             <button
               type="submit"
-              className="px-6 py-3 bg-orange-400 hover:bg-orange-500 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all duration-200 whitespace-nowrap"
+              className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all duration-200 whitespace-nowrap"
             >
               Get My Free Kit 🎨
             </button>

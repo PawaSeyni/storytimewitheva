@@ -74,11 +74,11 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-gray-500">
+        <div className="border-t border-gray-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-gray-400">
           <p>© 2025 Story Time with Eva. All rights reserved.</p>
           <div className="flex gap-4">
-            <Link to="/privacy" className="hover:text-gray-300 transition-colors">Privacy Policy</Link>
-            <Link to="/terms" className="hover:text-gray-300 transition-colors">Terms of Use</Link>
+            <Link to="/privacy" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="text-gray-400 hover:text-white transition-colors">Terms of Use</Link>
           </div>
         </div>
       </div>
