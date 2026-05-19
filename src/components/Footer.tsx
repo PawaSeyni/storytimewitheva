@@ -24,7 +24,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Quick Links</h4>
+            <h3 className="text-white font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               {[
                 { to: '/', label: 'Home' },
@@ -45,7 +45,7 @@ export default function Footer() {
 
           {/* Connect */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Connect with Eva</h4>
+            <h3 className="text-white font-semibold mb-4">Connect with Eva</h3>
             <p className="text-sm text-gray-400 mb-4">
               Join our community for weekly tips, new stories, and exclusive activities!
             </p>
