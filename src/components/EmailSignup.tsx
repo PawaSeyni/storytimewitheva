@@ -1,5 +1,15 @@
 import { useState } from 'react';
-import { useTranslation } from '../lib/language';
+import { useLanguage, useTranslation } from '../lib/language';
+
+// MailerLite embedded form action — group "storytimewitheva-signups", form
+// "Bilingual Starter Kit — site signup". Custom fields `language` and
+// `lead_magnet` are pre-registered on the MailerLite account, so they get
+// attached to the subscriber on submit. Double opt-in is ON, so MailerLite
+// sends the confirmation email; the welcome automation fires once the user
+// confirms (subscriber_joins_group trigger).
+const MAILERLITE_FORM_ACTION =
+  'https://assets.mailerlite.com/jsonp/2363396/forms/187942934227715798/subscribe';
+const LEAD_MAGNET_TAG = 'bilingual-starter-kit';
 
 const TRANSLATIONS = {
   en: {
@@ -11,10 +21,13 @@ const TRANSLATIONS = {
       '✓ Fun story prompts & creative activities',
       '✓ No spam, unsubscribe anytime',
     ],
+    firstNamePlaceholder: 'First name (optional)',
     emailPlaceholder: 'Enter your email address',
     submit: 'Get My Free Kit 🎨',
-    successHeading: "You're in! Check your inbox.",
-    successDetail: 'Your Bilingual Starter Kit is on its way!',
+    submitting: 'Sending…',
+    successHeading: 'Almost there — check your inbox!',
+    successDetail: 'Confirm your email and your Bilingual Starter Kit is on its way.',
+    errorMessage: 'Something went wrong. Please try again or email hello@storytimewitheva.com.',
     privacy: '🔒 We respect your privacy. No spam, ever.',
   },
   es: {
@@ -26,10 +39,13 @@ const TRANSLATIONS = {
       '✓ Divertidas ideas de historias y actividades creativas',
       '✓ Sin spam, cancela cuando quieras',
     ],
+    firstNamePlaceholder: 'Nombre (opcional)',
     emailPlaceholder: 'Escribe tu correo electrónico',
     submit: 'Quiero mi kit gratis 🎨',
-    successHeading: '¡Ya estás dentro! Revisa tu correo.',
-    successDetail: '¡Tu kit bilingüe está en camino!',
+    submitting: 'Enviando…',
+    successHeading: '¡Ya casi! Revisa tu correo.',
+    successDetail: 'Confirma tu email y tu kit bilingüe estará en camino.',
+    errorMessage: 'Algo salió mal. Inténtalo de nuevo o escríbenos a hello@storytimewitheva.com.',
     privacy: '🔒 Respetamos tu privacidad. Nunca spam.',
   },
   fr: {
@@ -41,24 +57,62 @@ const TRANSLATIONS = {
       '✓ Idées d\'histoires et activités créatives',
       '✓ Pas de spam, désinscription à tout moment',
     ],
+    firstNamePlaceholder: 'Prénom (facultatif)',
     emailPlaceholder: 'Entrez votre adresse e-mail',
     submit: 'Recevoir mon kit gratuit 🎨',
-    successHeading: 'C\'est fait ! Vérifiez votre boîte mail.',
-    successDetail: 'Votre kit bilingue arrive !',
+    submitting: 'Envoi…',
+    successHeading: 'Presque ! Vérifiez votre boîte mail.',
+    successDetail: 'Confirmez votre email et votre kit bilingue arrivera.',
+    errorMessage: 'Une erreur est survenue. Réessayez ou écrivez à hello@storytimewitheva.com.',
     privacy: '🔒 Nous respectons votre vie privée. Jamais de spam.',
   },
 };
 
 export default function EmailSignup() {
+  const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'submitted' | 'error'>('idle');
+  const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      setSubmitted(true);
+    if (!email || status === 'submitting') return;
+
+    setStatus('submitting');
+
+    const trimmedName = firstName.trim();
+
+    const formData = new FormData();
+    formData.append('fields[email]', email);
+    // MailerLite's default "Name" field has key `name` (id 1). Keep this
+    // submission optional — empty names just leave the field blank, which
+    // the welcome email handles with a `{$name|default:'…'}` fallback.
+    if (trimmedName) formData.append('fields[name]', trimmedName);
+    formData.append('fields[language]', language);
+    formData.append('fields[lead_magnet]', LEAD_MAGNET_TAG);
+    formData.append('ml-submit', '1');
+    formData.append('anticsrf', 'true');
+
+    try {
+      // MailerLite's JSONP endpoint doesn't return CORS headers, so we
+      // can't read the response. `no-cors` lets the POST go through —
+      // double opt-in means MailerLite will email the user the
+      // confirmation link regardless of what we surface in the UI.
+      await fetch(MAILERLITE_FORM_ACTION, {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors',
+      });
+      setStatus('submitted');
       setEmail('');
+      setFirstName('');
+    } catch (err) {
+      // `no-cors` fetch only throws on hard network failure (offline,
+      // DNS, request aborted). Show the inline error so the user can
+      // retry or fall back to email.
+      console.error('MailerLite signup failed:', err);
+      setStatus('error');
     }
   };
 
@@ -75,29 +129,49 @@ export default function EmailSignup() {
           ))}
         </ul>
 
-        {submitted ? (
+        {status === 'submitted' ? (
           <div className="bg-white/20 rounded-2xl p-6 text-white">
             <div className="text-4xl mb-2">🎉</div>
             <p className="font-bold text-xl">{t.successHeading}</p>
             <p className="text-purple-100 text-sm mt-1">{t.successDetail}</p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3 max-w-md mx-auto">
             <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder={t.emailPlaceholder}
-              required
-              className="flex-1 px-5 py-3 rounded-full text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white shadow-md"
+              type="text"
+              value={firstName}
+              onChange={e => setFirstName(e.target.value)}
+              placeholder={t.firstNamePlaceholder}
+              autoComplete="given-name"
+              disabled={status === 'submitting'}
+              className="w-full px-5 py-3 rounded-full text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white shadow-md disabled:opacity-60"
             />
-            <button
-              type="submit"
-              className="px-6 py-3 bg-orange-700 hover:bg-orange-800 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all duration-200 whitespace-nowrap"
-            >
-              {t.submit}
-            </button>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder={t.emailPlaceholder}
+                required
+                autoComplete="email"
+                disabled={status === 'submitting'}
+                className="flex-1 px-5 py-3 rounded-full text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white shadow-md disabled:opacity-60"
+              />
+              <button
+                type="submit"
+                disabled={status === 'submitting'}
+                className="px-6 py-3 bg-orange-700 hover:bg-orange-800 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all duration-200 whitespace-nowrap disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {status === 'submitting' ? t.submitting : t.submit}
+              </button>
+            </div>
           </form>
+        )}
+
+        {status === 'error' && (
+          <p className="mt-4 text-pink-100 text-sm bg-red-500/30 rounded-full inline-block px-4 py-2">
+            {t.errorMessage}
+          </p>
         )}
 
         <p className="text-purple-200 text-xs mt-4">{t.privacy}</p>

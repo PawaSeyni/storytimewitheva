@@ -20,11 +20,13 @@ Three gates to get to a real launch. Top-to-bottom priority. Detailed task list 
 
 Without this, every dollar of paid traffic is wasted: form looks fine but throws away the email and never delivers the promised PDF.
 
-- [ ] **A1** Confirm Mailchimp audience + tag scheme (source, language, requested asset)
-- [ ] **A2** Upload `Bilingual_Starter_Kit_Optimized_Fixed.pdf` → `public/bilingual-starter-kit.pdf`, verify public URL serves
-- [ ] **A3** Wire `EmailSignup.tsx` to Mailchimp (embedded form post, no API key needed)
-- [ ] **A4** Build welcome automation in Mailchimp: confirm → PDF link → 3-touch drip
-- [ ] **A5** End-to-end test signup flow in EN / ES / FR
+- [x] **A1** MailerLite audience set up: group `storytimewitheva-signups` (id `187942568670005101`), custom fields `language` + `lead_magnet`, embedded form "Bilingual Starter Kit — site signup" (id `187942934227715798`), action URL `https://assets.mailerlite.com/jsonp/2363396/forms/187942934227715798/subscribe`, double opt-in ON
+- [x] **A2** PDF live at https://storytimewitheva.netlify.app/bilingual-starter-kit.pdf
+- [x] **A3** `EmailSignup.tsx` posts (no-cors fetch) to the MailerLite JSONP endpoint with `fields[email] / fields[name] / fields[language] / fields[lead_magnet]`; submitting / submitted / error states wired, optional first-name field added above email (EN/ES/FR placeholders), EN/ES/FR copy updated to reflect the double-opt-in confirmation step
+- [x] **A4** Welcome automation built in MailerLite (id `187944859858895989`) — trigger `subscriber_joins_group`, 4 emails (Bilingual Starter Kit → Parent's Reading Guide → Bilingual Flashcards → Bedtime Routine Chart) with 3 / 4 / 5-day delays between them. Email #1 (welcome) carries the multilingual EN/ES/FR copy from `Welcome_Email_Copy.pdf` with `{$name|default:'…'}` merge-tag greetings (fallbacks: `there` / `amigo/a` / `à toi`). Trilingual subject + short plain-text fallback are set via MCP; full HTML body lives at `email-drafts/welcome-multilingual.html` for Eva to paste into the MailerLite block editor. Currently in draft — Eva needs to design/style each email and **activate** before live traffic
+- [ ] **A5** End-to-end test signup flow in EN / ES / FR (needs a real deploy + Eva activating the automation)
+
+⚠️ **Open A4 follow-up:** nurture-email links currently point to `https://storytimewitheva.netlify.app/{parents-guide,bilingual-flashcards,bedtime-routine}.pdf` — only `bilingual-starter-kit.pdf` is uploaded so far. Upload the 6 nurture PDFs from `/Eva/Story_Time_With_Eva_Optimized_PDFs/` into `public/` before activating the automation, or strip the broken links from emails 2–4.
 
 Bonus lead magnets already sitting in `/Eva/Story_Time_With_Eva_Optimized_PDFs/`:
 Parents Guide (EN/ES/FR), Bilingual Flashcards, Bedtime Routine Chart (EN/ES/FR) — usable as
@@ -264,4 +266,5 @@ storytimewitheva/
 
 - **2026-05-18** — Initial site stand-up, GitHub + Netlify wired. Phase 0–3 of base44 import. 8 demos live.
 - **2026-05-19** — Phase 9: full EN/ES/FR i18n shipped across all marketing pages, components, data, and all 8 demos. Bundle 88 KB → 136 KB JS gz. Deep punch-list review uncovered: EmailSignup is fake (no ESP wired), lead magnet PDF was never uploaded, Contact form is fake, Resources "Read More" buttons are stubs, react-helmet-async regressed on production. New 3-gate structure (A/B/C) created with 14 tracked tasks targeting "ASAP, Gate A this week" launch path. Mailchimp picked as ESP. Primary lead magnet identified: `Bilingual_Starter_Kit_Optimized_Fixed.pdf`.
+- **2026-05-19** — Pivoted ESP from Mailchimp → MailerLite (account `galloeva2612@gmail.com`, workspace `Storytimewitheva`, 14-day trial). A1 closed: group `storytimewitheva-signups`, custom fields `language` + `lead_magnet`, embedded form "Bilingual Starter Kit — site signup" with double-opt-in ON. A3 closed: `EmailSignup.tsx` now POSTs to `assets.mailerlite.com/jsonp/2363396/forms/187942934227715798/subscribe` with `no-cors` fetch, carrying `fields[email] / fields[language] / fields[lead_magnet=bilingual-starter-kit]`. A4 closed: welcome automation `187944859858895989` built — 4 emails / 3 delays, currently DRAFT, needs Eva to design + activate. Nurture-email PDF links assume 6 more PDFs will be uploaded under `public/` (parents-guide, bilingual-flashcards, bedtime-routine × {en,es,fr-ish}); fix that or strip the links before activating.
 - _(Add entries here as gates close)_
