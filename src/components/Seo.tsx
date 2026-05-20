@@ -1,5 +1,5 @@
-import { Helmet } from 'react-helmet-async';
 import { useLanguage } from '../lib/language';
+import { useHead } from '../lib/head';
 
 const SITE_URL = 'https://storytimewitheva.netlify.app';
 const SITE_NAME = 'Story Time with Eva';
@@ -25,31 +25,27 @@ interface SeoProps {
   noindex?: boolean;
 }
 
+/**
+ * Per-route head manager. Renders nothing; side-effects only.
+ *
+ * Previously implemented with react-helmet-async; replaced with a custom
+ * `useHead` hook after Helmet stopped injecting tags on the production Vite
+ * build (see src/lib/head.ts header comment). The HTML `lang` attribute is
+ * managed separately by LanguageProvider's effect, so Seo doesn't touch it.
+ */
 export default function Seo({ title, description, image = DEFAULT_IMAGE, path, bare = false, noindex = false }: SeoProps) {
   const { language } = useLanguage();
   const fullTitle = bare ? title : `${title} | ${SITE_NAME}`;
   const url = path ? `${SITE_URL}${path}` : SITE_URL;
 
-  return (
-    <Helmet>
-      <html lang={language} />
-      <title>{fullTitle}</title>
-      <meta name="description" content={description} />
-      <link rel="canonical" href={url} />
-      {noindex && <meta name="robots" content="noindex,nofollow" />}
+  useHead({
+    title: fullTitle,
+    description,
+    image,
+    url,
+    locale: OG_LOCALE[language],
+    noindex,
+  });
 
-      <meta property="og:type" content="website" />
-      <meta property="og:site_name" content={SITE_NAME} />
-      <meta property="og:url" content={url} />
-      <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={image} />
-      <meta property="og:locale" content={OG_LOCALE[language]} />
-
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={image} />
-    </Helmet>
-  );
+  return null;
 }

@@ -27,7 +27,7 @@ const TRANSLATIONS = {
     submitting: 'Sending…',
     successHeading: 'Almost there — check your inbox!',
     successDetail: 'Confirm your email and your Bilingual Starter Kit is on its way.',
-    errorMessage: 'Something went wrong. Please try again or email hello@storytimewitheva.com.',
+    errorMessage: 'Something went wrong. Please try again or email galloeva2612@gmail.com.',
     privacy: '🔒 We respect your privacy. No spam, ever.',
   },
   es: {
@@ -45,7 +45,7 @@ const TRANSLATIONS = {
     submitting: 'Enviando…',
     successHeading: '¡Ya casi! Revisa tu correo.',
     successDetail: 'Confirma tu email y tu kit bilingüe estará en camino.',
-    errorMessage: 'Algo salió mal. Inténtalo de nuevo o escríbenos a hello@storytimewitheva.com.',
+    errorMessage: 'Algo salió mal. Inténtalo de nuevo o escríbenos a galloeva2612@gmail.com.',
     privacy: '🔒 Respetamos tu privacidad. Nunca spam.',
   },
   fr: {
@@ -63,7 +63,7 @@ const TRANSLATIONS = {
     submitting: 'Envoi…',
     successHeading: 'Presque ! Vérifiez votre boîte mail.',
     successDetail: 'Confirmez votre email et votre kit bilingue arrivera.',
-    errorMessage: 'Une erreur est survenue. Réessayez ou écrivez à hello@storytimewitheva.com.',
+    errorMessage: 'Une erreur est survenue. Réessayez ou écrivez à galloeva2612@gmail.com.',
     privacy: '🔒 Nous respectons votre vie privée. Jamais de spam.',
   },
 };

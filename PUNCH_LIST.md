@@ -36,11 +36,11 @@ nurture-sequence sends after the starter kit.
 
 Things that currently lie to the visitor.
 
-- [ ] **B1** Resources page: write 6 articles or hide cards until content exists (currently 6 cards with stub `<button>` that goes nowhere)
-- [ ] **B2** Wire Contact form to Netlify Forms (free, ~5 min)
-- [ ] **B3** Confirm `hello@storytimewitheva.com` is real + monitored, or swap address
-- [ ] **B4** Replace Instagram placeholder URL (currently links to instagram.com root)
-- [ ] **B5** Debug react-helmet-async not injecting meta tags on production. `<title>`, `og:locale`, `og:title`, canonical all fall back to index.html static defaults across every route. `html lang` updates correctly (via LanguageProvider useEffect) so HelmetProvider mounts, but Helmet's children aren't reaching the head. Likely Vite minification or HelmetProvider+StrictMode interaction.
+- [x] **B1** Resources page: Read More stub `<button>` removed from each of the 6 cards (`src/pages/Resources.tsx`). Cards now function as a content preview — title + description + read-time pill. Article authoring deferred to long-term backlog.
+- [x] **B2** Contact form wired to Netlify Forms. `Contact.tsx` POSTs URL-encoded to `/` with `form-name=contact`, honeypot included; static placeholder form in `index.html` lets Netlify's deploy scanner register the submission target. Submitting / submitted / error states wired in all three languages.
+- [x] **B3** `hello@storytimewitheva.com` → `galloeva2612@gmail.com` in three places: `Footer.tsx` mailto, `Contact.tsx` sidebar contact card, and `EmailSignup.tsx` error message (EN/ES/FR). Revisit when the custom domain (Gate C1) lands and a real `hello@` mailbox exists.
+- [ ] **B4** Replace Instagram placeholder URL (currently links to instagram.com root) — pending Paul providing the real handle.
+- [x] **B5** Dropped `react-helmet-async` entirely. Replaced with a custom `useHead` hook (`src/lib/head.ts`) — useEffect-based imperative upsert of `<title>`, `meta[name=description]`, all `og:*`, all `twitter:*`, `link[rel=canonical]`, and `meta[name=robots]`. `Seo.tsx` rewritten to call `useHead(...)` and return `null`. `HelmetProvider` removed from `main.tsx`. Dependency removed from `package.json`. Needs production-deploy verification: view-source on a non-home route (e.g. `/books`, `/activities/story-builder`) should now show the per-route title and OG/Twitter tags in the DOM.
 
 ### Gate C — Pre-launch polish
 
@@ -120,7 +120,7 @@ Nice-to-have before turning on paid traffic.
 - [x] `public/robots.txt` — Allow-all + Disallow /profile + sitemap pointer
 - [x] `public/sitemap.xml` — 14 routes (home + books + activities + 8 demos + resources + about + contact). Profile excluded.
 
-⚠️ **Known regression as of 2026-05-19** — Helmet stopped injecting meta tags on production. See Gate B5.
+~~⚠️ **Known regression as of 2026-05-19** — Helmet stopped injecting meta tags on production. See Gate B5.~~ Fixed 2026-05-20 by dropping react-helmet-async for a custom `useHead` hook; awaiting production-deploy verification.
 
 ### Phase 8 — Lighthouse audit (PageSpeed Insights / Mobile)
 - [x] `@netlify/plugin-lighthouse` configured in `netlify.toml` for 5 audited routes (/, /books, /activities, /activities/story-builder, /about). Plugin runs but report HTML isn't surfaced in Netlify's free-tier UI — used PageSpeed Insights manually for visibility.
@@ -268,4 +268,5 @@ storytimewitheva/
 - **2026-05-19** — Phase 9: full EN/ES/FR i18n shipped across all marketing pages, components, data, and all 8 demos. Bundle 88 KB → 136 KB JS gz. Deep punch-list review uncovered: EmailSignup is fake (no ESP wired), lead magnet PDF was never uploaded, Contact form is fake, Resources "Read More" buttons are stubs, react-helmet-async regressed on production. New 3-gate structure (A/B/C) created with 14 tracked tasks targeting "ASAP, Gate A this week" launch path. Mailchimp picked as ESP. Primary lead magnet identified: `Bilingual_Starter_Kit_Optimized_Fixed.pdf`.
 - **2026-05-19** — Pivoted ESP from Mailchimp → MailerLite (account `galloeva2612@gmail.com`, workspace `Storytimewitheva`, 14-day trial). A1 closed: group `storytimewitheva-signups`, custom fields `language` + `lead_magnet`, embedded form "Bilingual Starter Kit — site signup" with double-opt-in ON. A3 closed: `EmailSignup.tsx` now POSTs to `assets.mailerlite.com/jsonp/2363396/forms/187942934227715798/subscribe` with `no-cors` fetch, carrying `fields[email] / fields[language] / fields[lead_magnet=bilingual-starter-kit]`. A4 closed: welcome automation `187944859858895989` built — 4 emails / 3 delays, currently DRAFT, needs Eva to design + activate. Nurture-email PDF links assume 6 more PDFs will be uploaded under `public/` (parents-guide, bilingual-flashcards, bedtime-routine × {en,es,fr-ish}); fix that or strip the links before activating.
 - **2026-05-20** — Added optional first-name field to `EmailSignup.tsx` (placeholder localized EN/ES/FR), wired `fields[name]` into the MailerLite POST. Replaced welcome email #1 with multilingual EN/ES/FR copy from `Welcome_Email_Copy.pdf` — subject `🎉 Your Bilingual Starter Kit is here! · ¡Aquí está! · Le voici !`, plain-text fallback set via MCP, full HTML lives at `email-drafts/welcome-multilingual.html` for Eva to paste into the block editor. Greetings use `{$name|default:'…'}` merge tags. **Gate A fully closed** — A5 end-to-end test passed on live deploy `23cc7be`: three test signups landed in MailerLite with the right `language`, `lead_magnet`, and `name` fields; double-opt-in confirmations sent. Next: Eva styles + activates the automation in the dashboard.
+- **2026-05-20** — Started Gate B. Decisions: B1 → remove the Read More button so the 6 Resources cards work as a preview (article authoring deferred to long-term backlog); B3 → swap `hello@storytimewitheva.com` for `galloeva2612@gmail.com` until the custom domain (Gate C1) lands; B4 → real Instagram URL pending from Paul. Closed in this session: **B1**, **B2** (Contact → Netlify Forms with honeypot + URL-encoded fetch + static `index.html` placeholder), **B3** (3-spot email swap), **B5** (Helmet replaced with custom `useHead` hook in `src/lib/head.ts`, `react-helmet-async` dependency removed; needs prod-deploy verification). Only **B4** remains in Gate B.
 - _(Add entries here as gates close)_

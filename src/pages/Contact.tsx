@@ -22,6 +22,8 @@ const TRANSLATIONS = {
     messageLabel: 'Your Message',
     messagePlaceholder: 'Tell us how we can help...',
     sendButton: '✉️ Send Message',
+    sending: 'Sending…',
+    errorMessage: "Hmm, that didn't go through. Please try again or email galloeva2612@gmail.com directly.",
     sidebarHeading: 'Contact Information',
     sidebarBlurb: "Let's make reading magical together!",
     emailTitle: 'Email',
@@ -50,6 +52,8 @@ const TRANSLATIONS = {
     messageLabel: 'Tu mensaje',
     messagePlaceholder: 'Cuéntanos cómo podemos ayudarte...',
     sendButton: '✉️ Enviar mensaje',
+    sending: 'Enviando…',
+    errorMessage: 'Vaya, no se pudo enviar. Inténtalo de nuevo o escríbenos a galloeva2612@gmail.com.',
     sidebarHeading: 'Información de contacto',
     sidebarBlurb: '¡Hagamos la lectura mágica juntos!',
     emailTitle: 'Correo',
@@ -78,6 +82,8 @@ const TRANSLATIONS = {
     messageLabel: 'Votre message',
     messagePlaceholder: 'Dites-nous comment nous pouvons aider...',
     sendButton: '✉️ Envoyer le message',
+    sending: 'Envoi…',
+    errorMessage: "L'envoi a échoué. Réessayez ou écrivez à galloeva2612@gmail.com.",
     sidebarHeading: 'Coordonnées',
     sidebarBlurb: 'Rendons la lecture magique ensemble !',
     emailTitle: 'E-mail',
@@ -89,14 +95,44 @@ const TRANSLATIONS = {
   },
 };
 
+// Encode a flat object into URL-encoded body for Netlify Forms. Netlify expects
+// `application/x-www-form-urlencoded` (the same content type a native HTML form
+// POST would send) with a `form-name` field matching the static placeholder in
+// index.html.
+function encodeFormData(data: Record<string, string>) {
+  return Object.keys(data)
+    .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(data[k])}`)
+    .join('&');
+}
+
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'submitted' | 'error'>('idle');
   const t = useTranslation(TRANSLATIONS);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (status === 'submitting') return;
+
+    setStatus('submitting');
+
+    try {
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: encodeFormData({
+          'form-name': 'contact',
+          'bot-field': '', // honeypot — bots fill it, humans leave it blank
+          ...form,
+        }),
+      });
+      if (!res.ok) throw new Error(`Netlify Forms returned ${res.status}`);
+      setStatus('submitted');
+      setForm({ name: '', email: '', subject: '', message: '' });
+    } catch (err) {
+      console.error('Contact form submit failed:', err);
+      setStatus('error');
+    }
   };
 
   return (
@@ -119,20 +155,36 @@ export default function Contact() {
                 💡 <strong>{t.tipLabel}:</strong> {t.tip}
               </div>
 
-              {submitted ? (
+              {status === 'submitted' ? (
                 <div className="text-center py-12">
                   <div className="text-6xl mb-4">🎉</div>
                   <h3 className="text-2xl font-bold text-gray-800 mb-2">{t.successHeading}</h3>
                   <p className="text-gray-500">{t.successDetail}</p>
                   <button
-                    onClick={() => setSubmitted(false)}
+                    onClick={() => setStatus('idle')}
                     className="mt-6 px-6 py-2.5 border-2 border-purple-400 text-purple-600 font-semibold rounded-full hover:bg-purple-50 transition-colors"
                   >
                     {t.sendAnother}
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form
+                  onSubmit={handleSubmit}
+                  className="space-y-5"
+                  name="contact"
+                  method="POST"
+                  data-netlify="true"
+                  data-netlify-honeypot="bot-field"
+                >
+                  {/* Required by Netlify Forms for SPA submissions */}
+                  <input type="hidden" name="form-name" value="contact" />
+                  {/* Honeypot: hidden from real users, bots tend to fill it */}
+                  <p className="hidden">
+                    <label>
+                      Don't fill this out if you're human:{' '}
+                      <input name="bot-field" tabIndex={-1} autoComplete="off" />
+                    </label>
+                  </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">{t.nameLabel}</label>
@@ -179,11 +231,18 @@ export default function Contact() {
                       placeholder={t.messagePlaceholder}
                     />
                   </div>
+                  {status === 'error' && (
+                    <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-sm text-red-700">
+                      ⚠️ {t.errorMessage}
+                    </div>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full py-3.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-lg"
+                    disabled={status === 'submitting'}
+                    className="w-full py-3.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-lg disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100"
                   >
-                    {t.sendButton}
+                    {status === 'submitting' ? t.sending : t.sendButton}
                   </button>
                 </form>
               )}
@@ -198,7 +257,7 @@ export default function Contact() {
             </div>
 
             {[
-              { emoji: '📧', title: t.emailTitle, value: 'hello@storytimewitheva.com', href: 'mailto:hello@storytimewitheva.com' },
+              { emoji: '📧', title: t.emailTitle, value: 'galloeva2612@gmail.com', href: 'mailto:galloeva2612@gmail.com' },
               { emoji: '📍', title: t.locationTitle, value: t.locationValue },
               { emoji: '⏰', title: t.responseTitle, value: t.responseValue },
             ].map((item, i) => (

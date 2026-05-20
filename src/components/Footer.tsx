@@ -114,10 +114,10 @@ export default function Footer() {
             </div>
             <div className="mt-4">
               <a
-                href="mailto:hello@storytimewitheva.com"
+                href="mailto:galloeva2612@gmail.com"
                 className="text-sm text-purple-400 hover:text-purple-300 transition-colors"
               >
-                hello@storytimewitheva.com
+                galloeva2612@gmail.com
               </a>
             </div>
           </div>

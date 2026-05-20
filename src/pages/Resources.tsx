@@ -182,14 +182,9 @@ export default function Resources() {
                   {r.title}
                 </h3>
                 <p className="text-gray-500 text-sm leading-relaxed mb-4">{r.desc}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-400 flex items-center gap-1">
-                    ⏱ {r.minutes} {t.minRead}
-                  </span>
-                  <button className="text-sm font-semibold text-purple-600 hover:text-purple-800 transition-colors">
-                    {t.readMore}
-                  </button>
-                </div>
+                <span className="text-xs text-gray-400 flex items-center gap-1">
+                  ⏱ {r.minutes} {t.minRead}
+                </span>
               </div>
             ))}
           </div>
