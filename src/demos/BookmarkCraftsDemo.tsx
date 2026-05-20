@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Shuffle, Save, Printer } from 'lucide-react';
 import { useLanguage, useTranslation, type Language } from '../lib/language';
+import { useToast } from '../lib/toast';
 
 type Item = { emoji: string; name: string };
 
@@ -276,6 +277,7 @@ const TRANSLATIONS = {
 export default function BookmarkCraftsDemo() {
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
+  const toast = useToast();
 
   const animals = ANIMALS_BY_LANG[language] ?? ANIMALS_BY_LANG.en;
   const countries = COUNTRIES_BY_LANG[language] ?? COUNTRIES_BY_LANG.en;
@@ -323,7 +325,7 @@ export default function BookmarkCraftsDemo() {
       bookmarkText,
     };
     localStorage.setItem('bookmarkDesign', JSON.stringify(design));
-    alert(t.saved);
+    toast.success(t.saved);
   };
 
   return (

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { RefreshCw, Trophy, Award } from 'lucide-react';
 import { useLanguage, useTranslation } from '../lib/language';
 import type { Language } from '../lib/language';
+import { useToast } from '../lib/toast';
 
 type Item = { emoji: string; text: string; free?: boolean };
 type ThemeKey = 'fairytale' | 'adventure' | 'mystery' | 'animal';
@@ -280,6 +281,7 @@ const BADGE_DEFS: { id: string; emoji: string; condition: 'marks' | 'bingo' | 'f
 export default function BingoDemo() {
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
+  const toast = useToast();
   const themes = THEMES[language] ?? THEMES.en;
   const freeSpace: Item = { emoji: '⭐', text: FREE_SPACE_TEXT[language], free: true };
 
@@ -349,7 +351,7 @@ export default function BingoDemo() {
     setHasBingo(lines.length > 0);
     if (completedSquares.size === 25) setFullCardCount((p) => p + 1);
     if (lines.length > 0) setBingoCount((p) => p + lines.length);
-    if (lines.length === 0) alert(t.noBingo);
+    if (lines.length === 0) toast(t.noBingo);
   };
 
   const toggleSquare = (index: number) => {

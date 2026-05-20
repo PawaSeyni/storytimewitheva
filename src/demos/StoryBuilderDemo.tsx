@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { RefreshCw, Copy, Save } from 'lucide-react';
 import { useTranslation, useLanguage } from '../lib/language';
 import type { Language } from '../lib/language';
+import { useToast } from '../lib/toast';
 
 type StoryItem = { name: string; emoji: string };
 type ElementKey = 'character' | 'setting' | 'goal' | 'problem' | 'solution' | 'twist';
@@ -266,6 +267,7 @@ type SavedStory = { text: string; date: string };
 export default function StoryBuilderDemo() {
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
+  const toast = useToast();
   const pools = STORY_ELEMENTS[language] || STORY_ELEMENTS.en;
 
   const [currentStory, setCurrentStory] = useState<Story>({});
@@ -311,13 +313,13 @@ export default function StoryBuilderDemo() {
 
   const copyStory = () => {
     navigator.clipboard.writeText(generateStoryText());
-    alert(t.copied);
+    toast.success(t.copied);
   };
 
   const saveStory = () => {
     const date = new Date().toLocaleString();
     setSavedStories(prev => [...prev, { text: generateStoryText(), date }]);
-    alert(t.saved);
+    toast.success(t.saved);
   };
 
   return (
