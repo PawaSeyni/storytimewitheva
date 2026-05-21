@@ -285,7 +285,7 @@ export default function Contact() {
                   className="flex-1 py-2 bg-orange-50 border border-orange-200 rounded-xl text-center text-sm hover:bg-orange-100 transition-colors">
                   📚 Amazon
                 </a>
-                <a href="https://www.instagram.com/galloeva2612/" target="_blank" rel="noopener noreferrer"
+                <a href="https://www.instagram.com/evagallo.books/" target="_blank" rel="noopener noreferrer"
                   className="flex-1 py-2 bg-pink-50 border border-pink-200 rounded-xl text-center text-sm hover:bg-pink-100 transition-colors">
                   📷 Instagram
                 </a>

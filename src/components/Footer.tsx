@@ -103,7 +103,7 @@ export default function Footer() {
                 className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 transition-colors text-lg">
                 📘
               </a>
-              <a href="https://www.instagram.com/galloeva2612/" target="_blank" rel="noopener noreferrer" aria-label="Instagram @galloeva2612"
+              <a href="https://www.instagram.com/evagallo.books/" target="_blank" rel="noopener noreferrer" aria-label="Instagram @evagallo.books"
                 className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 transition-colors text-lg">
                 📷
               </a>
