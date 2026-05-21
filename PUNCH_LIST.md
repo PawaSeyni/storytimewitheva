@@ -175,6 +175,12 @@ Add new items as discovered. Prioritize roughly top-to-bottom within each cluste
 - [ ] Per-language Resources articles (EN/ES/FR) once article structure exists
 - [ ] Update books.ts as Colors Mixed Up / Rainbow Symphony / Tower hit Amazon — swap author-page fallback for real ASIN URLs
 
+### Social & marketing channels
+- [ ] **YouTube channel** — create "Story Time with Eva" channel for read-alouds, behind-the-scenes author videos, animated book trailers, and bilingual story-time content. Wire the new channel URL into Footer.tsx + Contact.tsx social clusters alongside Instagram + Facebook. Decide on naming consistency (`@storytimewitheva` if available) and first 3-5 video format pilots (read-aloud? book intro? craft demo from the Craft Corner activity?).
+- [ ] Facebook cover photo: design 1640×624 banner in Canva (book covers row, rooster + wordmark, or extended book illustration) and upload to the Page.
+- [ ] Pinterest profile setup: ~15 pin templates already exist in `/Eva/Online Strategy/` and `/Eva/Social_Media_Complete_Package/` — needs an account + scheduling tool (Tailwind, Later, or manual).
+- [ ] TikTok / Threads: consider once YouTube has a baseline.
+
 ### Engineering
 - [ ] Build-time prerendering for perfect per-route OG unfurls on non-JS scrapers (`vite-plugin-prerender` or migrate to Astro). Currently each subroute's description duplicates the static homepage fallback in the DOM — modern crawlers handle this correctly but a non-JS Twitterbot would only see the static one.
 - [ ] Lightweight global search (subset of Base44's, no modal — inline page-search)
