@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /profile
 
-Sitemap: https://storytimewitheva.netlify.app/sitemap.xml
+Sitemap: https://storytimewitheva.com/sitemap.xml

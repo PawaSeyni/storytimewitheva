@@ -1,7 +1,7 @@
 import { useLanguage } from '../lib/language';
 import { useHead } from '../lib/head';
 
-const SITE_URL = 'https://storytimewitheva.netlify.app';
+const SITE_URL = 'https://storytimewitheva.com';
 const SITE_NAME = 'Story Time with Eva';
 const DEFAULT_IMAGE = 'https://m.media-amazon.com/images/I/619qWXXkRwL.jpg';
 

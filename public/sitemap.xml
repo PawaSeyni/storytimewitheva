@@ -1,72 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://storytimewitheva.netlify.app/</loc>
+    <loc>https://storytimewitheva.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://storytimewitheva.netlify.app/books</loc>
+    <loc>https://storytimewitheva.com/books</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://storytimewitheva.netlify.app/activities</loc>
+    <loc>https://storytimewitheva.com/activities</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://storytimewitheva.netlify.app/activities/story-builder</loc>
+    <loc>https://storytimewitheva.com/activities/story-builder</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://storytimewitheva.netlify.app/activities/character-workshop</loc>
+    <loc>https://storytimewitheva.com/activities/character-workshop</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://storytimewitheva.netlify.app/activities/adventure-journal</loc>
+    <loc>https://storytimewitheva.com/activities/adventure-journal</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://storytimewitheva.netlify.app/activities/coloring</loc>
+    <loc>https://storytimewitheva.com/activities/coloring</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://storytimewitheva.netlify.app/activities/craft-corner</loc>
+    <loc>https://storytimewitheva.com/activities/craft-corner</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://storytimewitheva.netlify.app/activities/bookmark-designer</loc>
+    <loc>https://storytimewitheva.com/activities/bookmark-designer</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://storytimewitheva.netlify.app/activities/bingo</loc>
+    <loc>https://storytimewitheva.com/activities/bingo</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://storytimewitheva.netlify.app/activities/puzzles</loc>
+    <loc>https://storytimewitheva.com/activities/puzzles</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://storytimewitheva.netlify.app/resources</loc>
+    <loc>https://storytimewitheva.com/resources</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://storytimewitheva.netlify.app/about</loc>
+    <loc>https://storytimewitheva.com/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://storytimewitheva.netlify.app/contact</loc>
+    <loc>https://storytimewitheva.com/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
