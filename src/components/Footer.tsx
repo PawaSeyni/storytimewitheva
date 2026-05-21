@@ -99,7 +99,7 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-4">{t.connect}</h3>
             <p className="text-sm text-gray-400 mb-4">{t.connectBlurb}</p>
             <div className="flex gap-3">
-              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"
+              <a href="https://www.facebook.com/profile.php?id=61590158550516" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
                 className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 transition-colors text-lg">
                 📘
               </a>
