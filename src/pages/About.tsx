@@ -9,6 +9,8 @@ const TRANSLATIONS = {
     seoDesc: 'Eva Gallo writes multicultural picture books for children ages 3–9. Before she was an author, she spent thirty years in public health. Her stories begin in night and end in morning.',
     heading: 'About Story Time with Eva',
     subheading: 'Making reading magical for every child',
+    refrain: 'Every story begins in the dark and ends in the morning.',
+    refrainAttr: 'the signature rhythm of every book in the Eva Gallo Collection',
     photoNote: '📸 Replace with your photo',
     bioHeading: 'A Note from the Author',
     bio: [
@@ -32,6 +34,8 @@ const TRANSLATIONS = {
     seoDesc: 'Eva Gallo escribe libros ilustrados multiculturales para niños de 3 a 9 años. Antes de ser autora, trabajó treinta años en salud pública. Sus historias comienzan de noche y terminan al amanecer.',
     heading: 'Acerca de Story Time with Eva',
     subheading: 'Haciendo la lectura mágica para cada peque',
+    refrain: 'Cada historia comienza en la oscuridad y termina con la mañana.',
+    refrainAttr: 'el ritmo distintivo de cada libro de la Colección Eva Gallo',
     photoNote: '📸 Reemplazar con tu foto',
     bioHeading: 'Una nota de la autora',
     bio: [
@@ -55,6 +59,8 @@ const TRANSLATIONS = {
     seoDesc: 'Eva Gallo écrit des albums illustrés multiculturels pour les enfants de 3 à 9 ans. Avant de devenir autrice, elle a travaillé trente ans en santé publique. Ses histoires commencent la nuit et s\'achèvent au matin.',
     heading: 'À propos de Story Time with Eva',
     subheading: 'Rendre la lecture magique pour chaque enfant',
+    refrain: "Chaque histoire commence dans le noir et finit au matin.",
+    refrainAttr: 'le rythme signature de chaque livre de la Collection Eva Gallo',
     photoNote: '📸 Remplacer par votre photo',
     bioHeading: "Mot de l'autrice",
     bio: [
@@ -93,6 +99,20 @@ export default function About() {
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">{t.heading}</h1>
           <p className="text-gray-500 text-lg">{t.subheading}</p>
+        </div>
+      </section>
+
+      {/* Eva Gallo Collection imprint refrain — the locked signature line */}
+      <section className="py-10 px-4 bg-white">
+        <div className="max-w-3xl mx-auto">
+          <blockquote className="border-l-4 border-orange-400 pl-6 py-2">
+            <p className="text-2xl md:text-3xl font-serif italic text-slate-700 leading-snug">
+              {t.refrain}
+            </p>
+            <footer className="mt-3 text-sm text-gray-500 not-italic">
+              — {t.refrainAttr}
+            </footer>
+          </blockquote>
         </div>
       </section>
 
