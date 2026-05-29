@@ -5,10 +5,35 @@ import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import { useTranslation } from '../lib/language';
 
+// ---------------------------------------------------------------------------
+// Age-filter helpers — parse "5-9 years" → [5, 9] and check overlap with the
+// active filter range. Fixes the bug where "9+ years" returned no books
+// because the literal "9+" string didn't appear in any book's ageRange.
+// ---------------------------------------------------------------------------
+function parseAgeRange(s: string): [number, number] {
+  const m = s.match(/(\d+)\s*-\s*(\d+)/);
+  if (m) return [parseInt(m[1], 10), parseInt(m[2], 10)];
+  const single = s.match(/(\d+)/);
+  if (single) {
+    const n = parseInt(single[1], 10);
+    return [n, n];
+  }
+  return [0, 99];
+}
+
+function matchesAgeFilter(bookAge: string, filterKey: string): boolean {
+  if (filterKey === 'All') return true;
+  const [bMin, bMax] = parseAgeRange(bookAge);
+  if (filterKey === '9+') return bMax >= 9;
+  // For "3-5" and "6-8" filters: overlap between book range and filter range.
+  const [fMin, fMax] = parseAgeRange(filterKey);
+  return bMax >= fMin && bMin <= fMax;
+}
+
 const TRANSLATIONS = {
   en: {
     seoTitle: 'Our Magical Book Collection',
-    seoDesc: 'Browse all 11 books in the Eva Gallo Collection — multicultural picture books for children ages 3–9 about quiet wonder, kindness, and curiosity.',
+    seoDesc: 'Browse all 18 books in the Eva Gallo Collection — multicultural picture books for children ages 3–9 about quiet wonder, kindness, and curiosity.',
     heading: 'Our Magical Book Collection',
     subheading: 'Explore stories that inspire, educate, and delight young readers',
     searchPlaceholder: 'Search books by title or theme...',
@@ -26,7 +51,7 @@ const TRANSLATIONS = {
   },
   es: {
     seoTitle: 'Nuestra colección de libros mágicos',
-    seoDesc: 'Explora los 11 libros de la Colección Eva Gallo — álbumes multiculturales para niños de 3 a 9 años sobre asombro tranquilo, bondad y curiosidad.',
+    seoDesc: 'Explora los 18 libros de la Colección Eva Gallo — álbumes multiculturales para niños de 3 a 9 años sobre asombro tranquilo, bondad y curiosidad.',
     heading: 'Nuestra colección de libros mágicos',
     subheading: 'Descubre historias que inspiran, educan y deleitan a los lectores jóvenes',
     searchPlaceholder: 'Buscar libros por título o tema...',
@@ -44,7 +69,7 @@ const TRANSLATIONS = {
   },
   fr: {
     seoTitle: 'Notre collection de livres magiques',
-    seoDesc: 'Parcourez les 11 livres de la Collection Eva Gallo — albums multiculturels pour enfants de 3 à 9 ans sur l\'émerveillement tranquille, la bonté et la curiosité.',
+    seoDesc: 'Parcourez les 18 livres de la Collection Eva Gallo — albums multiculturels pour enfants de 3 à 9 ans sur l\'émerveillement tranquille, la bonté et la curiosité.',
     heading: 'Notre collection de livres magiques',
     subheading: 'Découvrez des histoires qui inspirent, instruisent et ravissent les jeunes lecteurs',
     searchPlaceholder: 'Rechercher un livre par titre ou thème...',
@@ -82,7 +107,7 @@ export default function Books() {
       book.title.toLowerCase().includes(q) ||
       book.description.toLowerCase().includes(q) ||
       book.theme.toLowerCase().includes(q);
-    const matchesAge = ageFilter === 'All' || book.ageRange.includes(ageFilter);
+    const matchesAge = matchesAgeFilter(book.ageRange, ageFilter);
     return matchesSearch && matchesAge;
   });
 
