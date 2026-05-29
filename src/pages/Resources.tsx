@@ -18,6 +18,14 @@ const AFFILIATE = {
 } as const;
 
 // ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+type AffiliatePart = { href: string; text: string };
+type BodyPart = string | AffiliatePart;
+type Section = { title: string; body: BodyPart[] };
+type SkipList = { title: string; items: { lead: string; rest: string }[] };
+
+// ---------------------------------------------------------------------------
 // Reusable affiliate link component — enforces rel="sponsored noopener" +
 // target="_blank" + small "(affiliate)" badge for FTC clarity.
 // ---------------------------------------------------------------------------
@@ -35,6 +43,20 @@ function AffiliateLink({ href, children }: { href: string; children: React.React
   );
 }
 
+function renderBody(parts: BodyPart[]) {
+  return parts.map((p, i) =>
+    typeof p === 'string'
+      ? <span key={i}>{p}</span>
+      : <AffiliateLink key={i} href={p.href}>{p.text}</AffiliateLink>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// TRANSLATIONS
+// Note: brand voice is warm, multilingual, parent-to-parent, lightly poetic.
+// Translations are adapted (not literal) so each language reads as if Eva
+// wrote it in that language directly.
+// ---------------------------------------------------------------------------
 const TRANSLATIONS = {
   en: {
     seoTitle: 'Parent Resources',
@@ -58,7 +80,6 @@ const TRANSLATIONS = {
       body: 'This page contains affiliate links. If you purchase through these links I may earn a small commission at no extra cost to you. I only recommend products I genuinely use and trust.',
       amazon: 'As an Amazon Associate I earn from qualifying purchases.',
     },
-    articleSoon: 'Full article available in English. ES / FR coming soon.',
     resources: [
       { title: '10 Ways to Make Reading Time Magical', desc: 'Transform ordinary reading sessions into memorable adventures your child will love.', minutes: 5, anchor: 'making-reading-magical' },
       { title: 'Age-Appropriate Reading Milestones', desc: "What to expect at each stage and how to support your child's literacy journey.", minutes: 8 },
@@ -67,6 +88,79 @@ const TRANSLATIONS = {
       { title: 'Creating the Perfect Reading Environment', desc: 'Design a space that makes your child excited to pick up a book.', minutes: 4, anchor: 'perfect-reading-environment' },
       { title: 'The Science of Reading: What Parents Need to Know', desc: 'Understanding how children learn to read can help you support them better.', minutes: 10 },
     ],
+    article1: {
+      eyebrow: 'Reading Tips · 5 min read',
+      title: '10 Ways to Make Reading Time Magical',
+      intro: 'Transform ordinary reading sessions into memorable adventures your child will look forward to every single day.',
+      sections: [
+        { title: '1. Set the mood — light matters more than you think', body: [
+          'Bedtime reading hits different when the overhead light is off and a soft, warm glow surrounds the book. We use a clip-on kids’ reading lamp that gives off just enough light for the words without the overstimulation of a ceiling fixture. Our pick: ',
+          { href: AFFILIATE.readingLamp, text: 'this dimmable bedside lamp' },
+          '.',
+        ] },
+        { title: '2. Build a reading rhythm, not a reading rule', body: [
+          'Kids resist rules; they lean into rhythms. Pair reading time with something sensory — a particular blanket, a specific tea for you, the same playlist on low. After two weeks the cue alone makes them reach for a book.',
+        ] },
+        { title: '3. Pair the story with hands-on play', body: [
+          'Reading about animals? Pull out finger puppets. About space? Cardboard rockets. The point isn’t a Pinterest-perfect craft — it’s the bridge from page to body.',
+        ] },
+        { title: '4. Let them turn the pages — even when they get it wrong', body: [
+          'Control is the gateway to engagement. A three-year-old turning two pages at once still chose to be there. Don’t correct it. Just keep reading.',
+        ] },
+        { title: '5. Voice acting is allowed', body: [
+          'If you’ve never been a grandmother witch with a stuffy nose, this is your moment. Kids will quote you back to themselves for weeks.',
+        ] },
+        { title: '6. Read the same book until you can’t stand it', body: [
+          'Repetition is how fluency develops. The book you’ve read 47 times is the one teaching them most. Keep going.',
+        ] },
+        { title: '7. Bring in a second language casually', body: [
+          'Even if you’re not fluent, swap a single word per page. “Look at the perro.” Then “The perro is sleeping.” Children absorb the second language as part of the story, not as a lesson.',
+        ] },
+        { title: '8. Pause for predictions', body: [
+          'Halfway through, ask: “What do you think will happen?” Then go back to reading. Comprehension goes up by roughly 30% on the next read-through when kids have already guessed once.',
+        ] },
+        { title: '9. Build the nook', body: [
+          'A reading nook is a vote of confidence — a small space that says “this matters here.” Start with a ',
+          { href: AFFILIATE.floorCushion, text: 'convertible floor cushion' },
+          ' and a ',
+          { href: AFFILIATE.bookshelf, text: 'front-facing Montessori bookshelf' },
+          ' so they can see the covers. That’s the whole setup.',
+        ] },
+        { title: '10. Be the reader your child sees most', body: [
+          'Children read more if they live with someone who reads. Twenty minutes of you on the couch with your own book does more for their literacy than any printable.',
+        ] },
+      ] satisfies Section[],
+    },
+    article2: {
+      eyebrow: 'Reading Tips · 4 min read',
+      title: 'Creating the Perfect Reading Environment',
+      intro: 'Design a space that makes your child reach for a book without being asked. This isn’t about Pinterest-perfect rooms. It’s about three deliberate choices.',
+      choices: [
+        { title: 'Choice 1 — Comfort that says “stay a while”', body: [
+          'Forget structured chairs. Kids read longer when they’re slouching, side-lying, or upside-down on something soft. A washable floor cushion is the workhorse here. Our pick: ',
+          { href: AFFILIATE.floorCushion, text: 'this 3-in-1 convertible kids’ bean bag couch' },
+          '. Machine-washable, big enough that two kids can pile on without an elbow war.',
+        ] },
+        { title: 'Choice 2 — Book covers, not book spines', body: [
+          'Traditional bookshelves hide picture-book covers and turn reading into a search problem. A forward-facing Montessori-style bookshelf shows four to six books at a time. Rotate them weekly. Kids pick up books they see, not books they have to dig for. Our pick: ',
+          { href: AFFILIATE.bookshelf, text: 'this 4-tier wooden front-facing bookshelf' },
+          '.',
+        ] },
+        { title: 'Choice 3 — Light that signals “reading”', body: [
+          'Lighting is the most underrated piece. We use ',
+          { href: AFFILIATE.readingLamp, text: 'a warm dimmable lamp' },
+          ' that we only turn on for reading. After a few weeks, the click of the lamp is itself the bedtime cue. The lamp goes on, the body settles.',
+        ] },
+      ] satisfies Section[],
+      skip: {
+        title: 'Three things to skip',
+        items: [
+          { lead: 'A theme.', rest: 'Nautical, jungle, princess — kids outgrow themes faster than the paint dries.' },
+          { lead: 'A screen anywhere in sight.', rest: 'Even an off iPad on a side table is a competitor. Move it.' },
+          { lead: 'Background music with lyrics.', rest: 'Instrumental only. Lyrics fight with the story for the same processing channel.' },
+        ],
+      } satisfies SkipList,
+    },
   },
   es: {
     seoTitle: 'Recursos para padres',
@@ -90,7 +184,6 @@ const TRANSLATIONS = {
       body: 'Esta página contiene enlaces de afiliados. Si compras a través de ellos, podemos ganar una pequeña comisión sin coste adicional para ti. Solo recomendamos productos que de verdad usamos y nos gustan.',
       amazon: 'Como afiliados de Amazon, ganamos con compras que cumplen los requisitos.',
     },
-    articleSoon: 'Artículo completo disponible en inglés. Traducción al ES / FR próximamente.',
     resources: [
       { title: '10 formas de hacer mágico el tiempo de lectura', desc: 'Transforma las sesiones de lectura cotidianas en aventuras memorables que tu peque adorará.', minutes: 5, anchor: 'making-reading-magical' },
       { title: 'Hitos de lectura por edades', desc: 'Qué esperar en cada etapa y cómo apoyar el camino lector de tu peque.', minutes: 8 },
@@ -99,38 +192,183 @@ const TRANSLATIONS = {
       { title: 'Crear el ambiente perfecto para leer', desc: 'Diseña un espacio que invite a tu peque a coger un libro con ganas.', minutes: 4, anchor: 'perfect-reading-environment' },
       { title: 'La ciencia de la lectura: lo que los padres deben saber', desc: 'Entender cómo aprenden a leer los niños te ayudará a apoyarles mejor.', minutes: 10 },
     ],
+    article1: {
+      eyebrow: 'Consejos de lectura · 5 min de lectura',
+      title: '10 formas de hacer mágico el tiempo de lectura',
+      intro: 'Transforma las sesiones de lectura cotidianas en aventuras memorables que tu peque esperará con ilusión cada día.',
+      sections: [
+        { title: '1. Crea el ambiente — la luz importa más de lo que crees', body: [
+          'La lectura a la hora de dormir cambia cuando se apaga la luz del techo y un resplandor cálido y suave envuelve el libro. Usamos una lámpara infantil con pinza que da la luz justa para las palabras, sin la sobrecarga de la luz cenital. Nuestra elección: ',
+          { href: AFFILIATE.readingLamp, text: 'esta lámpara de mesilla regulable' },
+          '.',
+        ] },
+        { title: '2. Crea un ritmo de lectura, no una regla de lectura', body: [
+          'Los niños se resisten a las reglas; se inclinan a los rituales. Empareja el tiempo de lectura con algo sensorial: una manta concreta, un té específico para ti, la misma playlist a volumen bajo. A las dos semanas, la señal sola basta para que cojan un libro.',
+        ] },
+        { title: '3. Une la historia con juego sensorial', body: [
+          '¿Leen sobre animales? Saca marionetas de dedo. ¿Sobre el espacio? Cohetes de cartón. No se trata de una manualidad perfecta de Pinterest — se trata del puente entre la página y el cuerpo.',
+        ] },
+        { title: '4. Déjales pasar las páginas — incluso cuando se equivocan', body: [
+          'El control es la puerta de entrada al interés. Un peque de tres años que pasa dos páginas a la vez igualmente eligió estar ahí. No corrijas. Sigue leyendo.',
+        ] },
+        { title: '5. Las voces de personajes están permitidas', body: [
+          'Si nunca has sido una abuela bruja con la nariz tapada, este es tu momento. Los niños te imitarán durante semanas.',
+        ] },
+        { title: '6. Lee el mismo libro hasta que no lo soportes', body: [
+          'La repetición es como se desarrolla la fluidez. El libro que has leído 47 veces es el que más les está enseñando. Sigue.',
+        ] },
+        { title: '7. Introduce un segundo idioma con naturalidad', body: [
+          'Aunque no domines el idioma, cambia una sola palabra por página. “Look at the perro.” Luego “The perro is sleeping.” Los niños absorben el segundo idioma como parte de la historia, no como una lección.',
+        ] },
+        { title: '8. Pausa para predecir', body: [
+          'A mitad del cuento, pregunta: “¿Qué crees que pasará?” Luego sigue leyendo. La comprensión sube alrededor de un 30% en la siguiente lectura cuando los niños ya han hecho una conjetura.',
+        ] },
+        { title: '9. Construye el rincón', body: [
+          'Un rincón de lectura es un voto de confianza — un pequeño espacio que dice “esto importa aquí.” Empieza con un ',
+          { href: AFFILIATE.floorCushion, text: 'cojín de suelo convertible' },
+          ' y una ',
+          { href: AFFILIATE.bookshelf, text: 'estantería Montessori de frente' },
+          ' para que vean las portadas. Esa es toda la instalación.',
+        ] },
+        { title: '10. Sé el lector que tu peque más ve', body: [
+          'Los niños leen más si conviven con alguien que lee. Veinte minutos tuyos en el sofá con tu propio libro hacen más por su alfabetización que cualquier imprimible.',
+        ] },
+      ] satisfies Section[],
+    },
+    article2: {
+      eyebrow: 'Consejos de lectura · 4 min de lectura',
+      title: 'Crear el ambiente perfecto para leer',
+      intro: 'Diseña un espacio que invite a tu peque a coger un libro sin que se lo pidas. No se trata de habitaciones perfectas de Pinterest. Se trata de tres decisiones deliberadas.',
+      choices: [
+        { title: 'Decisión 1 — Comodidad que dice “quédate un rato”', body: [
+          'Olvida las sillas rígidas. Los peques leen más tiempo cuando están desparramados, de lado o boca abajo sobre algo blando. Un cojín de suelo lavable es el caballo de batalla aquí. Nuestra elección: ',
+          { href: AFFILIATE.floorCushion, text: 'este sofá puff 3-en-1 para niños' },
+          '. Lavable a máquina, lo bastante grande para que dos peques se amontonen sin guerra de codos.',
+        ] },
+        { title: 'Decisión 2 — Portadas de libros, no lomos', body: [
+          'Las estanterías tradicionales esconden las portadas de los álbumes ilustrados y convierten la lectura en un problema de búsqueda. Una estantería Montessori de frente muestra entre cuatro y seis libros a la vez. Rotalos cada semana. Los niños cogen los libros que ven, no los que tienen que rebuscar. Nuestra elección: ',
+          { href: AFFILIATE.bookshelf, text: 'esta estantería de madera de 4 niveles, libros de frente' },
+          '.',
+        ] },
+        { title: 'Decisión 3 — Una luz que dice “lectura”', body: [
+          'La iluminación es la pieza más infravalorada. Usamos ',
+          { href: AFFILIATE.readingLamp, text: 'una lámpara cálida regulable' },
+          ' que solo encendemos para leer. A las pocas semanas, el clic de la lámpara es la señal de la hora de dormir. La lámpara se enciende, el cuerpo se calma.',
+        ] },
+      ] satisfies Section[],
+      skip: {
+        title: 'Tres cosas que evitar',
+        items: [
+          { lead: 'Una temática.', rest: 'Marinera, selva, princesa — los peques superan las temáticas antes de que se seque la pintura.' },
+          { lead: 'Una pantalla a la vista.', rest: 'Incluso un iPad apagado en la mesilla es competencia. Muévelo.' },
+          { lead: 'Música de fondo con letra.', rest: 'Solo instrumental. La letra pelea con la historia por el mismo canal.' },
+        ],
+      } satisfies SkipList,
+    },
   },
   fr: {
     seoTitle: 'Ressources pour parents',
-    seoDesc: 'Conseils de lecture, étapes du développement de l\'enfant et idées d\'activités pour les parents et enseignants. Pour rendre chaque séance de lecture magique.',
+    seoDesc: 'Conseils de lecture, étapes du développement de l’enfant et idées d’activités pour les parents et enseignants. Pour rendre chaque séance de lecture magique.',
     heading: 'Ressources et guides pour parents',
-    subheading: 'Conseils d\'experts, activités et stratégies pour rendre le temps de lecture magique',
+    subheading: 'Conseils d’experts, activités et stratégies pour rendre le temps de lecture magique',
     searchPlaceholder: 'Rechercher des ressources...',
     popular: 'Populaire',
-    readArticle: 'Lire l\'article ↓',
+    readArticle: 'Lire l’article ↓',
     emptyMsg: 'Aucune ressource trouvée. Essayez une autre recherche !',
     minRead: 'min de lecture',
     categories: {
       all: 'Toutes les ressources',
       readingTips: 'Conseils de lecture',
-      activityIdeas: "Idées d'activités",
-      childDev: "Développement de l'enfant",
-      engagement: "Susciter l'intérêt",
+      activityIdeas: 'Idées d’activités',
+      childDev: 'Développement de l’enfant',
+      engagement: 'Susciter l’intérêt',
     },
     disclosure: {
       heading: 'À propos des liens affiliés',
       body: 'Cette page contient des liens affiliés. Si vous achetez via ces liens, nous pouvons gagner une petite commission sans coût supplémentaire pour vous. Nous ne recommandons que des produits que nous utilisons réellement.',
-      amazon: 'En tant qu\'affilié Amazon, nous percevons une commission sur les achats éligibles.',
+      amazon: 'En tant qu’affilié Amazon, nous percevons une commission sur les achats éligibles.',
     },
-    articleSoon: 'Article complet disponible en anglais. Traduction ES / FR à venir.',
     resources: [
       { title: '10 façons de rendre le temps de lecture magique', desc: 'Transformez les séances de lecture ordinaires en aventures inoubliables que votre enfant adorera.', minutes: 5, anchor: 'making-reading-magical' },
-      { title: 'Les étapes de lecture selon l\'âge', desc: 'À quoi s\'attendre à chaque étape et comment soutenir le parcours de lecture de votre enfant.', minutes: 8 },
-      { title: '5 activités créatives à faire après la lecture', desc: 'Prolongez l\'apprentissage et le plaisir au-delà de la dernière page avec ces activités.', minutes: 6 },
+      { title: 'Les étapes de lecture selon l’âge', desc: 'À quoi s’attendre à chaque étape et comment soutenir le parcours de lecture de votre enfant.', minutes: 8 },
+      { title: '5 activités créatives à faire après la lecture', desc: 'Prolongez l’apprentissage et le plaisir au-delà de la dernière page avec ces activités.', minutes: 6 },
       { title: 'Faire aimer la lecture aux lecteurs réticents', desc: 'Stratégies concrètes pour aider les enfants qui résistent à découvrir le plaisir des livres.', minutes: 7 },
-      { title: "Créer l'environnement de lecture idéal", desc: 'Aménagez un espace qui donne envie à votre enfant de prendre un livre.', minutes: 4, anchor: 'perfect-reading-environment' },
+      { title: 'Créer l’environnement de lecture idéal', desc: 'Aménagez un espace qui donne envie à votre enfant de prendre un livre.', minutes: 4, anchor: 'perfect-reading-environment' },
       { title: 'La science de la lecture : ce que les parents doivent savoir', desc: 'Comprendre comment les enfants apprennent à lire vous aidera à mieux les accompagner.', minutes: 10 },
     ],
+    article1: {
+      eyebrow: 'Conseils de lecture · 5 min de lecture',
+      title: '10 façons de rendre le temps de lecture magique',
+      intro: 'Transformez les séances de lecture ordinaires en aventures inoubliables que votre enfant attendra avec impatience chaque jour.',
+      sections: [
+        { title: '1. Préparez l’ambiance — la lumière compte plus que vous ne le pensez', body: [
+          'La lecture du soir change quand la lumière du plafond s’éteint et qu’une lueur douce et chaude entoure le livre. Nous utilisons une lampe pince pour enfants qui éclaire juste assez les mots, sans la surcharge d’une suspension. Notre choix : ',
+          { href: AFFILIATE.readingLamp, text: 'cette lampe de chevet à intensité réglable' },
+          '.',
+        ] },
+        { title: '2. Créez un rythme de lecture, pas une règle de lecture', body: [
+          'Les enfants résistent aux règles ; ils adoptent les rituels. Associez la lecture à quelque chose de sensoriel — une couverture précise, une tisane particulière pour vous, la même playlist en sourdine. Au bout de deux semaines, le signal seul suffit à leur faire ouvrir un livre.',
+        ] },
+        { title: '3. Associez l’histoire à un jeu manuel', body: [
+          'Vous lisez une histoire d’animaux ? Sortez les marionnettes à doigts. De l’espace ? Des fusées en carton. Le but n’est pas un bricolage parfait pour Pinterest — c’est le pont entre la page et le corps.',
+        ] },
+        { title: '4. Laissez-les tourner les pages — même quand ils se trompent', body: [
+          'Le contrôle est la porte d’entrée de l’engagement. Un enfant de trois ans qui tourne deux pages d’un coup a quand même choisi d’être là. Ne corrigez pas. Continuez à lire.',
+        ] },
+        { title: '5. Le doublage est autorisé', body: [
+          'Si vous n’avez jamais joué une grand-mère sorcière enrhumée, c’est le moment. Les enfants vous reciteront vos voix pendant des semaines.',
+        ] },
+        { title: '6. Lisez le même livre jusqu’à n’en plus pouvoir', body: [
+          'C’est par la répétition que la fluidité se construit. Le livre que vous avez lu 47 fois est celui qui leur apprend le plus. Continuez.',
+        ] },
+        { title: '7. Glissez une seconde langue, l’air de rien', body: [
+          'Même si vous ne parlez pas couramment, remplacez un mot par page. « Look at the perro. » Puis « The perro is sleeping. » Les enfants intègrent la deuxième langue comme une partie de l’histoire, pas comme une leçon.',
+        ] },
+        { title: '8. Faites une pause pour prédire', body: [
+          'À mi-parcours, demandez : « À ton avis, qu’est-ce qui va se passer ? » Puis reprenez la lecture. La compréhension grimpe d’environ 30 % à la relecture quand les enfants ont déjà fait une hypothèse.',
+        ] },
+        { title: '9. Aménagez le coin lecture', body: [
+          'Un coin lecture est un vote de confiance — un petit espace qui dit « ça compte ici ». Commencez avec un ',
+          { href: AFFILIATE.floorCushion, text: 'coussin de sol convertible' },
+          ' et une ',
+          { href: AFFILIATE.bookshelf, text: 'étagère Montessori frontale' },
+          ' pour qu’ils voient les couvertures. C’est toute l’installation.',
+        ] },
+        { title: '10. Soyez le lecteur que votre enfant voit le plus', body: [
+          'Les enfants lisent davantage s’ils vivent avec quelqu’un qui lit. Vingt minutes de vous sur le canapé avec votre propre livre font plus pour leur lecture que tous les imprimables réunis.',
+        ] },
+      ] satisfies Section[],
+    },
+    article2: {
+      eyebrow: 'Conseils de lecture · 4 min de lecture',
+      title: 'Créer l’environnement de lecture idéal',
+      intro: 'Aménagez un espace qui donne à votre enfant l’envie de prendre un livre sans qu’on le lui demande. Il ne s’agit pas de chambres parfaites pour Pinterest. Il s’agit de trois choix réfléchis.',
+      choices: [
+        { title: 'Choix 1 — Un confort qui dit « reste un moment »', body: [
+          'Oubliez les chaises rigides. Les enfants lisent plus longtemps quand ils sont avachis, sur le côté ou la tête en bas sur quelque chose de doux. Un coussin de sol lavable est la pièce maîtresse. Notre choix : ',
+          { href: AFFILIATE.floorCushion, text: 'ce pouf-canapé 3-en-1 pour enfants' },
+          '. Lavable en machine, assez grand pour que deux enfants s’y entassent sans guerre de coudes.',
+        ] },
+        { title: 'Choix 2 — Couvertures, pas dos de livres', body: [
+          'Les bibliothèques classiques cachent les couvertures des albums et transforment la lecture en problème de recherche. Une étagère Montessori frontale montre quatre à six livres à la fois. Faites-les tourner chaque semaine. Les enfants prennent les livres qu’ils voient, pas ceux qu’ils doivent fouiller. Notre choix : ',
+          { href: AFFILIATE.bookshelf, text: 'cette étagère en bois 4 niveaux, livres de face' },
+          '.',
+        ] },
+        { title: 'Choix 3 — Une lumière qui dit « lecture »', body: [
+          'L’éclairage est l’élément le plus sous-estimé. Nous utilisons ',
+          { href: AFFILIATE.readingLamp, text: 'une lampe chaude à intensité réglable' },
+          ' que nous n’allumons que pour la lecture. Au bout de quelques semaines, le clic de la lampe devient le signal du coucher. La lampe s’allume, le corps se pose.',
+        ] },
+      ] satisfies Section[],
+      skip: {
+        title: 'Trois choses à éviter',
+        items: [
+          { lead: 'Un thème.', rest: 'Marin, jungle, princesse — les enfants en sortent plus vite que la peinture ne sèche.' },
+          { lead: 'Un écran en vue.', rest: 'Même un iPad éteint sur une commode est un concurrent. Déplacez-le.' },
+          { lead: 'De la musique avec paroles.', rest: 'Instrumental uniquement. Les paroles se battent avec l’histoire pour le même canal de traitement.' },
+        ],
+      } satisfies SkipList,
+    },
   },
 };
 
@@ -146,168 +384,55 @@ const RESOURCE_META = [
 type CategoryKey = 'all' | 'readingTips' | 'activityIdeas' | 'childDev' | 'engagement';
 
 // ---------------------------------------------------------------------------
-// Article 1 — 10 Ways to Make Reading Time Magical
-// English-only for v1. ES / FR translations will come in a follow-up.
+// Article components — data-driven from translations.
 // ---------------------------------------------------------------------------
-function ArticleMakingReadingMagical({ articleSoonNote }: { articleSoonNote: string | null }) {
+type Article1T = (typeof TRANSLATIONS)['en']['article1'];
+type Article2T = (typeof TRANSLATIONS)['en']['article2'];
+
+function ArticleMakingReadingMagical({ t }: { t: Article1T }) {
   return (
     <article id="making-reading-magical" className="scroll-mt-24 max-w-3xl mx-auto px-4 py-12 border-t border-gray-100">
       <header className="mb-8">
-        <p className="text-xs uppercase tracking-wider text-amber-700 font-semibold mb-2">Reading Tips · 5 min read</p>
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3 leading-tight">
-          10 Ways to Make Reading Time Magical
-        </h2>
-        <p className="text-gray-600 text-lg leading-relaxed">
-          Transform ordinary reading sessions into memorable adventures your child will look forward to every single day.
-        </p>
-        {articleSoonNote && (
-          <p className="mt-3 text-sm text-gray-500 italic">{articleSoonNote}</p>
-        )}
+        <p className="text-xs uppercase tracking-wider text-amber-700 font-semibold mb-2">{t.eyebrow}</p>
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3 leading-tight">{t.title}</h2>
+        <p className="text-gray-600 text-lg leading-relaxed">{t.intro}</p>
       </header>
 
       <div className="space-y-6 text-gray-700 leading-relaxed">
-        <section>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">1. Set the mood — light matters more than you think</h3>
-          <p>
-            Bedtime reading hits different when the overhead light is off and a soft, warm glow surrounds the book. We use a clip-on
-            kids' reading lamp that gives off just enough light for the words without the overstimulation of a ceiling fixture.
-            Our pick: <AffiliateLink href={AFFILIATE.readingLamp}>this dimmable bedside lamp</AffiliateLink>.
-          </p>
-        </section>
-
-        <section>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">2. Build a reading rhythm, not a reading rule</h3>
-          <p>
-            Kids resist rules; they lean into rhythms. Pair reading time with something sensory — a particular blanket, a specific
-            tea for you, the same playlist on low. After two weeks the cue alone makes them reach for a book.
-          </p>
-        </section>
-
-        <section>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">3. Pair the story with hands-on play</h3>
-          <p>
-            Reading about animals? Pull out finger puppets. About space? Cardboard rockets. The point isn't a Pinterest-perfect
-            craft — it's the bridge from page to body.
-          </p>
-        </section>
-
-        <section>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">4. Let them turn the pages — even when they get it wrong</h3>
-          <p>
-            Control is the gateway to engagement. A three-year-old turning two pages at once still chose to be there. Don't correct
-            it. Just keep reading.
-          </p>
-        </section>
-
-        <section>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">5. Voice acting is allowed</h3>
-          <p>
-            If you've never been a grandmother witch with a stuffy nose, this is your moment. Kids will quote you back to themselves
-            for weeks.
-          </p>
-        </section>
-
-        <section>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">6. Read the same book until you can't stand it</h3>
-          <p>
-            Repetition is how fluency develops. The book you've read 47 times is the one teaching them most. Keep going.
-          </p>
-        </section>
-
-        <section>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">7. Bring in a second language casually</h3>
-          <p>
-            Even if you're not fluent, swap a single word per page. <em>"Look at the perro."</em> Then{' '}
-            <em>"The perro is sleeping."</em> Children absorb the second language as part of the story, not as a lesson.
-          </p>
-        </section>
-
-        <section>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">8. Pause for predictions</h3>
-          <p>
-            Halfway through, ask: "What do you think will happen?" Then go back to reading. Comprehension goes up by roughly 30%
-            on the next read-through when kids have already guessed once.
-          </p>
-        </section>
-
-        <section>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">9. Build the nook</h3>
-          <p>
-            A reading nook is a vote of confidence — a small space that says "this matters here." Start with a{' '}
-            <AffiliateLink href={AFFILIATE.floorCushion}>convertible floor cushion</AffiliateLink> and a{' '}
-            <AffiliateLink href={AFFILIATE.bookshelf}>front-facing Montessori bookshelf</AffiliateLink> so they can see the covers.
-            That's the whole setup.
-          </p>
-        </section>
-
-        <section>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">10. Be the reader your child sees most</h3>
-          <p>
-            Children read more if they live with someone who reads. Twenty minutes of you on the couch with your own book does
-            more for their literacy than any printable.
-          </p>
-        </section>
+        {t.sections.map((s, i) => (
+          <section key={i}>
+            <h3 className="text-xl font-bold text-gray-800 mb-2">{s.title}</h3>
+            <p>{renderBody(s.body)}</p>
+          </section>
+        ))}
       </div>
     </article>
   );
 }
 
-// ---------------------------------------------------------------------------
-// Article 2 — Creating the Perfect Reading Environment
-// ---------------------------------------------------------------------------
-function ArticlePerfectReadingEnvironment({ articleSoonNote }: { articleSoonNote: string | null }) {
+function ArticlePerfectReadingEnvironment({ t }: { t: Article2T }) {
   return (
     <article id="perfect-reading-environment" className="scroll-mt-24 max-w-3xl mx-auto px-4 py-12 border-t border-gray-100">
       <header className="mb-8">
-        <p className="text-xs uppercase tracking-wider text-amber-700 font-semibold mb-2">Reading Tips · 4 min read</p>
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3 leading-tight">
-          Creating the Perfect Reading Environment
-        </h2>
-        <p className="text-gray-600 text-lg leading-relaxed">
-          Design a space that makes your child reach for a book without being asked. This isn't about Pinterest-perfect rooms.
-          It's about three deliberate choices.
-        </p>
-        {articleSoonNote && (
-          <p className="mt-3 text-sm text-gray-500 italic">{articleSoonNote}</p>
-        )}
+        <p className="text-xs uppercase tracking-wider text-amber-700 font-semibold mb-2">{t.eyebrow}</p>
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3 leading-tight">{t.title}</h2>
+        <p className="text-gray-600 text-lg leading-relaxed">{t.intro}</p>
       </header>
 
       <div className="space-y-6 text-gray-700 leading-relaxed">
-        <section>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">Choice 1 — Comfort that says "stay a while"</h3>
-          <p>
-            Forget structured chairs. Kids read longer when they're slouching, side-lying, or upside-down on something soft. A
-            washable floor cushion is the workhorse here. Our pick:{' '}
-            <AffiliateLink href={AFFILIATE.floorCushion}>this 3-in-1 convertible kids' bean bag couch</AffiliateLink>. Machine-washable,
-            big enough that two kids can pile on without an elbow war.
-          </p>
-        </section>
+        {t.choices.map((s, i) => (
+          <section key={i}>
+            <h3 className="text-xl font-bold text-gray-800 mb-2">{s.title}</h3>
+            <p>{renderBody(s.body)}</p>
+          </section>
+        ))}
 
         <section>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">Choice 2 — Book covers, not book spines</h3>
-          <p>
-            Traditional bookshelves hide picture-book covers and turn reading into a search problem. A forward-facing
-            Montessori-style bookshelf shows four to six books at a time. Rotate them weekly. Kids pick up books they see, not
-            books they have to dig for. Our pick:{' '}
-            <AffiliateLink href={AFFILIATE.bookshelf}>this 4-tier wooden front-facing bookshelf</AffiliateLink>.
-          </p>
-        </section>
-
-        <section>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">Choice 3 — Light that signals "reading"</h3>
-          <p>
-            Lighting is the most underrated piece. We use{' '}
-            <AffiliateLink href={AFFILIATE.readingLamp}>a warm dimmable lamp</AffiliateLink> that we only turn on for reading.
-            After a few weeks, the click of the lamp is itself the bedtime cue. The lamp goes on, the body settles.
-          </p>
-        </section>
-
-        <section>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">Three things to skip</h3>
+          <h3 className="text-xl font-bold text-gray-800 mb-2">{t.skip.title}</h3>
           <ul className="list-disc pl-6 space-y-2">
-            <li><strong>A theme.</strong> Nautical, jungle, princess — kids outgrow themes faster than the paint dries.</li>
-            <li><strong>A screen anywhere in sight.</strong> Even an off iPad on a side table is a competitor. Move it.</li>
-            <li><strong>Background music with lyrics.</strong> Instrumental only. Lyrics fight with the story for the same processing channel.</li>
+            {t.skip.items.map((item, i) => (
+              <li key={i}><strong>{item.lead}</strong> {item.rest}</li>
+            ))}
           </ul>
         </section>
       </div>
@@ -341,14 +466,6 @@ export default function Resources() {
       r.title.toLowerCase().includes(q) || r.desc.toLowerCase().includes(q);
     return matchesCat && matchesSearch;
   });
-
-  // Detect if current language has full article bodies.
-  const articleSoonNote = (t as unknown as { articleSoon: string }).articleSoon;
-  // Articles are EN-only for v1; show note in ES/FR.
-  const showSoonNote =
-    (typeof document !== 'undefined' && document.documentElement.lang !== 'en') ||
-    null;
-  const noteForArticles = showSoonNote ? articleSoonNote : null;
 
   return (
     <main>
@@ -451,9 +568,9 @@ export default function Resources() {
         </div>
       </section>
 
-      {/* Full articles with affiliate links — currently EN-only for v1. */}
-      <ArticleMakingReadingMagical articleSoonNote={noteForArticles} />
-      <ArticlePerfectReadingEnvironment articleSoonNote={noteForArticles} />
+      {/* Full articles — now trilingual (EN/ES/FR), data-driven from translations. */}
+      <ArticleMakingReadingMagical t={t.article1} />
+      <ArticlePerfectReadingEnvironment t={t.article2} />
 
       <EmailSignup />
     </main>
