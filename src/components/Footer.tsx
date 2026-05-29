@@ -107,7 +107,15 @@ export default function Footer() {
                 className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 transition-colors text-lg">
                 📷
               </a>
-              <a href="https://www.amazon.com/author/evagallo" target="_blank" rel="noopener noreferrer"
+              <a href="https://www.pinterest.com/storytimewitheva/" target="_blank" rel="noopener noreferrer" aria-label="Pinterest @storytimewitheva"
+                className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors text-lg">
+                📌
+              </a>
+              <a href="https://www.threads.com/@evagallo.books" target="_blank" rel="noopener noreferrer" aria-label="Threads @evagallo.books"
+                className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors text-lg">
+                🧵
+              </a>
+              <a href="https://www.amazon.com/author/evagallo" target="_blank" rel="noopener noreferrer" aria-label="Amazon author page"
                 className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors text-lg">
                 📚
               </a>
