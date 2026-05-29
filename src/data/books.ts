@@ -49,7 +49,7 @@ export const books: Book[] = [
     coverImage: colorsMixedUp,
     ageRange: '4-7 years',
     languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
-    amazonUrl: AUTHOR_URL,
+    amazonUrl: dp('1997027038'),
     featured: true,
     title: {
       en: 'The Day the Colors Got Mixed Up',
@@ -77,7 +77,7 @@ export const books: Book[] = [
     coverImage: rainbowSymphony,
     ageRange: '3-6 years',
     languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
-    amazonUrl: AUTHOR_URL,
+    amazonUrl: dp('1997027003'),
     featured: true,
     title: {
       en: 'The Rainbow Symphony',
@@ -105,7 +105,7 @@ export const books: Book[] = [
     coverImage: towerTouchedSky,
     ageRange: '5-9 years',
     languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
-    amazonUrl: AUTHOR_URL,
+    amazonUrl: dp('1996972995'),
     title: {
       en: 'The Tower That Touched the Sky',
       es: 'La torre que tocó el cielo',
@@ -344,6 +344,197 @@ export const books: Book[] = [
       en: 'Patience and craft',
       es: 'Paciencia y oficio',
       fr: 'Patience et savoir-faire',
+    },
+  },
+
+  // ---- 7 newer titles, added 2026-05-29 ----
+  {
+    id: 'leo-and-the-wolf',
+    coverImage: 'https://m.media-amazon.com/images/I/61GgsTi1z4L.jpg',
+    ageRange: '4-8 years',
+    languages: ['🇺🇸'],
+    amazonUrl: dp('1997027054'),
+    title: {
+      en: 'Leo and the Wolf: A Lesson About Honesty',
+      es: 'Leo y el lobo: una lección sobre la honestidad',
+      fr: 'Léo et le loup : une leçon sur l’honnêteté',
+    },
+    subtitle: {
+      en: 'A Timeless Story About Trust, Honesty, and Starting Again',
+      es: 'Un cuento atemporal sobre la confianza, la honestidad y empezar de nuevo',
+      fr: 'Un conte intemporel sur la confiance, l’honnêteté et le nouveau départ',
+    },
+    description: {
+      en: 'Leo loves his first real job as a shepherd. Then the hours get long and a small mischief slips into his face. "WOLF! WOLF!" he shouts. The villagers come running and find nothing. He does it again. They stop coming. And then one evening, yellow eyes appear at the edge of the forest. Real teeth. A real wolf. A retelling of the timeless fable about trust, honesty, and the long road back.',
+      es: 'Leo adora su primer trabajo de verdad como pastor. Pero las horas se hacen largas y una pequeña travesura le cruza la cara. «¡LOBO! ¡LOBO!», grita. Los aldeanos vienen corriendo y no encuentran nada. Vuelve a gritar. Dejan de venir. Y una tarde, unos ojos amarillos aparecen al borde del bosque. Dientes reales. Un lobo real. Una nueva versión de la fábula eterna sobre la confianza, la honestidad y el largo camino de vuelta.',
+      fr: 'Léo adore son premier vrai métier de berger. Mais les heures s’allongent et une petite malice lui traverse le visage. « LOUP ! LOUP ! », crie-t-il. Les villageois accourent et ne trouvent rien. Il recommence. Ils ne viennent plus. Et un soir, des yeux jaunes apparaissent à la lisière de la forêt. De vraies dents. Un vrai loup. Une nouvelle version de la fable intemporelle sur la confiance, l’honnêteté et le long chemin du retour.',
+    },
+    theme: {
+      en: 'Honesty and trust',
+      es: 'Honestidad y confianza',
+      fr: 'Honnêteté et confiance',
+    },
+  },
+  {
+    id: 'russet-the-fox',
+    coverImage: 'https://m.media-amazon.com/images/I/71vg4083EVL.jpg',
+    ageRange: '4-8 years',
+    languages: ['🇺🇸'],
+    amazonUrl: dp('1997027046'),
+    title: {
+      en: 'Russet the Fox Learns a Lesson',
+      es: 'Russet el zorro aprende una lección',
+      fr: 'Russet le renard apprend une leçon',
+    },
+    subtitle: {
+      en: 'A Quiet Tale About Listening, Patience, and Growing Up',
+      es: 'Un cuento tranquilo sobre escuchar, la paciencia y crecer',
+      fr: 'Un conte tranquille sur l’écoute, la patience et le fait de grandir',
+    },
+    description: {
+      en: 'Russet is sure he is the cleverest fox in the den. Faster than his siblings. Smarter than the farmer. Too quick to ever get caught. So when his mother warns him about the dogs and the wire fence, he barely listens. Then comes the night the wire wraps around his leg. A picture book fable about humility, listening, and the quiet wisdom of taking your time.',
+      es: 'Russet está seguro de ser el zorro más listo de la madriguera. Más rápido que sus hermanos. Más astuto que el granjero. Demasiado veloz para que lo atrapen. Así que cuando su madre le advierte sobre los perros y la alambrada, apenas escucha. Y llega la noche en que el alambre le rodea la pata. Una fábula ilustrada sobre la humildad, escuchar y la sabiduría tranquila de tomarse su tiempo.',
+      fr: 'Russet est convaincu d’être le renard le plus malin du terrier. Plus rapide que ses frères. Plus rusé que le fermier. Trop vif pour se faire attraper. Alors quand sa mère le met en garde contre les chiens et la clôture en fil de fer, il écoute à peine. Puis vient la nuit où le fil s’enroule autour de sa patte. Une fable illustrée sur l’humilité, l’écoute et la sagesse tranquille de prendre son temps.',
+    },
+    theme: {
+      en: 'Listening and humility',
+      es: 'Escuchar y humildad',
+      fr: 'Écoute et humilité',
+    },
+  },
+  {
+    id: 'little-boats-big-wish',
+    coverImage: 'https://m.media-amazon.com/images/I/71Zjj22p5sL.jpg',
+    ageRange: '3-7 years',
+    languages: ['🇺🇸'],
+    amazonUrl: dp('1997027070'),
+    title: {
+      en: "A Little Boat's Big Wish",
+      es: 'El gran deseo de un pequeño barco',
+      fr: 'Le grand rêve d’un petit bateau',
+    },
+    subtitle: {
+      en: 'A Story About Finding the Ocean in a Bathtub, a Puddle, and a Pond',
+      es: 'Una historia sobre encontrar el océano en una bañera, un charco y un estanque',
+      fr: 'Une histoire sur l’océan caché dans une baignoire, une flaque et une mare',
+    },
+    description: {
+      en: 'A small yellow wooden boat sits on a shelf above the bathroom sink, watching the moon and dreaming of vast open ocean. Then one morning a boy carries him out to a sparkling puddle, and the adventure begins. A frog, a turtle, a goldfish, a duckling — each tiny water teaches the boat that the ocean was never the point. A gentle bedtime book about contentment and the wonder hidden in small worlds.',
+      es: 'Un pequeño barco amarillo de madera está en un estante sobre el lavabo, mirando la luna y soñando con el vasto océano abierto. Hasta que una mañana un niño lo lleva a un charco brillante, y empieza la aventura. Una rana, una tortuga, un pez dorado, un patito — cada pequeño charco enseña al barco que el océano nunca fue lo importante. Un cuento tierno para la hora de dormir sobre el contentamiento y el asombro escondido en los mundos pequeños.',
+      fr: 'Un petit bateau jaune en bois posé sur une étagère au-dessus du lavabo regarde la lune et rêve de vastes océans. Puis un matin, un enfant l’emporte vers une flaque scintillante, et l’aventure commence. Une grenouille, une tortue, un poisson rouge, un caneton — chaque petite étendue d’eau enseigne au bateau que l’océan n’était pas l’essentiel. Un doux livre du soir sur la satisfaction et l’émerveillement caché dans les petits mondes.',
+    },
+    theme: {
+      en: 'Contentment and wonder in small worlds',
+      es: 'Contentamiento y asombro en los mundos pequeños',
+      fr: 'Satisfaction et émerveillement dans les petits mondes',
+    },
+  },
+  {
+    id: 'heidis-journey-to-mastery',
+    coverImage: 'https://m.media-amazon.com/images/I/91BfUbqNR9L.jpg',
+    ageRange: '5-9 years',
+    languages: ['🇺🇸'],
+    amazonUrl: dp('B0H35ZJKCR'),
+    title: {
+      en: "Heidi's Journey to Mastery: Through Diligence",
+      es: 'El camino de Heidi hacia la maestría: a través de la constancia',
+      fr: 'Le chemin de Heidi vers la maîtrise : par la persévérance',
+    },
+    subtitle: {
+      en: 'A Picture Book About Patience, Apprenticeship, and Becoming Good at Something',
+      es: 'Un álbum sobre la paciencia, el aprendizaje y llegar a ser bueno en algo',
+      fr: 'Un album sur la patience, l’apprentissage et le fait de devenir bon en quelque chose',
+    },
+    description: {
+      en: "Seven-year-old Heidi dreams of inventions. Solar cars. Wind-turbine bridges. A small robot to clean the lake outside her grandfather Anders's workshop in Granholm. So when she finally crosses the threshold expecting gears and tools, she is surprised when he hands her a broom. Month after month, she sweeps. Then she sorts parts. Then she watches. Then she asks. A picture book about the slow patient road from dreaming to making.",
+      es: 'Heidi tiene siete años y sueña con inventos. Coches solares. Puentes con turbinas de viento. Un pequeño robot para limpiar el lago frente al taller de su abuelo Anders en Granholm. Por eso, cuando por fin cruza el umbral esperando engranajes y herramientas, se sorprende al recibir una escoba. Mes tras mes, barre. Luego clasifica piezas. Luego observa. Luego pregunta. Un álbum sobre el camino lento y paciente que va del soñar al hacer.',
+      fr: 'Heidi a sept ans et rêve d’inventions. De voitures solaires. De ponts à éoliennes. D’un petit robot pour nettoyer le lac devant l’atelier de son grand-père Anders à Granholm. Alors quand elle franchit enfin le seuil en s’attendant à des engrenages et à des outils, elle est surprise qu’il lui tende un balai. Mois après mois, elle balaie. Puis elle trie les pièces. Puis elle observe. Puis elle pose des questions. Un album sur la lente route patiente qui mène du rêve à la fabrication.',
+    },
+    theme: {
+      en: 'Patience and apprenticeship',
+      es: 'Paciencia y aprendizaje',
+      fr: 'Patience et apprentissage',
+    },
+  },
+  {
+    id: 'cloud-collector',
+    coverImage: 'https://m.media-amazon.com/images/I/91wvx5C9wYL.jpg',
+    ageRange: '4-8 years',
+    languages: ['🇺🇸'],
+    amazonUrl: dp('B0H1DXZ1KH'),
+    title: {
+      en: 'The Cloud Collector',
+      es: 'La coleccionista de nubes',
+      fr: 'La collectionneuse de nuages',
+    },
+    subtitle: {
+      en: 'A Story About Wonder, Letting Go, and Watching the Sky',
+      es: 'Una historia sobre el asombro, soltar y mirar el cielo',
+      fr: 'Une histoire sur l’émerveillement, le lâcher-prise et le ciel qu’on regarde',
+    },
+    description: {
+      en: 'Luna loves the sky. The way clouds change shape, drift across the horizon, dance with the wind. When Grandpa Chen gives her a butterfly net and a glass jar, she sets out into the meadow with one big plan: collect one cloud of every kind. She meets cumulus clouds that float just out of reach, wispy cirrus painted high across the sky, and slowly learns that some things are too beautiful to keep. A picture book about wonder, attention, and the gift of letting beautiful things stay where they are.',
+      es: 'A Luna le encanta el cielo. Cómo las nubes cambian de forma, recorren el horizonte, bailan con el viento. Cuando su abuelo Chen le regala una red de mariposas y un frasco de cristal, sale al prado con un gran plan: coleccionar una nube de cada tipo. Conoce nubes cúmulo que flotan justo fuera de su alcance, finos cirros pintados en lo alto, y poco a poco aprende que algunas cosas son demasiado hermosas para guardarlas. Un álbum sobre el asombro, la atención y el regalo de dejar que las cosas bellas se queden donde están.',
+      fr: 'Luna adore le ciel. La façon dont les nuages changent de forme, dérivent à l’horizon, dansent avec le vent. Quand grand-père Chen lui offre un filet à papillons et un bocal en verre, elle part dans la prairie avec un grand projet : collectionner un nuage de chaque sorte. Elle rencontre des cumulus qui flottent juste hors de portée, des cirrus filants peints très haut, et apprend peu à peu que certaines choses sont trop belles pour qu’on les garde. Un album sur l’émerveillement, l’attention et le cadeau de laisser les belles choses là où elles sont.',
+    },
+    theme: {
+      en: 'Wonder and letting go',
+      es: 'Asombro y soltar',
+      fr: 'Émerveillement et lâcher-prise',
+    },
+  },
+  {
+    id: 'little-mapmaker',
+    coverImage: 'https://m.media-amazon.com/images/I/91oyc%2BLU-GL.jpg',
+    ageRange: '4-8 years',
+    languages: ['🇺🇸'],
+    amazonUrl: dp('B0GZJPZS74'),
+    title: {
+      en: 'The Little Mapmaker',
+      es: 'La pequeña cartógrafa',
+      fr: 'La petite cartographe',
+    },
+    subtitle: {
+      en: 'A Story About Imagination, Drawing, and Making the World a Place You Can Go',
+      es: 'Una historia sobre la imaginación, el dibujo y convertir el mundo en un lugar al que puedes ir',
+      fr: 'Une histoire sur l’imagination, le dessin et le monde qu’on transforme en lieu où l’on peut aller',
+    },
+    description: {
+      en: 'Maya is five, and she draws maps. Maps of her bedroom. Maps of the kitchen. Maps of the backyard with the tire swing. Her dog Pepper sits beside her with a red bandana while she works. Then one day Maya draws a castle deep in the tall grass, and when she walks out to find it, it is exactly where she put it. Soon a river runs through a crack in the sidewalk because she sketched fish in it. A picture book about how imagination, attention, and a pencil are enough to make a world.',
+      es: 'Maya tiene cinco años, y dibuja mapas. Mapas de su habitación. Mapas de la cocina. Mapas del jardín con el columpio de neumático. Su perro Pepper se sienta a su lado con un pañuelo rojo mientras trabaja. Hasta que un día Maya dibuja un castillo entre la hierba alta, y cuando sale a buscarlo, está justo donde lo puso. Pronto un río corre por una grieta de la acera porque dibujó peces en ella. Un álbum sobre cómo la imaginación, la atención y un lápiz bastan para crear un mundo.',
+      fr: 'Maya a cinq ans, et elle dessine des cartes. Des cartes de sa chambre. Des cartes de la cuisine. Des cartes du jardin avec la balançoire en pneu. Son chien Pepper s’assoit près d’elle avec un bandana rouge pendant qu’elle travaille. Puis un jour Maya dessine un château au fond des hautes herbes, et quand elle sort pour le chercher, il est exactement là où elle l’a posé. Bientôt une rivière coule dans une fissure du trottoir parce qu’elle y a esquissé des poissons. Un album sur la façon dont l’imagination, l’attention et un crayon suffisent à faire un monde.',
+    },
+    theme: {
+      en: 'Imagination and making',
+      es: 'Imaginación y crear',
+      fr: 'Imagination et création',
+    },
+  },
+  {
+    id: 'pawa-rainbow-cloud',
+    coverImage: 'https://m.media-amazon.com/images/I/61-eXffo5xL.jpg',
+    ageRange: '3-7 years',
+    languages: ['🇺🇸'],
+    amazonUrl: dp('1996972936'),
+    title: {
+      en: 'Pawa and the Little Rainbow Cloud',
+      es: 'Pawa y la pequeña nube arcoíris',
+      fr: 'Pawa et le petit nuage arc-en-ciel',
+    },
+    subtitle: {
+      en: 'A Tale of Self-Worth and Transformation',
+      es: 'Un cuento sobre la propia valía y la transformación',
+      fr: 'Un conte sur l’estime de soi et la transformation',
+    },
+    description: {
+      en: 'Cirro is a little gray cloud who feels heavy and sad after a storm. He believes his tears only make the world messy and wet. But Pawa the wise Sun knows a quiet secret: when rain meets light, something extraordinary happens. Through Cirro\'s gentle transformation, young readers discover that the feelings that seem like too much are often the very things that make beauty possible.',
+      es: 'Cirro es una pequeña nube gris que se siente pesada y triste después de una tormenta. Cree que sus lágrimas solo ensucian y mojan el mundo. Pero Pawa, el sabio Sol, conoce un secreto tranquilo: cuando la lluvia se encuentra con la luz, ocurre algo extraordinario. A través de la suave transformación de Cirro, los lectores pequeños descubren que los sentimientos que parecen demasiado son a menudo precisamente los que hacen posible la belleza.',
+      fr: 'Cirro est un petit nuage gris qui se sent lourd et triste après l’orage. Il croit que ses larmes ne font que mouiller et salir le monde. Mais Pawa, le sage Soleil, connaît un secret tranquille : quand la pluie rencontre la lumière, quelque chose d’extraordinaire arrive. À travers la douce transformation de Cirro, les jeunes lecteurs découvrent que les sentiments qui semblent trop grands sont souvent ceux qui rendent la beauté possible.',
+    },
+    theme: {
+      en: 'Self-worth and transformation',
+      es: 'Valor propio y transformación',
+      fr: 'Estime de soi et transformation',
     },
   },
 ];
