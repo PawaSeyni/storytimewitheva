@@ -14,6 +14,7 @@ const TRANSLATIONS = {
     heroSubtitle: 'Discover magical bilingual books, fun activities, and reading adventures for curious minds of all ages with Eva',
     ctaBooks: '✨ Browse 50+ Magical Books',
     ctaActivities: '🎨 Explore Free Activities',
+    ctaActivityKit: 'Get Free Activity Kit 🎨',
     statBooks: 'Magical Books',
     statLanguages: 'Languages',
     statRating: 'Amazon Rating',
@@ -54,6 +55,7 @@ const TRANSLATIONS = {
     heroSubtitle: 'Descubre libros bilingües mágicos, actividades divertidas y aventuras de lectura para mentes curiosas de todas las edades con Eva',
     ctaBooks: '✨ Explora más de 50 libros mágicos',
     ctaActivities: '🎨 Descubre actividades gratis',
+    ctaActivityKit: 'Recibe el kit de actividades gratis 🎨',
     statBooks: 'Libros mágicos',
     statLanguages: 'Idiomas',
     statRating: 'Valoración Amazon',
@@ -94,6 +96,7 @@ const TRANSLATIONS = {
     heroSubtitle: 'Découvrez des livres bilingues magiques, des activités amusantes et des aventures de lecture pour les esprits curieux de tous âges avec Eva',
     ctaBooks: '✨ Parcourir plus de 50 livres magiques',
     ctaActivities: '🎨 Découvrir les activités gratuites',
+    ctaActivityKit: 'Recevoir le kit d’activités gratuit 🎨',
     statBooks: 'Livres magiques',
     statLanguages: 'Langues',
     statRating: 'Note Amazon',
@@ -164,6 +167,15 @@ export default function Home() {
             <Link to="/activities" className="btn-secondary text-lg px-8 py-4">
               {t.ctaActivities}
             </Link>
+          </div>
+          {/* High-contrast lead-magnet CTA — scrolls to email signup form below the fold. */}
+          <div className="mt-5 flex justify-center">
+            <a
+              href="#email-signup"
+              className="inline-flex items-center justify-center text-lg px-8 py-4 bg-amber-300 hover:bg-amber-400 active:bg-amber-500 text-purple-900 font-extrabold rounded-full shadow-2xl ring-2 ring-amber-200/60 hover:ring-amber-100 transition-all duration-200 hover:scale-105"
+            >
+              {t.ctaActivityKit}
+            </a>
           </div>
         </div>
       </section>

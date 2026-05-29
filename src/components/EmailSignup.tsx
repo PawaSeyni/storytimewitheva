@@ -117,7 +117,7 @@ export default function EmailSignup() {
   };
 
   return (
-    <section className="bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 py-16 px-4">
+    <section id="email-signup" className="scroll-mt-24 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 py-16 px-4">
       <div className="max-w-2xl mx-auto text-center">
         <div className="text-5xl mb-4">🎁</div>
         <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">{t.title}</h2>
