@@ -23,7 +23,7 @@ const TRANSLATIONS = {
     messagePlaceholder: 'Tell us how we can help...',
     sendButton: '✉️ Send Message',
     sending: 'Sending…',
-    errorMessage: "Hmm, that didn't go through. Please try again or email galloeva2612@gmail.com directly.",
+    errorMessage: "Hmm, that didn't go through. Please try again or email contact@storytimewitheva.com directly.",
     sidebarHeading: 'Contact Information',
     sidebarBlurb: "Let's make reading magical together!",
     emailTitle: 'Email',
@@ -53,7 +53,7 @@ const TRANSLATIONS = {
     messagePlaceholder: 'Cuéntanos cómo podemos ayudarte...',
     sendButton: '✉️ Enviar mensaje',
     sending: 'Enviando…',
-    errorMessage: 'Vaya, no se pudo enviar. Inténtalo de nuevo o escríbenos a galloeva2612@gmail.com.',
+    errorMessage: 'Vaya, no se pudo enviar. Inténtalo de nuevo o escríbenos a contact@storytimewitheva.com.',
     sidebarHeading: 'Información de contacto',
     sidebarBlurb: '¡Hagamos la lectura mágica juntos!',
     emailTitle: 'Correo',
@@ -83,7 +83,7 @@ const TRANSLATIONS = {
     messagePlaceholder: 'Dites-nous comment nous pouvons aider...',
     sendButton: '✉️ Envoyer le message',
     sending: 'Envoi…',
-    errorMessage: "L'envoi a échoué. Réessayez ou écrivez à galloeva2612@gmail.com.",
+    errorMessage: "L'envoi a échoué. Réessayez ou écrivez à contact@storytimewitheva.com.",
     sidebarHeading: 'Coordonnées',
     sidebarBlurb: 'Rendons la lecture magique ensemble !',
     emailTitle: 'E-mail',
@@ -257,7 +257,7 @@ export default function Contact() {
             </div>
 
             {[
-              { emoji: '📧', title: t.emailTitle, value: 'galloeva2612@gmail.com', href: 'mailto:galloeva2612@gmail.com' },
+              { emoji: '📧', title: t.emailTitle, value: 'contact@storytimewitheva.com', href: 'mailto:contact@storytimewitheva.com' },
               { emoji: '📍', title: t.locationTitle, value: t.locationValue },
               { emoji: '⏰', title: t.responseTitle, value: t.responseValue },
             ].map((item, i) => (
