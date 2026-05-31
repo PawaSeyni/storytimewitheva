@@ -15,6 +15,10 @@ const AFFILIATE = {
   floorCushion: 'https://www.amazon.com/dp/B0DNZJ2W9C?tag=storytimewi20-20',
   // AF-003 — Chuiendi 4-Tier Montessori Front-Facing Bookshelf
   bookshelf: 'https://www.amazon.com/dp/B0GJLKWVKJ?tag=storytimewi20-20',
+  // AF-004 — Rory's Story Cubes Classic (Box) — image-only dice, language-agnostic
+  storyCubes: 'https://www.amazon.com/dp/B07P3MB9H8?tag=storytimewi20-20',
+  // AF-005 — SFOUR Astronaut Galaxy Projector
+  galaxyProjector: 'https://www.amazon.com/dp/B09Q2WL7C6?tag=storytimewi20-20',
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -102,7 +106,9 @@ const TRANSLATIONS = {
           'Kids resist rules; they lean into rhythms. Pair reading time with something sensory — a particular blanket, a specific tea for you, the same playlist on low. After two weeks the cue alone makes them reach for a book.',
         ] },
         { title: '3. Pair the story with hands-on play', body: [
-          'Reading about animals? Pull out finger puppets. About space? Cardboard rockets. The point isn’t a Pinterest-perfect craft — it’s the bridge from page to body.',
+          'Reading about animals? Pull out finger puppets. About space? Cardboard rockets. The point isn’t a Pinterest-perfect craft, it’s the bridge from page to body. After the last page, we keep a tin of ',
+          { href: AFFILIATE.storyCubes, text: 'story cubes' },
+          ' on the shelf. Nine dice with images instead of words, so the kids invent the sequel together in whichever language they feel like that night.',
         ] },
         { title: '4. Let them turn the pages — even when they get it wrong', body: [
           'Control is the gateway to engagement. A three-year-old turning two pages at once still chose to be there. Don’t correct it. Just keep reading.',
@@ -150,6 +156,11 @@ const TRANSLATIONS = {
           'Lighting is the most underrated piece. We use ',
           { href: AFFILIATE.readingLamp, text: 'a warm dimmable lamp' },
           ' that we only turn on for reading. After a few weeks, the click of the lamp is itself the bedtime cue. The lamp goes on, the body settles.',
+        ] },
+        { title: 'Choice 4 — On special nights, turn the ceiling into the sky', body: [
+          'We keep this one for the books that deserve an event. Maya’s Shadow, anything moon-related, the rare second-read request. Plug in ',
+          { href: AFFILIATE.galaxyProjector, text: 'a star projector' },
+          ', kill the lamps, and the ceiling becomes a slow-drifting galaxy. The remote lets you match the brightness to the mood. Eight nebula effects, timer included, so it switches off after they’ve fallen asleep mid-page.',
         ] },
       ] satisfies Section[],
       skip: {
@@ -206,7 +217,9 @@ const TRANSLATIONS = {
           'Los niños se resisten a las reglas; se inclinan a los rituales. Empareja el tiempo de lectura con algo sensorial: una manta concreta, un té específico para ti, la misma playlist a volumen bajo. A las dos semanas, la señal sola basta para que cojan un libro.',
         ] },
         { title: '3. Une la historia con juego sensorial', body: [
-          '¿Leen sobre animales? Saca marionetas de dedo. ¿Sobre el espacio? Cohetes de cartón. No se trata de una manualidad perfecta de Pinterest — se trata del puente entre la página y el cuerpo.',
+          '¿Leen sobre animales? Saca marionetas de dedo. ¿Sobre el espacio? Cohetes de cartón. No se trata de una manualidad perfecta de Pinterest, se trata del puente entre la página y el cuerpo. Cuando termina el cuento, guardamos una caja de ',
+          { href: AFFILIATE.storyCubes, text: 'cubos de cuentos' },
+          ' en la estantería. Nueve dados con imágenes en vez de palabras, para que los peques inventen la continuación juntos en el idioma que les apetezca esa noche.',
         ] },
         { title: '4. Déjales pasar las páginas — incluso cuando se equivocan', body: [
           'El control es la puerta de entrada al interés. Un peque de tres años que pasa dos páginas a la vez igualmente eligió estar ahí. No corrijas. Sigue leyendo.',
@@ -254,6 +267,11 @@ const TRANSLATIONS = {
           'La iluminación es la pieza más infravalorada. Usamos ',
           { href: AFFILIATE.readingLamp, text: 'una lámpara cálida regulable' },
           ' que solo encendemos para leer. A las pocas semanas, el clic de la lámpara es la señal de la hora de dormir. La lámpara se enciende, el cuerpo se calma.',
+        ] },
+        { title: 'Decisión 4 — En noches especiales, convierte el techo en un cielo', body: [
+          'Esta la reservamos para los libros que merecen ceremonia. Maya’s Shadow, cualquier historia de luna, la rara petición de “otra vez seguido.” Enchufa ',
+          { href: AFFILIATE.galaxyProjector, text: 'un proyector de estrellas' },
+          ', apaga las lámparas, y el techo se convierte en una galaxia que se mueve despacio. El mando permite ajustar el brillo al ánimo. Ocho efectos de nebulosa, temporizador incluido, así se apaga cuando ya se han dormido a mitad de página.',
         ] },
       ] satisfies Section[],
       skip: {
@@ -310,7 +328,9 @@ const TRANSLATIONS = {
           'Les enfants résistent aux règles ; ils adoptent les rituels. Associez la lecture à quelque chose de sensoriel — une couverture précise, une tisane particulière pour vous, la même playlist en sourdine. Au bout de deux semaines, le signal seul suffit à leur faire ouvrir un livre.',
         ] },
         { title: '3. Associez l’histoire à un jeu manuel', body: [
-          'Vous lisez une histoire d’animaux ? Sortez les marionnettes à doigts. De l’espace ? Des fusées en carton. Le but n’est pas un bricolage parfait pour Pinterest — c’est le pont entre la page et le corps.',
+          'Vous lisez une histoire d’animaux ? Sortez les marionnettes à doigts. De l’espace ? Des fusées en carton. Le but n’est pas un bricolage parfait pour Pinterest, c’est le pont entre la page et le corps. Après la dernière page, nous gardons une boîte de ',
+          { href: AFFILIATE.storyCubes, text: 'dés à histoires' },
+          ' sur l’étagère. Neuf dés avec des images au lieu de mots, pour que les enfants inventent la suite ensemble dans la langue qu’ils choisissent ce soir-là.',
         ] },
         { title: '4. Laissez-les tourner les pages — même quand ils se trompent', body: [
           'Le contrôle est la porte d’entrée de l’engagement. Un enfant de trois ans qui tourne deux pages d’un coup a quand même choisi d’être là. Ne corrigez pas. Continuez à lire.',
@@ -358,6 +378,11 @@ const TRANSLATIONS = {
           'L’éclairage est l’élément le plus sous-estimé. Nous utilisons ',
           { href: AFFILIATE.readingLamp, text: 'une lampe chaude à intensité réglable' },
           ' que nous n’allumons que pour la lecture. Au bout de quelques semaines, le clic de la lampe devient le signal du coucher. La lampe s’allume, le corps se pose.',
+        ] },
+        { title: 'Choix 4 — Les soirs spéciaux, transformez le plafond en ciel', body: [
+          'Nous gardons celui-ci pour les livres qui méritent une cérémonie. Maya’s Shadow, toute histoire de lune, la rare demande de relecture immédiate. Branchez ',
+          { href: AFFILIATE.galaxyProjector, text: 'un projecteur d’étoiles' },
+          ', éteignez les lampes, et le plafond devient une galaxie qui dérive doucement. La télécommande permet d’ajuster la luminosité à l’humeur. Huit effets de nébuleuse, minuterie incluse, donc il s’éteint quand ils se sont endormis en pleine page.',
         ] },
       ] satisfies Section[],
       skip: {
