@@ -230,6 +230,16 @@ storytimewitheva/
 └── PUNCH_LIST.md            ← this file
 ```
 
+### Foundational rule: automate via MCP first
+
+When a task can be done programmatically — via a dedicated MCP (MailerLite, Netlify, etc.), the Chrome MCP for any web app, or computer-use for native apps — that's the first route, not the fallback. The user accepts trade-offs (longer wall-clock, less-polished output, occasional UI breakage) in exchange for being hands-off. Hand work back to the user **only** when:
+
+1. The required permission can't be granted (e.g. financial trades, password creation, anything the safety rules prohibit)
+2. The task genuinely requires a human-only judgment (creative review, signing legal docs)
+3. The user explicitly opts out
+
+For every other task, default flow is: identify which MCP can do it → request the permission grant if needed → drive end-to-end → report progress at checkpoints, not at every click. Don't default to "give the user instructions and wait" — that pattern is what we are explicitly trying to avoid.
+
 ### Conventions that survived all the ports
 - **Three languages** (en/es/fr) inlined per component via `TRANSLATIONS` object + `useTranslation(TRANSLATIONS)`. No i18next, no JSON files.
 - **`localStorage`** for any persisted state. No backend, no auth.
