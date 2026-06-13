@@ -198,7 +198,7 @@ export default function Home() {
         <div className="absolute bottom-20 left-20 text-3xl star-float opacity-50" style={{ animationDelay: '2s' }}>✨</div>
         <div className="absolute bottom-16 right-10 text-4xl star-float opacity-60" style={{ animationDelay: '0.5s' }}>🎨</div>
 
-        <div className="relative z-10 w-full max-w-6xl mx-auto lg:flex lg:items-center lg:gap-12">
+        <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col lg:flex-row lg:items-center lg:gap-12">
           <div className="text-center lg:text-left text-white lg:flex-1">
             <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight drop-shadow-lg">
               {t.heroLine1}<br />{t.heroLine2}
@@ -224,7 +224,7 @@ export default function Home() {
               </a>
             </div>
           </div>
-          <div className="mt-12 lg:mt-0 lg:flex-1">
+          <div className="order-first mb-10 lg:order-none lg:mb-0 lg:mt-0 lg:flex-1">
             <img
               src={evaReading}
               alt={t.heroImageAlt}

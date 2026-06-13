@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
+import ReadAloudButton from '../components/ReadAloudButton';
 import { useLanguage, useTranslation } from '../lib/language';
 
 // Free classroom/home printables (PDFs in /public). `localized` files ship an
@@ -485,6 +486,9 @@ function ArticleMakingReadingMagical({ t }: { t: Article1T }) {
         <p className="text-xs uppercase tracking-wider text-amber-700 font-semibold mb-2">{t.eyebrow}</p>
         <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3 leading-tight">{t.title}</h2>
         <p className="text-gray-600 text-lg leading-relaxed">{t.intro}</p>
+        <div className="mt-3">
+          <ReadAloudButton text={t.intro} compact />
+        </div>
       </header>
 
       <div className="space-y-6 text-gray-700 leading-relaxed">
@@ -506,6 +510,9 @@ function ArticlePerfectReadingEnvironment({ t }: { t: Article2T }) {
         <p className="text-xs uppercase tracking-wider text-amber-700 font-semibold mb-2">{t.eyebrow}</p>
         <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3 leading-tight">{t.title}</h2>
         <p className="text-gray-600 text-lg leading-relaxed">{t.intro}</p>
+        <div className="mt-3">
+          <ReadAloudButton text={t.intro} compact />
+        </div>
       </header>
 
       <div className="space-y-6 text-gray-700 leading-relaxed">

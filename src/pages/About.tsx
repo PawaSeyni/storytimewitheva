@@ -2,6 +2,7 @@ import { Link } from '../components/LocalizedLink';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
+import ReadAloudButton from '../components/ReadAloudButton';
 import { useTranslation } from '../lib/language';
 import evaHeadshot from '../assets/eva-headshot.jpg';
 
@@ -151,7 +152,10 @@ export default function About() {
             </div>
 
             <div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">{t.bioHeading}</h2>
+              <h2 className="text-3xl font-bold text-gray-800 mb-3">{t.bioHeading}</h2>
+              <div className="mb-4">
+                <ReadAloudButton text={[...t.bio, t.motivation].join(' ')} compact />
+              </div>
               <div className="space-y-4 text-gray-600 leading-relaxed">
                 {t.bio.map((para, i) => (
                   <p key={i}>{para}</p>
