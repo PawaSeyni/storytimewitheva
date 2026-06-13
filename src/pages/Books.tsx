@@ -5,35 +5,11 @@ import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
 import { PRICING } from '../data/pricing';
+import { matchesAgeFilter } from '../lib/ages';
 import { useTranslation } from '../lib/language';
 
 const SITE_URL = 'https://storytimewitheva.com';
 const FLAG_TO_LANG: Record<string, string> = { '🇺🇸': 'en', '🇪🇸': 'es', '🇫🇷': 'fr' };
-
-// ---------------------------------------------------------------------------
-// Age-filter helpers — parse "5-9 years" → [5, 9] and check overlap with the
-// active filter range. Fixes the bug where "9+ years" returned no books
-// because the literal "9+" string didn't appear in any book's ageRange.
-// ---------------------------------------------------------------------------
-function parseAgeRange(s: string): [number, number] {
-  const m = s.match(/(\d+)\s*-\s*(\d+)/);
-  if (m) return [parseInt(m[1], 10), parseInt(m[2], 10)];
-  const single = s.match(/(\d+)/);
-  if (single) {
-    const n = parseInt(single[1], 10);
-    return [n, n];
-  }
-  return [0, 99];
-}
-
-function matchesAgeFilter(bookAge: string, filterKey: string): boolean {
-  if (filterKey === 'All') return true;
-  const [bMin, bMax] = parseAgeRange(bookAge);
-  if (filterKey === '9+') return bMax >= 9;
-  // For "3-5" and "6-8" filters: overlap between book range and filter range.
-  const [fMin, fMax] = parseAgeRange(filterKey);
-  return bMax >= fMin && bMin <= fMax;
-}
 
 const TRANSLATIONS = {
   en: {
