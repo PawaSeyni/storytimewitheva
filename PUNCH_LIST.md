@@ -206,6 +206,28 @@ Add new items as discovered. Prioritize roughly top-to-bottom within each cluste
 - [ ] **Language**: games have internal EN/ES/FR toggles but a single URL and English default; consider opening them in the site's currently-selected language. (Card titles/descriptions are already localized in `activities.ts`.)
 - [ ] **Align read-aloud** with `src/lib/speech.ts` (voice/rate) if/when ported, and re-test Web Speech on iOS Safari (needs a user gesture — the Play/Listen buttons satisfy it).
 
+### Audit follow-ups (UX/SEO audit — 2026-06-13)
+Open items from the audit. Most of the audit shipped in PR #1 (`fix/audit-quick-wins-seo`); the rest live here so nothing is lost. Items already tracked in other clusters are cross-referenced, not duplicated.
+
+**Owner decisions / content**
+- [ ] **4.9/5 Amazon rating** (Home stat band + Footer stars) — substantiate with a real aggregate + link to the Amazon author page, or remove. Last unverified trust claim on the site. _(owner)_
+- [ ] **Privacy/Terms** — confirm a governing **jurisdiction** and do a legal skim (operating entity "Pawa Press Inc." already named; date "Last updated: June 2026"). _(owner)_
+- [ ] **Translate the 15 English-only books** to ES/FR so the "bilingual/3 languages" promise matches the catalog (only 3 of 18 are trilingual today). Hero/stat copy was intentionally left as-is pending this. _(content)_
+
+**Child-UX & product**
+- [ ] **Dedicated "Ages 3–5" zone** — a curated younger-kids view/filter on Activities (now partially served by the 3–7 games: matching, rhyme-singalong, counting-numbers, emotion-wheel).
+- [ ] **Read-aloud word-highlighting** — highlight each word as it's spoken (Web Speech `onboundary`); optionally extend the "Listen" button to the Resources/About text.
+- [ ] **Per-book pages** (`/books/<slug>`) — real indexable pages + deep-linking (currently a modal + ItemList schema only); add `Book`/`Product` schema per title.
+- [ ] **Language-learning extras** — side-by-side bilingual text, tap-to-translate words, vocabulary activities, language-progress tracking (partially covered by the sentence-builder / flashcards / reading-tracker games).
+- [ ] **Guide character / mascot** — a recurring illustrated guide (Eva or Pawa) at decision points; visual-direction recommendation for the 3–10 range.
+- [ ] **Mobile hero** — optionally move the family photo above the CTAs on phones (it currently sits below them). Minor.
+- [ ] Accessibility/contrast + keyboard + screen-reader pass — **see Engineering › "Accessibility audit (axe-core)"** (covers the hero subheadline + white-outline secondary-button contrast the audit flagged). a11y quick wins (reduced-motion, skip link, focus-visible) already shipped in PR #1.
+
+**Ops & verification**
+- [ ] **Google Search Console** — submit `sitemap.xml` and confirm the new `/es` and `/fr` pages index.
+- [ ] **Re-run Lighthouse / PageSpeed (mobile)** after PR #1 merges to recapture Core Web Vitals; confirm Chromium launches on the first Netlify build (prerender) — falls back to `build:spa` if not.
+- [ ] **Usability testing** — light parent/child testing of the core flows, plus a Plausible review (conversion, language usage, top activities). _(testing)_
+
 ---
 
 ## 🛠 Operational notes for future Claude sessions
