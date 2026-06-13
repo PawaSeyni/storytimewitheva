@@ -55,8 +55,15 @@ export function getActiveId(): string | null {
   return activeId;
 }
 
+interface PlayOptions {
+  /** Fires as each word is spoken (Web Speech `boundary`), with the char index
+   *  into `text`. Used for read-along word highlighting. Support varies by
+   *  browser/voice; callers must tolerate it never firing. */
+  onBoundary?: (charIndex: number) => void;
+}
+
 /** Start narrating `text` in `lang`, tagging the active utterance with `id`. */
-export function play(id: string, text: string, lang: Language): void {
+export function play(id: string, text: string, lang: Language, opts?: PlayOptions): void {
   if (!isSpeechSupported() || !text.trim()) return;
   const synth = window.speechSynthesis;
   synth.cancel(); // stop anything already playing
@@ -73,6 +80,11 @@ export function play(id: string, text: string, lang: Language): void {
   };
   utterance.onend = clear;
   utterance.onerror = clear;
+  if (opts?.onBoundary) {
+    utterance.onboundary = (e: SpeechSynthesisEvent) => {
+      if (activeId === id) opts.onBoundary!(e.charIndex);
+    };
+  }
   activeId = id;
   notify();
   synth.speak(utterance);

@@ -3,7 +3,7 @@ import { Link } from '../components/LocalizedLink';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
 import NotFound from './NotFound';
-import ReadAloudButton from '../components/ReadAloudButton';
+import ReadAlong from '../components/ReadAlong';
 import BookStatusButton from '../components/BookStatusButton';
 import { useBook } from '../data/books';
 import { useTranslation } from '../lib/language';
@@ -30,7 +30,6 @@ export default function BookDetail() {
   const cover = book.coverImage;
   const amazon = isAmazonCover(cover);
   const ogImage = amazon ? sizedCover(cover, 600) : `${SITE_URL}${cover}`;
-  const narration = [book.title, book.subtitle, book.description].filter(Boolean).join('. ');
 
   const bookSchema = {
     '@context': 'https://schema.org',
@@ -79,14 +78,10 @@ export default function BookDetail() {
             <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-1">{book.title}</h1>
             {book.subtitle && <p className="text-gray-500 italic mb-4">{book.subtitle}</p>}
 
-            <p className="text-gray-600 leading-relaxed mb-4">{book.description}</p>
+            <ReadAlong text={book.description} className="text-gray-600 leading-relaxed mb-4" />
 
             <div className="bg-purple-50 rounded-xl px-4 py-2 inline-block mb-5">
               <span className="text-sm text-purple-700 font-medium">{t.theme}: {book.theme}</span>
-            </div>
-
-            <div className="mb-4">
-              <ReadAloudButton text={narration} />
             </div>
 
             <div className="mb-4">
