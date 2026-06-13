@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Books from './pages/Books';
+import BookDetail from './pages/BookDetail';
 import Activities from './pages/Activities';
 import Resources from './pages/Resources';
 import About from './pages/About';
@@ -31,6 +32,7 @@ import PuzzleAdventuresDemo from './demos/PuzzleAdventuresDemo';
 const routeDefs = [
   { path: '/', element: <Home /> },
   { path: '/books', element: <Books /> },
+  { path: '/books/:slug', element: <BookDetail /> },
   { path: '/activities', element: <Activities /> },
   { path: '/activities/story-builder', element: <DemoPage><StoryBuilderDemo /></DemoPage> },
   { path: '/activities/character-workshop', element: <DemoPage><CharacterWorkshopDemo /></DemoPage> },

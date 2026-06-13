@@ -8,6 +8,7 @@
     "build": "tsc && vite build && npm run prerender",
     "build:spa": "tsc && vite build",
     "prerender": "node scripts/prerender.mjs",
+    "gen:sitemap": "node scripts/gen-sitemap.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

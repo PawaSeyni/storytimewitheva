@@ -217,7 +217,7 @@ Open items from the audit. Most of the audit shipped in PR #1 (`fix/audit-quick-
 **Child-UX & product**
 - [ ] **Dedicated "Ages 3–5" zone** — a curated younger-kids view/filter on Activities (now partially served by the 3–7 games: matching, rhyme-singalong, counting-numbers, emotion-wheel).
 - [ ] **Read-aloud word-highlighting** — highlight each word as it's spoken (Web Speech `onboundary`); optionally extend the "Listen" button to the Resources/About text.
-- [ ] **Per-book pages** (`/books/<slug>`) — real indexable pages + deep-linking (currently a modal + ItemList schema only); add `Book`/`Product` schema per title.
+- [x] **Per-book pages** (`/books/<id>`) — DONE. `BookDetail.tsx` renders a full localized page per title (cover, blurb, theme, read-aloud, price, Buy, status) with `Book` JSON-LD + per-language canonical/hreflang; the card modal was replaced by links to it. Sitemap now 105 URLs (35 pages × EN/ES/FR) via `scripts/gen-sitemap.mjs` which reads book ids from `books.ts`; prerender covers all 105.
 - [ ] **Language-learning extras** — side-by-side bilingual text, tap-to-translate words, vocabulary activities, language-progress tracking (partially covered by the sentence-builder / flashcards / reading-tracker games).
 - [ ] **Guide character / mascot** — a recurring illustrated guide (Eva or Pawa) at decision points; visual-direction recommendation for the 3–10 range.
 - [ ] **Mobile hero** — optionally move the family photo above the CTAs on phones (it currently sits below them). Minor.
