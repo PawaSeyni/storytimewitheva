@@ -8,12 +8,12 @@ import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <LanguageProvider>
-      <ToastProvider>
-        <BrowserRouter>
+    <BrowserRouter>
+      <LanguageProvider>
+        <ToastProvider>
           <App />
-        </BrowserRouter>
-      </ToastProvider>
-    </LanguageProvider>
+        </ToastProvider>
+      </LanguageProvider>
+    </BrowserRouter>
   </React.StrictMode>,
 )

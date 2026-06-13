@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from './LocalizedLink';
 import { useTranslation } from '../lib/language';
 
 const TRANSLATIONS = {

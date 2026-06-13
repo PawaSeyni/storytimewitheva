@@ -28,6 +28,8 @@ interface UseHeadOptions {
   url?: string;
   /** og:locale value (e.g. "en_US"). */
   locale?: string;
+  /** Reciprocal hreflang alternates (incl. x-default). Replaced wholesale each render. */
+  alternates?: { hreflang: string; href: string }[];
   /** When true, sets `meta[name=robots]=noindex,nofollow`; otherwise removes that meta. */
   noindex?: boolean;
 }
@@ -61,7 +63,22 @@ function upsertLink(rel: string, href: string) {
   el.setAttribute('href', href);
 }
 
-export function useHead({ title, description, image, url, locale, noindex }: UseHeadOptions) {
+function setAlternates(alternates: { hreflang: string; href: string }[]) {
+  // Remove the ones we manage, then re-add — keeps them correct across SPA
+  // route changes without accumulating stale tags.
+  document.head
+    .querySelectorAll('link[rel="alternate"][hreflang]')
+    .forEach(el => el.remove());
+  for (const { hreflang, href } of alternates) {
+    const el = document.createElement('link');
+    el.setAttribute('rel', 'alternate');
+    el.setAttribute('hreflang', hreflang);
+    el.setAttribute('href', href);
+    document.head.appendChild(el);
+  }
+}
+
+export function useHead({ title, description, image, url, locale, alternates, noindex }: UseHeadOptions) {
   useEffect(() => {
     document.title = title;
     upsertMeta('name', 'description', description);
@@ -84,11 +101,14 @@ export function useHead({ title, description, image, url, locale, noindex }: Use
     // Canonical
     if (url) upsertLink('canonical', url);
 
+    // hreflang alternates
+    setAlternates(alternates ?? []);
+
     // Robots (only present when noindex)
     if (noindex) {
       upsertMeta('name', 'robots', 'noindex,nofollow');
     } else {
       removeMeta('name', 'robots');
     }
-  }, [title, description, image, url, locale, noindex]);
+  }, [title, description, image, url, locale, alternates, noindex]);
 }

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../components/LocalizedLink';
 import { useBooks } from '../data/books';
 import BookCard from '../components/BookCard';
 import EmailSignup from '../components/EmailSignup';

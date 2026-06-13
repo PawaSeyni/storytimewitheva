@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { Link } from '../components/LocalizedLink';
 import ActivityStatusButton from '../components/ActivityStatusButton';
 import Seo from '../components/Seo';
 import { useActivity } from '../data/activities';

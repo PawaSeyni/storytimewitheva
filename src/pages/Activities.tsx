@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../components/LocalizedLink';
 import { CheckCircle2 } from 'lucide-react';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';

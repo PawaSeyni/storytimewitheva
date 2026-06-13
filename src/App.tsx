@@ -22,31 +22,45 @@ import CraftCornerDemo from './demos/CraftCornerDemo';
 import ColoringDemo from './demos/ColoringDemo';
 import PuzzleAdventuresDemo from './demos/PuzzleAdventuresDemo';
 
+// Canonical (English) route table. Mounted once per language prefix below so
+// every page exists at /path, /es/path, and /fr/path. The active language is
+// derived from the URL prefix by LanguageProvider.
+const routeDefs = [
+  { path: '/', element: <Home /> },
+  { path: '/books', element: <Books /> },
+  { path: '/activities', element: <Activities /> },
+  { path: '/activities/story-builder', element: <DemoPage><StoryBuilderDemo /></DemoPage> },
+  { path: '/activities/character-workshop', element: <DemoPage><CharacterWorkshopDemo /></DemoPage> },
+  { path: '/activities/adventure-journal', element: <DemoPage><AdventureJournalDemo /></DemoPage> },
+  { path: '/activities/bingo', element: <DemoPage><BingoDemo /></DemoPage> },
+  { path: '/activities/bookmark-designer', element: <DemoPage><BookmarkCraftsDemo /></DemoPage> },
+  { path: '/activities/craft-corner', element: <DemoPage><CraftCornerDemo /></DemoPage> },
+  { path: '/activities/coloring', element: <DemoPage><ColoringDemo /></DemoPage> },
+  { path: '/activities/puzzles', element: <DemoPage><PuzzleAdventuresDemo /></DemoPage> },
+  { path: '/resources', element: <Resources /> },
+  { path: '/about', element: <About /> },
+  { path: '/contact', element: <Contact /> },
+  { path: '/profile', element: <Profile /> },
+  { path: '/privacy', element: <Privacy /> },
+  { path: '/terms', element: <Terms /> },
+  { path: '/links', element: <Links /> },
+];
+
+const LANG_PREFIXES = ['', '/es', '/fr'];
+
 export default function App() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
       <div className="flex-1">
         <Routes>
-          <Route path="/" element={<Home />} />
+          {LANG_PREFIXES.flatMap(prefix =>
+            routeDefs.map(r => {
+              const full = r.path === '/' ? prefix || '/' : `${prefix}${r.path}`;
+              return <Route key={full} path={full} element={r.element} />;
+            }),
+          )}
           <Route path="/home" element={<Navigate to="/" replace />} />
-          <Route path="/books" element={<Books />} />
-          <Route path="/activities" element={<Activities />} />
-          <Route path="/activities/story-builder" element={<DemoPage><StoryBuilderDemo /></DemoPage>} />
-          <Route path="/activities/character-workshop" element={<DemoPage><CharacterWorkshopDemo /></DemoPage>} />
-          <Route path="/activities/adventure-journal" element={<DemoPage><AdventureJournalDemo /></DemoPage>} />
-          <Route path="/activities/bingo" element={<DemoPage><BingoDemo /></DemoPage>} />
-          <Route path="/activities/bookmark-designer" element={<DemoPage><BookmarkCraftsDemo /></DemoPage>} />
-          <Route path="/activities/craft-corner" element={<DemoPage><CraftCornerDemo /></DemoPage>} />
-          <Route path="/activities/coloring" element={<DemoPage><ColoringDemo /></DemoPage>} />
-          <Route path="/activities/puzzles" element={<DemoPage><PuzzleAdventuresDemo /></DemoPage>} />
-          <Route path="/resources" element={<Resources />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/links" element={<Links />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
