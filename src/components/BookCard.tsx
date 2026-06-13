@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { LocalizedBook } from '../data/books';
 import BookStatusButton from './BookStatusButton';
+import ReadAloudButton from './ReadAloudButton';
 import { useTranslation } from '../lib/language';
 
 const TRANSLATIONS = {
@@ -44,6 +45,10 @@ export default function BookCard({ book, priority = false }: BookCardProps) {
   const [showModal, setShowModal] = useState(false);
   const t = useTranslation(TRANSLATIONS);
 
+  // Narration text for the read-aloud button — title, subtitle, and blurb in
+  // the active language.
+  const narration = [book.title, book.subtitle, book.description].filter(Boolean).join('. ');
+
   return (
     <>
       <div className="card group cursor-pointer flex flex-col" onClick={() => setShowModal(true)}>
@@ -78,6 +83,10 @@ export default function BookCard({ book, priority = false }: BookCardProps) {
           <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-3">
             {book.description}
           </p>
+
+          <div className="mb-3 flex" onClick={(e) => e.stopPropagation()}>
+            <ReadAloudButton text={narration} compact />
+          </div>
 
           <div className="mb-3" onClick={(e) => e.stopPropagation()}>
             <BookStatusButton bookId={book.id} compact />
@@ -133,7 +142,11 @@ export default function BookCard({ book, priority = false }: BookCardProps) {
                 <span className="text-sm text-purple-700 font-medium">{t.theme}: {book.theme}</span>
               </div>
 
-              <div className="flex flex-col gap-3 mt-6">
+              <div className="flex justify-center mt-5">
+                <ReadAloudButton text={narration} />
+              </div>
+
+              <div className="flex flex-col gap-3 mt-4">
                 <a
                   href={book.amazonUrl}
                   target="_blank"
