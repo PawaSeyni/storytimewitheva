@@ -41,6 +41,17 @@ const TRANSLATIONS = {
   },
 };
 
+// Amazon's image CDN resizes on the fly via an "._SX<width>_" modifier before
+// the extension (e.g. 619qWXXkRwL.jpg -> 619qWXXkRwL._SX466_.jpg, ~65% smaller).
+// We use it to serve card/modal-appropriate widths instead of full-res covers.
+// Local imported covers (the 3 featured titles) are returned unchanged.
+function isAmazonCover(url: string): boolean {
+  return url.includes('m.media-amazon.com/images/');
+}
+function sizedCover(url: string, width: number): string {
+  return isAmazonCover(url) ? url.replace(/\.(jpe?g|png)(\?.*)?$/i, `._SX${width}_.$1$2`) : url;
+}
+
 interface BookCardProps {
   book: LocalizedBook;
   /** Above-the-fold cards (featured row, first books page row) load eagerly to
@@ -56,12 +67,22 @@ export default function BookCard({ book, priority = false }: BookCardProps) {
   // the active language.
   const narration = [book.title, book.subtitle, book.description].filter(Boolean).join('. ');
 
+  const amazonCover = isAmazonCover(book.coverImage);
+  const cardSrcSet = amazonCover
+    ? `${sizedCover(book.coverImage, 330)} 330w, ${sizedCover(book.coverImage, 660)} 660w`
+    : undefined;
+  const modalSrcSet = amazonCover
+    ? `${sizedCover(book.coverImage, 500)} 500w, ${sizedCover(book.coverImage, 900)} 900w`
+    : undefined;
+
   return (
     <>
       <div className="card group cursor-pointer flex flex-col" onClick={() => setShowModal(true)}>
         <div className="relative bg-gray-100 aspect-square overflow-hidden">
           <img
-            src={book.coverImage}
+            src={amazonCover ? sizedCover(book.coverImage, 400) : book.coverImage}
+            srcSet={cardSrcSet}
+            sizes="(min-width: 1024px) 300px, (min-width: 640px) 45vw, 90vw"
             alt={`${book.title} — ${t.coverAlt}`}
             loading={priority ? 'eager' : 'lazy'}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -129,7 +150,9 @@ export default function BookCard({ book, priority = false }: BookCardProps) {
             onClick={e => e.stopPropagation()}
           >
             <img
-              src={book.coverImage}
+              src={amazonCover ? sizedCover(book.coverImage, 600) : book.coverImage}
+              srcSet={modalSrcSet}
+              sizes="(min-width: 768px) 448px, 90vw"
               alt={`${book.title} — ${t.coverAlt}`}
               className="w-full aspect-square object-cover"
             />
