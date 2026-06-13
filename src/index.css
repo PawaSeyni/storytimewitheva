@@ -5,6 +5,27 @@
 @layer base {
   html { scroll-behavior: smooth; }
   body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; }
+
+  /* Visible keyboard-focus indicator (WCAG 2.4.7). Mouse clicks don't trigger
+     :focus-visible, so this only shows for keyboard/AT users. */
+  :focus-visible {
+    outline: 3px solid #7e22ce;
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+}
+
+/* Honor reduced-motion: kill the floating decorations, smooth scroll, and any
+   transition/animation for users who ask for less motion (WCAG 2.3.3). */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .star-float { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 @layer components {
