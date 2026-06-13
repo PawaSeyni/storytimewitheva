@@ -19,7 +19,7 @@ const TRANSLATIONS = {
     title: 'Terms of Use',
     updated: 'Last updated: June 2026',
     intro:
-      'Welcome! By using storytimewitheva.com you agree to these terms. They are written for parents, guardians, caregivers, and educators who use the site.',
+      'Welcome! storytimewitheva.com is operated by Pawa Press Inc. By using the site you agree to these terms. They are written for parents, guardians, caregivers, and educators who use the site.',
     sections: [
       {
         heading: 'Using this site',
@@ -78,7 +78,7 @@ const TRANSLATIONS = {
     title: 'Términos de uso',
     updated: 'Última actualización: junio de 2026',
     intro:
-      '¡Bienvenido/a! Al usar storytimewitheva.com aceptas estos términos. Están escritos para padres, tutores, cuidadores y educadores que usan el sitio.',
+      '¡Bienvenido/a! storytimewitheva.com es operado por Pawa Press Inc. Al usar el sitio aceptas estos términos. Están escritos para padres, tutores, cuidadores y educadores que usan el sitio.',
     sections: [
       {
         heading: 'Uso de este sitio',
@@ -137,7 +137,7 @@ const TRANSLATIONS = {
     title: 'Conditions d\'utilisation',
     updated: 'Dernière mise à jour : juin 2026',
     intro:
-      'Bienvenue ! En utilisant storytimewitheva.com, vous acceptez ces conditions. Elles sont rédigées pour les parents, tuteurs, accompagnants et enseignants qui utilisent le site.',
+      'Bienvenue ! storytimewitheva.com est exploité par Pawa Press Inc. En utilisant le site, vous acceptez ces conditions. Elles sont rédigées pour les parents, tuteurs, accompagnants et enseignants qui utilisent le site.',
     sections: [
       {
         heading: 'Utilisation de ce site',

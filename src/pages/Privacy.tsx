@@ -24,7 +24,7 @@ const TRANSLATIONS = {
     title: 'Privacy Policy',
     updated: 'Last updated: June 2026',
     intro:
-      'Story Time with Eva ("we", "us") is a small picture-book project for the Eva Gallo Collection. This site is intended for parents, guardians, caregivers, and educators. This page explains, in plain language, what we collect and what we do not.',
+      'Story Time with Eva is operated by Pawa Press Inc. ("we", "us") and publishes the Eva Gallo Collection of picture books. This site is intended for parents, guardians, caregivers, and educators. This page explains, in plain language, what we collect and what we do not.',
     sections: [
       {
         heading: 'A note for families',
@@ -90,7 +90,7 @@ const TRANSLATIONS = {
     title: 'Política de privacidad',
     updated: 'Última actualización: junio de 2026',
     intro:
-      'Story Time with Eva ("nosotros") es un pequeño proyecto de libros ilustrados de la Colección Eva Gallo. Este sitio está dirigido a padres, tutores, cuidadores y educadores. Esta página explica, en lenguaje sencillo, qué recopilamos y qué no.',
+      'Story Time with Eva es operado por Pawa Press Inc. ("nosotros") y publica la Colección Eva Gallo de libros ilustrados. Este sitio está dirigido a padres, tutores, cuidadores y educadores. Esta página explica, en lenguaje sencillo, qué recopilamos y qué no.',
     sections: [
       {
         heading: 'Una nota para las familias',
@@ -156,7 +156,7 @@ const TRANSLATIONS = {
     title: 'Politique de confidentialité',
     updated: 'Dernière mise à jour : juin 2026',
     intro:
-      'Story Time with Eva (« nous ») est un petit projet d\'albums illustrés de la Collection Eva Gallo. Ce site s\'adresse aux parents, tuteurs, accompagnants et enseignants. Cette page explique, en langage clair, ce que nous collectons et ce que nous ne collectons pas.',
+      'Story Time with Eva est exploité par Pawa Press Inc. (« nous ») et publie la Collection Eva Gallo d\'albums illustrés. Ce site s\'adresse aux parents, tuteurs, accompagnants et enseignants. Cette page explique, en langage clair, ce que nous collectons et ce que nous ne collectons pas.',
     sections: [
       {
         heading: 'Une note pour les familles',

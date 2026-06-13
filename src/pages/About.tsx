@@ -42,7 +42,7 @@ const TRANSLATIONS = {
     contactEva: '✉️ Contact Eva',
     missionHeading: 'Our Mission & Values',
     cards: [
-      { title: 'Our Story', text: "Founded by educators and parents who understand the power of storytelling, we created Eva to make quality children's literature accessible to families everywhere." },
+      { title: 'Our Story', text: "Story Time with Eva began with Eva Gallo, a grandmother and retired public-health worker who wanted to pass the bedtime stories of her own childhood on to a new generation. Every book in the collection grew from that simple wish: to make reading magical for families everywhere." },
       { title: 'Why Books Matter', text: "Reading with Eva isn't just about words on a page — it's about opening doorways to new worlds, building vocabulary, and creating precious memories that last forever." },
       { title: 'Our Mission', text: 'We believe every child deserves access to stories that spark imagination, build empathy, and celebrate the joy of reading with Eva as their guide.' },
       { title: 'Our Values', text: 'Quality storytelling, inclusive representation, educational excellence, and making reading accessible and fun for all families around the world.' },
@@ -67,7 +67,7 @@ const TRANSLATIONS = {
     contactEva: '✉️ Contactar a Eva',
     missionHeading: 'Nuestra misión y valores',
     cards: [
-      { title: 'Nuestra historia', text: 'Fundada por educadores y padres que entienden el poder de contar historias, creamos a Eva para hacer accesible la buena literatura infantil a familias de todo el mundo.' },
+      { title: 'Nuestra historia', text: 'Story Time with Eva nació con Eva Gallo, una abuela y trabajadora de salud pública jubilada que quería transmitir los cuentos de su propia infancia a una nueva generación. Cada libro de la colección surgió de ese deseo sencillo: hacer mágica la lectura para las familias de todo el mundo.' },
       { title: 'Por qué importan los libros', text: 'Leer con Eva no es solo palabras en una página: es abrir puertas a mundos nuevos, ampliar el vocabulario y crear recuerdos preciosos que duran para siempre.' },
       { title: 'Nuestra misión', text: 'Creemos que cada niño merece acceso a historias que enciendan la imaginación, fomenten la empatía y celebren el gozo de leer con Eva como guía.' },
       { title: 'Nuestros valores', text: 'Buenas historias, representación inclusiva, excelencia educativa y hacer que la lectura sea accesible y divertida para familias de todo el mundo.' },
@@ -92,7 +92,7 @@ const TRANSLATIONS = {
     contactEva: '✉️ Contacter Eva',
     missionHeading: 'Notre mission et nos valeurs',
     cards: [
-      { title: 'Notre histoire', text: "Fondée par des éducateurs et des parents qui comprennent le pouvoir des histoires, nous avons créé Eva pour rendre la bonne littérature jeunesse accessible aux familles partout." },
+      { title: 'Notre histoire', text: "Story Time with Eva est née avec Eva Gallo, une grand-mère et ancienne professionnelle de la santé publique qui souhaitait transmettre les histoires du soir de sa propre enfance à une nouvelle génération. Chaque livre de la collection est né de ce souhait tout simple : rendre la lecture magique pour les familles du monde entier." },
       { title: 'Pourquoi les livres comptent', text: 'Lire avec Eva, ce n\'est pas seulement des mots sur une page : c\'est ouvrir des portes vers de nouveaux mondes, enrichir le vocabulaire et créer des souvenirs précieux qui durent toute une vie.' },
       { title: 'Notre mission', text: "Nous croyons que chaque enfant mérite des histoires qui éveillent l'imagination, nourrissent l'empathie et célèbrent la joie de lire, avec Eva comme guide." },
       { title: 'Nos valeurs', text: 'Des histoires de qualité, une représentation inclusive, l\'excellence éducative et une lecture accessible et joyeuse pour toutes les familles du monde.' },

@@ -16,7 +16,7 @@ const TRANSLATIONS = {
     title: 'Download the FREE 20-Page Bilingual Starter Kit!',
     blurb: 'Join our growing community of parents making reading fun. Get coloring pages, reading guides, and bilingual activities delivered straight to your inbox.',
     bullets: [
-      '✓ 20-page bilingual activity pack (English & Spanish)',
+      '✓ 20-page activity pack (English, Spanish & French)',
       '✓ Age-appropriate book recommendations',
       '✓ Fun story prompts & creative activities',
       '✓ No spam, unsubscribe anytime',
@@ -35,7 +35,7 @@ const TRANSLATIONS = {
     title: '¡Descarga GRATIS el kit bilingüe de 20 páginas!',
     blurb: 'Únete a nuestra comunidad de padres que hacen divertida la lectura. Recibe páginas para colorear, guías de lectura y actividades bilingües directamente en tu correo.',
     bullets: [
-      '✓ Pack de 20 páginas de actividades bilingües (inglés y español)',
+      '✓ Pack de 20 páginas de actividades (inglés, español y francés)',
       '✓ Recomendaciones de libros por edad',
       '✓ Divertidas ideas de historias y actividades creativas',
       '✓ Sin spam, cancela cuando quieras',
@@ -54,7 +54,7 @@ const TRANSLATIONS = {
     title: 'Téléchargez gratuitement le kit bilingue de 20 pages !',
     blurb: 'Rejoignez notre communauté de parents qui rendent la lecture amusante. Recevez des pages à colorier, des guides de lecture et des activités bilingues directement dans votre boîte mail.',
     bullets: [
-      '✓ Pack d\'activités bilingues de 20 pages (anglais & espagnol)',
+      '✓ Pack d\'activités de 20 pages (anglais, espagnol et français)',
       '✓ Recommandations de livres par tranche d\'âge',
       '✓ Idées d\'histoires et activités créatives',
       '✓ Pas de spam, désinscription à tout moment',
