@@ -5,6 +5,7 @@ import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
 import { useTranslation } from '../lib/language';
+import evaReading from '../assets/eva-reading.jpg';
 
 const SITE_URL = 'https://storytimewitheva.com';
 
@@ -44,6 +45,7 @@ const TRANSLATIONS = {
     heroLine1: 'Where Stories',
     heroLine2: 'Come to Life!',
     heroSubtitle: 'Discover magical bilingual books, fun activities, and reading adventures for curious minds of all ages with Eva',
+    heroImageAlt: 'Eva reading a bedtime picture book with her grandchildren',
     ctaBooksPrefix: '✨ Browse',
     ctaBooksSuffix: 'Magical Books',
     ctaActivities: '🎨 Explore Free Activities',
@@ -86,6 +88,7 @@ const TRANSLATIONS = {
     heroLine1: 'Donde las historias',
     heroLine2: '¡cobran vida!',
     heroSubtitle: 'Descubre libros bilingües mágicos, actividades divertidas y aventuras de lectura para mentes curiosas de todas las edades con Eva',
+    heroImageAlt: 'Eva leyendo un cuento antes de dormir con sus nietos',
     ctaBooksPrefix: '✨ Explora',
     ctaBooksSuffix: 'libros mágicos',
     ctaActivities: '🎨 Descubre actividades gratis',
@@ -128,6 +131,7 @@ const TRANSLATIONS = {
     heroLine1: 'Là où les histoires',
     heroLine2: 'prennent vie !',
     heroSubtitle: 'Découvrez des livres bilingues magiques, des activités amusantes et des aventures de lecture pour les esprits curieux de tous âges avec Eva',
+    heroImageAlt: 'Eva lisant un album du soir avec ses petits-enfants',
     ctaBooksPrefix: '✨ Parcourir',
     ctaBooksSuffix: 'livres magiques',
     ctaActivities: '🎨 Découvrir les activités gratuites',
@@ -181,7 +185,7 @@ export default function Home() {
 
   return (
     <main>
-      <Seo title={t.seoTitle} bare description={t.seoDesc} path="/" />
+      <Seo title={t.seoTitle} bare description={t.seoDesc} path="/" image={`${SITE_URL}${evaReading}`} />
       <JsonLd id="org" data={ORG_SCHEMA} />
 
       {/* Hero Section */}
@@ -191,29 +195,40 @@ export default function Home() {
         <div className="absolute bottom-20 left-20 text-3xl star-float opacity-50" style={{ animationDelay: '2s' }}>✨</div>
         <div className="absolute bottom-16 right-10 text-4xl star-float opacity-60" style={{ animationDelay: '0.5s' }}>🎨</div>
 
-        <div className="text-center text-white max-w-3xl mx-auto relative z-10">
-          <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight drop-shadow-lg">
-            {t.heroLine1}<br />{t.heroLine2}
-          </h1>
-          <p className="text-xl md:text-2xl text-purple-100 mb-10 leading-relaxed drop-shadow-md">
-            {t.heroSubtitle}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/books" className="btn-primary text-lg px-8 py-4 shadow-2xl">
-              {t.ctaBooksPrefix} {books.length} {t.ctaBooksSuffix}
-            </Link>
-            <Link to="/activities" className="btn-secondary text-lg px-8 py-4">
-              {t.ctaActivities}
-            </Link>
+        <div className="relative z-10 w-full max-w-6xl mx-auto lg:flex lg:items-center lg:gap-12">
+          <div className="text-center lg:text-left text-white lg:flex-1">
+            <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight drop-shadow-lg">
+              {t.heroLine1}<br />{t.heroLine2}
+            </h1>
+            <p className="text-xl md:text-2xl text-purple-100 mb-10 leading-relaxed drop-shadow-md">
+              {t.heroSubtitle}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <Link to="/books" className="btn-primary text-lg px-8 py-4 shadow-2xl">
+                {t.ctaBooksPrefix} {books.length} {t.ctaBooksSuffix}
+              </Link>
+              <Link to="/activities" className="btn-secondary text-lg px-8 py-4">
+                {t.ctaActivities}
+              </Link>
+            </div>
+            {/* High-contrast lead-magnet CTA — scrolls to email signup form below the fold. */}
+            <div className="mt-5 flex justify-center lg:justify-start">
+              <a
+                href="#email-signup"
+                className="inline-flex items-center justify-center text-lg px-8 py-4 bg-amber-300 hover:bg-amber-400 active:bg-amber-500 text-purple-900 font-extrabold rounded-full shadow-2xl ring-2 ring-amber-200/60 hover:ring-amber-100 transition-all duration-200 hover:scale-105"
+              >
+                {t.ctaActivityKit}
+              </a>
+            </div>
           </div>
-          {/* High-contrast lead-magnet CTA — scrolls to email signup form below the fold. */}
-          <div className="mt-5 flex justify-center">
-            <a
-              href="#email-signup"
-              className="inline-flex items-center justify-center text-lg px-8 py-4 bg-amber-300 hover:bg-amber-400 active:bg-amber-500 text-purple-900 font-extrabold rounded-full shadow-2xl ring-2 ring-amber-200/60 hover:ring-amber-100 transition-all duration-200 hover:scale-105"
-            >
-              {t.ctaActivityKit}
-            </a>
+          <div className="mt-12 lg:mt-0 lg:flex-1">
+            <img
+              src={evaReading}
+              alt={t.heroImageAlt}
+              width={1200}
+              height={900}
+              className="w-full max-w-md mx-auto rounded-3xl shadow-2xl ring-4 ring-white/30 object-cover"
+            />
           </div>
         </div>
       </section>
