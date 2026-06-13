@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { Link } from './LocalizedLink';
 import { useTranslation } from '../lib/language';
 import LanguageSwitcher from './LanguageSwitcher';
 
@@ -56,18 +57,19 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 font-bold text-xl text-purple-700 hover:text-purple-900 transition-colors">
+          <Link to="/" className="flex items-center gap-2 font-bold text-xl text-purple-700 hover:text-purple-900 transition-colors shrink-0 whitespace-nowrap">
             <span className="text-2xl">🐾</span>
             <span>Story Time with Eva</span>
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
+          {/* Desktop Nav — full nav appears at lg; tablets/phones use the menu
+              button so the logo + 7 links + 3 language pills never crowd. */}
+          <div className="hidden lg:flex items-center gap-1">
             {navLinks.map(link => (
               <Link
                 key={link.to}
                 to={link.to}
-                className={`px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                className={`px-3 py-2.5 rounded-full text-sm font-medium transition-all duration-200 ${
                   location.pathname === link.to
                     ? 'bg-purple-100 text-purple-700'
                     : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
@@ -83,7 +85,7 @@ export default function Navbar() {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100"
+            className="lg:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label={t.toggleMenu}
           >
@@ -98,7 +100,7 @@ export default function Navbar() {
 
         {/* Mobile Nav */}
         {menuOpen && (
-          <div className="md:hidden py-3 border-t border-gray-100">
+          <div className="lg:hidden py-3 border-t border-gray-100">
             {navLinks.map(link => (
               <Link
                 key={link.to}

@@ -1,9 +1,42 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../components/LocalizedLink';
 import { useBooks } from '../data/books';
 import BookCard from '../components/BookCard';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
+import JsonLd from '../components/JsonLd';
 import { useTranslation } from '../lib/language';
+import evaReading from '../assets/eva-reading.jpg';
+
+const SITE_URL = 'https://storytimewitheva.com';
+
+// Organization + WebSite structured data. Defined at module scope so the
+// reference is stable across renders (JsonLd re-runs its effect on data change).
+const ORG_SCHEMA = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Story Time with Eva',
+    url: SITE_URL,
+    logo: `${SITE_URL}/favicon.svg`,
+    description:
+      'The Eva Gallo Collection — multicultural picture books for children ages 3–9, with free activities in English, Spanish, and French.',
+    founder: { '@type': 'Person', name: 'Eva Gallo' },
+    sameAs: [
+      'https://www.amazon.com/author/evagallo',
+      'https://www.instagram.com/evagallo.books/',
+      'https://www.facebook.com/storytimewitheva',
+      'https://www.pinterest.com/storytimewitheva/',
+      'https://www.threads.com/@evagallo.books',
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Story Time with Eva',
+    url: SITE_URL,
+    inLanguage: ['en', 'es', 'fr'],
+  },
+];
 
 const TRANSLATIONS = {
   en: {
@@ -12,7 +45,9 @@ const TRANSLATIONS = {
     heroLine1: 'Where Stories',
     heroLine2: 'Come to Life!',
     heroSubtitle: 'Discover magical bilingual books, fun activities, and reading adventures for curious minds of all ages with Eva',
-    ctaBooks: '✨ Browse 50+ Magical Books',
+    heroImageAlt: 'Eva reading a bedtime picture book with her grandchildren',
+    ctaBooksPrefix: '✨ Browse',
+    ctaBooksSuffix: 'Magical Books',
     ctaActivities: '🎨 Explore Free Activities',
     ctaActivityKit: 'Get Free Activity Kit 🎨',
     statBooks: 'Magical Books',
@@ -28,12 +63,13 @@ const TRANSLATIONS = {
       { emoji: '✨', title: 'Choose', desc: "Pick the perfect story or activity for your child's age" },
       { emoji: '🎉', title: 'Enjoy!', desc: 'Start reading, playing, and learning together' },
     ],
-    testimonialsTitle: 'What Parents Say',
-    testimonialsSubtitle: 'Real families, real magic',
-    testimonials: [
-      { text: "My daughter asks for Eva's books every single night. The bilingual format has been incredible for her Spanish learning!", author: 'Maria T.', role: 'Mom of a 5-year-old' },
-      { text: 'The Kindness Garden sparked a whole week of conversations about helping others. These books are more than stories.', author: 'James R.', role: 'Dad of two' },
-      { text: "As a teacher, I recommend Eva's books to all my students' parents. The cultural diversity woven into each story is beautiful.", author: 'Ms. Sandra L.', role: '1st Grade Teacher' },
+    benefitsTitle: 'Why Story Time with Eva',
+    benefitsSubtitle: 'Thoughtful stories and free tools families can count on',
+    benefits: [
+      { emoji: '🌍', title: 'Read in three languages', desc: 'Switch between English, Spanish, and French anytime — made for bilingual families and language learners.' },
+      { emoji: '🔊', title: 'Hear every story', desc: 'Tap Listen on any book to hear it read aloud with natural pronunciation in each language.' },
+      { emoji: '🎨', title: 'Free activities & printables', desc: 'Story dice, coloring, a reading journal, and a free bilingual starter kit — all free.' },
+      { emoji: '💜', title: 'Gentle stories with heart', desc: 'Quiet, values-rich picture books about kindness, courage, and wonder for ages 3–9.' },
     ],
     activitiesTitle: 'Fun Activities with Eva',
     activitiesSubtitle: 'Learning comes alive through play!',
@@ -53,7 +89,9 @@ const TRANSLATIONS = {
     heroLine1: 'Donde las historias',
     heroLine2: '¡cobran vida!',
     heroSubtitle: 'Descubre libros bilingües mágicos, actividades divertidas y aventuras de lectura para mentes curiosas de todas las edades con Eva',
-    ctaBooks: '✨ Explora más de 50 libros mágicos',
+    heroImageAlt: 'Eva leyendo un cuento antes de dormir con sus nietos',
+    ctaBooksPrefix: '✨ Explora',
+    ctaBooksSuffix: 'libros mágicos',
     ctaActivities: '🎨 Descubre actividades gratis',
     ctaActivityKit: 'Recibe el kit de actividades gratis 🎨',
     statBooks: 'Libros mágicos',
@@ -69,12 +107,13 @@ const TRANSLATIONS = {
       { emoji: '✨', title: 'Elige', desc: 'Selecciona la historia o actividad perfecta para la edad de tu peque' },
       { emoji: '🎉', title: '¡Disfruta!', desc: 'Empieza a leer, jugar y aprender juntos' },
     ],
-    testimonialsTitle: 'Lo que dicen los padres',
-    testimonialsSubtitle: 'Familias reales, magia real',
-    testimonials: [
-      { text: 'Mi hija pide los libros de Eva todas las noches. ¡El formato bilingüe ha sido increíble para su aprendizaje del español!', author: 'María T.', role: 'Mamá de un niño de 5 años' },
-      { text: 'El Jardín de la Bondad inspiró una semana entera de conversaciones sobre ayudar a los demás. Estos libros son más que historias.', author: 'James R.', role: 'Papá de dos' },
-      { text: 'Como maestra, recomiendo los libros de Eva a todos los padres de mis estudiantes. La diversidad cultural en cada historia es hermosa.', author: 'Sra. Sandra L.', role: 'Maestra de 1.º grado' },
+    benefitsTitle: 'Por qué Story Time with Eva',
+    benefitsSubtitle: 'Historias con cariño y recursos gratuitos en los que las familias pueden confiar',
+    benefits: [
+      { emoji: '🌍', title: 'Lee en tres idiomas', desc: 'Cambia entre inglés, español y francés cuando quieras — ideal para familias bilingües y para aprender idiomas.' },
+      { emoji: '🔊', title: 'Escucha cada historia', desc: 'Pulsa Escuchar en cualquier libro para oírlo en voz alta con pronunciación natural en cada idioma.' },
+      { emoji: '🎨', title: 'Actividades y descargables gratis', desc: 'Dados de historias, páginas para colorear, un diario de lectura y un kit de inicio bilingüe — todo gratis.' },
+      { emoji: '💜', title: 'Historias tiernas con valores', desc: 'Libros ilustrados serenos sobre la bondad, la valentía y el asombro, para edades de 3 a 9 años.' },
     ],
     activitiesTitle: 'Actividades divertidas con Eva',
     activitiesSubtitle: '¡El aprendizaje cobra vida con el juego!',
@@ -94,7 +133,9 @@ const TRANSLATIONS = {
     heroLine1: 'Là où les histoires',
     heroLine2: 'prennent vie !',
     heroSubtitle: 'Découvrez des livres bilingues magiques, des activités amusantes et des aventures de lecture pour les esprits curieux de tous âges avec Eva',
-    ctaBooks: '✨ Parcourir plus de 50 livres magiques',
+    heroImageAlt: 'Eva lisant un album du soir avec ses petits-enfants',
+    ctaBooksPrefix: '✨ Parcourir',
+    ctaBooksSuffix: 'livres magiques',
     ctaActivities: '🎨 Découvrir les activités gratuites',
     ctaActivityKit: 'Recevoir le kit d’activités gratuit 🎨',
     statBooks: 'Livres magiques',
@@ -110,12 +151,13 @@ const TRANSLATIONS = {
       { emoji: '✨', title: 'Choisir', desc: "Choisissez l'histoire ou l'activité idéale pour l'âge de votre enfant" },
       { emoji: '🎉', title: 'Profiter !', desc: 'Commencez à lire, jouer et apprendre ensemble' },
     ],
-    testimonialsTitle: 'Ce que disent les parents',
-    testimonialsSubtitle: 'Vraies familles, vraie magie',
-    testimonials: [
-      { text: 'Ma fille demande les livres d\'Eva chaque soir. Le format bilingue a été incroyable pour son apprentissage de l\'espagnol !', author: 'Maria T.', role: 'Maman d\'un enfant de 5 ans' },
-      { text: 'Le Jardin de la Bonté a déclenché toute une semaine de conversations sur l\'aide aux autres. Ces livres sont bien plus que des histoires.', author: 'James R.', role: 'Papa de deux enfants' },
-      { text: 'En tant qu\'enseignante, je recommande les livres d\'Eva à tous les parents de mes élèves. La diversité culturelle tissée dans chaque histoire est magnifique.', author: 'Mme Sandra L.', role: 'Maîtresse de CP' },
+    benefitsTitle: 'Pourquoi Story Time with Eva',
+    benefitsSubtitle: 'Des histoires attentionnées et des ressources gratuites sur lesquelles les familles peuvent compter',
+    benefits: [
+      { emoji: '🌍', title: 'Lisez en trois langues', desc: 'Passez de l\'anglais à l\'espagnol et au français à tout moment — parfait pour les familles bilingues et l\'apprentissage des langues.' },
+      { emoji: '🔊', title: 'Écoutez chaque histoire', desc: 'Appuyez sur Écouter sur n\'importe quel livre pour l\'entendre lu à voix haute avec une prononciation naturelle dans chaque langue.' },
+      { emoji: '🎨', title: 'Activités et imprimables gratuits', desc: 'Dés à histoires, coloriages, un journal de lecture et un kit de démarrage bilingue — tout gratuit.' },
+      { emoji: '💜', title: 'Des histoires douces et porteuses de sens', desc: 'Des albums paisibles sur la gentillesse, le courage et l\'émerveillement, pour les 3 à 9 ans.' },
     ],
     activitiesTitle: 'Activités amusantes avec Eva',
     activitiesSubtitle: 'L\'apprentissage prend vie par le jeu !',
@@ -136,15 +178,18 @@ export default function Home() {
   const books = useBooks();
   const featuredBooks = books.filter(b => b.featured);
 
+  // Counts derive from the catalog so the hero CTA, this stat, and the /books
+  // page can never disagree (previously: "50+" CTA vs "6+" stat vs 18 books).
   const stats = [
-    { number: '6+', label: t.statBooks, emoji: '📚' },
+    { number: `${books.length}`, label: t.statBooks, emoji: '📚' },
     { number: '3', label: t.statLanguages, emoji: '🌍' },
     { number: '4.9/5', label: t.statRating, emoji: '⭐' },
   ];
 
   return (
     <main>
-      <Seo title={t.seoTitle} bare description={t.seoDesc} path="/" />
+      <Seo title={t.seoTitle} bare description={t.seoDesc} path="/" image={`${SITE_URL}${evaReading}`} />
+      <JsonLd id="org" data={ORG_SCHEMA} />
 
       {/* Hero Section */}
       <section className="hero-bg min-h-[85vh] flex items-center justify-center relative overflow-hidden px-4 py-20">
@@ -153,29 +198,40 @@ export default function Home() {
         <div className="absolute bottom-20 left-20 text-3xl star-float opacity-50" style={{ animationDelay: '2s' }}>✨</div>
         <div className="absolute bottom-16 right-10 text-4xl star-float opacity-60" style={{ animationDelay: '0.5s' }}>🎨</div>
 
-        <div className="text-center text-white max-w-3xl mx-auto relative z-10">
-          <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight drop-shadow-lg">
-            {t.heroLine1}<br />{t.heroLine2}
-          </h1>
-          <p className="text-xl md:text-2xl text-purple-100 mb-10 leading-relaxed drop-shadow-md">
-            {t.heroSubtitle}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/books" className="btn-primary text-lg px-8 py-4 shadow-2xl">
-              {t.ctaBooks}
-            </Link>
-            <Link to="/activities" className="btn-secondary text-lg px-8 py-4">
-              {t.ctaActivities}
-            </Link>
+        <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col lg:flex-row lg:items-center lg:gap-12">
+          <div className="text-center lg:text-left text-white lg:flex-1">
+            <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight drop-shadow-lg">
+              {t.heroLine1}<br />{t.heroLine2}
+            </h1>
+            <p className="text-xl md:text-2xl text-purple-100 mb-10 leading-relaxed drop-shadow-md">
+              {t.heroSubtitle}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <Link to="/books" className="btn-primary text-lg px-8 py-4 shadow-2xl">
+                {t.ctaBooksPrefix} {books.length} {t.ctaBooksSuffix}
+              </Link>
+              <Link to="/activities" className="btn-secondary text-lg px-8 py-4">
+                {t.ctaActivities}
+              </Link>
+            </div>
+            {/* High-contrast lead-magnet CTA — scrolls to email signup form below the fold. */}
+            <div className="mt-5 flex justify-center lg:justify-start">
+              <a
+                href="#email-signup"
+                className="inline-flex items-center justify-center text-lg px-8 py-4 bg-amber-300 hover:bg-amber-400 active:bg-amber-500 text-purple-900 font-extrabold rounded-full shadow-2xl ring-2 ring-amber-200/60 hover:ring-amber-100 transition-all duration-200 hover:scale-105"
+              >
+                {t.ctaActivityKit}
+              </a>
+            </div>
           </div>
-          {/* High-contrast lead-magnet CTA — scrolls to email signup form below the fold. */}
-          <div className="mt-5 flex justify-center">
-            <a
-              href="#email-signup"
-              className="inline-flex items-center justify-center text-lg px-8 py-4 bg-amber-300 hover:bg-amber-400 active:bg-amber-500 text-purple-900 font-extrabold rounded-full shadow-2xl ring-2 ring-amber-200/60 hover:ring-amber-100 transition-all duration-200 hover:scale-105"
-            >
-              {t.ctaActivityKit}
-            </a>
+          <div className="order-first mb-10 lg:order-none lg:mb-0 lg:mt-0 lg:flex-1">
+            <img
+              src={evaReading}
+              alt={t.heroImageAlt}
+              width={1200}
+              height={900}
+              className="w-full max-w-md mx-auto rounded-3xl shadow-2xl ring-4 ring-white/30 object-cover"
+            />
           </div>
         </div>
       </section>
@@ -203,7 +259,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
             {featuredBooks.map(book => (
-              <BookCard key={book.id} book={book} />
+              <BookCard key={book.id} book={book} priority />
             ))}
           </div>
           <div className="text-center">
@@ -237,27 +293,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Parent Testimonials */}
+      {/* Why Story Time with Eva — honest benefit cards (no fabricated quotes) */}
       <section className="py-20 px-4 bg-gradient-to-b from-purple-50 to-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">{t.testimonialsTitle}</h2>
-            <p className="text-gray-500 text-lg">{t.testimonialsSubtitle}</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">{t.benefitsTitle}</h2>
+            <p className="text-gray-500 text-lg">{t.benefitsSubtitle}</p>
             <div className="w-20 h-1 bg-gradient-to-r from-purple-400 to-pink-400 mx-auto mt-6 rounded-full" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {t.testimonials.map((quote, i) => (
-              <div key={i} className="bg-white rounded-2xl p-6 shadow-md border border-purple-50">
-                <div className="flex gap-0.5 mb-3">
-                  {Array(5).fill(null).map((_, j) => (
-                    <span key={j} className="text-yellow-400">⭐</span>
-                  ))}
-                </div>
-                <p className="text-gray-600 italic leading-relaxed mb-4">"{quote.text}"</p>
-                <div>
-                  <p className="font-bold text-gray-800">{quote.author}</p>
-                  <p className="text-sm text-purple-600">{quote.role}</p>
-                </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {t.benefits.map((b, i) => (
+              <div key={i} className="bg-white rounded-2xl p-6 shadow-md border border-purple-50 text-center">
+                <div className="text-4xl mb-3" aria-hidden>{b.emoji}</div>
+                <h3 className="font-bold text-gray-800 mb-2">{b.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{b.desc}</p>
               </div>
             ))}
           </div>

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eva's Virtual Story Map | Story Time with Eva</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+    * { font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif; }
+
+    @keyframes bounce-in {
+      0% { transform: scale(0.7); opacity: 0; }
+      60% { transform: scale(1.12); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .bounce-in { animation: bounce-in 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .float { animation: float 3s ease-in-out infinite; }
+
+    @keyframes pin-drop {
+      0% { transform: translateY(-20px) scale(0.5); opacity: 0; }
+      70% { transform: translateY(4px) scale(1.1); opacity: 1; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    .pin-drop { animation: pin-drop 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+
+    /* Map */
+    #worldMap {
+      width: 100%;
+      height: auto;
+      border-radius: 1.5rem;
+      display: block;
+    }
+    .country-land {
+      fill: #bbf7d0;
+      stroke: #ffffff;
+      stroke-width: 0.5;
+    }
+
+    /* Map container */
+    .map-wrap {
+      position: relative;
+      width: 100%;
+      background: #bfdbfe;
+      border-radius: 1.5rem;
+      overflow: hidden;
+    }
+
+    /* Story pin */
+    .story-pin {
+      position: absolute;
+      transform: translate(-50%, -100%);
+      cursor: pointer;
+      z-index: 20;
+      transition: transform 0.2s;
+    }
+    .story-pin:hover { transform: translate(-50%, -110%) scale(1.15); }
+    .story-pin .pin-body {
+      width: 44px; height: 44px;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      border: 3px solid white;
+      transition: all 0.2s;
+    }
+    .story-pin .pin-emoji {
+      transform: rotate(45deg);
+      font-size: 1.3rem;
+      line-height: 1;
+    }
+    .story-pin .pin-ring {
+      position: absolute;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 3px solid;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      animation: pulse-ring 2s ease-out infinite;
+      opacity: 0;
+    }
+    .story-pin.active .pin-body {
+      box-shadow: 0 6px 20px rgba(168,85,247,0.5);
+      border-color: #a855f7;
+    }
+
+    /* Book card panel */
+    .book-card {
+      transition: all 0.3s;
+    }
+    .book-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(168,85,247,0.2);
+    }
+
+    /* Continent filter */
+    .continent-btn.active {
+      background: linear-gradient(to right, #a855f7, #ec4899);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* Visited badge */
+    .visited-badge {
+      position: absolute;
+      top: -4px; right: -4px;
+      width: 18px; height: 18px;
+      background: #22c55e;
+      border-radius: 50%;
+      border: 2px solid white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem;
+      color: white;
+      font-weight: 900;
+    }
+
+    /* Slide in */
+    @keyframes slide-in-right {
+      0% { transform: translateX(30px); opacity: 0; }
+      100% { transform: translateX(0); opacity: 1; }
+    }
+    .slide-in { animation: slide-in-right 0.35s ease forwards; }
+
+    /* Fun fact card */
+    .fun-fact-card {
+      background: linear-gradient(135deg, #fdf4ff, #eff6ff);
+      border: 2px solid #e9d5ff;
+      border-radius: 16px;
+      padding: 12px 16px;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+
+  <!-- Nav -->
+  <nav class="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-2 font-extrabold text-purple-700 text-lg">🐾 Story Time with Eva</a>
+        <div class="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-600">
+          <a href="/" class="hover:text-purple-600">Home</a>
+          <a href="/books" class="hover:text-purple-600">Books</a>
+          <a href="/activities" class="hover:text-purple-600">Activities</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto px-4 pt-6 flex justify-between items-center">
+    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
+    <button id="markCompleted" class="px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
+  </div>
+
+  <main class="max-w-7xl mx-auto px-4 pb-16 pt-4">
+
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <div class="text-5xl mb-2 float">🗺️</div>
+      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Eva's Story Map</h1>
+      <p class="text-gray-500 text-base">Explore the world through Eva's books — tap a pin to discover the story!</p>
+      <div class="w-20 h-1 bg-gradient-to-r from-blue-400 via-teal-400 to-green-400 mx-auto mt-4 rounded-full"></div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="flex flex-wrap justify-center gap-4 mb-5">
+      <div class="bg-white rounded-2xl px-5 py-3 shadow border-2 border-blue-100 text-center">
+        <div class="text-2xl font-extrabold text-blue-600" id="visitedCount">0</div>
+        <div class="text-xs text-gray-500 font-bold">Places Visited</div>
+      </div>
+      <div class="bg-white rounded-2xl px-5 py-3 shadow border-2 border-purple-100 text-center">
+        <div class="text-2xl font-extrabold text-purple-600">10</div>
+        <div class="text-xs text-gray-500 font-bold">Total Stories</div>
+      </div>
+      <div class="bg-white rounded-2xl px-5 py-3 shadow border-2 border-green-100 text-center">
+        <div class="text-2xl font-extrabold text-green-600">6</div>
+        <div class="text-xs text-gray-500 font-bold">Continents</div>
+      </div>
+    </div>
+
+    <!-- Continent filter -->
+    <div class="flex flex-wrap gap-2 justify-center mb-5">
+      <button class="continent-btn active px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold transition-all" data-continent="all">🌍 All</button>
+      <button class="continent-btn px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-continent="Africa">🌍 Africa</button>
+      <button class="continent-btn px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-continent="Americas">🌎 Americas</button>
+      <button class="continent-btn px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-continent="Europe">🏰 Europe</button>
+      <button class="continent-btn px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-continent="Asia">🌏 Asia</button>
+      <button class="continent-btn px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-continent="Oceania">🦘 Oceania</button>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6">
+
+      <!-- MAP -->
+      <div class="lg:col-span-2">
+        <div class="map-wrap shadow-xl border-2 border-blue-200">
+          <svg id="worldMap" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1000" height="500" fill="#bfdbfe"/>
+            <!-- Simplified continent shapes -->
+            <!-- North America -->
+            <path class="country-land" d="M 80 30 L 350 30 L 350 80 L 310 90 L 290 120 L 250 130 L 220 110 L 180 120 L 150 100 L 100 110 L 80 80 Z"/>
+            <path class="country-land" d="M 90 130 L 310 120 L 320 160 L 300 180 L 270 185 L 240 175 L 210 185 L 180 180 L 150 185 L 120 175 L 90 165 Z"/>
+            <path class="country-land" d="M 100 185 L 240 185 L 250 210 L 230 230 L 200 235 L 170 225 L 140 230 L 110 215 Z"/>
+            <path class="country-land" d="M 340 10 L 430 10 L 440 50 L 420 70 L 390 75 L 360 65 L 340 40 Z"/>
+            <!-- Caribbean & Central America -->
+            <path class="country-land" d="M 175 240 L 220 238 L 225 248 L 215 255 L 180 252 Z"/>
+            <path class="country-land" d="M 130 235 L 160 232 L 165 250 L 145 258 L 128 250 Z"/>
+            <!-- South America -->
+            <path class="country-land" d="M 160 255 L 330 250 L 345 295 L 335 345 L 305 375 L 265 385 L 230 365 L 200 325 L 185 290 Z"/>
+            <!-- Europe -->
+            <path class="country-land" d="M 430 60 L 570 55 L 580 120 L 555 145 L 520 155 L 490 148 L 450 155 L 430 140 L 425 100 Z"/>
+            <!-- Africa -->
+            <path class="country-land" d="M 440 160 L 610 155 L 625 300 L 590 390 L 555 410 L 510 405 L 470 385 L 445 330 L 435 260 Z"/>
+            <!-- Madagascar -->
+            <path class="country-land" d="M 610 280 L 638 275 L 643 340 L 622 348 L 608 330 Z"/>
+            <!-- Middle East -->
+            <path class="country-land" d="M 580 155 L 660 148 L 668 215 L 640 228 L 600 220 L 578 195 Z"/>
+            <!-- Russia -->
+            <path class="country-land" d="M 545 25 L 900 18 L 912 92 L 850 102 L 780 97 L 700 102 L 640 97 L 580 102 L 545 78 Z"/>
+            <!-- Central/South Asia -->
+            <path class="country-land" d="M 620 100 L 760 95 L 775 185 L 740 210 L 700 215 L 660 205 L 618 185 Z"/>
+            <!-- Southeast Asia -->
+            <path class="country-land" d="M 730 185 L 820 180 L 835 260 L 800 275 L 750 268 L 728 240 Z"/>
+            <!-- Indonesia -->
+            <path class="country-land" d="M 730 270 L 830 265 L 840 295 L 800 302 L 728 296 Z"/>
+            <!-- Japan -->
+            <path class="country-land" d="M 828 118 L 858 113 L 866 152 L 848 163 L 826 156 Z"/>
+            <!-- China/East Asia -->
+            <path class="country-land" d="M 760 95 L 870 90 L 880 170 L 840 185 L 800 182 L 775 185 Z"/>
+            <!-- Australia -->
+            <path class="country-land" d="M 778 308 L 902 303 L 917 382 L 882 408 L 820 410 L 776 387 Z"/>
+            <!-- New Zealand -->
+            <path class="country-land" d="M 908 368 L 936 363 L 941 402 L 920 410 L 906 392 Z"/>
+          </svg>
+
+          <!-- Story pins rendered here -->
+          <div id="pinLayer" class="absolute inset-0 pointer-events-none"></div>
+        </div>
+
+        <p class="text-center text-xs text-gray-400 font-semibold mt-2">📍 Tap any pin to explore that story!</p>
+      </div>
+
+      <!-- BOOK PANEL -->
+      <div class="lg:col-span-1">
+
+        <!-- Default state -->
+        <div id="defaultPanel" class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl border-2 border-blue-100 p-6 text-center h-full flex flex-col justify-center">
+          <div class="text-5xl mb-3">📍</div>
+          <h3 class="text-lg font-extrabold text-purple-700 mb-2">Tap a pin on the map!</h3>
+          <p class="text-sm text-gray-500 font-semibold mb-4">Each pin marks the setting of one of Eva's stories. Explore all 10 to become a World Story Explorer!</p>
+          <div class="grid grid-cols-2 gap-2" id="miniBookGrid"></div>
+        </div>
+
+        <!-- Active book panel -->
+        <div id="activePanel" class="hidden slide-in">
+          <div class="bg-white rounded-3xl shadow-xl border-2 border-purple-100 p-5 mb-3">
+            <!-- Book header -->
+            <div class="flex items-start gap-3 mb-4">
+              <div class="text-5xl" id="bookEmoji"></div>
+              <div>
+                <div class="text-xs font-bold text-purple-400 uppercase tracking-wide" id="bookContinent"></div>
+                <div class="text-lg font-extrabold text-gray-800 leading-tight" id="bookTitle"></div>
+                <div class="text-sm font-bold text-gray-400" id="bookLocation"></div>
+              </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="bg-purple-50 rounded-2xl p-3 mb-3">
+              <p class="text-xs font-bold text-purple-500 mb-1">📖 Story Summary:</p>
+              <p class="text-sm font-semibold text-gray-700 leading-relaxed" id="bookSummary"></p>
+            </div>
+
+            <!-- Fun fact -->
+            <div class="fun-fact-card mb-3">
+              <p class="text-xs font-bold text-blue-500 mb-1">🌍 Fun Fact:</p>
+              <p class="text-sm font-semibold text-gray-700" id="bookFact"></p>
+            </div>
+
+            <!-- Themes -->
+            <div class="flex flex-wrap gap-1 mb-4" id="bookThemes"></div>
+
+            <!-- CTA -->
+            <a id="bookLink" href="https://storytimewitheva.com/books" target="_blank"
+              class="block w-full py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all text-center text-sm">
+              📚 Read This Book →
+            </a>
+          </div>
+
+          <!-- Navigation -->
+          <div class="flex gap-2">
+            <button id="prevBook" class="flex-1 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold rounded-full text-sm transition-all">← Prev</button>
+            <button id="nextBook" class="flex-1 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-full text-sm transition-all">Next →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Book grid at bottom -->
+    <div class="mt-8 bg-white rounded-3xl shadow-xl border-2 border-purple-100 p-6">
+      <h2 class="text-xl font-extrabold text-purple-700 mb-4 text-center">📚 All of Eva's Stories</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-3" id="allBooksGrid"></div>
+    </div>
+
+  </main>
+
+  <script>
+    // ─── BOOK DATA ────────────────────────────────────────────────────────────
+    // Pin positions as % of map width/height
+    const books = [
+      {
+        id: 'west-africa',
+        title: "Chief Mael's Final Gift",
+        emoji: '🌍',
+        location: 'West Africa',
+        continent: 'Africa',
+        pinX: 47, pinY: 52,
+        pinColor: '#f97316',
+        summary: "When Chief Mael falls ill, the village worries about the future. But his final gift — a story — teaches everyone that wisdom lives on forever through the words we share.",
+        fact: "West Africa is home to some of the world's oldest oral storytelling traditions, passed down through generations of griots — professional storytellers and musicians.",
+        themes: ['Wisdom', 'Community', 'Legacy'],
+        amazonUrl: 'https://www.amazon.com/Chief-Maels-Final-Gift-Storytime/dp/106946287X',
+      },
+      {
+        id: 'senegal',
+        title: "The Clever Pots",
+        emoji: '🏺',
+        location: 'Senegal, West Africa',
+        continent: 'Africa',
+        pinX: 44, pinY: 50,
+        pinColor: '#a855f7',
+        summary: "A Haalpulaar tale from Senegal about a young girl who outsmarts everyone with her cleverness and the magical clay pots passed down from her grandmother.",
+        fact: "The Haalpulaar people of Senegal are known for their rich tradition of pottery, music, and storytelling along the banks of the Senegal River.",
+        themes: ['Cleverness', 'Heritage', 'Family'],
+        amazonUrl: 'https://storytimewitheva.com/books',
+      },
+      {
+        id: 'fulani',
+        title: "Our Child",
+        emoji: '🤝',
+        location: 'Fulani Lands, West Africa',
+        continent: 'Africa',
+        pinX: 48, pinY: 53,
+        pinColor: '#22c55e',
+        summary: "A Fulani tale about community and belonging — when a child gets lost, the whole village comes together, showing that every child belongs to everyone.",
+        fact: "The Fulani (Fula) people are one of the largest ethnic groups in Africa, spread across 20 countries, known for their cattle herding traditions and rich oral literature.",
+        themes: ['Community', 'Belonging', 'Kindness'],
+        amazonUrl: 'https://storytimewitheva.com/books',
+      },
+      {
+        id: 'amazon',
+        title: "The Rainbow Symphony",
+        emoji: '🌈',
+        location: 'Amazon Rainforest, Brazil',
+        continent: 'Americas',
+        pinX: 26, pinY: 62,
+        pinColor: '#06b6d4',
+        summary: "Deep in the Amazon, the colors of the rainbow have lost their music. Eva must journey through the forest to help each color find its song again.",
+        fact: "The Amazon Rainforest is home to over 40,000 plant species, 1,300 bird species, and 3,000 types of fish — the most biodiverse place on Earth!",
+        themes: ['Nature', 'Music', 'Diversity'],
+        amazonUrl: 'https://storytimewitheva.com/books',
+      },
+      {
+        id: 'japan',
+        title: "The Little Lantern",
+        emoji: '🏮',
+        location: 'Kyoto, Japan',
+        continent: 'Asia',
+        pinX: 84, pinY: 34,
+        pinColor: '#ec4899',
+        summary: "During the Obon festival in Kyoto, a young girl lights a lantern for her grandmother and discovers that love never disappears — it just changes shape.",
+        fact: "The Obon festival in Japan is a 500-year-old Buddhist tradition where families honor the spirits of their ancestors with lanterns, dances, and offerings.",
+        themes: ['Love', 'Memory', 'Tradition'],
+        amazonUrl: 'https://storytimewitheva.com/books',
+      },
+      {
+        id: 'india',
+        title: "The Mango Tree Wish",
+        emoji: '🥭',
+        location: 'Rajasthan, India',
+        continent: 'Asia',
+        pinX: 67, pinY: 47,
+        pinColor: '#f59e0b',
+        summary: "Under the oldest mango tree in the village, children make wishes every monsoon season. This year, Eva's wish is the most unexpected one of all.",
+        fact: "India has over 1,000 varieties of mangoes! The mango tree is considered sacred in Hindu culture and is associated with love, fertility, and good fortune.",
+        themes: ['Wishes', 'Hope', 'Seasons'],
+        amazonUrl: 'https://storytimewitheva.com/books',
+      },
+      {
+        id: 'norway',
+        title: "The Snow Fox",
+        emoji: '🦊',
+        location: 'Northern Norway',
+        continent: 'Europe',
+        pinX: 50, pinY: 18,
+        pinColor: '#6366f1',
+        summary: "In the land of the Northern Lights, a lonely snow fox teaches a young girl that being different is the most beautiful thing in the world.",
+        fact: "The Arctic fox is one of the only animals that can survive temperatures as low as -70°C (-94°F). Its fur changes from brown in summer to pure white in winter!",
+        themes: ['Uniqueness', 'Friendship', 'Nature'],
+        amazonUrl: 'https://storytimewitheva.com/books',
+      },
+      {
+        id: 'peru',
+        title: "The Mountain Weaver",
+        emoji: '🏔️',
+        location: 'Andes Mountains, Peru',
+        continent: 'Americas',
+        pinX: 20, pinY: 68,
+        pinColor: '#8b5cf6',
+        summary: "High in the Andes, a young Quechua girl weaves a tapestry that tells the story of her people — and discovers that every thread connects us to those who came before.",
+        fact: "The Quechua people of the Andes have been weaving intricate textiles for over 2,000 years. Each pattern tells a story about their history, beliefs, and community.",
+        themes: ['Heritage', 'Art', 'Identity'],
+        amazonUrl: 'https://storytimewitheva.com/books',
+      },
+      {
+        id: 'australia',
+        title: "The Dreamtime Story",
+        emoji: '🦘',
+        location: 'Australia',
+        continent: 'Oceania',
+        pinX: 83, pinY: 75,
+        pinColor: '#ef4444',
+        summary: "An Aboriginal elder shares a Dreamtime story with her granddaughter, explaining how the stars, rivers, and animals all came to be — and why every living thing is connected.",
+        fact: "Aboriginal Australians have the world's oldest continuous culture, dating back over 65,000 years. Their Dreamtime stories are one of humanity's oldest forms of literature.",
+        themes: ['Creation', 'Connection', 'Ancestors'],
+        amazonUrl: 'https://storytimewitheva.com/books',
+      },
+      {
+        id: 'morocco',
+        title: "A Little Light for the Dark",
+        emoji: '🕯️',
+        location: 'Morocco, North Africa',
+        continent: 'Africa',
+        pinX: 45, pinY: 38,
+        pinColor: '#0891b2',
+        summary: "During a long winter night in a Moroccan village, a small candle teaches a child that even the tiniest light can push back the greatest darkness.",
+        fact: "Morocco's ancient medinas (old city centers) are lit by thousands of traditional lanterns called fanous. The city of Fez has the world's oldest university, founded in 859 AD.",
+        themes: ['Hope', 'Courage', 'Light'],
+        amazonUrl: 'https://storytimewitheva.com/books',
+      },
+    ];
+
+    let visited = new Set();
+    let currentBookIdx = 0;
+    let filteredBooks = [...books];
+
+    // ─── BUILD MINI GRID ─────────────────────────────────────────────────────
+    function buildMiniGrid() {
+      const c = document.getElementById('miniBookGrid');
+      c.innerHTML = books.map(b => `
+        <div class="text-center p-2 rounded-xl bg-white border-2 border-gray-100 cursor-pointer hover:border-purple-300 transition-all"
+          onclick="showBook('${b.id}')">
+          <div class="text-2xl">${b.emoji}</div>
+          <div class="text-xs font-bold text-gray-600 truncate">${b.location}</div>
+        </div>
+      `).join('');
+    }
+
+    function buildAllBooksGrid() {
+      const c = document.getElementById('allBooksGrid');
+      c.innerHTML = books.map(b => `
+        <div class="book-card relative bg-white rounded-2xl border-2 border-gray-100 p-3 cursor-pointer hover:border-purple-300 transition-all"
+          id="bookcard-${b.id}" onclick="showBook('${b.id}')">
+          <div class="text-3xl mb-1 text-center">${b.emoji}</div>
+          <div class="text-xs font-extrabold text-gray-700 text-center leading-tight">${b.title}</div>
+          <div class="text-xs text-gray-400 font-semibold text-center">${b.location}</div>
+          <div class="mt-1 text-center">
+            <span class="text-xs px-2 py-0.5 rounded-full font-bold" style="background:${b.pinColor}22; color:${b.pinColor}">${b.continent}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ─── BUILD PINS ───────────────────────────────────────────────────────────
+    function buildPins(booksToShow) {
+      const layer = document.getElementById('pinLayer');
+      layer.innerHTML = '';
+      booksToShow.forEach((b, i) => {
+        const pin = document.createElement('div');
+        pin.className = 'story-pin pin-drop';
+        pin.id = `pin-${b.id}`;
+        pin.style.left = `${b.pinX}%`;
+        pin.style.top = `${b.pinY}%`;
+        pin.style.pointerEvents = 'all';
+        pin.style.animationDelay = `${i * 80}ms`;
+        pin.innerHTML = `
+          <div class="pin-ring" style="border-color:${b.pinColor}"></div>
+          <div class="pin-body" style="background:${b.pinColor}">
+            <span class="pin-emoji">${b.emoji}</span>
+          </div>
+          ${visited.has(b.id) ? '<div class="visited-badge">✓</div>' : ''}
+        `;
+        pin.addEventListener('click', () => showBook(b.id));
+        layer.appendChild(pin);
+      });
+    }
+
+    // ─── SHOW BOOK ────────────────────────────────────────────────────────────
+    function showBook(id) {
+      const book = books.find(b => b.id === id);
+      if (!book) return;
+      currentBookIdx = books.indexOf(book);
+
+      visited.add(id);
+      document.getElementById('visitedCount').textContent = visited.size;
+
+      // Mark visited on card
+      const card = document.getElementById(`bookcard-${id}`);
+      if (card && !card.querySelector('.visited-badge')) {
+        const badge = document.createElement('div');
+        badge.className = 'visited-badge absolute top-1 right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-extrabold';
+        badge.textContent = '✓';
+        card.style.position = 'relative';
+        card.appendChild(badge);
+      }
+
+      // Highlight pin
+      document.querySelectorAll('.story-pin').forEach(p => p.classList.remove('active'));
+      document.getElementById(`pin-${id}`)?.classList.add('active');
+
+      // Fill panel
+      document.getElementById('defaultPanel').classList.add('hidden');
+      const panel = document.getElementById('activePanel');
+      panel.classList.remove('hidden');
+      panel.classList.add('slide-in');
+
+      document.getElementById('bookEmoji').textContent = book.emoji;
+      document.getElementById('bookTitle').textContent = book.title;
+      document.getElementById('bookLocation').textContent = `📍 ${book.location}`;
+      document.getElementById('bookContinent').textContent = book.continent;
+      document.getElementById('bookSummary').textContent = book.summary;
+      document.getElementById('bookFact').textContent = book.fact;
+      document.getElementById('bookLink').href = book.amazonUrl;
+
+      const themes = document.getElementById('bookThemes');
+      themes.innerHTML = book.themes.map(t => `
+        <span class="px-3 py-1 rounded-full text-xs font-bold" style="background:${book.pinColor}22; color:${book.pinColor}; border:1px solid ${book.pinColor}44">${t}</span>
+      `).join('');
+
+      speak(`${book.title}. Set in ${book.location}. ${book.summary}`);
+    }
+
+    // Prev / Next
+    document.getElementById('prevBook').addEventListener('click', () => {
+      currentBookIdx = (currentBookIdx - 1 + books.length) % books.length;
+      showBook(books[currentBookIdx].id);
+    });
+    document.getElementById('nextBook').addEventListener('click', () => {
+      currentBookIdx = (currentBookIdx + 1) % books.length;
+      showBook(books[currentBookIdx].id);
+    });
+
+    // Continent filter
+    document.querySelectorAll('.continent-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.continent-btn').forEach(b => { b.classList.remove('active'); b.classList.add('text-gray-600'); });
+        btn.classList.add('active'); btn.classList.remove('text-gray-600');
+        const continent = btn.dataset.continent;
+        filteredBooks = continent === 'all' ? [...books] : books.filter(b => b.continent === continent);
+        buildPins(filteredBooks);
+      });
+    });
+
+    document.getElementById('markCompleted').addEventListener('click', function() {
+      this.textContent = '✅ Completed!';
+      this.classList.add('bg-green-100','border-green-400','text-green-700');
+    });
+
+    function speak(text) {
+      if (!window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US'; u.rate = 0.85; u.pitch = 1.0;
+      window.speechSynthesis.speak(u);
+    }
+
+    // Init
+    buildMiniGrid();
+    buildAllBooksGrid();
+    buildPins(books);
+  </script>
+
+  <footer class="bg-gray-800 text-white py-10 mt-10">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p class="font-extrabold text-lg mb-1">🐾 Story Time with Eva</p>
+      <p class="text-gray-400 text-sm mb-4">Where stories come to life! Magical bilingual books and activities for curious young minds.</p>
+      <div class="flex justify-center gap-4 text-sm text-gray-400">
+        <a href="/" class="hover:text-white">Home</a>
+        <a href="/books" class="hover:text-white">Books</a>
+        <a href="/activities" class="hover:text-white">Activities</a>
+        <a href="/about" class="hover:text-white">About Eva</a>
+      </div>
+      <p class="text-gray-500 text-xs mt-4">© 2025 Story Time with Eva. All rights reserved.</p>
+    </div>
+  </footer>
+
+<!-- STE_PROGRESS_SYNC: injected by scripts/patch-games.mjs -->
+<script>
+(function () {
+  var SLUG = "story-map";
+  var KEY = 'readingProgress';
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+  function isDone() { var p = load(); return Array.isArray(p.activitiesCompleted) && p.activitiesCompleted.indexOf(SLUG) > -1; }
+  function markDone() {
+    var p = load();
+    p.booksRead = Array.isArray(p.booksRead) ? p.booksRead : [];
+    p.booksWantToRead = Array.isArray(p.booksWantToRead) ? p.booksWantToRead : [];
+    p.activitiesCompleted = Array.isArray(p.activitiesCompleted) ? p.activitiesCompleted : [];
+    if (p.activitiesCompleted.indexOf(SLUG) < 0) p.activitiesCompleted.push(SLUG);
+    localStorage.setItem(KEY, JSON.stringify(p));
+    try { window.dispatchEvent(new CustomEvent('progresschange')); } catch (e) {}
+  }
+  var btn = document.getElementById('markCompleted');
+  if (btn) {
+    btn.addEventListener('click', markDone);
+    if (isDone()) {
+      btn.textContent = '✅ Completed!';
+      btn.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
+    }
+  }
+})();
+</script>
+</body>
+</html>

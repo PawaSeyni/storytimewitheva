@@ -16,7 +16,7 @@ const TRANSLATIONS = {
     title: 'Download the FREE 20-Page Bilingual Starter Kit!',
     blurb: 'Join our growing community of parents making reading fun. Get coloring pages, reading guides, and bilingual activities delivered straight to your inbox.',
     bullets: [
-      '✓ 20-page bilingual activity pack (English & Spanish)',
+      '✓ 20-page activity pack (English, Spanish & French)',
       '✓ Age-appropriate book recommendations',
       '✓ Fun story prompts & creative activities',
       '✓ No spam, unsubscribe anytime',
@@ -29,12 +29,13 @@ const TRANSLATIONS = {
     successDetail: 'Confirm your email and your Bilingual Starter Kit is on its way.',
     errorMessage: 'Something went wrong. Please try again or email contact@storytimewitheva.com.',
     privacy: '🔒 We respect your privacy. No spam, ever.',
+    audienceNote: 'For parents & guardians. Please sign up on your child’s behalf.',
   },
   es: {
     title: '¡Descarga GRATIS el kit bilingüe de 20 páginas!',
     blurb: 'Únete a nuestra comunidad de padres que hacen divertida la lectura. Recibe páginas para colorear, guías de lectura y actividades bilingües directamente en tu correo.',
     bullets: [
-      '✓ Pack de 20 páginas de actividades bilingües (inglés y español)',
+      '✓ Pack de 20 páginas de actividades (inglés, español y francés)',
       '✓ Recomendaciones de libros por edad',
       '✓ Divertidas ideas de historias y actividades creativas',
       '✓ Sin spam, cancela cuando quieras',
@@ -47,12 +48,13 @@ const TRANSLATIONS = {
     successDetail: 'Confirma tu email y tu kit bilingüe estará en camino.',
     errorMessage: 'Algo salió mal. Inténtalo de nuevo o escríbenos a contact@storytimewitheva.com.',
     privacy: '🔒 Respetamos tu privacidad. Nunca spam.',
+    audienceNote: 'Para padres y tutores. Por favor, regístrate en nombre de tu peque.',
   },
   fr: {
     title: 'Téléchargez gratuitement le kit bilingue de 20 pages !',
     blurb: 'Rejoignez notre communauté de parents qui rendent la lecture amusante. Recevez des pages à colorier, des guides de lecture et des activités bilingues directement dans votre boîte mail.',
     bullets: [
-      '✓ Pack d\'activités bilingues de 20 pages (anglais & espagnol)',
+      '✓ Pack d\'activités de 20 pages (anglais, espagnol et français)',
       '✓ Recommandations de livres par tranche d\'âge',
       '✓ Idées d\'histoires et activités créatives',
       '✓ Pas de spam, désinscription à tout moment',
@@ -65,6 +67,7 @@ const TRANSLATIONS = {
     successDetail: 'Confirmez votre email et votre kit bilingue arrivera.',
     errorMessage: 'Une erreur est survenue. Réessayez ou écrivez à contact@storytimewitheva.com.',
     privacy: '🔒 Nous respectons votre vie privée. Jamais de spam.',
+    audienceNote: 'Pour les parents et tuteurs. Merci de vous inscrire au nom de votre enfant.',
   },
 };
 
@@ -142,6 +145,7 @@ export default function EmailSignup() {
               value={firstName}
               onChange={e => setFirstName(e.target.value)}
               placeholder={t.firstNamePlaceholder}
+              aria-label={t.firstNamePlaceholder}
               autoComplete="given-name"
               disabled={status === 'submitting'}
               className="w-full px-5 py-3 rounded-full text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white shadow-md disabled:opacity-60"
@@ -152,6 +156,7 @@ export default function EmailSignup() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder={t.emailPlaceholder}
+                aria-label={t.emailPlaceholder}
                 required
                 autoComplete="email"
                 disabled={status === 'submitting'}
@@ -175,6 +180,7 @@ export default function EmailSignup() {
         )}
 
         <p className="text-purple-200 text-xs mt-4">{t.privacy}</p>
+        <p className="text-purple-200 text-xs mt-1">{t.audienceNote}</p>
       </div>
     </section>
   );

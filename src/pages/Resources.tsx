@@ -1,7 +1,18 @@
 import { useState } from 'react';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
-import { useTranslation } from '../lib/language';
+import ReadAloudButton from '../components/ReadAloudButton';
+import { useLanguage, useTranslation } from '../lib/language';
+
+// Free classroom/home printables (PDFs in /public). `localized` files ship an
+// -es / -fr variant; the rest are single-file. Order matches each language's
+// `teachers.downloads` array below.
+const TEACHER_DOWNLOADS = [
+  { emoji: '📘', file: 'parents-guide', localized: true },
+  { emoji: '🃏', file: 'bilingual-flashcards', localized: false },
+  { emoji: '✏️', file: 'follow-up-activities', localized: false },
+  { emoji: '🌙', file: 'bedtime-routine', localized: true },
+];
 
 // ---------------------------------------------------------------------------
 // Affiliate URLs — single source of truth. Keep in sync with
@@ -83,6 +94,24 @@ const TRANSLATIONS = {
       heading: 'A note on affiliate links',
       body: 'This page contains affiliate links. If you purchase through these links I may earn a small commission at no extra cost to you. I only recommend products I genuinely use and trust.',
       amazon: 'As an Amazon Associate I earn from qualifying purchases.',
+    },
+    teachers: {
+      heading: 'For Teachers & Educators',
+      intro: 'Eva’s printables are free to use at home or in the classroom. Download, print, and share — no sign-up needed.',
+      downloadCta: 'Download PDF',
+      downloads: [
+        { title: 'Parent & Teacher Guide', desc: 'Discussion prompts and read-aloud tips for getting the most from each story.' },
+        { title: 'Bilingual Flashcards', desc: 'Printable English–Spanish vocabulary cards for classroom or home practice.' },
+        { title: 'Follow-Up Activities', desc: 'Worksheets and extension activities to do after reading a story.' },
+        { title: 'Reading Routine Chart', desc: 'A printable chart to help build a daily reading habit.' },
+      ],
+      tipsHeading: 'Using Eva’s books in the classroom',
+      tips: [
+        'Read aloud as a group — tap 🔊 Listen to model pronunciation in English, Spanish, or French.',
+        'Pause for predictions and discussion; each story carries a gentle theme like kindness, courage, or patience.',
+        'Pair a story with a matching printable above for a complete lesson.',
+        'Use the bilingual flashcards for vocabulary warm-ups and language practice.',
+      ],
     },
     resources: [
       { title: '10 Ways to Make Reading Time Magical', desc: 'Transform ordinary reading sessions into memorable adventures your child will love.', minutes: 5, anchor: 'making-reading-magical' },
@@ -195,6 +224,24 @@ const TRANSLATIONS = {
       body: 'Esta página contiene enlaces de afiliados. Si compras a través de ellos, podemos ganar una pequeña comisión sin coste adicional para ti. Solo recomendamos productos que de verdad usamos y nos gustan.',
       amazon: 'Como afiliados de Amazon, ganamos con compras que cumplen los requisitos.',
     },
+    teachers: {
+      heading: 'Para docentes y educadores',
+      intro: 'Los materiales de Eva son gratuitos para usar en casa o en el aula. Descarga, imprime y comparte — sin registro.',
+      downloadCta: 'Descargar PDF',
+      downloads: [
+        { title: 'Guía para familias y docentes', desc: 'Preguntas para conversar y consejos de lectura en voz alta para aprovechar cada historia.' },
+        { title: 'Tarjetas bilingües', desc: 'Tarjetas de vocabulario en inglés y español para practicar en clase o en casa.' },
+        { title: 'Actividades complementarias', desc: 'Fichas y actividades de ampliación para hacer después de leer.' },
+        { title: 'Tabla de rutina de lectura', desc: 'Una tabla imprimible para crear el hábito diario de leer.' },
+      ],
+      tipsHeading: 'Usar los libros de Eva en el aula',
+      tips: [
+        'Lean en voz alta en grupo — pulsa 🔊 Escuchar para modelar la pronunciación en inglés, español o francés.',
+        'Hagan pausas para predecir y conversar; cada historia tiene un valor como la bondad, la valentía o la paciencia.',
+        'Combina una historia con un imprimible de arriba para una lección completa.',
+        'Usa las tarjetas bilingües para calentamientos de vocabulario y práctica de idiomas.',
+      ],
+    },
     resources: [
       { title: '10 formas de hacer mágico el tiempo de lectura', desc: 'Transforma las sesiones de lectura cotidianas en aventuras memorables que tu peque adorará.', minutes: 5, anchor: 'making-reading-magical' },
       { title: 'Hitos de lectura por edades', desc: 'Qué esperar en cada etapa y cómo apoyar el camino lector de tu peque.', minutes: 8 },
@@ -305,6 +352,24 @@ const TRANSLATIONS = {
       heading: 'À propos des liens affiliés',
       body: 'Cette page contient des liens affiliés. Si vous achetez via ces liens, nous pouvons gagner une petite commission sans coût supplémentaire pour vous. Nous ne recommandons que des produits que nous utilisons réellement.',
       amazon: 'En tant qu’affilié Amazon, nous percevons une commission sur les achats éligibles.',
+    },
+    teachers: {
+      heading: 'Pour les enseignants et éducateurs',
+      intro: 'Les supports d’Eva sont gratuits à utiliser à la maison ou en classe. Téléchargez, imprimez et partagez — sans inscription.',
+      downloadCta: 'Télécharger le PDF',
+      downloads: [
+        { title: 'Guide parents & enseignants', desc: 'Questions de discussion et conseils de lecture à voix haute pour tirer le meilleur de chaque histoire.' },
+        { title: 'Cartes bilingues', desc: 'Cartes de vocabulaire anglais–espagnol à imprimer pour la classe ou la maison.' },
+        { title: 'Activités complémentaires', desc: 'Fiches et activités de prolongement à faire après la lecture.' },
+        { title: 'Tableau de routine de lecture', desc: 'Un tableau à imprimer pour instaurer une habitude de lecture quotidienne.' },
+      ],
+      tipsHeading: 'Utiliser les livres d’Eva en classe',
+      tips: [
+        'Lisez à voix haute en groupe — appuyez sur 🔊 Écouter pour modéliser la prononciation en anglais, espagnol ou français.',
+        'Faites des pauses pour les prédictions et la discussion ; chaque histoire porte une valeur comme la gentillesse, le courage ou la patience.',
+        'Associez une histoire à un imprimable ci-dessus pour une leçon complète.',
+        'Utilisez les cartes bilingues pour les échauffements de vocabulaire et la pratique des langues.',
+      ],
     },
     resources: [
       { title: '10 façons de rendre le temps de lecture magique', desc: 'Transformez les séances de lecture ordinaires en aventures inoubliables que votre enfant adorera.', minutes: 5, anchor: 'making-reading-magical' },
@@ -421,6 +486,9 @@ function ArticleMakingReadingMagical({ t }: { t: Article1T }) {
         <p className="text-xs uppercase tracking-wider text-amber-700 font-semibold mb-2">{t.eyebrow}</p>
         <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3 leading-tight">{t.title}</h2>
         <p className="text-gray-600 text-lg leading-relaxed">{t.intro}</p>
+        <div className="mt-3">
+          <ReadAloudButton text={t.intro} compact />
+        </div>
       </header>
 
       <div className="space-y-6 text-gray-700 leading-relaxed">
@@ -442,6 +510,9 @@ function ArticlePerfectReadingEnvironment({ t }: { t: Article2T }) {
         <p className="text-xs uppercase tracking-wider text-amber-700 font-semibold mb-2">{t.eyebrow}</p>
         <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3 leading-tight">{t.title}</h2>
         <p className="text-gray-600 text-lg leading-relaxed">{t.intro}</p>
+        <div className="mt-3">
+          <ReadAloudButton text={t.intro} compact />
+        </div>
       </header>
 
       <div className="space-y-6 text-gray-700 leading-relaxed">
@@ -469,6 +540,7 @@ export default function Resources() {
   const [activeCategory, setActiveCategory] = useState<CategoryKey>('all');
   const [search, setSearch] = useState('');
   const t = useTranslation(TRANSLATIONS);
+  const { language } = useLanguage();
 
   const categoryButtons: { key: CategoryKey; label: string }[] = [
     { key: 'all', label: t.categories.all },
@@ -596,6 +668,46 @@ export default function Resources() {
       {/* Full articles — now trilingual (EN/ES/FR), data-driven from translations. */}
       <ArticleMakingReadingMagical t={t.article1} />
       <ArticlePerfectReadingEnvironment t={t.article2} />
+
+      {/* For Teachers & Educators — free, classroom-friendly printables (PDFs in /public). */}
+      <section id="teachers" className="scroll-mt-24 py-12 px-4 bg-gradient-to-b from-white to-purple-50 border-t border-gray-100">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-8">
+            <div className="text-4xl mb-3" aria-hidden>🍎</div>
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">{t.teachers.heading}</h2>
+            <p className="text-gray-500 max-w-2xl mx-auto">{t.teachers.intro}</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+            {t.teachers.downloads.map((d, i) => {
+              const file = TEACHER_DOWNLOADS[i];
+              const href = `/${file.file}${file.localized && language !== 'en' ? `-${language}` : ''}.pdf`;
+              return (
+                <a
+                  key={i}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download
+                  className="bg-white rounded-2xl shadow-md hover:shadow-xl border border-gray-50 p-5 flex flex-col transition-all"
+                >
+                  <span className="text-3xl mb-2" aria-hidden>{file.emoji}</span>
+                  <h3 className="font-bold text-gray-800 mb-1 leading-snug">{d.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed flex-1">{d.desc}</p>
+                  <span className="mt-3 text-sm font-semibold text-purple-600">⬇ {t.teachers.downloadCta}</span>
+                </a>
+              );
+            })}
+          </div>
+          <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-50 p-6">
+            <h3 className="font-bold text-gray-800 mb-3">{t.teachers.tipsHeading}</h3>
+            <ul className="space-y-2 text-gray-600 text-sm leading-relaxed list-disc pl-5">
+              {t.teachers.tips.map((tip, i) => (
+                <li key={i}>{tip}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
 
       <EmailSignup />
     </main>

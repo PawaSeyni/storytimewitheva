@@ -1,4 +1,5 @@
-import { useLanguage } from '../lib/language';
+import { useMemo } from 'react';
+import { SUPPORTED_LANGUAGES, localizePath, useLanguage } from '../lib/language';
 import { useHead } from '../lib/head';
 
 const SITE_URL = 'https://storytimewitheva.com';
@@ -17,11 +18,11 @@ interface SeoProps {
   description: string;
   /** Absolute URL of an OG/Twitter image. Defaults to the Maya's Shadow cover. */
   image?: string;
-  /** Path-only canonical URL. Defaults to current pathname. */
+  /** English-canonical app path (e.g. "/books"). Canonical + hreflang are derived per language. */
   path?: string;
   /** Set to true to render the title verbatim (no site suffix). Use only on the home page. */
   bare?: boolean;
-  /** Discourage indexing on personal/utility pages (e.g. /profile). */
+  /** Discourage indexing on personal/utility pages (e.g. /profile, 404). Suppresses hreflang. */
   noindex?: boolean;
 }
 
@@ -36,7 +37,18 @@ interface SeoProps {
 export default function Seo({ title, description, image = DEFAULT_IMAGE, path, bare = false, noindex = false }: SeoProps) {
   const { language } = useLanguage();
   const fullTitle = bare ? title : `${title} | ${SITE_NAME}`;
-  const url = path ? `${SITE_URL}${path}` : SITE_URL;
+  const enPath = path ?? '/';
+
+  // Canonical points to THIS language's URL; hreflang advertises all three
+  // (plus x-default → English) so search engines index each language version.
+  const url = `${SITE_URL}${localizePath(enPath, language)}`;
+  const alternates = useMemo(() => {
+    if (noindex) return [];
+    return [
+      ...SUPPORTED_LANGUAGES.map(l => ({ hreflang: l, href: `${SITE_URL}${localizePath(enPath, l)}` })),
+      { hreflang: 'x-default', href: `${SITE_URL}${localizePath(enPath, 'en')}` },
+    ];
+  }, [enPath, noindex]);
 
   useHead({
     title: fullTitle,
@@ -44,6 +56,7 @@ export default function Seo({ title, description, image = DEFAULT_IMAGE, path, b
     image,
     url,
     locale: OG_LOCALE[language],
+    alternates,
     noindex,
   });
 

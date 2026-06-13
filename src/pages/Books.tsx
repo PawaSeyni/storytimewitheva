@@ -1,34 +1,15 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useBooks } from '../data/books';
 import BookCard from '../components/BookCard';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
+import JsonLd from '../components/JsonLd';
+import { PRICING } from '../data/pricing';
+import { matchesAgeFilter } from '../lib/ages';
 import { useTranslation } from '../lib/language';
 
-// ---------------------------------------------------------------------------
-// Age-filter helpers — parse "5-9 years" → [5, 9] and check overlap with the
-// active filter range. Fixes the bug where "9+ years" returned no books
-// because the literal "9+" string didn't appear in any book's ageRange.
-// ---------------------------------------------------------------------------
-function parseAgeRange(s: string): [number, number] {
-  const m = s.match(/(\d+)\s*-\s*(\d+)/);
-  if (m) return [parseInt(m[1], 10), parseInt(m[2], 10)];
-  const single = s.match(/(\d+)/);
-  if (single) {
-    const n = parseInt(single[1], 10);
-    return [n, n];
-  }
-  return [0, 99];
-}
-
-function matchesAgeFilter(bookAge: string, filterKey: string): boolean {
-  if (filterKey === 'All') return true;
-  const [bMin, bMax] = parseAgeRange(bookAge);
-  if (filterKey === '9+') return bMax >= 9;
-  // For "3-5" and "6-8" filters: overlap between book range and filter range.
-  const [fMin, fMax] = parseAgeRange(filterKey);
-  return bMax >= fMin && bMin <= fMax;
-}
+const SITE_URL = 'https://storytimewitheva.com';
+const FLAG_TO_LANG: Record<string, string> = { '🇺🇸': 'en', '🇪🇸': 'es', '🇫🇷': 'fr' };
 
 const TRANSLATIONS = {
   en: {
@@ -48,6 +29,12 @@ const TRANSLATIONS = {
     amazonHeading: 'Find All Books on Amazon',
     amazonBlurb: "All of Eva's books are available on Amazon with fast shipping and easy returns.",
     amazonCta: '🛒 View All Books on Amazon →',
+    pricingHeading: 'Formats & Pricing',
+    paperbackLabel: 'Paperback',
+    ebookLabel: 'eBook',
+    freeLabel: 'Always free',
+    freeItems: 'Activities, read-alongs & the starter kit',
+    pricingNote: 'Prices in USD. Final price and availability on Amazon.',
   },
   es: {
     seoTitle: 'Nuestra colección de libros mágicos',
@@ -66,6 +53,12 @@ const TRANSLATIONS = {
     amazonHeading: 'Encuentra todos los libros en Amazon',
     amazonBlurb: 'Todos los libros de Eva están disponibles en Amazon con envío rápido y devoluciones fáciles.',
     amazonCta: '🛒 Ver todos los libros en Amazon →',
+    pricingHeading: 'Formatos y precios',
+    paperbackLabel: 'Tapa blanda',
+    ebookLabel: 'eBook',
+    freeLabel: 'Siempre gratis',
+    freeItems: 'Actividades, lecturas en voz alta y el kit de inicio',
+    pricingNote: 'Precios en USD. Precio final y disponibilidad en Amazon.',
   },
   fr: {
     seoTitle: 'Notre collection de livres magiques',
@@ -84,6 +77,12 @@ const TRANSLATIONS = {
     amazonHeading: 'Trouvez tous les livres sur Amazon',
     amazonBlurb: 'Tous les livres d\'Eva sont disponibles sur Amazon avec livraison rapide et retours faciles.',
     amazonCta: '🛒 Voir tous les livres sur Amazon →',
+    pricingHeading: 'Formats et prix',
+    paperbackLabel: 'Livre broché',
+    ebookLabel: 'Livre numérique',
+    freeLabel: 'Toujours gratuit',
+    freeItems: 'Activités, lectures à voix haute et le kit de démarrage',
+    pricingNote: 'Prix en USD. Prix final et disponibilité sur Amazon.',
   },
 };
 
@@ -92,6 +91,32 @@ export default function Books() {
   const [ageFilter, setAgeFilter] = useState('All');
   const t = useTranslation(TRANSLATIONS);
   const books = useBooks();
+
+  // ItemList of Book schema for the full catalog — gives search engines a
+  // per-title entry even though books don't have individual pages yet.
+  const booksSchema = useMemo(
+    () => ({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: 'The Eva Gallo Collection',
+      numberOfItems: books.length,
+      itemListElement: books.map((book, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@type': 'Book',
+          name: book.title,
+          author: { '@type': 'Person', name: 'Eva Gallo' },
+          inLanguage: book.languages.map(f => FLAG_TO_LANG[f]).filter(Boolean),
+          url: book.amazonUrl,
+          image: book.coverImage.startsWith('http') ? book.coverImage : `${SITE_URL}${book.coverImage}`,
+          ...(book.subtitle ? { alternativeHeadline: book.subtitle } : {}),
+          abstract: book.description,
+        },
+      })),
+    }),
+    [books],
+  );
 
   // Internal age filter keys are language-invariant; UI labels come from t.
   const ageFilters: { key: string; label: string }[] = [
@@ -114,6 +139,7 @@ export default function Books() {
   return (
     <main>
       <Seo title={t.seoTitle} description={t.seoDesc} path="/books" />
+      <JsonLd id="books" data={booksSchema} />
 
       <section className="bg-gradient-to-b from-purple-50 to-white py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
@@ -157,8 +183,8 @@ export default function Books() {
           </p>
           {filtered.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map(book => (
-                <BookCard key={book.id} book={book} />
+              {filtered.map((book, i) => (
+                <BookCard key={book.id} book={book} priority={i < 3} />
               ))}
             </div>
           ) : (
@@ -167,6 +193,30 @@ export default function Books() {
               <p className="text-gray-500 text-lg">{t.emptyMsg}</p>
             </div>
           )}
+        </div>
+      </section>
+
+      <section className="py-12 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">{t.pricingHeading}</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-white rounded-2xl shadow-md border border-gray-50 p-6">
+              <div className="text-3xl mb-2" aria-hidden>📖</div>
+              <p className="font-semibold text-gray-800">{t.paperbackLabel}</p>
+              <p className="text-2xl font-extrabold text-purple-700 mt-1">{PRICING.paperback}</p>
+            </div>
+            <div className="bg-white rounded-2xl shadow-md border border-gray-50 p-6">
+              <div className="text-3xl mb-2" aria-hidden>📱</div>
+              <p className="font-semibold text-gray-800">{t.ebookLabel}</p>
+              <p className="text-2xl font-extrabold text-purple-700 mt-1">{PRICING.ebook}</p>
+            </div>
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow-md border border-purple-100 p-6">
+              <div className="text-3xl mb-2" aria-hidden>🎁</div>
+              <p className="font-semibold text-purple-700">{t.freeLabel}</p>
+              <p className="text-sm text-gray-600 mt-1">{t.freeItems}</p>
+            </div>
+          </div>
+          <p className="text-xs text-gray-400 mt-4">{t.pricingNote}</p>
         </div>
       </section>
 

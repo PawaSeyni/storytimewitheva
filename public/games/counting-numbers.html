@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Counting & Numbers Story Game | Story Time with Eva</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+    * { font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif; }
+
+    /* Number button */
+    .num-btn {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      font-size: 1.6rem; font-weight: 900;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1);
+      border: 3px solid transparent;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .num-btn:hover { transform: scale(1.15); box-shadow: 0 6px 20px rgba(168,85,247,0.35); }
+    .num-btn:active { transform: scale(0.95); }
+    .num-btn.correct { background: #dcfce7 !important; border-color: #22c55e !important; color: #15803d !important; }
+    .num-btn.wrong { background: #fee2e2 !important; border-color: #ef4444 !important; }
+
+    /* Shake */
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+    .shake { animation: shake 0.4s ease; }
+
+    /* Bounce in */
+    @keyframes bounce-in {
+      0% { transform: scale(0.7); opacity: 0; }
+      60% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .bounce-in { animation: bounce-in 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+
+    /* Object appear */
+    @keyframes pop-in {
+      0% { transform: scale(0) rotate(-15deg); opacity: 0; }
+      70% { transform: scale(1.15) rotate(3deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .pop-in { animation: pop-in 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+
+    /* Story object display */
+    .story-object {
+      font-size: 2.5rem;
+      display: inline-block;
+      margin: 4px;
+      transition: all 0.2s;
+    }
+
+    /* Progress dots */
+    .progress-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      transition: all 0.3s;
+    }
+    .progress-dot.done { background: #a855f7; }
+    .progress-dot.current { background: #f97316; box-shadow: 0 0 0 3px rgba(249,115,22,0.3); }
+    .progress-dot.pending { background: #e5e7eb; }
+
+    /* Lang tab active */
+    .lang-tab.active {
+      background: linear-gradient(to right, rgb(168,85,247), rgb(236,72,153));
+      color: white;
+    }
+
+    /* Number chart cell */
+    .chart-cell {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-weight: 900;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .chart-cell:hover { transform: scale(1.1); }
+
+    /* Celebration */
+    @keyframes confetti-spin {
+      0% { transform: rotate(0deg) translateY(0); opacity: 1; }
+      100% { transform: rotate(720deg) translateY(60px); opacity: 0; }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-green-50 to-white">
+
+  <!-- Nav -->
+  <nav class="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-2 font-extrabold text-purple-700 text-lg">🐾 Story Time with Eva</a>
+        <div class="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-600">
+          <a href="/" class="hover:text-purple-600">Home</a>
+          <a href="/books" class="hover:text-purple-600">Books</a>
+          <a href="/activities" class="hover:text-purple-600">Activities</a>
+          <a href="/resources" class="hover:text-purple-600">Resources</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-3xl mx-auto px-4 pt-6">
+    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
+    <button id="markCompleted" class="float-right px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
+  </div>
+
+  <main class="max-w-3xl mx-auto px-4 pb-16 pt-4">
+
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <div class="text-5xl mb-2">🔢</div>
+      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Eva's Counting Story</h1>
+      <p class="text-gray-500 text-base">Listen to the story, then tap the right number!</p>
+      <div class="w-20 h-1 bg-gradient-to-r from-green-400 via-cyan-400 to-purple-400 mx-auto mt-4 rounded-full"></div>
+    </div>
+
+    <!-- How to Play -->
+    <div class="bg-gradient-to-r from-green-400 via-teal-400 to-cyan-500 rounded-2xl p-5 mb-6 text-white shadow-lg">
+      <h2 class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
+      <ol class="list-decimal list-inside space-y-1 text-sm font-semibold">
+        <li>Listen to Eva's short story sentence</li>
+        <li>Count the objects you see on screen</li>
+        <li>Tap the correct number on the number pad!</li>
+        <li>Learn the number in English, Spanish, and French</li>
+        <li>Complete all 10 rounds to earn your Star Badge! ⭐</li>
+      </ol>
+    </div>
+
+    <!-- Language Tabs -->
+    <div class="flex justify-center gap-2 mb-5">
+      <button class="lang-tab active px-4 py-2 rounded-full border-2 border-purple-300 font-bold text-sm transition-all" data-lang="en">🇺🇸 English</button>
+      <button class="lang-tab px-4 py-2 rounded-full border-2 border-purple-300 font-bold text-sm text-gray-600 transition-all hover:bg-purple-50" data-lang="es">🇪🇸 Español</button>
+      <button class="lang-tab px-4 py-2 rounded-full border-2 border-purple-300 font-bold text-sm text-gray-600 transition-all hover:bg-purple-50" data-lang="fr">🇫🇷 Français</button>
+    </div>
+
+    <!-- Progress -->
+    <div class="flex justify-center gap-2 mb-5" id="progressDots"></div>
+
+    <!-- Story Card -->
+    <div class="bg-white rounded-3xl shadow-xl border-2 border-green-100 p-6 mb-5">
+
+      <!-- Score bar -->
+      <div class="flex justify-between text-sm font-bold text-gray-500 mb-4">
+        <span>Round <span id="roundNum" class="text-purple-600">1</span> of 10</span>
+        <span>⭐ Score: <span id="scoreNum" class="text-orange-500">0</span></span>
+        <span>🔥 Streak: <span id="streakNum" class="text-pink-500">0</span></span>
+      </div>
+
+      <!-- Story sentence -->
+      <div class="bg-gradient-to-br from-green-50 to-cyan-50 rounded-2xl p-4 mb-4 text-center">
+        <button id="listenBtn" class="mb-3 px-5 py-2 bg-gradient-to-r from-green-400 to-teal-400 text-white font-extrabold rounded-full shadow hover:shadow-lg transition-all text-sm">
+          🔊 Hear the Story
+        </button>
+        <p class="text-lg font-extrabold text-gray-800 leading-relaxed" id="storySentence">Loading...</p>
+      </div>
+
+      <!-- Object display -->
+      <div class="text-center mb-5 min-h-20 flex flex-wrap justify-center items-center gap-1" id="objectDisplay"></div>
+
+      <!-- Feedback -->
+      <div id="feedback" class="text-center text-lg font-extrabold mb-3 min-h-7"></div>
+
+      <!-- Number translation reveal -->
+      <div id="translationReveal" class="hidden text-center bg-purple-50 rounded-2xl p-3 mb-4 bounce-in">
+        <p class="text-xs font-bold text-purple-500 mb-1">🌍 That number in 3 languages:</p>
+        <div class="flex justify-center gap-4 text-base font-extrabold">
+          <span class="text-blue-600" id="transEN"></span>
+          <span class="text-red-500" id="transES"></span>
+          <span class="text-indigo-600" id="transFR"></span>
+        </div>
+      </div>
+
+      <!-- Number Pad -->
+      <div class="grid grid-cols-5 gap-3 justify-items-center mb-4" id="numberPad"></div>
+
+      <!-- Next button -->
+      <div class="text-center">
+        <button id="nextBtn" class="hidden px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">
+          Next Story →
+        </button>
+      </div>
+    </div>
+
+    <!-- Number Chart -->
+    <div class="bg-white rounded-3xl shadow-xl border-2 border-purple-100 p-5">
+      <h2 class="text-lg font-extrabold text-purple-700 mb-3 text-center">🌍 Bilingual Number Chart</h2>
+      <div class="grid grid-cols-5 gap-2 justify-items-center" id="numberChart"></div>
+    </div>
+
+    <!-- Celebration -->
+    <div id="celebration" class="hidden text-center py-8 bg-gradient-to-r from-green-50 to-cyan-50 rounded-3xl border-2 border-green-200 mt-6 bounce-in">
+      <div class="text-6xl mb-2">🏆</div>
+      <h2 class="text-2xl font-extrabold text-purple-700 mb-1">Counting Champion!</h2>
+      <p class="text-gray-600 mb-1" id="celebStats"></p>
+      <p class="text-gray-500 text-sm mb-4">You counted all the way to 10 in 3 languages! 🌍⭐</p>
+      <button id="playAgain" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">🔄 Play Again!</button>
+    </div>
+
+  </main>
+
+  <script>
+    const numbers = [
+      { n: 1,  en: 'One',   es: 'Uno',    fr: 'Un',     emoji: '🦋', story_en: 'One butterfly flew into the garden. How many butterflies are there?', story_es: 'Una mariposa voló al jardín. ¿Cuántas mariposas hay?', story_fr: 'Un papillon a volé dans le jardin. Combien de papillons y a-t-il?' },
+      { n: 2,  en: 'Two',   es: 'Dos',    fr: 'Deux',   emoji: '🐸', story_en: 'Two frogs sat on a lily pad. How many frogs are there?', story_es: 'Dos ranas se sentaron en una hoja. ¿Cuántas ranas hay?', story_fr: 'Deux grenouilles étaient assises sur un nénuphar. Combien de grenouilles y a-t-il?' },
+      { n: 3,  en: 'Three', es: 'Tres',   fr: 'Trois',  emoji: '⭐', story_en: 'Three stars lit up the night sky. How many stars are there?', story_es: 'Tres estrellas iluminaron el cielo nocturno. ¿Cuántas estrellas hay?', story_fr: 'Trois étoiles illuminaient le ciel nocturne. Combien d\'étoiles y a-t-il?' },
+      { n: 4,  en: 'Four',  es: 'Cuatro', fr: 'Quatre', emoji: '🌸', story_en: 'Four flowers bloomed in Eva\'s garden. How many flowers are there?', story_es: 'Cuatro flores florecieron en el jardín de Eva. ¿Cuántas flores hay?', story_fr: 'Quatre fleurs ont fleuri dans le jardin d\'Eva. Combien de fleurs y a-t-il?' },
+      { n: 5,  en: 'Five',  es: 'Cinco',  fr: 'Cinq',   emoji: '🐦', story_en: 'Five birds sang in the big oak tree. How many birds are there?', story_es: 'Cinco pájaros cantaron en el gran roble. ¿Cuántos pájaros hay?', story_fr: 'Cinq oiseaux chantaient dans le grand chêne. Combien d\'oiseaux y a-t-il?' },
+      { n: 6,  en: 'Six',   es: 'Seis',   fr: 'Six',    emoji: '🍎', story_en: 'Six apples fell from the apple tree. How many apples are there?', story_es: 'Seis manzanas cayeron del manzano. ¿Cuántas manzanas hay?', story_fr: 'Six pommes sont tombées du pommier. Combien de pommes y a-t-il?' },
+      { n: 7,  en: 'Seven', es: 'Siete',  fr: 'Sept',   emoji: '🌈', story_en: 'Seven colors painted the rainbow. How many colors are there?', story_es: 'Siete colores pintaron el arcoíris. ¿Cuántos colores hay?', story_fr: 'Sept couleurs ont peint l\'arc-en-ciel. Combien de couleurs y a-t-il?' },
+      { n: 8,  en: 'Eight', es: 'Ocho',   fr: 'Huit',   emoji: '🐝', story_en: 'Eight bees buzzed around the beehive. How many bees are there?', story_es: 'Ocho abejas zumbaron alrededor de la colmena. ¿Cuántas abejas hay?', story_fr: 'Huit abeilles bourdonnaient autour de la ruche. Combien d\'abeilles y a-t-il?' },
+      { n: 9,  en: 'Nine',  es: 'Nueve',  fr: 'Neuf',   emoji: '🐠', story_en: 'Nine fish swam in the sparkling river. How many fish are there?', story_es: 'Nueve peces nadaron en el río brillante. ¿Cuántos peces hay?', story_fr: 'Neuf poissons nageaient dans la rivière scintillante. Combien de poissons y a-t-il?' },
+      { n: 10, en: 'Ten',   es: 'Diez',   fr: 'Dix',    emoji: '🌟', story_en: 'Ten stars twinkled in the night sky. How many stars are there?', story_es: 'Diez estrellas brillaron en el cielo nocturno. ¿Cuántas estrellas hay?', story_fr: 'Dix étoiles scintillaient dans le ciel nocturne. Combien d\'étoiles y a-t-il?' },
+    ];
+
+    const bgColors = ['bg-red-100','bg-orange-100','bg-yellow-100','bg-green-100','bg-cyan-100','bg-blue-100','bg-indigo-100','bg-purple-100','bg-pink-100','bg-amber-100'];
+    const textColors = ['text-red-700','text-orange-700','text-yellow-700','text-green-700','text-cyan-700','text-blue-700','text-indigo-700','text-purple-700','text-pink-700','text-amber-700'];
+
+    let currentLang = 'en';
+    let currentRound = 0;
+    let score = 0;
+    let streak = 0;
+    let answered = false;
+    let order = [];
+
+    function shuffle(arr) {
+      const a = [...arr]; for (let i = a.length-1; i>0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a;
+    }
+
+    function initGame() {
+      order = shuffle([...Array(10).keys()]);
+      currentRound = 0; score = 0; streak = 0;
+      document.getElementById('scoreNum').textContent = '0';
+      document.getElementById('streakNum').textContent = '0';
+      document.getElementById('celebration').classList.add('hidden');
+      buildProgressDots();
+      buildNumberChart();
+      loadRound();
+    }
+
+    function buildProgressDots() {
+      const c = document.getElementById('progressDots');
+      c.innerHTML = Array(10).fill(0).map((_,i) =>
+        `<div class="progress-dot ${i===0?'current':'pending'}" id="dot-${i}"></div>`
+      ).join('');
+    }
+
+    function updateProgressDots() {
+      for (let i=0; i<10; i++) {
+        const d = document.getElementById(`dot-${i}`);
+        if (i < currentRound) d.className = 'progress-dot done';
+        else if (i === currentRound) d.className = 'progress-dot current';
+        else d.className = 'progress-dot pending';
+      }
+    }
+
+    function buildNumberChart() {
+      const c = document.getElementById('numberChart');
+      c.innerHTML = numbers.map((n,i) => `
+        <div class="chart-cell ${bgColors[i]}">
+          <div class="text-xl font-extrabold ${textColors[i]}">${n.n}</div>
+          <div class="text-xs font-bold ${textColors[i]}">${n.en}</div>
+          <div class="text-xs text-gray-500">${n.es}</div>
+        </div>
+      `).join('');
+    }
+
+    function loadRound() {
+      if (currentRound >= 10) { showCelebration(); return; }
+      answered = false;
+      const num = numbers[order[currentRound]];
+      document.getElementById('roundNum').textContent = currentRound + 1;
+      document.getElementById('feedback').textContent = '';
+      document.getElementById('translationReveal').classList.add('hidden');
+      document.getElementById('nextBtn').classList.add('hidden');
+      updateProgressDots();
+
+      // Story sentence
+      const storyKey = `story_${currentLang}`;
+      document.getElementById('storySentence').textContent = num[storyKey];
+
+      // Object display
+      const display = document.getElementById('objectDisplay');
+      display.innerHTML = '';
+      for (let i=0; i<num.n; i++) {
+        setTimeout(() => {
+          const span = document.createElement('span');
+          span.className = 'story-object pop-in';
+          span.style.animationDelay = `${i * 80}ms`;
+          span.textContent = num.emoji;
+          display.appendChild(span);
+        }, i * 80);
+      }
+
+      // Number pad (1-10 shuffled)
+      buildNumberPad(num.n);
+      speakStory(num[storyKey]);
+    }
+
+    function buildNumberPad(correct) {
+      const pad = document.getElementById('numberPad');
+      pad.innerHTML = numbers.map(n => `
+        <button class="num-btn ${bgColors[n.n-1]} ${textColors[n.n-1]} border-2 border-white shadow-md"
+          id="nbtn-${n.n}" onclick="checkAnswer(${n.n}, ${correct})">
+          ${n.n}
+        </button>
+      `).join('');
+    }
+
+    function checkAnswer(chosen, correct) {
+      if (answered) return;
+      answered = true;
+      const num = numbers[order[currentRound]];
+
+      if (chosen === correct) {
+        score += Math.max(1, 2);
+        streak++;
+        document.getElementById('scoreNum').textContent = score;
+        document.getElementById('streakNum').textContent = streak;
+        document.getElementById(`nbtn-${chosen}`).classList.add('correct');
+        document.getElementById('feedback').innerHTML = `<span class="text-green-600 bounce-in">🎉 Correct! That's ${num[currentLang]}! +2 ⭐</span>`;
+        speak(`Correct! ${correct} is ${num.en} in English, ${num.es} in Spanish, and ${num.fr} in French!`);
+        showTranslation(num);
+      } else {
+        streak = 0;
+        document.getElementById('streakNum').textContent = '0';
+        document.getElementById(`nbtn-${chosen}`).classList.add('wrong');
+        document.getElementById(`nbtn-${chosen}`).classList.add('shake');
+        document.getElementById(`nbtn-${correct}`).classList.add('correct');
+        document.getElementById('feedback').innerHTML = `<span class="text-red-500">Not quite! The answer was ${correct}. Keep going! 💪</span>`;
+        speak(`The answer was ${correct}. ${num.en}!`);
+        showTranslation(num);
+      }
+
+      setTimeout(() => {
+        document.getElementById('nextBtn').classList.remove('hidden');
+      }, 800);
+    }
+
+    function showTranslation(num) {
+      document.getElementById('transEN').textContent = `🇺🇸 ${num.en}`;
+      document.getElementById('transES').textContent = `🇪🇸 ${num.es}`;
+      document.getElementById('transFR').textContent = `🇫🇷 ${num.fr}`;
+      document.getElementById('translationReveal').classList.remove('hidden');
+    }
+
+    function speakStory(text) {
+      if (!window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const langCodes = { en: 'en-US', es: 'es-ES', fr: 'fr-FR' };
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = langCodes[currentLang]; u.rate = 0.8; u.pitch = 1.1;
+      window.speechSynthesis.speak(u);
+    }
+
+    function speak(text) {
+      if (!window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US'; u.rate = 0.85; u.pitch = 1.1;
+      window.speechSynthesis.speak(u);
+    }
+
+    function showCelebration() {
+      document.getElementById('celebStats').textContent = `You scored ${score} stars across all 10 rounds! 🌟`;
+      document.getElementById('celebration').classList.remove('hidden');
+      speak('Congratulations! You are a Counting Champion!');
+    }
+
+    // Language tabs
+    document.querySelectorAll('.lang-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.lang-tab').forEach(t => { t.classList.remove('active'); t.classList.add('text-gray-600'); });
+        tab.classList.add('active'); tab.classList.remove('text-gray-600');
+        currentLang = tab.dataset.lang;
+        initGame();
+      });
+    });
+
+    document.getElementById('listenBtn').addEventListener('click', () => {
+      const num = numbers[order[currentRound]];
+      speakStory(num[`story_${currentLang}`]);
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      currentRound++;
+      loadRound();
+    });
+
+    document.getElementById('playAgain').addEventListener('click', initGame);
+    document.getElementById('markCompleted').addEventListener('click', function() {
+      this.textContent = '✅ Completed!';
+      this.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
+    });
+
+    initGame();
+  </script>
+
+  <footer class="bg-gray-800 text-white py-10 mt-10">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p class="font-extrabold text-lg mb-1">🐾 Story Time with Eva</p>
+      <p class="text-gray-400 text-sm mb-4">Where stories come to life! Magical bilingual books and activities for curious young minds.</p>
+      <div class="flex justify-center gap-4 text-sm text-gray-400">
+        <a href="/" class="hover:text-white">Home</a>
+        <a href="/books" class="hover:text-white">Books</a>
+        <a href="/activities" class="hover:text-white">Activities</a>
+        <a href="/about" class="hover:text-white">About Eva</a>
+      </div>
+      <p class="text-gray-500 text-xs mt-4">© 2025 Story Time with Eva. All rights reserved.</p>
+    </div>
+  </footer>
+
+<!-- STE_PROGRESS_SYNC: injected by scripts/patch-games.mjs -->
+<script>
+(function () {
+  var SLUG = "counting-numbers";
+  var KEY = 'readingProgress';
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+  function isDone() { var p = load(); return Array.isArray(p.activitiesCompleted) && p.activitiesCompleted.indexOf(SLUG) > -1; }
+  function markDone() {
+    var p = load();
+    p.booksRead = Array.isArray(p.booksRead) ? p.booksRead : [];
+    p.booksWantToRead = Array.isArray(p.booksWantToRead) ? p.booksWantToRead : [];
+    p.activitiesCompleted = Array.isArray(p.activitiesCompleted) ? p.activitiesCompleted : [];
+    if (p.activitiesCompleted.indexOf(SLUG) < 0) p.activitiesCompleted.push(SLUG);
+    localStorage.setItem(KEY, JSON.stringify(p));
+    try { window.dispatchEvent(new CustomEvent('progresschange')); } catch (e) {}
+  }
+  var btn = document.getElementById('markCompleted');
+  if (btn) {
+    btn.addEventListener('click', markDone);
+    if (isDone()) {
+      btn.textContent = '✅ Completed!';
+      btn.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
+    }
+  }
+})();
+</script>
+</body>
+</html>

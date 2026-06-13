@@ -182,7 +182,7 @@ Add new items as discovered. Prioritize roughly top-to-bottom within each cluste
 - [ ] TikTok / Threads: consider once YouTube has a baseline.
 
 ### Engineering
-- [ ] Build-time prerendering for perfect per-route OG unfurls on non-JS scrapers (`vite-plugin-prerender` or migrate to Astro). Currently each subroute's description duplicates the static homepage fallback in the DOM — modern crawlers handle this correctly but a non-JS Twitterbot would only see the static one.
+- [x] Build-time prerendering for perfect per-route OG unfurls on non-JS scrapers — DONE in PR #1 (branch `fix/audit-quick-wins-seo`). `scripts/prerender.mjs` runs after `vite build` and snapshots all 51 sitemap routes (17 pages × EN/ES/FR) to `dist/<route>/index.html` with route-correct title/canonical/hreflang/JSON-LD in the static HTML. Graceful-degrades to the SPA if Chromium can't launch; `build:spa` is the escape hatch.
 - [ ] Lightweight global search (subset of Base44's, no modal — inline page-search)
 - [ ] Accessibility audit (axe-core), fix focus management on demo modals
 - [ ] Mobile responsiveness pass — particularly the wide demo layouts (Bookmark Designer, Bingo grid)
@@ -196,6 +196,37 @@ Add new items as discovered. Prioritize roughly top-to-bottom within each cluste
 - [ ] Craft Corner: download a printable PDF "craft guide" per craft
 - [ ] Activities tracking → simple personal stats page (uses same localStorage as Profile)
 - [ ] Decide on Profile auth (skip / add Netlify Identity / add Supabase) if multi-device sync becomes a need
+
+### Activity games (12 standalone games — integrated 2026-06-13)
+12 self-contained HTML games were added as static pages under `public/games/<slug>.html` and registered in `src/data/activities.ts` with `game: true` (Activities grid now shows 20 activities; game cards link to `/games/<slug>.html`). They work as-is but were intentionally NOT deep-ported — these are the follow-up improvements:
+- [ ] **Port games into the Vite build** — they currently load Tailwind + Nunito from a CDN (the only external CDN requests on the site, and they use Nunito instead of the site's self-hosted Lexend). Either convert each to a React demo or build the HTML through Vite so typography/colors match and there are no third-party requests.
+- [x] **Sync completion to the shared store** — DONE. `scripts/patch-games.mjs` injects a small script into each game that writes the game's slug to `readingProgress.activitiesCompleted` on "Mark Completed" (and reflects it on load), so it now flips the site Profile counts + the Activities "Completed / Open Again" badge. Verified cross-page.
+- [x] **Fix each game's "Get Free Kit" CTA** — DONE (same patch script): `href="#signup"` → `/#email-signup`.
+- [x] **Add the 12 game URLs to `sitemap.xml`** — DONE via `gen-sitemap.mjs` (single URL each; prerender skips static `.html` routes).
+- [ ] **Language**: games have internal EN/ES/FR toggles but a single URL and English default; consider opening them in the site's currently-selected language. (Card titles/descriptions are already localized in `activities.ts`.)
+- [ ] **Align read-aloud** with `src/lib/speech.ts` (voice/rate) if/when ported, and re-test Web Speech on iOS Safari (needs a user gesture — the Play/Listen buttons satisfy it).
+
+### Audit follow-ups (UX/SEO audit — 2026-06-13)
+Open items from the audit. Most of the audit shipped in PR #1 (`fix/audit-quick-wins-seo`); the rest live here so nothing is lost. Items already tracked in other clusters are cross-referenced, not duplicated.
+
+**Owner decisions / content**
+- [ ] **4.9/5 Amazon rating** (Home stat band + Footer stars) — substantiate with a real aggregate + link to the Amazon author page, or remove. Last unverified trust claim on the site. _(owner)_
+- [ ] **Privacy/Terms** — confirm a governing **jurisdiction** and do a legal skim (operating entity "Pawa Press Inc." already named; date "Last updated: June 2026"). _(owner)_
+- [ ] **Translate the 15 English-only books** to ES/FR so the "bilingual/3 languages" promise matches the catalog (only 3 of 18 are trilingual today). Hero/stat copy was intentionally left as-is pending this. _(content)_
+
+**Child-UX & product**
+- [x] **"Ages 3–5" zone** — DONE. Activities page now has age-band filter chips (All / 3-5 / 6-8 / 9+, localized) using a shared `src/lib/ages.ts` overlap helper (also refactored out of Books.tsx). "Ages 3-5" surfaces the 12 overlapping activities incl. the toddler games (matching, rhyme, counting, emotion-wheel).
+- [x] **Read-aloud word-highlighting** — DONE on book detail pages. `src/components/ReadAlong.tsx` renders the description word-by-word and highlights each word as it's spoken (Web Speech `boundary` events via `speech.ts` `play(..., { onBoundary })`); best-effort (audio + text still work if a voice doesn't fire boundaries). Could still extend to Resources/About text.
+- [x] **Per-book pages** (`/books/<id>`) — DONE. `BookDetail.tsx` renders a full localized page per title (cover, blurb, theme, read-aloud, price, Buy, status) with `Book` JSON-LD + per-language canonical/hreflang; the card modal was replaced by links to it. Sitemap now 105 URLs (35 pages × EN/ES/FR) via `scripts/gen-sitemap.mjs` which reads book ids from `books.ts`; prerender covers all 105.
+- [~] **Language-learning extras** — side-by-side bilingual text DONE (book detail pages get a "Read in two languages" toggle showing the description in the other languages, via `books` raw localized strings). Still open: tap-to-translate words, dedicated vocabulary activities, language-progress tracking (partly covered by the sentence-builder / flashcards / reading-tracker games).
+- [ ] **Guide character / mascot** — a recurring illustrated guide (Eva or Pawa) at decision points; visual-direction recommendation for the 3–10 range.
+- [ ] **Mobile hero** — optionally move the family photo above the CTAs on phones (it currently sits below them). Minor.
+- [ ] Accessibility/contrast + keyboard + screen-reader pass — **see Engineering › "Accessibility audit (axe-core)"** (covers the hero subheadline + white-outline secondary-button contrast the audit flagged). a11y quick wins (reduced-motion, skip link, focus-visible) already shipped in PR #1.
+
+**Ops & verification**
+- [ ] **Google Search Console** — submit `sitemap.xml` and confirm the new `/es` and `/fr` pages index.
+- [ ] **Re-run Lighthouse / PageSpeed (mobile)** after PR #1 merges to recapture Core Web Vitals; confirm Chromium launches on the first Netlify build (prerender) — falls back to `build:spa` if not.
+- [ ] **Usability testing** — light parent/child testing of the core flows, plus a Plausible review (conversion, language usage, top activities). _(testing)_
 
 ---
 
@@ -290,4 +321,5 @@ For every other task, default flow is: identify which MCP can do it → request 
 - **2026-06-10** — Closed **C1**: custom domain `storytimewitheva.com` confirmed fully live (DNS → Netlify, valid auto-renewing cert, www + netlify.app both 301 to apex, all SEO files + lead-magnet PDFs on the custom domain). Was completed in an earlier session (cert dated May 20) but never checked off. Gate C now: C2 Plausible, C3 toast swap, C4 ongoing.
 - **2026-06-10** — Closed **C3**: custom toast system (`src/lib/toast.tsx`) already replaces all `alert()` placeholders (StoryBuilder/BookmarkCrafts/Bingo); zero alerts remain. Left Profile's `window.confirm` as the correct destructive-action guard. Gate C now down to **C2 (Plausible)** + C4. Three of four launch-blocking gates' polish items are closed; only analytics remains before paid traffic.
 - **2026-06-10** — Closed **C2**: Plausible analytics confirmed live (installed 2026-05-20, verified serving + on live site + registered in a Plausible account). **🚦 ALL launch gates (A, B, C1–C3) are now closed.** Only C4 (keep this list current) is ongoing. The site is launch-ready for paid traffic. Today's session was a truth-up sweep: B4, C1, C2, and C3 were all functionally complete in earlier sessions but had never been checked off — the PUNCH_LIST had drifted from reality.
+- **2026-06-13** — Big audit-driven session on branch `fix/audit-quick-wins-seo` (PR #1). Shipped: real Privacy/Terms pages + 404 (no soft-404), book-count fix, JSON-LD (Org/WebSite/Person/Book/FAQPage), **per-language URLs `/es` `/fr` + hreflang** (English at root), **build-time prerendering** (51 routes — closes the Engineering backlog item), **read-aloud "Listen"** on every book (Web Speech via `src/lib/speech.ts`), a11y quick wins (reduced-motion, skip link, focus-visible), **Lexend** body font (self-hosted), on-site **Formats & Pricing** (paperback $11.99 / eBook $7.99, `src/data/pricing.ts`), honest **benefit cards** replacing fabricated testimonials, **FAQ page**, **Teacher & Educator** downloads section, responsive/optimized covers (Amazon `_SX` srcset + local WebP), the **Eva headshot** (About) + **family hero photo** (Home), and **12 standalone games** integrated into Activities (see the new "Activity games" backlog cluster for follow-ups). Confirmed facts: Eva Gallo is a real person; operator is **Pawa Press Inc.** (named on Privacy/Terms + footer). Still open (owner input): the unverified **4.9/5 rating** (keep+link or remove). Remaining build items: read-aloud word-highlighting, per-book pages, deeper game integration.
 - _(Add entries here as gates close)_

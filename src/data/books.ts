@@ -7,9 +7,9 @@
 // translated descriptions, subtitles, and themes.
 
 import { useLanguage, type Language } from '../lib/language';
-import colorsMixedUp from '../assets/covers/colors-mixed-up.jpg';
-import rainbowSymphony from '../assets/covers/rainbow-symphony.jpg';
-import towerTouchedSky from '../assets/covers/tower-touched-sky.jpg';
+import colorsMixedUp from '../assets/covers/colors-mixed-up.webp';
+import rainbowSymphony from '../assets/covers/rainbow-symphony.webp';
+import towerTouchedSky from '../assets/covers/tower-touched-sky.webp';
 
 type LocalizedString = Record<Language, string>;
 

@@ -1,7 +1,27 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../components/LocalizedLink';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
+import JsonLd from '../components/JsonLd';
+import ReadAloudButton from '../components/ReadAloudButton';
 import { useTranslation } from '../lib/language';
+import evaHeadshot from '../assets/eva-headshot.jpg';
+
+const SITE_URL = 'https://storytimewitheva.com';
+
+const AUTHOR_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Eva Gallo',
+  jobTitle: 'Children’s Author',
+  description:
+    'Author of the Eva Gallo Collection of multicultural picture books for children ages 3–9.',
+  url: `${SITE_URL}/about`,
+  image: `${SITE_URL}${evaHeadshot}`,
+  sameAs: [
+    'https://www.amazon.com/author/evagallo',
+    'https://www.instagram.com/evagallo.books/',
+  ],
+};
 
 const TRANSLATIONS = {
   en: {
@@ -11,7 +31,7 @@ const TRANSLATIONS = {
     subheading: 'Making reading magical for every child',
     refrain: 'Every story begins in the dark and ends in the morning.',
     refrainAttr: 'the signature rhythm of every book in the Eva Gallo Collection',
-    photoNote: '📸 Replace with your photo',
+    photoNote: 'Eva Gallo, author',
     bioHeading: 'A Note from the Author',
     bio: [
       "This children's book series is a lively collection of imaginative stories from my childhood, created for kids ages 3 to 9.",
@@ -23,7 +43,7 @@ const TRANSLATIONS = {
     contactEva: '✉️ Contact Eva',
     missionHeading: 'Our Mission & Values',
     cards: [
-      { title: 'Our Story', text: "Founded by educators and parents who understand the power of storytelling, we created Eva to make quality children's literature accessible to families everywhere." },
+      { title: 'Our Story', text: "Story Time with Eva began with Eva Gallo, a grandmother and retired public-health worker who wanted to pass the bedtime stories of her own childhood on to a new generation. Every book in the collection grew from that simple wish: to make reading magical for families everywhere." },
       { title: 'Why Books Matter', text: "Reading with Eva isn't just about words on a page — it's about opening doorways to new worlds, building vocabulary, and creating precious memories that last forever." },
       { title: 'Our Mission', text: 'We believe every child deserves access to stories that spark imagination, build empathy, and celebrate the joy of reading with Eva as their guide.' },
       { title: 'Our Values', text: 'Quality storytelling, inclusive representation, educational excellence, and making reading accessible and fun for all families around the world.' },
@@ -36,7 +56,7 @@ const TRANSLATIONS = {
     subheading: 'Haciendo la lectura mágica para cada peque',
     refrain: 'Cada historia comienza en la oscuridad y termina con la mañana.',
     refrainAttr: 'el ritmo distintivo de cada libro de la Colección Eva Gallo',
-    photoNote: '📸 Reemplazar con tu foto',
+    photoNote: 'Eva Gallo, autora',
     bioHeading: 'Una nota de la autora',
     bio: [
       'Esta serie de libros infantiles es una colección viva de historias imaginativas de mi infancia, creadas para niños de 3 a 9 años.',
@@ -48,7 +68,7 @@ const TRANSLATIONS = {
     contactEva: '✉️ Contactar a Eva',
     missionHeading: 'Nuestra misión y valores',
     cards: [
-      { title: 'Nuestra historia', text: 'Fundada por educadores y padres que entienden el poder de contar historias, creamos a Eva para hacer accesible la buena literatura infantil a familias de todo el mundo.' },
+      { title: 'Nuestra historia', text: 'Story Time with Eva nació con Eva Gallo, una abuela y trabajadora de salud pública jubilada que quería transmitir los cuentos de su propia infancia a una nueva generación. Cada libro de la colección surgió de ese deseo sencillo: hacer mágica la lectura para las familias de todo el mundo.' },
       { title: 'Por qué importan los libros', text: 'Leer con Eva no es solo palabras en una página: es abrir puertas a mundos nuevos, ampliar el vocabulario y crear recuerdos preciosos que duran para siempre.' },
       { title: 'Nuestra misión', text: 'Creemos que cada niño merece acceso a historias que enciendan la imaginación, fomenten la empatía y celebren el gozo de leer con Eva como guía.' },
       { title: 'Nuestros valores', text: 'Buenas historias, representación inclusiva, excelencia educativa y hacer que la lectura sea accesible y divertida para familias de todo el mundo.' },
@@ -61,7 +81,7 @@ const TRANSLATIONS = {
     subheading: 'Rendre la lecture magique pour chaque enfant',
     refrain: "Chaque histoire commence dans le noir et finit au matin.",
     refrainAttr: 'le rythme signature de chaque livre de la Collection Eva Gallo',
-    photoNote: '📸 Remplacer par votre photo',
+    photoNote: 'Eva Gallo, autrice',
     bioHeading: "Mot de l'autrice",
     bio: [
       "Cette série de livres pour enfants est une collection vivante d'histoires imaginatives de mon enfance, créée pour les 3 à 9 ans.",
@@ -73,7 +93,7 @@ const TRANSLATIONS = {
     contactEva: '✉️ Contacter Eva',
     missionHeading: 'Notre mission et nos valeurs',
     cards: [
-      { title: 'Notre histoire', text: "Fondée par des éducateurs et des parents qui comprennent le pouvoir des histoires, nous avons créé Eva pour rendre la bonne littérature jeunesse accessible aux familles partout." },
+      { title: 'Notre histoire', text: "Story Time with Eva est née avec Eva Gallo, une grand-mère et ancienne professionnelle de la santé publique qui souhaitait transmettre les histoires du soir de sa propre enfance à une nouvelle génération. Chaque livre de la collection est né de ce souhait tout simple : rendre la lecture magique pour les familles du monde entier." },
       { title: 'Pourquoi les livres comptent', text: 'Lire avec Eva, ce n\'est pas seulement des mots sur une page : c\'est ouvrir des portes vers de nouveaux mondes, enrichir le vocabulaire et créer des souvenirs précieux qui durent toute une vie.' },
       { title: 'Notre mission', text: "Nous croyons que chaque enfant mérite des histoires qui éveillent l'imagination, nourrissent l'empathie et célèbrent la joie de lire, avec Eva comme guide." },
       { title: 'Nos valeurs', text: 'Des histoires de qualité, une représentation inclusive, l\'excellence éducative et une lecture accessible et joyeuse pour toutes les familles du monde.' },
@@ -93,7 +113,8 @@ export default function About() {
 
   return (
     <main>
-      <Seo title={t.seoTitle} description={t.seoDesc} path="/about" />
+      <Seo title={t.seoTitle} description={t.seoDesc} path="/about" image={`${SITE_URL}${evaHeadshot}`} />
+      <JsonLd id="author" data={AUTHOR_SCHEMA} />
 
       <section className="bg-gradient-to-b from-amber-50 to-white py-14 px-4">
         <div className="max-w-3xl mx-auto text-center">
@@ -119,16 +140,22 @@ export default function About() {
       <section className="py-14 px-4 bg-white">
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-col md:flex-row gap-10 items-center">
-            <div className="flex-shrink-0">
-              <div className="w-52 h-52 rounded-full bg-gradient-to-br from-purple-200 to-pink-200 flex flex-col items-center justify-center shadow-xl border-4 border-white ring-4 ring-purple-100">
-                <span className="text-6xl">👩‍🦳</span>
-                <span className="text-xs text-purple-500 mt-2 font-medium">Eva Gallo</span>
-              </div>
+            <div className="flex-shrink-0 w-full md:w-72">
+              <img
+                src={evaHeadshot}
+                alt={t.photoNote}
+                width={800}
+                height={800}
+                className="w-full aspect-square rounded-2xl shadow-xl border-4 border-white ring-4 ring-purple-100 object-cover"
+              />
               <p className="text-center text-xs text-gray-400 mt-3 italic">{t.photoNote}</p>
             </div>
 
             <div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">{t.bioHeading}</h2>
+              <h2 className="text-3xl font-bold text-gray-800 mb-3">{t.bioHeading}</h2>
+              <div className="mb-4">
+                <ReadAloudButton text={[...t.bio, t.motivation].join(' ')} compact />
+              </div>
               <div className="space-y-4 text-gray-600 leading-relaxed">
                 {t.bio.map((para, i) => (
                   <p key={i}>{para}</p>

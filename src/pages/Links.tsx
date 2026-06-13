@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../components/LocalizedLink';
 import Seo from '../components/Seo';
 import { useTranslation } from '../lib/language';
 
@@ -144,7 +144,7 @@ export default function Links() {
 
   return (
     <>
-      <Seo title={t.seoTitle} description={t.seoDesc} />
+      <Seo title={t.seoTitle} description={t.seoDesc} path="/links" />
       <div className="min-h-screen bg-gradient-to-b from-[#FBF6EC] via-[#F2D08A]/40 to-[#FBF6EC] py-10 px-4">
         <div className="max-w-md mx-auto">
           {/* Header */}
