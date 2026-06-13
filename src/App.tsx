@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -49,6 +50,13 @@ const routeDefs = [
 const LANG_PREFIXES = ['', '/es', '/fr'];
 
 export default function App() {
+  // Signal to the build-time prerender crawler that the first render + all
+  // child effects (Seo/JsonLd inject the head here) have completed. Child
+  // effects flush before this parent effect, so the head is guaranteed present.
+  useEffect(() => {
+    (window as unknown as { __PRERENDER_READY__?: boolean }).__PRERENDER_READY__ = true;
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
