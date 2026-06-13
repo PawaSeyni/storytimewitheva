@@ -1,7 +1,22 @@
 import { Link } from 'react-router-dom';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
+import JsonLd from '../components/JsonLd';
 import { useTranslation } from '../lib/language';
+
+const AUTHOR_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Eva Gallo',
+  jobTitle: 'Children’s Author',
+  description:
+    'Author of the Eva Gallo Collection of multicultural picture books for children ages 3–9.',
+  url: 'https://storytimewitheva.com/about',
+  sameAs: [
+    'https://www.amazon.com/author/evagallo',
+    'https://www.instagram.com/evagallo.books/',
+  ],
+};
 
 const TRANSLATIONS = {
   en: {
@@ -94,6 +109,7 @@ export default function About() {
   return (
     <main>
       <Seo title={t.seoTitle} description={t.seoDesc} path="/about" />
+      <JsonLd id="author" data={AUTHOR_SCHEMA} />
 
       <section className="bg-gradient-to-b from-amber-50 to-white py-14 px-4">
         <div className="max-w-3xl mx-auto text-center">

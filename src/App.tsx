@@ -8,6 +8,9 @@ import Resources from './pages/Resources';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Profile from './pages/Profile';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
+import NotFound from './pages/NotFound';
 import Links from './pages/Links';
 import DemoPage from './pages/DemoPage';
 import StoryBuilderDemo from './demos/StoryBuilderDemo';
@@ -41,8 +44,10 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
           <Route path="/links" element={<Links />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
       <Footer />

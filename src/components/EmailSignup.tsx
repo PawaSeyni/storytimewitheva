@@ -29,6 +29,7 @@ const TRANSLATIONS = {
     successDetail: 'Confirm your email and your Bilingual Starter Kit is on its way.',
     errorMessage: 'Something went wrong. Please try again or email contact@storytimewitheva.com.',
     privacy: '🔒 We respect your privacy. No spam, ever.',
+    audienceNote: 'For parents & guardians. Please sign up on your child’s behalf.',
   },
   es: {
     title: '¡Descarga GRATIS el kit bilingüe de 20 páginas!',
@@ -47,6 +48,7 @@ const TRANSLATIONS = {
     successDetail: 'Confirma tu email y tu kit bilingüe estará en camino.',
     errorMessage: 'Algo salió mal. Inténtalo de nuevo o escríbenos a contact@storytimewitheva.com.',
     privacy: '🔒 Respetamos tu privacidad. Nunca spam.',
+    audienceNote: 'Para padres y tutores. Por favor, regístrate en nombre de tu peque.',
   },
   fr: {
     title: 'Téléchargez gratuitement le kit bilingue de 20 pages !',
@@ -65,6 +67,7 @@ const TRANSLATIONS = {
     successDetail: 'Confirmez votre email et votre kit bilingue arrivera.',
     errorMessage: 'Une erreur est survenue. Réessayez ou écrivez à contact@storytimewitheva.com.',
     privacy: '🔒 Nous respectons votre vie privée. Jamais de spam.',
+    audienceNote: 'Pour les parents et tuteurs. Merci de vous inscrire au nom de votre enfant.',
   },
 };
 
@@ -142,6 +145,7 @@ export default function EmailSignup() {
               value={firstName}
               onChange={e => setFirstName(e.target.value)}
               placeholder={t.firstNamePlaceholder}
+              aria-label={t.firstNamePlaceholder}
               autoComplete="given-name"
               disabled={status === 'submitting'}
               className="w-full px-5 py-3 rounded-full text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white shadow-md disabled:opacity-60"
@@ -152,6 +156,7 @@ export default function EmailSignup() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder={t.emailPlaceholder}
+                aria-label={t.emailPlaceholder}
                 required
                 autoComplete="email"
                 disabled={status === 'submitting'}
@@ -175,6 +180,7 @@ export default function EmailSignup() {
         )}
 
         <p className="text-purple-200 text-xs mt-4">{t.privacy}</p>
+        <p className="text-purple-200 text-xs mt-1">{t.audienceNote}</p>
       </div>
     </section>
   );

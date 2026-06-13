@@ -24,7 +24,7 @@ export default function LanguageSwitcher({ vertical = false }: LanguageSwitcherP
         const { name, flag } = LANGUAGE_LABELS[lang];
         const base = vertical
           ? 'flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all'
-          : 'inline-flex items-center justify-center w-9 h-7 rounded-full text-sm transition-all';
+          : 'inline-flex items-center justify-center min-w-[44px] h-9 px-2 rounded-full text-sm transition-all';
         const activeCls = active
           ? vertical
             ? 'bg-purple-100 text-purple-700'

@@ -3,7 +3,39 @@ import { useBooks } from '../data/books';
 import BookCard from '../components/BookCard';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
+import JsonLd from '../components/JsonLd';
 import { useTranslation } from '../lib/language';
+
+const SITE_URL = 'https://storytimewitheva.com';
+
+// Organization + WebSite structured data. Defined at module scope so the
+// reference is stable across renders (JsonLd re-runs its effect on data change).
+const ORG_SCHEMA = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Story Time with Eva',
+    url: SITE_URL,
+    logo: `${SITE_URL}/favicon.svg`,
+    description:
+      'The Eva Gallo Collection — multicultural picture books for children ages 3–9, with free activities in English, Spanish, and French.',
+    founder: { '@type': 'Person', name: 'Eva Gallo' },
+    sameAs: [
+      'https://www.amazon.com/author/evagallo',
+      'https://www.instagram.com/evagallo.books/',
+      'https://www.facebook.com/storytimewitheva',
+      'https://www.pinterest.com/storytimewitheva/',
+      'https://www.threads.com/@evagallo.books',
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Story Time with Eva',
+    url: SITE_URL,
+    inLanguage: ['en', 'es', 'fr'],
+  },
+];
 
 const TRANSLATIONS = {
   en: {
@@ -12,7 +44,8 @@ const TRANSLATIONS = {
     heroLine1: 'Where Stories',
     heroLine2: 'Come to Life!',
     heroSubtitle: 'Discover magical bilingual books, fun activities, and reading adventures for curious minds of all ages with Eva',
-    ctaBooks: '✨ Browse 50+ Magical Books',
+    ctaBooksPrefix: '✨ Browse',
+    ctaBooksSuffix: 'Magical Books',
     ctaActivities: '🎨 Explore Free Activities',
     ctaActivityKit: 'Get Free Activity Kit 🎨',
     statBooks: 'Magical Books',
@@ -53,7 +86,8 @@ const TRANSLATIONS = {
     heroLine1: 'Donde las historias',
     heroLine2: '¡cobran vida!',
     heroSubtitle: 'Descubre libros bilingües mágicos, actividades divertidas y aventuras de lectura para mentes curiosas de todas las edades con Eva',
-    ctaBooks: '✨ Explora más de 50 libros mágicos',
+    ctaBooksPrefix: '✨ Explora',
+    ctaBooksSuffix: 'libros mágicos',
     ctaActivities: '🎨 Descubre actividades gratis',
     ctaActivityKit: 'Recibe el kit de actividades gratis 🎨',
     statBooks: 'Libros mágicos',
@@ -94,7 +128,8 @@ const TRANSLATIONS = {
     heroLine1: 'Là où les histoires',
     heroLine2: 'prennent vie !',
     heroSubtitle: 'Découvrez des livres bilingues magiques, des activités amusantes et des aventures de lecture pour les esprits curieux de tous âges avec Eva',
-    ctaBooks: '✨ Parcourir plus de 50 livres magiques',
+    ctaBooksPrefix: '✨ Parcourir',
+    ctaBooksSuffix: 'livres magiques',
     ctaActivities: '🎨 Découvrir les activités gratuites',
     ctaActivityKit: 'Recevoir le kit d’activités gratuit 🎨',
     statBooks: 'Livres magiques',
@@ -136,8 +171,10 @@ export default function Home() {
   const books = useBooks();
   const featuredBooks = books.filter(b => b.featured);
 
+  // Counts derive from the catalog so the hero CTA, this stat, and the /books
+  // page can never disagree (previously: "50+" CTA vs "6+" stat vs 18 books).
   const stats = [
-    { number: '6+', label: t.statBooks, emoji: '📚' },
+    { number: `${books.length}`, label: t.statBooks, emoji: '📚' },
     { number: '3', label: t.statLanguages, emoji: '🌍' },
     { number: '4.9/5', label: t.statRating, emoji: '⭐' },
   ];
@@ -145,6 +182,7 @@ export default function Home() {
   return (
     <main>
       <Seo title={t.seoTitle} bare description={t.seoDesc} path="/" />
+      <JsonLd id="org" data={ORG_SCHEMA} />
 
       {/* Hero Section */}
       <section className="hero-bg min-h-[85vh] flex items-center justify-center relative overflow-hidden px-4 py-20">
@@ -162,7 +200,7 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/books" className="btn-primary text-lg px-8 py-4 shadow-2xl">
-              {t.ctaBooks}
+              {t.ctaBooksPrefix} {books.length} {t.ctaBooksSuffix}
             </Link>
             <Link to="/activities" className="btn-secondary text-lg px-8 py-4">
               {t.ctaActivities}
@@ -203,7 +241,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
             {featuredBooks.map(book => (
-              <BookCard key={book.id} book={book} />
+              <BookCard key={book.id} book={book} priority />
             ))}
           </div>
           <div className="text-center">

@@ -187,8 +187,10 @@ export default function Contact() {
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">{t.nameLabel}</label>
+                      <label htmlFor="contact-name" className="block text-sm font-medium text-gray-700 mb-1">{t.nameLabel}</label>
                       <input
+                        id="contact-name"
+                        name="name"
                         type="text"
                         required
                         value={form.name}
@@ -198,8 +200,10 @@ export default function Contact() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">{t.emailLabel}</label>
+                      <label htmlFor="contact-email" className="block text-sm font-medium text-gray-700 mb-1">{t.emailLabel}</label>
                       <input
+                        id="contact-email"
+                        name="email"
                         type="email"
                         required
                         value={form.email}
@@ -210,8 +214,10 @@ export default function Contact() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">{t.subjectLabel}</label>
+                    <label htmlFor="contact-subject" className="block text-sm font-medium text-gray-700 mb-1">{t.subjectLabel}</label>
                     <input
+                      id="contact-subject"
+                      name="subject"
                       type="text"
                       required
                       value={form.subject}
@@ -221,8 +227,10 @@ export default function Contact() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">{t.messageLabel}</label>
+                    <label htmlFor="contact-message" className="block text-sm font-medium text-gray-700 mb-1">{t.messageLabel}</label>
                     <textarea
+                      id="contact-message"
+                      name="message"
                       required
                       rows={5}
                       value={form.message}

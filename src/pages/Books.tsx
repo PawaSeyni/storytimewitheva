@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useBooks } from '../data/books';
 import BookCard from '../components/BookCard';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
+import JsonLd from '../components/JsonLd';
 import { useTranslation } from '../lib/language';
+
+const SITE_URL = 'https://storytimewitheva.com';
+const FLAG_TO_LANG: Record<string, string> = { '🇺🇸': 'en', '🇪🇸': 'es', '🇫🇷': 'fr' };
 
 // ---------------------------------------------------------------------------
 // Age-filter helpers — parse "5-9 years" → [5, 9] and check overlap with the
@@ -93,6 +97,32 @@ export default function Books() {
   const t = useTranslation(TRANSLATIONS);
   const books = useBooks();
 
+  // ItemList of Book schema for the full catalog — gives search engines a
+  // per-title entry even though books don't have individual pages yet.
+  const booksSchema = useMemo(
+    () => ({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: 'The Eva Gallo Collection',
+      numberOfItems: books.length,
+      itemListElement: books.map((book, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@type': 'Book',
+          name: book.title,
+          author: { '@type': 'Person', name: 'Eva Gallo' },
+          inLanguage: book.languages.map(f => FLAG_TO_LANG[f]).filter(Boolean),
+          url: book.amazonUrl,
+          image: book.coverImage.startsWith('http') ? book.coverImage : `${SITE_URL}${book.coverImage}`,
+          ...(book.subtitle ? { alternativeHeadline: book.subtitle } : {}),
+          abstract: book.description,
+        },
+      })),
+    }),
+    [books],
+  );
+
   // Internal age filter keys are language-invariant; UI labels come from t.
   const ageFilters: { key: string; label: string }[] = [
     { key: 'All', label: t.ageAll },
@@ -114,6 +144,7 @@ export default function Books() {
   return (
     <main>
       <Seo title={t.seoTitle} description={t.seoDesc} path="/books" />
+      <JsonLd id="books" data={booksSchema} />
 
       <section className="bg-gradient-to-b from-purple-50 to-white py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
@@ -157,8 +188,8 @@ export default function Books() {
           </p>
           {filtered.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map(book => (
-                <BookCard key={book.id} book={book} />
+              {filtered.map((book, i) => (
+                <BookCard key={book.id} book={book} priority={i < 3} />
               ))}
             </div>
           ) : (

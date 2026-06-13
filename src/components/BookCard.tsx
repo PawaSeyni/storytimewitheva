@@ -35,9 +35,12 @@ const TRANSLATIONS = {
 
 interface BookCardProps {
   book: LocalizedBook;
+  /** Above-the-fold cards (featured row, first books page row) load eagerly to
+   *  improve LCP; everything else stays lazy. */
+  priority?: boolean;
 }
 
-export default function BookCard({ book }: BookCardProps) {
+export default function BookCard({ book, priority = false }: BookCardProps) {
   const [showModal, setShowModal] = useState(false);
   const t = useTranslation(TRANSLATIONS);
 
@@ -48,7 +51,7 @@ export default function BookCard({ book }: BookCardProps) {
           <img
             src={book.coverImage}
             alt={`${book.title} — ${t.coverAlt}`}
-            loading="lazy"
+            loading={priority ? 'eager' : 'lazy'}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
           {book.featured && (
