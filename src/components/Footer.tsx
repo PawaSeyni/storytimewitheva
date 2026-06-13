@@ -11,6 +11,7 @@ const TRANSLATIONS = {
     resources: 'Parent Resources',
     about: 'About Eva',
     contact: 'Contact',
+    faq: 'FAQ',
     connect: 'Connect with Eva',
     connectBlurb: 'Join our community for weekly tips, new stories, and exclusive activities!',
     rights: '© 2025 Pawa Press Inc. · Story Time with Eva. All rights reserved.',
@@ -26,6 +27,7 @@ const TRANSLATIONS = {
     resources: 'Recursos para padres',
     about: 'Sobre Eva',
     contact: 'Contacto',
+    faq: 'Preguntas frecuentes',
     connect: 'Conecta con Eva',
     connectBlurb: '¡Únete a nuestra comunidad para consejos semanales, historias nuevas y actividades exclusivas!',
     rights: '© 2025 Pawa Press Inc. · Story Time with Eva. Todos los derechos reservados.',
@@ -41,6 +43,7 @@ const TRANSLATIONS = {
     resources: 'Ressources pour parents',
     about: 'À propos d\'Eva',
     contact: 'Contact',
+    faq: 'FAQ',
     connect: 'Connectez-vous avec Eva',
     connectBlurb: 'Rejoignez notre communauté pour des conseils hebdomadaires, de nouvelles histoires et des activités exclusives !',
     rights: '© 2025 Pawa Press Inc. · Story Time with Eva. Tous droits réservés.',
@@ -59,6 +62,7 @@ export default function Footer() {
     { to: '/resources', label: t.resources },
     { to: '/about', label: t.about },
     { to: '/contact', label: t.contact },
+    { to: '/faq', label: t.faq },
   ];
 
   return (
