@@ -63,12 +63,13 @@ const TRANSLATIONS = {
       { emoji: '✨', title: 'Choose', desc: "Pick the perfect story or activity for your child's age" },
       { emoji: '🎉', title: 'Enjoy!', desc: 'Start reading, playing, and learning together' },
     ],
-    testimonialsTitle: 'What Parents Say',
-    testimonialsSubtitle: 'Real families, real magic',
-    testimonials: [
-      { text: "My daughter asks for Eva's books every single night. The bilingual format has been incredible for her Spanish learning!", author: 'Maria T.', role: 'Mom of a 5-year-old' },
-      { text: 'The Kindness Garden sparked a whole week of conversations about helping others. These books are more than stories.', author: 'James R.', role: 'Dad of two' },
-      { text: "As a teacher, I recommend Eva's books to all my students' parents. The cultural diversity woven into each story is beautiful.", author: 'Ms. Sandra L.', role: '1st Grade Teacher' },
+    benefitsTitle: 'Why Story Time with Eva',
+    benefitsSubtitle: 'Thoughtful stories and free tools families can count on',
+    benefits: [
+      { emoji: '🌍', title: 'Read in three languages', desc: 'Switch between English, Spanish, and French anytime — made for bilingual families and language learners.' },
+      { emoji: '🔊', title: 'Hear every story', desc: 'Tap Listen on any book to hear it read aloud with natural pronunciation in each language.' },
+      { emoji: '🎨', title: 'Free activities & printables', desc: 'Story dice, coloring, a reading journal, and a free bilingual starter kit — all free.' },
+      { emoji: '💜', title: 'Gentle stories with heart', desc: 'Quiet, values-rich picture books about kindness, courage, and wonder for ages 3–9.' },
     ],
     activitiesTitle: 'Fun Activities with Eva',
     activitiesSubtitle: 'Learning comes alive through play!',
@@ -106,12 +107,13 @@ const TRANSLATIONS = {
       { emoji: '✨', title: 'Elige', desc: 'Selecciona la historia o actividad perfecta para la edad de tu peque' },
       { emoji: '🎉', title: '¡Disfruta!', desc: 'Empieza a leer, jugar y aprender juntos' },
     ],
-    testimonialsTitle: 'Lo que dicen los padres',
-    testimonialsSubtitle: 'Familias reales, magia real',
-    testimonials: [
-      { text: 'Mi hija pide los libros de Eva todas las noches. ¡El formato bilingüe ha sido increíble para su aprendizaje del español!', author: 'María T.', role: 'Mamá de un niño de 5 años' },
-      { text: 'El Jardín de la Bondad inspiró una semana entera de conversaciones sobre ayudar a los demás. Estos libros son más que historias.', author: 'James R.', role: 'Papá de dos' },
-      { text: 'Como maestra, recomiendo los libros de Eva a todos los padres de mis estudiantes. La diversidad cultural en cada historia es hermosa.', author: 'Sra. Sandra L.', role: 'Maestra de 1.º grado' },
+    benefitsTitle: 'Por qué Story Time with Eva',
+    benefitsSubtitle: 'Historias con cariño y recursos gratuitos en los que las familias pueden confiar',
+    benefits: [
+      { emoji: '🌍', title: 'Lee en tres idiomas', desc: 'Cambia entre inglés, español y francés cuando quieras — ideal para familias bilingües y para aprender idiomas.' },
+      { emoji: '🔊', title: 'Escucha cada historia', desc: 'Pulsa Escuchar en cualquier libro para oírlo en voz alta con pronunciación natural en cada idioma.' },
+      { emoji: '🎨', title: 'Actividades y descargables gratis', desc: 'Dados de historias, páginas para colorear, un diario de lectura y un kit de inicio bilingüe — todo gratis.' },
+      { emoji: '💜', title: 'Historias tiernas con valores', desc: 'Libros ilustrados serenos sobre la bondad, la valentía y el asombro, para edades de 3 a 9 años.' },
     ],
     activitiesTitle: 'Actividades divertidas con Eva',
     activitiesSubtitle: '¡El aprendizaje cobra vida con el juego!',
@@ -149,12 +151,13 @@ const TRANSLATIONS = {
       { emoji: '✨', title: 'Choisir', desc: "Choisissez l'histoire ou l'activité idéale pour l'âge de votre enfant" },
       { emoji: '🎉', title: 'Profiter !', desc: 'Commencez à lire, jouer et apprendre ensemble' },
     ],
-    testimonialsTitle: 'Ce que disent les parents',
-    testimonialsSubtitle: 'Vraies familles, vraie magie',
-    testimonials: [
-      { text: 'Ma fille demande les livres d\'Eva chaque soir. Le format bilingue a été incroyable pour son apprentissage de l\'espagnol !', author: 'Maria T.', role: 'Maman d\'un enfant de 5 ans' },
-      { text: 'Le Jardin de la Bonté a déclenché toute une semaine de conversations sur l\'aide aux autres. Ces livres sont bien plus que des histoires.', author: 'James R.', role: 'Papa de deux enfants' },
-      { text: 'En tant qu\'enseignante, je recommande les livres d\'Eva à tous les parents de mes élèves. La diversité culturelle tissée dans chaque histoire est magnifique.', author: 'Mme Sandra L.', role: 'Maîtresse de CP' },
+    benefitsTitle: 'Pourquoi Story Time with Eva',
+    benefitsSubtitle: 'Des histoires attentionnées et des ressources gratuites sur lesquelles les familles peuvent compter',
+    benefits: [
+      { emoji: '🌍', title: 'Lisez en trois langues', desc: 'Passez de l\'anglais à l\'espagnol et au français à tout moment — parfait pour les familles bilingues et l\'apprentissage des langues.' },
+      { emoji: '🔊', title: 'Écoutez chaque histoire', desc: 'Appuyez sur Écouter sur n\'importe quel livre pour l\'entendre lu à voix haute avec une prononciation naturelle dans chaque langue.' },
+      { emoji: '🎨', title: 'Activités et imprimables gratuits', desc: 'Dés à histoires, coloriages, un journal de lecture et un kit de démarrage bilingue — tout gratuit.' },
+      { emoji: '💜', title: 'Des histoires douces et porteuses de sens', desc: 'Des albums paisibles sur la gentillesse, le courage et l\'émerveillement, pour les 3 à 9 ans.' },
     ],
     activitiesTitle: 'Activités amusantes avec Eva',
     activitiesSubtitle: 'L\'apprentissage prend vie par le jeu !',
@@ -290,27 +293,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Parent Testimonials */}
+      {/* Why Story Time with Eva — honest benefit cards (no fabricated quotes) */}
       <section className="py-20 px-4 bg-gradient-to-b from-purple-50 to-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">{t.testimonialsTitle}</h2>
-            <p className="text-gray-500 text-lg">{t.testimonialsSubtitle}</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">{t.benefitsTitle}</h2>
+            <p className="text-gray-500 text-lg">{t.benefitsSubtitle}</p>
             <div className="w-20 h-1 bg-gradient-to-r from-purple-400 to-pink-400 mx-auto mt-6 rounded-full" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {t.testimonials.map((quote, i) => (
-              <div key={i} className="bg-white rounded-2xl p-6 shadow-md border border-purple-50">
-                <div className="flex gap-0.5 mb-3">
-                  {Array(5).fill(null).map((_, j) => (
-                    <span key={j} className="text-yellow-400">⭐</span>
-                  ))}
-                </div>
-                <p className="text-gray-600 italic leading-relaxed mb-4">"{quote.text}"</p>
-                <div>
-                  <p className="font-bold text-gray-800">{quote.author}</p>
-                  <p className="text-sm text-purple-600">{quote.role}</p>
-                </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {t.benefits.map((b, i) => (
+              <div key={i} className="bg-white rounded-2xl p-6 shadow-md border border-purple-50 text-center">
+                <div className="text-4xl mb-3" aria-hidden>{b.emoji}</div>
+                <h3 className="font-bold text-gray-800 mb-2">{b.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{b.desc}</p>
               </div>
             ))}
           </div>
