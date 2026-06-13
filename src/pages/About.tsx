@@ -3,7 +3,9 @@ import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
 import { useTranslation } from '../lib/language';
-import evaReading from '../assets/eva-reading.jpg';
+import evaHeadshot from '../assets/eva-headshot.jpg';
+
+const SITE_URL = 'https://storytimewitheva.com';
 
 const AUTHOR_SCHEMA = {
   '@context': 'https://schema.org',
@@ -12,7 +14,8 @@ const AUTHOR_SCHEMA = {
   jobTitle: 'Children’s Author',
   description:
     'Author of the Eva Gallo Collection of multicultural picture books for children ages 3–9.',
-  url: 'https://storytimewitheva.com/about',
+  url: `${SITE_URL}/about`,
+  image: `${SITE_URL}${evaHeadshot}`,
   sameAs: [
     'https://www.amazon.com/author/evagallo',
     'https://www.instagram.com/evagallo.books/',
@@ -27,7 +30,7 @@ const TRANSLATIONS = {
     subheading: 'Making reading magical for every child',
     refrain: 'Every story begins in the dark and ends in the morning.',
     refrainAttr: 'the signature rhythm of every book in the Eva Gallo Collection',
-    photoNote: 'Eva reads with her grandchildren',
+    photoNote: 'Eva Gallo, author',
     bioHeading: 'A Note from the Author',
     bio: [
       "This children's book series is a lively collection of imaginative stories from my childhood, created for kids ages 3 to 9.",
@@ -52,7 +55,7 @@ const TRANSLATIONS = {
     subheading: 'Haciendo la lectura mágica para cada peque',
     refrain: 'Cada historia comienza en la oscuridad y termina con la mañana.',
     refrainAttr: 'el ritmo distintivo de cada libro de la Colección Eva Gallo',
-    photoNote: 'Eva lee con sus nietos',
+    photoNote: 'Eva Gallo, autora',
     bioHeading: 'Una nota de la autora',
     bio: [
       'Esta serie de libros infantiles es una colección viva de historias imaginativas de mi infancia, creadas para niños de 3 a 9 años.',
@@ -77,7 +80,7 @@ const TRANSLATIONS = {
     subheading: 'Rendre la lecture magique pour chaque enfant',
     refrain: "Chaque histoire commence dans le noir et finit au matin.",
     refrainAttr: 'le rythme signature de chaque livre de la Collection Eva Gallo',
-    photoNote: 'Eva lit avec ses petits-enfants',
+    photoNote: 'Eva Gallo, autrice',
     bioHeading: "Mot de l'autrice",
     bio: [
       "Cette série de livres pour enfants est une collection vivante d'histoires imaginatives de mon enfance, créée pour les 3 à 9 ans.",
@@ -109,7 +112,7 @@ export default function About() {
 
   return (
     <main>
-      <Seo title={t.seoTitle} description={t.seoDesc} path="/about" />
+      <Seo title={t.seoTitle} description={t.seoDesc} path="/about" image={`${SITE_URL}${evaHeadshot}`} />
       <JsonLd id="author" data={AUTHOR_SCHEMA} />
 
       <section className="bg-gradient-to-b from-amber-50 to-white py-14 px-4">
@@ -136,13 +139,13 @@ export default function About() {
       <section className="py-14 px-4 bg-white">
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-col md:flex-row gap-10 items-center">
-            <div className="flex-shrink-0 w-full md:w-80">
+            <div className="flex-shrink-0 w-full md:w-72">
               <img
-                src={evaReading}
+                src={evaHeadshot}
                 alt={t.photoNote}
-                width={1200}
-                height={900}
-                className="w-full rounded-2xl shadow-xl border-4 border-white ring-4 ring-purple-100 object-cover"
+                width={800}
+                height={800}
+                className="w-full aspect-square rounded-2xl shadow-xl border-4 border-white ring-4 ring-purple-100 object-cover"
               />
               <p className="text-center text-xs text-gray-400 mt-3 italic">{t.photoNote}</p>
             </div>
