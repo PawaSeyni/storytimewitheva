@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finish the Story | Story Time with Eva</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+    * { font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif; }
+
+    @keyframes bounce-in {
+      0% { transform: scale(0.8); opacity: 0; }
+      60% { transform: scale(1.08); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .bounce-in { animation: bounce-in 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+
+    @keyframes slide-up {
+      0% { transform: translateY(24px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    .slide-up { animation: slide-up 0.4s ease forwards; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .float { animation: float 3s ease-in-out infinite; }
+
+    .choice-btn {
+      transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1);
+      cursor: pointer;
+    }
+    .choice-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 24px rgba(168,85,247,0.25); }
+    .choice-btn:active { transform: scale(0.97); }
+    .choice-btn.selected { border-color: #a855f7 !important; background: #f3e8ff !important; }
+
+    .step-dot {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 0.85rem;
+      transition: all 0.3s;
+    }
+    .step-dot.done { background: #a855f7; color: white; }
+    .step-dot.active { background: #f97316; color: white; box-shadow: 0 0 0 4px rgba(249,115,22,0.25); }
+    .step-dot.pending { background: #e5e7eb; color: #9ca3af; }
+
+    /* Certificate */
+    @media print {
+      body > *:not(#certificate) { display: none !important; }
+      #certificate { display: block !important; position: static !important; }
+    }
+    #certificate {
+      background: linear-gradient(135deg, #fdf4ff 0%, #eff6ff 50%, #f0fdf4 100%);
+      border: 4px solid #a855f7;
+      border-radius: 24px;
+      padding: 32px;
+      text-align: center;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    textarea:focus { outline: none; border-color: #a855f7; box-shadow: 0 0 0 3px rgba(168,85,247,0.15); }
+
+    .story-card {
+      background: linear-gradient(135deg, #fdf4ff, #eff6ff);
+      border: 2px solid #e9d5ff;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-purple-50 to-white">
+
+  <!-- Nav -->
+  <nav class="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-2 font-extrabold text-purple-700 text-lg">🐾 Story Time with Eva</a>
+        <div class="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-600">
+          <a href="/" class="hover:text-purple-600">Home</a>
+          <a href="/books" class="hover:text-purple-600">Books</a>
+          <a href="/activities" class="hover:text-purple-600">Activities</a>
+          <a href="/resources" class="hover:text-purple-600">Resources</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-3xl mx-auto px-4 pt-6 flex justify-between items-center">
+    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
+    <button id="markCompleted" class="px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
+  </div>
+
+  <main class="max-w-3xl mx-auto px-4 pb-16 pt-4">
+
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <div class="text-5xl mb-2 float">✍️</div>
+      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Finish Eva's Story!</h1>
+      <p class="text-gray-500 text-base">Eva started a story — now YOU get to finish it!</p>
+      <div class="w-20 h-1 bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 mx-auto mt-4 rounded-full"></div>
+    </div>
+
+    <!-- How to Play -->
+    <div class="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 rounded-2xl p-5 mb-6 text-white shadow-lg">
+      <h2 class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
+      <ol class="list-decimal list-inside space-y-1 text-sm font-semibold">
+        <li>Enter your name, then pick a story to finish</li>
+        <li>Read Eva's opening — she started it for you!</li>
+        <li>Choose what happens next at each story step</li>
+        <li>Write your own ending in the box</li>
+        <li>Print your very own Story Certificate! 🎓</li>
+      </ol>
+    </div>
+
+    <!-- Name Input -->
+    <div id="nameSection" class="bg-white rounded-3xl shadow-xl border-2 border-purple-100 p-6 mb-5">
+      <h2 class="text-lg font-extrabold text-purple-700 mb-3">👋 First, what's your name?</h2>
+      <div class="flex gap-3">
+        <input id="childName" type="text" placeholder="Type your name here..." maxlength="30"
+          class="flex-1 px-4 py-3 rounded-2xl border-2 border-purple-200 font-bold text-gray-700 focus:outline-none focus:border-purple-400 text-base"/>
+        <button id="startBtn" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-2xl shadow hover:shadow-lg transition-all">
+          Let's Go! →
+        </button>
+      </div>
+    </div>
+
+    <!-- Story Picker -->
+    <div id="storyPicker" class="hidden mb-5 slide-up">
+      <h2 class="text-lg font-extrabold text-gray-700 mb-3 text-center">📚 Choose a story to finish:</h2>
+      <div class="grid sm:grid-cols-2 gap-3" id="storyCards"></div>
+    </div>
+
+    <!-- Story Steps -->
+    <div id="storyGame" class="hidden">
+
+      <!-- Progress steps -->
+      <div class="flex items-center justify-center gap-2 mb-5" id="stepIndicator"></div>
+
+      <!-- Story opening -->
+      <div class="story-card rounded-3xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-2xl" id="storyEmoji"></span>
+          <span class="font-extrabold text-purple-700 text-lg" id="storyTitle"></span>
+        </div>
+        <div class="bg-white/70 rounded-2xl p-4 mb-3">
+          <p class="text-xs font-bold text-purple-500 mb-1">📖 Eva's opening:</p>
+          <p class="text-base font-bold text-gray-800 leading-relaxed italic" id="storyOpening"></p>
+        </div>
+        <!-- Built story so far -->
+        <div id="storyBuilt" class="hidden bg-white/70 rounded-2xl p-4 mb-3">
+          <p class="text-xs font-bold text-purple-500 mb-1">📝 Your story so far:</p>
+          <p class="text-sm font-semibold text-gray-700 leading-relaxed" id="storyBuiltText"></p>
+        </div>
+      </div>
+
+      <!-- Current step question -->
+      <div id="stepQuestion" class="bg-white rounded-3xl shadow-xl border-2 border-purple-100 p-6 mb-5 slide-up">
+        <p class="text-base font-extrabold text-gray-800 mb-4" id="questionText"></p>
+        <div class="grid sm:grid-cols-2 gap-3" id="choiceButtons"></div>
+        <!-- Free write -->
+        <div class="mt-4">
+          <p class="text-xs font-bold text-purple-500 mb-1">Or write your own:</p>
+          <textarea id="freeWrite" class="w-full px-4 py-3 rounded-2xl border-2 border-purple-200 font-semibold text-gray-700 text-sm" placeholder="Write what happens next..."></textarea>
+          <button id="useMyIdea" class="mt-2 px-5 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-full text-sm transition-all">Use My Idea ✏️</button>
+        </div>
+      </div>
+
+      <!-- Final ending step -->
+      <div id="endingSection" class="hidden bg-white rounded-3xl shadow-xl border-2 border-pink-100 p-6 mb-5 slide-up">
+        <h3 class="text-lg font-extrabold text-pink-600 mb-2">🌟 Now write your ending!</h3>
+        <p class="text-sm text-gray-500 font-semibold mb-3">How does YOUR story end? Write anything you like!</p>
+        <textarea id="endingText" class="w-full px-4 py-3 rounded-2xl border-2 border-pink-200 font-semibold text-gray-700 text-sm" placeholder="And then..." rows="4"></textarea>
+        <button id="finishStory" class="mt-3 w-full py-3 bg-gradient-to-r from-pink-500 to-orange-400 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">
+          🎉 Finish My Story!
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Certificate -->
+    <div id="certificateSection" class="hidden bounce-in">
+      <div id="certificate">
+        <div class="text-5xl mb-2">🏆</div>
+        <div class="text-xs font-bold text-purple-400 uppercase tracking-widest mb-1">Story Time with Eva presents</div>
+        <h2 class="text-2xl font-extrabold text-purple-700 mb-1">Story Ending Certificate</h2>
+        <p class="text-gray-500 text-sm mb-4">This certifies that</p>
+        <p class="text-3xl font-extrabold text-orange-500 mb-4" id="certName"></p>
+        <p class="text-gray-600 text-sm mb-4">has brilliantly finished the story:</p>
+        <p class="text-xl font-extrabold text-purple-700 mb-6" id="certStoryTitle"></p>
+
+        <div class="bg-white rounded-2xl p-5 text-left mb-5 border-2 border-purple-100">
+          <p class="text-xs font-bold text-purple-400 mb-2 uppercase tracking-wide">Their complete story:</p>
+          <p class="text-sm font-semibold text-gray-700 leading-relaxed italic" id="certFullStory"></p>
+        </div>
+
+        <div class="flex justify-center gap-2 text-2xl mb-4">⭐⭐⭐⭐⭐</div>
+        <p class="text-xs text-gray-400 font-bold">storytimewitheva.com | Keep reading, keep imagining! 📚</p>
+      </div>
+
+      <div class="flex gap-3 justify-center mt-5">
+        <button id="printCert" class="px-6 py-3 bg-purple-600 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">🖨️ Print Certificate</button>
+        <button id="newStory" class="px-6 py-3 bg-gradient-to-r from-pink-500 to-orange-400 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">📖 Try Another Story!</button>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const stories = [
+      {
+        id: 'rainbow',
+        emoji: '🌈',
+        title: 'The Day the Colors Got Mixed Up',
+        opening: 'One morning, Eva woke up and looked out her window. Something was very strange — the sky was GREEN, the grass was BLUE, and the sun was PURPLE! All the colors in the world had gotten mixed up overnight.',
+        steps: [
+          {
+            question: 'Eva decided to find out what happened. Where did she go first?',
+            choices: ['She ran to the Rainbow Garden at the edge of town', 'She climbed the tallest tree to see the whole village', 'She knocked on the door of the wise old owl', 'She followed a trail of colorful footprints'],
+          },
+          {
+            question: 'Eva discovered the colors were mixed up because...',
+            choices: ['A mischievous wind sprite had been playing tricks', 'The Color Keeper had lost her magic paintbrush', 'Two rainbows had crashed into each other', 'A little cloud had sneezed and scrambled everything'],
+          },
+          {
+            question: 'To fix the colors, Eva had to...',
+            choices: ['Sing a special color song with all her friends', 'Find all 7 color crystals hidden around the village', 'Paint a new rainbow from scratch', 'Ask the sun to sneeze everything back into place'],
+          },
+        ],
+      },
+      {
+        id: 'forest',
+        emoji: '🌲',
+        title: 'The Secret of the Whispering Forest',
+        opening: 'Eva loved walking through the forest behind her house. But one day, the trees began to whisper her name. "Eva... Eva... we need your help," the leaves rustled softly. Eva stopped and listened very carefully.',
+        steps: [
+          {
+            question: 'The trees needed Eva\'s help because...',
+            choices: ['A family of birds had lost their home', 'Someone had been taking the forest\'s magic seeds', 'The river that fed the trees had stopped flowing', 'A sleeping giant was about to wake up'],
+          },
+          {
+            question: 'Eva found a clue — a tiny glowing door at the base of the oldest tree. She...',
+            choices: ['Knocked three times and waited politely', 'Peeked through the keyhole and saw something amazing', 'Placed her hand on it and it swung open by itself', 'Called out "Hello? Is anyone home?"'],
+          },
+          {
+            question: 'Inside, Eva met a tiny forest guardian who told her the solution was...',
+            choices: ['To plant a new magic seed under the moonlight', 'To tell the forest a story it had never heard before', 'To bring laughter back to the forest with music', 'To find the missing piece of the forest\'s ancient map'],
+          },
+        ],
+      },
+      {
+        id: 'ocean',
+        emoji: '🌊',
+        title: 'Eva and the Talking Fish',
+        opening: 'Eva was sitting on the dock, dangling her feet in the cool blue water, when a shimmery silver fish popped its head above the surface. "Excuse me," said the fish politely, "but I believe you dropped something." It held up a tiny golden key in its fin.',
+        steps: [
+          {
+            question: 'Eva recognized the golden key — it opened...',
+            choices: ['The treasure chest her grandmother had left her', 'A mysterious locked box she found on the beach', 'The door to an underwater kingdom', 'A secret room in the old lighthouse'],
+          },
+          {
+            question: 'The fish offered to help Eva. In return, Eva had to...',
+            choices: ['Tell the fish the most exciting story she knew', 'Help clean up the plastic from the ocean floor', 'Bring the fish a gift from the land world', 'Teach the fish how to whistle'],
+          },
+          {
+            question: 'Together, Eva and the fish discovered that the key unlocked...',
+            choices: ['A map to the most beautiful hidden beach in the world', 'A message from Eva\'s grandmother full of love and wisdom', 'A magical pearl that could grant one wish', 'A door to an underwater library of stories'],
+          },
+        ],
+      },
+      {
+        id: 'star',
+        emoji: '⭐',
+        title: 'The Star That Fell Into Eva\'s Garden',
+        opening: 'One night, Eva saw a streak of light fall from the sky and land with a soft thud in her garden. She ran outside in her pajamas and found a small, glowing star sitting in the flower bed, looking very lost and a little bit scared.',
+        steps: [
+          {
+            question: 'The little star told Eva it had fallen because...',
+            choices: ['It had leaned too far over to see the Earth and slipped', 'A big storm in space had blown it off course', 'It had been chasing a comet and got lost', 'It wanted to see what flowers smelled like'],
+          },
+          {
+            question: 'To help the star get home, Eva needed to...',
+            choices: ['Build a rocket out of things in her garden', 'Find the highest hill and launch the star at midnight', 'Collect moonbeams in a jar to power the star\'s journey', 'Ask all the fireflies in the neighborhood to guide the way'],
+          },
+          {
+            question: 'Before the star left, it gave Eva a special gift — it was...',
+            choices: ['A tiny piece of itself that would glow whenever she felt lonely', 'The ability to understand what animals were saying', 'A map of all the constellations with her name on one', 'A wish that could only be used to help someone else'],
+          },
+        ],
+      },
+    ];
+
+    let childName = '';
+    let currentStory = null;
+    let currentStep = 0;
+    let storyChoices = [];
+    let builtStory = '';
+
+    // ── NAME SECTION ──────────────────────────────────────────────────────────
+    document.getElementById('startBtn').addEventListener('click', () => {
+      const name = document.getElementById('childName').value.trim();
+      if (!name) { document.getElementById('childName').focus(); return; }
+      childName = name;
+      document.getElementById('nameSection').classList.add('hidden');
+      showStoryPicker();
+    });
+    document.getElementById('childName').addEventListener('keydown', e => { if (e.key==='Enter') document.getElementById('startBtn').click(); });
+
+    function showStoryPicker() {
+      document.getElementById('storyPicker').classList.remove('hidden');
+      const container = document.getElementById('storyCards');
+      container.innerHTML = stories.map(s => `
+        <button class="choice-btn text-left p-4 rounded-2xl border-2 border-purple-100 bg-white hover:border-purple-300 shadow-sm"
+          onclick="startStory('${s.id}')">
+          <div class="text-3xl mb-2">${s.emoji}</div>
+          <div class="font-extrabold text-gray-800 text-sm mb-1">${s.title}</div>
+          <div class="text-xs text-gray-400 font-semibold">3 choices + your ending</div>
+        </button>
+      `).join('');
+    }
+
+    function startStory(id) {
+      currentStory = stories.find(s => s.id === id);
+      currentStep = 0;
+      storyChoices = [];
+      builtStory = currentStory.opening + ' ';
+      document.getElementById('storyPicker').classList.add('hidden');
+      document.getElementById('storyGame').classList.remove('hidden');
+      document.getElementById('storyEmoji').textContent = currentStory.emoji;
+      document.getElementById('storyTitle').textContent = currentStory.title;
+      document.getElementById('storyOpening').textContent = currentStory.opening;
+      document.getElementById('storyBuilt').classList.add('hidden');
+      renderStepIndicator();
+      renderStep();
+      speak(currentStory.opening);
+    }
+
+    function renderStepIndicator() {
+      const total = currentStory.steps.length + 1; // steps + ending
+      const container = document.getElementById('stepIndicator');
+      container.innerHTML = Array(total).fill(0).map((_,i) => {
+        let cls = i < currentStep ? 'done' : i === currentStep ? 'active' : 'pending';
+        let label = i < currentStory.steps.length ? (i+1) : '✍️';
+        return `<div class="step-dot ${cls}">${label}</div>${i<total-1?'<div class="w-6 h-0.5 bg-gray-200 mt-4"></div>':''}`;
+      }).join('');
+    }
+
+    function renderStep() {
+      document.getElementById('endingSection').classList.add('hidden');
+      const stepQ = document.getElementById('stepQuestion');
+
+      if (currentStep >= currentStory.steps.length) {
+        // Show ending section
+        stepQ.classList.add('hidden');
+        document.getElementById('endingSection').classList.remove('hidden');
+        if (builtStory) {
+          document.getElementById('storyBuilt').classList.remove('hidden');
+          document.getElementById('storyBuiltText').textContent = builtStory;
+        }
+        return;
+      }
+
+      stepQ.classList.remove('hidden');
+      const step = currentStory.steps[currentStep];
+      document.getElementById('questionText').textContent = step.question;
+      document.getElementById('freeWrite').value = '';
+
+      const choiceContainer = document.getElementById('choiceButtons');
+      choiceContainer.innerHTML = step.choices.map((c,i) => `
+        <button class="choice-btn text-left px-4 py-3 rounded-2xl border-2 border-gray-200 bg-white text-sm font-bold text-gray-700"
+          id="choice-${i}" onclick="selectChoice(${i}, \`${c.replace(/`/g,'\\`')}\`)">
+          ${['🅐','🅑','🅒','🅓'][i]} ${c}
+        </button>
+      `).join('');
+
+      speak(step.question);
+      renderStepIndicator();
+    }
+
+    function selectChoice(idx, text) {
+      document.querySelectorAll('[id^="choice-"]').forEach((b,i) => b.classList.toggle('selected', i===idx));
+      document.getElementById('freeWrite').value = '';
+      setTimeout(() => advanceStep(text), 600);
+    }
+
+    document.getElementById('useMyIdea').addEventListener('click', () => {
+      const text = document.getElementById('freeWrite').value.trim();
+      if (!text) return;
+      advanceStep(text);
+    });
+
+    function advanceStep(choiceText) {
+      storyChoices.push(choiceText);
+      builtStory += choiceText + '. ';
+      document.getElementById('storyBuilt').classList.remove('hidden');
+      document.getElementById('storyBuiltText').textContent = builtStory;
+      currentStep++;
+      renderStep();
+    }
+
+    document.getElementById('finishStory').addEventListener('click', () => {
+      const ending = document.getElementById('endingText').value.trim();
+      if (!ending) { document.getElementById('endingText').focus(); return; }
+      const fullStory = builtStory + ending;
+      showCertificate(fullStory);
+    });
+
+    function showCertificate(fullStory) {
+      document.getElementById('storyGame').classList.add('hidden');
+      const section = document.getElementById('certificateSection');
+      section.classList.remove('hidden');
+      document.getElementById('certName').textContent = childName;
+      document.getElementById('certStoryTitle').textContent = `"${currentStory.title}"`;
+      document.getElementById('certFullStory').textContent = fullStory;
+      speak(`Congratulations ${childName}! You finished the story! Amazing work!`);
+    }
+
+    document.getElementById('printCert').addEventListener('click', () => window.print());
+    document.getElementById('newStory').addEventListener('click', () => {
+      document.getElementById('certificateSection').classList.add('hidden');
+      document.getElementById('storyGame').classList.add('hidden');
+      showStoryPicker();
+      document.getElementById('storyPicker').classList.remove('hidden');
+    });
+    document.getElementById('markCompleted').addEventListener('click', function() {
+      this.textContent = '✅ Completed!';
+      this.classList.add('bg-green-100','border-green-400','text-green-700');
+    });
+
+    function speak(text) {
+      if (!window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US'; u.rate = 0.85; u.pitch = 1.05;
+      window.speechSynthesis.speak(u);
+    }
+  </script>
+
+  <footer class="bg-gray-800 text-white py-10 mt-10">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p class="font-extrabold text-lg mb-1">🐾 Story Time with Eva</p>
+      <p class="text-gray-400 text-sm mb-4">Where stories come to life! Magical bilingual books and activities for curious young minds.</p>
+      <div class="flex justify-center gap-4 text-sm text-gray-400">
+        <a href="/" class="hover:text-white">Home</a>
+        <a href="/books" class="hover:text-white">Books</a>
+        <a href="/activities" class="hover:text-white">Activities</a>
+        <a href="/about" class="hover:text-white">About Eva</a>
+      </div>
+      <p class="text-gray-500 text-xs mt-4">© 2025 Story Time with Eva. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

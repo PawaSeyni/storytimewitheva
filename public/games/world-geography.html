@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>World Geography Map Game | Story Time with Eva</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+    * { font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif; }
+
+    /* Map styles */
+    #worldMap {
+      width: 100%;
+      height: auto;
+      background: #dbeafe;
+      border-radius: 1.5rem;
+    }
+    .country {
+      fill: #86efac;
+      stroke: #ffffff;
+      stroke-width: 0.5;
+      transition: fill 0.25s, transform 0.2s;
+      cursor: pointer;
+      transform-origin: center;
+    }
+    .country:hover { fill: #a855f7; }
+    .country.highlighted {
+      fill: #f97316;
+      stroke: #ea580c;
+      stroke-width: 1.5;
+      filter: drop-shadow(0 0 6px rgba(249,115,22,0.7));
+      animation: pulse-country 1.2s ease-in-out infinite;
+    }
+    .country.correct-flash {
+      fill: #22c55e;
+      stroke: #16a34a;
+      stroke-width: 2;
+    }
+    .country.wrong-flash {
+      fill: #ef4444;
+      stroke: #dc2626;
+      stroke-width: 2;
+    }
+
+    @keyframes pulse-country {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    /* Answer buttons */
+    .answer-btn {
+      transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1);
+      cursor: pointer;
+    }
+    .answer-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(168,85,247,0.3); }
+    .answer-btn:active { transform: scale(0.97); }
+    .answer-btn.correct { background: #dcfce7 !important; border-color: #22c55e !important; color: #15803d !important; }
+    .answer-btn.wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #b91c1c !important; }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+    .shake { animation: shake 0.4s ease; }
+
+    @keyframes bounce-in {
+      0% { transform: scale(0.8); opacity: 0; }
+      60% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .bounce-in { animation: bounce-in 0.4s ease forwards; }
+
+    @keyframes slide-up {
+      0% { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    .slide-up { animation: slide-up 0.35s ease forwards; }
+
+    .level-btn.active {
+      background: linear-gradient(to right, rgb(168,85,247), rgb(236,72,153));
+      color: white;
+      box-shadow: 0 4px 12px rgba(168,85,247,0.4);
+    }
+
+    /* Continent badge */
+    .continent-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 999px;
+      font-size: 0.7rem; font-weight: 800;
+    }
+
+    /* Progress bar */
+    .progress-fill { transition: width 0.5s ease; }
+
+    /* Flag tooltip */
+    .flag-tooltip {
+      position: absolute;
+      background: white;
+      border: 2px solid #e9d5ff;
+      border-radius: 12px;
+      padding: 8px 12px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      pointer-events: none;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      white-space: nowrap;
+    }
+
+    /* Map container */
+    .map-container { position: relative; }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+
+  <!-- Nav -->
+  <nav class="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-2 font-extrabold text-purple-700 text-lg">🐾 Story Time with Eva</a>
+        <div class="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-600">
+          <a href="/" class="hover:text-purple-600">Home</a>
+          <a href="/books" class="hover:text-purple-600">Books</a>
+          <a href="/activities" class="hover:text-purple-600">Activities</a>
+          <a href="/resources" class="hover:text-purple-600">Resources</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-5xl mx-auto px-4 pt-6">
+    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
+    <button id="markCompleted" class="float-right px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
+  </div>
+
+  <main class="max-w-5xl mx-auto px-4 pb-16 pt-4">
+
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <div class="text-5xl mb-2">🌍</div>
+      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Eva's World Explorer</h1>
+      <p class="text-gray-500 text-base">A country lights up on the map — can you name it?</p>
+      <div class="w-20 h-1 bg-gradient-to-r from-blue-400 via-green-400 to-purple-400 mx-auto mt-4 rounded-full"></div>
+    </div>
+
+    <!-- How to Play -->
+    <div class="bg-gradient-to-r from-blue-400 via-teal-400 to-green-500 rounded-2xl p-5 mb-6 text-white shadow-lg">
+      <h2 class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
+      <ol class="list-decimal list-inside space-y-1 text-sm font-semibold">
+        <li>A country will light up in orange on the world map</li>
+        <li>Read the fun fact clue about that country</li>
+        <li>Tap the correct country name from the 4 choices!</li>
+        <li>Earn stars for every correct answer 🌟</li>
+        <li>Explore all continents to become a World Explorer! 🌍</li>
+      </ol>
+    </div>
+
+    <!-- Level Selector -->
+    <div class="flex justify-center gap-3 mb-5">
+      <button class="level-btn active px-5 py-2 rounded-full border-2 border-blue-300 font-bold text-sm transition-all" data-level="beginner">🌱 Beginner</button>
+      <button class="level-btn px-5 py-2 rounded-full border-2 border-blue-300 font-bold text-sm text-gray-600 transition-all hover:bg-blue-50" data-level="explorer">🗺️ Explorer</button>
+      <button class="level-btn px-5 py-2 rounded-full border-2 border-blue-300 font-bold text-sm text-gray-600 transition-all hover:bg-blue-50" data-level="champion">🏆 Champion</button>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="flex justify-between items-center bg-blue-50 rounded-2xl px-5 py-3 mb-5 border-2 border-blue-100">
+      <div class="text-center">
+        <div class="text-2xl font-extrabold text-blue-600" id="qNum">1</div>
+        <div class="text-xs text-gray-500 font-bold">Question</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-extrabold text-purple-600" id="scoreDisplay">0</div>
+        <div class="text-xs text-gray-500 font-bold">Stars ⭐</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-extrabold text-green-600" id="streakDisplay">0</div>
+        <div class="text-xs text-gray-500 font-bold">Streak 🔥</div>
+      </div>
+      <button id="resetBtn" class="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 font-bold rounded-full text-sm transition-all">🔄 New Game</button>
+    </div>
+
+    <!-- Progress -->
+    <div class="mb-4">
+      <div class="w-full bg-gray-200 rounded-full h-3">
+        <div id="progressBar" class="progress-fill h-3 rounded-full bg-gradient-to-r from-blue-400 to-green-500" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-5">
+
+      <!-- MAP (3/5 width on large) -->
+      <div class="lg:col-span-3">
+        <div class="map-container bg-blue-100 rounded-2xl overflow-hidden shadow-lg border-2 border-blue-200">
+          <!-- Interactive SVG World Map using simplified country paths -->
+          <svg id="worldMap" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+            <!-- Ocean background -->
+            <rect width="1000" height="500" fill="#bfdbfe"/>
+
+            <!-- NORTH AMERICA -->
+            <!-- Canada -->
+            <path id="canada" class="country" d="M 80 30 L 350 30 L 350 80 L 310 90 L 290 120 L 250 130 L 220 110 L 180 120 L 150 100 L 100 110 L 80 80 Z" />
+            <!-- USA -->
+            <path id="usa" class="country" d="M 90 130 L 310 120 L 320 160 L 300 180 L 270 185 L 240 175 L 210 185 L 180 180 L 150 185 L 120 175 L 90 165 Z" />
+            <!-- Mexico -->
+            <path id="mexico" class="country" d="M 100 185 L 240 185 L 250 210 L 230 230 L 200 235 L 170 225 L 140 230 L 110 215 Z" />
+            <!-- Greenland -->
+            <path id="greenland" class="country" d="M 340 10 L 430 10 L 440 50 L 420 70 L 390 75 L 360 65 L 340 40 Z" />
+
+            <!-- CENTRAL AMERICA & CARIBBEAN -->
+            <path id="cuba" class="country" d="M 175 240 L 220 238 L 225 248 L 215 255 L 180 252 Z" />
+            <path id="guatemala" class="country" d="M 130 235 L 160 232 L 165 250 L 145 258 L 128 250 Z" />
+
+            <!-- SOUTH AMERICA -->
+            <!-- Brazil -->
+            <path id="brazil" class="country" d="M 200 270 L 320 260 L 340 290 L 330 340 L 300 370 L 260 380 L 230 360 L 200 320 L 190 290 Z" />
+            <!-- Colombia -->
+            <path id="colombia" class="country" d="M 170 255 L 210 255 L 215 275 L 195 285 L 170 278 Z" />
+            <!-- Argentina -->
+            <path id="argentina" class="country" d="M 215 370 L 265 365 L 270 400 L 255 430 L 235 440 L 215 420 L 205 395 Z" />
+            <!-- Peru -->
+            <path id="peru" class="country" d="M 175 285 L 210 280 L 215 315 L 200 330 L 175 320 Z" />
+            <!-- Chile -->
+            <path id="chile" class="country" d="M 195 330 L 215 325 L 220 370 L 210 420 L 195 415 L 185 375 Z" />
+            <!-- Venezuela -->
+            <path id="venezuela" class="country" d="M 210 255 L 250 250 L 255 270 L 235 278 L 210 272 Z" />
+
+            <!-- EUROPE -->
+            <!-- UK -->
+            <path id="uk" class="country" d="M 430 75 L 450 70 L 458 90 L 448 105 L 432 100 L 425 85 Z" />
+            <!-- France -->
+            <path id="france" class="country" d="M 450 100 L 490 95 L 498 120 L 480 135 L 455 130 L 445 115 Z" />
+            <!-- Germany -->
+            <path id="germany" class="country" d="M 490 85 L 525 82 L 530 108 L 510 118 L 488 112 Z" />
+            <!-- Spain -->
+            <path id="spain" class="country" d="M 440 130 L 490 125 L 495 155 L 468 162 L 440 155 Z" />
+            <!-- Italy -->
+            <path id="italy" class="country" d="M 490 120 L 515 118 L 520 145 L 510 165 L 495 168 L 488 148 Z" />
+            <!-- Norway -->
+            <path id="norway" class="country" d="M 480 45 L 515 38 L 525 62 L 508 72 L 482 68 Z" />
+            <!-- Sweden -->
+            <path id="sweden" class="country" d="M 515 40 L 540 38 L 545 70 L 528 78 L 514 68 Z" />
+            <!-- Poland -->
+            <path id="poland" class="country" d="M 525 82 L 560 80 L 562 105 L 540 110 L 524 106 Z" />
+            <!-- Ukraine -->
+            <path id="ukraine" class="country" d="M 560 88 L 610 85 L 615 108 L 590 115 L 558 110 Z" />
+            <!-- Portugal -->
+            <path id="portugal" class="country" d="M 432 128 L 450 126 L 452 155 L 438 158 L 430 145 Z" />
+            <!-- Netherlands -->
+            <path id="netherlands" class="country" d="M 476 82 L 492 80 L 494 95 L 478 97 Z" />
+            <!-- Greece -->
+            <path id="greece" class="country" d="M 520 140 L 545 138 L 548 158 L 530 165 L 518 158 Z" />
+
+            <!-- AFRICA -->
+            <!-- Morocco -->
+            <path id="morocco" class="country" d="M 440 165 L 480 162 L 485 195 L 460 200 L 438 192 Z" />
+            <!-- Egypt -->
+            <path id="egypt" class="country" d="M 545 158 L 590 155 L 595 185 L 568 190 L 543 183 Z" />
+            <!-- Nigeria -->
+            <path id="nigeria" class="country" d="M 468 235 L 510 232 L 515 265 L 490 272 L 465 265 Z" />
+            <!-- South Africa -->
+            <path id="southafrica" class="country" d="M 510 355 L 560 350 L 568 385 L 545 400 L 515 395 L 500 375 Z" />
+            <!-- Kenya -->
+            <path id="kenya" class="country" d="M 570 265 L 610 260 L 615 295 L 590 302 L 565 295 Z" />
+            <!-- Ethiopia -->
+            <path id="ethiopia" class="country" d="M 570 235 L 615 230 L 620 262 L 595 268 L 568 260 Z" />
+            <!-- DR Congo -->
+            <path id="drcongo" class="country" d="M 510 270 L 560 265 L 568 310 L 540 318 L 508 310 Z" />
+            <!-- Tanzania -->
+            <path id="tanzania" class="country" d="M 560 300 L 610 295 L 615 330 L 588 338 L 558 330 Z" />
+            <!-- Algeria -->
+            <path id="algeria" class="country" d="M 455 195 L 545 190 L 550 235 L 510 240 L 458 235 Z" />
+            <!-- Libya -->
+            <path id="libya" class="country" d="M 505 165 L 548 162 L 555 198 L 528 202 L 503 196 Z" />
+            <!-- Sudan -->
+            <path id="sudan" class="country" d="M 545 195 L 590 190 L 595 235 L 568 240 L 542 232 Z" />
+            <!-- Ghana -->
+            <path id="ghana" class="country" d="M 452 250 L 478 248 L 482 272 L 460 278 L 450 268 Z" />
+            <!-- Cameroon -->
+            <path id="cameroon" class="country" d="M 490 245 L 520 242 L 525 272 L 500 278 L 488 268 Z" />
+            <!-- Mozambique -->
+            <path id="mozambique" class="country" d="M 560 330 L 590 325 L 595 368 L 572 375 L 558 362 Z" />
+            <!-- Madagascar -->
+            <path id="madagascar" class="country" d="M 610 315 L 635 310 L 640 360 L 620 368 L 608 350 Z" />
+
+            <!-- MIDDLE EAST -->
+            <!-- Saudi Arabia -->
+            <path id="saudiarabia" class="country" d="M 590 180 L 640 175 L 648 215 L 620 225 L 588 218 Z" />
+            <!-- Turkey -->
+            <path id="turkey" class="country" d="M 548 140 L 600 135 L 608 158 L 580 165 L 546 160 Z" />
+            <!-- Iran -->
+            <path id="iran" class="country" d="M 610 155 L 660 150 L 668 185 L 640 192 L 608 185 Z" />
+            <!-- Iraq -->
+            <path id="iraq" class="country" d="M 590 158 L 618 155 L 622 180 L 600 185 L 588 178 Z" />
+            <!-- Israel -->
+            <path id="israel" class="country" d="M 570 165 L 582 163 L 584 178 L 572 180 Z" />
+
+            <!-- ASIA -->
+            <!-- Russia -->
+            <path id="russia" class="country" d="M 545 30 L 900 20 L 910 90 L 850 100 L 780 95 L 700 100 L 640 95 L 580 100 L 545 80 Z" />
+            <!-- China -->
+            <path id="china" class="country" d="M 680 120 L 800 115 L 815 175 L 780 195 L 720 200 L 678 185 Z" />
+            <!-- India -->
+            <path id="india" class="country" d="M 660 185 L 720 180 L 728 240 L 700 265 L 668 258 L 655 225 Z" />
+            <!-- Japan -->
+            <path id="japan" class="country" d="M 830 120 L 858 115 L 865 150 L 848 162 L 828 155 Z" />
+            <!-- Indonesia -->
+            <path id="indonesia" class="country" d="M 730 270 L 820 265 L 830 290 L 800 298 L 728 292 Z" />
+            <!-- Pakistan -->
+            <path id="pakistan" class="country" d="M 638 178 L 680 173 L 685 205 L 660 212 L 635 205 Z" />
+            <!-- Bangladesh -->
+            <path id="bangladesh" class="country" d="M 720 195 L 740 193 L 742 212 L 725 215 Z" />
+            <!-- Vietnam -->
+            <path id="vietnam" class="country" d="M 770 195 L 790 192 L 795 235 L 778 240 L 768 228 Z" />
+            <!-- Thailand -->
+            <path id="thailand" class="country" d="M 745 205 L 775 200 L 778 235 L 758 240 L 742 230 Z" />
+            <!-- South Korea -->
+            <path id="southkorea" class="country" d="M 808 128 L 832 125 L 835 148 L 815 152 L 806 142 Z" />
+            <!-- Philippines -->
+            <path id="philippines" class="country" d="M 810 215 L 840 210 L 845 250 L 825 255 L 808 242 Z" />
+            <!-- Kazakhstan -->
+            <path id="kazakhstan" class="country" d="M 620 100 L 700 95 L 705 130 L 670 138 L 618 130 Z" />
+            <!-- Afghanistan -->
+            <path id="afghanistan" class="country" d="M 638 155 L 680 150 L 685 178 L 658 183 L 635 175 Z" />
+            <!-- Myanmar -->
+            <path id="myanmar" class="country" d="M 738 185 L 765 180 L 770 215 L 748 220 L 735 208 Z" />
+            <!-- Malaysia -->
+            <path id="malaysia" class="country" d="M 748 248 L 780 244 L 785 265 L 762 270 L 745 262 Z" />
+
+            <!-- OCEANIA -->
+            <!-- Australia -->
+            <path id="australia" class="country" d="M 780 310 L 900 305 L 915 380 L 880 405 L 820 408 L 778 385 Z" />
+            <!-- New Zealand -->
+            <path id="newzealand" class="country" d="M 910 370 L 935 365 L 940 400 L 920 408 L 908 390 Z" />
+            <!-- Papua New Guinea -->
+            <path id="papuanewguinea" class="country" d="M 840 270 L 880 265 L 885 295 L 860 300 L 838 290 Z" />
+
+            <!-- Country labels (small, for reference) -->
+          </svg>
+          <!-- Tooltip -->
+          <div id="mapTooltip" class="flag-tooltip hidden"></div>
+        </div>
+
+        <!-- Map legend -->
+        <div class="flex gap-3 mt-2 text-xs font-bold justify-center flex-wrap">
+          <span class="flex items-center gap-1"><span class="w-4 h-4 rounded bg-orange-400 inline-block"></span> Find this country!</span>
+          <span class="flex items-center gap-1"><span class="w-4 h-4 rounded bg-green-400 inline-block"></span> Correct!</span>
+          <span class="flex items-center gap-1"><span class="w-4 h-4 rounded bg-red-400 inline-block"></span> Wrong</span>
+        </div>
+      </div>
+
+      <!-- QUESTION PANEL (2/5 width) -->
+      <div class="lg:col-span-2 flex flex-col gap-4">
+
+        <!-- Question Card -->
+        <div class="bg-white rounded-3xl shadow-xl border-2 border-blue-100 p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-2xl" id="qEmoji">🌍</span>
+            <div>
+              <div class="text-xs font-bold text-blue-500 uppercase tracking-wide" id="qContinent">Continent</div>
+              <div class="text-sm font-extrabold text-gray-700">Which country is this?</div>
+            </div>
+          </div>
+
+          <!-- Fun fact clue -->
+          <div class="bg-blue-50 rounded-2xl p-3 mb-4 border border-blue-100">
+            <p class="text-xs font-bold text-blue-600 mb-1">🔍 Clue:</p>
+            <p class="text-sm font-bold text-gray-700" id="qClue">Loading...</p>
+          </div>
+
+          <!-- Answer options -->
+          <div class="grid grid-cols-2 gap-2 mb-3" id="answerOptions"></div>
+
+          <!-- Feedback -->
+          <div id="feedback" class="text-center text-sm font-extrabold min-h-6 mb-2"></div>
+
+          <!-- Country info reveal -->
+          <div id="countryReveal" class="hidden bg-green-50 rounded-2xl p-3 border border-green-200 bounce-in">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-2xl" id="revealFlag"></span>
+              <span class="font-extrabold text-green-700" id="revealName"></span>
+            </div>
+            <p class="text-xs text-gray-600 font-semibold" id="revealFact"></p>
+          </div>
+
+          <button id="nextBtn" class="hidden mt-3 w-full py-2 bg-gradient-to-r from-blue-500 to-teal-500 text-white font-extrabold rounded-full shadow hover:shadow-lg transition-all text-sm">
+            Next Country →
+          </button>
+        </div>
+
+        <!-- Explored countries -->
+        <div class="bg-white rounded-2xl shadow border-2 border-blue-50 p-4">
+          <p class="text-xs font-extrabold text-gray-500 mb-2 uppercase tracking-wide">Countries Explored</p>
+          <div id="exploredList" class="flex flex-wrap gap-1"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Celebration -->
+    <div id="celebration" class="hidden text-center py-8 bg-gradient-to-r from-blue-50 to-green-50 rounded-3xl border-2 border-blue-200 mt-6 bounce-in">
+      <div class="text-6xl mb-2">🌍</div>
+      <h2 class="text-2xl font-extrabold text-purple-700 mb-1">World Explorer Champion!</h2>
+      <p class="text-gray-600 mb-1" id="celebStats"></p>
+      <p class="text-gray-500 text-sm mb-4">You explored countries from every continent! 🌟</p>
+      <div class="flex justify-center gap-3">
+        <button id="playAgain" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">🔄 Play Again!</button>
+        <button id="nextLevelBtn" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-teal-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">⬆️ Harder Level!</button>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // ─── COUNTRY DATA ───────────────────────────────────────────────────────────
+    const countries = {
+      // id: { name, flag, continent, continentEmoji, clue, funFact, level }
+      // Beginner: very well-known countries
+      usa:          { name:'United States',    flag:'🇺🇸', continent:'North America', ce:'🌎', clue:'Home of the Statue of Liberty and the Grand Canyon', fact:'The USA has 50 states and is the 3rd largest country in the world!', level:1 },
+      brazil:       { name:'Brazil',           flag:'🇧🇷', continent:'South America', ce:'🌎', clue:'The largest country in South America, famous for the Amazon rainforest', fact:'Brazil has the world\'s largest tropical rainforest — the Amazon!', level:1 },
+      france:       { name:'France',           flag:'🇫🇷', continent:'Europe',        ce:'🌍', clue:'Famous for the Eiffel Tower and delicious croissants', fact:'France is the most visited country in the world!', level:1 },
+      china:        { name:'China',            flag:'🇨🇳', continent:'Asia',          ce:'🌏', clue:'Home of the Great Wall and giant pandas', fact:'China has the largest population of any country in the world!', level:1 },
+      australia:    { name:'Australia',        flag:'🇦🇺', continent:'Oceania',       ce:'🌏', clue:'Home of kangaroos, koalas, and the Great Barrier Reef', fact:'Australia is the only country that is also an entire continent!', level:1 },
+      russia:       { name:'Russia',           flag:'🇷🇺', continent:'Europe/Asia',   ce:'🌍', clue:'The largest country in the world, spanning two continents', fact:'Russia is so big it has 11 different time zones!', level:1 },
+      india:        { name:'India',            flag:'🇮🇳', continent:'Asia',          ce:'🌏', clue:'Home of the Taj Mahal and the Ganges River', fact:'India has more than 1.4 billion people and 22 official languages!', level:1 },
+      canada:       { name:'Canada',           flag:'🇨🇦', continent:'North America', ce:'🌎', clue:'The second largest country in the world, famous for maple syrup', fact:'Canada has more lakes than any other country in the world!', level:1 },
+      // Explorer: well-known but slightly harder
+      uk:           { name:'United Kingdom',   flag:'🇬🇧', continent:'Europe',        ce:'🌍', clue:'An island nation famous for Big Ben and the Queen\'s palace', fact:'The UK is made up of four countries: England, Scotland, Wales, and Northern Ireland!', level:2 },
+      germany:      { name:'Germany',          flag:'🇩🇪', continent:'Europe',        ce:'🌍', clue:'Famous for the Black Forest, castles, and the Berlin Wall', fact:'Germany invented the printing press, which changed the world forever!', level:2 },
+      japan:        { name:'Japan',            flag:'🇯🇵', continent:'Asia',          ce:'🌏', clue:'An island nation famous for cherry blossoms and Mount Fuji', fact:'Japan has over 6,800 islands and is known for its bullet trains!', level:2 },
+      southafrica:  { name:'South Africa',     flag:'🇿🇦', continent:'Africa',        ce:'🌍', clue:'At the southern tip of Africa, famous for lions and Nelson Mandela', fact:'South Africa has 11 official languages — more than almost any country!', level:2 },
+      mexico:       { name:'Mexico',           flag:'🇲🇽', continent:'North America', ce:'🌎', clue:'Famous for ancient pyramids, tacos, and colorful festivals', fact:'Mexico City is one of the largest cities in the world and was built on a lake!', level:2 },
+      egypt:        { name:'Egypt',            flag:'🇪🇬', continent:'Africa',        ce:'🌍', clue:'Home of the ancient pyramids and the Sphinx', fact:'The Great Pyramid of Giza is one of the Seven Wonders of the Ancient World!', level:2 },
+      argentina:    { name:'Argentina',        flag:'🇦🇷', continent:'South America', ce:'🌎', clue:'Famous for tango dancing and the Andes mountains', fact:'Argentina is the 8th largest country in the world!', level:2 },
+      indonesia:    { name:'Indonesia',        flag:'🇮🇩', continent:'Asia',          ce:'🌏', clue:'The world\'s largest archipelago with over 17,000 islands', fact:'Indonesia has more volcanoes than any other country!', level:2 },
+      // Champion: harder countries
+      nigeria:      { name:'Nigeria',          flag:'🇳🇬', continent:'Africa',        ce:'🌍', clue:'The most populous country in Africa, famous for Nollywood films', fact:'Nigeria has over 500 different languages spoken within its borders!', level:3 },
+      kenya:        { name:'Kenya',            flag:'🇰🇪', continent:'Africa',        ce:'🌍', clue:'Famous for the Maasai Mara safari and marathon runners', fact:'Kenya\'s Great Rift Valley is one of the most dramatic landscapes on Earth!', level:3 },
+      turkey:       { name:'Turkey',           flag:'🇹🇷', continent:'Europe/Asia',   ce:'🌍', clue:'A country that sits on two continents, famous for hot air balloons in Cappadocia', fact:'Turkey is one of the few countries that straddles two continents!', level:3 },
+      iran:         { name:'Iran',             flag:'🇮🇷', continent:'Asia',          ce:'🌏', clue:'An ancient civilization famous for beautiful mosques and Persian carpets', fact:'Iran (ancient Persia) is one of the oldest civilizations in the world!', level:3 },
+      colombia:     { name:'Colombia',         flag:'🇨🇴', continent:'South America', ce:'🌎', clue:'Famous for coffee, emeralds, and the Amazon and Andes', fact:'Colombia is the only country in South America with coastlines on both the Pacific and Atlantic oceans!', level:3 },
+      ukraine:      { name:'Ukraine',          flag:'🇺🇦', continent:'Europe',        ce:'🌍', clue:'The largest country entirely within Europe, famous for sunflowers', fact:'Ukraine is known as the "breadbasket of Europe" because of its rich farmland!', level:3 },
+      vietnam:      { name:'Vietnam',          flag:'🇻🇳', continent:'Asia',          ce:'🌏', clue:'A long, S-shaped country in Southeast Asia famous for Ha Long Bay', fact:'Vietnam has over 3,000 km of coastline along the South China Sea!', level:3 },
+      peru:         { name:'Peru',             flag:'🇵🇪', continent:'South America', ce:'🌎', clue:'Home of Machu Picchu and the ancient Inca civilization', fact:'Peru\'s Amazon rainforest is home to more species of birds than anywhere else on Earth!', level:3 },
+    };
+
+    const levelSets = {
+      beginner: ['usa','brazil','france','china','australia','russia','india','canada'],
+      explorer: ['uk','germany','japan','southafrica','mexico','egypt','argentina','indonesia'],
+      champion: ['nigeria','kenya','turkey','iran','colombia','ukraine','vietnam','peru'],
+    };
+
+    const levelOrder = ['beginner','explorer','champion'];
+    let currentLevel = 'beginner';
+    let queue = [];
+    let currentIdx = 0;
+    let score = 0;
+    let streak = 0;
+    let answered = false;
+    let explored = [];
+
+    function shuffle(arr) {
+      const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a;
+    }
+
+    function initGame(level) {
+      currentLevel = level;
+      queue = shuffle([...levelSets[level]]);
+      currentIdx = 0; score = 0; streak = 0; explored = [];
+      document.getElementById('scoreDisplay').textContent = '0';
+      document.getElementById('streakDisplay').textContent = '0';
+      document.getElementById('celebration').classList.add('hidden');
+      document.getElementById('exploredList').innerHTML = '';
+      // Reset all country fills
+      document.querySelectorAll('.country').forEach(c => {
+        c.classList.remove('highlighted','correct-flash','wrong-flash');
+      });
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      if (currentIdx >= queue.length) { showCelebration(); return; }
+      answered = false;
+      const cid = queue[currentIdx];
+      const c = countries[cid];
+
+      document.getElementById('qNum').textContent = currentIdx + 1;
+      document.getElementById('qEmoji').textContent = c.ce;
+      document.getElementById('qContinent').textContent = c.continent;
+      document.getElementById('qClue').textContent = c.clue;
+      document.getElementById('feedback').textContent = '';
+      document.getElementById('countryReveal').classList.add('hidden');
+      document.getElementById('nextBtn').classList.add('hidden');
+      document.getElementById('progressBar').style.width = `${(currentIdx / queue.length) * 100}%`;
+
+      // Highlight country on map
+      document.querySelectorAll('.country').forEach(el => el.classList.remove('highlighted','correct-flash','wrong-flash'));
+      const el = document.getElementById(cid);
+      if (el) el.classList.add('highlighted');
+
+      // Build answer options (1 correct + 3 wrong)
+      const allIds = Object.keys(countries);
+      const wrong = shuffle(allIds.filter(id => id !== cid)).slice(0, 3);
+      const opts = shuffle([cid, ...wrong]);
+      const container = document.getElementById('answerOptions');
+      container.innerHTML = opts.map(id => `
+        <button class="answer-btn px-3 py-3 rounded-2xl border-2 border-gray-200 bg-white text-sm font-extrabold text-gray-700 text-left hover:border-purple-300"
+          id="opt-${id}" onclick="checkAnswer('${id}','${cid}')">
+          ${countries[id].flag} ${countries[id].name}
+        </button>
+      `).join('');
+
+      // Speak clue
+      speak(c.clue);
+    }
+
+    function checkAnswer(chosen, correct) {
+      if (answered) return;
+      answered = true;
+      const c = countries[correct];
+
+      if (chosen === correct) {
+        score += 2; streak++;
+        document.getElementById('scoreDisplay').textContent = score;
+        document.getElementById('streakDisplay').textContent = streak;
+        document.getElementById(`opt-${chosen}`).classList.add('correct');
+        document.getElementById('feedback').innerHTML = `<span class="text-green-600">🎉 Correct! That's ${c.name}! +2 ⭐</span>`;
+        const el = document.getElementById(correct);
+        if (el) { el.classList.remove('highlighted'); el.classList.add('correct-flash'); }
+        speak(`Correct! That is ${c.name}! ${c.fact}`);
+      } else {
+        streak = 0;
+        document.getElementById('streakDisplay').textContent = '0';
+        document.getElementById(`opt-${chosen}`).classList.add('wrong');
+        document.getElementById(`opt-${chosen}`).classList.add('shake');
+        document.getElementById(`opt-${correct}`).classList.add('correct');
+        document.getElementById('feedback').innerHTML = `<span class="text-red-500">Not quite! It was ${c.name}. Keep exploring! 💪</span>`;
+        const el = document.getElementById(correct);
+        if (el) { el.classList.remove('highlighted'); el.classList.add('correct-flash'); }
+        speak(`The answer was ${c.name}. ${c.fact}`);
+      }
+
+      // Show country reveal
+      document.getElementById('revealFlag').textContent = c.flag;
+      document.getElementById('revealName').textContent = c.name;
+      document.getElementById('revealFact').textContent = '🌟 ' + c.fact;
+      document.getElementById('countryReveal').classList.remove('hidden');
+
+      // Add to explored
+      explored.push(correct);
+      document.getElementById('exploredList').innerHTML = explored.map(id =>
+        `<span title="${countries[id].name}" class="text-xl">${countries[id].flag}</span>`
+      ).join('');
+
+      setTimeout(() => document.getElementById('nextBtn').classList.remove('hidden'), 800);
+    }
+
+    function speak(text) {
+      if (!window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US'; u.rate = 0.85; u.pitch = 1.0;
+      window.speechSynthesis.speak(u);
+    }
+
+    function showCelebration() {
+      document.getElementById('progressBar').style.width = '100%';
+      document.getElementById('celebStats').textContent = `You scored ${score} stars exploring ${queue.length} countries!`;
+      document.getElementById('celebration').classList.remove('hidden');
+      speak('Congratulations! You are a World Explorer Champion!');
+    }
+
+    // Level buttons
+    document.querySelectorAll('.level-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.level-btn').forEach(b => { b.classList.remove('active'); b.classList.add('text-gray-600'); });
+        btn.classList.add('active'); btn.classList.remove('text-gray-600');
+        initGame(btn.dataset.level);
+      });
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', () => { currentIdx++; loadQuestion(); });
+    document.getElementById('resetBtn').addEventListener('click', () => initGame(currentLevel));
+    document.getElementById('playAgain').addEventListener('click', () => initGame(currentLevel));
+    document.getElementById('nextLevelBtn').addEventListener('click', () => {
+      const idx = levelOrder.indexOf(currentLevel);
+      const next = levelOrder[Math.min(idx+1, levelOrder.length-1)];
+      document.querySelectorAll('.level-btn').forEach(b => {
+        b.classList.remove('active');
+        if (b.dataset.level === next) { b.classList.add('active'); b.classList.remove('text-gray-600'); }
+        else b.classList.add('text-gray-600');
+      });
+      initGame(next);
+    });
+    document.getElementById('markCompleted').addEventListener('click', function() {
+      this.textContent = '✅ Completed!';
+      this.classList.add('bg-green-100','border-green-400','text-green-700');
+    });
+
+    // Map hover tooltip
+    document.querySelectorAll('.country').forEach(el => {
+      el.addEventListener('mouseenter', (e) => {
+        const id = el.id;
+        if (countries[id]) {
+          const tip = document.getElementById('mapTooltip');
+          tip.textContent = `${countries[id].flag} ${countries[id].name}`;
+          tip.classList.remove('hidden');
+        }
+      });
+      el.addEventListener('mousemove', (e) => {
+        const tip = document.getElementById('mapTooltip');
+        const rect = e.target.closest('.map-container').getBoundingClientRect();
+        tip.style.left = (e.clientX - rect.left + 10) + 'px';
+        tip.style.top = (e.clientY - rect.top - 30) + 'px';
+      });
+      el.addEventListener('mouseleave', () => {
+        document.getElementById('mapTooltip').classList.add('hidden');
+      });
+    });
+
+    initGame('beginner');
+  </script>
+
+  <footer class="bg-gray-800 text-white py-10 mt-10">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p class="font-extrabold text-lg mb-1">🐾 Story Time with Eva</p>
+      <p class="text-gray-400 text-sm mb-4">Where stories come to life! Magical bilingual books and activities for curious young minds.</p>
+      <div class="flex justify-center gap-4 text-sm text-gray-400">
+        <a href="/" class="hover:text-white">Home</a>
+        <a href="/books" class="hover:text-white">Books</a>
+        <a href="/activities" class="hover:text-white">Activities</a>
+        <a href="/about" class="hover:text-white">About Eva</a>
+      </div>
+      <p class="text-gray-500 text-xs mt-4">© 2025 Story Time with Eva. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

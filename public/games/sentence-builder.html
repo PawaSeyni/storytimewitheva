@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bilingual Sentence Builder | Story Time with Eva</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+    * { font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif; }
+
+    @keyframes bounce-in {
+      0% { transform: scale(0.8); opacity: 0; }
+      60% { transform: scale(1.12); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .bounce-in { animation: bounce-in 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+    .shake { animation: shake 0.4s ease; }
+
+    @keyframes slide-up {
+      0% { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    .slide-up { animation: slide-up 0.35s ease forwards; }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .float { animation: float 3s ease-in-out infinite; }
+
+    /* Word tile */
+    .word-tile {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: grab;
+      transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1);
+      border: 2px solid transparent;
+      user-select: none;
+      touch-action: none;
+    }
+    .word-tile:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+    .word-tile:active { transform: scale(0.95); cursor: grabbing; }
+    .word-tile.dragging { opacity: 0.5; transform: scale(0.95); }
+    .word-tile.placed { cursor: pointer; }
+    .word-tile.placed:hover { transform: translateY(-2px); }
+
+    /* Drop zone */
+    #dropZone {
+      min-height: 64px;
+      border: 3px dashed #c4b5fd;
+      border-radius: 16px;
+      padding: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      transition: all 0.2s;
+      background: #faf5ff;
+    }
+    #dropZone.drag-over {
+      border-color: #a855f7;
+      background: #f3e8ff;
+      box-shadow: 0 0 0 4px rgba(168,85,247,0.15);
+    }
+    #dropZone.correct {
+      border-color: #22c55e;
+      background: #f0fdf4;
+    }
+    #dropZone.wrong {
+      border-color: #ef4444;
+      background: #fef2f2;
+    }
+
+    /* Translation reveal */
+    .translation-box {
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-weight: 800;
+    }
+
+    /* Level tab */
+    .level-tab.active {
+      background: linear-gradient(to right, #a855f7, #ec4899);
+      color: white;
+    }
+
+    /* Lang tab */
+    .lang-tab.active {
+      background: linear-gradient(to right, #3b82f6, #06b6d4);
+      color: white;
+    }
+
+    /* Progress dot */
+    .prog-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      transition: all 0.3s;
+    }
+    .prog-dot.done { background: #a855f7; }
+    .prog-dot.current { background: #f97316; box-shadow: 0 0 0 3px rgba(249,115,22,0.3); }
+    .prog-dot.pending { background: #e5e7eb; }
+
+    /* Hint word */
+    .hint-word {
+      display: inline-block;
+      padding: 2px 8px;
+      background: #fef3c7;
+      border: 1px dashed #f59e0b;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #92400e;
+      margin: 2px;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+
+  <!-- Nav -->
+  <nav class="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-2 font-extrabold text-purple-700 text-lg">🐾 Story Time with Eva</a>
+        <div class="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-600">
+          <a href="/" class="hover:text-purple-600">Home</a>
+          <a href="/books" class="hover:text-purple-600">Books</a>
+          <a href="/activities" class="hover:text-purple-600">Activities</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-3xl mx-auto px-4 pt-6 flex justify-between items-center">
+    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
+    <button id="markCompleted" class="px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
+  </div>
+
+  <main class="max-w-3xl mx-auto px-4 pb-16 pt-4">
+
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <div class="text-5xl mb-2 float">🌐</div>
+      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Sentence Builder</h1>
+      <p class="text-gray-500 text-base">Arrange the word tiles to build the correct sentence!</p>
+      <div class="w-20 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 mx-auto mt-4 rounded-full"></div>
+    </div>
+
+    <!-- How to Play -->
+    <div class="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-2xl p-5 mb-6 text-white shadow-lg">
+      <h2 class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
+      <ol class="list-decimal list-inside space-y-1 text-sm font-semibold">
+        <li>Look at the picture clue and the scrambled word tiles</li>
+        <li>Drag (or tap) the tiles into the correct order</li>
+        <li>Press "Check!" to see if you got it right</li>
+        <li>See the sentence in Spanish and French too! 🌍</li>
+        <li>Complete all sentences to earn your Explorer Badge! 🏅</li>
+      </ol>
+    </div>
+
+    <!-- Controls -->
+    <div class="flex flex-wrap gap-2 justify-between items-center mb-4">
+      <!-- Level -->
+      <div class="flex gap-1">
+        <button class="level-tab active px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold transition-all" data-level="beginner">🌱 Beginner</button>
+        <button class="level-tab px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-level="intermediate">🌿 Intermediate</button>
+        <button class="level-tab px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-level="advanced">🌳 Advanced</button>
+      </div>
+      <!-- Score -->
+      <div class="flex gap-3 text-sm font-extrabold">
+        <span class="text-purple-600">⭐ <span id="scoreNum">0</span></span>
+        <span class="text-orange-500">🔥 <span id="streakNum">0</span></span>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="flex gap-1 justify-center mb-4" id="progressDots"></div>
+
+    <!-- Main Game Card -->
+    <div class="bg-white rounded-3xl shadow-xl border-2 border-blue-100 p-6 mb-4">
+
+      <!-- Round info -->
+      <div class="flex justify-between text-xs font-bold text-gray-400 mb-4">
+        <span>Sentence <span id="roundNum" class="text-purple-600 font-extrabold">1</span> of <span id="totalNum">8</span></span>
+        <button id="hintBtn" class="text-yellow-600 hover:text-yellow-700">💡 Hint</button>
+      </div>
+
+      <!-- Picture clue -->
+      <div class="text-center mb-4">
+        <div class="text-6xl mb-2" id="pictureClue"></div>
+        <p class="text-xs font-bold text-gray-400" id="clueLabel"></p>
+      </div>
+
+      <!-- Hint row -->
+      <div id="hintRow" class="hidden text-center mb-3 slide-up">
+        <p class="text-xs font-bold text-yellow-600 mb-1">💡 The correct order is:</p>
+        <div id="hintWords"></div>
+      </div>
+
+      <!-- Drop zone -->
+      <div class="mb-3">
+        <p class="text-xs font-bold text-purple-500 mb-2">📝 Build your sentence here:</p>
+        <div id="dropZone" onclick="handleDropZoneClick(event)">
+          <span class="text-gray-300 text-sm font-bold" id="dropPlaceholder">Tap or drag words here...</span>
+        </div>
+      </div>
+
+      <!-- Word tile bank -->
+      <div class="mb-4">
+        <p class="text-xs font-bold text-gray-400 mb-2">🔤 Word tiles:</p>
+        <div id="tilePalette" class="flex flex-wrap gap-2 min-h-12 p-2 bg-gray-50 rounded-2xl border-2 border-gray-100"></div>
+      </div>
+
+      <!-- Feedback -->
+      <div id="feedback" class="text-center font-extrabold text-base min-h-6 mb-3"></div>
+
+      <!-- Translation reveal -->
+      <div id="translationReveal" class="hidden slide-up mb-4">
+        <div class="grid grid-cols-3 gap-2">
+          <div class="translation-box bg-blue-50 border-2 border-blue-200 text-center">
+            <div class="text-xs text-blue-400 mb-1">🇺🇸 English</div>
+            <div class="text-sm text-blue-800" id="transEN"></div>
+          </div>
+          <div class="translation-box bg-red-50 border-2 border-red-200 text-center">
+            <div class="text-xs text-red-400 mb-1">🇪🇸 Español</div>
+            <div class="text-sm text-red-800" id="transES"></div>
+          </div>
+          <div class="translation-box bg-indigo-50 border-2 border-indigo-200 text-center">
+            <div class="text-xs text-indigo-400 mb-1">🇫🇷 Français</div>
+            <div class="text-sm text-indigo-800" id="transFR"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex gap-3">
+        <button id="clearBtn" class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-600 font-extrabold rounded-full transition-all">🔄 Reset</button>
+        <button id="checkBtn" class="flex-2 flex-grow py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">✓ Check!</button>
+        <button id="nextBtn" class="hidden flex-1 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">Next →</button>
+      </div>
+    </div>
+
+    <!-- Celebration -->
+    <div id="celebration" class="hidden text-center py-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl border-2 border-purple-200 bounce-in">
+      <div class="text-6xl mb-2">🏅</div>
+      <h2 class="text-2xl font-extrabold text-purple-700 mb-1">Bilingual Explorer!</h2>
+      <p class="text-gray-600 mb-1" id="celebStats"></p>
+      <p class="text-gray-500 text-sm mb-4">You can build sentences in English, Spanish, and French! 🌍</p>
+      <div class="flex justify-center gap-3">
+        <button id="playAgain" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">🔄 Play Again!</button>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // ─── SENTENCES ───────────────────────────────────────────────────────────
+    const sentences = {
+      beginner: [
+        { emoji:'🌞', clue:'The sun is shining', en:['The','sun','is','shining'], es:'El sol está brillando', fr:'Le soleil brille' },
+        { emoji:'🐶', clue:'The dog is happy',   en:['The','dog','is','happy'],   es:'El perro está feliz', fr:'Le chien est heureux' },
+        { emoji:'🌸', clue:'The flower is pink',  en:['The','flower','is','pink'],  es:'La flor es rosada', fr:'La fleur est rose' },
+        { emoji:'🐦', clue:'A bird can fly',      en:['A','bird','can','fly'],      es:'Un pájaro puede volar', fr:'Un oiseau peut voler' },
+        { emoji:'🌊', clue:'The water is blue',   en:['The','water','is','blue'],   es:'El agua es azul', fr:'L\'eau est bleue' },
+        { emoji:'🍎', clue:'I like red apples',   en:['I','like','red','apples'],   es:'Me gustan las manzanas rojas', fr:'J\'aime les pommes rouges' },
+        { emoji:'⭐', clue:'Stars shine at night', en:['Stars','shine','at','night'], es:'Las estrellas brillan de noche', fr:'Les étoiles brillent la nuit' },
+        { emoji:'🌈', clue:'The rainbow is beautiful', en:['The','rainbow','is','beautiful'], es:'El arcoíris es hermoso', fr:'L\'arc-en-ciel est beau' },
+      ],
+      intermediate: [
+        { emoji:'📚', clue:'Eva loves to read books', en:['Eva','loves','to','read','books'], es:'Eva ama leer libros', fr:'Eva aime lire des livres' },
+        { emoji:'🌲', clue:'The forest is full of magic', en:['The','forest','is','full','of','magic'], es:'El bosque está lleno de magia', fr:'La forêt est pleine de magie' },
+        { emoji:'🦋', clue:'Butterflies are very beautiful', en:['Butterflies','are','very','beautiful'], es:'Las mariposas son muy hermosas', fr:'Les papillons sont très beaux' },
+        { emoji:'🌙', clue:'The moon lights up the sky', en:['The','moon','lights','up','the','sky'], es:'La luna ilumina el cielo', fr:'La lune éclaire le ciel' },
+        { emoji:'🎵', clue:'Music makes me feel happy', en:['Music','makes','me','feel','happy'], es:'La música me hace sentir feliz', fr:'La musique me rend heureux' },
+        { emoji:'🐠', clue:'Fish swim in the deep ocean', en:['Fish','swim','in','the','deep','ocean'], es:'Los peces nadan en el océano profundo', fr:'Les poissons nagent dans l\'océan profond' },
+        { emoji:'🌺', clue:'Flowers bloom every spring', en:['Flowers','bloom','every','spring'], es:'Las flores florecen cada primavera', fr:'Les fleurs fleurissent chaque printemps' },
+        { emoji:'🏔️', clue:'Mountains are tall and majestic', en:['Mountains','are','tall','and','majestic'], es:'Las montañas son altas y majestuosas', fr:'Les montagnes sont hautes et majestueuses' },
+      ],
+      advanced: [
+        { emoji:'🌍', clue:'We must take care of our planet', en:['We','must','take','care','of','our','planet'], es:'Debemos cuidar nuestro planeta', fr:'Nous devons prendre soin de notre planète' },
+        { emoji:'🤝', clue:'Kindness makes the world better', en:['Kindness','makes','the','world','better'], es:'La bondad hace el mundo mejor', fr:'La gentillesse rend le monde meilleur' },
+        { emoji:'📖', clue:'Stories help us understand each other', en:['Stories','help','us','understand','each','other'], es:'Las historias nos ayudan a entendernos', fr:'Les histoires nous aident à nous comprendre' },
+        { emoji:'🌱', clue:'Every small action can change the world', en:['Every','small','action','can','change','the','world'], es:'Cada pequeña acción puede cambiar el mundo', fr:'Chaque petite action peut changer le monde' },
+        { emoji:'🎨', clue:'Art lets us express our feelings', en:['Art','lets','us','express','our','feelings'], es:'El arte nos permite expresar nuestros sentimientos', fr:'L\'art nous permet d\'exprimer nos sentiments' },
+        { emoji:'🦁', clue:'Courage means being brave even when scared', en:['Courage','means','being','brave','even','when','scared'], es:'El coraje significa ser valiente incluso cuando tienes miedo', fr:'Le courage signifie être courageux même quand on a peur' },
+        { emoji:'🌟', clue:'Everyone has a special gift inside them', en:['Everyone','has','a','special','gift','inside','them'], es:'Todos tienen un don especial dentro de ellos', fr:'Tout le monde a un don spécial en eux' },
+        { emoji:'💛', clue:'Friendship is the greatest treasure of all', en:['Friendship','is','the','greatest','treasure','of','all'], es:'La amistad es el mayor tesoro de todos', fr:'L\'amitié est le plus grand trésor de tous' },
+      ],
+    };
+
+    const tileColors = [
+      'bg-purple-100 text-purple-800 border-purple-300',
+      'bg-blue-100 text-blue-800 border-blue-300',
+      'bg-pink-100 text-pink-800 border-pink-300',
+      'bg-green-100 text-green-800 border-green-300',
+      'bg-orange-100 text-orange-800 border-orange-300',
+      'bg-cyan-100 text-cyan-800 border-cyan-300',
+      'bg-yellow-100 text-yellow-800 border-yellow-300',
+    ];
+
+    let currentLevel = 'beginner';
+    let queue = [];
+    let currentIdx = 0;
+    let score = 0;
+    let streak = 0;
+    let placedWords = [];
+    let availableWords = [];
+    let answered = false;
+    let hintUsed = false;
+
+    function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+    function initGame(level) {
+      currentLevel = level;
+      queue = shuffle([...sentences[level]]);
+      currentIdx = 0; score = 0; streak = 0;
+      document.getElementById('scoreNum').textContent = '0';
+      document.getElementById('streakNum').textContent = '0';
+      document.getElementById('celebration').classList.add('hidden');
+      document.getElementById('totalNum').textContent = queue.length;
+      buildProgressDots();
+      loadSentence();
+    }
+
+    function buildProgressDots() {
+      const c = document.getElementById('progressDots');
+      c.innerHTML = queue.map((_,i) => `<div class="prog-dot ${i===0?'current':'pending'}" id="pdot-${i}"></div>`).join('');
+    }
+
+    function updateProgressDots() {
+      queue.forEach((_,i) => {
+        const d = document.getElementById(`pdot-${i}`);
+        if (!d) return;
+        if (i < currentIdx) d.className = 'prog-dot done';
+        else if (i === currentIdx) d.className = 'prog-dot current';
+        else d.className = 'prog-dot pending';
+      });
+    }
+
+    function loadSentence() {
+      if (currentIdx >= queue.length) { showCelebration(); return; }
+      answered = false; hintUsed = false; placedWords = []; availableWords = [];
+      const s = queue[currentIdx];
+      document.getElementById('roundNum').textContent = currentIdx + 1;
+      document.getElementById('pictureClue').textContent = s.emoji;
+      document.getElementById('clueLabel').textContent = `Clue: "${s.clue}"`;
+      document.getElementById('feedback').textContent = '';
+      document.getElementById('translationReveal').classList.add('hidden');
+      document.getElementById('nextBtn').classList.add('hidden');
+      document.getElementById('hintRow').classList.add('hidden');
+      document.getElementById('dropZone').className = 'mb-3';
+      document.getElementById('dropZone').innerHTML = '<span class="text-gray-300 text-sm font-bold" id="dropPlaceholder">Tap or drag words here...</span>';
+      updateProgressDots();
+
+      // Shuffle tiles
+      availableWords = shuffle([...s.en]);
+      renderTilePalette();
+      speak(s.clue);
+    }
+
+    function renderTilePalette() {
+      const palette = document.getElementById('tilePalette');
+      palette.innerHTML = availableWords.map((word, i) => {
+        const colorClass = tileColors[i % tileColors.length];
+        return `<div class="word-tile ${colorClass} border-2" 
+          id="tile-${i}" data-word="${word}" data-idx="${i}"
+          draggable="true"
+          ondragstart="onTileDragStart(event, ${i})"
+          onclick="tapTile(${i})">
+          ${word}
+        </div>`;
+      }).join('');
+
+      // Setup drop zone
+      const dz = document.getElementById('dropZone');
+      dz.ondragover = e => { e.preventDefault(); dz.classList.add('drag-over'); };
+      dz.ondragleave = () => dz.classList.remove('drag-over');
+      dz.ondrop = e => {
+        e.preventDefault();
+        dz.classList.remove('drag-over');
+        const idx = parseInt(e.dataTransfer.getData('text/plain'));
+        if (!isNaN(idx)) moveTileToZone(idx);
+      };
+    }
+
+    let dragTileIdx = null;
+    function onTileDragStart(e, idx) {
+      dragTileIdx = idx;
+      e.dataTransfer.setData('text/plain', idx.toString());
+      e.dataTransfer.effectAllowed = 'move';
+      document.getElementById(`tile-${idx}`)?.classList.add('dragging');
+    }
+
+    function tapTile(idx) {
+      if (answered) return;
+      moveTileToZone(idx);
+    }
+
+    function moveTileToZone(idx) {
+      if (answered) return;
+      const word = availableWords[idx];
+      if (!word) return;
+      placedWords.push({ word, idx });
+      availableWords[idx] = null;
+
+      // Remove from palette
+      const tile = document.getElementById(`tile-${idx}`);
+      if (tile) tile.remove();
+
+      // Add to drop zone
+      const dz = document.getElementById('dropZone');
+      const placeholder = document.getElementById('dropPlaceholder');
+      if (placeholder) placeholder.remove();
+
+      const colorClass = tileColors[idx % tileColors.length];
+      const placedTile = document.createElement('div');
+      placedTile.className = `word-tile placed ${colorClass} border-2`;
+      placedTile.textContent = word;
+      placedTile.dataset.placedIdx = placedWords.length - 1;
+      placedTile.title = 'Click to remove';
+      placedTile.addEventListener('click', () => removePlacedTile(parseInt(placedTile.dataset.placedIdx)));
+      dz.appendChild(placedTile);
+    }
+
+    function removePlacedTile(placedIdx) {
+      if (answered) return;
+      const entry = placedWords[placedIdx];
+      if (!entry) return;
+      placedWords[placedIdx] = null;
+      availableWords[entry.idx] = entry.word;
+
+      // Re-render palette
+      renderTilePalette();
+
+      // Re-render drop zone
+      const dz = document.getElementById('dropZone');
+      dz.innerHTML = '';
+      const remaining = placedWords.filter(Boolean);
+      if (remaining.length === 0) {
+        dz.innerHTML = '<span class="text-gray-300 text-sm font-bold" id="dropPlaceholder">Tap or drag words here...</span>';
+      } else {
+        remaining.forEach((entry, i) => {
+          const colorClass = tileColors[entry.idx % tileColors.length];
+          const t = document.createElement('div');
+          t.className = `word-tile placed ${colorClass} border-2`;
+          t.textContent = entry.word;
+          t.dataset.placedIdx = placedWords.indexOf(entry);
+          t.addEventListener('click', () => removePlacedTile(parseInt(t.dataset.placedIdx)));
+          dz.appendChild(t);
+        });
+      }
+    }
+
+    function handleDropZoneClick(e) { /* handled by tile clicks */ }
+
+    // Check answer
+    document.getElementById('checkBtn').addEventListener('click', checkAnswer);
+    function checkAnswer() {
+      if (answered) return;
+      const s = queue[currentIdx];
+      const placed = placedWords.filter(Boolean).map(p => p.word);
+      if (placed.length === 0) return;
+
+      answered = true;
+      const correct = s.en;
+      const isCorrect = placed.length === correct.length && placed.every((w,i) => w.toLowerCase() === correct[i].toLowerCase());
+
+      const dz = document.getElementById('dropZone');
+      if (isCorrect) {
+        score += hintUsed ? 1 : 2;
+        streak++;
+        document.getElementById('scoreNum').textContent = score;
+        document.getElementById('streakNum').textContent = streak;
+        dz.classList.add('correct');
+        document.getElementById('feedback').innerHTML = `<span class="text-green-600 bounce-in">🎉 Correct! ${hintUsed ? '+1' : '+2'} ⭐</span>`;
+        speak(`Correct! ${correct.join(' ')}. In Spanish: ${s.es}. In French: ${s.fr}.`);
+      } else {
+        streak = 0;
+        document.getElementById('streakNum').textContent = '0';
+        dz.classList.add('wrong');
+        dz.classList.add('shake');
+        document.getElementById('feedback').innerHTML = `<span class="text-red-500">Not quite! The correct order was: <strong>${correct.join(' ')}</strong></span>`;
+        speak(`The correct sentence is: ${correct.join(' ')}`);
+      }
+
+      // Show translations
+      document.getElementById('transEN').textContent = correct.join(' ');
+      document.getElementById('transES').textContent = s.es;
+      document.getElementById('transFR').textContent = s.fr;
+      document.getElementById('translationReveal').classList.remove('hidden');
+
+      setTimeout(() => document.getElementById('nextBtn').classList.remove('hidden'), 700);
+    }
+
+    // Reset
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      if (answered) return;
+      placedWords = [];
+      availableWords = shuffle([...queue[currentIdx].en]);
+      renderTilePalette();
+      const dz = document.getElementById('dropZone');
+      dz.className = 'mb-3';
+      dz.innerHTML = '<span class="text-gray-300 text-sm font-bold" id="dropPlaceholder">Tap or drag words here...</span>';
+    });
+
+    // Hint
+    document.getElementById('hintBtn').addEventListener('click', () => {
+      if (answered) return;
+      hintUsed = true;
+      const s = queue[currentIdx];
+      document.getElementById('hintRow').classList.remove('hidden');
+      document.getElementById('hintWords').innerHTML = s.en.map(w => `<span class="hint-word">${w}</span>`).join(' ');
+    });
+
+    // Next
+    document.getElementById('nextBtn').addEventListener('click', () => { currentIdx++; loadSentence(); });
+
+    // Level tabs
+    document.querySelectorAll('.level-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.level-tab').forEach(b => { b.classList.remove('active'); b.classList.add('text-gray-600'); });
+        btn.classList.add('active'); btn.classList.remove('text-gray-600');
+        initGame(btn.dataset.level);
+      });
+    });
+
+    function showCelebration() {
+      document.getElementById('celebStats').textContent = `You scored ${score} stars across all ${queue.length} sentences!`;
+      document.getElementById('celebration').classList.remove('hidden');
+      speak('Congratulations! You are a Bilingual Explorer!');
+    }
+
+    document.getElementById('playAgain').addEventListener('click', () => initGame(currentLevel));
+    document.getElementById('markCompleted').addEventListener('click', function() {
+      this.textContent = '✅ Completed!';
+      this.classList.add('bg-green-100','border-green-400','text-green-700');
+    });
+
+    function speak(text) {
+      if (!window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US'; u.rate = 0.85; u.pitch = 1.05;
+      window.speechSynthesis.speak(u);
+    }
+
+    initGame('beginner');
+  </script>
+
+  <footer class="bg-gray-800 text-white py-10 mt-10">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p class="font-extrabold text-lg mb-1">🐾 Story Time with Eva</p>
+      <p class="text-gray-400 text-sm mb-4">Where stories come to life! Magical bilingual books and activities for curious young minds.</p>
+      <div class="flex justify-center gap-4 text-sm text-gray-400">
+        <a href="/" class="hover:text-white">Home</a>
+        <a href="/books" class="hover:text-white">Books</a>
+        <a href="/activities" class="hover:text-white">Activities</a>
+        <a href="/about" class="hover:text-white">About Eva</a>
+      </div>
+      <p class="text-gray-500 text-xs mt-4">© 2025 Story Time with Eva. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

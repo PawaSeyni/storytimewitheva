@@ -106,12 +106,22 @@ export default function Activities() {
                       <span className="text-xs text-gray-500">
                         {t.ages}: <strong>{act.ages}</strong>
                       </span>
-                      <Link
-                        to={`/activities/${act.slug}`}
-                        className="text-sm font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 px-4 py-1.5 rounded-full shadow-sm transition-all"
-                      >
-                        {done ? t.openAgain : t.tryNow}
-                      </Link>
+                      {act.game ? (
+                        // Standalone HTML game — full-page static file in /public/games.
+                        <a
+                          href={`/games/${act.slug}.html`}
+                          className="text-sm font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 px-4 py-1.5 rounded-full shadow-sm transition-all"
+                        >
+                          {done ? t.openAgain : t.tryNow}
+                        </a>
+                      ) : (
+                        <Link
+                          to={`/activities/${act.slug}`}
+                          className="text-sm font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 px-4 py-1.5 rounded-full shadow-sm transition-all"
+                        >
+                          {done ? t.openAgain : t.tryNow}
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>
