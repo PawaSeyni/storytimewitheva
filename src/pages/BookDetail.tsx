@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from '../components/LocalizedLink';
 import Seo from '../components/Seo';
@@ -5,8 +6,9 @@ import JsonLd from '../components/JsonLd';
 import NotFound from './NotFound';
 import ReadAlong from '../components/ReadAlong';
 import BookStatusButton from '../components/BookStatusButton';
-import { useBook } from '../data/books';
-import { useTranslation } from '../lib/language';
+import { books, useBook } from '../data/books';
+import { LANGUAGE_LABELS, SUPPORTED_LANGUAGES, useLanguage, useTranslation } from '../lib/language';
+import type { Language } from '../lib/language';
 import { isAmazonCover, sizedCover } from '../lib/covers';
 import { PRICING } from '../data/pricing';
 
@@ -14,18 +16,24 @@ const SITE_URL = 'https://storytimewitheva.com';
 const FLAG_TO_LANG: Record<string, string> = { '🇺🇸': 'en', '🇪🇸': 'es', '🇫🇷': 'fr' };
 
 const TRANSLATIONS = {
-  en: { back: '← Back to all books', theme: 'Theme', paperback: 'Paperback', ebook: 'eBook', buy: '🛒 Buy on Amazon', coverAlt: 'book cover', ages: 'Ages' },
-  es: { back: '← Volver a todos los libros', theme: 'Tema', paperback: 'Tapa blanda', ebook: 'eBook', buy: '🛒 Comprar en Amazon', coverAlt: 'portada del libro', ages: 'Edades' },
-  fr: { back: '← Retour à tous les livres', theme: 'Thème', paperback: 'Livre broché', ebook: 'Livre numérique', buy: '🛒 Acheter sur Amazon', coverAlt: 'couverture du livre', ages: 'Âges' },
+  en: { back: '← Back to all books', theme: 'Theme', paperback: 'Paperback', ebook: 'eBook', buy: '🛒 Buy on Amazon', coverAlt: 'book cover', ages: 'Ages', bilingualShow: '🌐 Read in two languages', bilingualHide: '🌐 Hide other languages' },
+  es: { back: '← Volver a todos los libros', theme: 'Tema', paperback: 'Tapa blanda', ebook: 'eBook', buy: '🛒 Comprar en Amazon', coverAlt: 'portada del libro', ages: 'Edades', bilingualShow: '🌐 Leer en dos idiomas', bilingualHide: '🌐 Ocultar otros idiomas' },
+  fr: { back: '← Retour à tous les livres', theme: 'Thème', paperback: 'Livre broché', ebook: 'Livre numérique', buy: '🛒 Acheter sur Amazon', coverAlt: 'couverture du livre', ages: 'Âges', bilingualShow: '🌐 Lire en deux langues', bilingualHide: '🌐 Masquer les autres langues' },
 };
 
 export default function BookDetail() {
   const { slug = '' } = useParams();
   const book = useBook(slug);
+  const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
+  const [bilingual, setBilingual] = useState(false);
 
   // Unknown id → real (noindex) 404 rather than a blank page.
   if (!book) return <NotFound />;
+
+  // Raw record (all-language strings) for the side-by-side bilingual view.
+  const raw = books.find((b) => b.id === slug);
+  const otherLangs = SUPPORTED_LANGUAGES.filter((l) => l !== language) as Language[];
 
   const cover = book.coverImage;
   const amazon = isAmazonCover(cover);
@@ -79,6 +87,33 @@ export default function BookDetail() {
             {book.subtitle && <p className="text-gray-500 italic mb-4">{book.subtitle}</p>}
 
             <ReadAlong text={book.description} className="text-gray-600 leading-relaxed mb-4" />
+
+            {raw && (
+              <div className="mb-5">
+                <button
+                  type="button"
+                  onClick={() => setBilingual((v) => !v)}
+                  aria-expanded={bilingual}
+                  className="inline-flex items-center gap-2 py-2 px-4 text-sm font-semibold rounded-full text-purple-600 border border-purple-200 hover:bg-purple-50 transition-colors"
+                >
+                  {bilingual ? t.bilingualHide : t.bilingualShow}
+                </button>
+                {bilingual && (
+                  <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {otherLangs.map((l) => (
+                      <div key={l} className="bg-purple-50/60 rounded-xl p-4">
+                        <p className="text-xs font-semibold text-purple-700 mb-1">
+                          {LANGUAGE_LABELS[l].flag} {LANGUAGE_LABELS[l].name}
+                        </p>
+                        <p className="text-sm text-gray-600 leading-relaxed" lang={l}>
+                          {raw.description[l]}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
 
             <div className="bg-purple-50 rounded-xl px-4 py-2 inline-block mb-5">
               <span className="text-sm text-purple-700 font-medium">{t.theme}: {book.theme}</span>
