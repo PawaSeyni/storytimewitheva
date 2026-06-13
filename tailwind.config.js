@@ -21,6 +21,7 @@ export default {
         }
       },
       fontFamily: {
+        sans: ['Lexend Variable', 'Segoe UI', 'system-ui', '-apple-system', 'sans-serif'],
         display: ['Georgia', 'serif'],
       }
     },

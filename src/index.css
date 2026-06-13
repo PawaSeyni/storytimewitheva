@@ -4,7 +4,7 @@
 
 @layer base {
   html { scroll-behavior: smooth; }
-  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; }
+  body { font-family: 'Lexend Variable', 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; }
 
   /* Visible keyboard-focus indicator (WCAG 2.4.7). Mouse clicks don't trigger
      :focus-visible, so this only shows for keyboard/AT users. */
