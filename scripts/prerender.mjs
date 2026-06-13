@@ -72,7 +72,12 @@ const shell = await readFile(path.join(DIST, 'index.html'), 'utf8');
 const server = createServer(shell);
 await new Promise(resolve => server.listen(PORT, resolve));
 
-const routes = routesFromSitemap(await readFile(path.join(DIST, 'sitemap.xml'), 'utf8'));
+// Only prerender SPA routes. Sitemap entries with a file extension (e.g. the
+// standalone /games/<slug>.html pages) are already static and must NOT be
+// snapshotted — they'd just stall waiting for the SPA's ready flag.
+const routes = routesFromSitemap(await readFile(path.join(DIST, 'sitemap.xml'), 'utf8')).filter(
+  r => !path.extname(r),
+);
 console.log(`Prerendering ${routes.length} routes…`);
 
 // Best-effort: if Chromium can't launch (e.g. a host without the right libs),

@@ -200,9 +200,9 @@ Add new items as discovered. Prioritize roughly top-to-bottom within each cluste
 ### Activity games (12 standalone games — integrated 2026-06-13)
 12 self-contained HTML games were added as static pages under `public/games/<slug>.html` and registered in `src/data/activities.ts` with `game: true` (Activities grid now shows 20 activities; game cards link to `/games/<slug>.html`). They work as-is but were intentionally NOT deep-ported — these are the follow-up improvements:
 - [ ] **Port games into the Vite build** — they currently load Tailwind + Nunito from a CDN (the only external CDN requests on the site, and they use Nunito instead of the site's self-hosted Lexend). Either convert each to a React demo or build the HTML through Vite so typography/colors match and there are no third-party requests.
-- [ ] **Sync completion to the shared store** — each game's "✓ Mark Completed" writes to its own storage, so it does NOT flip the site's Profile counts or the Activities "Completed / Open Again" badge. Wire them to `src/lib/progress.ts` (`setActivityCompleted(slug)`) using the matching slug.
-- [ ] **Fix each game's "Get Free Kit" CTA** — points at `#signup`; update to the real signup anchor (`/#email-signup`) or the home route.
-- [ ] **Add the 12 game URLs to `sitemap.xml`** — currently discoverable only via the Activities page links (not in the sitemap).
+- [x] **Sync completion to the shared store** — DONE. `scripts/patch-games.mjs` injects a small script into each game that writes the game's slug to `readingProgress.activitiesCompleted` on "Mark Completed" (and reflects it on load), so it now flips the site Profile counts + the Activities "Completed / Open Again" badge. Verified cross-page.
+- [x] **Fix each game's "Get Free Kit" CTA** — DONE (same patch script): `href="#signup"` → `/#email-signup`.
+- [x] **Add the 12 game URLs to `sitemap.xml`** — DONE via `gen-sitemap.mjs` (single URL each; prerender skips static `.html` routes).
 - [ ] **Language**: games have internal EN/ES/FR toggles but a single URL and English default; consider opening them in the site's currently-selected language. (Card titles/descriptions are already localized in `activities.ts`.)
 - [ ] **Align read-aloud** with `src/lib/speech.ts` (voice/rate) if/when ported, and re-test Web Speech on iOS Safari (needs a user gesture — the Play/Listen buttons satisfy it).
 

@@ -3,7 +3,7 @@
 // Book detail pages are derived from the `id` fields in src/data/books.ts so
 // the sitemap can't drift from the catalog. Run: npm run gen:sitemap
 
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile, writeFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -44,6 +44,10 @@ const bookPages = bookIds.map(id => [`/books/${id}`, 'monthly', '0.8']);
 
 const pages = [...staticPages, ...bookPages];
 
+// Standalone games: single static URL each (self-contained pages with their
+// own internal EN/ES/FR toggles), so no per-language hreflang.
+const gameFiles = (await readdir(path.join(ROOT, 'public/games'))).filter(f => f.endsWith('.html')).sort();
+
 let out = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n';
 for (const [p, cf, pr] of pages) {
   for (const l of LANGS) {
@@ -53,7 +57,10 @@ for (const [p, cf, pr] of pages) {
     out += `    <changefreq>${cf}</changefreq>\n    <priority>${pr}</priority>\n  </url>\n`;
   }
 }
+for (const file of gameFiles) {
+  out += `  <url>\n    <loc>${SITE}/games/${file}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
+}
 out += '</urlset>\n';
 
 await writeFile(path.join(ROOT, 'public/sitemap.xml'), out);
-console.log(`sitemap.xml: ${pages.length} pages × ${LANGS.length} langs = ${pages.length * LANGS.length} URLs (${bookIds.length} book pages)`);
+console.log(`sitemap.xml: ${pages.length * LANGS.length} localized URLs + ${gameFiles.length} game URLs (${bookIds.length} book pages)`);
