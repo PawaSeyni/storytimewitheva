@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { LocalizedBook } from '../data/books';
 import BookStatusButton from './BookStatusButton';
 import ReadAloudButton from './ReadAloudButton';
+import { PRICING } from '../data/pricing';
 import { useTranslation } from '../lib/language';
 
 const TRANSLATIONS = {
@@ -13,6 +14,8 @@ const TRANSLATIONS = {
     close: 'Close',
     theme: 'Theme',
     coverAlt: 'book cover',
+    paperback: 'Paperback',
+    ebook: 'eBook',
   },
   es: {
     featured: 'Destacado',
@@ -22,6 +25,8 @@ const TRANSLATIONS = {
     close: 'Cerrar',
     theme: 'Tema',
     coverAlt: 'portada del libro',
+    paperback: 'Tapa blanda',
+    ebook: 'eBook',
   },
   fr: {
     featured: 'En vedette',
@@ -31,6 +36,8 @@ const TRANSLATIONS = {
     close: 'Fermer',
     theme: 'Thème',
     coverAlt: 'couverture du livre',
+    paperback: 'Livre broché',
+    ebook: 'Livre numérique',
   },
 };
 
@@ -146,7 +153,11 @@ export default function BookCard({ book, priority = false }: BookCardProps) {
                 <ReadAloudButton text={narration} />
               </div>
 
-              <div className="flex flex-col gap-3 mt-4">
+              <p className="text-sm text-gray-500 mt-4">
+                📖 {t.paperback} {PRICING.paperback} · 📱 {t.ebook} {PRICING.ebook}
+              </p>
+
+              <div className="flex flex-col gap-3 mt-3">
                 <a
                   href={book.amazonUrl}
                   target="_blank"

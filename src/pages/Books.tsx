@@ -4,6 +4,7 @@ import BookCard from '../components/BookCard';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
+import { PRICING } from '../data/pricing';
 import { useTranslation } from '../lib/language';
 
 const SITE_URL = 'https://storytimewitheva.com';
@@ -52,6 +53,12 @@ const TRANSLATIONS = {
     amazonHeading: 'Find All Books on Amazon',
     amazonBlurb: "All of Eva's books are available on Amazon with fast shipping and easy returns.",
     amazonCta: '🛒 View All Books on Amazon →',
+    pricingHeading: 'Formats & Pricing',
+    paperbackLabel: 'Paperback',
+    ebookLabel: 'eBook',
+    freeLabel: 'Always free',
+    freeItems: 'Activities, read-alongs & the starter kit',
+    pricingNote: 'Prices in USD. Final price and availability on Amazon.',
   },
   es: {
     seoTitle: 'Nuestra colección de libros mágicos',
@@ -70,6 +77,12 @@ const TRANSLATIONS = {
     amazonHeading: 'Encuentra todos los libros en Amazon',
     amazonBlurb: 'Todos los libros de Eva están disponibles en Amazon con envío rápido y devoluciones fáciles.',
     amazonCta: '🛒 Ver todos los libros en Amazon →',
+    pricingHeading: 'Formatos y precios',
+    paperbackLabel: 'Tapa blanda',
+    ebookLabel: 'eBook',
+    freeLabel: 'Siempre gratis',
+    freeItems: 'Actividades, lecturas en voz alta y el kit de inicio',
+    pricingNote: 'Precios en USD. Precio final y disponibilidad en Amazon.',
   },
   fr: {
     seoTitle: 'Notre collection de livres magiques',
@@ -88,6 +101,12 @@ const TRANSLATIONS = {
     amazonHeading: 'Trouvez tous les livres sur Amazon',
     amazonBlurb: 'Tous les livres d\'Eva sont disponibles sur Amazon avec livraison rapide et retours faciles.',
     amazonCta: '🛒 Voir tous les livres sur Amazon →',
+    pricingHeading: 'Formats et prix',
+    paperbackLabel: 'Livre broché',
+    ebookLabel: 'Livre numérique',
+    freeLabel: 'Toujours gratuit',
+    freeItems: 'Activités, lectures à voix haute et le kit de démarrage',
+    pricingNote: 'Prix en USD. Prix final et disponibilité sur Amazon.',
   },
 };
 
@@ -198,6 +217,30 @@ export default function Books() {
               <p className="text-gray-500 text-lg">{t.emptyMsg}</p>
             </div>
           )}
+        </div>
+      </section>
+
+      <section className="py-12 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">{t.pricingHeading}</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-white rounded-2xl shadow-md border border-gray-50 p-6">
+              <div className="text-3xl mb-2" aria-hidden>📖</div>
+              <p className="font-semibold text-gray-800">{t.paperbackLabel}</p>
+              <p className="text-2xl font-extrabold text-purple-700 mt-1">{PRICING.paperback}</p>
+            </div>
+            <div className="bg-white rounded-2xl shadow-md border border-gray-50 p-6">
+              <div className="text-3xl mb-2" aria-hidden>📱</div>
+              <p className="font-semibold text-gray-800">{t.ebookLabel}</p>
+              <p className="text-2xl font-extrabold text-purple-700 mt-1">{PRICING.ebook}</p>
+            </div>
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow-md border border-purple-100 p-6">
+              <div className="text-3xl mb-2" aria-hidden>🎁</div>
+              <p className="font-semibold text-purple-700">{t.freeLabel}</p>
+              <p className="text-sm text-gray-600 mt-1">{t.freeItems}</p>
+            </div>
+          </div>
+          <p className="text-xs text-gray-400 mt-4">{t.pricingNote}</p>
         </div>
       </section>
 
