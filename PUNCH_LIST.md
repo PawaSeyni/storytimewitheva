@@ -210,7 +210,7 @@ Add new items as discovered. Prioritize roughly top-to-bottom within each cluste
 Open items from the audit. Most of the audit shipped in PR #1 (`fix/audit-quick-wins-seo`); the rest live here so nothing is lost. Items already tracked in other clusters are cross-referenced, not duplicated.
 
 **Owner decisions / content**
-- [ ] **4.9/5 Amazon rating** (Home stat band + Footer stars) — substantiate with a real aggregate + link to the Amazon author page, or remove. Last unverified trust claim on the site. _(owner)_
+- [x] **4.9/5 Amazon rating** — RESOLVED (owner chose to remove it). Removed from the Footer; the Home stat band now shows the live activity count ("Fun Activities" = `activities.length`) in its place. No unverified rating remains on the site.
 - [ ] **Privacy/Terms** — confirm a governing **jurisdiction** and do a legal skim (operating entity "Pawa Press Inc." already named; date "Last updated: June 2026"). _(owner)_
 - [ ] **Translate the 15 English-only books** to ES/FR so the "bilingual/3 languages" promise matches the catalog (only 3 of 18 are trilingual today). Hero/stat copy was intentionally left as-is pending this. _(content)_
 

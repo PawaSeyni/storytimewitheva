@@ -76,12 +76,6 @@ export default function Footer() {
               <span className="text-white font-bold text-lg">Story Time with Eva</span>
             </div>
             <p className="text-sm text-gray-400 leading-relaxed">{t.tagline}</p>
-            <div className="flex items-center gap-1 mt-3">
-              {'⭐⭐⭐⭐⭐'.split('').map((s, i) => (
-                <span key={i} className="text-yellow-400 text-sm">{s}</span>
-              ))}
-              <span className="text-gray-400 text-sm ml-1">4.9/5</span>
-            </div>
           </div>
 
           {/* Quick Links */}

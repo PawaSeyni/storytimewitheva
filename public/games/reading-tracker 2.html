@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reading Tracker | Story Time with Eva</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+    * { font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif; }
+
+    @keyframes bounce-in {
+      0% { transform: scale(0.8); opacity: 0; }
+      60% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .bounce-in { animation: bounce-in 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .float { animation: float 3s ease-in-out infinite; }
+
+    @keyframes streak-fire {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+    .streak-fire { animation: streak-fire 1s ease-in-out infinite; }
+
+    @keyframes confetti-pop {
+      0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+      60% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .confetti-pop { animation: confetti-pop 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+
+    @keyframes slide-up {
+      0% { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    .slide-up { animation: slide-up 0.35s ease forwards; }
+
+    /* Calendar day */
+    .cal-day {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 800;
+      transition: all 0.2s;
+    }
+    .cal-day.read { background: linear-gradient(135deg, #a855f7, #ec4899); color: white; }
+    .cal-day.today { border: 3px solid #f97316; color: #f97316; font-weight: 900; }
+    .cal-day.today.read { border-color: white; color: white; }
+    .cal-day.past { color: #d1d5db; }
+    .cal-day.future { color: #e5e7eb; }
+
+    /* Timer ring */
+    .timer-ring {
+      position: relative;
+      width: 160px; height: 160px;
+      margin: 0 auto;
+    }
+    .timer-ring svg { transform: rotate(-90deg); }
+    .timer-ring .ring-bg { fill: none; stroke: #e9d5ff; stroke-width: 10; }
+    .timer-ring .ring-fill { fill: none; stroke: url(#timerGrad); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+    .timer-center {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+
+    /* Goal button */
+    .goal-btn.active {
+      background: linear-gradient(to right, #a855f7, #ec4899);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* Log entry */
+    .log-entry {
+      transition: all 0.2s;
+    }
+    .log-entry:hover { transform: translateX(4px); }
+
+    /* Stars */
+    .star-filled { color: #f59e0b; }
+    .star-empty { color: #e5e7eb; }
+
+    /* Badge */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 10px; border-radius: 999px;
+      font-size: 0.7rem; font-weight: 800;
+    }
+
+    @media print {
+      nav, footer, #timerSection, #logForm, .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-amber-50 to-white">
+
+  <!-- Nav -->
+  <nav class="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-2 font-extrabold text-purple-700 text-lg">🐾 Story Time with Eva</a>
+        <div class="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-600">
+          <a href="/" class="hover:text-purple-600">Home</a>
+          <a href="/books" class="hover:text-purple-600">Books</a>
+          <a href="/activities" class="hover:text-purple-600">Activities</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-5xl mx-auto px-4 pt-6 flex justify-between items-center">
+    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
+    <div class="flex gap-2">
+      <button id="printBtn" class="no-print px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-full text-sm font-bold transition-all">🖨️ Print Report</button>
+      <button id="markCompleted" class="no-print px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
+    </div>
+  </div>
+
+  <main class="max-w-5xl mx-auto px-4 pb-16 pt-4">
+
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <div class="text-5xl mb-2 float">📚</div>
+      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Reading Tracker</h1>
+      <p class="text-gray-500 text-base">Track your daily reading time and build a reading streak together!</p>
+      <div class="w-20 h-1 bg-gradient-to-r from-amber-400 via-orange-400 to-pink-400 mx-auto mt-4 rounded-full"></div>
+    </div>
+
+    <!-- Setup (shown first time) -->
+    <div id="setupSection" class="bg-white rounded-3xl shadow-xl border-2 border-amber-100 p-6 mb-6">
+      <h2 class="text-lg font-extrabold text-amber-700 mb-4">👋 Set Up Your Reading Profile</h2>
+      <div class="grid sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="text-xs font-bold text-gray-500 block mb-1">Child's Name</label>
+          <input id="childNameInput" type="text" placeholder="e.g. Sofia" maxlength="20"
+            class="w-full px-4 py-3 rounded-2xl border-2 border-amber-200 font-bold text-gray-700 focus:outline-none focus:border-amber-400"/>
+        </div>
+        <div>
+          <label class="text-xs font-bold text-gray-500 block mb-1">Parent's Name</label>
+          <input id="parentNameInput" type="text" placeholder="e.g. Mom / Dad" maxlength="20"
+            class="w-full px-4 py-3 rounded-2xl border-2 border-amber-200 font-bold text-gray-700 focus:outline-none focus:border-amber-400"/>
+        </div>
+      </div>
+      <div class="mb-4">
+        <label class="text-xs font-bold text-gray-500 block mb-2">Daily Reading Goal</label>
+        <div class="flex gap-2 flex-wrap">
+          <button class="goal-btn active px-4 py-2 rounded-full border-2 border-amber-200 text-sm font-bold transition-all" data-mins="10">⏱️ 10 min</button>
+          <button class="goal-btn px-4 py-2 rounded-full border-2 border-amber-200 text-sm font-bold text-gray-600 transition-all hover:bg-amber-50" data-mins="15">⏱️ 15 min</button>
+          <button class="goal-btn px-4 py-2 rounded-full border-2 border-amber-200 text-sm font-bold text-gray-600 transition-all hover:bg-amber-50" data-mins="20">⏱️ 20 min</button>
+          <button class="goal-btn px-4 py-2 rounded-full border-2 border-amber-200 text-sm font-bold text-gray-600 transition-all hover:bg-amber-50" data-mins="30">⏱️ 30 min</button>
+        </div>
+      </div>
+      <button id="startTracking" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-400 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">
+        🚀 Start Tracking!
+      </button>
+    </div>
+
+    <!-- Main Dashboard (hidden until setup) -->
+    <div id="dashboard" class="hidden space-y-5">
+
+      <!-- Top stats -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="bg-white rounded-2xl shadow border-2 border-orange-100 p-4 text-center">
+          <div class="text-3xl streak-fire" id="streakEmoji">🔥</div>
+          <div class="text-2xl font-extrabold text-orange-500" id="streakCount">0</div>
+          <div class="text-xs text-gray-500 font-bold">Day Streak</div>
+        </div>
+        <div class="bg-white rounded-2xl shadow border-2 border-purple-100 p-4 text-center">
+          <div class="text-3xl">📖</div>
+          <div class="text-2xl font-extrabold text-purple-600" id="totalBooks">0</div>
+          <div class="text-xs text-gray-500 font-bold">Books Read</div>
+        </div>
+        <div class="bg-white rounded-2xl shadow border-2 border-blue-100 p-4 text-center">
+          <div class="text-3xl">⏱️</div>
+          <div class="text-2xl font-extrabold text-blue-600" id="totalMins">0</div>
+          <div class="text-xs text-gray-500 font-bold">Total Minutes</div>
+        </div>
+        <div class="bg-white rounded-2xl shadow border-2 border-green-100 p-4 text-center">
+          <div class="text-3xl">🏆</div>
+          <div class="text-2xl font-extrabold text-green-600" id="badgeCount">0</div>
+          <div class="text-xs text-gray-500 font-bold">Badges Earned</div>
+        </div>
+      </div>
+
+      <!-- Timer + Log Form -->
+      <div class="grid sm:grid-cols-2 gap-5" id="timerSection">
+
+        <!-- Timer -->
+        <div class="bg-white rounded-3xl shadow-xl border-2 border-purple-100 p-6 text-center">
+          <h2 class="text-lg font-extrabold text-purple-700 mb-4">⏱️ Reading Timer</h2>
+          <div class="timer-ring mb-4">
+            <svg width="160" height="160" viewBox="0 0 160 160">
+              <defs>
+                <linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#a855f7"/>
+                  <stop offset="100%" style="stop-color:#ec4899"/>
+                </linearGradient>
+              </defs>
+              <circle class="ring-bg" cx="80" cy="80" r="70"/>
+              <circle class="ring-fill" id="timerRing" cx="80" cy="80" r="70"
+                stroke-dasharray="439.8" stroke-dashoffset="439.8"/>
+            </svg>
+            <div class="timer-center">
+              <div class="text-3xl font-extrabold text-gray-800" id="timerDisplay">00:00</div>
+              <div class="text-xs font-bold text-gray-400" id="timerGoalLabel">Goal: 10 min</div>
+            </div>
+          </div>
+          <div class="flex gap-2 justify-center">
+            <button id="timerStart" class="px-5 py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow hover:shadow-lg transition-all text-sm">▶ Start</button>
+            <button id="timerPause" class="hidden px-5 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 font-extrabold rounded-full text-sm transition-all">⏸ Pause</button>
+            <button id="timerReset" class="px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 font-extrabold rounded-full text-sm transition-all">↺ Reset</button>
+          </div>
+          <div id="goalReached" class="hidden mt-3 text-green-600 font-extrabold text-sm bounce-in">🎉 Goal reached! Great reading!</div>
+        </div>
+
+        <!-- Log Form -->
+        <div class="bg-white rounded-3xl shadow-xl border-2 border-amber-100 p-6" id="logForm">
+          <h2 class="text-lg font-extrabold text-amber-700 mb-4">📝 Log Today's Reading</h2>
+          <div class="space-y-3">
+            <div>
+              <label class="text-xs font-bold text-gray-500 block mb-1">Book Title</label>
+              <input id="logBook" type="text" placeholder="What did you read?" maxlength="60"
+                class="w-full px-3 py-2 rounded-xl border-2 border-amber-200 font-bold text-gray-700 text-sm focus:outline-none focus:border-amber-400"/>
+            </div>
+            <div>
+              <label class="text-xs font-bold text-gray-500 block mb-1">Minutes Read</label>
+              <input id="logMins" type="number" min="1" max="120" placeholder="e.g. 15"
+                class="w-full px-3 py-2 rounded-xl border-2 border-amber-200 font-bold text-gray-700 text-sm focus:outline-none focus:border-amber-400"/>
+            </div>
+            <div>
+              <label class="text-xs font-bold text-gray-500 block mb-1">How was the reading? ⭐</label>
+              <div class="flex gap-1" id="starRating">
+                <span class="star text-2xl cursor-pointer star-empty" data-star="1">★</span>
+                <span class="star text-2xl cursor-pointer star-empty" data-star="2">★</span>
+                <span class="star text-2xl cursor-pointer star-empty" data-star="3">★</span>
+                <span class="star text-2xl cursor-pointer star-empty" data-star="4">★</span>
+                <span class="star text-2xl cursor-pointer star-empty" data-star="5">★</span>
+              </div>
+            </div>
+            <div>
+              <label class="text-xs font-bold text-gray-500 block mb-1">Favorite moment (optional)</label>
+              <input id="logNote" type="text" placeholder="e.g. The dragon scene!" maxlength="80"
+                class="w-full px-3 py-2 rounded-xl border-2 border-amber-200 font-semibold text-gray-700 text-sm focus:outline-none focus:border-amber-400"/>
+            </div>
+            <button id="logSession" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-400 text-white font-extrabold rounded-full shadow hover:shadow-lg transition-all text-sm">
+              ✅ Log This Session!
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calendar -->
+      <div class="bg-white rounded-3xl shadow-xl border-2 border-purple-100 p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-extrabold text-purple-700">📅 Reading Calendar</h2>
+          <div class="flex items-center gap-2">
+            <button id="calPrev" class="w-8 h-8 rounded-full bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold transition-all">‹</button>
+            <span class="text-sm font-extrabold text-gray-700" id="calMonthLabel"></span>
+            <button id="calNext" class="w-8 h-8 rounded-full bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold transition-all">›</button>
+          </div>
+        </div>
+        <div class="grid grid-cols-7 gap-1 text-center mb-2">
+          <div class="text-xs font-bold text-gray-400">Sun</div>
+          <div class="text-xs font-bold text-gray-400">Mon</div>
+          <div class="text-xs font-bold text-gray-400">Tue</div>
+          <div class="text-xs font-bold text-gray-400">Wed</div>
+          <div class="text-xs font-bold text-gray-400">Thu</div>
+          <div class="text-xs font-bold text-gray-400">Fri</div>
+          <div class="text-xs font-bold text-gray-400">Sat</div>
+        </div>
+        <div class="grid grid-cols-7 gap-1 justify-items-center" id="calGrid"></div>
+        <div class="flex gap-3 mt-3 text-xs font-bold justify-center">
+          <span class="flex items-center gap-1"><span class="w-4 h-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 inline-block"></span> Read!</span>
+          <span class="flex items-center gap-1"><span class="w-4 h-4 rounded-full border-2 border-orange-400 inline-block"></span> Today</span>
+        </div>
+      </div>
+
+      <!-- Badges -->
+      <div class="bg-white rounded-3xl shadow-xl border-2 border-yellow-100 p-6">
+        <h2 class="text-lg font-extrabold text-yellow-700 mb-4">🏅 Badges Earned</h2>
+        <div class="grid grid-cols-3 sm:grid-cols-6 gap-3" id="badgesGrid"></div>
+      </div>
+
+      <!-- Reading Log -->
+      <div class="bg-white rounded-3xl shadow-xl border-2 border-blue-100 p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-extrabold text-blue-700">📖 Reading Log</h2>
+          <button id="clearLog" class="no-print text-xs text-red-400 hover:text-red-600 font-bold transition-all">Clear All</button>
+        </div>
+        <div id="logList" class="space-y-2">
+          <p class="text-gray-300 text-sm font-semibold text-center py-4">No sessions logged yet — start reading! 📚</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // ─── STATE ───────────────────────────────────────────────────────────────
+    const STORAGE_KEY = 'eva_reading_tracker_v1';
+    let state = {
+      childName: '', parentName: '', goalMins: 10,
+      streak: 0, lastReadDate: null,
+      totalBooks: 0, totalMins: 0,
+      readDates: [], // array of 'YYYY-MM-DD'
+      log: [], // { date, book, mins, stars, note }
+      badges: [],
+    };
+    let calYear, calMonth;
+    let timerInterval = null;
+    let timerSeconds = 0;
+    let timerRunning = false;
+    let selectedStars = 0;
+    let goalMins = 10;
+
+    const allBadges = [
+      { id: 'first',    emoji: '🌟', name: 'First Read!',     desc: 'Logged your very first session',   condition: s => s.log.length >= 1 },
+      { id: 'streak3',  emoji: '🔥', name: '3-Day Streak',    desc: 'Read 3 days in a row',              condition: s => s.streak >= 3 },
+      { id: 'streak7',  emoji: '💫', name: 'Week Warrior',    desc: 'Read 7 days in a row',              condition: s => s.streak >= 7 },
+      { id: 'streak30', emoji: '🏆', name: 'Monthly Master',  desc: 'Read 30 days in a row',             condition: s => s.streak >= 30 },
+      { id: 'books5',   emoji: '📚', name: '5 Books',         desc: 'Logged 5 reading sessions',         condition: s => s.log.length >= 5 },
+      { id: 'books10',  emoji: '📖', name: '10 Books',        desc: 'Logged 10 reading sessions',        condition: s => s.log.length >= 10 },
+      { id: 'mins60',   emoji: '⏱️', name: '1 Hour Read',     desc: 'Read for 60 minutes total',         condition: s => s.totalMins >= 60 },
+      { id: 'mins300',  emoji: '⌛', name: '5 Hour Reader',   desc: 'Read for 300 minutes total',        condition: s => s.totalMins >= 300 },
+      { id: 'stars5',   emoji: '⭐', name: 'Star Reader',     desc: 'Gave a 5-star rating',              condition: s => s.log.some(l => l.stars === 5) },
+      { id: 'note',     emoji: '✏️', name: 'Note Taker',      desc: 'Added a favorite moment note',      condition: s => s.log.some(l => l.note) },
+      { id: 'morning',  emoji: '🌅', name: 'Early Bird',      desc: 'Logged a morning session',          condition: s => s.log.some(l => { const h = new Date(l.date).getHours(); return h < 10; }) },
+      { id: 'variety',  emoji: '🌈', name: 'Variety Reader',  desc: 'Read 3 different books',            condition: s => new Set(s.log.map(l => l.book.toLowerCase())).size >= 3 },
+    ];
+
+    // ─── LOAD / SAVE ─────────────────────────────────────────────────────────
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) { state = { ...state, ...JSON.parse(saved) }; return true; }
+      } catch(e) {}
+      return false;
+    }
+    function saveState() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+    }
+
+    // ─── SETUP ───────────────────────────────────────────────────────────────
+    const hasData = loadState();
+    if (hasData && state.childName) {
+      document.getElementById('setupSection').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+      goalMins = state.goalMins;
+      renderDashboard();
+    }
+
+    document.querySelectorAll('.goal-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.goal-btn').forEach(b => { b.classList.remove('active'); b.classList.add('text-gray-600'); });
+        btn.classList.add('active'); btn.classList.remove('text-gray-600');
+        goalMins = parseInt(btn.dataset.mins);
+      });
+    });
+
+    document.getElementById('startTracking').addEventListener('click', () => {
+      const child = document.getElementById('childNameInput').value.trim();
+      const parent = document.getElementById('parentNameInput').value.trim();
+      if (!child) { document.getElementById('childNameInput').focus(); return; }
+      state.childName = child;
+      state.parentName = parent || 'Parent';
+      state.goalMins = goalMins;
+      saveState();
+      document.getElementById('setupSection').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+      renderDashboard();
+    });
+
+    // ─── TIMER ───────────────────────────────────────────────────────────────
+    function updateTimerDisplay() {
+      const m = Math.floor(timerSeconds / 60);
+      const s = timerSeconds % 60;
+      document.getElementById('timerDisplay').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      const total = goalMins * 60;
+      const progress = Math.min(timerSeconds / total, 1);
+      const circumference = 439.8;
+      document.getElementById('timerRing').style.strokeDashoffset = circumference * (1 - progress);
+      if (timerSeconds >= total && timerRunning) {
+        document.getElementById('goalReached').classList.remove('hidden');
+        document.getElementById('logMins').value = goalMins;
+      }
+    }
+
+    document.getElementById('timerStart').addEventListener('click', () => {
+      if (timerRunning) return;
+      timerRunning = true;
+      document.getElementById('timerStart').classList.add('hidden');
+      document.getElementById('timerPause').classList.remove('hidden');
+      timerInterval = setInterval(() => { timerSeconds++; updateTimerDisplay(); }, 1000);
+    });
+    document.getElementById('timerPause').addEventListener('click', () => {
+      timerRunning = false;
+      clearInterval(timerInterval);
+      document.getElementById('timerStart').classList.remove('hidden');
+      document.getElementById('timerPause').classList.add('hidden');
+      document.getElementById('logMins').value = Math.ceil(timerSeconds / 60);
+    });
+    document.getElementById('timerReset').addEventListener('click', () => {
+      timerRunning = false;
+      clearInterval(timerInterval);
+      timerSeconds = 0;
+      updateTimerDisplay();
+      document.getElementById('timerStart').classList.remove('hidden');
+      document.getElementById('timerPause').classList.add('hidden');
+      document.getElementById('goalReached').classList.add('hidden');
+    });
+
+    // ─── STAR RATING ─────────────────────────────────────────────────────────
+    document.querySelectorAll('.star').forEach(star => {
+      star.addEventListener('click', () => {
+        selectedStars = parseInt(star.dataset.star);
+        document.querySelectorAll('.star').forEach((s, i) => {
+          s.classList.toggle('star-filled', i < selectedStars);
+          s.classList.toggle('star-empty', i >= selectedStars);
+        });
+      });
+    });
+
+    // ─── LOG SESSION ─────────────────────────────────────────────────────────
+    document.getElementById('logSession').addEventListener('click', () => {
+      const book = document.getElementById('logBook').value.trim();
+      const mins = parseInt(document.getElementById('logMins').value) || 0;
+      if (!book || mins <= 0) return;
+      const note = document.getElementById('logNote').value.trim();
+      const now = new Date();
+      const dateStr = now.toISOString().split('T')[0];
+
+      // Add to log
+      state.log.unshift({ date: now.toISOString(), book, mins, stars: selectedStars, note });
+      state.totalMins += mins;
+      state.totalBooks = state.log.length;
+
+      // Update streak
+      if (!state.readDates.includes(dateStr)) {
+        state.readDates.push(dateStr);
+        const yesterday = new Date(now); yesterday.setDate(yesterday.getDate() - 1);
+        const yStr = yesterday.toISOString().split('T')[0];
+        if (state.lastReadDate === yStr || state.lastReadDate === dateStr) {
+          state.streak++;
+        } else if (state.lastReadDate !== dateStr) {
+          state.streak = 1;
+        }
+        state.lastReadDate = dateStr;
+      }
+
+      // Check badges
+      checkBadges();
+      saveState();
+      renderDashboard();
+
+      // Reset form
+      document.getElementById('logBook').value = '';
+      document.getElementById('logMins').value = '';
+      document.getElementById('logNote').value = '';
+      selectedStars = 0;
+      document.querySelectorAll('.star').forEach(s => { s.classList.remove('star-filled'); s.classList.add('star-empty'); });
+      timerRunning = false;
+      clearInterval(timerInterval);
+      timerSeconds = 0;
+      updateTimerDisplay();
+      document.getElementById('timerStart').classList.remove('hidden');
+      document.getElementById('timerPause').classList.add('hidden');
+      document.getElementById('goalReached').classList.add('hidden');
+    });
+
+    // ─── BADGES ──────────────────────────────────────────────────────────────
+    function checkBadges() {
+      allBadges.forEach(b => {
+        if (!state.badges.includes(b.id) && b.condition(state)) {
+          state.badges.push(b.id);
+        }
+      });
+    }
+
+    // ─── RENDER DASHBOARD ────────────────────────────────────────────────────
+    function renderDashboard() {
+      document.getElementById('streakCount').textContent = state.streak;
+      document.getElementById('totalBooks').textContent = state.log.length;
+      document.getElementById('totalMins').textContent = state.totalMins;
+      document.getElementById('badgeCount').textContent = state.badges.length;
+      document.getElementById('timerGoalLabel').textContent = `Goal: ${state.goalMins} min`;
+      goalMins = state.goalMins;
+      renderCalendar();
+      renderBadges();
+      renderLog();
+    }
+
+    // ─── CALENDAR ────────────────────────────────────────────────────────────
+    const now = new Date();
+    calYear = now.getFullYear();
+    calMonth = now.getMonth();
+
+    function renderCalendar() {
+      const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      document.getElementById('calMonthLabel').textContent = `${months[calMonth]} ${calYear}`;
+      const grid = document.getElementById('calGrid');
+      const firstDay = new Date(calYear, calMonth, 1).getDay();
+      const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+      const todayStr = new Date().toISOString().split('T')[0];
+      grid.innerHTML = '';
+      // Empty cells
+      for (let i = 0; i < firstDay; i++) {
+        const empty = document.createElement('div');
+        empty.className = 'cal-day';
+        grid.appendChild(empty);
+      }
+      for (let d = 1; d <= daysInMonth; d++) {
+        const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        const isRead = state.readDates.includes(dateStr);
+        const isToday = dateStr === todayStr;
+        const cell = document.createElement('div');
+        cell.className = `cal-day ${isRead ? 'read' : ''} ${isToday ? 'today' : ''}`;
+        cell.textContent = d;
+        grid.appendChild(cell);
+      }
+    }
+
+    document.getElementById('calPrev').addEventListener('click', () => {
+      calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; }
+      renderCalendar();
+    });
+    document.getElementById('calNext').addEventListener('click', () => {
+      calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; }
+      renderCalendar();
+    });
+
+    // ─── BADGES GRID ─────────────────────────────────────────────────────────
+    function renderBadges() {
+      const grid = document.getElementById('badgesGrid');
+      grid.innerHTML = allBadges.map(b => {
+        const earned = state.badges.includes(b.id);
+        return `
+          <div class="text-center p-2 rounded-2xl border-2 ${earned ? 'border-yellow-200 bg-yellow-50' : 'border-gray-100 bg-gray-50 opacity-40'} transition-all" title="${b.desc}">
+            <div class="text-3xl mb-1 ${earned ? 'confetti-pop' : ''}">${b.emoji}</div>
+            <div class="text-xs font-extrabold ${earned ? 'text-yellow-700' : 'text-gray-400'}">${b.name}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ─── LOG LIST ────────────────────────────────────────────────────────────
+    function renderLog() {
+      const list = document.getElementById('logList');
+      if (state.log.length === 0) {
+        list.innerHTML = '<p class="text-gray-300 text-sm font-semibold text-center py-4">No sessions logged yet — start reading! 📚</p>';
+        return;
+      }
+      list.innerHTML = state.log.slice(0, 20).map(entry => {
+        const d = new Date(entry.date);
+        const dateLabel = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const stars = '★'.repeat(entry.stars) + '☆'.repeat(5 - entry.stars);
+        return `
+          <div class="log-entry flex items-center gap-3 p-3 rounded-2xl bg-amber-50 border border-amber-100">
+            <div class="text-2xl">📖</div>
+            <div class="flex-1 min-w-0">
+              <div class="font-extrabold text-gray-800 text-sm truncate">${entry.book}</div>
+              <div class="text-xs text-gray-500 font-semibold">${dateLabel} · ${entry.mins} min · <span class="text-yellow-500">${stars}</span></div>
+              ${entry.note ? `<div class="text-xs text-purple-600 font-semibold italic">"${entry.note}"</div>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('clearLog').addEventListener('click', () => {
+      if (!confirm('Clear all reading history? This cannot be undone.')) return;
+      state = { ...state, streak: 0, lastReadDate: null, totalBooks: 0, totalMins: 0, readDates: [], log: [], badges: [] };
+      saveState();
+      renderDashboard();
+    });
+
+    document.getElementById('printBtn').addEventListener('click', () => window.print());
+    document.getElementById('markCompleted').addEventListener('click', function() {
+      this.textContent = '✅ Completed!';
+      this.classList.add('bg-green-100','border-green-400','text-green-700');
+    });
+
+    updateTimerDisplay();
+  </script>
+
+  <footer class="bg-gray-800 text-white py-10 mt-10">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p class="font-extrabold text-lg mb-1">🐾 Story Time with Eva</p>
+      <p class="text-gray-400 text-sm mb-4">Where stories come to life! Magical bilingual books and activities for curious young minds.</p>
+      <div class="flex justify-center gap-4 text-sm text-gray-400">
+        <a href="/" class="hover:text-white">Home</a>
+        <a href="/books" class="hover:text-white">Books</a>
+        <a href="/activities" class="hover:text-white">Activities</a>
+        <a href="/about" class="hover:text-white">About Eva</a>
+      </div>
+      <p class="text-gray-500 text-xs mt-4">© 2025 Story Time with Eva. All rights reserved.</p>
+    </div>
+  </footer>
+
+<!-- STE_PROGRESS_SYNC: injected by scripts/patch-games.mjs -->
+<script>
+(function () {
+  var SLUG = "reading-tracker";
+  var KEY = 'readingProgress';
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+  function isDone() { var p = load(); return Array.isArray(p.activitiesCompleted) && p.activitiesCompleted.indexOf(SLUG) > -1; }
+  function markDone() {
+    var p = load();
+    p.booksRead = Array.isArray(p.booksRead) ? p.booksRead : [];
+    p.booksWantToRead = Array.isArray(p.booksWantToRead) ? p.booksWantToRead : [];
+    p.activitiesCompleted = Array.isArray(p.activitiesCompleted) ? p.activitiesCompleted : [];
+    if (p.activitiesCompleted.indexOf(SLUG) < 0) p.activitiesCompleted.push(SLUG);
+    localStorage.setItem(KEY, JSON.stringify(p));
+    try { window.dispatchEvent(new CustomEvent('progresschange')); } catch (e) {}
+  }
+  var btn = document.getElementById('markCompleted');
+  if (btn) {
+    btn.addEventListener('click', markDone);
+    if (isDone()) {
+      btn.textContent = '✅ Completed!';
+      btn.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
+    }
+  }
+})();
+</script>
+</body>
+</html>
