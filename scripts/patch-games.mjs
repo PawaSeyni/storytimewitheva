@@ -60,6 +60,22 @@ for (const file of files) {
     changed = true;
   }
 
+  // 1b. Self-host the font: drop the Google Fonts (Nunito) CDN @import and use
+  //     the site's Lexend (self-hosted in /games/lexend.woff2) for consistency
+  //     and to avoid the external request. (Tailwind CDN is left as-is for now.)
+  const GFONTS_IMPORT =
+    "@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');";
+  const LEXEND_FACE =
+    "@font-face{font-family:'Lexend';src:url('/games/lexend.woff2') format('woff2');font-weight:100 900;font-display:swap;}";
+  if (html.includes(GFONTS_IMPORT)) {
+    html = html.replace(GFONTS_IMPORT, LEXEND_FACE);
+    changed = true;
+  }
+  if (html.includes("font-family: 'Nunito'")) {
+    html = html.replaceAll("font-family: 'Nunito'", "font-family: 'Lexend'");
+    changed = true;
+  }
+
   // 2. Inject the progress-sync script once.
   if (!html.includes(MARKER)) {
     if (html.includes('</body>')) {
