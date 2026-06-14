@@ -76,6 +76,14 @@ for (const file of files) {
     changed = true;
   }
 
+  // 1c. Replace Tailwind Play CDN with static built CSS (not meant for production).
+  const TW_CDN = '<script src="https://cdn.tailwindcss.com"></script>';
+  const TW_LOCAL = '<link rel="stylesheet" href="/games/games.css">';
+  if (html.includes(TW_CDN)) {
+    html = html.replace(TW_CDN, TW_LOCAL);
+    changed = true;
+  }
+
   // 2. Inject the progress-sync script once.
   if (!html.includes(MARKER)) {
     if (html.includes('</body>')) {

@@ -9,7 +9,9 @@
     "build:spa": "tsc && vite build",
     "prerender": "node scripts/prerender.mjs",
     "gen:sitemap": "node scripts/gen-sitemap.mjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:games-css": "tailwindcss -c scripts/games.tailwind.config.cjs -i scripts/games-tw-input.css -o public/games/games.css --minify",
+    "patch:games": "node scripts/patch-games.mjs"
   },
   "dependencies": {
     "@fontsource-variable/lexend": "^5.2.11",
