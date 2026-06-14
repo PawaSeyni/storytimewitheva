@@ -85,13 +85,23 @@ console.log(`Prerendering ${routes.length} routes…`);
 // enhancement, not a hard build requirement.
 let browser;
 try {
-  browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+  browser = await puppeteer.launch({
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',   // required in Docker/CI (Netlify) where /dev/shm is small
+      '--disable-gpu',
+      '--no-first-run',
+      '--no-zygote',
+    ],
+  });
 } catch (e) {
   console.warn(`⚠️  Prerender skipped — could not launch Chromium: ${e.message}`);
   console.warn('   Shipping the client-rendered SPA build as-is.');
   server.close();
   process.exit(0);
 }
+console.log('Chromium launched OK');
 
 let ok = 0;
 const failures = [];
