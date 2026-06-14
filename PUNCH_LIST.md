@@ -231,7 +231,7 @@ Open items from the audit. Most of the audit shipped in PR #1 (`fix/audit-quick-
 
 **Post-launch follow-ups (observed on the live deploy 2026-06-13)**
 - [ ] **Trailing-slash vs canonical mismatch** — Netlify serves prerendered pages at a trailing slash and 301-redirects `/faq` → `/faq/`, but `Seo.tsx` canonical + `sitemap.xml` + hreflang are written WITHOUT the slash (e.g. canonical `…/faq`). Pages resolve and render fine (Google follows the 301), but it's a slightly circular signal. Fix: emit trailing slashes in `localizePath` (so canonical/hreflang/sitemap match what's served), or disable Netlify's force-trailing-slash. Small follow-up PR.
-- [ ] **Home mobile Performance dipped to 83** (was 98) on deploy `6a2decfa` — likely the new hero photo (LCP) and/or the Lexend web font; A11y 100 / BP 100 / SEO 100, other pages 91–98. Perf pass: preload the hero image + font, or compress the hero further.
+- [x] **Home mobile Performance** — addressed (PR pending). Hero photo (the mobile LCP element) converted to a 1000px WebP (~317 KB JPEG → ~76 KB) with `fetchpriority="high"` + `loading="eager"`; the 1200px JPEG is kept only for `og:image` (broad social compatibility). Re-confirm the Lighthouse score from the PR's deploy preview / next production deploy.
 
 ---
 
