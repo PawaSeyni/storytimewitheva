@@ -186,7 +186,7 @@ Add new items as discovered. Prioritize roughly top-to-bottom within each cluste
 - [ ] Lightweight global search (subset of Base44's, no modal — inline page-search)
 - [ ] Accessibility audit (axe-core), fix focus management on demo modals
 - [ ] Mobile responsiveness pass — particularly the wide demo layouts (Bookmark Designer, Bingo grid)
-- [ ] Lazy-load demo bundles per route to keep initial JS payload lean as i18n bumped bundle 88KB → 136KB gz
+- [x] Lazy-load demo bundles per route — DONE. The 8 interactive demos are `React.lazy()` code-split (separate chunks, fetched only on their route); main bundle ~495 KB → ~381 KB. A Suspense fallback tagged `data-prerender-loading` lets `prerender.mjs` wait for the demo chunk to resolve before snapshotting, so the prerendered demo pages still contain real content (verified 105/105, 0 leftover spinners).
 
 ### Product
 - [ ] Real book recommendation logic (subset of Base44's `RecommendationEngine`, no backend)
