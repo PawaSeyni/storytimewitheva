@@ -6,7 +6,8 @@ import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
 import { useTranslation } from '../lib/language';
-import evaReading from '../assets/eva-reading.jpg';
+import evaReadingWebp from '../assets/eva-reading.webp'; // optimized on-page hero (LCP)
+import evaReading from '../assets/eva-reading.jpg'; // kept for the og:image (broad social compatibility)
 
 const SITE_URL = 'https://storytimewitheva.com';
 
@@ -227,10 +228,13 @@ export default function Home() {
           </div>
           <div className="order-first mb-10 lg:order-none lg:mb-0 lg:mt-0 lg:flex-1">
             <img
-              src={evaReading}
+              src={evaReadingWebp}
               alt={t.heroImageAlt}
-              width={1200}
-              height={900}
+              width={1000}
+              height={750}
+              loading="eager"
+              decoding="async"
+              {...({ fetchpriority: 'high' } as Record<string, string>)}
               className="w-full max-w-md mx-auto rounded-3xl shadow-2xl ring-4 ring-white/30 object-cover"
             />
           </div>
