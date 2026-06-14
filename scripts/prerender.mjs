@@ -99,7 +99,7 @@ const failures = [];
 for (const route of routes) {
   const page = await browser.newPage();
   try {
-    await page.goto(ORIGIN + route, { waitUntil: 'networkidle0', timeout: 30000 });
+    await page.goto(ORIGIN + route, { waitUntil: 'load', timeout: 30000 });
     await page
       .waitForFunction('window.__PRERENDER_READY__ === true', { timeout: 10000 })
       .catch(() => {}); // fall back to the networkidle snapshot if the flag never fires
