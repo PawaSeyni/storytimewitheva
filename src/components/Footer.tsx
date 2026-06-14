@@ -117,6 +117,10 @@ export default function Footer() {
                 className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors text-lg">
                 📚
               </a>
+              <a href="https://www.youtube.com/@StoryTimeEva" target="_blank" rel="noopener noreferrer" aria-label="YouTube @StoryTimeEva"
+                className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors text-lg">
+                ▶️
+              </a>
             </div>
             <div className="mt-4">
               <a
