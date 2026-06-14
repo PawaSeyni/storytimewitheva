@@ -19,6 +19,27 @@ import { existsSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer';
+import { execFileSync } from 'node:child_process';
+
+// Prefer system Chrome on Linux CI (Netlify has it pre-installed).
+// Puppeteer's bundled Chromium may fail on containers due to missing system libs.
+function findSystemChrome() {
+  const candidates = [
+    '/usr/bin/google-chrome-stable',
+    '/usr/bin/google-chrome',
+    '/usr/bin/chromium-browser',
+    '/usr/bin/chromium',
+  ];
+  for (const p of candidates) {
+    if (existsSync(p)) return p;
+  }
+  try {
+    const found = execFileSync('which', ['google-chrome'], { stdio: ['pipe', 'pipe', 'ignore'] })
+      .toString().trim();
+    if (found) return found;
+  } catch {}
+  return null;
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.resolve(__dirname, '..', 'dist');
@@ -83,25 +104,31 @@ console.log(`Prerendering ${routes.length} routes…`);
 // Best-effort: if Chromium can't launch (e.g. a host without the right libs),
 // warn and exit 0 so the working SPA still deploys. Prerender is an
 // enhancement, not a hard build requirement.
+const CHROME_ARGS = [
+  '--no-sandbox',
+  '--disable-setuid-sandbox',
+  '--disable-dev-shm-usage',
+  '--disable-gpu',
+  '--no-first-run',
+  '--no-zygote',
+];
+
+const systemChrome = findSystemChrome();
+if (systemChrome) console.log(`Using system Chrome: ${systemChrome}`);
+
 let browser;
 try {
   browser = await puppeteer.launch({
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',   // required in Docker/CI (Netlify) where /dev/shm is small
-      '--disable-gpu',
-      '--no-first-run',
-      '--no-zygote',
-    ],
+    ...(systemChrome ? { executablePath: systemChrome } : {}),
+    args: CHROME_ARGS,
   });
 } catch (e) {
-  console.warn(`⚠️  Prerender skipped — could not launch Chromium: ${e.message}`);
+  console.warn(`⚠️  Prerender skipped — could not launch Chrome: ${e.message}`);
   console.warn('   Shipping the client-rendered SPA build as-is.');
   server.close();
   process.exit(0);
 }
-console.log('Chromium launched OK');
+console.log('Chrome launched OK');
 
 let ok = 0;
 const failures = [];
