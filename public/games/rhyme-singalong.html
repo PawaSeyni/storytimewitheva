@@ -337,6 +337,16 @@
       this.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     });
 
+    // Auto-select site language (React SPA stores it as 'preferredLanguage')
+    const _pref = localStorage.getItem('preferredLanguage');
+    if (_pref === 'es' || _pref === 'fr') {
+      currentLang = _pref;
+      document.querySelectorAll('.lang-tab').forEach(t => {
+        const active = t.dataset.lang === currentLang;
+        t.classList.toggle('active', active);
+        t.classList.toggle('text-gray-600', !active);
+      });
+    }
     // Init
     renderLyrics();
     updateSongInfo();
