@@ -1,5 +1,6 @@
 import { Link } from '../components/LocalizedLink';
 import { useBooks } from '../data/books';
+import { activities } from '../data/activities';
 import BookCard from '../components/BookCard';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
@@ -52,7 +53,7 @@ const TRANSLATIONS = {
     ctaActivityKit: 'Get Free Activity Kit 🎨',
     statBooks: 'Magical Books',
     statLanguages: 'Languages',
-    statRating: 'Amazon Rating',
+    statActivities: 'Fun Activities',
     featuredTitle: 'Featured Books',
     featuredSubtitle: 'Discover our carefully selected collection of magical stories',
     browseAll: 'Browse All Books →',
@@ -96,7 +97,7 @@ const TRANSLATIONS = {
     ctaActivityKit: 'Recibe el kit de actividades gratis 🎨',
     statBooks: 'Libros mágicos',
     statLanguages: 'Idiomas',
-    statRating: 'Valoración Amazon',
+    statActivities: 'Actividades divertidas',
     featuredTitle: 'Libros destacados',
     featuredSubtitle: 'Descubre nuestra colección cuidadosamente seleccionada de historias mágicas',
     browseAll: 'Ver todos los libros →',
@@ -140,7 +141,7 @@ const TRANSLATIONS = {
     ctaActivityKit: 'Recevoir le kit d’activités gratuit 🎨',
     statBooks: 'Livres magiques',
     statLanguages: 'Langues',
-    statRating: 'Note Amazon',
+    statActivities: 'Activités amusantes',
     featuredTitle: 'Livres en vedette',
     featuredSubtitle: 'Découvrez notre collection soigneusement choisie d\'histoires magiques',
     browseAll: 'Voir tous les livres →',
@@ -183,7 +184,7 @@ export default function Home() {
   const stats = [
     { number: `${books.length}`, label: t.statBooks, emoji: '📚' },
     { number: '3', label: t.statLanguages, emoji: '🌍' },
-    { number: '4.9/5', label: t.statRating, emoji: '⭐' },
+    { number: `${activities.length}`, label: t.statActivities, emoji: '🎨' },
   ];
 
   return (
