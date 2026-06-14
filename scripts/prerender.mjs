@@ -103,6 +103,12 @@ for (const route of routes) {
     await page
       .waitForFunction('window.__PRERENDER_READY__ === true', { timeout: 10000 })
       .catch(() => {}); // fall back to the networkidle snapshot if the flag never fires
+    // Lazy-loaded routes (the demos) render a Suspense fallback tagged
+    // data-prerender-loading until their chunk resolves — wait it out so we
+    // snapshot the real demo, not the spinner.
+    await page
+      .waitForFunction("!document.querySelector('[data-prerender-loading]')", { timeout: 10000 })
+      .catch(() => {});
     const html = await page.content();
     const outDir = route === '/' ? DIST : path.join(DIST, route);
     await mkdir(outDir, { recursive: true });

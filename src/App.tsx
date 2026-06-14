@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useTranslation } from './lib/language';
 import Navbar from './components/Navbar';
@@ -17,14 +17,20 @@ import FAQ from './pages/FAQ';
 import NotFound from './pages/NotFound';
 import Links from './pages/Links';
 import DemoPage from './pages/DemoPage';
-import StoryBuilderDemo from './demos/StoryBuilderDemo';
-import CharacterWorkshopDemo from './demos/CharacterWorkshopDemo';
-import AdventureJournalDemo from './demos/AdventureJournalDemo';
-import BingoDemo from './demos/BingoDemo';
-import BookmarkCraftsDemo from './demos/BookmarkCraftsDemo';
-import CraftCornerDemo from './demos/CraftCornerDemo';
-import ColoringDemo from './demos/ColoringDemo';
-import PuzzleAdventuresDemo from './demos/PuzzleAdventuresDemo';
+
+// The 8 interactive demos are code-split: they're only fetched when their route
+// is visited, keeping the initial bundle lean for every non-demo page. A
+// Suspense boundary (below) renders a fallback while a demo chunk loads; the
+// fallback carries data-prerender-loading so the build-time prerender waits for
+// the real demo to mount before snapshotting.
+const StoryBuilderDemo = lazy(() => import('./demos/StoryBuilderDemo'));
+const CharacterWorkshopDemo = lazy(() => import('./demos/CharacterWorkshopDemo'));
+const AdventureJournalDemo = lazy(() => import('./demos/AdventureJournalDemo'));
+const BingoDemo = lazy(() => import('./demos/BingoDemo'));
+const BookmarkCraftsDemo = lazy(() => import('./demos/BookmarkCraftsDemo'));
+const CraftCornerDemo = lazy(() => import('./demos/CraftCornerDemo'));
+const ColoringDemo = lazy(() => import('./demos/ColoringDemo'));
+const PuzzleAdventuresDemo = lazy(() => import('./demos/PuzzleAdventuresDemo'));
 
 // Canonical (English) route table. Mounted once per language prefix below so
 // every page exists at /path, /es/path, and /fr/path. The active language is
@@ -80,16 +86,24 @@ export default function App() {
       </a>
       <Navbar />
       <div className="flex-1 outline-none" id="main-content" tabIndex={-1}>
-        <Routes>
-          {LANG_PREFIXES.flatMap(prefix =>
-            routeDefs.map(r => {
-              const full = r.path === '/' ? prefix || '/' : `${prefix}${r.path}`;
-              return <Route key={full} path={full} element={r.element} />;
-            }),
-          )}
-          <Route path="/home" element={<Navigate to="/" replace />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense
+          fallback={
+            <div data-prerender-loading className="py-24 text-center text-gray-400">
+              …
+            </div>
+          }
+        >
+          <Routes>
+            {LANG_PREFIXES.flatMap(prefix =>
+              routeDefs.map(r => {
+                const full = r.path === '/' ? prefix || '/' : `${prefix}${r.path}`;
+                return <Route key={full} path={full} element={r.element} />;
+              }),
+            )}
+            <Route path="/home" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </div>
       <Footer />
     </div>
