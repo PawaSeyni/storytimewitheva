@@ -297,6 +297,10 @@ export default function Contact() {
                   className="flex-1 py-2 bg-pink-50 border border-pink-200 rounded-xl text-center text-sm hover:bg-pink-100 transition-colors">
                   📷 Instagram
                 </a>
+                <a href="https://www.youtube.com/@StoryTimeEva" target="_blank" rel="noopener noreferrer"
+                  className="flex-1 py-2 bg-red-50 border border-red-200 rounded-xl text-center text-sm hover:bg-red-100 transition-colors">
+                  ▶️ YouTube
+                </a>
               </div>
             </div>
           </div>
