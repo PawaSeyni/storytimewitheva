@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Search } from 'lucide-react';
 import { Link } from './LocalizedLink';
 import { useTranslation } from '../lib/language';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -13,6 +14,7 @@ const TRANSLATIONS = {
     about: 'About',
     contact: 'Contact',
     profile: 'Profile',
+    search: 'Search',
     toggleMenu: 'Toggle menu',
   },
   es: {
@@ -23,6 +25,7 @@ const TRANSLATIONS = {
     about: 'Acerca',
     contact: 'Contacto',
     profile: 'Perfil',
+    search: 'Buscar',
     toggleMenu: 'Abrir menú',
   },
   fr: {
@@ -33,6 +36,7 @@ const TRANSLATIONS = {
     about: 'À propos',
     contact: 'Contact',
     profile: 'Profil',
+    search: 'Recherche',
     toggleMenu: 'Ouvrir le menu',
   },
 };
@@ -78,6 +82,17 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            <Link
+              to="/search"
+              aria-label={t.search}
+              className={`p-2.5 rounded-full transition-all duration-200 ${
+                location.pathname === '/search'
+                  ? 'bg-purple-100 text-purple-700'
+                  : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
+              }`}
+            >
+              <Search className="w-5 h-5" />
+            </Link>
             <div className="ml-2">
               <LanguageSwitcher />
             </div>
@@ -115,6 +130,18 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            <Link
+              to="/search"
+              onClick={() => setMenuOpen(false)}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium mb-1 transition-all ${
+                location.pathname === '/search'
+                  ? 'bg-purple-100 text-purple-700'
+                  : 'text-gray-600 hover:bg-purple-50 hover:text-purple-600'
+              }`}
+            >
+              <Search className="w-4 h-4" />
+              {t.search}
+            </Link>
             <div className="px-2 pt-3 mt-1 border-t border-gray-100">
               <LanguageSwitcher vertical />
             </div>
