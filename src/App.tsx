@@ -4,24 +4,26 @@ import { useTranslation } from './lib/language';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
-import Books from './pages/Books';
-import BookDetail from './pages/BookDetail';
-import Activities from './pages/Activities';
-import Resources from './pages/Resources';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import Profile from './pages/Profile';
-import Privacy from './pages/Privacy';
-import Terms from './pages/Terms';
-import FAQ from './pages/FAQ';
-import Search from './pages/Search';
-import NotFound from './pages/NotFound';
-import Links from './pages/Links';
-import DemoPage from './pages/DemoPage';
 
-// The 8 interactive demos are code-split: they're only fetched when their route
-// is visited, keeping the initial bundle lean for every non-demo page. A
-// Suspense boundary (below) renders a fallback while a demo chunk loads; the
+// All non-home pages are code-split so the initial bundle only contains what
+// the homepage actually needs. The <Suspense> boundary below handles loading.
+const Books               = lazy(() => import('./pages/Books'));
+const BookDetail          = lazy(() => import('./pages/BookDetail'));
+const Activities          = lazy(() => import('./pages/Activities'));
+const Resources           = lazy(() => import('./pages/Resources'));
+const About               = lazy(() => import('./pages/About'));
+const Contact             = lazy(() => import('./pages/Contact'));
+const Profile             = lazy(() => import('./pages/Profile'));
+const Privacy             = lazy(() => import('./pages/Privacy'));
+const Terms               = lazy(() => import('./pages/Terms'));
+const FAQ                 = lazy(() => import('./pages/FAQ'));
+const Search              = lazy(() => import('./pages/Search'));
+const NotFound            = lazy(() => import('./pages/NotFound'));
+const Links               = lazy(() => import('./pages/Links'));
+const DemoPage            = lazy(() => import('./pages/DemoPage'));
+
+// The 8 interactive demos are also code-split.
+// A Suspense boundary (below) renders a fallback while a demo chunk loads; the
 // fallback carries data-prerender-loading so the build-time prerender waits for
 // the real demo to mount before snapshotting.
 const StoryBuilderDemo = lazy(() => import('./demos/StoryBuilderDemo'));
