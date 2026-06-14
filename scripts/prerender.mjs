@@ -18,28 +18,13 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import puppeteer from 'puppeteer';
-import { execFileSync } from 'node:child_process';
-
-// Prefer system Chrome on Linux CI (Netlify has it pre-installed).
-// Puppeteer's bundled Chromium may fail on containers due to missing system libs.
-function findSystemChrome() {
-  const candidates = [
-    '/usr/bin/google-chrome-stable',
-    '/usr/bin/google-chrome',
-    '/usr/bin/chromium-browser',
-    '/usr/bin/chromium',
-  ];
-  for (const p of candidates) {
-    if (existsSync(p)) return p;
-  }
-  try {
-    const found = execFileSync('which', ['google-chrome'], { stdio: ['pipe', 'pipe', 'ignore'] })
-      .toString().trim();
-    if (found) return found;
-  } catch {}
-  return null;
-}
+// On CI (Netlify) use @sparticuz/chromium — a statically-linked build that
+// works in containers without system-level Chrome libs.
+// Locally (macOS / dev) fall back to puppeteer's own bundled Chromium.
+const IS_CI = process.env.CI === 'true' || process.env.NETLIFY === 'true';
+const { default: puppeteer } = IS_CI
+  ? await import('puppeteer-core')
+  : await import('puppeteer');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.resolve(__dirname, '..', 'dist');
@@ -101,27 +86,31 @@ const routes = routesFromSitemap(await readFile(path.join(DIST, 'sitemap.xml'), 
 );
 console.log(`Prerendering ${routes.length} routes…`);
 
-// Best-effort: if Chromium can't launch (e.g. a host without the right libs),
-// warn and exit 0 so the working SPA still deploys. Prerender is an
-// enhancement, not a hard build requirement.
-const CHROME_ARGS = [
-  '--no-sandbox',
-  '--disable-setuid-sandbox',
-  '--disable-dev-shm-usage',
-  '--disable-gpu',
-  '--no-first-run',
-  '--no-zygote',
-];
-
-const systemChrome = findSystemChrome();
-if (systemChrome) console.log(`Using system Chrome: ${systemChrome}`);
+// Best-effort: if Chromium can't launch warn and exit 0 so the working SPA
+// still deploys. Prerender is an enhancement, not a hard build requirement.
+let launchOpts;
+if (IS_CI) {
+  const chromium = (await import('@sparticuz/chromium')).default;
+  launchOpts = {
+    args: chromium.args,
+    executablePath: await chromium.executablePath(),
+    headless: chromium.headless,
+  };
+  console.log('CI mode: using @sparticuz/chromium');
+} else {
+  launchOpts = {
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+    ],
+  };
+}
 
 let browser;
 try {
-  browser = await puppeteer.launch({
-    ...(systemChrome ? { executablePath: systemChrome } : {}),
-    args: CHROME_ARGS,
-  });
+  browser = await puppeteer.launch(launchOpts);
 } catch (e) {
   console.warn(`⚠️  Prerender skipped — could not launch Chrome: ${e.message}`);
   console.warn('   Shipping the client-rendered SPA build as-is.');
