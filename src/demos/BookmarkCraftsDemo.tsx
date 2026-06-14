@@ -331,13 +331,13 @@ export default function BookmarkCraftsDemo() {
   return (
     <div className="bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
-        <h3 className="text-3xl font-bold mb-2 text-purple-700">{t.heading}</h3>
+        <h2 className="text-3xl font-bold mb-2 text-purple-700">{t.heading}</h2>
         <p className="text-gray-700 mb-4">{t.subheading}</p>
         <div className="text-5xl mb-4">🎨📚</div>
       </div>
 
       <div className="bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl p-6 mb-6">
-        <h4 className="text-2xl font-bold text-white text-center mb-4">{t.quickStart}</h4>
+        <h3 className="text-2xl font-bold text-white text-center mb-4">{t.quickStart}</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {TEMPLATE_META.map((template) => (
             <Card
@@ -356,7 +356,7 @@ export default function BookmarkCraftsDemo() {
       <div className="grid lg:grid-cols-2 gap-6">
         <div className="space-y-6">
           <div className="bg-gradient-to-r from-yellow-200 to-orange-200 rounded-2xl p-6 border-4 border-orange-300">
-            <h4 className="text-xl font-bold text-gray-800 mb-4">{t.chooseAnimal}</h4>
+            <h3 className="text-xl font-bold text-gray-800 mb-4">{t.chooseAnimal}</h3>
             <div className="grid grid-cols-4 gap-3">
               {animals.map((animal) => (
                 <Card
@@ -376,7 +376,7 @@ export default function BookmarkCraftsDemo() {
           </div>
 
           <div className="bg-gradient-to-r from-blue-200 to-cyan-200 rounded-2xl p-6 border-4 border-cyan-300">
-            <h4 className="text-xl font-bold text-gray-800 mb-4">{t.chooseCountry}</h4>
+            <h3 className="text-xl font-bold text-gray-800 mb-4">{t.chooseCountry}</h3>
             <div className="grid grid-cols-4 gap-3">
               {countries.map((country) => (
                 <Card
@@ -396,7 +396,7 @@ export default function BookmarkCraftsDemo() {
           </div>
 
           <div className="bg-gradient-to-r from-green-200 to-teal-200 rounded-2xl p-6 border-4 border-teal-300">
-            <h4 className="text-xl font-bold text-gray-800 mb-4">{t.chooseColor}</h4>
+            <h3 className="text-xl font-bold text-gray-800 mb-4">{t.chooseColor}</h3>
             <div className="grid grid-cols-5 gap-3">
               {COLORS.map((color, idx) => (
                 <div
@@ -412,7 +412,7 @@ export default function BookmarkCraftsDemo() {
           </div>
 
           <div className="bg-gradient-to-r from-pink-200 to-rose-200 rounded-2xl p-6 border-4 border-rose-300">
-            <h4 className="text-xl font-bold text-gray-800 mb-4">{t.addText}</h4>
+            <h3 className="text-xl font-bold text-gray-800 mb-4">{t.addText}</h3>
             <Input
               value={bookmarkText}
               onChange={(e) => setBookmarkText(e.target.value)}
@@ -423,7 +423,7 @@ export default function BookmarkCraftsDemo() {
           </div>
 
           <div className="bg-gradient-to-r from-purple-200 to-pink-200 rounded-2xl p-6 border-4 border-pink-300">
-            <h4 className="text-xl font-bold text-gray-800 mb-4">{t.choosePattern}</h4>
+            <h3 className="text-xl font-bold text-gray-800 mb-4">{t.choosePattern}</h3>
             <div className="grid grid-cols-4 gap-3">
               {PATTERN_KEYS.map((key) => (
                 <Card
@@ -444,7 +444,7 @@ export default function BookmarkCraftsDemo() {
 
         <div className="space-y-6">
           <div className="text-center">
-            <h4 className="text-2xl font-bold text-purple-700 mb-4">{t.previewHeading}</h4>
+            <h3 className="text-2xl font-bold text-purple-700 mb-4">{t.previewHeading}</h3>
             <div
               className="w-72 h-[32rem] mx-auto rounded-2xl shadow-2xl overflow-hidden relative"
               style={{ background: selectedColor }}
@@ -491,8 +491,8 @@ export default function BookmarkCraftsDemo() {
         </div>
       </div>
 
-      <div className="bg-blue-400 text-white rounded-2xl p-6 mt-6">
-        <h4 className="text-xl font-bold mb-3">{t.tipsTitle}</h4>
+      <div className="bg-blue-600 text-white rounded-2xl p-6 mt-6">
+        <h3 className="text-xl font-bold mb-3">{t.tipsTitle}</h3>
         <ul className="space-y-2">
           {t.tips.map((tip, idx) => (
             <li key={idx} className="flex items-start gap-2">
@@ -504,7 +504,7 @@ export default function BookmarkCraftsDemo() {
       </div>
 
       <div className="bg-white rounded-2xl p-6 mt-6 border-4 border-dashed border-purple-400">
-        <h4 className="text-xl font-bold text-purple-700 mb-3">{t.printingTitle}</h4>
+        <h3 className="text-xl font-bold text-purple-700 mb-3">{t.printingTitle}</h3>
         <ol className="space-y-2 list-decimal list-inside">
           {t.printingSteps.map((step, idx) => (
             <li key={idx} className="text-gray-700">

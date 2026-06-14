@@ -383,13 +383,13 @@ export default function PuzzleAdventuresDemo() {
   return (
     <div className="bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
-        <h3 className="text-3xl font-bold mb-2 text-purple-700">{t.heading}</h3>
+        <h2 className="text-3xl font-bold mb-2 text-purple-700">{t.heading}</h2>
         <p className="text-gray-700 mb-4">{t.subheading}</p>
         <div className="text-5xl mb-4">🧩🧠</div>
       </div>
 
       <div className="bg-gradient-to-r from-indigo-400 to-purple-400 text-white rounded-2xl p-6 mb-6">
-        <h4 className="text-2xl font-bold mb-3 text-center">{t.howToPlay}</h4>
+        <h3 className="text-2xl font-bold mb-3 text-center">{t.howToPlay}</h3>
         <ol className="list-decimal list-inside space-y-2 text-lg">
           {t.howToPlaySteps.map((step, idx) => (
             <li key={idx}>{step}</li>
@@ -403,7 +403,7 @@ export default function PuzzleAdventuresDemo() {
 
       {/* Scrambled Words */}
       <div className="bg-gradient-to-r from-blue-200 to-cyan-200 rounded-2xl p-6 mb-6 border-4 border-cyan-300">
-        <h4 className="text-2xl font-bold text-gray-800 mb-4">{t.scrambleHeading}</h4>
+        <h3 className="text-2xl font-bold text-gray-800 mb-4">{t.scrambleHeading}</h3>
         <p className="text-center mb-4">{t.scrambleBlurb}</p>
 
         {scrambledWords.map((word, i) => (
@@ -500,7 +500,7 @@ export default function PuzzleAdventuresDemo() {
 
       {/* Riddles */}
       <div className="bg-gradient-to-r from-pink-200 to-rose-200 rounded-2xl p-6 mb-6 border-4 border-rose-300">
-        <h4 className="text-2xl font-bold text-gray-800 mb-4">{t.riddleHeading}</h4>
+        <h3 className="text-2xl font-bold text-gray-800 mb-4">{t.riddleHeading}</h3>
         <p className="text-center mb-4">{t.riddleBlurb}</p>
 
         {riddles.map((r, idx) => (
@@ -543,12 +543,12 @@ export default function PuzzleAdventuresDemo() {
 
       {/* Matching */}
       <div className="bg-gradient-to-r from-green-200 to-emerald-200 rounded-2xl p-6 mb-6 border-4 border-emerald-300">
-        <h4 className="text-2xl font-bold text-gray-800 mb-4">{t.matchingHeading}</h4>
+        <h3 className="text-2xl font-bold text-gray-800 mb-4">{t.matchingHeading}</h3>
         <p className="text-center mb-4">{t.matchingBlurb}</p>
 
         <div className="grid grid-cols-2 gap-6">
           <div>
-            <h5 className="font-bold text-emerald-800 mb-3 text-center">{t.characters}</h5>
+            <h4 className="font-bold text-emerald-800 mb-3 text-center">{t.characters}</h4>
             {characters.map((c) => (
               <Button
                 key={c.id}
@@ -567,7 +567,7 @@ export default function PuzzleAdventuresDemo() {
             ))}
           </div>
           <div>
-            <h5 className="font-bold text-emerald-800 mb-3 text-center">{t.stories}</h5>
+            <h4 className="font-bold text-emerald-800 mb-3 text-center">{t.stories}</h4>
             {stories.map((s) => (
               <Button
                 key={s.id}
@@ -630,7 +630,7 @@ export default function PuzzleAdventuresDemo() {
 
       {/* Logic */}
       <div className="bg-gradient-to-r from-yellow-200 to-orange-200 rounded-2xl p-6 mb-6 border-4 border-orange-300">
-        <h4 className="text-2xl font-bold text-gray-800 mb-4">{t.logicHeading}</h4>
+        <h3 className="text-2xl font-bold text-gray-800 mb-4">{t.logicHeading}</h3>
 
         <div className="bg-white rounded-xl p-5 mb-4">
           <p className="font-bold text-gray-800 mb-2">{t.mystery}</p>

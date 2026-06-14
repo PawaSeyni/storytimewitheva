@@ -413,7 +413,7 @@ export default function ColoringDemo() {
   return (
     <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
-        <h3 className="text-3xl font-bold text-purple-700 mb-2">{t.heading}</h3>
+        <h2 className="text-3xl font-bold text-purple-700 mb-2">{t.heading}</h2>
         <p className="text-gray-600">{t.subheading}</p>
         <div className="text-5xl my-4 animate-bounce">🎨</div>
       </div>
@@ -421,7 +421,7 @@ export default function ColoringDemo() {
       <div className="bg-gradient-to-r from-blue-400 to-cyan-400 text-white rounded-2xl p-6 mb-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10" />
         <div className="relative z-10">
-          <h4 className="text-2xl font-bold mb-3 flex items-center gap-2 drop-shadow-md">{t.howToPlay}</h4>
+          <h3 className="text-2xl font-bold mb-3 flex items-center gap-2 drop-shadow-md">{t.howToPlay}</h3>
           <ol className="list-decimal list-inside space-y-2 text-lg drop-shadow-md">
             {t.howToPlaySteps.map((step, idx) => (
               <li key={idx}>{step}</li>
@@ -506,8 +506,9 @@ export default function ColoringDemo() {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-bold text-purple-700 mb-2">{t.brushSize} {brushSize}px</label>
+        <label htmlFor="brush-size" className="block text-sm font-bold text-purple-700 mb-2">{t.brushSize} {brushSize}px</label>
         <input
+          id="brush-size"
           type="range"
           min="5"
           max="50"

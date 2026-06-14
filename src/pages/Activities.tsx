@@ -122,7 +122,7 @@ export default function Activities() {
                 >
                   <span
                     className={`absolute top-4 right-4 z-10 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 ${
-                      done ? 'bg-orange-500 text-white' : 'bg-green-100 text-green-700'
+                      done ? 'bg-orange-700 text-white' : 'bg-green-100 text-green-700'
                     }`}
                   >
                     {done ? (
@@ -140,7 +140,7 @@ export default function Activities() {
                     <span className="text-xs text-purple-600 font-medium bg-purple-50 px-2 py-1 rounded-full mb-3 inline-block self-start">
                       {act.category}
                     </span>
-                    <h3 className="font-bold text-gray-800 text-xl mb-2">{act.title}</h3>
+                    <h2 className="font-bold text-gray-800 text-xl mb-2">{act.title}</h2>
                     <p className="text-gray-500 text-sm leading-relaxed mb-4 flex-1">{act.desc}</p>
                     <div className="flex items-center justify-between mt-auto">
                       <span className="text-xs text-gray-500">

@@ -80,7 +80,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-white font-semibold mb-4">{t.quickLinks}</h3>
+            <p className="text-white font-semibold mb-4">{t.quickLinks}</p>
             <ul className="space-y-2 text-sm">
               {links.map(link => (
                 <li key={link.to}>
@@ -94,7 +94,7 @@ export default function Footer() {
 
           {/* Connect */}
           <div>
-            <h3 className="text-white font-semibold mb-4">{t.connect}</h3>
+            <p className="text-white font-semibold mb-4">{t.connect}</p>
             <p className="text-sm text-gray-400 mb-4">{t.connectBlurb}</p>
             <div className="flex gap-3">
               <a href="https://www.facebook.com/storytimewitheva" target="_blank" rel="noopener noreferrer" aria-label="Facebook @storytimewitheva"

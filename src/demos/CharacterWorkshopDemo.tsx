@@ -229,20 +229,20 @@ export default function CharacterWorkshopDemo() {
   const StepHeader = ({ n, title }: { n: number; title: string }) => (
     <div className="flex items-center gap-3 mb-4">
       <div className="bg-red-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl">{n}</div>
-      <h4 className="text-2xl font-bold text-gray-800">{title}</h4>
+      <h3 className="text-2xl font-bold text-gray-800">{title}</h3>
     </div>
   );
 
   return (
     <div className="bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
-        <h3 className="text-3xl font-bold mb-2 text-purple-700">{t.title}</h3>
+        <h2 className="text-3xl font-bold mb-2 text-purple-700">{t.title}</h2>
         <p className="text-gray-700 mb-4">{t.subtitle}</p>
         <div className="text-5xl mb-4">🎨✨</div>
       </div>
 
       <div className="bg-gradient-to-r from-purple-400 to-pink-400 text-white rounded-2xl p-6 mb-6 text-center">
-        <h4 className="text-2xl font-bold mb-3">{t.howToPlay}</h4>
+        <h3 className="text-2xl font-bold mb-3">{t.howToPlay}</h3>
         <ol className="list-decimal list-inside space-y-2 text-lg text-left max-w-2xl mx-auto">
           {t.howToList.map((line, i) => <li key={i}>{line}</li>)}
         </ol>
@@ -385,7 +385,7 @@ export default function CharacterWorkshopDemo() {
 
       {showSummary && (
         <div id="summary-section" className="mt-8 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl p-8">
-          <h3 className="text-3xl font-bold text-center mb-6">{t.summaryHeading}</h3>
+          <h2 className="text-3xl font-bold text-center mb-6">{t.summaryHeading}</h2>
           <div className="space-y-3 text-lg">
             <p><strong>📛 {t.name}:</strong> {charName || t.defaultCharName}</p>
             {selectedType && <p><strong>✨ {t.type}:</strong> {selectedType}</p>}

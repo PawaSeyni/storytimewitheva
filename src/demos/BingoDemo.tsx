@@ -383,13 +383,13 @@ export default function BingoDemo() {
   return (
     <div className="bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
-        <h3 className="text-3xl font-bold mb-2 text-purple-700">{t.title}</h3>
+        <h2 className="text-3xl font-bold mb-2 text-purple-700">{t.title}</h2>
         <p className="text-gray-700 mb-4">{t.subtitle}</p>
         <div className="text-5xl mb-4">📚🎯</div>
       </div>
 
       <Card className="bg-gradient-to-r from-yellow-100 to-orange-100 p-6 mb-6 border-4 border-orange-300">
-        <h4 className="font-bold text-lg mb-3 text-orange-700">{t.howToPlay}</h4>
+        <h3 className="font-bold text-lg mb-3 text-orange-700">{t.howToPlay}</h3>
         <ol className="list-decimal list-inside space-y-2 text-gray-700">
           {t.howToList.map((line, i) => <li key={i}>{line}</li>)}
         </ol>
@@ -399,7 +399,7 @@ export default function BingoDemo() {
       </Card>
 
       <div className="bg-white rounded-2xl p-6 mb-6 shadow-lg">
-        <h4 className="font-bold text-lg mb-3 text-purple-700">{t.chooseTheme}</h4>
+        <h3 className="font-bold text-lg mb-3 text-purple-700">{t.chooseTheme}</h3>
         <div className="flex flex-wrap gap-3 mb-4">
           {(Object.keys(themes) as ThemeKey[]).map((themeKey) => (
             <Button
@@ -429,7 +429,7 @@ export default function BingoDemo() {
       </div>
 
       <div className="bg-gradient-to-br from-indigo-400 to-purple-500 rounded-2xl p-6 mb-6 shadow-2xl">
-        <h3 className="text-2xl font-bold text-center text-white mb-4">{themes[currentTheme].title}</h3>
+        <h2 className="text-2xl font-bold text-center text-white mb-4">{themes[currentTheme].title}</h2>
         <div className="grid grid-cols-5 gap-2 max-w-2xl mx-auto">
           {currentCard.map((item, index) => (
             <div
@@ -496,10 +496,10 @@ export default function BingoDemo() {
       )}
 
       <div className="bg-gradient-to-br from-blue-400 to-cyan-500 rounded-2xl p-6 shadow-2xl">
-        <h3 className="text-2xl font-bold text-center text-white mb-4">
+        <h2 className="text-2xl font-bold text-center text-white mb-4">
           <Award className="inline w-6 h-6 mr-2" />
           {t.badgeCollection}
-        </h3>
+        </h2>
         <div className="grid grid-cols-3 gap-4">
           {BADGE_DEFS.map((badge) => (
             <div

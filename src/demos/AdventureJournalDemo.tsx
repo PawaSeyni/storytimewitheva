@@ -201,13 +201,13 @@ ${'='.repeat(50)}
   return (
     <div className="bg-gradient-to-br from-amber-100 via-orange-100 to-pink-100 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
-        <h3 className="text-3xl font-bold mb-2 text-orange-700">{t.title}</h3>
+        <h2 className="text-3xl font-bold mb-2 text-orange-700">{t.title}</h2>
         <p className="text-gray-700 mb-4">{t.subtitle}</p>
         <div className="text-5xl mb-4">📝✨</div>
       </div>
 
       <div className="bg-gradient-to-r from-orange-400 to-pink-400 text-white rounded-2xl p-6 mb-6">
-        <h4 className="text-2xl font-bold mb-3 text-center">{t.howToPlay}</h4>
+        <h3 className="text-2xl font-bold mb-3 text-center">{t.howToPlay}</h3>
         <ol className="list-decimal list-inside space-y-2 text-lg">
           {t.howToList.map((line, i) => <li key={i}>{line}</li>)}
         </ol>
@@ -215,10 +215,10 @@ ${'='.repeat(50)}
 
       {showForm ? (
         <div className="bg-white rounded-2xl p-6 mb-6 shadow-lg border-4 border-orange-300">
-          <h4 className="text-2xl font-bold text-orange-700 mb-4 flex items-center gap-2">
+          <h3 className="text-2xl font-bold text-orange-700 mb-4 flex items-center gap-2">
             <BookOpen className="w-6 h-6" />
             {t.newEntry}
-          </h4>
+          </h3>
 
           <div className="space-y-4">
             <div>
@@ -332,7 +332,7 @@ ${'='.repeat(50)}
 
       <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <h4 className="text-2xl font-bold text-orange-700">{t.journalHeading}</h4>
+          <h3 className="text-2xl font-bold text-orange-700">{t.journalHeading}</h3>
           {entries.length > 0 && (
             <Button
               onClick={downloadJournal}
@@ -358,7 +358,7 @@ ${'='.repeat(50)}
                   <div className="flex items-center gap-3">
                     <span className="text-5xl">{entry.emoji}</span>
                     <div>
-                      <h5 className="text-2xl font-bold text-orange-700">{entry.bookTitle}</h5>
+                      <h4 className="text-2xl font-bold text-orange-700">{entry.bookTitle}</h4>
                       <div className="flex items-center gap-4 text-sm text-gray-600 mt-1">
                         <span className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
