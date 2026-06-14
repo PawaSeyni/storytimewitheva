@@ -51,6 +51,7 @@ export default function DemoPage({ children }: DemoPageProps) {
           </Link>
           {activity && <ActivityStatusButton slug={activity.slug} />}
         </div>
+        {activity && <h1 className="sr-only">{activity.title}</h1>}
         {children}
       </div>
     </main>

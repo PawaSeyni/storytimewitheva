@@ -325,13 +325,13 @@ export default function StoryBuilderDemo() {
   return (
     <div className="bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
-        <h3 className="text-3xl font-bold mb-2 text-purple-700">{t.title}</h3>
+        <h2 className="text-3xl font-bold mb-2 text-purple-700">{t.title}</h2>
         <p className="text-gray-700 mb-4">{t.subtitle}</p>
         <div className="text-5xl mb-4">🎲📖</div>
       </div>
 
       <div className="bg-gradient-to-r from-blue-400 to-cyan-400 text-white rounded-2xl p-6 mb-6 text-center">
-        <h4 className="text-2xl font-bold mb-3">{t.howToPlay}</h4>
+        <h3 className="text-2xl font-bold mb-3">{t.howToPlay}</h3>
         <p className="text-lg leading-relaxed">{t.howToText}</p>
       </div>
 
@@ -359,7 +359,7 @@ export default function StoryBuilderDemo() {
             </div>
             <div
               className={`bg-white rounded-xl p-4 min-h-[80px] flex items-center justify-center text-center ${
-                currentStory[element] ? 'text-gray-800' : 'text-gray-400 italic'
+                currentStory[element] ? 'text-gray-800' : 'text-gray-600 italic'
               }`}
             >
               {currentStory[element] ? (
@@ -409,13 +409,13 @@ export default function StoryBuilderDemo() {
       )}
 
       <div className="bg-green-300 text-green-900 rounded-2xl p-6 border-l-8 border-green-600 mb-6">
-        <h4 className="font-bold text-lg mb-2">{t.tipsHeading}</h4>
+        <h3 className="font-bold text-lg mb-2">{t.tipsHeading}</h3>
         <p className="leading-relaxed">{t.tipsBody}</p>
       </div>
 
       {savedStories.length > 0 && (
         <div className="mt-8">
-          <h3 className="text-2xl font-bold text-purple-700 mb-4">{t.savedHeading}</h3>
+          <h2 className="text-2xl font-bold text-purple-700 mb-4">{t.savedHeading}</h2>
           <div className="space-y-4">
             {[...savedStories].reverse().map((story, index) => (
               <div key={index} className="bg-white rounded-xl p-6 border-l-4 border-purple-500 shadow-lg">

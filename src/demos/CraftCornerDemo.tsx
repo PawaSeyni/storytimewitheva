@@ -487,13 +487,13 @@ export default function CraftCornerDemo() {
   return (
     <div className="bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
-        <h3 className="text-3xl font-bold mb-2 text-purple-700">{t.heading}</h3>
+        <h2 className="text-3xl font-bold mb-2 text-purple-700">{t.heading}</h2>
         <p className="text-gray-700 mb-4">{t.subheading}</p>
         <div className="text-5xl mb-4">✂️🎨</div>
       </div>
 
       <div className="bg-gradient-to-r from-pink-400 to-purple-400 text-white rounded-2xl p-6 mb-6">
-        <h4 className="text-2xl font-bold mb-3 text-center">{t.howToPlay}</h4>
+        <h3 className="text-2xl font-bold mb-3 text-center">{t.howToPlay}</h3>
         <ol className="list-decimal list-inside space-y-2 text-lg">
           {t.howToPlaySteps.map((step, idx) => (
             <li key={idx}>{step}</li>
@@ -522,7 +522,7 @@ export default function CraftCornerDemo() {
               className="bg-gradient-to-br from-yellow-100 to-orange-100 border-4 border-orange-300 p-6 cursor-pointer hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
             >
               <div className="text-6xl mb-4 text-center">{m.emoji}</div>
-              <h4 className="text-xl font-bold text-gray-800 mb-2 text-center">{c.title}</h4>
+              <h3 className="text-xl font-bold text-gray-800 mb-2 text-center">{c.title}</h3>
               <p className="text-gray-700 text-center mb-4">{c.description}</p>
               <div className="text-center">
                 <span className={`inline-block px-4 py-2 rounded-full font-bold ${DIFFICULTY_COLOR[m.difficulty]}`}>
@@ -546,12 +546,12 @@ export default function CraftCornerDemo() {
               <X className="w-6 h-6" />
             </Button>
             <div className="text-6xl mb-4 text-center">{meta.emoji}</div>
-            <h3 className="text-3xl font-bold text-center">{craft.title}</h3>
+            <h2 className="text-3xl font-bold text-center">{craft.title}</h2>
           </div>
 
           <div className="p-6 space-y-6">
             <div className="bg-gradient-to-br from-blue-400 to-cyan-400 text-white rounded-2xl p-6">
-              <h4 className="text-2xl font-bold mb-4">{t.materialsNeeded}</h4>
+              <h3 className="text-2xl font-bold mb-4">{t.materialsNeeded}</h3>
               <div className="grid md:grid-cols-2 gap-3">
                 {craft.materials.map((item, idx) => (
                   <div key={idx} className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
@@ -562,7 +562,7 @@ export default function CraftCornerDemo() {
             </div>
 
             <div>
-              <h4 className="text-2xl font-bold mb-4 text-gray-800">{t.instructions}</h4>
+              <h3 className="text-2xl font-bold mb-4 text-gray-800">{t.instructions}</h3>
               <div className="space-y-4">
                 {craft.steps.map((step, idx) => (
                   <div key={idx} className="bg-gray-50 border-l-4 border-purple-400 rounded-r-xl p-6">
@@ -571,7 +571,7 @@ export default function CraftCornerDemo() {
                         {idx + 1}
                       </div>
                       <div>
-                        <h5 className="font-bold text-lg text-gray-800 mb-2">{step.title}</h5>
+                        <h4 className="font-bold text-lg text-gray-800 mb-2">{step.title}</h4>
                         <p className="text-gray-700 leading-relaxed">{step.desc}</p>
                       </div>
                     </div>
@@ -584,7 +584,7 @@ export default function CraftCornerDemo() {
               <div className="flex items-start gap-3">
                 <Lightbulb className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
                 <div>
-                  <h4 className="font-bold text-lg text-gray-800 mb-3">{t.proTips}</h4>
+                  <h3 className="font-bold text-lg text-gray-800 mb-3">{t.proTips}</h3>
                   <ul className="space-y-2">
                     {craft.tips.map((tip, idx) => (
                       <li key={idx} className="text-gray-700">
@@ -598,7 +598,7 @@ export default function CraftCornerDemo() {
 
             {meta.ideas.length > 0 && (
               <div className="bg-gradient-to-br from-purple-400 to-indigo-400 text-white rounded-2xl p-6">
-                <h4 className="text-2xl font-bold mb-4 text-center">{t.ideas}</h4>
+                <h3 className="text-2xl font-bold mb-4 text-center">{t.ideas}</h3>
                 <div className="grid grid-cols-6 gap-4">
                   {meta.ideas.map((emoji, idx) => (
                     <div
@@ -617,7 +617,7 @@ export default function CraftCornerDemo() {
                 <div className="flex items-start gap-3">
                   <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-1" />
                   <div>
-                    <h4 className="font-bold text-lg text-red-800 mb-3">{t.safetyRules}</h4>
+                    <h3 className="font-bold text-lg text-red-800 mb-3">{t.safetyRules}</h3>
                     <ul className="space-y-2">
                       {craft.safetyRules.map((rule, idx) => (
                         <li key={idx} className="text-red-700">
