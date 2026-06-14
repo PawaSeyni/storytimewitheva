@@ -428,25 +428,25 @@ export default function BingoDemo() {
         </div>
       </div>
 
-      <div className="bg-gradient-to-br from-indigo-400 to-purple-500 rounded-2xl p-6 mb-6 shadow-2xl">
+      <div className="bg-gradient-to-br from-indigo-400 to-purple-500 rounded-2xl p-3 sm:p-6 mb-6 shadow-2xl">
         <h2 className="text-2xl font-bold text-center text-white mb-4">{themes[currentTheme].title}</h2>
-        <div className="grid grid-cols-5 gap-2 max-w-2xl mx-auto">
+        <div className="grid grid-cols-5 gap-1 sm:gap-2 max-w-2xl mx-auto">
           {currentCard.map((item, index) => (
             <div
               key={index}
               onClick={() => toggleSquare(index)}
-              className={`aspect-square p-2 flex flex-col items-center justify-center text-center text-xs cursor-pointer rounded-xl transition-all shadow-lg ${
+              className={`aspect-square p-1 sm:p-2 flex flex-col items-center justify-center text-center text-[9px] sm:text-xs cursor-pointer rounded-lg sm:rounded-xl transition-all shadow-md overflow-hidden ${
                 item.free
                   ? 'bg-gradient-to-br from-pink-400 to-red-400 text-white font-bold'
                   : completedSquares.has(index)
                   ? isInBingoLine(index)
-                    ? 'bg-gradient-to-br from-green-400 to-emerald-500 text-white scale-105 ring-4 ring-yellow-400'
+                    ? 'bg-gradient-to-br from-green-400 to-emerald-500 text-white scale-105 ring-2 sm:ring-4 ring-yellow-400'
                     : 'bg-gradient-to-br from-green-300 to-teal-300 text-white scale-105'
                   : 'bg-white hover:bg-blue-50 hover:scale-105'
               }`}
             >
-              <span className="text-2xl mb-1">{item.emoji}</span>
-              <span className="leading-tight">{item.text}</span>
+              <span className="text-lg sm:text-2xl mb-0.5 sm:mb-1 leading-none">{item.emoji}</span>
+              <span className="leading-tight break-words w-full">{item.text}</span>
             </div>
           ))}
         </div>
