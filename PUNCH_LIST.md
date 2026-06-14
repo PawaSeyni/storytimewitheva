@@ -237,6 +237,14 @@ Open items from the audit. Most of the audit shipped in PR #1 (`fix/audit-quick-
 
 ## 🛠 Operational notes for future Claude sessions
 
+### Deployment verification (REQUIRED)
+Every change that reaches `main` auto-deploys to production. **Always verify the
+deploy on the live `storytimewitheva.com` URL after it publishes** — do not stop
+at "merged" or at the PR deploy-preview. Recipe: confirm via Netlify (current
+deploy `commit_ref` == merged commit, `state: ready`), then `curl -sL` the live
+URL(s) to confirm the change is present and nothing regressed. Only then is the
+task done.
+
 ### Repo layout
 ```
 storytimewitheva/
