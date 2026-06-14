@@ -13,7 +13,10 @@ const SITE = 'https://storytimewitheva.com';
 const LANGS = ['en', 'es', 'fr'];
 
 const loc = (p, l) => (l === 'en' ? p : p === '/' ? `/${l}` : `/${l}${p}`);
-const url = (p, l) => SITE + loc(p, l);
+// Netlify serves prerendered pages at a trailing slash (301s the slashless form
+// to it), so the sitemap uses the slashed form to match the canonical exactly.
+const slash = (s) => (s.endsWith('/') ? s : `${s}/`);
+const url = (p, l) => SITE + slash(loc(p, l));
 
 // Static pages: [path, changefreq, priority]
 const staticPages = [

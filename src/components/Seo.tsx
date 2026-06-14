@@ -41,12 +41,17 @@ export default function Seo({ title, description, image = DEFAULT_IMAGE, path, b
 
   // Canonical points to THIS language's URL; hreflang advertises all three
   // (plus x-default → English) so search engines index each language version.
-  const url = `${SITE_URL}${localizePath(enPath, language)}`;
+  // Netlify serves prerendered pages at a trailing slash (and 301s /faq →
+  // /faq/), so the canonical/hreflang/sitemap URLs use that slashed form to
+  // match exactly. Internal links/routing stay slashless (React Router matches
+  // both). Root stays "/".
+  const canonical = (p: string) => (p === '/' ? `${SITE_URL}/` : `${SITE_URL}${p}/`);
+  const url = canonical(localizePath(enPath, language));
   const alternates = useMemo(() => {
     if (noindex) return [];
     return [
-      ...SUPPORTED_LANGUAGES.map(l => ({ hreflang: l, href: `${SITE_URL}${localizePath(enPath, l)}` })),
-      { hreflang: 'x-default', href: `${SITE_URL}${localizePath(enPath, 'en')}` },
+      ...SUPPORTED_LANGUAGES.map(l => ({ hreflang: l, href: canonical(localizePath(enPath, l)) })),
+      { hreflang: 'x-default', href: canonical(localizePath(enPath, 'en')) },
     ];
   }, [enPath, noindex]);
 

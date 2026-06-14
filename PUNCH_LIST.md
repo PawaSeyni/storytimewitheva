@@ -230,7 +230,7 @@ Open items from the audit. Most of the audit shipped in PR #1 (`fix/audit-quick-
 - [x] **Confirm Chromium on Netlify (prerender)** — DONE. Production deploy `6a2decfa` (merge commit `1e7a9e0`) published 2026-06-13 in 131s; prerender ran on Netlify and the per-route HTML serves live. Re-run Lighthouse/PSI + GSC submission still open above.
 
 **Post-launch follow-ups (observed on the live deploy 2026-06-13)**
-- [ ] **Trailing-slash vs canonical mismatch** — Netlify serves prerendered pages at a trailing slash and 301-redirects `/faq` → `/faq/`, but `Seo.tsx` canonical + `sitemap.xml` + hreflang are written WITHOUT the slash (e.g. canonical `…/faq`). Pages resolve and render fine (Google follows the 301), but it's a slightly circular signal. Fix: emit trailing slashes in `localizePath` (so canonical/hreflang/sitemap match what's served), or disable Netlify's force-trailing-slash. Small follow-up PR.
+- [x] **Trailing-slash vs canonical mismatch** — FIXED. `Seo.tsx` canonical + hreflang and `gen-sitemap.mjs` now emit the trailing-slash form Netlify actually serves (`…/faq/`, `…/es/books/`; root stays `/`), so the canonical matches the served URL exactly (no more circular 301↔canonical signal). Internal links/routing stay slashless — React Router matches both, verified — and prerender navigates the slashed sitemap URLs fine (105/105, real content).
 - [x] **Home mobile Performance** — addressed (PR pending). Hero photo (the mobile LCP element) converted to a 1000px WebP (~317 KB JPEG → ~76 KB) with `fetchpriority="high"` + `loading="eager"`; the 1200px JPEG is kept only for `og:image` (broad social compatibility). Re-confirm the Lighthouse score from the PR's deploy preview / next production deploy.
 
 ---
