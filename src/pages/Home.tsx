@@ -230,8 +230,8 @@ export default function Home() {
             <img
               src={evaReadingWebp}
               alt={t.heroImageAlt}
-              width={1000}
-              height={750}
+              width={900}
+              height={675}
               loading="eager"
               decoding="async"
               {...({ fetchpriority: 'high' } as Record<string, string>)}
