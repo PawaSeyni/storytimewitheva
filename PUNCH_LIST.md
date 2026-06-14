@@ -183,7 +183,7 @@ Add new items as discovered. Prioritize roughly top-to-bottom within each cluste
 
 ### Engineering
 - [x] Build-time prerendering for perfect per-route OG unfurls on non-JS scrapers — DONE in PR #1 (branch `fix/audit-quick-wins-seo`). `scripts/prerender.mjs` runs after `vite build` and snapshots all 51 sitemap routes (17 pages × EN/ES/FR) to `dist/<route>/index.html` with route-correct title/canonical/hreflang/JSON-LD in the static HTML. Graceful-degrades to the SPA if Chromium can't launch; `build:spa` is the escape hatch.
-- [ ] Lightweight global search (subset of Base44's, no modal — inline page-search)
+- [x] Lightweight global search — DONE. `/search` page (noindex, `?q=` synced) searches across all books (title/subtitle/desc/theme) and activities/games (title/desc/category), with a search icon in the navbar (desktop) + labeled link (mobile). Localized en/es/fr. Not prerendered/sitemapped (interactive utility page).
 - [ ] Accessibility audit (axe-core), fix focus management on demo modals
 - [ ] Mobile responsiveness pass — particularly the wide demo layouts (Bookmark Designer, Bingo grid)
 - [x] Lazy-load demo bundles per route — DONE. The 8 interactive demos are `React.lazy()` code-split (separate chunks, fetched only on their route); main bundle ~495 KB → ~381 KB. A Suspense fallback tagged `data-prerender-loading` lets `prerender.mjs` wait for the demo chunk to resolve before snapshotting, so the prerendered demo pages still contain real content (verified 105/105, 0 leftover spinners).

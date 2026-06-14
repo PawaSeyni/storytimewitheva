@@ -14,6 +14,7 @@ import Profile from './pages/Profile';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import FAQ from './pages/FAQ';
+import Search from './pages/Search';
 import NotFound from './pages/NotFound';
 import Links from './pages/Links';
 import DemoPage from './pages/DemoPage';
@@ -52,6 +53,7 @@ const routeDefs = [
   { path: '/about', element: <About /> },
   { path: '/contact', element: <Contact /> },
   { path: '/faq', element: <FAQ /> },
+  { path: '/search', element: <Search /> },
   { path: '/profile', element: <Profile /> },
   { path: '/privacy', element: <Privacy /> },
   { path: '/terms', element: <Terms /> },
