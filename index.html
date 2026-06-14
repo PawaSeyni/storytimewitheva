@@ -7,6 +7,11 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
 
+    <!-- Preload Lexend to break the HTML→CSS→font depth-3 critical chain -->
+    <link rel="preload" as="font" type="font/woff2"
+      href="/assets/lexend-latin-wght-normal-ci0D1wrL.woff2"
+      crossorigin />
+
     <!--
       Defaults below are only used when JavaScript is disabled. Every route
       sets its own <title>, description, OG, and Twitter card via the Seo
