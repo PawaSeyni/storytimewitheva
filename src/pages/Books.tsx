@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useBooks } from '../data/books';
 import BookCard from '../components/BookCard';
+import BookRecommendations from '../components/BookRecommendations';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
@@ -175,6 +176,8 @@ export default function Books() {
           </div>
         </div>
       </section>
+
+      <BookRecommendations />
 
       <section className="py-12 px-4">
         <div className="max-w-7xl mx-auto">
