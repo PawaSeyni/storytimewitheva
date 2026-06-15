@@ -194,6 +194,18 @@ export const activities: Activity[] = [
       fr: 'Jeux',
     },
   },
+  {
+    slug: 'word-explorer',
+    emoji: '🔤',
+    ages: '5-9',
+    title: { en: 'Word Explorer', es: 'Explorador de palabras', fr: 'Explorateur de mots' },
+    desc: {
+      en: 'Learn new words in English, Spanish, and French with fun flashcards and quizzes.',
+      es: 'Aprende palabras nuevas en inglés, español y francés con tarjetas y cuestionarios.',
+      fr: 'Apprends de nouveaux mots en anglais, espagnol et français avec des cartes et des quiz.',
+    },
+    category: { en: 'Language', es: 'Idioma', fr: 'Langue' },
+  },
 
   // --- Standalone interactive games (served from /public/games/<slug>.html) ---
   {

@@ -34,6 +34,7 @@ const BookmarkCraftsDemo = lazy(() => import('./demos/BookmarkCraftsDemo'));
 const CraftCornerDemo = lazy(() => import('./demos/CraftCornerDemo'));
 const ColoringDemo = lazy(() => import('./demos/ColoringDemo'));
 const PuzzleAdventuresDemo = lazy(() => import('./demos/PuzzleAdventuresDemo'));
+const WordExplorerDemo = lazy(() => import('./demos/WordExplorerDemo'));
 
 // Canonical (English) route table. Mounted once per language prefix below so
 // every page exists at /path, /es/path, and /fr/path. The active language is
@@ -51,6 +52,7 @@ const routeDefs = [
   { path: '/activities/craft-corner', element: <DemoPage><CraftCornerDemo /></DemoPage> },
   { path: '/activities/coloring', element: <DemoPage><ColoringDemo /></DemoPage> },
   { path: '/activities/puzzles', element: <DemoPage><PuzzleAdventuresDemo /></DemoPage> },
+  { path: '/activities/word-explorer', element: <DemoPage><WordExplorerDemo /></DemoPage> },
   { path: '/resources', element: <Resources /> },
   { path: '/about', element: <About /> },
   { path: '/contact', element: <Contact /> },
