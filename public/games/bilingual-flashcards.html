@@ -179,6 +179,26 @@
   </main>
 
   <script>
+    // Shared voice picker, aligned with the site's src/lib/speech.ts:
+    // prefer an exact BCP-47 match (en-US / es-ES / fr-FR), else the 2-letter
+    // language prefix, else the browser default. getVoices() can be empty on
+    // first call, so we refresh and also listen for 'voiceschanged'.
+    let _voices = [];
+    function _refreshVoices() {
+      if (window.speechSynthesis) _voices = window.speechSynthesis.getVoices() || [];
+    }
+    _refreshVoices();
+    if (window.speechSynthesis && window.speechSynthesis.addEventListener) {
+      window.speechSynthesis.addEventListener('voiceschanged', _refreshVoices);
+    }
+    function pickVoice(langCode) {
+      if (!_voices.length) _refreshVoices();
+      const exact = _voices.find(v => v.lang === langCode);
+      if (exact) return exact;
+      const prefix = langCode.slice(0, 2).toLowerCase();
+      return _voices.find(v => v.lang && v.lang.toLowerCase().startsWith(prefix)) || null;
+    }
+
     // ─── DATA ───────────────────────────────────────────────────────────────────
     const vocab = {
       colors: [
@@ -290,9 +310,13 @@
       const langCode = currentLang === 'es' ? 'es-ES' : 'fr-FR';
       // Speak English first, then translation
       const u1 = new SpeechSynthesisUtterance(w.en);
-      u1.lang = 'en-US'; u1.rate = 0.85;
+      u1.lang = 'en-US'; u1.rate = 0.95;
+      const v1 = pickVoice(u1.lang);
+      if (v1) u1.voice = v1;
       const u2 = new SpeechSynthesisUtterance(translation);
-      u2.lang = langCode; u2.rate = 0.85;
+      u2.lang = langCode; u2.rate = 0.95;
+      const v2 = pickVoice(u2.lang);
+      if (v2) u2.voice = v2;
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(u1);
       window.speechSynthesis.speak(u2);
