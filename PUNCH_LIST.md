@@ -190,7 +190,7 @@ Add new items as discovered. Prioritize roughly top-to-bottom within each cluste
 
 ### Product
 - [x] Real book recommendation logic — theme-overlap scoring, top-3 shown on Books page — PR #24 (2026-06-15).
-- [ ] User-generated puzzle bank (currently 3 scrambles, 5 riddles, 4 matches, 1 logic — could grow)
+- [ ] User-generated puzzle bank — let visitors submit puzzles. (The curated bank was expanded in PR #26 to 13 scrambles / 11 riddles / 8 matches / 3 logic per language; this item is specifically about user-submitted content, still open.)
 - [x] Coloring demo: 4 new templates (castle, ocean, tree, rocket) + localStorage gallery (max 12, hover-delete) — PR #21 (2026-06-15).
 - [x] Bookmark designer: canvas PNG export (600×2100 px, 2"×7" at 300 DPI, rounded corners, pattern + emoji, watermark) — (2026-06-15).
 - [x] Craft Corner: canvas PNG craft guide per craft (800×1100 px, header bar, emoji, materials + steps, watermark) — PR #20 (2026-06-15).
@@ -227,7 +227,7 @@ Open items from the audit. Most of the audit shipped in PR #1 (`fix/audit-quick-
 **Ops & verification**
 - [x] **Google Search Console** — Domain property verified via DNS TXT record; sitemap submitted (117 URLs discovered, 2026-06-14).
 - [x] **Re-run Lighthouse / PageSpeed (mobile)** — Perf 88, Accessibility 100, Best Practices 100, SEO 100 (2026-06-14, post PRs #8–18).
-- [~] **Usability testing** — plan written (`docs/usability-test-plan.md`): passive on-site **feedback widget** (`FeedbackWidget.tsx`, Netlify Forms, now live site-wide) + a light unmoderated parent/child task test (6 tasks) + Plausible metrics to watch + COPPA/consent notes. Remaining (owner/testing): recruit 4-6 pairs, run the task test, add a Netlify email-notification rule for the `feedback` form, write up findings.
+- [~] **Usability testing** — plan written (`docs/usability-test-plan.md`): passive on-site **feedback widget** (`FeedbackWidget.tsx`, Netlify Forms, live site-wide) + a light unmoderated parent/child task test (6 tasks) + Plausible metrics to watch + COPPA/consent notes. Netlify notifications configured (2026-06-15): dedicated per-form rules → `contact@storytimewitheva.com` (feedback subject "New site feedback - storytimewitheva.com", contact subject "New contact message - storytimewitheva.com"). Remaining (owner/testing): recruit 4-6 pairs, run the task test, write up findings.
 - [x] **Confirm Chromium on Netlify (prerender)** — DONE. Production deploy `6a2decfa` (merge commit `1e7a9e0`) published 2026-06-13 in 131s; prerender ran on Netlify and the per-route HTML serves live. Re-run Lighthouse/PSI + GSC submission still open above.
 
 **Post-launch follow-ups (observed on the live deploy 2026-06-13)**
@@ -245,6 +245,18 @@ at "merged" or at the PR deploy-preview. Recipe: confirm via Netlify (current
 deploy `commit_ref` == merged commit, `state: ready`), then `curl -sL` the live
 URL(s) to confirm the change is present and nothing regressed. Only then is the
 task done.
+
+### Netlify plan + build-credit gotcha (2026-06-15)
+Site is now on **Netlify Pro** (`nf_team_pro`); team `pawaseyni`, site id
+`4dad1660-e50b-4fa6-ad71-309b87569282`. History: on the free tier a day of many
+deploys exhausted the build-minute allowance, and Netlify then SKIPPED every new
+build (`error_message: "Skipped due to account credit usage exceeded"`, deploy
+`state: error`, `skipped: true`) while keeping the last good deploy live — looks
+exactly like a code break but is purely billing. Diagnose via the Netlify MCP
+`get-deploy-for-site`. The prerender step (Puppeteer over 105 routes) makes each
+build minute-heavy. Manual MCP deploy: `netlify-deploy-services-updater` returns
+an `npx @netlify/mcp … --proxy-path` command to run in the repo dir; it needs
+explicit user authorization (a plain "yes push" only covers git pushes).
 
 ### Repo layout
 ```
