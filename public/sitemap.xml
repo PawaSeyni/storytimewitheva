@@ -298,6 +298,33 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://storytimewitheva.com/activities/word-explorer/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/word-explorer/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/word-explorer/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/word-explorer/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/word-explorer/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/activities/word-explorer/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/word-explorer/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/word-explorer/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/word-explorer/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/word-explorer/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/activities/word-explorer/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/word-explorer/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/word-explorer/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/word-explorer/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/word-explorer/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://storytimewitheva.com/resources/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/"/>

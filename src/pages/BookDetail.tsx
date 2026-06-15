@@ -70,7 +70,7 @@ export default function BookDetail() {
               src={amazon ? sizedCover(cover, 600) : cover}
               srcSet={amazon ? `${sizedCover(cover, 500)} 500w, ${sizedCover(cover, 900)} 900w` : undefined}
               sizes="(min-width: 768px) 448px, 90vw"
-              alt={`${book.title} — ${t.coverAlt}`}
+              alt={`${book.title} – ${t.coverAlt}`}
               className="w-full h-full object-cover"
               width={600}
               height={600}

@@ -31,6 +31,7 @@ const staticPages = [
   ['/activities/bookmark-designer', 'monthly', '0.7'],
   ['/activities/bingo', 'monthly', '0.7'],
   ['/activities/puzzles', 'monthly', '0.7'],
+  ['/activities/word-explorer', 'monthly', '0.7'],
   ['/resources', 'monthly', '0.6'],
   ['/about', 'monthly', '0.6'],
   ['/contact', 'monthly', '0.5'],

@@ -173,7 +173,7 @@ Add new items as discovered. Prioritize roughly top-to-bottom within each cluste
 ### Content & content-ops
 - [x] Write the 6 real Resources articles — full EN/ES/FR articles in-file (PR #23, 2026-06-15): bilingual reading, read-aloud tips, home reading habit, age-appropriate picks, reluctant readers, reading across cultures.
 - [x] Per-language Resources articles — all 6 articles include adapted ES/FR translations (PR #23).
-- [ ] Update books.ts as Colors Mixed Up / Rainbow Symphony / Tower hit Amazon — swap author-page fallback for real ASIN URLs
+- [~] Colors Mixed Up / Rainbow Symphony / Tower — code already points at real ASIN URLs (`dp('1997027038')` / `dp('1997027003')` / `dp('1996972995')`), no author-page fallback remains. All three return HTTP 200. _Owner action:_ open each link in a browser to confirm the listing is live and buyable (Amazon blocks automated verification with a bot-check page). Once confirmed, this is fully done.
 
 ### Social & marketing channels
 - [x] **YouTube channel** — `@StoryTimeEva` wired into Footer.tsx + Contact.tsx (PR #19, 2026-06-14).
@@ -204,7 +204,8 @@ Add new items as discovered. Prioritize roughly top-to-bottom within each cluste
 - [x] **Fix each game's "Get Free Kit" CTA** — DONE (same patch script): `href="#signup"` → `/#email-signup`.
 - [x] **Add the 12 game URLs to `sitemap.xml`** — DONE via `gen-sitemap.mjs` (single URL each; prerender skips static `.html` routes).
 - [x] **Language**: games auto-select the site's active language on load — DONE PR #11 (2026-06-14).
-- [ ] **Align read-aloud** with `src/lib/speech.ts` (voice/rate) if/when ported, and re-test Web Speech on iOS Safari (needs a user gesture — the Play/Listen buttons satisfy it).
+- [x] **Align read-aloud** with `src/lib/speech.ts` (voice selection + rate 0.95) across all 10 games that use speechSynthesis — PR #28 (2026-06-15); rhyme-singalong/spelling-bee intentional pitch/rate preserved. iOS Safari gesture-gating unchanged (Play/Listen buttons satisfy it).
+- [x] **World Geography Map accuracy** — replaced the 62 hand-drawn approximate country shapes with real Natural Earth 110m geometry, equirectangular-projected into the existing 1000×500 viewBox (ids preserved so the quiz highlight logic is untouched). Verified live in preview: recognizable continents, highlight + correct/wrong flash still work. Generator: `/tmp/build_map.py` pattern (2026-06-15).
 
 ### Audit follow-ups (UX/SEO audit — 2026-06-13)
 Open items from the audit. Most of the audit shipped in PR #1 (`fix/audit-quick-wins-seo`); the rest live here so nothing is lost. Items already tracked in other clusters are cross-referenced, not duplicated.
