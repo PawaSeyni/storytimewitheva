@@ -13,11 +13,10 @@ import listeningUrl from '../assets/pixel/listening.svg';
 // docs/pixel-mascot-brief.md). Each mood is a self-contained SVG rendered as an
 // <img>, so multiple Pixels can share a page without SVG id collisions.
 //
-// Preview flag: Pixel is OFF for normal visitors. Turn her on by visiting any
-// page with ?pixel=1 (the choice persists via localStorage); ?pixel=0 turns
-// her back off. This lets us preview the mascot on the live site before
-// committing to her for everyone. To ship her for all visitors, change the
-// default in readEnabled() to `true` (or remove the gate).
+// Pixel is ON for all visitors. A reader can opt out by visiting any page with
+// ?pixel=0 (the choice persists via localStorage); ?pixel=1 turns her back on.
+// To hide her from everyone again, default the localStorage branch back to
+// `=== 'on'` (and return false from the no-window / catch branches).
 
 export type PixelMood = 'hello' | 'reading' | 'praise' | 'sleepy' | 'pointing' | 'listening';
 
@@ -40,7 +39,7 @@ const ALT: Record<PixelMood, string> = {
 };
 
 function readEnabled(): boolean {
-  if (typeof window === 'undefined') return false;
+  if (typeof window === 'undefined') return true;
   try {
     const params = new URLSearchParams(window.location.search);
     if (params.has('pixel')) {
@@ -48,9 +47,9 @@ function readEnabled(): boolean {
       window.localStorage.setItem('pixelMascot', on ? 'on' : 'off');
       return on;
     }
-    return window.localStorage.getItem('pixelMascot') === 'on';
+    return window.localStorage.getItem('pixelMascot') !== 'off';
   } catch {
-    return false;
+    return true;
   }
 }
 
