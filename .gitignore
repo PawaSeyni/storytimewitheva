@@ -29,3 +29,6 @@ vite.config.ts.timestamp-*
 # macOS / mounted-FS duplicate copies ("FAQ 2.tsx", "eva-reading 2.jpg", …)
 # These get created by the sandbox FS and must never be committed.
 * 2.*
+
+# Netlify CLI local state
+.netlify/

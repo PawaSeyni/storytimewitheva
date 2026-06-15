@@ -44,8 +44,8 @@ pipeline required.
    example. Source: the Word Explorer word bank + tap-to-translate dictionary.
 3. **Activity process videos** — satisfying time-lapse of a coloring page,
    bookmark, or craft being made. Source: the 12 games + craft/coloring demos.
-4. **Theme picks** — "a book for a child who is "" — kindness, courage,
-   patience, wonder. Source: the 18 books and their themes.
+4. **Theme picks** — "a book for a child who is learning kindness / courage /
+   patience / wonder". Source: the 18 books and their themes.
 5. **Eva's story** — short, warm author moments (real grandmother, retired
    public-health worker). Source: the About page narrative.
 
