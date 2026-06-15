@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import type { MouseEvent as ReactMouseEvent, TouchEvent as ReactTouchEvent } from 'react';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, Download, Eraser, Palette } from 'lucide-react';
+import { RefreshCw, Download, Eraser, Palette, Save, Trash2 } from 'lucide-react';
 import { useLanguage, useTranslation, type Language } from '../lib/language';
+import { useToast } from '../lib/toast';
 
 const COLOR_PALETTE_KEYS = [
   'red', 'orange', 'yellow', 'green', 'blue', 'purple',
@@ -203,7 +204,308 @@ const drawRainbow: DrawFn = (ctx, canvas) => {
   drawCloud(cx + 160, baseY - 10);
 };
 
-type ThemeKey = 'sun' | 'butterfly' | 'star' | 'flower' | 'heart' | 'rainbow';
+const drawCastle: DrawFn = (ctx, canvas) => {
+  const w = canvas.width;
+  const h = canvas.height;
+  ctx.strokeStyle = '#222';
+  ctx.lineWidth = 3;
+
+  // Ground line
+  ctx.beginPath();
+  ctx.moveTo(50, h - 80);
+  ctx.lineTo(w - 50, h - 80);
+  ctx.stroke();
+
+  // Central wall body
+  ctx.beginPath();
+  ctx.rect(w / 2 - 90, h - 280, 180, 200);
+  ctx.stroke();
+
+  // Central gate arch
+  const gateCx = w / 2;
+  const gateBaseY = h - 80;
+  const gateW = 60;
+  const gateH = 80;
+  ctx.beginPath();
+  ctx.moveTo(gateCx - gateW / 2, gateBaseY);
+  ctx.lineTo(gateCx - gateW / 2, gateBaseY - gateH + gateW / 2);
+  ctx.arc(gateCx, gateBaseY - gateH + gateW / 2, gateW / 2, Math.PI, 0);
+  ctx.lineTo(gateCx + gateW / 2, gateBaseY);
+  ctx.stroke();
+
+  // Left tower
+  ctx.beginPath();
+  ctx.rect(w / 2 - 160, h - 320, 80, 240);
+  ctx.stroke();
+
+  // Right tower
+  ctx.beginPath();
+  ctx.rect(w / 2 + 80, h - 320, 80, 240);
+  ctx.stroke();
+
+  // Battlements on central wall
+  for (let i = 0; i < 5; i++) {
+    const bx = w / 2 - 90 + i * 40;
+    ctx.beginPath();
+    ctx.rect(bx + 5, h - 300, 25, 25);
+    ctx.stroke();
+  }
+
+  // Battlements on left tower
+  for (let i = 0; i < 3; i++) {
+    const bx = w / 2 - 160 + i * 28;
+    ctx.beginPath();
+    ctx.rect(bx + 4, h - 340, 20, 22);
+    ctx.stroke();
+  }
+
+  // Battlements on right tower
+  for (let i = 0; i < 3; i++) {
+    const bx = w / 2 + 80 + i * 28;
+    ctx.beginPath();
+    ctx.rect(bx + 4, h - 340, 20, 22);
+    ctx.stroke();
+  }
+
+  // Flag pole on left tower
+  const flagX = w / 2 - 120;
+  const flagY = h - 340;
+  ctx.beginPath();
+  ctx.moveTo(flagX, flagY);
+  ctx.lineTo(flagX, flagY - 80);
+  ctx.stroke();
+
+  // Flag pennant
+  ctx.beginPath();
+  ctx.moveTo(flagX, flagY - 80);
+  ctx.lineTo(flagX + 50, flagY - 65);
+  ctx.lineTo(flagX, flagY - 50);
+  ctx.closePath();
+  ctx.stroke();
+
+  // Tower arrow-slit windows
+  ctx.beginPath();
+  ctx.rect(w / 2 - 135, h - 240, 12, 28);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.rect(w / 2 + 122, h - 240, 12, 28);
+  ctx.stroke();
+};
+
+const drawOcean: DrawFn = (ctx, canvas) => {
+  const w = canvas.width;
+  const h = canvas.height;
+  ctx.strokeStyle = '#222';
+  ctx.lineWidth = 3;
+
+  // Sun top-right
+  const sunCx = w - 100;
+  const sunCy = 100;
+  const sunR = 55;
+  ctx.beginPath();
+  ctx.arc(sunCx, sunCy, sunR, 0, Math.PI * 2);
+  ctx.stroke();
+  for (let i = 0; i < 8; i++) {
+    const angle = (i * 45) * Math.PI / 180;
+    ctx.beginPath();
+    ctx.moveTo(sunCx + Math.cos(angle) * (sunR + 8), sunCy + Math.sin(angle) * (sunR + 8));
+    ctx.lineTo(sunCx + Math.cos(angle) * (sunR + 30), sunCy + Math.sin(angle) * (sunR + 30));
+    ctx.stroke();
+  }
+
+  // Waves at bottom half
+  const waveBaseY = h / 2;
+  for (let row = 0; row < 4; row++) {
+    const wy = waveBaseY + row * 60;
+    ctx.beginPath();
+    ctx.moveTo(0, wy);
+    const segments = 6;
+    const segW = w / segments;
+    for (let s = 0; s < segments; s++) {
+      const x2 = (s + 0.5) * segW;
+      const x3 = (s + 1) * segW;
+      ctx.quadraticCurveTo(x2, wy - 25, x3, wy);
+    }
+    ctx.stroke();
+  }
+
+  // Boat hull + sail
+  const boatCx = 160;
+  const boatY = h / 2 + 30;
+  ctx.beginPath();
+  ctx.moveTo(boatCx - 70, boatY);
+  ctx.bezierCurveTo(boatCx - 70, boatY + 40, boatCx + 70, boatY + 40, boatCx + 70, boatY);
+  ctx.closePath();
+  ctx.stroke();
+  // Mast
+  ctx.beginPath();
+  ctx.moveTo(boatCx, boatY);
+  ctx.lineTo(boatCx, boatY - 110);
+  ctx.stroke();
+  // Sail
+  ctx.beginPath();
+  ctx.moveTo(boatCx, boatY - 105);
+  ctx.lineTo(boatCx + 65, boatY - 50);
+  ctx.lineTo(boatCx, boatY - 10);
+  ctx.closePath();
+  ctx.stroke();
+
+  // Fish outline
+  const fishX = w - 160;
+  const fishY = h / 2 + 100;
+  ctx.beginPath();
+  ctx.ellipse(fishX, fishY, 55, 28, 0, 0, Math.PI * 2);
+  ctx.stroke();
+  // Tail
+  ctx.beginPath();
+  ctx.moveTo(fishX + 55, fishY);
+  ctx.lineTo(fishX + 90, fishY - 25);
+  ctx.lineTo(fishX + 90, fishY + 25);
+  ctx.closePath();
+  ctx.stroke();
+  // Eye
+  ctx.beginPath();
+  ctx.arc(fishX - 30, fishY - 6, 7, 0, Math.PI * 2);
+  ctx.stroke();
+};
+
+const drawTree: DrawFn = (ctx, canvas) => {
+  const w = canvas.width;
+  const h = canvas.height;
+  ctx.strokeStyle = '#222';
+  ctx.lineWidth = 3;
+
+  // Ground line
+  ctx.beginPath();
+  ctx.moveTo(60, h - 80);
+  ctx.lineTo(w - 60, h - 80);
+  ctx.stroke();
+
+  // Trunk
+  const trunkCx = w / 2;
+  const trunkTop = h - 80 - 160;
+  const trunkW = 50;
+  ctx.beginPath();
+  ctx.rect(trunkCx - trunkW / 2, trunkTop, trunkW, 160);
+  ctx.stroke();
+
+  // Large round canopy
+  const canopyCx = trunkCx;
+  const canopyCy = trunkTop - 120;
+  const canopyR = 160;
+  ctx.beginPath();
+  ctx.arc(canopyCx, canopyCy, canopyR, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Apples
+  const applePositions = [
+    { x: canopyCx - 80, y: canopyCy + 40 },
+    { x: canopyCx + 60, y: canopyCy + 60 },
+    { x: canopyCx + 10, y: canopyCy - 60 },
+  ];
+  for (const ap of applePositions) {
+    ctx.beginPath();
+    ctx.arc(ap.x, ap.y, 22, 0, Math.PI * 2);
+    ctx.stroke();
+    // Stem
+    ctx.beginPath();
+    ctx.moveTo(ap.x, ap.y - 22);
+    ctx.lineTo(ap.x + 5, ap.y - 34);
+    ctx.stroke();
+  }
+
+  // Trunk bark line
+  ctx.beginPath();
+  ctx.moveTo(trunkCx - 10, trunkTop + 40);
+  ctx.quadraticCurveTo(trunkCx, trunkTop + 70, trunkCx - 10, trunkTop + 110);
+  ctx.stroke();
+};
+
+const drawRocket: DrawFn = (ctx, canvas) => {
+  const w = canvas.width;
+  const h = canvas.height;
+  ctx.strokeStyle = '#222';
+  ctx.lineWidth = 3;
+
+  const rCx = w / 2;
+  const rBottom = h - 100;
+  const bodyH = 240;
+  const bodyW = 80;
+  const rTop = rBottom - bodyH;
+
+  // Rocket body
+  ctx.beginPath();
+  ctx.rect(rCx - bodyW / 2, rTop, bodyW, bodyH);
+  ctx.stroke();
+
+  // Nose cone
+  ctx.beginPath();
+  ctx.moveTo(rCx - bodyW / 2, rTop);
+  ctx.lineTo(rCx, rTop - 100);
+  ctx.lineTo(rCx + bodyW / 2, rTop);
+  ctx.closePath();
+  ctx.stroke();
+
+  // Left fin
+  ctx.beginPath();
+  ctx.moveTo(rCx - bodyW / 2, rBottom - 20);
+  ctx.lineTo(rCx - bodyW / 2 - 55, rBottom + 30);
+  ctx.lineTo(rCx - bodyW / 2, rBottom - 80);
+  ctx.closePath();
+  ctx.stroke();
+
+  // Right fin
+  ctx.beginPath();
+  ctx.moveTo(rCx + bodyW / 2, rBottom - 20);
+  ctx.lineTo(rCx + bodyW / 2 + 55, rBottom + 30);
+  ctx.lineTo(rCx + bodyW / 2, rBottom - 80);
+  ctx.closePath();
+  ctx.stroke();
+
+  // Porthole
+  ctx.beginPath();
+  ctx.arc(rCx, rTop + 100, 30, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Flames
+  const flameBase = rBottom;
+  ctx.beginPath();
+  ctx.moveTo(rCx, flameBase);
+  ctx.bezierCurveTo(rCx - 20, flameBase + 30, rCx - 10, flameBase + 70, rCx, flameBase + 80);
+  ctx.bezierCurveTo(rCx + 10, flameBase + 70, rCx + 20, flameBase + 30, rCx, flameBase);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(rCx - 20, flameBase);
+  ctx.bezierCurveTo(rCx - 35, flameBase + 20, rCx - 28, flameBase + 50, rCx - 22, flameBase + 58);
+  ctx.bezierCurveTo(rCx - 14, flameBase + 50, rCx - 8, flameBase + 20, rCx - 20, flameBase);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(rCx + 20, flameBase);
+  ctx.bezierCurveTo(rCx + 8, flameBase + 20, rCx + 14, flameBase + 50, rCx + 22, flameBase + 58);
+  ctx.bezierCurveTo(rCx + 28, flameBase + 50, rCx + 35, flameBase + 20, rCx + 20, flameBase);
+  ctx.stroke();
+
+  // Stars around the rocket
+  const starPositions = [
+    { x: 80, y: 80 }, { x: 150, y: 200 }, { x: 70, y: 320 },
+    { x: w - 80, y: 100 }, { x: w - 140, y: 240 }, { x: w - 70, y: 370 },
+  ];
+  for (const sp of starPositions) {
+    const sr = 14;
+    ctx.beginPath();
+    for (let i = 0; i < 8; i++) {
+      const r2 = i % 2 === 0 ? sr : sr / 2.5;
+      const angle = (i * Math.PI) / 4 - Math.PI / 2;
+      const sx = sp.x + r2 * Math.cos(angle);
+      const sy = sp.y + r2 * Math.sin(angle);
+      if (i === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy);
+    }
+    ctx.closePath();
+    ctx.stroke();
+  }
+};
+
+type ThemeKey = 'sun' | 'butterfly' | 'star' | 'flower' | 'heart' | 'rainbow' | 'castle' | 'ocean' | 'tree' | 'rocket';
 
 const THEME_META: { key: ThemeKey; emoji: string; draw: DrawFn }[] = [
   { key: 'sun', emoji: '☀️', draw: drawSun },
@@ -212,7 +514,34 @@ const THEME_META: { key: ThemeKey; emoji: string; draw: DrawFn }[] = [
   { key: 'flower', emoji: '🌸', draw: drawFlower },
   { key: 'heart', emoji: '💝', draw: drawHeart },
   { key: 'rainbow', emoji: '🌈', draw: drawRainbow },
+  { key: 'castle', emoji: '🏰', draw: drawCastle },
+  { key: 'ocean', emoji: '🌊', draw: drawOcean },
+  { key: 'tree', emoji: '🌳', draw: drawTree },
+  { key: 'rocket', emoji: '🚀', draw: drawRocket },
 ];
+
+const GALLERY_KEY = 'coloringGallery';
+const GALLERY_MAX = 12;
+
+interface GalleryItem {
+  dataUrl: string;
+  template: string;
+  savedAt: string;
+}
+
+function readGallery(): GalleryItem[] {
+  try {
+    const raw = localStorage.getItem(GALLERY_KEY);
+    if (!raw) return [];
+    return JSON.parse(raw) as GalleryItem[];
+  } catch {
+    return [];
+  }
+}
+
+function writeGallery(items: GalleryItem[]) {
+  localStorage.setItem(GALLERY_KEY, JSON.stringify(items));
+}
 
 const TRANSLATIONS = {
   en: {
@@ -231,10 +560,15 @@ const TRANSLATIONS = {
     selectColor: 'Select Color:',
     eraser: 'Eraser',
     startOver: 'Start Over',
-    saveArt: 'Save Art',
+    saveArt: 'Download',
+    saveToGallery: 'Save to Gallery',
+    saveToGallerySuccess: 'Saved to your gallery!',
     brushSize: 'Brush Size:',
     eraserLabel: 'Eraser',
     selectColorLabel: 'Select Color',
+    myGallery: 'My Gallery',
+    galleryEmpty: 'Your saved artworks will appear here',
+    deleteArtwork: 'Delete',
     themes: {
       sun: { name: 'Happy Sun', short: 'Sun' },
       butterfly: { name: 'Cute Butterfly', short: 'Butterfly' },
@@ -242,6 +576,10 @@ const TRANSLATIONS = {
       flower: { name: 'Happy Flower', short: 'Flower' },
       heart: { name: 'Cute Heart', short: 'Heart' },
       rainbow: { name: 'Rainbow', short: 'Rainbow' },
+      castle: { name: 'Fairy-Tale Castle', short: 'Castle' },
+      ocean: { name: 'Ocean Fun', short: 'Ocean' },
+      tree: { name: 'Apple Tree', short: 'Tree' },
+      rocket: { name: 'Rocket Ship', short: 'Rocket' },
     },
     colors: {
       red: 'Red', orange: 'Orange', yellow: 'Yellow', green: 'Green',
@@ -266,10 +604,15 @@ const TRANSLATIONS = {
     selectColor: 'Selecciona color:',
     eraser: 'Goma',
     startOver: 'Empezar de nuevo',
-    saveArt: 'Guardar arte',
+    saveArt: 'Descargar',
+    saveToGallery: 'Guardar en galería',
+    saveToGallerySuccess: '¡Guardado en tu galería!',
     brushSize: 'Tamaño del pincel:',
     eraserLabel: 'Goma',
     selectColorLabel: 'Selecciona color',
+    myGallery: 'Mi galería',
+    galleryEmpty: 'Tus obras guardadas aparecerán aquí',
+    deleteArtwork: 'Eliminar',
     themes: {
       sun: { name: 'Sol feliz', short: 'Sol' },
       butterfly: { name: 'Mariposa bonita', short: 'Mariposa' },
@@ -277,6 +620,10 @@ const TRANSLATIONS = {
       flower: { name: 'Flor feliz', short: 'Flor' },
       heart: { name: 'Corazón bonito', short: 'Corazón' },
       rainbow: { name: 'Arcoíris', short: 'Arcoíris' },
+      castle: { name: 'Castillo de cuento', short: 'Castillo' },
+      ocean: { name: 'Diversión en el mar', short: 'Mar' },
+      tree: { name: 'Manzano', short: 'Árbol' },
+      rocket: { name: 'Cohete espacial', short: 'Cohete' },
     },
     colors: {
       red: 'Rojo', orange: 'Naranja', yellow: 'Amarillo', green: 'Verde',
@@ -301,10 +648,15 @@ const TRANSLATIONS = {
     selectColor: 'Choisis la couleur :',
     eraser: 'Gomme',
     startOver: 'Recommencer',
-    saveArt: 'Sauvegarder',
+    saveArt: 'Télécharger',
+    saveToGallery: 'Enregistrer dans la galerie',
+    saveToGallerySuccess: 'Enregistré dans ta galerie !',
     brushSize: 'Taille du pinceau :',
     eraserLabel: 'Gomme',
     selectColorLabel: 'Choisis la couleur',
+    myGallery: 'Ma galerie',
+    galleryEmpty: 'Tes dessins enregistrés apparaîtront ici',
+    deleteArtwork: 'Supprimer',
     themes: {
       sun: { name: 'Soleil joyeux', short: 'Soleil' },
       butterfly: { name: 'Joli papillon', short: 'Papillon' },
@@ -312,6 +664,10 @@ const TRANSLATIONS = {
       flower: { name: 'Fleur joyeuse', short: 'Fleur' },
       heart: { name: 'Joli cœur', short: 'Cœur' },
       rainbow: { name: 'Arc-en-ciel', short: 'Arc-en-ciel' },
+      castle: { name: 'Château de conte', short: 'Château' },
+      ocean: { name: "L'océan", short: 'Océan' },
+      tree: { name: 'Pommier', short: 'Arbre' },
+      rocket: { name: 'Fusée spatiale', short: 'Fusée' },
     },
     colors: {
       red: 'Rouge', orange: 'Orange', yellow: 'Jaune', green: 'Vert',
@@ -326,6 +682,7 @@ export default function ColoringDemo() {
   const t = useTranslation(TRANSLATIONS);
   const { language: _language } = useLanguage();
   void _language;
+  const toast = useToast();
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [selectedColor, setSelectedColor] = useState<string>(COLOR_VALUES.red);
@@ -333,6 +690,7 @@ export default function ColoringDemo() {
   const [isEraser, setIsEraser] = useState(false);
   const [isDrawing, setIsDrawing] = useState(false);
   const [selectedThemeIdx, setSelectedThemeIdx] = useState(0);
+  const [gallery, setGallery] = useState<GalleryItem[]>(() => readGallery());
 
   const generateColoringPage = useCallback(() => {
     const canvas = canvasRef.current;
@@ -410,6 +768,29 @@ export default function ColoringDemo() {
     link.click();
   };
 
+  const saveToGallery = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const dataUrl = canvas.toDataURL('image/png');
+    const templateKey = THEME_META[selectedThemeIdx].key;
+    const newItem: GalleryItem = {
+      dataUrl,
+      template: templateKey,
+      savedAt: new Date().toISOString(),
+    };
+    const prev = readGallery();
+    const updated = [newItem, ...prev].slice(0, GALLERY_MAX);
+    writeGallery(updated);
+    setGallery(updated);
+    toast.success(t.saveToGallerySuccess);
+  };
+
+  const deleteFromGallery = (index: number) => {
+    const updated = gallery.filter((_, i) => i !== index);
+    writeGallery(updated);
+    setGallery(updated);
+  };
+
   return (
     <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
@@ -432,7 +813,7 @@ export default function ColoringDemo() {
 
       <div className="mb-6">
         <label className="block text-sm font-bold text-purple-700 mb-3">{t.chooseTheme}</label>
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+        <div className="grid grid-cols-5 md:grid-cols-10 gap-2">
           {THEME_META.map((theme, index) => (
             <Button
               key={theme.key}
@@ -503,6 +884,13 @@ export default function ColoringDemo() {
           <Download className="w-4 h-4 mr-2" />
           {t.saveArt}
         </Button>
+        <Button
+          onClick={saveToGallery}
+          className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white"
+        >
+          <Save className="w-4 h-4 mr-2" />
+          {t.saveToGallery}
+        </Button>
       </div>
 
       <div className="mb-4">
@@ -540,6 +928,36 @@ export default function ColoringDemo() {
           className="w-10 h-10 rounded-full border-4 border-purple-300 shadow-md"
           style={{ backgroundColor: isEraser ? 'white' : selectedColor }}
         />
+      </div>
+
+      {/* My Gallery section */}
+      <div className="mt-10">
+        <h3 className="text-2xl font-bold text-purple-700 mb-4">{t.myGallery}</h3>
+        {gallery.length === 0 ? (
+          <div className="text-center py-12 border-2 border-dashed border-purple-200 rounded-2xl text-gray-400">
+            {t.galleryEmpty}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {gallery.map((item, index) => (
+              <div key={item.savedAt + String(index)} className="relative group rounded-xl overflow-hidden shadow-md">
+                <img
+                  src={item.dataUrl}
+                  alt={item.template}
+                  className="w-full h-full object-cover rounded-xl"
+                />
+                <button
+                  type="button"
+                  onClick={() => deleteFromGallery(index)}
+                  aria-label={t.deleteArtwork}
+                  className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity shadow-md"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
