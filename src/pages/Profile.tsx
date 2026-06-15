@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from '../components/LocalizedLink';
 import { BookOpen, BookMarked, CheckCircle2, Star, User, Trash2 } from 'lucide-react';
-import { useBooks } from '../data/books';
+import { useBooks, books as rawBooks } from '../data/books';
 import { useActivities } from '../data/activities';
 import { loadProgress, clearProgress, type Progress } from '../lib/progress';
 import Seo from '../components/Seo';
-import { useTranslation } from '../lib/language';
+import { useTranslation, useLanguage } from '../lib/language';
 
 const TRANSLATIONS = {
   en: {
@@ -30,6 +30,14 @@ const TRANSLATIONS = {
     clearProgress: 'Clear all progress',
     clearConfirm: 'Clear all your reading progress? This cannot be undone.',
     deviceNote: 'Tip: progress is saved to this browser only. Clearing your browser data or using a different device will reset it.',
+    statsHeading: 'Your Reading Stats',
+    statBooksRead: 'Books Read',
+    statActivitiesDone: 'Activities Done',
+    statTopTheme: 'Top Theme',
+    statTopThemeNone: 'None yet',
+    statStreak: 'Keep it up!',
+    statStreakLabel: 'Reading Streak',
+    statWantToRead: 'On Your Reading List',
   },
   es: {
     seoTitle: 'Mi perfil',
@@ -53,6 +61,14 @@ const TRANSLATIONS = {
     clearProgress: 'Borrar todo el progreso',
     clearConfirm: '¿Borrar todo tu progreso de lectura? No se puede deshacer.',
     deviceNote: 'Consejo: el progreso se guarda solo en este navegador. Borrar los datos del navegador o usar otro dispositivo lo reiniciará.',
+    statsHeading: 'Tus estadísticas de lectura',
+    statBooksRead: 'Libros leídos',
+    statActivitiesDone: 'Actividades hechas',
+    statTopTheme: 'Tema favorito',
+    statTopThemeNone: 'Ninguno aún',
+    statStreak: 'Sigue así',
+    statStreakLabel: 'Racha de lectura',
+    statWantToRead: 'En tu lista de lectura',
   },
   fr: {
     seoTitle: 'Mon profil',
@@ -76,6 +92,14 @@ const TRANSLATIONS = {
     clearProgress: 'Tout effacer',
     clearConfirm: 'Effacer toute votre progression de lecture ? Cette action est définitive.',
     deviceNote: 'Astuce : la progression est sauvegardée uniquement dans ce navigateur. Vider les données du navigateur ou utiliser un autre appareil la réinitialise.',
+    statsHeading: 'Vos statistiques de lecture',
+    statBooksRead: 'Livres lus',
+    statActivitiesDone: 'Activites faites',
+    statTopTheme: 'Theme prefere',
+    statTopThemeNone: 'Aucun pour l instant',
+    statStreak: 'Continuez comme ca',
+    statStreakLabel: 'Serie de lecture',
+    statWantToRead: 'Sur votre liste de lecture',
   },
 };
 
@@ -152,6 +176,7 @@ function ItemList({ items, emptyMsg, emptyCta }: ItemListProps) {
 export default function Profile() {
   const [progress, setProgress] = useState<Progress>(() => loadProgress());
   const t = useTranslation(TRANSLATIONS);
+  const { language } = useLanguage();
   const activities = useActivities();
   const books = useBooks();
 
@@ -181,6 +206,22 @@ export default function Profile() {
     .map((a) => ({ id: a.slug, thumb: a.emoji, thumbType: 'emoji', title: a.title }));
 
   const totalAchievements = booksRead.length + activitiesDone.length;
+
+  // Compute the most-read theme across books the user has marked as read.
+  const topTheme: string = (() => {
+    if (progress.booksRead.length === 0) return '';
+    const tally: Record<string, number> = {};
+    for (const id of progress.booksRead) {
+      const raw = rawBooks.find((b) => b.id === id);
+      if (!raw) continue;
+      const theme = raw.theme[language] ?? raw.theme.en;
+      tally[theme] = (tally[theme] ?? 0) + 1;
+    }
+    const entries = Object.entries(tally);
+    if (entries.length === 0) return '';
+    return entries.reduce((a, b) => (b[1] > a[1] ? b : a))[0];
+  })();
+
   const hasAnyProgress =
     progress.booksRead.length + progress.booksWantToRead.length + progress.activitiesCompleted.length > 0;
 
@@ -208,6 +249,48 @@ export default function Profile() {
                 <span className="text-sm text-gray-600 font-medium">
                   {totalAchievements} {totalAchievements === 1 ? t.achievement : t.achievements} {t.unlocked}
                 </span>
+              </div>
+            </div>
+          </div>
+
+          {/* ---- Reading Stats summary ---- */}
+          <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-2xl p-6 mb-8">
+            <h2 className="text-lg font-bold text-gray-800 mb-4">{t.statsHeading}</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+                <div className="text-3xl mb-1">📚</div>
+                <div className="text-2xl font-bold text-purple-700">
+                  {progress.booksRead.length} / {rawBooks.length}
+                </div>
+                <div className="text-xs text-gray-500 mt-1 font-medium">{t.statBooksRead}</div>
+              </div>
+
+              <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+                <div className="text-3xl mb-1">🎯</div>
+                <div className="text-2xl font-bold text-indigo-700">
+                  {progress.activitiesCompleted.length} / {activities.length}
+                </div>
+                <div className="text-xs text-gray-500 mt-1 font-medium">{t.statActivitiesDone}</div>
+              </div>
+
+              <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+                <div className="text-3xl mb-1">🔖</div>
+                <div className="text-2xl font-bold text-blue-700">{progress.booksWantToRead.length}</div>
+                <div className="text-xs text-gray-500 mt-1 font-medium">{t.statWantToRead}</div>
+              </div>
+
+              <div className="bg-white rounded-xl p-4 text-center shadow-sm sm:col-span-2">
+                <div className="text-3xl mb-1">🌟</div>
+                <div className="text-base font-bold text-pink-700 leading-snug">
+                  {topTheme || t.statTopThemeNone}
+                </div>
+                <div className="text-xs text-gray-500 mt-1 font-medium">{t.statTopTheme}</div>
+              </div>
+
+              <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+                <div className="text-3xl mb-1">🔥</div>
+                <div className="text-base font-bold text-orange-600 leading-snug">{t.statStreak}</div>
+                <div className="text-xs text-gray-500 mt-1 font-medium">{t.statStreakLabel}</div>
               </div>
             </div>
           </div>
