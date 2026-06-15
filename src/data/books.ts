@@ -133,7 +133,7 @@ export const books: Book[] = [
     id: 'mayas-shadow',
     coverImage: 'https://m.media-amazon.com/images/I/619qWXXkRwL.jpg',
     ageRange: '3-7 years',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
     amazonUrl: dp('1996972812'),
     featured: true,
     title: {
@@ -161,7 +161,7 @@ export const books: Book[] = [
     id: 'sparrow-saved-forest',
     coverImage: 'https://m.media-amazon.com/images/I/61+OZTchcCL.jpg',
     ageRange: '4-8 years',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
     amazonUrl: dp('1996972685'),
     title: {
       en: 'The Sparrow Who Saved the Forest',
@@ -188,7 +188,7 @@ export const books: Book[] = [
     id: 'diegos-brave-leap',
     coverImage: 'https://m.media-amazon.com/images/I/71XLCAup1CL.jpg',
     ageRange: '4-8 years',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
     amazonUrl: dp('1996972863'),
     title: {
       en: "Diego's Brave Leap",
@@ -215,7 +215,7 @@ export const books: Book[] = [
     id: 'butterfly-effect',
     coverImage: 'https://m.media-amazon.com/images/I/71Ihs65rZFL.jpg',
     ageRange: '5-9 years',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
     amazonUrl: dp('1996972774'),
     title: {
       en: 'The Butterfly Effect',
@@ -242,7 +242,7 @@ export const books: Book[] = [
     id: 'emperors-true-treasure',
     coverImage: 'https://m.media-amazon.com/images/I/714jyt2r6TL.jpg',
     ageRange: '5-9 years',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
     amazonUrl: dp('199697274X'),
     title: {
       en: "The Emperor's True Treasure",
@@ -269,7 +269,7 @@ export const books: Book[] = [
     id: 'crooked-little-apple-tree',
     coverImage: 'https://m.media-amazon.com/images/I/713GxuodwVL.jpg',
     ageRange: '4-8 years',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
     amazonUrl: dp('1996972715'),
     title: {
       en: 'The Crooked Little Apple Tree',
@@ -296,7 +296,7 @@ export const books: Book[] = [
     id: 'true-beauty-meadowbrook',
     coverImage: 'https://m.media-amazon.com/images/I/712M0yodc0L.jpg',
     ageRange: '4-8 years',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
     amazonUrl: dp('1996972650'),
     title: {
       en: 'The True Beauty of Meadowbrook',
@@ -323,7 +323,7 @@ export const books: Book[] = [
     id: 'sanding-block',
     coverImage: 'https://m.media-amazon.com/images/I/710y9Kd57tL.jpg',
     ageRange: '5-9 years',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
     amazonUrl: dp('1996972898'),
     title: {
       en: 'The Sanding Block',
@@ -352,7 +352,7 @@ export const books: Book[] = [
     id: 'leo-and-the-wolf',
     coverImage: 'https://m.media-amazon.com/images/I/61GgsTi1z4L.jpg',
     ageRange: '4-8 years',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
     amazonUrl: dp('1997027054'),
     title: {
       en: 'Leo and the Wolf: A Lesson About Honesty',
@@ -379,7 +379,7 @@ export const books: Book[] = [
     id: 'russet-the-fox',
     coverImage: 'https://m.media-amazon.com/images/I/71vg4083EVL.jpg',
     ageRange: '4-8 years',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
     amazonUrl: dp('1997027046'),
     title: {
       en: 'Russet the Fox Learns a Lesson',
@@ -406,7 +406,7 @@ export const books: Book[] = [
     id: 'little-boats-big-wish',
     coverImage: 'https://m.media-amazon.com/images/I/71Zjj22p5sL.jpg',
     ageRange: '3-7 years',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
     amazonUrl: dp('1997027070'),
     title: {
       en: "A Little Boat's Big Wish",
@@ -433,7 +433,7 @@ export const books: Book[] = [
     id: 'heidis-journey-to-mastery',
     coverImage: 'https://m.media-amazon.com/images/I/91BfUbqNR9L.jpg',
     ageRange: '5-9 years',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
     amazonUrl: dp('B0H35ZJKCR'),
     title: {
       en: "Heidi's Journey to Mastery: Through Diligence",
@@ -460,7 +460,7 @@ export const books: Book[] = [
     id: 'cloud-collector',
     coverImage: 'https://m.media-amazon.com/images/I/91wvx5C9wYL.jpg',
     ageRange: '4-8 years',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
     amazonUrl: dp('B0H1DXZ1KH'),
     title: {
       en: 'The Cloud Collector',
@@ -487,7 +487,7 @@ export const books: Book[] = [
     id: 'little-mapmaker',
     coverImage: 'https://m.media-amazon.com/images/I/91oyc%2BLU-GL.jpg',
     ageRange: '4-8 years',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
     amazonUrl: dp('B0GZJPZS74'),
     title: {
       en: 'The Little Mapmaker',
@@ -514,7 +514,7 @@ export const books: Book[] = [
     id: 'pawa-rainbow-cloud',
     coverImage: 'https://m.media-amazon.com/images/I/61-eXffo5xL.jpg',
     ageRange: '3-7 years',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
     amazonUrl: dp('1996972936'),
     title: {
       en: 'Pawa and the Little Rainbow Cloud',

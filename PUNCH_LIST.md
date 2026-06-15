@@ -171,39 +171,39 @@ reason so we don't accidentally redo them without checking the trade-off.
 Add new items as discovered. Prioritize roughly top-to-bottom within each cluster.
 
 ### Content & content-ops
-- [ ] Write the 6 real Resources articles (currently stubs — Gate B1 might just hide them)
-- [ ] Per-language Resources articles (EN/ES/FR) once article structure exists
+- [x] Write the 6 real Resources articles — full EN/ES/FR articles in-file (PR #23, 2026-06-15): bilingual reading, read-aloud tips, home reading habit, age-appropriate picks, reluctant readers, reading across cultures.
+- [x] Per-language Resources articles — all 6 articles include adapted ES/FR translations (PR #23).
 - [ ] Update books.ts as Colors Mixed Up / Rainbow Symphony / Tower hit Amazon — swap author-page fallback for real ASIN URLs
 
 ### Social & marketing channels
-- [ ] **YouTube channel** — create "Story Time with Eva" channel for read-alouds, behind-the-scenes author videos, animated book trailers, and bilingual story-time content. Wire the new channel URL into Footer.tsx + Contact.tsx social clusters alongside Instagram + Facebook. Decide on naming consistency (`@storytimewitheva` if available) and first 3-5 video format pilots (read-aloud? book intro? craft demo from the Craft Corner activity?).
-- [ ] Facebook cover photo: design 1640×624 banner in Canva (book covers row, rooster + wordmark, or extended book illustration) and upload to the Page.
-- [ ] Pinterest profile setup: ~15 pin templates already exist in `/Eva/Online Strategy/` and `/Eva/Social_Media_Complete_Package/` — needs an account + scheduling tool (Tailwind, Later, or manual).
+- [x] **YouTube channel** — `@StoryTimeEva` wired into Footer.tsx + Contact.tsx (PR #19, 2026-06-14).
+- [x] Facebook cover photo: design 1640×624 banner in Canva (book covers row, rooster + wordmark, or extended book illustration) and upload to the Page.
+- [x] Pinterest profile setup: ~15 pin templates already exist in `/Eva/Online Strategy/` and `/Eva/Social_Media_Complete_Package/` — needs an account + scheduling tool (Tailwind, Later, or manual).
 - [ ] TikTok / Threads: consider once YouTube has a baseline.
 
 ### Engineering
 - [x] Build-time prerendering for perfect per-route OG unfurls on non-JS scrapers — DONE in PR #1 (branch `fix/audit-quick-wins-seo`). `scripts/prerender.mjs` runs after `vite build` and snapshots all 51 sitemap routes (17 pages × EN/ES/FR) to `dist/<route>/index.html` with route-correct title/canonical/hreflang/JSON-LD in the static HTML. Graceful-degrades to the SPA if Chromium can't launch; `build:spa` is the escape hatch.
 - [x] Lightweight global search — DONE. `/search` page (noindex, `?q=` synced) searches across all books (title/subtitle/desc/theme) and activities/games (title/desc/category), with a search icon in the navbar (desktop) + labeled link (mobile). Localized en/es/fr. Not prerendered/sitemapped (interactive utility page).
-- [ ] Accessibility audit (axe-core), fix focus management on demo modals
-- [ ] Mobile responsiveness pass — particularly the wide demo layouts (Bookmark Designer, Bingo grid)
+- [x] Accessibility audit (axe-core), fix focus management on demo modals — DONE PR #9 (2026-06-14), Lighthouse Accessibility 100.
+- [x] Mobile responsiveness pass — Bingo 5×5 grid fixed PR #10; Bookmark Designer mobile layout fixed PR #20 (flex-col-reverse preview-first, responsive grid-cols-4/6).
 - [x] Lazy-load demo bundles per route — DONE. The 8 interactive demos are `React.lazy()` code-split (separate chunks, fetched only on their route); main bundle ~495 KB → ~381 KB. A Suspense fallback tagged `data-prerender-loading` lets `prerender.mjs` wait for the demo chunk to resolve before snapshotting, so the prerendered demo pages still contain real content (verified 105/105, 0 leftover spinners).
 
 ### Product
-- [ ] Real book recommendation logic (subset of Base44's `RecommendationEngine`, no backend)
+- [x] Real book recommendation logic — theme-overlap scoring, top-3 shown on Books page — PR #24 (2026-06-15).
 - [ ] User-generated puzzle bank (currently 3 scrambles, 5 riddles, 4 matches, 1 logic — could grow)
-- [ ] Coloring demo: add more template scenes, save-to-localStorage gallery
-- [ ] Bookmark designer: actual PDF export instead of `window.print()`
-- [ ] Craft Corner: download a printable PDF "craft guide" per craft
-- [ ] Activities tracking → simple personal stats page (uses same localStorage as Profile)
+- [x] Coloring demo: 4 new templates (castle, ocean, tree, rocket) + localStorage gallery (max 12, hover-delete) — PR #21 (2026-06-15).
+- [x] Bookmark designer: canvas PNG export (600×2100 px, 2"×7" at 300 DPI, rounded corners, pattern + emoji, watermark) — (2026-06-15).
+- [x] Craft Corner: canvas PNG craft guide per craft (800×1100 px, header bar, emoji, materials + steps, watermark) — PR #20 (2026-06-15).
+- [x] Activities tracking → reading stats summary (Books Read, Activities Done, Top Theme, Streak, Want to Read) added to Profile page — PR #22 (2026-06-15).
 - [ ] Decide on Profile auth (skip / add Netlify Identity / add Supabase) if multi-device sync becomes a need
 
 ### Activity games (12 standalone games — integrated 2026-06-13)
 12 self-contained HTML games were added as static pages under `public/games/<slug>.html` and registered in `src/data/activities.ts` with `game: true` (Activities grid now shows 20 activities; game cards link to `/games/<slug>.html`). They work as-is but were intentionally NOT deep-ported — these are the follow-up improvements:
-- [~] **Port games off CDNs** — Phase 1 DONE: dropped the Google Fonts (Nunito) CDN and self-hosted **Lexend** (`public/games/lexend.woff2`) across all 12 games via `scripts/patch-games.mjs` (font-family Nunito→Lexend, @import→@font-face). Removes the privacy-relevant external request and matches the site font; Tailwind CDN left in place so no class-rendering risk. **Phase 2 (remaining):** replace the Tailwind Play CDN with a static built CSS. Caveat found during scoping: a few games build classes data-drivenly (`emotion-wheel` `${em.bg}/${em.border}`, grid `${cols}`), so the static build needs a color/grid **safelist** + per-game visual verification — do it carefully.
+- [x] **Port games off CDNs** — Phase 1 (Lexend self-hosted) + Phase 2 (Tailwind Play CDN → static `public/games/games.css`, full safelist including dynamic color/grid classes) — both DONE via PR #8 (2026-06-14). All 12 games load zero external resources.
 - [x] **Sync completion to the shared store** — DONE. `scripts/patch-games.mjs` injects a small script into each game that writes the game's slug to `readingProgress.activitiesCompleted` on "Mark Completed" (and reflects it on load), so it now flips the site Profile counts + the Activities "Completed / Open Again" badge. Verified cross-page.
 - [x] **Fix each game's "Get Free Kit" CTA** — DONE (same patch script): `href="#signup"` → `/#email-signup`.
 - [x] **Add the 12 game URLs to `sitemap.xml`** — DONE via `gen-sitemap.mjs` (single URL each; prerender skips static `.html` routes).
-- [ ] **Language**: games have internal EN/ES/FR toggles but a single URL and English default; consider opening them in the site's currently-selected language. (Card titles/descriptions are already localized in `activities.ts`.)
+- [x] **Language**: games auto-select the site's active language on load — DONE PR #11 (2026-06-14).
 - [ ] **Align read-aloud** with `src/lib/speech.ts` (voice/rate) if/when ported, and re-test Web Speech on iOS Safari (needs a user gesture — the Play/Listen buttons satisfy it).
 
 ### Audit follow-ups (UX/SEO audit — 2026-06-13)
@@ -212,7 +212,7 @@ Open items from the audit. Most of the audit shipped in PR #1 (`fix/audit-quick-
 **Owner decisions / content**
 - [x] **4.9/5 Amazon rating** — RESOLVED (owner chose to remove it). Removed from the Footer; the Home stat band now shows the live activity count ("Fun Activities" = `activities.length`) in its place. No unverified rating remains on the site.
 - [ ] **Privacy/Terms** — confirm a governing **jurisdiction** and do a legal skim (operating entity "Pawa Press Inc." already named; date "Last updated: June 2026"). _(owner)_
-- [ ] **Translate the 15 English-only books** to ES/FR so the "bilingual/3 languages" promise matches the catalog (only 3 of 18 are trilingual today). Hero/stat copy was intentionally left as-is pending this. _(content)_
+- [x] **Translate the 15 English-only books** to ES/FR — all 18 books have full EN/ES/FR title/subtitle/description/theme in `books.ts`; `languages` flag field updated to `['🇺🇸', '🇪🇸', '🇫🇷']` for all 15 previously EN-only entries (2026-06-15).
 
 **Child-UX & product**
 - [x] **"Ages 3–5" zone** — DONE. Activities page now has age-band filter chips (All / 3-5 / 6-8 / 9+, localized) using a shared `src/lib/ages.ts` overlap helper (also refactored out of Books.tsx). "Ages 3-5" surfaces the 12 overlapping activities incl. the toddler games (matching, rhyme, counting, emotion-wheel).
@@ -220,12 +220,12 @@ Open items from the audit. Most of the audit shipped in PR #1 (`fix/audit-quick-
 - [x] **Per-book pages** (`/books/<id>`) — DONE. `BookDetail.tsx` renders a full localized page per title (cover, blurb, theme, read-aloud, price, Buy, status) with `Book` JSON-LD + per-language canonical/hreflang; the card modal was replaced by links to it. Sitemap now 105 URLs (35 pages × EN/ES/FR) via `scripts/gen-sitemap.mjs` which reads book ids from `books.ts`; prerender covers all 105.
 - [~] **Language-learning extras** — side-by-side bilingual text DONE (book detail pages get a "Read in two languages" toggle showing the description in the other languages, via `books` raw localized strings). Still open: tap-to-translate words, dedicated vocabulary activities, language-progress tracking (partly covered by the sentence-builder / flashcards / reading-tracker games).
 - [ ] **Guide character / mascot** — a recurring illustrated guide (Eva or Pawa) at decision points; visual-direction recommendation for the 3–10 range.
-- [ ] **Mobile hero** — optionally move the family photo above the CTAs on phones (it currently sits below them). Minor.
-- [ ] Accessibility/contrast + keyboard + screen-reader pass — **see Engineering › "Accessibility audit (axe-core)"** (covers the hero subheadline + white-outline secondary-button contrast the audit flagged). a11y quick wins (reduced-motion, skip link, focus-visible) already shipped in PR #1.
+- [x] **Mobile hero** — family photo above headline/CTAs on phones (`order-first`), desktop layout unchanged — commit `0a4ad09` (2026-06-13).
+- [x] Accessibility/contrast + keyboard + screen-reader pass — axe-core WCAG AA violations fixed (PR #9, 2026-06-14); Lighthouse Accessibility 100. a11y quick wins (reduced-motion, skip link, focus-visible) in PR #1.
 
 **Ops & verification**
-- [ ] **Google Search Console** — submit `sitemap.xml` and confirm the new `/es` and `/fr` pages index.
-- [ ] **Re-run Lighthouse / PageSpeed (mobile)** after PR #1 merges to recapture Core Web Vitals; confirm Chromium launches on the first Netlify build (prerender) — falls back to `build:spa` if not.
+- [x] **Google Search Console** — Domain property verified via DNS TXT record; sitemap submitted (117 URLs discovered, 2026-06-14).
+- [x] **Re-run Lighthouse / PageSpeed (mobile)** — Perf 88, Accessibility 100, Best Practices 100, SEO 100 (2026-06-14, post PRs #8–18).
 - [ ] **Usability testing** — light parent/child testing of the core flows, plus a Plausible review (conversion, language usage, top activities). _(testing)_
 - [x] **Confirm Chromium on Netlify (prerender)** — DONE. Production deploy `6a2decfa` (merge commit `1e7a9e0`) published 2026-06-13 in 131s; prerender ran on Netlify and the per-route HTML serves live. Re-run Lighthouse/PSI + GSC submission still open above.
 
