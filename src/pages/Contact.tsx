@@ -301,6 +301,10 @@ export default function Contact() {
                   className="flex-1 py-2 bg-red-50 border border-red-200 rounded-xl text-center text-sm hover:bg-red-100 transition-colors">
                   ▶️ YouTube
                 </a>
+                <a href="https://www.tiktok.com/@evagallo8" target="_blank" rel="noopener noreferrer"
+                  className="flex-1 py-2 bg-gray-50 border border-gray-200 rounded-xl text-center text-sm hover:bg-gray-100 transition-colors">
+                  🎵 TikTok
+                </a>
               </div>
             </div>
           </div>

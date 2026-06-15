@@ -4,19 +4,19 @@ Companion channels for storytimewitheva.com. Threads already exists and is wired
 across the site (`@evagallo.books`). This doc covers the TikTok launch and a
 shared content plan for both.
 
-## Handle (decision needed)
+## Handle
 
-Recommended TikTok handle: **`@evagallo.books`** — matches Instagram and Threads
-for one consistent personal brand. Fallback if taken: `@storytimewitheva`
-(matches Facebook and Pinterest).
+TikTok handle: **`@evagallo8`** (claimed 2026-06-15, after the cleaner variants
+were all taken — the BookTok username namespace is heavily squatted). The
+display name stays "Story Time with Eva", so the handle reading slightly off
+brand does not matter much.
 
-Once you have claimed the handle, tell me and I will wire the link into the site
-(Footer social row, Contact sidebar, and the `/links` page) the same way the
-other channels are wired. Until the account exists I am holding the wiring so we
-do not ship a dead link.
+Wired into the site: Footer social row, Contact sidebar, and the `/links` page,
+linking to `https://www.tiktok.com/@evagallo8`.
 
 ## TikTok profile copy
 
+- Handle: `@evagallo8`
 - Display name: `Story Time with Eva`
 - Bio (fits the 80-character limit):
   `Bilingual picture books & activities for curious kids 📚 EN · ES · FR`
@@ -63,13 +63,13 @@ pipeline required.
 Batch-film in one or two sessions. Re-use each TikTok as an Instagram Reel; pull
 its hook into a Threads text post the same day.
 
-## Wiring spec (ready to apply on handle confirmation)
+## Wiring (done 2026-06-15)
 
-When the TikTok account is live, the link gets added in three places, matching
-the existing pattern:
+The TikTok link (`https://www.tiktok.com/@evagallo8`) is wired in three places,
+matching the existing social pattern:
 
-- `Footer.tsx` social row — new `<a>` with `aria-label="TikTok @<handle>"`, emoji 🎵
-- `Contact.tsx` sidebar — alongside the existing Amazon/Instagram/YouTube links
-- `Links.tsx` — a `tiktokCta` entry (EN/ES/FR) in the link list
+- `Footer.tsx` social row — `<a aria-label="TikTok @evagallo8">` with the 🎵 icon
+- `Contact.tsx` sidebar — alongside Amazon/Instagram/YouTube
+- `Links.tsx` — a `tiktokCta` row (EN/ES/FR) in the Follow Along section
 
 No em dashes in any user-facing copy, per the site convention.

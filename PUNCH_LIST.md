@@ -179,7 +179,7 @@ Add new items as discovered. Prioritize roughly top-to-bottom within each cluste
 - [x] **YouTube channel** — `@StoryTimeEva` wired into Footer.tsx + Contact.tsx (PR #19, 2026-06-14).
 - [x] Facebook cover photo: design 1640×624 banner in Canva (book covers row, rooster + wordmark, or extended book illustration) and upload to the Page.
 - [x] Pinterest profile setup: ~15 pin templates already exist in `/Eva/Online Strategy/` and `/Eva/Social_Media_Complete_Package/` — needs an account + scheduling tool (Tailwind, Later, or manual).
-- [~] TikTok / Threads: Threads live + wired (`@evagallo.books`). TikTok — profile copy + content plan + 2-week starter calendar written (`docs/social-tiktok-threads.md`); wiring is specced and ready (Footer + Contact + `/links`), held until the owner claims the handle (recommended `@evagallo.books`). Account creation is an owner action.
+- [x] TikTok / Threads: both live and wired. Threads `@evagallo.books`; **TikTok `@evagallo8`** (claimed 2026-06-15) wired into Footer + Contact + `/links`. Profile copy + content plan + 2-week starter calendar in `docs/social-tiktok-threads.md`.
 
 ### Engineering
 - [x] Build-time prerendering for perfect per-route OG unfurls on non-JS scrapers — DONE in PR #1 (branch `fix/audit-quick-wins-seo`). `scripts/prerender.mjs` runs after `vite build` and snapshots all 51 sitemap routes (17 pages × EN/ES/FR) to `dist/<route>/index.html` with route-correct title/canonical/hreflang/JSON-LD in the static HTML. Graceful-degrades to the SPA if Chromium can't launch; `build:spa` is the escape hatch.
