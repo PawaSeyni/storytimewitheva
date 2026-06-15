@@ -1,8 +1,9 @@
-# TikTok and Threads — profile copy + content plan
+# TikTok, Threads, and YouTube - profile copy + content plan
 
 Companion channels for storytimewitheva.com. Threads already exists and is wired
-across the site (`@evagallo.books`). This doc covers the TikTok launch and a
-shared content plan for both.
+across the site (`@evagallo.books`); YouTube (`@StoryTimeEva`) and TikTok
+(`@evagallo8`) are wired too. This doc covers profile copy for each and a shared
+content plan.
 
 ## Handle
 
@@ -32,6 +33,27 @@ The account exists and links work. Suggested bio refresh (fits 150 chars):
 
 Threads strategy: mostly text. Cross-post the caption/hook from each Instagram
 or TikTok post, plus standalone questions and short tips. 3 to 4 posts a week.
+
+## YouTube profile copy (@StoryTimeEva)
+
+Wired across the site (Footer + Contact). YouTube is video-first, so it is the
+natural home for the read-aloud clips (cross-post the TikTok read-alouds here as
+Shorts, and build longer full-story read-alouds over time).
+
+- Handle: `@StoryTimeEva`
+- Channel name: `Story Time with Eva`
+- Description (the "About" text):
+  `Multicultural, bilingual picture books and reading activities for curious kids. Story Time with Eva brings the Eva Gallo Collection to life with warm read-alouds in English, Spanish, and French, plus free printables families love. Gentle stories about kindness, courage, and wonder. Grab the free Bilingual Starter Kit and explore everything at storytimewitheva.com.`
+- Links (channel "Links" section): `storytimewitheva.com` (primary),
+  `storytimewitheva.com/links` (all channels + free kit)
+- Profile picture: the rooster + wordmark brand mark (same as every channel)
+- Banner: 2560x1440 px (keep key content inside the ~1546x423 safe area). Adapt
+  the Facebook cover art (book-covers row, or rooster + wordmark) so the look
+  matches across channels.
+- Category: Education
+
+Bio link strategy across channels stays consistent: where only one link is
+allowed, point it at `storytimewitheva.com/links`.
 
 ## Content pillars (both platforms, repurpose what already exists)
 
