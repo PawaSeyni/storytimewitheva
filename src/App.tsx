@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useTranslation } from './lib/language';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import FeedbackWidget from './components/FeedbackWidget';
 import Home from './pages/Home';
 
 // All non-home pages are code-split so the initial bundle only contains what
@@ -112,6 +113,7 @@ export default function App() {
         </Suspense>
       </div>
       <Footer />
+      <FeedbackWidget />
     </div>
   );
 }

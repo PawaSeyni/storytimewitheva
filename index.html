@@ -57,6 +57,19 @@
       <textarea name="message"></textarea>
     </form>
 
+    <!--
+      Static placeholder for the on-site feedback widget (src/components/
+      FeedbackWidget.tsx). Same Netlify Forms pattern as "contact": the React
+      widget POSTs (URL-encoded) to "/" with `form-name=feedback`. Field names
+      must stay in sync with the widget.
+    -->
+    <form name="feedback" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="rating" />
+      <textarea name="comment"></textarea>
+      <input type="text" name="page" />
+      <input type="text" name="language" />
+    </form>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

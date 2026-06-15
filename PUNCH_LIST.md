@@ -179,7 +179,7 @@ Add new items as discovered. Prioritize roughly top-to-bottom within each cluste
 - [x] **YouTube channel** — `@StoryTimeEva` wired into Footer.tsx + Contact.tsx (PR #19, 2026-06-14).
 - [x] Facebook cover photo: design 1640×624 banner in Canva (book covers row, rooster + wordmark, or extended book illustration) and upload to the Page.
 - [x] Pinterest profile setup: ~15 pin templates already exist in `/Eva/Online Strategy/` and `/Eva/Social_Media_Complete_Package/` — needs an account + scheduling tool (Tailwind, Later, or manual).
-- [ ] TikTok / Threads: consider once YouTube has a baseline.
+- [~] TikTok / Threads: Threads live + wired (`@evagallo.books`). TikTok — profile copy + content plan + 2-week starter calendar written (`docs/social-tiktok-threads.md`); wiring is specced and ready (Footer + Contact + `/links`), held until the owner claims the handle (recommended `@evagallo.books`). Account creation is an owner action.
 
 ### Engineering
 - [x] Build-time prerendering for perfect per-route OG unfurls on non-JS scrapers — DONE in PR #1 (branch `fix/audit-quick-wins-seo`). `scripts/prerender.mjs` runs after `vite build` and snapshots all 51 sitemap routes (17 pages × EN/ES/FR) to `dist/<route>/index.html` with route-correct title/canonical/hreflang/JSON-LD in the static HTML. Graceful-degrades to the SPA if Chromium can't launch; `build:spa` is the escape hatch.
@@ -227,7 +227,7 @@ Open items from the audit. Most of the audit shipped in PR #1 (`fix/audit-quick-
 **Ops & verification**
 - [x] **Google Search Console** — Domain property verified via DNS TXT record; sitemap submitted (117 URLs discovered, 2026-06-14).
 - [x] **Re-run Lighthouse / PageSpeed (mobile)** — Perf 88, Accessibility 100, Best Practices 100, SEO 100 (2026-06-14, post PRs #8–18).
-- [ ] **Usability testing** — light parent/child testing of the core flows, plus a Plausible review (conversion, language usage, top activities). _(testing)_
+- [~] **Usability testing** — plan written (`docs/usability-test-plan.md`): passive on-site **feedback widget** (`FeedbackWidget.tsx`, Netlify Forms, now live site-wide) + a light unmoderated parent/child task test (6 tasks) + Plausible metrics to watch + COPPA/consent notes. Remaining (owner/testing): recruit 4-6 pairs, run the task test, add a Netlify email-notification rule for the `feedback` form, write up findings.
 - [x] **Confirm Chromium on Netlify (prerender)** — DONE. Production deploy `6a2decfa` (merge commit `1e7a9e0`) published 2026-06-13 in 131s; prerender ran on Netlify and the per-route HTML serves live. Re-run Lighthouse/PSI + GSC submission still open above.
 
 **Post-launch follow-ups (observed on the live deploy 2026-06-13)**
