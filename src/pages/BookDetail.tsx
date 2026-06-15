@@ -5,6 +5,7 @@ import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
 import NotFound from './NotFound';
 import ReadAlong from '../components/ReadAlong';
+import TapToTranslate from '../components/TapToTranslate';
 import BookStatusButton from '../components/BookStatusButton';
 import { books, useBook } from '../data/books';
 import { LANGUAGE_LABELS, SUPPORTED_LANGUAGES, useLanguage, useTranslation } from '../lib/language';
@@ -16,9 +17,9 @@ const SITE_URL = 'https://storytimewitheva.com';
 const FLAG_TO_LANG: Record<string, string> = { '🇺🇸': 'en', '🇪🇸': 'es', '🇫🇷': 'fr' };
 
 const TRANSLATIONS = {
-  en: { back: '← Back to all books', theme: 'Theme', paperback: 'Paperback', ebook: 'eBook', buy: '🛒 Buy on Amazon', coverAlt: 'book cover', ages: 'Ages', bilingualShow: '🌐 Read in two languages', bilingualHide: '🌐 Hide other languages' },
-  es: { back: '← Volver a todos los libros', theme: 'Tema', paperback: 'Tapa blanda', ebook: 'eBook', buy: '🛒 Comprar en Amazon', coverAlt: 'portada del libro', ages: 'Edades', bilingualShow: '🌐 Leer en dos idiomas', bilingualHide: '🌐 Ocultar otros idiomas' },
-  fr: { back: '← Retour à tous les livres', theme: 'Thème', paperback: 'Livre broché', ebook: 'Livre numérique', buy: '🛒 Acheter sur Amazon', coverAlt: 'couverture du livre', ages: 'Âges', bilingualShow: '🌐 Lire en deux langues', bilingualHide: '🌐 Masquer les autres langues' },
+  en: { back: '← Back to all books', theme: 'Theme', paperback: 'Paperback', ebook: 'eBook', buy: '🛒 Buy on Amazon', coverAlt: 'book cover', ages: 'Ages', bilingualShow: '🌐 Read in two languages', bilingualHide: '🌐 Hide other languages', tapShow: '🔤 Tap words to translate', tapHide: '🔤 Stop translating' },
+  es: { back: '← Volver a todos los libros', theme: 'Tema', paperback: 'Tapa blanda', ebook: 'eBook', buy: '🛒 Comprar en Amazon', coverAlt: 'portada del libro', ages: 'Edades', bilingualShow: '🌐 Leer en dos idiomas', bilingualHide: '🌐 Ocultar otros idiomas', tapShow: '🔤 Toca para traducir', tapHide: '🔤 Dejar de traducir' },
+  fr: { back: '← Retour à tous les livres', theme: 'Thème', paperback: 'Livre broché', ebook: 'Livre numérique', buy: '🛒 Acheter sur Amazon', coverAlt: 'couverture du livre', ages: 'Âges', bilingualShow: '🌐 Lire en deux langues', bilingualHide: '🌐 Masquer les autres langues', tapShow: '🔤 Touche pour traduire', tapHide: '🔤 Arrêter la traduction' },
 };
 
 export default function BookDetail() {
@@ -27,6 +28,7 @@ export default function BookDetail() {
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
   const [bilingual, setBilingual] = useState(false);
+  const [tapMode, setTapMode] = useState(false);
 
   // Unknown id → real (noindex) 404 rather than a blank page.
   if (!book) return <NotFound />;
@@ -86,7 +88,24 @@ export default function BookDetail() {
             <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-1">{book.title}</h1>
             {book.subtitle && <p className="text-gray-500 italic mb-4">{book.subtitle}</p>}
 
-            <ReadAlong text={book.description} className="text-gray-600 leading-relaxed mb-4" />
+            {tapMode ? (
+              <TapToTranslate text={book.description} language={language} className="text-gray-600 leading-relaxed mb-4" />
+            ) : (
+              <ReadAlong text={book.description} className="text-gray-600 leading-relaxed mb-4" />
+            )}
+
+            <div className="flex flex-wrap gap-2 mb-3">
+              <button
+                type="button"
+                onClick={() => setTapMode((v) => !v)}
+                aria-pressed={tapMode}
+                className={`inline-flex items-center gap-2 py-2 px-4 text-sm font-semibold rounded-full transition-colors ${
+                  tapMode ? 'bg-purple-600 text-white hover:bg-purple-700' : 'text-purple-600 border border-purple-200 hover:bg-purple-50'
+                }`}
+              >
+                {tapMode ? t.tapHide : t.tapShow}
+              </button>
+            </div>
 
             {raw && (
               <div className="mb-5">
