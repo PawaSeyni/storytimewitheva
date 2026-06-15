@@ -22,7 +22,11 @@ linking to `https://www.tiktok.com/@evagallo8`.
 - Bio (fits the 80-character limit):
   `Bilingual picture books & activities for curious kids 📚 EN · ES · FR`
 - Bio link: `https://storytimewitheva.com/links` (routes to all channels + the
-  free starter kit, so the single allowed link does the most work)
+  free starter kit, so the single allowed link does the most work). GOTCHA:
+  TikTok only exposes the clickable Website field in the mobile app and gates it
+  behind ~1,000 followers in most regions; the web editor hides it. Set it via
+  the app (Profile > Edit profile > Website). The bio (69/80 chars) has no room
+  to fit the URL as plain-text fallback without dropping content.
 - Category: Education / Publisher
 - Profile photo: Pixel the butterfly mascot (see brand-mark note below)
 
