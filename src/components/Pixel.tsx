@@ -1,0 +1,95 @@
+import { useEffect, useState } from 'react';
+import helloUrl from '../assets/pixel/hello.svg';
+import readingUrl from '../assets/pixel/reading.svg';
+import readingInlineUrl from '../assets/pixel/reading-inline.svg';
+import praiseUrl from '../assets/pixel/praise.svg';
+import sleepyUrl from '../assets/pixel/sleepy.svg';
+import pointingUrl from '../assets/pixel/pointing.svg';
+import listeningUrl from '../assets/pixel/listening.svg';
+
+// Pixel the Butterfly mascot.
+//
+// Final illustrated art lives in src/assets/pixel/*.svg (see
+// docs/pixel-mascot-brief.md). Each mood is a self-contained SVG rendered as an
+// <img>, so multiple Pixels can share a page without SVG id collisions.
+//
+// Preview flag: Pixel is OFF for normal visitors. Turn her on by visiting any
+// page with ?pixel=1 (the choice persists via localStorage); ?pixel=0 turns
+// her back off. This lets us preview the mascot on the live site before
+// committing to her for everyone. To ship her for all visitors, change the
+// default in readEnabled() to `true` (or remove the gate).
+
+export type PixelMood = 'hello' | 'reading' | 'praise' | 'sleepy' | 'pointing' | 'listening';
+
+const ART: Record<PixelMood, string> = {
+  hello: helloUrl,
+  reading: readingUrl,
+  praise: praiseUrl,
+  sleepy: sleepyUrl,
+  pointing: pointingUrl,
+  listening: listeningUrl,
+};
+
+const ALT: Record<PixelMood, string> = {
+  hello: 'Pixel the butterfly waving hello',
+  reading: 'Pixel the butterfly reading along',
+  praise: 'Pixel the butterfly holding a star',
+  sleepy: 'Pixel the butterfly resting',
+  pointing: 'Pixel the butterfly pointing at a word',
+  listening: 'Pixel the butterfly listening',
+};
+
+function readEnabled(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('pixel')) {
+      const on = params.get('pixel') !== '0';
+      window.localStorage.setItem('pixelMascot', on ? 'on' : 'off');
+      return on;
+    }
+    return window.localStorage.getItem('pixelMascot') === 'on';
+  } catch {
+    return false;
+  }
+}
+
+export function usePixelEnabled(): boolean {
+  const [enabled, setEnabled] = useState(false);
+  useEffect(() => {
+    setEnabled(readEnabled());
+  }, []);
+  return enabled;
+}
+
+interface PixelProps {
+  mood?: PixelMood;
+  size?: number;
+  className?: string;
+  /** Use the compact 24px-optimized art (only meaningful for the reading mood). */
+  inline?: boolean;
+  /** Accessible label; defaults to a per-mood description. Pass "" for decorative. */
+  title?: string;
+}
+
+export default function Pixel({ mood = 'hello', size = 120, className, inline = false, title }: PixelProps) {
+  const enabled = usePixelEnabled();
+  if (!enabled) return null;
+
+  const src = inline && mood === 'reading' ? readingInlineUrl : ART[mood];
+  const alt = title ?? ALT[mood];
+
+  return (
+    <img
+      src={src}
+      width={size}
+      height={size}
+      alt={alt}
+      aria-hidden={alt === '' ? true : undefined}
+      className={className}
+      loading="lazy"
+      decoding="async"
+      draggable={false}
+    />
+  );
+}

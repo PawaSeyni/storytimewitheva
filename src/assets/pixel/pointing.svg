@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 256 256"
+     role="img"
+     aria-labelledby="pixelPointingReadingTitle pixelPointingReadingDesc"
+     focusable="false">
+  <title id="pixelPointingReadingTitle">Pixel the Butterfly pointing while reading</title>
+  <desc id="pixelPointingReadingDesc">A friendly purple and pink butterfly mascot beside an open book, pointing to a word while reading along.</desc>
+
+  <defs>
+    <linearGradient id="pixelPointingUpperWing" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <linearGradient id="pixelPointingLowerWing" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F472B6"/>
+      <stop offset="1" stop-color="#EC4899"/>
+    </linearGradient>
+    <linearGradient id="pixelPointingBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7C3AED"/>
+      <stop offset="1" stop-color="#5B21B6"/>
+    </linearGradient>
+    <filter id="pixelPointingSoftShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#3B0764" flood-opacity=".2"/>
+    </filter>
+  </defs>
+
+  <g id="pixel-pointing-reading" filter="url(#pixelPointingSoftShadow)">
+    <!-- antennae -->
+    <g id="antennae" fill="none" stroke="#5B21B6" stroke-width="7" stroke-linecap="round">
+      <path d="M113 64C109 45 101 33 92 26"/>
+      <path d="M143 64c4-19 12-31 21-38"/>
+    </g>
+    <g fill="#FB923C" stroke="#C2410C" stroke-width="3">
+      <circle cx="90" cy="24" r="8"/>
+      <circle cx="166" cy="24" r="8"/>
+    </g>
+
+    <!-- wings -->
+    <g id="wings" stroke="#6D28D9" stroke-width="6" stroke-linejoin="round">
+      <path fill="url(#pixelPointingUpperWing)"
+            d="M104 94C81 51 31 48 20 81c-10 30 26 54 77 48 16-2 24-19 17-31z"/>
+      <path fill="url(#pixelPointingUpperWing)"
+            d="M152 94c23-43 73-46 84-13 10 30-26 54-77 48-16-2-24-19-17-31z"/>
+      <path fill="url(#pixelPointingLowerWing)"
+            d="M102 132c-35-6-63 10-59 37 5 26 34 33 63 14 12-8 14-36-4-51z"/>
+      <path fill="url(#pixelPointingLowerWing)"
+            d="M154 132c35-6 63 10 59 37-5 26-34 33-63 14-12-8-14-36 4-51z"/>
+    </g>
+
+    <!-- wing highlights -->
+    <g fill="#DDD6FE" opacity=".9">
+      <path d="M87 78c-18-18-44-15-50 2-5 13 11 24 43 21 10-1 14-13 7-23z"/>
+      <path d="M169 78c18-18 44-15 50 2 5 13-11 24-43 21-10-1-14-13-7-23z"/>
+    </g>
+    <g fill="#F9A8D4" opacity=".95">
+      <path d="M88 148c-18-3-33 5-30 18 3 12 17 15 31 7 7-4 8-19-1-25z"/>
+      <path d="M168 148c18-3 33 5 30 18-3 12-17 15-31 7-7-4-8-19 1-25z"/>
+    </g>
+
+    <!-- jewel spots -->
+    <g id="jewels">
+      <g fill="#FB923C" stroke="#C2410C" stroke-width="3">
+        <circle cx="57" cy="80" r="10"/>
+        <circle cx="199" cy="80" r="10"/>
+      </g>
+      <g fill="#FBBF24" stroke="#D97706" stroke-width="3">
+        <circle cx="67" cy="160" r="8"/>
+        <circle cx="189" cy="160" r="8"/>
+      </g>
+      <g fill="#FFF7ED">
+        <circle cx="55" cy="76" r="3"/>
+        <circle cx="197" cy="76" r="3"/>
+        <circle cx="65" cy="157" r="2.5"/>
+        <circle cx="187" cy="157" r="2.5"/>
+      </g>
+    </g>
+
+    <!-- body -->
+    <g id="body">
+      <path fill="url(#pixelPointingBody)" stroke="#4C1D95" stroke-width="6"
+            d="M109 119c0-14 8-24 19-24s19 10 19 24v63c0 20-8 31-19 31s-19-11-19-31z"/>
+      <path d="M111 147h34M111 170h34"
+            fill="none" stroke="#6D28D9" stroke-width="4" opacity=".9"/>
+    </g>
+
+    <!-- face looking toward the page -->
+    <g id="face">
+      <circle cx="128" cy="94" r="35" fill="#FFF7ED" stroke="#4C1D95" stroke-width="6"/>
+      <ellipse cx="113" cy="93" rx="9" ry="11" fill="#312E81"/>
+      <ellipse cx="143" cy="93" rx="9" ry="11" fill="#312E81"/>
+      <circle cx="116" cy="90" r="3.2" fill="#FFFFFF"/>
+      <circle cx="146" cy="90" r="3.2" fill="#FFFFFF"/>
+      <circle cx="102" cy="106" r="6.5" fill="#FDA4AF" opacity=".9"/>
+      <circle cx="154" cy="106" r="6.5" fill="#FDA4AF" opacity=".9"/>
+      <path d="M121 109c4 4 10 4 14 0"
+            fill="none" stroke="#9D174D" stroke-width="4.5" stroke-linecap="round"/>
+    </g>
+
+    <!-- pointing arm -->
+    <g id="pointing-arm"
+       fill="#FFF7ED"
+       stroke="#4C1D95"
+       stroke-width="6"
+       stroke-linecap="round"
+       stroke-linejoin="round">
+      <path d="M109 135c-15 3-25 12-27 24-1 8 4 14 11 14 7 0 10-6 11-12 4 4 10 5 15 2 5-4 6-11 2-16-3-5-7-9-12-12z"/>
+      <path d="M147 136c10 5 17 13 19 22 2 7-2 13-8 14-6 1-10-4-11-10-5 3-11 2-15-2-4-5-3-12 1-17 4-5 9-8 14-7z"/>
+      <path d="M93 164l-16 13" fill="none"/>
+      <circle cx="75" cy="179" r="4.5"/>
+    </g>
+
+    <!-- open book -->
+    <g id="book" stroke="#4C1D95" stroke-width="6" stroke-linejoin="round">
+      <path fill="#FFF7ED"
+            d="M39 176c32-9 60-6 89 10v42c-29-13-57-16-89-8z"/>
+      <path fill="#FFF7ED"
+            d="M217 176c-32-9-60-6-89 10v42c29-13 57-16 89-8z"/>
+      <path d="M128 186v42" fill="none"/>
+      <path d="M56 192c18-4 35-2 53 5M56 205c18-4 35-2 53 5M147 197c18-7 35-9 53-5M147 210c18-7 35-9 53-5"
+            fill="none" stroke="#C4B5FD" stroke-width="4" stroke-linecap="round"/>
+    </g>
+
+    <!-- highlighted word -->
+    <g id="highlighted-word">
+      <rect x="63" y="184" width="42" height="14" rx="7" fill="#FBBF24" opacity=".35"/>
+      <path d="M70 191h28" stroke="#D97706" stroke-width="4" stroke-linecap="round"/>
+    </g>
+
+    <!-- subtle reading sparkle -->
+    <g id="sparkles" fill="#FBBF24">
+      <path d="M30 146l2.6 5.5 5.5 2.6-5.5 2.6L30 162l-2.6-5.5-5.5-2.6 5.5-2.6z"/>
+      <circle cx="223" cy="153" r="3.5"/>
+    </g>
+  </g>
+</svg>

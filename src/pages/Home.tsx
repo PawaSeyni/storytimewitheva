@@ -5,6 +5,7 @@ import BookCard from '../components/BookCard';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
+import Pixel from '../components/Pixel';
 import { useTranslation } from '../lib/language';
 import evaReadingWebp from '../assets/eva-reading.webp'; // optimized on-page hero (LCP)
 import evaReading from '../assets/eva-reading.jpg'; // kept for the og:image (broad social compatibility)
@@ -199,6 +200,7 @@ export default function Home() {
         <div className="absolute top-20 right-16 text-3xl star-float opacity-60" style={{ animationDelay: '1s' }}>🌙</div>
         <div className="absolute bottom-20 left-20 text-3xl star-float opacity-50" style={{ animationDelay: '2s' }}>✨</div>
         <div className="absolute bottom-16 right-10 text-4xl star-float opacity-60" style={{ animationDelay: '0.5s' }}>🎨</div>
+        <Pixel mood="hello" size={120} className="absolute top-24 right-6 lg:right-12 z-20 hidden sm:block star-float" title="Pixel the butterfly waves hello" />
 
         <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col lg:flex-row lg:items-center lg:gap-12">
           <div className="text-center lg:text-left text-white lg:flex-1">

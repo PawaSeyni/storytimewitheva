@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 256 256"
+     role="img"
+     aria-labelledby="pixelSleepyTitle pixelSleepyDesc"
+     focusable="false">
+  <title id="pixelSleepyTitle">Pixel the Butterfly sleeping peacefully</title>
+  <desc id="pixelSleepyDesc">A friendly purple and pink butterfly mascot resting with closed eyes, drooping antennae, and gentle z symbols.</desc>
+
+  <defs>
+    <linearGradient id="pixelSleepyUpperWing" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <linearGradient id="pixelSleepyLowerWing" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F472B6"/>
+      <stop offset="1" stop-color="#EC4899"/>
+    </linearGradient>
+    <linearGradient id="pixelSleepyBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7C3AED"/>
+      <stop offset="1" stop-color="#5B21B6"/>
+    </linearGradient>
+    <filter id="pixelSleepySoftShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#3B0764" flood-opacity=".2"/>
+    </filter>
+  </defs>
+
+  <g id="pixel-sleepy" filter="url(#pixelSleepySoftShadow)">
+    <!-- sleepy symbols -->
+    <g id="sleep-symbols"
+       fill="none"
+       stroke="#8B5CF6"
+       stroke-width="6"
+       stroke-linecap="round"
+       stroke-linejoin="round">
+      <path d="M194 42h19l-18 21h20"/>
+      <path d="M212 20h14l-13 16h15"/>
+      <path d="M179 66h13l-12 14h14"/>
+    </g>
+
+    <!-- drooping antennae -->
+    <g id="antennae"
+       fill="none"
+       stroke="#5B21B6"
+       stroke-width="7"
+       stroke-linecap="round">
+      <path d="M113 69c-5-16-14-24-26-22-8 1-13 7-13 14"/>
+      <path d="M143 69c5-16 14-24 26-22 8 1 13 7 13 14"/>
+    </g>
+    <g fill="#FB923C" stroke="#C2410C" stroke-width="3">
+      <circle cx="74" cy="63" r="8"/>
+      <circle cx="182" cy="63" r="8"/>
+    </g>
+
+    <!-- resting wings -->
+    <g id="wings" stroke="#6D28D9" stroke-width="6" stroke-linejoin="round">
+      <path fill="url(#pixelSleepyUpperWing)"
+            d="M105 101C82 64 40 59 25 86c-13 25 15 49 67 48 19 0 27-19 20-29z"/>
+      <path fill="url(#pixelSleepyUpperWing)"
+            d="M151 101c23-37 65-42 80-15 13 25-15 49-67 48-19 0-27-19-20-29z"/>
+      <path fill="url(#pixelSleepyLowerWing)"
+            d="M103 137c-34-4-61 10-58 35 3 24 31 33 60 17 13-7 16-36-2-52z"/>
+      <path fill="url(#pixelSleepyLowerWing)"
+            d="M153 137c34-4 61 10 58 35-3 24-31 33-60 17-13-7-16-36 2-52z"/>
+    </g>
+
+    <!-- wing highlights -->
+    <g fill="#DDD6FE" opacity=".9">
+      <path d="M87 87c-17-16-39-14-46 1-5 11 9 20 37 19 10 0 15-11 9-20z"/>
+      <path d="M169 87c17-16 39-14 46 1 5 11-9 20-37 19-10 0-15-11-9-20z"/>
+    </g>
+    <g fill="#F9A8D4" opacity=".95">
+      <path d="M88 151c-18-2-32 5-30 17 2 12 16 16 30 9 8-4 9-19 0-26z"/>
+      <path d="M168 151c18-2 32 5 30 17-2 12-16 16-30 9-8-4-9-19 0-26z"/>
+    </g>
+
+    <!-- jewel spots -->
+    <g id="jewels">
+      <g fill="#FB923C" stroke="#C2410C" stroke-width="3">
+        <circle cx="60" cy="91" r="10"/>
+        <circle cx="196" cy="91" r="10"/>
+      </g>
+      <g fill="#FBBF24" stroke="#D97706" stroke-width="3">
+        <circle cx="68" cy="164" r="8"/>
+        <circle cx="188" cy="164" r="8"/>
+      </g>
+      <g fill="#FFF7ED">
+        <circle cx="58" cy="87" r="3"/>
+        <circle cx="194" cy="87" r="3"/>
+        <circle cx="66" cy="161" r="2.5"/>
+        <circle cx="186" cy="161" r="2.5"/>
+      </g>
+    </g>
+
+    <!-- body -->
+    <g id="body">
+      <path fill="url(#pixelSleepyBody)" stroke="#4C1D95" stroke-width="6"
+            d="M109 124c0-14 8-23 19-23s19 9 19 23v61c0 22-8 36-19 36s-19-14-19-36z"/>
+      <path d="M111 151h34M111 174h34M113 196h30"
+            fill="none" stroke="#6D28D9" stroke-width="4" opacity=".9"/>
+    </g>
+
+    <!-- face -->
+    <g id="face">
+      <circle cx="128" cy="101" r="35" fill="#FFF7ED" stroke="#4C1D95" stroke-width="6"/>
+      <path d="M103 99c6 7 14 7 20 0"
+            fill="none" stroke="#312E81" stroke-width="5" stroke-linecap="round"/>
+      <path d="M133 99c6 7 14 7 20 0"
+            fill="none" stroke="#312E81" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="102" cy="113" r="6.5" fill="#FDA4AF" opacity=".9"/>
+      <circle cx="154" cy="113" r="6.5" fill="#FDA4AF" opacity=".9"/>
+      <path d="M120 116c5 5 11 5 16 0"
+            fill="none" stroke="#9D174D" stroke-width="4.5" stroke-linecap="round"/>
+    </g>
+
+    <!-- folded arms -->
+    <g id="arms"
+       fill="#FFF7ED"
+       stroke="#4C1D95"
+       stroke-width="6"
+       stroke-linecap="round"
+       stroke-linejoin="round">
+      <path d="M111 142c-14 7-21 17-18 27 2 8 9 11 15 7 6-4 8-10 10-16 4 6 11 8 17 5 6-4 7-12 3-18-5-8-17-10-27-5z"/>
+      <path d="M145 142c14 7 21 17 18 27-2 8-9 11-15 7-6-4-8-10-10-16-4 6-11 8-17 5-6-4-7-12-3-18 5-8 17-10 27-5z"/>
+    </g>
+
+    <!-- tucked feet -->
+    <g id="feet" fill="#5B21B6" stroke="#4C1D95" stroke-width="5">
+      <ellipse cx="117" cy="219" rx="11" ry="8" transform="rotate(-18 117 219)"/>
+      <ellipse cx="139" cy="219" rx="11" ry="8" transform="rotate(18 139 219)"/>
+    </g>
+  </g>
+</svg>

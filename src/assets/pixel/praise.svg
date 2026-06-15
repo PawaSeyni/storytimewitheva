@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 256 256"
+     role="img"
+     aria-labelledby="pixelPraiseTitle pixelPraiseDesc"
+     focusable="false">
+  <title id="pixelPraiseTitle">Pixel the Butterfly celebrating with a star</title>
+  <desc id="pixelPraiseDesc">A friendly purple and pink butterfly mascot holding a golden star and smiling proudly.</desc>
+
+  <defs>
+    <linearGradient id="pixelPraiseUpperWing" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <linearGradient id="pixelPraiseLowerWing" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F472B6"/>
+      <stop offset="1" stop-color="#EC4899"/>
+    </linearGradient>
+    <linearGradient id="pixelPraiseBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7C3AED"/>
+      <stop offset="1" stop-color="#5B21B6"/>
+    </linearGradient>
+    <linearGradient id="pixelPraiseStar" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FDE68A"/>
+      <stop offset=".45" stop-color="#FBBF24"/>
+      <stop offset="1" stop-color="#F59E0B"/>
+    </linearGradient>
+    <filter id="pixelPraiseSoftShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#3B0764" flood-opacity=".2"/>
+    </filter>
+  </defs>
+
+  <g id="pixel-praise" filter="url(#pixelPraiseSoftShadow)">
+    <!-- celebratory sparkles -->
+    <g id="sparkles" fill="#FBBF24">
+      <path d="M31 53l3.2 6.8L41 63l-6.8 3.2L31 73l-3.2-6.8L21 63l6.8-3.2z"/>
+      <path d="M220 48l2.6 5.5 5.5 2.6-5.5 2.6L220 63l-2.6-5.5-5.5-2.6 5.5-2.6z"/>
+      <circle cx="45" cy="89" r="4"/>
+      <circle cx="210" cy="93" r="3.5"/>
+    </g>
+
+    <!-- antennae -->
+    <g id="antennae" fill="none" stroke="#5B21B6" stroke-width="7" stroke-linecap="round">
+      <path d="M113 63C108 42 99 29 89 20"/>
+      <path d="M143 63c5-21 14-34 24-43"/>
+    </g>
+    <g fill="#FB923C" stroke="#C2410C" stroke-width="3">
+      <circle cx="87" cy="18" r="8"/>
+      <circle cx="169" cy="18" r="8"/>
+    </g>
+
+    <!-- wings -->
+    <g id="wings" stroke="#6D28D9" stroke-width="6" stroke-linejoin="round">
+      <path fill="url(#pixelPraiseUpperWing)"
+            d="M104 94C80 47 28 43 18 78c-9 34 30 60 83 51 14-2 22-18 16-30z"/>
+      <path fill="url(#pixelPraiseUpperWing)"
+            d="M152 94c24-47 76-51 86-16 9 34-30 60-83 51-14-2-22-18-16-30z"/>
+      <path fill="url(#pixelPraiseLowerWing)"
+            d="M102 132c-42-7-75 13-68 46 7 31 43 38 74 15 12-9 14-43-6-61z"/>
+      <path fill="url(#pixelPraiseLowerWing)"
+            d="M154 132c42-7 75 13 68 46-7 31-43 38-74 15-12-9-14-43 6-61z"/>
+    </g>
+
+    <!-- wing highlights -->
+    <g fill="#DDD6FE" opacity=".9">
+      <path d="M87 77c-18-21-47-18-54 1-5 15 13 28 48 24 10-1 14-14 6-25z"/>
+      <path d="M169 77c18-21 47-18 54 1 5 15-13 28-48 24-10-1-14-14-6-25z"/>
+    </g>
+    <g fill="#F9A8D4" opacity=".95">
+      <path d="M88 150c-21-4-38 6-34 22 4 14 20 18 36 8 8-5 8-23-2-30z"/>
+      <path d="M168 150c21-4 38 6 34 22-4 14-20 18-36 8-8-5-8-23 2-30z"/>
+    </g>
+
+    <!-- jewel spots -->
+    <g id="jewels">
+      <g fill="#FB923C" stroke="#C2410C" stroke-width="3">
+        <circle cx="54" cy="78" r="10"/>
+        <circle cx="202" cy="78" r="10"/>
+      </g>
+      <g fill="#FBBF24" stroke="#D97706" stroke-width="3">
+        <circle cx="64" cy="165" r="8"/>
+        <circle cx="192" cy="165" r="8"/>
+      </g>
+      <g fill="#FFF7ED">
+        <circle cx="52" cy="74" r="3"/>
+        <circle cx="200" cy="74" r="3"/>
+        <circle cx="62" cy="162" r="2.5"/>
+        <circle cx="190" cy="162" r="2.5"/>
+      </g>
+    </g>
+
+    <!-- body -->
+    <g id="body">
+      <path fill="url(#pixelPraiseBody)" stroke="#4C1D95" stroke-width="6"
+            d="M107 119c0-15 9-25 21-25s21 10 21 25v79c0 24-10 39-21 39s-21-15-21-39z"/>
+      <path d="M109 151h38M109 177h38M111 202h34"
+            fill="none" stroke="#6D28D9" stroke-width="4" opacity=".9"/>
+    </g>
+
+    <!-- face -->
+    <g id="face">
+      <circle cx="128" cy="94" r="36" fill="#FFF7ED" stroke="#4C1D95" stroke-width="6"/>
+      <path d="M103 91c6-8 13-8 19 0" fill="none" stroke="#312E81" stroke-width="5" stroke-linecap="round"/>
+      <ellipse cx="144" cy="91" rx="10" ry="12" fill="#312E81"/>
+      <circle cx="147" cy="87" r="3.5" fill="#FFFFFF"/>
+      <circle cx="101" cy="105" r="7" fill="#FDA4AF" opacity=".9"/>
+      <circle cx="155" cy="105" r="7" fill="#FDA4AF" opacity=".9"/>
+      <path d="M115 107c6 13 19 13 26 0"
+            fill="#EC4899" stroke="#9D174D" stroke-width="4.5" stroke-linejoin="round"/>
+      <path d="M121 113c4 3 10 3 14 0" fill="none" stroke="#FFF7ED" stroke-width="3" stroke-linecap="round"/>
+    </g>
+
+    <!-- star -->
+    <g id="star" transform="translate(42 113)">
+      <path fill="url(#pixelPraiseStar)" stroke="#D97706" stroke-width="6" stroke-linejoin="round"
+            d="M38 0l10 22 24 3-18 16 5 24-21-12-21 12 5-24L4 25l24-3z"/>
+      <path d="M38 11l5 12" fill="none" stroke="#FFF7ED" stroke-width="5" stroke-linecap="round" opacity=".8"/>
+    </g>
+
+    <!-- arms holding star -->
+    <g id="arms" fill="#FFF7ED" stroke="#4C1D95" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M109 136c-13-2-24 2-31 12-5 7-2 15 5 18 7 3 13-2 17-8 4 6 11 8 17 4 6-4 7-12 3-18-2-4-6-7-11-8z"/>
+      <path d="M147 136c15 2 25 8 29 19 3 8-1 15-8 16-7 1-11-5-12-11-5 4-12 3-16-2-4-5-3-13 2-18 1-2 3-3 5-4z"/>
+    </g>
+  </g>
+</svg>
