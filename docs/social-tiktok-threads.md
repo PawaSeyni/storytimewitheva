@@ -24,7 +24,7 @@ linking to `https://www.tiktok.com/@evagallo8`.
 - Bio link: `https://storytimewitheva.com/links` (routes to all channels + the
   free starter kit, so the single allowed link does the most work)
 - Category: Education / Publisher
-- Profile photo: the rooster + wordmark brand mark (same as other channels)
+- Profile photo: Pixel the butterfly mascot (see brand-mark note below)
 
 ## Threads (already live)
 
@@ -46,14 +46,25 @@ Shorts, and build longer full-story read-alouds over time).
   `Multicultural, bilingual picture books and reading activities for curious kids. Story Time with Eva brings the Eva Gallo Collection to life with warm read-alouds in English, Spanish, and French, plus free printables families love. Gentle stories about kindness, courage, and wonder. Grab the free Bilingual Starter Kit and explore everything at storytimewitheva.com.`
 - Links (channel "Links" section): `storytimewitheva.com` (primary),
   `storytimewitheva.com/links` (all channels + free kit)
-- Profile picture: the rooster + wordmark brand mark (same as every channel)
+- Profile picture: Pixel the butterfly mascot (see brand-mark note below)
 - Banner: 2560x1440 px (keep key content inside the ~1546x423 safe area). Adapt
-  the Facebook cover art (book-covers row, or rooster + wordmark) so the look
-  matches across channels.
+  the Facebook cover art (book-covers row) or a Pixel + wordmark + tagline
+  layout so the look matches across channels.
 - Category: Education
 
 Bio link strategy across channels stays consistent: where only one link is
 allowed, point it at `storytimewitheva.com/links`.
+
+## Brand-mark note (avatars + banners)
+
+There is no rooster logo, despite earlier notes calling for one. The live site
+brand is just the 🐾 paw emoji + the "Story Time with Eva" wordmark; the favicon
+is a generic purple mark, not real brand art. For channel avatars use a single
+consistent mark across all channels. Recommended: **Pixel the butterfly**
+(`src/assets/pixel/hello.svg`), the mascot — it reads clearly at small avatar
+sizes where a wordmark would not. Alternative: a paw + wordmark badge if the
+owner prefers to keep the site's current mark. Banners can pair the wordmark +
+tagline ("Where stories come to life") with Pixel and the book covers.
 
 ## Content pillars (both platforms, repurpose what already exists)
 
