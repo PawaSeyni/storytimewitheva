@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Shuffle, Save, Printer } from 'lucide-react';
+import { Shuffle, Save, Download } from 'lucide-react';
 import { useLanguage, useTranslation, type Language } from '../lib/language';
 import { useToast } from '../lib/toast';
 
@@ -111,7 +111,6 @@ const COLORS = [
   'linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%)',
 ];
 
-// Patterns - value is invariant; name is localized at render time.
 const PATTERN_KEYS = ['none', 'dots', 'lines', 'waves'] as const;
 type PatternKey = (typeof PATTERN_KEYS)[number];
 const PATTERN_VALUES: Record<PatternKey, string> = {
@@ -125,7 +124,6 @@ const PATTERN_VALUES: Record<PatternKey, string> = {
 
 type TemplateKey = 'safari' | 'ocean' | 'japan' | 'arctic';
 
-// Static template configuration - animal/country indices into ANIMALS_BY_LANG / COUNTRIES_BY_LANG arrays.
 const TEMPLATE_META: { id: TemplateKey; icon: string; animalIdx: number; countryIdx: number; colorIdx: number }[] = [
   { id: 'safari', icon: '🦁🌍', animalIdx: 1, countryIdx: 9, colorIdx: 3 },
   { id: 'ocean', icon: '🐬🌊', animalIdx: 11, countryIdx: 5, colorIdx: 2 },
@@ -146,10 +144,11 @@ const TRANSLATIONS = {
     choosePattern: '🎭 Choose Pattern',
     previewHeading: '📖 Your Bookmark Preview',
     defaultBookmark: 'My Bookmark',
-    print: 'Print Bookmark',
+    download: 'Download Bookmark',
     save: 'Save Design',
     surprise: 'Surprise Me!',
     saved: 'Design saved!',
+    downloaded: 'Bookmark downloaded!',
     tipsTitle: '💡 Bookmark Making Tips:',
     tips: [
       'Choose contrasting colors for text to stand out',
@@ -157,14 +156,14 @@ const TRANSLATIONS = {
       'Make multiple bookmarks as gifts for friends!',
       'Try creating a collection for different book genres',
     ],
-    printingTitle: '📋 Printing Instructions:',
+    printingTitle: '🖨️ How to Print Your Bookmark:',
     printingSteps: [
-      'Click the print button above',
-      "In the print dialog, select 'Portrait' orientation",
-      'Use cardstock or thick paper for best results',
-      'After printing, cut around the bookmark',
-      'Optional: Laminate for durability!',
-      'Add a hole at the top and thread ribbon for a tassel',
+      'Click "Download Bookmark" to save a high-quality PNG',
+      'Open the file in any photo viewer or app',
+      'Print at actual size on cardstock or thick paper',
+      'Cut along the edges of the bookmark',
+      'Optional: Laminate for extra durability!',
+      'Punch a hole at the top and thread ribbon for a tassel',
     ],
     patterns: {
       none: 'None',
@@ -192,10 +191,11 @@ const TRANSLATIONS = {
     choosePattern: '🎭 Elige el patrón',
     previewHeading: '📖 Vista previa de tu marcapáginas',
     defaultBookmark: 'Mi marcapáginas',
-    print: 'Imprimir marcapáginas',
+    download: 'Descargar marcapáginas',
     save: 'Guardar diseño',
     surprise: '¡Sorpréndeme!',
     saved: '¡Diseño guardado!',
+    downloaded: '¡Marcapáginas descargado!',
     tipsTitle: '💡 Consejos para crear marcapáginas:',
     tips: [
       'Elige colores que contrasten para que el texto resalte',
@@ -203,12 +203,12 @@ const TRANSLATIONS = {
       '¡Haz varios marcapáginas como regalo para tus amigos!',
       'Prueba a crear una colección para distintos géneros literarios',
     ],
-    printingTitle: '📋 Instrucciones de impresión:',
+    printingTitle: '🖨️ Cómo imprimir tu marcapáginas:',
     printingSteps: [
-      'Haz clic en el botón de imprimir',
-      "En el diálogo de impresión, elige orientación 'Vertical'",
-      'Usa cartulina o papel grueso para mejores resultados',
-      'Después de imprimir, recorta alrededor del marcapáginas',
+      'Haz clic en "Descargar marcapáginas" para guardar un PNG de alta calidad',
+      'Abre el archivo en cualquier visor de fotos o aplicación',
+      'Imprime a tamaño real en cartulina o papel grueso',
+      'Recorta los bordes del marcapáginas',
       '¡Opcional: plastifícalo para que dure más!',
       'Haz un agujero arriba y pasa una cinta para un pompón',
     ],
@@ -238,23 +238,24 @@ const TRANSLATIONS = {
     choosePattern: '🎭 Choisis le motif',
     previewHeading: '📖 Aperçu de ton marque-page',
     defaultBookmark: 'Mon marque-page',
-    print: 'Imprimer le marque-page',
+    download: 'Télécharger le marque-page',
     save: 'Sauvegarder le design',
     surprise: 'Surprends-moi !',
     saved: 'Design sauvegardé !',
+    downloaded: 'Marque-page téléchargé !',
     tipsTitle: '💡 Conseils pour créer un marque-page :',
     tips: [
       'Choisis des couleurs contrastées pour que le texte ressorte',
-      'Les animaux et les pays sont d\'excellents sujets de conversation',
+      "Les animaux et les pays sont d'excellents sujets de conversation",
       'Fabrique plusieurs marque-pages à offrir à tes amis !',
       'Essaie de créer une collection pour différents genres de livres',
     ],
-    printingTitle: '📋 Instructions d\'impression :',
+    printingTitle: "🖨️ Comment imprimer ton marque-page :",
     printingSteps: [
-      'Clique sur le bouton imprimer ci-dessus',
-      "Dans la boîte d'impression, choisis l'orientation « Portrait »",
-      'Utilise du papier cartonné ou épais pour un meilleur rendu',
-      'Après impression, découpe autour du marque-page',
+      'Clique sur « Télécharger le marque-page » pour enregistrer un PNG haute qualité',
+      "Ouvre le fichier dans n'importe quelle visionneuse de photos",
+      "Imprime en taille réelle sur du papier cartonné ou épais",
+      'Découpe les bords du marque-page',
       'Optionnel : plastifie-le pour plus de durabilité !',
       'Fais un trou en haut et passe un ruban pour faire un pompon',
     ],
@@ -266,13 +267,82 @@ const TRANSLATIONS = {
     },
     templates: {
       safari: { name: 'Aventure safari', subtitle: 'Faune africaine', text: 'Aventure safari' },
-      ocean: { name: 'Explorateur de l\'océan', subtitle: 'Créatures marines', text: 'Explorateur de l\'océan' },
+      ocean: { name: "Explorateur de l'océan", subtitle: 'Créatures marines', text: "Explorateur de l'océan" },
       japan: { name: 'Voyage au Japon', subtitle: 'Culture asiatique', text: 'Voyage au Japon' },
       arctic: { name: 'Cercle arctique', subtitle: 'Animaux polaires', text: 'Cercle arctique' },
     },
-    quotes: ['L\'aventure t\'attend', 'Continue de lire', 'Amoureux des livres', 'L\'heure du conte', 'Ma bibliothèque'],
+    quotes: ["L'aventure t'attend", 'Continue de lire', 'Amoureux des livres', "L'heure du conte", 'Ma bibliothèque'],
   },
 };
+
+// Draw a CSS linear-gradient string onto a canvas context.
+function drawGradient(ctx: CanvasRenderingContext2D, css: string, w: number, h: number) {
+  const hexes = css.match(/#[0-9a-fA-F]{6}/g) ?? ['#667eea', '#764ba2'];
+  const grd = ctx.createLinearGradient(0, 0, w, h); // diagonal ~ 135deg
+  grd.addColorStop(0, hexes[0]);
+  grd.addColorStop(1, hexes[hexes.length - 1]);
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, w, h);
+}
+
+function drawPattern(ctx: CanvasRenderingContext2D, pattern: PatternKey, w: number, h: number) {
+  if (pattern === 'dots') {
+    ctx.fillStyle = 'rgba(255,255,255,0.25)';
+    for (let y = 30; y < h; y += 60) {
+      for (let x = 30; x < w; x += 60) {
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  } else if (pattern === 'lines') {
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 4;
+    for (let i = -h; i < w + h; i += 80) {
+      ctx.beginPath();
+      ctx.moveTo(i, 0);
+      ctx.lineTo(i + h, h);
+      ctx.stroke();
+    }
+  } else if (pattern === 'waves') {
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 4;
+    for (let y = 40; y < h; y += 80) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+      ctx.stroke();
+    }
+  }
+}
+
+// Wrap and draw centered text, returning the y position after the last line.
+function drawWrappedText(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  font: string,
+  cx: number,
+  maxWidth: number,
+  startY: number,
+  lineHeight: number,
+): number {
+  ctx.font = font;
+  const words = text.split(' ');
+  const lines: string[] = [];
+  let line = '';
+  for (const word of words) {
+    const test = line ? `${line} ${word}` : word;
+    if (ctx.measureText(test).width > maxWidth) {
+      if (line) lines.push(line);
+      line = word;
+    } else {
+      line = test;
+    }
+  }
+  if (line) lines.push(line);
+  lines.forEach((l, i) => ctx.fillText(l, cx, startY + i * lineHeight));
+  return startY + lines.length * lineHeight;
+}
 
 export default function BookmarkCraftsDemo() {
   const { language } = useLanguage();
@@ -288,11 +358,6 @@ export default function BookmarkCraftsDemo() {
   const [selectedPatternKey, setSelectedPatternKey] = useState<PatternKey>('none');
   const [bookmarkText, setBookmarkText] = useState('');
 
-  // When the language changes, re-resolve current animal/country to the equivalent localized item.
-  // We do this by matching emoji (stable across languages).
-  // This keeps the user's selection visible after switching languages.
-  // We use a ref-free approach since selectedAnimal.emoji uniquely identifies it.
-  // (No effect needed - just lookup at render time when displaying.)
   const currentAnimal = animals.find(a => a.emoji === selectedAnimal.emoji) ?? animals[0];
   const currentCountry = countries.find(c => c.emoji === selectedCountry.emoji) ?? countries[0];
 
@@ -314,7 +379,79 @@ export default function BookmarkCraftsDemo() {
     setBookmarkText(t.quotes[Math.floor(Math.random() * t.quotes.length)]);
   };
 
-  const handlePrint = () => window.print();
+  // Canvas-based PNG download — 600×2100 px (2"×7" at 300 DPI, standard bookmark size)
+  const handleDownload = () => {
+    const W = 600;
+    const H = 2100;
+    const canvas = document.createElement('canvas');
+    canvas.width = W;
+    canvas.height = H;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Rounded-corner clip
+    const r = 48;
+    ctx.beginPath();
+    ctx.moveTo(r, 0);
+    ctx.lineTo(W - r, 0);
+    ctx.quadraticCurveTo(W, 0, W, r);
+    ctx.lineTo(W, H - r);
+    ctx.quadraticCurveTo(W, H, W - r, H);
+    ctx.lineTo(r, H);
+    ctx.quadraticCurveTo(0, H, 0, H - r);
+    ctx.lineTo(0, r);
+    ctx.quadraticCurveTo(0, 0, r, 0);
+    ctx.closePath();
+    ctx.clip();
+
+    // Background
+    drawGradient(ctx, selectedColor, W, H);
+
+    // Pattern overlay
+    drawPattern(ctx, selectedPatternKey, W, H);
+
+    // Top text
+    const displayText = bookmarkText || t.defaultBookmark;
+    ctx.fillStyle = 'white';
+    ctx.textAlign = 'center';
+    ctx.shadowColor = 'rgba(0,0,0,0.4)';
+    ctx.shadowBlur = 8;
+    ctx.shadowOffsetX = 2;
+    ctx.shadowOffsetY = 2;
+    drawWrappedText(ctx, displayText, 'bold 72px sans-serif', W / 2, W - 80, 180, 90);
+
+    // Animal emoji (large)
+    ctx.font = '320px serif';
+    ctx.fillText(currentAnimal.emoji, W / 2, 1080);
+
+    // Country flag
+    ctx.font = '180px serif';
+    ctx.fillText(currentCountry.emoji, W / 2, 1620);
+
+    // Country name
+    ctx.shadowBlur = 4;
+    ctx.font = 'bold 56px sans-serif';
+    ctx.fillText(currentCountry.name, W / 2, 1740);
+
+    // Footer watermark
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+    ctx.globalAlpha = 0.55;
+    ctx.font = '34px sans-serif';
+    ctx.fillText('storytimewitheva.com', W / 2, 2040);
+    ctx.globalAlpha = 1;
+
+    // Trigger download
+    const slug = `${currentAnimal.name}-${currentCountry.name}`
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-');
+    const link = document.createElement('a');
+    link.download = `bookmark-${slug}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    toast.success(t.downloaded);
+  };
 
   const handleSave = () => {
     const design = {
@@ -329,74 +466,83 @@ export default function BookmarkCraftsDemo() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl p-6 md:p-8">
+    <div className="bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl p-4 sm:p-6 md:p-8">
       <div className="text-center mb-6">
-        <h2 className="text-3xl font-bold mb-2 text-purple-700">{t.heading}</h2>
-        <p className="text-gray-700 mb-4">{t.subheading}</p>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-purple-700">{t.heading}</h2>
+        <p className="text-gray-700 mb-4 text-sm sm:text-base">{t.subheading}</p>
         <div className="text-5xl mb-4">🎨📚</div>
       </div>
 
-      <div className="bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl p-6 mb-6">
-        <h3 className="text-2xl font-bold text-white text-center mb-4">{t.quickStart}</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* Quick-start templates */}
+      <div className="bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl p-4 sm:p-6 mb-6">
+        <h3 className="text-xl sm:text-2xl font-bold text-white text-center mb-4">{t.quickStart}</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {TEMPLATE_META.map((template) => (
             <Card
               key={template.id}
               onClick={() => loadTemplate(template.id)}
-              className="bg-white p-4 text-center cursor-pointer hover:scale-105 transition-transform"
+              className="bg-white p-3 sm:p-4 text-center cursor-pointer hover:scale-105 transition-transform"
             >
-              <div className="text-4xl mb-2">{template.icon}</div>
-              <div className="font-bold text-purple-700">{t.templates[template.id].name}</div>
+              <div className="text-3xl sm:text-4xl mb-2">{template.icon}</div>
+              <div className="font-bold text-purple-700 text-sm sm:text-base">{t.templates[template.id].name}</div>
               <div className="text-xs text-gray-600">{t.templates[template.id].subtitle}</div>
             </Card>
           ))}
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
-        <div className="space-y-6">
-          <div className="bg-gradient-to-r from-yellow-200 to-orange-200 rounded-2xl p-6 border-4 border-orange-300">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">{t.chooseAnimal}</h3>
-            <div className="grid grid-cols-4 gap-3">
+      {/*
+        Mobile: flex-col-reverse puts the preview first, controls below.
+        lg+: two-column grid, controls left, preview right.
+      */}
+      <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-6">
+        {/* ── Controls (right side on lg, bottom on mobile) ─────────────── */}
+        <div className="space-y-4 sm:space-y-6">
+          {/* Animal picker */}
+          <div className="bg-gradient-to-r from-yellow-200 to-orange-200 rounded-2xl p-4 sm:p-6 border-4 border-orange-300">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3">{t.chooseAnimal}</h3>
+            <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 sm:gap-3">
               {animals.map((animal) => (
                 <Card
                   key={animal.emoji}
                   onClick={() => setSelectedAnimal(animal)}
-                  className={`p-3 text-center cursor-pointer transition-all hover:scale-105 ${
+                  className={`p-2 sm:p-3 text-center cursor-pointer transition-all hover:scale-105 ${
                     currentAnimal.emoji === animal.emoji
                       ? 'bg-gradient-to-br from-pink-400 to-red-400 text-white ring-4 ring-pink-300'
                       : 'bg-white'
                   }`}
                 >
-                  <div className="text-3xl mb-1">{animal.emoji}</div>
-                  <div className="text-xs font-medium">{animal.name}</div>
+                  <div className="text-2xl sm:text-3xl mb-1">{animal.emoji}</div>
+                  <div className="text-xs font-medium leading-tight">{animal.name}</div>
                 </Card>
               ))}
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-blue-200 to-cyan-200 rounded-2xl p-6 border-4 border-cyan-300">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">{t.chooseCountry}</h3>
-            <div className="grid grid-cols-4 gap-3">
+          {/* Country picker */}
+          <div className="bg-gradient-to-r from-blue-200 to-cyan-200 rounded-2xl p-4 sm:p-6 border-4 border-cyan-300">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3">{t.chooseCountry}</h3>
+            <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 sm:gap-3">
               {countries.map((country) => (
                 <Card
                   key={country.emoji}
                   onClick={() => setSelectedCountry(country)}
-                  className={`p-3 text-center cursor-pointer transition-all hover:scale-105 ${
+                  className={`p-2 sm:p-3 text-center cursor-pointer transition-all hover:scale-105 ${
                     currentCountry.emoji === country.emoji
                       ? 'bg-gradient-to-br from-blue-400 to-cyan-400 text-white ring-4 ring-blue-300'
                       : 'bg-white'
                   }`}
                 >
-                  <div className="text-3xl mb-1">{country.emoji}</div>
-                  <div className="text-xs font-medium">{country.name}</div>
+                  <div className="text-2xl sm:text-3xl mb-1">{country.emoji}</div>
+                  <div className="text-xs font-medium leading-tight">{country.name}</div>
                 </Card>
               ))}
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-green-200 to-teal-200 rounded-2xl p-6 border-4 border-teal-300">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">{t.chooseColor}</h3>
+          {/* Color picker */}
+          <div className="bg-gradient-to-r from-green-200 to-teal-200 rounded-2xl p-4 sm:p-6 border-4 border-teal-300">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3">{t.chooseColor}</h3>
             <div className="grid grid-cols-5 gap-3">
               {COLORS.map((color, idx) => (
                 <div
@@ -411,42 +557,46 @@ export default function BookmarkCraftsDemo() {
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-pink-200 to-rose-200 rounded-2xl p-6 border-4 border-rose-300">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">{t.addText}</h3>
+          {/* Text input */}
+          <div className="bg-gradient-to-r from-pink-200 to-rose-200 rounded-2xl p-4 sm:p-6 border-4 border-rose-300">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3">{t.addText}</h3>
             <Input
               value={bookmarkText}
               onChange={(e) => setBookmarkText(e.target.value)}
               placeholder={t.textPlaceholder}
               maxLength={30}
-              className="text-lg border-2 border-rose-400"
+              className="text-base sm:text-lg border-2 border-rose-400"
             />
           </div>
 
-          <div className="bg-gradient-to-r from-purple-200 to-pink-200 rounded-2xl p-6 border-4 border-pink-300">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">{t.choosePattern}</h3>
-            <div className="grid grid-cols-4 gap-3">
+          {/* Pattern picker */}
+          <div className="bg-gradient-to-r from-purple-200 to-pink-200 rounded-2xl p-4 sm:p-6 border-4 border-pink-300">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3">{t.choosePattern}</h3>
+            <div className="grid grid-cols-4 gap-2 sm:gap-3">
               {PATTERN_KEYS.map((key) => (
                 <Card
                   key={key}
                   onClick={() => setSelectedPatternKey(key)}
-                  className={`p-4 text-center cursor-pointer transition-all hover:scale-105 ${
+                  className={`p-3 sm:p-4 text-center cursor-pointer transition-all hover:scale-105 ${
                     selectedPatternKey === key
                       ? 'bg-gradient-to-br from-purple-400 to-pink-400 text-white ring-4 ring-purple-300'
                       : 'bg-white'
                   }`}
                 >
-                  <div className="font-medium text-sm">{t.patterns[key]}</div>
+                  <div className="font-medium text-xs sm:text-sm">{t.patterns[key]}</div>
                 </Card>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="space-y-6">
+        {/* ── Preview + action buttons (top on mobile, right on lg) ──────── */}
+        <div className="space-y-4 sm:space-y-6">
           <div className="text-center">
-            <h3 className="text-2xl font-bold text-purple-700 mb-4">{t.previewHeading}</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-purple-700 mb-4">{t.previewHeading}</h3>
+            {/* Bookmark preview — scales down on smaller screens */}
             <div
-              className="w-72 h-[32rem] mx-auto rounded-2xl shadow-2xl overflow-hidden relative"
+              className="w-44 h-64 sm:w-56 sm:h-80 md:w-64 md:h-[24rem] lg:w-72 lg:h-[32rem] mx-auto rounded-2xl shadow-2xl overflow-hidden relative"
               style={{ background: selectedColor }}
             >
               {selectedPatternKey !== 'none' && (
@@ -455,10 +605,12 @@ export default function BookmarkCraftsDemo() {
                   style={{ background: PATTERN_VALUES[selectedPatternKey], backgroundSize: '20px 20px' }}
                 />
               )}
-              <div className="relative z-10 h-full flex flex-col items-center justify-between p-8 text-white">
-                <div className="text-2xl font-bold text-center">{bookmarkText || t.defaultBookmark}</div>
-                <div className="text-8xl">{currentAnimal.emoji}</div>
-                <div className="text-xl font-semibold text-center">
+              <div className="relative z-10 h-full flex flex-col items-center justify-between p-4 sm:p-6 lg:p-8 text-white">
+                <div className="text-base sm:text-lg lg:text-2xl font-bold text-center leading-tight">
+                  {bookmarkText || t.defaultBookmark}
+                </div>
+                <div className="text-6xl sm:text-7xl lg:text-8xl">{currentAnimal.emoji}</div>
+                <div className="text-sm sm:text-base lg:text-xl font-semibold text-center">
                   {currentCountry.emoji} {currentCountry.name}
                 </div>
               </div>
@@ -467,22 +619,22 @@ export default function BookmarkCraftsDemo() {
 
           <div className="flex flex-col gap-3">
             <Button
-              onClick={handlePrint}
-              className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold py-6 text-lg"
+              onClick={handleDownload}
+              className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold py-5 sm:py-6 text-base sm:text-lg"
             >
-              <Printer className="w-5 h-5 mr-2" />
-              {t.print}
+              <Download className="w-5 h-5 mr-2" />
+              {t.download}
             </Button>
             <Button
               onClick={handleSave}
-              className="w-full bg-gradient-to-r from-green-400 to-cyan-500 hover:from-green-500 hover:to-cyan-600 text-white font-bold py-6 text-lg"
+              className="w-full bg-gradient-to-r from-green-400 to-cyan-500 hover:from-green-500 hover:to-cyan-600 text-white font-bold py-5 sm:py-6 text-base sm:text-lg"
             >
               <Save className="w-5 h-5 mr-2" />
               {t.save}
             </Button>
             <Button
               onClick={randomizeDesign}
-              className="w-full bg-gradient-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white font-bold py-6 text-lg"
+              className="w-full bg-gradient-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white font-bold py-5 sm:py-6 text-base sm:text-lg"
             >
               <Shuffle className="w-5 h-5 mr-2" />
               {t.surprise}
@@ -491,23 +643,23 @@ export default function BookmarkCraftsDemo() {
         </div>
       </div>
 
-      <div className="bg-blue-600 text-white rounded-2xl p-6 mt-6">
-        <h3 className="text-xl font-bold mb-3">{t.tipsTitle}</h3>
+      <div className="bg-blue-600 text-white rounded-2xl p-4 sm:p-6 mt-6">
+        <h3 className="text-lg sm:text-xl font-bold mb-3">{t.tipsTitle}</h3>
         <ul className="space-y-2">
           {t.tips.map((tip, idx) => (
-            <li key={idx} className="flex items-start gap-2">
-              <span className="text-yellow-300">★</span>
+            <li key={idx} className="flex items-start gap-2 text-sm sm:text-base">
+              <span className="text-yellow-300 shrink-0">★</span>
               <span>{tip}</span>
             </li>
           ))}
         </ul>
       </div>
 
-      <div className="bg-white rounded-2xl p-6 mt-6 border-4 border-dashed border-purple-400">
-        <h3 className="text-xl font-bold text-purple-700 mb-3">{t.printingTitle}</h3>
+      <div className="bg-white rounded-2xl p-4 sm:p-6 mt-6 border-4 border-dashed border-purple-400">
+        <h3 className="text-lg sm:text-xl font-bold text-purple-700 mb-3">{t.printingTitle}</h3>
         <ol className="space-y-2 list-decimal list-inside">
           {t.printingSteps.map((step, idx) => (
-            <li key={idx} className="text-gray-700">
+            <li key={idx} className="text-gray-700 text-sm sm:text-base">
               {step}
             </li>
           ))}
