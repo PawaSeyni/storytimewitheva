@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;800&display=swap');
+  html, body { margin: 0; padding: 0; }
+  .canvas {
+    width: 2048px; height: 1152px;
+    background: linear-gradient(135deg, #6d28d9 0%, #9333ea 45%, #ec4899 100%);
+    position: relative; overflow: hidden;
+    font-family: 'Lexend', sans-serif;
+  }
+  /* All-device safe area is the centered 1546x423 box. Keep key content inside. */
+  .safe {
+    position: absolute;
+    left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: 1500px; height: 410px;
+    display: flex; align-items: center; justify-content: center; gap: 60px;
+  }
+  .text { color: #ffffff; }
+  .wordmark { font-weight: 800; font-size: 104px; line-height: 1.04; letter-spacing: -1px; text-shadow: 0 4px 18px rgba(60,10,90,.35); }
+  .tagline { font-weight: 600; font-size: 40px; margin-top: 14px; color: #fde68a; }
+  .sub { font-weight: 400; font-size: 30px; margin-top: 16px; color: #f3e8ff; }
+  .pixel { width: 330px; height: 330px; flex: none; filter: drop-shadow(0 10px 22px rgba(60,10,90,.3)); }
+  .dot { position: absolute; border-radius: 50%; opacity: .9; }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <span class="dot" style="width:34px;height:34px;background:#fbbf24;top:210px;left:360px;"></span>
+    <span class="dot" style="width:22px;height:22px;background:#fb923c;bottom:240px;left:520px;"></span>
+    <span class="dot" style="width:28px;height:28px;background:#fde68a;top:250px;right:430px;"></span>
+    <span class="dot" style="width:20px;height:20px;background:#f9a8d4;bottom:230px;right:560px;"></span>
+    <div class="safe">
+      <div class="text">
+        <div class="wordmark">Story Time<br/>with Eva</div>
+        <div class="tagline">Where stories come to life</div>
+        <div class="sub">Bilingual picture books for curious kids · EN · ES · FR</div>
+      </div>
+      <img class="pixel" src="../src/assets/pixel/hello.svg" alt="Pixel" />
+    </div>
+  </div>
+</body>
+</html>

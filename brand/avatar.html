@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  .canvas {
+    width: 800px; height: 800px;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle at 50% 44%, #faf7ff 0%, #ece3fc 55%, #d8c8f6 100%);
+    position: relative; overflow: hidden;
+  }
+  .pixel { width: 600px; height: 600px; display: block; }
+  .spark { position: absolute; color: #fbbf24; font-size: 0; }
+  .dot { position: absolute; border-radius: 50%; }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <span class="dot" style="width:26px;height:26px;background:#fb923c;top:150px;left:150px;"></span>
+    <span class="dot" style="width:18px;height:18px;background:#fbbf24;top:200px;right:170px;"></span>
+    <span class="dot" style="width:16px;height:16px;background:#a855f7;bottom:175px;left:200px;"></span>
+    <span class="dot" style="width:22px;height:22px;background:#fb923c;bottom:150px;right:185px;"></span>
+    <img class="pixel" src="../src/assets/pixel/hello.svg" alt="Pixel" />
+  </div>
+</body>
+</html>
