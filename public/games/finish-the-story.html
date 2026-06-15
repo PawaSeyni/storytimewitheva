@@ -209,6 +209,26 @@
   </main>
 
   <script>
+    // Shared voice picker, aligned with the site's src/lib/speech.ts:
+    // prefer an exact BCP-47 match (en-US / es-ES / fr-FR), else the 2-letter
+    // language prefix, else the browser default. getVoices() can be empty on
+    // first call, so we refresh and also listen for 'voiceschanged'.
+    let _voices = [];
+    function _refreshVoices() {
+      if (window.speechSynthesis) _voices = window.speechSynthesis.getVoices() || [];
+    }
+    _refreshVoices();
+    if (window.speechSynthesis && window.speechSynthesis.addEventListener) {
+      window.speechSynthesis.addEventListener('voiceschanged', _refreshVoices);
+    }
+    function pickVoice(langCode) {
+      if (!_voices.length) _refreshVoices();
+      const exact = _voices.find(v => v.lang === langCode);
+      if (exact) return exact;
+      const prefix = langCode.slice(0, 2).toLowerCase();
+      return _voices.find(v => v.lang && v.lang.toLowerCase().startsWith(prefix)) || null;
+    }
+
     const stories = [
       {
         id: 'rainbow',
@@ -433,7 +453,9 @@
       if (!window.speechSynthesis) return;
       window.speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(text);
-      u.lang = 'en-US'; u.rate = 0.85; u.pitch = 1.05;
+      u.lang = 'en-US'; u.rate = 0.95; u.pitch = 1.05;
+      const voice = pickVoice(u.lang);
+      if (voice) u.voice = voice;
       window.speechSynthesis.speak(u);
     }
   </script>

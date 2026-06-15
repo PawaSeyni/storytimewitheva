@@ -140,6 +140,26 @@
   </main>
 
   <script>
+    // Shared voice picker, aligned with the site's src/lib/speech.ts:
+    // prefer an exact BCP-47 match (en-US / es-ES / fr-FR), else the 2-letter
+    // language prefix, else the browser default. getVoices() can be empty on
+    // first call, so we refresh and also listen for 'voiceschanged'.
+    let _voices = [];
+    function _refreshVoices() {
+      if (window.speechSynthesis) _voices = window.speechSynthesis.getVoices() || [];
+    }
+    _refreshVoices();
+    if (window.speechSynthesis && window.speechSynthesis.addEventListener) {
+      window.speechSynthesis.addEventListener('voiceschanged', _refreshVoices);
+    }
+    function pickVoice(langCode) {
+      if (!_voices.length) _refreshVoices();
+      const exact = _voices.find(v => v.lang === langCode);
+      if (exact) return exact;
+      const prefix = langCode.slice(0, 2).toLowerCase();
+      return _voices.find(v => v.lang && v.lang.toLowerCase().startsWith(prefix)) || null;
+    }
+
     const songs = [
       {
         id: 'twinkle', emoji: '⭐', title: 'Twinkle Twinkle', subtitle: 'Ages 3–7 · Classic Nursery Rhyme',
@@ -275,8 +295,12 @@
 
           const u = new SpeechSynthesisUtterance(words[wordIdx]);
           u.lang = langCode;
+          // Sing-along keeps its musical pitch and user speed multiplier;
+          // only the voice selection is aligned with the rest of the site.
           u.rate = 0.75 * speed;
           u.pitch = 1.1;
+          const voice = pickVoice(langCode);
+          if (voice) u.voice = voice;
           u.onend = () => {
             playTimeout = setTimeout(() => speakWord(wordIdx + 1), 80 / speed);
           };
