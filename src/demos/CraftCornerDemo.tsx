@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { X, AlertTriangle, Lightbulb } from 'lucide-react';
+import { X, AlertTriangle, Lightbulb, Download } from 'lucide-react';
 import { useLanguage, useTranslation, type Language } from '../lib/language';
+import { useToast } from '../lib/toast';
 
 type Difficulty = 'easy' | 'medium' | 'hard';
 type CraftKey = 'mask' | 'puppet' | 'diorama' | 'crown' | 'wand' | 'cape';
@@ -12,6 +13,7 @@ type Craft = {
   difficulty: Difficulty;
   ideas: string[];
   hasSafetyRules: boolean;
+  color: string;
 };
 type LocalizedCraft = {
   title: string;
@@ -24,12 +26,12 @@ type LocalizedCraft = {
 
 // Static per-craft visual metadata (language-invariant).
 const CRAFT_META: Record<CraftKey, Craft> = {
-  mask: { emoji: '🎭', difficulty: 'easy', ideas: ['🦊', '🦁', '🐉', '🦉', '🐻', '🐱'], hasSafetyRules: false },
-  puppet: { emoji: '🧦', difficulty: 'easy', ideas: ['🐶', '🐸', '👹', '👸', '🤖', '🦕'], hasSafetyRules: false },
-  diorama: { emoji: '📦', difficulty: 'medium', ideas: [], hasSafetyRules: false },
-  crown: { emoji: '👑', difficulty: 'easy', ideas: [], hasSafetyRules: false },
-  wand: { emoji: '🪄', difficulty: 'easy', ideas: [], hasSafetyRules: false },
-  cape: { emoji: '🦸', difficulty: 'medium', ideas: [], hasSafetyRules: true },
+  mask:    { emoji: '🎭', difficulty: 'easy',   ideas: ['🦊', '🦁', '🐉', '🦉', '🐻', '🐱'], hasSafetyRules: false, color: '#e05c97' },
+  puppet:  { emoji: '🧦', difficulty: 'easy',   ideas: ['🐶', '🐸', '👹', '👸', '🤖', '🦕'], hasSafetyRules: false, color: '#22a87a' },
+  diorama: { emoji: '📦', difficulty: 'medium', ideas: [],                                     hasSafetyRules: false, color: '#2e7bd6' },
+  crown:   { emoji: '👑', difficulty: 'easy',   ideas: [],                                     hasSafetyRules: false, color: '#d4a017' },
+  wand:    { emoji: '🪄', difficulty: 'easy',   ideas: [],                                     hasSafetyRules: false, color: '#7c3aed' },
+  cape:    { emoji: '🦸', difficulty: 'medium', ideas: [],                                     hasSafetyRules: true,  color: '#c0392b' },
 };
 
 const CRAFT_KEYS: CraftKey[] = ['mask', 'puppet', 'diorama', 'crown', 'wand', 'cape'];
@@ -429,6 +431,8 @@ const TRANSLATIONS = {
     proTips: 'Pro Tips:',
     ideas: 'Ideas:',
     safetyRules: 'Safety Rules:',
+    downloadGuide: 'Download Guide',
+    downloadSuccess: 'Craft guide downloaded!',
     difficulty: { easy: 'Easy', medium: 'Medium', hard: 'Hard' } as Record<Difficulty, string>,
   },
   es: {
@@ -450,6 +454,8 @@ const TRANSLATIONS = {
     proTips: 'Consejos pro:',
     ideas: 'Ideas:',
     safetyRules: 'Reglas de seguridad:',
+    downloadGuide: 'Descargar guía',
+    downloadSuccess: '¡Guía descargada!',
     difficulty: { easy: 'Fácil', medium: 'Medio', hard: 'Difícil' } as Record<Difficulty, string>,
   },
   fr: {
@@ -471,14 +477,163 @@ const TRANSLATIONS = {
     proTips: 'Astuces de pro :',
     ideas: 'Idées :',
     safetyRules: 'Règles de sécurité :',
+    downloadGuide: 'Télécharger le guide',
+    downloadSuccess: 'Guide téléchargé !',
     difficulty: { easy: 'Facile', medium: 'Moyen', hard: 'Difficile' } as Record<Difficulty, string>,
   },
 };
+
+function downloadCraftGuide(
+  craftKey: CraftKey,
+  localizedCraft: LocalizedCraft,
+  meta: Craft,
+  successLabel: string,
+  toast: (msg: string) => void,
+): void {
+  const W = 800;
+  const H = 1100;
+  const RADIUS = 24;
+  const HEADER_H = 180;
+  const SIDE_PAD = 48;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  // Rounded-corner clip path
+  ctx.beginPath();
+  ctx.moveTo(RADIUS, 0);
+  ctx.lineTo(W - RADIUS, 0);
+  ctx.quadraticCurveTo(W, 0, W, RADIUS);
+  ctx.lineTo(W, H - RADIUS);
+  ctx.quadraticCurveTo(W, H, W - RADIUS, H);
+  ctx.lineTo(RADIUS, H);
+  ctx.quadraticCurveTo(0, H, 0, H - RADIUS);
+  ctx.lineTo(0, RADIUS);
+  ctx.quadraticCurveTo(0, 0, RADIUS, 0);
+  ctx.closePath();
+  ctx.clip();
+
+  // White background
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, W, H);
+
+  // Coloured header bar
+  ctx.fillStyle = meta.color;
+  ctx.fillRect(0, 0, W, HEADER_H);
+
+  // Craft emoji (large)
+  ctx.font = '72px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(meta.emoji, W / 2, 80);
+
+  // Craft title in header
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 32px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(localizedCraft.title, W / 2, 148);
+
+  // Body text helpers
+  const lineH = 22;
+  let y = HEADER_H + 36;
+
+  function drawSectionHeading(label: string) {
+    ctx!.fillStyle = meta.color;
+    ctx!.font = 'bold 20px sans-serif';
+    ctx!.textAlign = 'left';
+    ctx!.fillText(label, SIDE_PAD, y);
+    y += 8;
+    ctx!.fillStyle = meta.color;
+    ctx!.fillRect(SIDE_PAD, y, W - SIDE_PAD * 2, 2);
+    y += 14;
+  }
+
+  function wrapText(text: string, maxW: number, fontSize: number, fontStyle: string): string[] {
+    ctx!.font = `${fontStyle} ${fontSize}px sans-serif`;
+    const words = text.split(' ');
+    const lines: string[] = [];
+    let line = '';
+    for (const word of words) {
+      const test = line ? `${line} ${word}` : word;
+      if (ctx!.measureText(test).width > maxW && line) {
+        lines.push(line);
+        line = word;
+      } else {
+        line = test;
+      }
+    }
+    if (line) lines.push(line);
+    return lines;
+  }
+
+  // -- Materials section --
+  drawSectionHeading('Materials');
+  ctx.fillStyle = '#374151';
+  for (const mat of localizedCraft.materials) {
+    const lines = wrapText(`- ${mat}`, W - SIDE_PAD * 2 - 16, 15, 'normal');
+    for (const ln of lines) {
+      ctx.font = '15px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#374151';
+      ctx.fillText(ln, SIDE_PAD + 16, y);
+      y += lineH;
+    }
+  }
+  y += 16;
+
+  // -- Steps section --
+  drawSectionHeading('Steps');
+  for (let i = 0; i < localizedCraft.steps.length; i++) {
+    const step = localizedCraft.steps[i];
+    // Step number badge
+    ctx.fillStyle = meta.color;
+    ctx.beginPath();
+    ctx.arc(SIDE_PAD + 12, y - 4, 12, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 13px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(String(i + 1), SIDE_PAD + 12, y);
+    // Step title (bold)
+    ctx.fillStyle = '#111827';
+    ctx.font = 'bold 15px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(step.title, SIDE_PAD + 32, y);
+    y += lineH;
+    // Step description (wrapped)
+    const descLines = wrapText(step.desc, W - SIDE_PAD * 2 - 32, 14, 'normal');
+    ctx.fillStyle = '#4b5563';
+    for (const ln of descLines) {
+      ctx.font = '14px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(ln, SIDE_PAD + 32, y);
+      y += lineH - 2;
+    }
+    y += 8;
+  }
+
+  // Footer watermark
+  ctx.fillStyle = '#9ca3af';
+  ctx.font = '13px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('storytimewitheva.com', W / 2, H - 20);
+
+  // Trigger download
+  const link = document.createElement('a');
+  link.download = `craft-guide-${craftKey}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+
+  toast(successLabel);
+}
 
 export default function CraftCornerDemo() {
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
   const crafts = CRAFTS_BY_LANG[language] ?? CRAFTS_BY_LANG.en;
+  const toast = useToast();
 
   const [selectedCraft, setSelectedCraft] = useState<CraftKey | null>(null);
   const craft = selectedCraft ? crafts[selectedCraft] : null;
@@ -629,6 +784,24 @@ export default function CraftCornerDemo() {
                 </div>
               </div>
             )}
+
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Button
+                onClick={() =>
+                  downloadCraftGuide(
+                    selectedCraft!,
+                    craft,
+                    meta,
+                    t.downloadSuccess,
+                    toast.success,
+                  )
+                }
+                className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-full shadow-md transition-all"
+              >
+                <Download className="w-5 h-5" />
+                {t.downloadGuide}
+              </Button>
+            </div>
           </div>
         </div>
       )}
