@@ -11,6 +11,7 @@ import { books, useBook } from '../data/books';
 import { LANGUAGE_LABELS, SUPPORTED_LANGUAGES, useLanguage, useTranslation } from '../lib/language';
 import type { Language } from '../lib/language';
 import { isAmazonCover, sizedCover } from '../lib/covers';
+import { track } from '../lib/analytics';
 import { PRICING } from '../data/pricing';
 
 const SITE_URL = 'https://storytimewitheva.com';
@@ -150,6 +151,7 @@ export default function BookDetail() {
               href={book.amazonUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => track('Amazon Click', { book: book.id })}
               className="inline-block w-full sm:w-auto text-center py-3 px-8 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-lg"
             >
               {t.buy}

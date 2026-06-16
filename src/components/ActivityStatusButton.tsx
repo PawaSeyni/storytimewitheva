@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { CheckCircle2 } from 'lucide-react';
 import { isActivityCompleted, loadProgress, setActivityCompleted } from '../lib/progress';
 import { useTranslation } from '../lib/language';
+import { track } from '../lib/analytics';
 
 const TRANSLATIONS = {
   en: { completed: 'Completed!', markCompleted: 'Mark Completed' },
@@ -28,6 +29,7 @@ export default function ActivityStatusButton({ slug }: ActivityStatusButtonProps
     const next = !done;
     setActivityCompleted(slug, next);
     setDone(next);
+    if (next) track('Activity Complete', { activity: slug });
   };
 
   return (

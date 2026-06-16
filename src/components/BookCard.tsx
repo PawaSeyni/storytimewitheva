@@ -4,6 +4,7 @@ import BookStatusButton from './BookStatusButton';
 import ReadAloudButton from './ReadAloudButton';
 import { isAmazonCover, sizedCover } from '../lib/covers';
 import { useTranslation } from '../lib/language';
+import { track } from '../lib/analytics';
 
 const TRANSLATIONS = {
   en: { featured: 'Featured', discoverMore: 'Discover More ✨', buy: '🛒 Buy', coverAlt: 'book cover' },
@@ -87,6 +88,7 @@ export default function BookCard({ book, priority = false }: BookCardProps) {
             href={book.amazonUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => track('Amazon Click', { book: book.id })}
             className="btn-amazon text-xs px-3 py-2"
           >
             {t.buy}

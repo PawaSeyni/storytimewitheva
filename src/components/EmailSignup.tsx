@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useLanguage, useTranslation } from '../lib/language';
+import { track } from '../lib/analytics';
 
 // MailerLite embedded form action — group "storytimewitheva-signups", form
 // "Bilingual Starter Kit — site signup". Custom fields `language` and
@@ -108,6 +109,7 @@ export default function EmailSignup() {
         mode: 'no-cors',
       });
       setStatus('submitted');
+      track('Signup', { language });
       setEmail('');
       setFirstName('');
     } catch (err) {

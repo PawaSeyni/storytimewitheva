@@ -72,8 +72,18 @@ Plausible). Define and watch:
 - Outbound clicks to Amazon (buy intent).
 - Drop-off pages with high exits, cross-referenced with feedback-widget ratings.
 
-(If any of these are not set up as Plausible goals yet, add them: signup submit,
-Amazon outbound, activity-complete.)
+**Custom events are now wired** (`src/lib/analytics.ts`, fired from the app):
+- `Signup` (props: language) — fires on newsletter submit (`EmailSignup.tsx`)
+- `Amazon Click` (props: book) — fires on a Buy-on-Amazon click (`BookCard`, `BookDetail`)
+- `Activity Complete` (props: activity) — fires when a demo is marked complete (`ActivityStatusButton`)
+
+OWNER STEP: in the Plausible dashboard, add each as a **Goal** (Site settings →
+Goals → Add goal → Custom event) to see conversion rates, and optionally build a
+funnel. The events are sent automatically once live; goals just surface them.
+(Note: the 12 standalone games mark completion via their own injected script and
+do not yet fire `Activity Complete` — only the 8 React demos do. Extending the
+games is a small follow-up via `scripts/patch-games.mjs` if game-completion
+tracking is wanted.)
 
 ## Privacy and consent (testing with children)
 
