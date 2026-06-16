@@ -6,10 +6,11 @@ import { useTranslation } from '../lib/language';
 //   • Newsletter  -> MailerLite (email + optional first name, double opt-in)
 //   • Contact     -> Netlify Forms (name, email, subject, message)
 //   • Analytics   -> Plausible (cookieless, aggregate, no personal data)
+//   • Feedback widget -> Netlify Forms (rating, page, language, optional comment)
 //   • Reading profile -> browser localStorage only, never transmitted
 // No child accounts, no advertising trackers, no data sales.
-// NOTE FOR OWNER: confirm the legal entity name, governing jurisdiction, and
-// "last updated" date below, and have counsel review before relying on it.
+// Operator: Pawa Press Inc., Toronto, Ontario, Canada (confirmed 2026-06-16).
+// NOTE FOR OWNER: have counsel review before relying on it.
 
 interface Section {
   heading: string;
@@ -49,6 +50,7 @@ const TRANSLATIONS = {
         heading: 'Contact form',
         body: [
           'When you message us, we collect the name, email, subject, and message you provide, via Netlify Forms, so we can reply. We do not use it for marketing. Please do not include sensitive personal information in your message.',
+          'Our on-site feedback button also uses Netlify Forms: it records a rating, the page, and your site language, plus any optional comment you choose to write. It never asks for your name or email.',
         ],
       },
       {
@@ -115,6 +117,7 @@ const TRANSLATIONS = {
         heading: 'Formulario de contacto',
         body: [
           'Cuando nos escribes, recopilamos el nombre, correo, asunto y mensaje que nos das, a través de Netlify Forms, para poder responderte. No lo usamos para marketing. Por favor, no incluyas información personal sensible en tu mensaje.',
+          'Nuestro botón de comentarios del sitio también usa Netlify Forms: registra una valoración, la página y el idioma del sitio, además de cualquier comentario opcional que escribas. Nunca pide tu nombre ni tu correo.',
         ],
       },
       {
@@ -181,6 +184,7 @@ const TRANSLATIONS = {
         heading: 'Formulaire de contact',
         body: [
           'Lorsque vous nous écrivez, nous collectons le nom, l\'e-mail, le sujet et le message que vous fournissez, via Netlify Forms, afin de vous répondre. Nous ne l\'utilisons pas à des fins marketing. Merci de ne pas inclure d\'informations personnelles sensibles dans votre message.',
+          'Notre bouton d\'avis sur le site utilise aussi Netlify Forms : il enregistre une note, la page et la langue du site, ainsi que tout commentaire facultatif que vous écrivez. Il ne demande jamais votre nom ni votre e-mail.',
         ],
       },
       {

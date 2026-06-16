@@ -3,8 +3,9 @@ import { useTranslation } from '../lib/language';
 
 // Plain-language terms of use. Reflects how the site actually works: free
 // activities for personal/classroom use, books sold via Amazon, contact form,
-// affiliate links. NOTE FOR OWNER: confirm the legal entity name and governing
-// jurisdiction, and have counsel review before relying on it.
+// affiliate links. Operator: Pawa Press Inc., Toronto, Ontario, Canada;
+// governing law = Ontario (confirmed 2026-06-16). Have counsel review the
+// governing-law / no-warranty wording before relying on it.
 
 interface Section {
   heading: string;
@@ -61,6 +62,12 @@ const TRANSLATIONS = {
         heading: 'External links',
         body: [
           'Our site links to other websites (such as Amazon and our social media). We are not responsible for the content or practices of those sites; their own terms and privacy policies apply.',
+        ],
+      },
+      {
+        heading: 'Governing law',
+        body: [
+          'Story Time with Eva is operated by Pawa Press Inc., a corporation based in Toronto, Ontario, Canada. These terms are governed by the laws of the Province of Ontario and the federal laws of Canada applicable there, without regard to conflict-of-laws rules. Any dispute will be subject to the courts located in Toronto, Ontario, Canada.',
         ],
       },
       {
@@ -123,6 +130,12 @@ const TRANSLATIONS = {
         ],
       },
       {
+        heading: 'Ley aplicable',
+        body: [
+          'Story Time with Eva es operado por Pawa Press Inc., una sociedad con sede en Toronto, Ontario, Canadá. Estos términos se rigen por las leyes de la Provincia de Ontario y las leyes federales de Canadá aplicables en ella, sin tener en cuenta las normas sobre conflictos de leyes. Cualquier disputa se someterá a los tribunales ubicados en Toronto, Ontario, Canadá.',
+        ],
+      },
+      {
         heading: 'Cambios y contacto',
         body: [
           'Podemos actualizar estos términos de vez en cuando; la fecha de arriba indica la última versión. ¿Preguntas? Escribe a contact@storytimewitheva.com.',
@@ -179,6 +192,12 @@ const TRANSLATIONS = {
         heading: 'Liens externes',
         body: [
           'Notre site renvoie vers d\'autres sites (comme Amazon et nos réseaux sociaux). Nous ne sommes pas responsables du contenu ni des pratiques de ces sites ; leurs propres conditions et politiques de confidentialité s\'appliquent.',
+        ],
+      },
+      {
+        heading: 'Droit applicable',
+        body: [
+          'Story Time with Eva est exploité par Pawa Press Inc., une société établie à Toronto (Ontario), Canada. Les présentes conditions sont régies par les lois de la province de l\'Ontario et les lois fédérales du Canada qui y sont applicables, sans égard aux règles de conflits de lois. Tout litige sera soumis aux tribunaux situés à Toronto (Ontario), Canada.',
         ],
       },
       {
