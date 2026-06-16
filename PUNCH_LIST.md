@@ -212,7 +212,7 @@ Open items from the audit. Most of the audit shipped in PR #1 (`fix/audit-quick-
 
 **Owner decisions / content**
 - [x] **4.9/5 Amazon rating** — RESOLVED (owner chose to remove it). Removed from the Footer; the Home stat band now shows the live activity count ("Fun Activities" = `activities.length`) in its place. No unverified rating remains on the site.
-- [ ] **Privacy/Terms** — confirm a governing **jurisdiction** and do a legal skim (operating entity "Pawa Press Inc." already named; date "Last updated: June 2026"). _(owner)_
+- [~] **Privacy/Terms** — reviewed (`docs/privacy-terms-review.md`). Privacy policy is accurate to actual practice (MailerLite / Netlify Forms / Plausible / localStorage; no child data; GDPR/CCPA/PIPEDA rights) ✅. Gaps: **Terms has no governing-law/jurisdiction clause** (drafted EN/ES/FR, ready to insert), jurisdiction must be confirmed (signals point to Canada — PIPEDA/Law 25), refresh "last updated" date, optional: add the feedback widget to the Privacy list. **Owner decision needed:** where Pawa Press Inc. is incorporated/operates → then I wire the clause in. Final lawyer skim still required. _(owner + legal)_
 - [x] **Translate the 15 English-only books** to ES/FR — all 18 books have full EN/ES/FR title/subtitle/description/theme in `books.ts`; `languages` flag field updated to `['🇺🇸', '🇪🇸', '🇫🇷']` for all 15 previously EN-only entries (2026-06-15).
 
 **Child-UX & product**
