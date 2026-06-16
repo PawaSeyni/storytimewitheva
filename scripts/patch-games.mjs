@@ -25,14 +25,34 @@ const syncSnippet = (slug) => `
   var KEY = 'readingProgress';
   function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
   function isDone() { var p = load(); return Array.isArray(p.activitiesCompleted) && p.activitiesCompleted.indexOf(SLUG) > -1; }
+  function track() {
+    // Fire the same "Activity Complete" Plausible event the React app sends,
+    // via the script-less events API so games stay zero-external on load (this
+    // request only fires on the completion click, not on page load).
+    try {
+      fetch('https://plausible.io/api/event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        body: JSON.stringify({
+          name: 'Activity Complete',
+          url: location.href,
+          domain: 'storytimewitheva.com',
+          props: { activity: SLUG }
+        })
+      });
+    } catch (e) {}
+  }
   function markDone() {
     var p = load();
     p.booksRead = Array.isArray(p.booksRead) ? p.booksRead : [];
     p.booksWantToRead = Array.isArray(p.booksWantToRead) ? p.booksWantToRead : [];
     p.activitiesCompleted = Array.isArray(p.activitiesCompleted) ? p.activitiesCompleted : [];
-    if (p.activitiesCompleted.indexOf(SLUG) < 0) p.activitiesCompleted.push(SLUG);
+    var already = p.activitiesCompleted.indexOf(SLUG) > -1;
+    if (!already) p.activitiesCompleted.push(SLUG);
     localStorage.setItem(KEY, JSON.stringify(p));
     try { window.dispatchEvent(new CustomEvent('progresschange')); } catch (e) {}
+    if (!already) track();
   }
   var btn = document.getElementById('markCompleted');
   if (btn) {
@@ -84,17 +104,17 @@ for (const file of files) {
     changed = true;
   }
 
-  // 2. Inject the progress-sync script once.
-  if (!html.includes(MARKER)) {
-    if (html.includes('</body>')) {
-      html = html.replace('</body>', `${syncSnippet(slug)}</body>`);
-      changed = true;
-    } else {
-      console.warn(`⚠️  ${file}: no </body> found, appended at end`);
-      html += syncSnippet(slug);
-      changed = true;
-    }
+  // 2. Inject (or refresh) the progress-sync + analytics script. Strip any
+  //    previously-injected block first so re-running upgrades it in place.
+  const existingBlock = new RegExp(`\\n?<!-- ${MARKER}[\\s\\S]*?</script>\\n?`);
+  html = html.replace(existingBlock, '\n');
+  if (html.includes('</body>')) {
+    html = html.replace('</body>', `${syncSnippet(slug)}</body>`);
+  } else {
+    console.warn(`⚠️  ${file}: no </body> found, appended at end`);
+    html += syncSnippet(slug);
   }
+  changed = true; // always (re)write the current snippet
 
   if (changed) {
     await writeFile(full, html);
