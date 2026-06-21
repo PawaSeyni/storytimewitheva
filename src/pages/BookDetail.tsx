@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from '../components/LocalizedLink';
 import Seo from '../components/Seo';
@@ -8,7 +8,7 @@ import ReadAlong from '../components/ReadAlong';
 import TapToTranslate from '../components/TapToTranslate';
 import BookStatusButton from '../components/BookStatusButton';
 import { books, useBook } from '../data/books';
-import { LANGUAGE_LABELS, SUPPORTED_LANGUAGES, useLanguage, useTranslation } from '../lib/language';
+import { LANGUAGE_LABELS, SUPPORTED_LANGUAGES, localizePath, useLanguage, useTranslation } from '../lib/language';
 import type { Language } from '../lib/language';
 import { isAmazonCover, sizedCover } from '../lib/covers';
 import { track } from '../lib/analytics';
@@ -31,29 +31,36 @@ export default function BookDetail() {
   const [bilingual, setBilingual] = useState(false);
   const [tapMode, setTapMode] = useState(false);
 
+  const cover = book?.coverImage ?? '';
+  const amazon = isAmazonCover(cover);
+  const ogImage = amazon ? sizedCover(cover, 600) : `${SITE_URL}${cover}`;
+
+  // Memoized so toggling bilingual / tap mode doesn't tear down and re-inject
+  // the JSON-LD <script>. book is derived from slug+language, so those (plus
+  // the derived ogImage) are the real inputs. url tracks the localized canonical.
+  const bookSchema = useMemo(() => {
+    if (!book) return null;
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'Book',
+      name: book.title,
+      author: { '@type': 'Person', name: 'Eva Gallo' },
+      inLanguage: book.languages.map(f => FLAG_TO_LANG[f]).filter(Boolean),
+      bookFormat: 'https://schema.org/Paperback',
+      image: ogImage,
+      url: `${SITE_URL}${localizePath(`/books/${book.id}`, language)}/`,
+      ...(book.subtitle ? { alternativeHeadline: book.subtitle } : {}),
+      abstract: book.description,
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug, language, ogImage]);
+
   // Unknown id → real (noindex) 404 rather than a blank page.
   if (!book) return <NotFound />;
 
   // Raw record (all-language strings) for the side-by-side bilingual view.
   const raw = books.find((b) => b.id === slug);
   const otherLangs = SUPPORTED_LANGUAGES.filter((l) => l !== language) as Language[];
-
-  const cover = book.coverImage;
-  const amazon = isAmazonCover(cover);
-  const ogImage = amazon ? sizedCover(cover, 600) : `${SITE_URL}${cover}`;
-
-  const bookSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Book',
-    name: book.title,
-    author: { '@type': 'Person', name: 'Eva Gallo' },
-    inLanguage: book.languages.map(f => FLAG_TO_LANG[f]).filter(Boolean),
-    bookFormat: 'https://schema.org/Paperback',
-    image: ogImage,
-    url: `${SITE_URL}/books/${book.id}`,
-    ...(book.subtitle ? { alternativeHeadline: book.subtitle } : {}),
-    abstract: book.description,
-  };
 
   return (
     <main className="py-8 px-4">

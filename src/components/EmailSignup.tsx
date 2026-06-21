@@ -65,7 +65,7 @@ const TRANSLATIONS = {
     emailPlaceholder: 'Enter your email address',
     submit: 'Get My Free Kit 🎨',
     submitting: 'Sending…',
-    successHeading: 'Success — your download is ready!',
+    successHeading: 'Success, your download is ready!',
     successDetail: 'Tap below to grab your freebie. We also sent a confirmation email so you don’t miss future printables.',
     download: '📥 Download your free PDF',
     errorMessage: 'Something went wrong. Please try again or email contact@storytimewitheva.com.',

@@ -162,7 +162,13 @@ export default function AdventureJournalDemo() {
 
   const persist = (next: Entry[]) => {
     setEntries(next);
-    localStorage.setItem('adventureJournal', JSON.stringify(next));
+    // Keep the in-memory state authoritative; a storage failure (Safari private
+    // mode, quota) shouldn't throw out of the handler.
+    try {
+      localStorage.setItem('adventureJournal', JSON.stringify(next));
+    } catch {
+      /* storage unavailable */
+    }
   };
 
   const saveEntry = () => {

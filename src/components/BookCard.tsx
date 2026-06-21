@@ -38,7 +38,7 @@ export default function BookCard({ book, priority = false }: BookCardProps) {
           src={amazonCover ? sizedCover(book.coverImage, 400) : book.coverImage}
           srcSet={cardSrcSet}
           sizes="(min-width: 1024px) 300px, (min-width: 640px) 45vw, 90vw"
-          alt={`${book.title} — ${t.coverAlt}`}
+          alt={`${book.title}, ${t.coverAlt}`}
           loading={priority ? 'eager' : 'lazy'}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />

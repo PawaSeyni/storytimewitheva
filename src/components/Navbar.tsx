@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { Link } from './LocalizedLink';
-import { useTranslation } from '../lib/language';
+import { useTranslation, splitLangFromPath } from '../lib/language';
 import LanguageSwitcher from './LanguageSwitcher';
 
 const TRANSLATIONS = {
@@ -45,6 +45,9 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const t = useTranslation(TRANSLATIONS);
+  // Active state must ignore the /es | /fr language prefix, otherwise no nav
+  // item ever highlights for Spanish/French visitors.
+  const currentPath = splitLangFromPath(location.pathname).rest;
 
   const navLinks = [
     { to: '/', label: t.home },
@@ -74,7 +77,7 @@ export default function Navbar() {
                 key={link.to}
                 to={link.to}
                 className={`px-3 py-2.5 rounded-full text-sm font-medium transition-all duration-200 ${
-                  location.pathname === link.to
+                  currentPath === link.to
                     ? 'bg-purple-100 text-purple-700'
                     : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
                 }`}
@@ -86,7 +89,7 @@ export default function Navbar() {
               to="/search"
               aria-label={t.search}
               className={`p-2.5 rounded-full transition-all duration-200 ${
-                location.pathname === '/search'
+                currentPath === '/search'
                   ? 'bg-purple-100 text-purple-700'
                   : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
               }`}
@@ -122,7 +125,7 @@ export default function Navbar() {
                 to={link.to}
                 onClick={() => setMenuOpen(false)}
                 className={`block px-4 py-2.5 rounded-lg text-sm font-medium mb-1 transition-all ${
-                  location.pathname === link.to
+                  currentPath === link.to
                     ? 'bg-purple-100 text-purple-700'
                     : 'text-gray-600 hover:bg-purple-50 hover:text-purple-600'
                 }`}
@@ -134,7 +137,7 @@ export default function Navbar() {
               to="/search"
               onClick={() => setMenuOpen(false)}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium mb-1 transition-all ${
-                location.pathname === '/search'
+                currentPath === '/search'
                   ? 'bg-purple-100 text-purple-700'
                   : 'text-gray-600 hover:bg-purple-50 hover:text-purple-600'
               }`}

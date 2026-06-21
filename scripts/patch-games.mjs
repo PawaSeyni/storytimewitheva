@@ -123,3 +123,16 @@ for (const file of files) {
   }
 }
 console.log(`Done. ${patched}/${files.length} game files patched.`);
+
+// Safety net: the Tailwind Play CDN must never ship to production. The replace
+// above is an exact-string match, so a slightly different tag would slip
+// through silently — assert here instead.
+const offenders = [];
+for (const file of files) {
+  const html = await readFile(path.join(GAMES_DIR, file), 'utf8');
+  if (html.includes('cdn.tailwindcss.com')) offenders.push(file);
+}
+if (offenders.length) {
+  console.error(`\n❌ Tailwind Play CDN still present in: ${offenders.join(', ')}`);
+  process.exit(1);
+}

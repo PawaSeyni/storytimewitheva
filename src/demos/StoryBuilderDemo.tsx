@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RefreshCw, Copy, Save } from 'lucide-react';
@@ -185,6 +185,7 @@ const TRANSLATIONS = {
     copy: 'Copy Story',
     newStory: 'Create New Story',
     copied: 'Story copied to clipboard!',
+    copyError: "Couldn't copy, try selecting the text manually.",
     saved: 'Story saved! Check your saved stories below!',
     tipsHeading: '✏️ Story Writing Tips:',
     tipsBody: 'Once you have your story elements, try expanding your tale! Add more details about your character, describe the setting with colorful words, or create dialogue between characters. Every great author starts with a simple idea!',
@@ -213,6 +214,7 @@ const TRANSLATIONS = {
     copy: 'Copiar historia',
     newStory: 'Crear una nueva',
     copied: '¡Historia copiada al portapapeles!',
+    copyError: 'No se pudo copiar, intenta seleccionar el texto manualmente.',
     saved: '¡Historia guardada! Mira tus historias guardadas abajo.',
     tipsHeading: '✏️ Consejos para escribir historias:',
     tipsBody: 'Cuando tengas los elementos, ¡prueba a ampliar tu cuento! Añade más detalles sobre tu personaje, describe el escenario con palabras llenas de color o crea diálogos entre personajes. ¡Cada gran autor empieza con una idea sencilla!',
@@ -241,6 +243,7 @@ const TRANSLATIONS = {
     copy: "Copier l'histoire",
     newStory: 'Créer une nouvelle',
     copied: "Histoire copiée dans le presse-papiers !",
+    copyError: "Impossible de copier, sélectionne le texte manuellement.",
     saved: 'Histoire sauvegardée ! Regarde tes histoires sauvegardées plus bas.',
     tipsHeading: "✏️ Conseils d'écriture :",
     tipsBody: "Une fois que tu as tes éléments, essaie d'étoffer ton récit ! Ajoute des détails sur ton personnage, décris le décor avec des mots colorés ou invente des dialogues. Chaque grand auteur commence par une simple idée !",
@@ -275,15 +278,25 @@ export default function StoryBuilderDemo() {
   const [showStory, setShowStory] = useState(false);
   const [savedStories, setSavedStories] = useState<SavedStory[]>([]);
 
+  // Track dice-animation timeouts so they can be cleared on unmount (otherwise
+  // they fire setState after the component is gone).
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const schedule = (fn: () => void, ms: number) => {
+    const id = setTimeout(fn, ms);
+    timers.current.push(id);
+    return id;
+  };
+  useEffect(() => () => { timers.current.forEach(clearTimeout); }, []);
+
   const rollDice = (element: ElementKey) => {
     setRollingElement(element);
-    setTimeout(() => {
+    schedule(() => {
       const options = pools[element];
       const selected = options[Math.floor(Math.random() * options.length)];
       setCurrentStory(prev => {
         const updated = { ...prev, [element]: selected };
         if (Object.keys(updated).length === 6) {
-          setTimeout(() => setShowStory(true), 500);
+          schedule(() => setShowStory(true), 500);
         }
         return updated;
       });
@@ -294,15 +307,15 @@ export default function StoryBuilderDemo() {
   const rollAllDice = () => {
     setShowStory(false);
     ELEMENTS_LIST.forEach((element, index) => {
-      setTimeout(() => {
+      schedule(() => {
         setRollingElement(element);
-        setTimeout(() => {
+        schedule(() => {
           const options = pools[element];
           const selected = options[Math.floor(Math.random() * options.length)];
           setCurrentStory(prev => ({ ...prev, [element]: selected }));
           setRollingElement(null);
           if (index === ELEMENTS_LIST.length - 1) {
-            setTimeout(() => setShowStory(true), 500);
+            schedule(() => setShowStory(true), 500);
           }
         }, 500);
       }, index * 800);
@@ -311,9 +324,15 @@ export default function StoryBuilderDemo() {
 
   const generateStoryText = () => t.template(currentStory);
 
-  const copyStory = () => {
-    navigator.clipboard.writeText(generateStoryText());
-    toast.success(t.copied);
+  const copyStory = async () => {
+    // clipboard API is undefined on insecure origins and rejects without
+    // permission — only claim success when the write actually resolves.
+    try {
+      await navigator.clipboard.writeText(generateStoryText());
+      toast.success(t.copied);
+    } catch {
+      toast.error(t.copyError);
+    }
   };
 
   const saveStory = () => {

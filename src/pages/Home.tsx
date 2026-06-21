@@ -22,7 +22,7 @@ const ORG_SCHEMA = [
     url: SITE_URL,
     logo: `${SITE_URL}/favicon.svg`,
     description:
-      'The Eva Gallo Collection — multicultural picture books for children ages 3–9, with free activities in English, Spanish, and French.',
+      'The Eva Gallo Collection: multicultural picture books for children ages 3–9, with free activities in English, Spanish, and French.',
     founder: { '@type': 'Person', name: 'Eva Gallo' },
     sameAs: [
       'https://www.amazon.com/author/evagallo',
@@ -38,13 +38,21 @@ const ORG_SCHEMA = [
     name: 'Story Time with Eva',
     url: SITE_URL,
     inLanguage: ['en', 'es', 'fr'],
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
   },
 ];
 
 const TRANSLATIONS = {
   en: {
-    seoTitle: 'Story Time with Eva — Multicultural Picture Books for Curious Minds',
-    seoDesc: 'The Eva Gallo Collection — picture books for children ages 3–9 about quiet wonder, nighttime magic, and morning homecoming. Read with us and explore free activities.',
+    seoTitle: 'Story Time with Eva: Multicultural Picture Books for Curious Minds',
+    seoDesc: 'The Eva Gallo Collection: picture books for children ages 3–9 about quiet wonder, nighttime magic, and morning homecoming. Read with us and explore free activities.',
     heroLine1: 'Where Stories',
     heroLine2: 'Come to Life!',
     heroSubtitle: 'Discover magical bilingual books, fun activities, and reading adventures for curious minds of all ages with Eva',
@@ -69,9 +77,9 @@ const TRANSLATIONS = {
     benefitsTitle: 'Why Story Time with Eva',
     benefitsSubtitle: 'Thoughtful stories and free tools families can count on',
     benefits: [
-      { emoji: '🌍', title: 'Read in three languages', desc: 'Switch between English, Spanish, and French anytime — made for bilingual families and language learners.' },
+      { emoji: '🌍', title: 'Read in three languages', desc: 'Switch between English, Spanish, and French anytime, made for bilingual families and language learners.' },
       { emoji: '🔊', title: 'Hear every story', desc: 'Tap Listen on any book to hear it read aloud with natural pronunciation in each language.' },
-      { emoji: '🎨', title: 'Free activities & printables', desc: 'Story dice, coloring, a reading journal, and a free bilingual starter kit — all free.' },
+      { emoji: '🎨', title: 'Free activities & printables', desc: 'Story dice, coloring, a reading journal, and a free bilingual starter kit, all free.' },
       { emoji: '💜', title: 'Gentle stories with heart', desc: 'Quiet, values-rich picture books about kindness, courage, and wonder for ages 3–9.' },
     ],
     activitiesTitle: 'Fun Activities with Eva',

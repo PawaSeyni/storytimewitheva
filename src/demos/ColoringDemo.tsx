@@ -539,8 +539,16 @@ function readGallery(): GalleryItem[] {
   }
 }
 
-function writeGallery(items: GalleryItem[]) {
-  localStorage.setItem(GALLERY_KEY, JSON.stringify(items));
+function writeGallery(items: GalleryItem[]): boolean {
+  // Gallery entries are full-canvas base64 PNGs; a dozen can exceed the ~5MB
+  // localStorage quota (and Safari private mode throws on any write). Never let
+  // that surface as an uncaught exception out of a click handler.
+  try {
+    localStorage.setItem(GALLERY_KEY, JSON.stringify(items));
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 const TRANSLATIONS = {
@@ -563,6 +571,7 @@ const TRANSLATIONS = {
     saveArt: 'Download',
     saveToGallery: 'Save to Gallery',
     saveToGallerySuccess: 'Saved to your gallery!',
+    saveToGalleryError: "Couldn't save, your gallery may be full. Try deleting a few.",
     brushSize: 'Brush Size:',
     eraserLabel: 'Eraser',
     selectColorLabel: 'Select Color',
@@ -607,6 +616,7 @@ const TRANSLATIONS = {
     saveArt: 'Descargar',
     saveToGallery: 'Guardar en galería',
     saveToGallerySuccess: '¡Guardado en tu galería!',
+    saveToGalleryError: 'No se pudo guardar, tu galería puede estar llena. Borra algunos.',
     brushSize: 'Tamaño del pincel:',
     eraserLabel: 'Goma',
     selectColorLabel: 'Selecciona color',
@@ -651,6 +661,7 @@ const TRANSLATIONS = {
     saveArt: 'Télécharger',
     saveToGallery: 'Enregistrer dans la galerie',
     saveToGallerySuccess: 'Enregistré dans ta galerie !',
+    saveToGalleryError: "Impossible d'enregistrer, ta galerie est peut-être pleine. Supprime-en quelques-uns.",
     brushSize: 'Taille du pinceau :',
     eraserLabel: 'Gomme',
     selectColorLabel: 'Choisis la couleur',
@@ -690,7 +701,12 @@ export default function ColoringDemo() {
   const [isEraser, setIsEraser] = useState(false);
   const [isDrawing, setIsDrawing] = useState(false);
   const [selectedThemeIdx, setSelectedThemeIdx] = useState(0);
-  const [gallery, setGallery] = useState<GalleryItem[]>(() => readGallery());
+  // Load the gallery in an effect (not at render) so this demo is safe under
+  // the static prerender / any non-browser render path.
+  const [gallery, setGallery] = useState<GalleryItem[]>([]);
+  useEffect(() => {
+    setGallery(readGallery());
+  }, []);
 
   const generateColoringPage = useCallback(() => {
     const canvas = canvasRef.current;
@@ -780,7 +796,10 @@ export default function ColoringDemo() {
     };
     const prev = readGallery();
     const updated = [newItem, ...prev].slice(0, GALLERY_MAX);
-    writeGallery(updated);
+    if (!writeGallery(updated)) {
+      toast.error(t.saveToGalleryError);
+      return;
+    }
     setGallery(updated);
     toast.success(t.saveToGallerySuccess);
   };

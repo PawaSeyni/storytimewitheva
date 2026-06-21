@@ -1,6 +1,34 @@
 import { lazy, Suspense, useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from './lib/language';
+
+/**
+ * Scroll to a #hash target after navigation. React Router doesn't do this for
+ * client-side navigations, so links like /#email-signup (and the localized
+ * /es/#email-signup) wouldn't scroll to the section on their own.
+ */
+function ScrollToHash() {
+  const { pathname, hash } = useLocation();
+  useEffect(() => {
+    if (!hash) return;
+    // The destination may be a lazy-loaded page, so the target element isn't in
+    // the DOM yet. Poll briefly until it appears, then scroll to it.
+    const id = hash.slice(1);
+    let tries = 0;
+    let timer: ReturnType<typeof setTimeout>;
+    const tryScroll = () => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (tries++ < 40) {
+        timer = setTimeout(tryScroll, 100); // up to ~4s while the page mounts
+      }
+    };
+    tryScroll();
+    return () => clearTimeout(timer);
+  }, [pathname, hash]);
+  return null;
+}
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import FeedbackWidget from './components/FeedbackWidget';
@@ -85,6 +113,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
+      <ScrollToHash />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-3 focus:left-3 focus:bg-white focus:text-purple-700 focus:font-semibold focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg"

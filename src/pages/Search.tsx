@@ -9,7 +9,7 @@ import { useTranslation } from '../lib/language';
 const TRANSLATIONS = {
   en: {
     seoTitle: 'Search',
-    seoDesc: 'Search the Eva Gallo Collection — books and activities.',
+    seoDesc: 'Search the Eva Gallo Collection: books and activities.',
     heading: 'Search',
     placeholder: 'Search books and activities…',
     booksHeading: 'Books',

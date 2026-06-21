@@ -23,7 +23,7 @@ const TRANSLATIONS = {
     age3to5: 'Ages 3-5',
     age6to8: 'Ages 6-8',
     age9plus: 'Ages 9+',
-    emptyAge: 'No activities in this age range yet — try another.',
+    emptyAge: 'No activities in this age range yet. Try another.',
   },
   es: {
     seoTitle: 'Actividades divertidas con Eva',
