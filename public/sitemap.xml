@@ -433,6 +433,33 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://storytimewitheva.com/links/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/links/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/links/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/links/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/links/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/links/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/links/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/links/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/links/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/links/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/links/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/links/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/links/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/links/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/links/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://storytimewitheva.com/privacy/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/privacy/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/privacy/"/>
