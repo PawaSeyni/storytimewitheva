@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLanguage, useTranslation, type Language } from '../lib/language';
 import { track } from '../lib/analytics';
 
@@ -121,6 +121,13 @@ export default function EmailSignup() {
   const { language, setLanguage } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
   const [magnet] = useState<Magnet>(() => resolveMagnet());
+  const successRef = useRef<HTMLParagraphElement>(null);
+
+  // Move focus to the success message so screen-reader users learn the signup
+  // worked and the download link is available (the form they were on is gone).
+  useEffect(() => {
+    if (status === 'submitted') successRef.current?.focus();
+  }, [status]);
 
   // Honor `?lang=` from language-targeted pins (e.g. an ES pin links with
   // &lang=es) so the whole page + delivered PDF render in the pin's language,
@@ -187,12 +194,13 @@ export default function EmailSignup() {
         </ul>
 
         {status === 'submitted' ? (
-          <div className="bg-white/20 rounded-2xl p-6 text-white">
+          <div className="bg-white/20 rounded-2xl p-6 text-white" role="status" aria-live="polite">
             <div className="text-4xl mb-2">🎉</div>
-            <p className="font-bold text-xl">{t.successHeading}</p>
+            <p ref={successRef} tabIndex={-1} className="font-bold text-xl outline-none">{t.successHeading}</p>
             <p className="text-purple-100 text-sm mt-1 mb-4">{t.successDetail}</p>
             <a
               href={magnet.pdf[language]}
+              download
               target="_blank"
               rel="noopener"
               className="inline-block px-6 py-3 bg-orange-700 hover:bg-orange-800 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all duration-200"
@@ -236,7 +244,7 @@ export default function EmailSignup() {
         )}
 
         {status === 'error' && (
-          <p className="mt-4 text-pink-100 text-sm bg-red-500/30 rounded-full inline-block px-4 py-2">
+          <p role="alert" className="mt-4 text-pink-100 text-sm bg-red-500/30 rounded-full inline-block px-4 py-2">
             {t.errorMessage}
           </p>
         )}
