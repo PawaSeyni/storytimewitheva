@@ -40,8 +40,8 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
     tag: 'bilingual-flashcards',
     title: {
       en: 'Get Free Flashcards',
-      es: 'Descarga tarjetas bilingües',
-      fr: 'Téléchargez les cartes bilingues',
+      es: 'Descarga tarjetas trilingües',
+      fr: 'Téléchargez les cartes trilingues',
     },
     pdf: { en: '/bilingual-flashcards.pdf', es: '/bilingual-flashcards.pdf', fr: '/bilingual-flashcards.pdf' },
   },
