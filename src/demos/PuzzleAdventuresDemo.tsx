@@ -446,7 +446,13 @@ export default function PuzzleAdventuresDemo() {
   const stories = STORIES_BY_LANG[language] ?? STORIES_BY_LANG.en;
   const logicPuzzles = LOGIC_PUZZLES_BY_LANG[language] ?? LOGIC_PUZZLES_BY_LANG.en;
 
-  // Pick a random starting puzzle index on mount
+  // Total scorable items: one per scramble word + one per riddle + matching (1) + logic (1).
+  // Drives both the progress denominator and the "Puzzle Master" threshold so they
+  // reflect the real puzzle count instead of a hardcoded 8.
+  const totalPuzzles = scrambledWords.length + riddles.length + 2;
+
+  // Pick a random starting puzzle index on mount (run once; pools are same length across langs)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const initialLogicIndex = useMemo(() => Math.floor(Math.random() * logicPuzzles.length), []);
   const [logicIndex, setLogicIndex] = useState(initialLogicIndex);
   const logic = logicPuzzles[logicIndex];
@@ -594,7 +600,7 @@ export default function PuzzleAdventuresDemo() {
       </div>
 
       <div className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-2xl p-6 text-center text-xl font-bold mb-6">
-        ⭐ {t.completed} {score} / 8
+        ⭐ {t.completed} {score} / {totalPuzzles}
       </div>
 
       {/* Scrambled Words */}
@@ -916,7 +922,7 @@ export default function PuzzleAdventuresDemo() {
         </div>
       </div>
 
-      {score >= 8 && (
+      {score >= totalPuzzles && (
         <div className="bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-500 text-white rounded-2xl p-8 mb-6 text-center shadow-2xl">
           <div className="text-6xl mb-4">🏆🎉🏆</div>
           <h2 className="text-3xl font-bold mb-2">{t.masterHeading}</h2>

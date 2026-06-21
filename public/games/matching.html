@@ -113,7 +113,7 @@
       <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">
         🃏 Eva's Matching Adventure
       </h1>
-      <p class="text-gray-500 text-base">Find the matching pairs — flip two cards to see if they match!</p>
+      <p class="text-gray-500 text-base">Find the matching pairs, flip two cards to see if they match!</p>
       <div class="w-20 h-1 bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400 mx-auto mt-4 rounded-full"></div>
     </div>
 
@@ -123,8 +123,8 @@
       <ol class="list-decimal list-inside space-y-1 text-sm font-semibold">
         <li>Pick a theme: Animals, Colors, or Story Friends!</li>
         <li>Tap any card to flip it over</li>
-        <li>Tap another card — if they match, they stay flipped! 🎉</li>
-        <li>If they don't match, they'll flip back — try to remember!</li>
+        <li>Tap another card, if they match, they stay flipped! 🎉</li>
+        <li>If they don't match, they'll flip back, try to remember!</li>
         <li>Find all the pairs to win! 🏆</li>
       </ol>
     </div>
@@ -329,7 +329,7 @@
           setTimeout(showCelebration, 500);
         }
       } else {
-        // No match — shake and flip back
+        // No match: shake and flip back
         document.getElementById(`scene-${a}`).classList.add('card-wrong');
         document.getElementById(`scene-${b}`).classList.add('card-wrong');
         setTimeout(() => {

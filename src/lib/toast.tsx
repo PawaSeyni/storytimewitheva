@@ -9,6 +9,13 @@
 // role="status" / aria-live="polite" so screen readers announce them.
 
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
+import { useTranslation } from './language';
+
+const DISMISS_LABEL = {
+  en: { dismiss: 'Dismiss notification' },
+  es: { dismiss: 'Descartar notificación' },
+  fr: { dismiss: 'Fermer la notification' },
+};
 
 type ToastVariant = 'info' | 'success' | 'error';
 
@@ -90,6 +97,7 @@ function ToastViewport({
 
 function ToastItemView({ item, onDismiss }: { item: ToastItem; onDismiss: () => void }) {
   const [visible, setVisible] = useState(false);
+  const t = useTranslation(DISMISS_LABEL);
   useEffect(() => {
     // Trigger the entry transition on next frame.
     const id = requestAnimationFrame(() => setVisible(true));
@@ -112,7 +120,7 @@ function ToastItemView({ item, onDismiss }: { item: ToastItem; onDismiss: () => 
       className={`pointer-events-auto flex items-center gap-3 rounded-full px-5 py-3 shadow-2xl ring-1 ring-white/20 text-sm font-semibold transition-all duration-200 max-w-md ${
         visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
       } ${variantClass}`}
-      aria-label="Dismiss notification"
+      aria-label={t.dismiss}
     >
       <span className="text-lg leading-none">{icon}</span>
       <span className="text-left">{item.message}</span>

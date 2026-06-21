@@ -12,11 +12,17 @@ export default defineConfig([
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
-      reactHooks.configs.flat.recommended,
+      reactHooks.configs['recommended-latest'],
       reactRefresh.configs.vite,
     ],
     languageOptions: {
       globals: globals.browser,
+    },
+    rules: {
+      // Provider files (language.tsx, toast.tsx) and Pixel.tsx legitimately export
+      // their hooks/constants alongside the component. This only affects dev HMR
+      // granularity, not correctness, so keep it advisory rather than blocking.
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
   },
 ])

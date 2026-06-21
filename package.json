@@ -10,6 +10,7 @@
     "prerender": "node scripts/prerender.mjs",
     "gen:sitemap": "node scripts/gen-sitemap.mjs",
     "preview": "vite preview",
+    "lint": "eslint .",
     "build:games-css": "tailwindcss -c scripts/games.tailwind.config.cjs -i scripts/games-tw-input.css -o public/games/games.css --minify",
     "patch:games": "node scripts/patch-games.mjs"
   },
@@ -21,16 +22,22 @@
     "react-router-dom": "^6.22.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.4",
     "@sparticuz/chromium": "^149.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.2.0",
     "autoprefixer": "^10.4.17",
+    "eslint": "^9.39.4",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "globals": "^17.6.0",
     "postcss": "^8.4.35",
     "puppeteer": "^25.1.0",
     "puppeteer-core": "^25.1.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",
+    "typescript-eslint": "^8.61.1",
     "vite": "^5.1.0"
   },
   "optionalDependencies": {

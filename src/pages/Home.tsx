@@ -208,7 +208,7 @@ export default function Home() {
         <div className="absolute top-20 right-16 text-3xl star-float opacity-60" style={{ animationDelay: '1s' }}>🌙</div>
         <div className="absolute bottom-20 left-20 text-3xl star-float opacity-50" style={{ animationDelay: '2s' }}>✨</div>
         <div className="absolute bottom-16 right-10 text-4xl star-float opacity-60" style={{ animationDelay: '0.5s' }}>🎨</div>
-        <Pixel mood="hello" size={120} className="absolute top-24 right-6 lg:right-12 z-20 hidden sm:block star-float" title="Pixel the butterfly waves hello" />
+        <Pixel mood="hello" size={120} className="absolute top-24 right-6 lg:right-12 z-20 hidden sm:block star-float" />
 
         <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col lg:flex-row lg:items-center lg:gap-12">
           <div className="text-center lg:text-left text-white lg:flex-1">

@@ -139,7 +139,7 @@ function ItemList({ items, emptyMsg, emptyCta }: ItemListProps) {
   if (items.length === 0) {
     return (
       <div className="py-6 text-center">
-        <Pixel mood="sleepy" size={88} className="block mx-auto mb-2" title="Pixel is resting" />
+        <Pixel mood="sleepy" size={88} className="block mx-auto mb-2" />
         <p className="text-gray-400 text-sm mb-3">{emptyMsg}</p>
         {emptyCta && (
           <Link to={emptyCta.to} className="text-sm font-semibold text-purple-600 hover:text-purple-800">

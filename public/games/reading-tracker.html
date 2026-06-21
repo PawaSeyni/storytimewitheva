@@ -294,7 +294,7 @@
           <button id="clearLog" class="no-print text-xs text-red-400 hover:text-red-600 font-bold transition-all">Clear All</button>
         </div>
         <div id="logList" class="space-y-2">
-          <p class="text-gray-300 text-sm font-semibold text-center py-4">No sessions logged yet — start reading! 📚</p>
+          <p class="text-gray-300 text-sm font-semibold text-center py-4">No sessions logged yet... start reading! 📚</p>
         </div>
       </div>
 
@@ -556,7 +556,7 @@
     function renderLog() {
       const list = document.getElementById('logList');
       if (state.log.length === 0) {
-        list.innerHTML = '<p class="text-gray-300 text-sm font-semibold text-center py-4">No sessions logged yet — start reading! 📚</p>';
+        list.innerHTML = '<p class="text-gray-300 text-sm font-semibold text-center py-4">No sessions logged yet... start reading! 📚</p>';
         return;
       }
       list.innerHTML = state.log.slice(0, 20).map(entry => {

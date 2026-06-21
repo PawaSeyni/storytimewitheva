@@ -394,10 +394,14 @@ export default function CharacterWorkshopDemo() {
             {(colors || eyes || features || outfit) && (
               <p>
                 <strong>🎨 {t.appearance}:</strong>{' '}
-                {colors && `${colors} ${t.colorsSuffix}`}
-                {eyes && `, ${eyes} ${t.eyesSuffix}`}
-                {features && `, ${features}`}
-                {outfit && `, ${t.wearing} ${outfit}`}
+                {[
+                  colors && `${colors} ${t.colorsSuffix}`,
+                  eyes && `${eyes} ${t.eyesSuffix}`,
+                  features && features,
+                  outfit && `${t.wearing} ${outfit}`,
+                ]
+                  .filter(Boolean)
+                  .join(', ')}
               </p>
             )}
             {selectedTraits.length > 0 && <p><strong>💫 {t.personality}:</strong> {selectedTraits.join(', ')}</p>}

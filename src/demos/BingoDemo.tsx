@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RefreshCw, Trophy, Award } from 'lucide-react';
@@ -283,7 +283,11 @@ export default function BingoDemo() {
   const t = useTranslation(TRANSLATIONS);
   const toast = useToast();
   const themes = THEMES[language] ?? THEMES.en;
-  const freeSpace: Item = { emoji: '⭐', text: FREE_SPACE_TEXT[language], free: true };
+  // Memoized so it's a stable dependency of generateCard's useCallback.
+  const freeSpace: Item = useMemo(
+    () => ({ emoji: '⭐', text: FREE_SPACE_TEXT[language], free: true }),
+    [language],
+  );
 
   const [currentTheme, setCurrentTheme] = useState<ThemeKey>('fairytale');
   const [completedSquares, setCompletedSquares] = useState<Set<number>>(new Set([12]));
@@ -292,6 +296,10 @@ export default function BingoDemo() {
   const [currentCard, setCurrentCard] = useState<Item[]>([]);
   const [bingoCount, setBingoCount] = useState(0);
   const [fullCardCount, setFullCardCount] = useState(0);
+  // Lines/full-card already credited for the *current* card, so re-checking an
+  // unchanged winning card doesn't keep inflating the cumulative counters.
+  const [awardedLines, setAwardedLines] = useState<Set<string>>(new Set());
+  const [fullCardAwarded, setFullCardAwarded] = useState(false);
   const [unlockedBadges, setUnlockedBadges] = useState<Set<string>>(new Set());
   const [themesPlayed, setThemesPlayed] = useState<Set<ThemeKey>>(new Set(['fairytale']));
 
@@ -304,6 +312,8 @@ export default function BingoDemo() {
     setCompletedSquares(new Set([12]));
     setHasBingo(false);
     setBingoLines([]);
+    setAwardedLines(new Set());
+    setFullCardAwarded(false);
   }, [currentTheme, themes, freeSpace]);
 
   // Rebuild card whenever language changes so labels match the active locale
@@ -349,8 +359,16 @@ export default function BingoDemo() {
     const lines = checkForBingo();
     setBingoLines(lines);
     setHasBingo(lines.length > 0);
-    if (completedSquares.size === 25) setFullCardCount((p) => p + 1);
-    if (lines.length > 0) setBingoCount((p) => p + lines.length);
+    const lineKey = (l: BingoLine) => `${l.type}-${l.index}`;
+    const fresh = lines.filter((l) => !awardedLines.has(lineKey(l)));
+    if (fresh.length > 0) {
+      setAwardedLines((prev) => new Set([...prev, ...fresh.map(lineKey)]));
+      setBingoCount((p) => p + fresh.length);
+    }
+    if (completedSquares.size === 25 && !fullCardAwarded) {
+      setFullCardAwarded(true);
+      setFullCardCount((p) => p + 1);
+    }
     if (lines.length === 0) toast(t.noBingo);
   };
 

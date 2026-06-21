@@ -133,6 +133,7 @@ export default function FeedbackWidget() {
       {open && (
         <div
           ref={panelRef}
+          id="feedback-panel"
           role="dialog"
           aria-label={t.title}
           className="mb-3 w-72 rounded-2xl bg-white shadow-2xl ring-1 ring-gray-200 p-4"
@@ -212,6 +213,7 @@ export default function FeedbackWidget() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
+        aria-controls="feedback-panel"
         aria-label={t.label}
         className="ml-auto flex items-center justify-center w-12 h-12 rounded-full bg-purple-600 hover:bg-purple-700 text-white shadow-lg transition-colors"
       >

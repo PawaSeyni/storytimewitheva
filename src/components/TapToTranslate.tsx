@@ -213,6 +213,7 @@ export default function TapToTranslate({ text, language, className = '' }: TapTo
                   .map((l) => `${LANGUAGE_LABELS[l].name} ${forms[l]}`)
                   .join(', ')}`}
                 aria-expanded={isOpen}
+                aria-controls={isOpen ? `ttt-pop-${i}` : undefined}
                 className={`cursor-pointer underline decoration-dotted decoration-purple-400 underline-offset-4 rounded transition-colors ${
                   isOpen ? 'bg-purple-100 text-purple-800' : 'hover:bg-purple-50'
                 }`}
@@ -221,6 +222,7 @@ export default function TapToTranslate({ text, language, className = '' }: TapTo
               </button>
               {isOpen && (
                 <span
+                  id={`ttt-pop-${i}`}
                   role="dialog"
                   aria-label={tok.raw}
                   className={`absolute top-full z-20 mt-1 block min-w-[10rem] rounded-xl border border-purple-100 bg-white p-3 text-left shadow-lg ${
