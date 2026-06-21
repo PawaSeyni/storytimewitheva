@@ -96,7 +96,7 @@ const CRAFTS_BY_LANG: Record<Language, Record<CraftKey, LocalizedCraft>> = {
         'Add cotton clouds hanging from the top',
         'Use aluminum foil for water or ice',
         'Poke holes in the top for "stars" with light shining through',
-        'Make it interactive — move characters around to retell the story',
+        'Make it interactive, move characters around to retell the story',
       ],
     },
     crown: {
@@ -128,7 +128,7 @@ const CRAFTS_BY_LANG: Record<Language, Record<CraftKey, LocalizedCraft>> = {
         { title: 'Final Touches', desc: 'Wrap the handle with ribbon or yarn for a better grip. Add extra glitter, stickers, or paint details. Now cast your spells!' },
       ],
       tips: [
-        'Make different shapes — hearts, moons, or flowers instead of stars',
+        'Make different shapes: hearts, moons, or flowers instead of stars',
         'Add bells to the ribbons for sound effects',
         'Use glow-in-the-dark paint for nighttime magic',
         'Create a matching spell book with construction paper',
@@ -143,10 +143,10 @@ const CRAFTS_BY_LANG: Record<Language, Record<CraftKey, LocalizedCraft>> = {
         { title: 'Cut and Shape', desc: 'If using a pillowcase, cut open the closed end. Round the bottom corners for a classic cape shape, or cut a zigzag edge for drama!' },
         { title: 'Add Tie Strings', desc: 'Attach two pieces of ribbon to the top corners (adult help may be needed). Make them long enough to tie comfortably around your neck.' },
         { title: 'Decorate Your Cape', desc: 'Use fabric markers to draw your logo, initial, or favorite symbol. Add iron-on patches with adult help.' },
-        { title: 'Safety Check', desc: "Make sure the cape isn't too long — it should end above your knees so you don't trip. Use breakaway ties or velcro that come apart easily." },
+        { title: 'Safety Check', desc: "Make sure the cape isn't too long, it should end above your knees so you don't trip. Use breakaway ties or velcro that come apart easily." },
       ],
       tips: [
-        'Make it reversible — decorate both sides!',
+        'Make it reversible: decorate both sides!',
         'Add sequins or glitter for a sparkly wizard cape',
         'Use glow-in-the-dark paint for night heroes',
         'Create a collar using felt for extra style',
@@ -154,7 +154,7 @@ const CRAFTS_BY_LANG: Record<Language, Record<CraftKey, LocalizedCraft>> = {
       safetyRules: [
         'Never wear capes near stairs or while climbing',
         'Remove capes before playing on playground equipment',
-        'Make sure ties break away easily — never use permanent attachments',
+        'Make sure ties break away easily, never use permanent attachments',
         'Always have adult supervision when wearing capes',
       ],
     },

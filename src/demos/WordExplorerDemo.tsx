@@ -434,7 +434,7 @@ export default function WordExplorerDemo() {
           {/* Score + restart */}
           <div className="flex items-center gap-3">
             <span className="text-sm font-semibold text-gray-600">
-              {t.score}: {quizScore} / {quizIndex}
+              {t.score}: {quizScore} / {quizIndex + 1}
             </span>
             <Button
               onClick={() => resetQuiz()}

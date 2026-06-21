@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { CheckCircle2, XCircle, Lightbulb, Eye, ChevronRight } from 'lucide-react';
@@ -475,6 +475,26 @@ export default function PuzzleAdventuresDemo() {
   const [logicFeedback, setLogicFeedback] = useState<Feedback>('');
   const [logicHint, setLogicHint] = useState('');
   const [logicAttempts, setLogicAttempts] = useState(0);
+
+  // Clear in-progress answers/feedback when the language changes, so the inputs
+  // can't go stale against the now-translated prompts.
+  useEffect(() => {
+    setScrambleAnswers(scrambledWords.map(() => ''));
+    setScrambleFeedback(scrambledWords.map(() => ''));
+    setScrambleAttempts(scrambledWords.map(() => 0));
+    setScrambleHints(scrambledWords.map(() => ''));
+    setRiddlesRevealed(new Set());
+    setRiddleHints(new Set());
+    setSelectedChar(null);
+    setMatchedPairs(new Set());
+    setMatchFeedback('');
+    setMatchHint('');
+    setLogicAnswer('');
+    setLogicFeedback('');
+    setLogicHint('');
+    setLogicAttempts(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [language]);
 
   const updateScore = (key: string) => {
     if (!completed.has(key)) {
