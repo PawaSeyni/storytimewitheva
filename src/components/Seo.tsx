@@ -4,7 +4,9 @@ import { useHead } from '../lib/head';
 
 const SITE_URL = 'https://storytimewitheva.com';
 const SITE_NAME = 'Story Time with Eva';
-const DEFAULT_IMAGE = 'https://m.media-amazon.com/images/I/619qWXXkRwL.jpg';
+// Self-hosted so social cards never depend on an external CDN (Amazon) that
+// could rotate or hot-link-block the asset. 1200x900 brand image in /public.
+const DEFAULT_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 const OG_LOCALE: Record<'en' | 'es' | 'fr', string> = {
   en: 'en_US',
@@ -16,7 +18,7 @@ interface SeoProps {
   /** Page-specific title. Will be rendered as `${title} | Story Time with Eva` unless `bare` is true. */
   title: string;
   description: string;
-  /** Absolute URL of an OG/Twitter image. Defaults to the Maya's Shadow cover. */
+  /** Absolute URL of an OG/Twitter image. Defaults to the self-hosted brand image. */
   image?: string;
   /** English-canonical app path (e.g. "/books"). Canonical + hreflang are derived per language. */
   path?: string;

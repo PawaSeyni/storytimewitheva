@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /profile
+Disallow: /*/profile
 
 Sitemap: https://storytimewitheva.com/sitemap.xml
