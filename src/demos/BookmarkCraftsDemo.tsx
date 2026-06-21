@@ -461,8 +461,14 @@ export default function BookmarkCraftsDemo() {
       selectedPatternKey,
       bookmarkText,
     };
-    localStorage.setItem('bookmarkDesign', JSON.stringify(design));
-    toast.success(t.saved);
+    // Only confirm success if the write actually went through (Safari private
+    // mode throws on any setItem); never claim "saved" when it didn't.
+    try {
+      localStorage.setItem('bookmarkDesign', JSON.stringify(design));
+      toast.success(t.saved);
+    } catch {
+      /* storage unavailable */
+    }
   };
 
   return (
