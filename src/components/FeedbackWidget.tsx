@@ -81,6 +81,7 @@ export default function FeedbackWidget() {
   const [botField, setBotField] = useState('');
   const [status, setStatus] = useState<Status>('idle');
   const panelRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
   const firstControlRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -90,7 +91,11 @@ export default function FeedbackWidget() {
       if (e.key === 'Escape') setOpen(false);
     };
     const onClick = (e: MouseEvent) => {
-      if (panelRef.current && !panelRef.current.contains(e.target as Node)) setOpen(false);
+      const target = e.target as Node;
+      // Ignore clicks on the toggle button — its own onClick handles open/close,
+      // otherwise this would close-then-reopen and the button would never close it.
+      if (toggleRef.current?.contains(target)) return;
+      if (panelRef.current && !panelRef.current.contains(target)) setOpen(false);
     };
     document.addEventListener('keydown', onKey);
     document.addEventListener('mousedown', onClick);
@@ -210,6 +215,7 @@ export default function FeedbackWidget() {
       )}
 
       <button
+        ref={toggleRef}
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}

@@ -44,6 +44,7 @@ const TRANSLATIONS = {
     thoughtsPlaceholder: 'What did you think about the book? What did you learn?',
     chooseEmoji: 'Choose a Book Emoji:',
     saveEntry: 'Save Entry',
+    deleteEntryLabel: 'Delete entry',
     journalHeading: '📚 My Reading Journal',
     downloadJournal: 'Download Journal',
     emptyJournal: 'No entries yet! Start recording your reading adventures!',
@@ -81,6 +82,7 @@ const TRANSLATIONS = {
     thoughtsPlaceholder: '¿Qué te pareció el libro? ¿Qué aprendiste?',
     chooseEmoji: 'Elige un emoji de libro:',
     saveEntry: 'Guardar entrada',
+    deleteEntryLabel: 'Eliminar entrada',
     journalHeading: '📚 Mi diario de lectura',
     downloadJournal: 'Descargar diario',
     emptyJournal: '¡Aún no hay entradas! Empieza a registrar tus aventuras lectoras.',
@@ -118,6 +120,7 @@ const TRANSLATIONS = {
     thoughtsPlaceholder: 'Qu\'as-tu pensé du livre ? Qu\'as-tu appris ?',
     chooseEmoji: 'Choisis un emoji de livre :',
     saveEntry: 'Sauvegarder',
+    deleteEntryLabel: 'Supprimer l\'entrée',
     journalHeading: '📚 Mon journal de lecture',
     downloadJournal: 'Télécharger le journal',
     emptyJournal: "Pas encore d'entrées ! Commence à noter tes aventures de lecture.",
@@ -229,8 +232,9 @@ ${'='.repeat(50)}
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">{t.bookTitleLabel}</label>
+              <label htmlFor="aj-book-title" className="block text-sm font-bold text-gray-700 mb-2">{t.bookTitleLabel}</label>
               <Input
+                id="aj-book-title"
                 value={currentEntry.bookTitle}
                 onChange={(e) => setCurrentEntry({ ...currentEntry, bookTitle: e.target.value })}
                 placeholder={t.bookTitlePlaceholder}
@@ -240,8 +244,9 @@ ${'='.repeat(50)}
 
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">{t.dateLabel}</label>
+                <label htmlFor="aj-date" className="block text-sm font-bold text-gray-700 mb-2">{t.dateLabel}</label>
                 <Input
+                  id="aj-date"
                   type="date"
                   value={currentEntry.date}
                   onChange={(e) => setCurrentEntry({ ...currentEntry, date: e.target.value })}
@@ -251,15 +256,17 @@ ${'='.repeat(50)}
 
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">{t.ratingLabel}</label>
-                <div className="flex gap-2">
+                <div className="flex gap-2" role="group" aria-label={t.ratingLabel}>
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
                       key={star}
                       type="button"
                       onClick={() => setCurrentEntry({ ...currentEntry, rating: star })}
-                      className="text-3xl transition-transform hover:scale-110"
+                      aria-label={`${star} / 5`}
+                      aria-pressed={star <= currentEntry.rating}
+                      className="text-3xl transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded"
                     >
-                      {star <= currentEntry.rating ? '⭐' : '☆'}
+                      <span aria-hidden="true">{star <= currentEntry.rating ? '⭐' : '☆'}</span>
                     </button>
                   ))}
                 </div>
@@ -267,8 +274,9 @@ ${'='.repeat(50)}
             </div>
 
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">{t.favCharLabel}</label>
+              <label htmlFor="aj-fav-char" className="block text-sm font-bold text-gray-700 mb-2">{t.favCharLabel}</label>
               <Input
+                id="aj-fav-char"
                 value={currentEntry.favoriteCharacter}
                 onChange={(e) => setCurrentEntry({ ...currentEntry, favoriteCharacter: e.target.value })}
                 placeholder={t.favCharPlaceholder}
@@ -277,8 +285,9 @@ ${'='.repeat(50)}
             </div>
 
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">{t.favSceneLabel}</label>
+              <label htmlFor="aj-fav-scene" className="block text-sm font-bold text-gray-700 mb-2">{t.favSceneLabel}</label>
               <Input
+                id="aj-fav-scene"
                 value={currentEntry.favoriteScene}
                 onChange={(e) => setCurrentEntry({ ...currentEntry, favoriteScene: e.target.value })}
                 placeholder={t.favScenePlaceholder}
@@ -287,8 +296,9 @@ ${'='.repeat(50)}
             </div>
 
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">{t.thoughtsLabel}</label>
+              <label htmlFor="aj-thoughts" className="block text-sm font-bold text-gray-700 mb-2">{t.thoughtsLabel}</label>
               <Textarea
+                id="aj-thoughts"
                 value={currentEntry.thoughts}
                 onChange={(e) => setCurrentEntry({ ...currentEntry, thoughts: e.target.value })}
                 placeholder={t.thoughtsPlaceholder}
@@ -299,13 +309,15 @@ ${'='.repeat(50)}
 
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2">{t.chooseEmoji}</label>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2" role="group" aria-label={t.chooseEmoji}>
                 {BOOK_EMOJIS.map((emoji) => (
                   <button
                     key={emoji}
                     type="button"
                     onClick={() => setCurrentEntry({ ...currentEntry, emoji })}
-                    className={`text-3xl p-2 rounded-lg transition-all hover:scale-110 ${
+                    aria-label={emoji}
+                    aria-pressed={currentEntry.emoji === emoji}
+                    className={`text-3xl p-2 rounded-lg transition-all hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 ${
                       currentEntry.emoji === emoji ? 'bg-orange-300 ring-4 ring-orange-500' : 'bg-gray-100'
                     }`}
                   >
@@ -379,6 +391,7 @@ ${'='.repeat(50)}
                     variant="ghost"
                     size="icon"
                     onClick={() => deleteEntry(entry.id)}
+                    aria-label={t.deleteEntryLabel}
                     className="text-red-500 hover:bg-red-50"
                   >
                     <Trash2 className="w-5 h-5" />

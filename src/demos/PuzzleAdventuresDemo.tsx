@@ -624,6 +624,7 @@ export default function PuzzleAdventuresDemo() {
                     setScrambleAnswers(a);
                   }}
                   placeholder={t.unscramble}
+                  aria-label={t.unscramble}
                   className="mb-3 text-lg"
                 />
                 <div className="flex gap-2 mb-3">
@@ -866,6 +867,7 @@ export default function PuzzleAdventuresDemo() {
               value={logicAnswer}
               onChange={(e) => setLogicAnswer(e.target.value)}
               placeholder={t.typeName}
+              aria-label={t.typeName}
               className="mb-3 text-lg"
             />
             <div className="flex gap-2">
