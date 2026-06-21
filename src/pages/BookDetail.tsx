@@ -121,12 +121,13 @@ export default function BookDetail() {
                   type="button"
                   onClick={() => setBilingual((v) => !v)}
                   aria-expanded={bilingual}
+                  aria-controls="bilingual-panel"
                   className="inline-flex items-center gap-2 py-2 px-4 text-sm font-semibold rounded-full text-purple-600 border border-purple-200 hover:bg-purple-50 transition-colors"
                 >
                   {bilingual ? t.bilingualHide : t.bilingualShow}
                 </button>
                 {bilingual && (
-                  <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div id="bilingual-panel" className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {otherLangs.map((l) => (
                       <div key={l} className="bg-purple-50/60 rounded-xl p-4">
                         <p className="text-xs font-semibold text-purple-700 mb-1">

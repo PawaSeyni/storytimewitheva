@@ -20,6 +20,9 @@ interface SeoProps {
   description: string;
   /** Absolute URL of an OG/Twitter image. Defaults to the self-hosted brand image. */
   image?: string;
+  /** og:image pixel dimensions, when known. Defaults to 1200×900 for the brand image. */
+  imageWidth?: number;
+  imageHeight?: number;
   /** English-canonical app path (e.g. "/books"). Canonical + hreflang are derived per language. */
   path?: string;
   /** Set to true to render the title verbatim (no site suffix). Use only on the home page. */
@@ -36,8 +39,12 @@ interface SeoProps {
  * build (see src/lib/head.ts header comment). The HTML `lang` attribute is
  * managed separately by LanguageProvider's effect, so Seo doesn't touch it.
  */
-export default function Seo({ title, description, image = DEFAULT_IMAGE, path, bare = false, noindex = false }: SeoProps) {
+export default function Seo({ title, description, image = DEFAULT_IMAGE, imageWidth, imageHeight, path, bare = false, noindex = false }: SeoProps) {
   const { language } = useLanguage();
+  // The brand image is a known 1200×900; custom per-page images omit dimensions
+  // unless the caller supplies them.
+  const resolvedWidth = imageWidth ?? (image === DEFAULT_IMAGE ? 1200 : undefined);
+  const resolvedHeight = imageHeight ?? (image === DEFAULT_IMAGE ? 900 : undefined);
   const fullTitle = bare ? title : `${title} | ${SITE_NAME}`;
   const enPath = path ?? '/';
 
@@ -61,6 +68,8 @@ export default function Seo({ title, description, image = DEFAULT_IMAGE, path, b
     title: fullTitle,
     description,
     image,
+    imageWidth: resolvedWidth,
+    imageHeight: resolvedHeight,
     url,
     locale: OG_LOCALE[language],
     alternates,

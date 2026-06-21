@@ -275,6 +275,9 @@ export default function StoryBuilderDemo() {
 
   const [currentStory, setCurrentStory] = useState<Story>({});
   const [rollingElement, setRollingElement] = useState<ElementKey | null>(null);
+  // True while "Roll All" is animating, so individual dice can't be clicked
+  // mid-sequence and clobber the staggered rolls.
+  const [isRollingAll, setIsRollingAll] = useState(false);
   const [showStory, setShowStory] = useState(false);
   const [savedStories, setSavedStories] = useState<SavedStory[]>([]);
 
@@ -289,6 +292,7 @@ export default function StoryBuilderDemo() {
   useEffect(() => () => { timers.current.forEach(clearTimeout); }, []);
 
   const rollDice = (element: ElementKey) => {
+    if (isRollingAll || rollingElement) return;
     setRollingElement(element);
     schedule(() => {
       const options = pools[element];
@@ -305,7 +309,9 @@ export default function StoryBuilderDemo() {
   };
 
   const rollAllDice = () => {
+    if (isRollingAll || rollingElement) return;
     setShowStory(false);
+    setIsRollingAll(true);
     ELEMENTS_LIST.forEach((element, index) => {
       schedule(() => {
         setRollingElement(element);
@@ -315,6 +321,7 @@ export default function StoryBuilderDemo() {
           setCurrentStory(prev => ({ ...prev, [element]: selected }));
           setRollingElement(null);
           if (index === ELEMENTS_LIST.length - 1) {
+            setIsRollingAll(false);
             schedule(() => setShowStory(true), 500);
           }
         }, 500);
@@ -367,7 +374,7 @@ export default function StoryBuilderDemo() {
               </div>
               <Button
                 onClick={() => rollDice(element)}
-                disabled={rollingElement === element}
+                disabled={isRollingAll || rollingElement !== null}
                 variant="outline"
                 className={`w-14 h-14 p-0 rounded-xl border-2 border-gray-800 text-3xl hover:bg-yellow-200 hover:rotate-12 transition-all ${
                   rollingElement === element ? 'animate-spin' : ''
@@ -397,7 +404,7 @@ export default function StoryBuilderDemo() {
       <div className="text-center mb-6">
         <Button
           onClick={rollAllDice}
-          disabled={rollingElement !== null}
+          disabled={rollingElement !== null || isRollingAll}
           className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold text-xl px-12 py-8 rounded-full shadow-2xl"
         >
           {t.rollAll}

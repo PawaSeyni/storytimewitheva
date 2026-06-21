@@ -1,5 +1,11 @@
-import { LANGUAGE_LABELS, SUPPORTED_LANGUAGES, useLanguage } from '../lib/language';
+import { LANGUAGE_LABELS, SUPPORTED_LANGUAGES, useLanguage, useTranslation } from '../lib/language';
 import type { Language } from '../lib/language';
+
+const TRANSLATIONS = {
+  en: { group: 'Language', switchTo: (n: string) => `Switch to ${n}` },
+  es: { group: 'Idioma', switchTo: (n: string) => `Cambiar a ${n}` },
+  fr: { group: 'Langue', switchTo: (n: string) => `Passer à ${n}` },
+};
 
 interface LanguageSwitcherProps {
   /** When true, render as a stacked vertical list (mobile menu). Otherwise a horizontal pill cluster. */
@@ -8,11 +14,12 @@ interface LanguageSwitcherProps {
 
 export default function LanguageSwitcher({ vertical = false }: LanguageSwitcherProps) {
   const { language, setLanguage } = useLanguage();
+  const t = useTranslation(TRANSLATIONS);
 
   return (
     <div
       role="group"
-      aria-label="Language"
+      aria-label={t.group}
       className={
         vertical
           ? 'flex flex-col gap-1 mt-2'
@@ -37,7 +44,7 @@ export default function LanguageSwitcher({ vertical = false }: LanguageSwitcherP
             key={lang}
             type="button"
             onClick={() => setLanguage(lang)}
-            aria-label={`Switch to ${name}`}
+            aria-label={t.switchTo(name)}
             aria-pressed={active}
             title={name}
             className={`${base} ${activeCls}`}

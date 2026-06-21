@@ -24,13 +24,16 @@ interface UseHeadOptions {
   description: string;
   /** Absolute image URL for og:image / twitter:image. */
   image?: string;
+  /** og:image pixel dimensions, when known (helps scrapers render the card without a pre-fetch). */
+  imageWidth?: number;
+  imageHeight?: number;
   /** Absolute canonical URL. */
   url?: string;
   /** og:locale value (e.g. "en_US"). */
   locale?: string;
   /** Reciprocal hreflang alternates (incl. x-default). Replaced wholesale each render. */
   alternates?: { hreflang: string; href: string }[];
-  /** When true, sets `meta[name=robots]=noindex,nofollow`; otherwise removes that meta. */
+  /** When true, sets `meta[name=robots]=noindex,follow`; otherwise removes that meta. */
   noindex?: boolean;
 }
 
@@ -78,7 +81,7 @@ function setAlternates(alternates: { hreflang: string; href: string }[]) {
   }
 }
 
-export function useHead({ title, description, image, url, locale, alternates, noindex }: UseHeadOptions) {
+export function useHead({ title, description, image, imageWidth, imageHeight, url, locale, alternates, noindex }: UseHeadOptions) {
   useEffect(() => {
     document.title = title;
     upsertMeta('name', 'description', description);
@@ -89,7 +92,26 @@ export function useHead({ title, description, image, url, locale, alternates, no
     upsertMeta('property', 'og:title', title);
     upsertMeta('property', 'og:description', description);
     if (url) upsertMeta('property', 'og:url', url);
-    if (image) upsertMeta('property', 'og:image', image);
+    if (image) {
+      upsertMeta('property', 'og:image', image);
+      upsertMeta('property', 'og:image:alt', title);
+      // Derive the MIME type from the extension so scrapers don't have to sniff it.
+      const lower = image.toLowerCase();
+      const type = lower.endsWith('.png')
+        ? 'image/png'
+        : lower.endsWith('.webp')
+          ? 'image/webp'
+          : 'image/jpeg';
+      upsertMeta('property', 'og:image:type', type);
+      // Dimensions only when known (varies per page) — remove stale ones on SPA nav otherwise.
+      if (imageWidth && imageHeight) {
+        upsertMeta('property', 'og:image:width', String(imageWidth));
+        upsertMeta('property', 'og:image:height', String(imageHeight));
+      } else {
+        removeMeta('property', 'og:image:width');
+        removeMeta('property', 'og:image:height');
+      }
+    }
     if (locale) upsertMeta('property', 'og:locale', locale);
 
     // Twitter
@@ -106,9 +128,11 @@ export function useHead({ title, description, image, url, locale, alternates, no
 
     // Robots (only present when noindex)
     if (noindex) {
-      upsertMeta('name', 'robots', 'noindex,nofollow');
+      // noindex keeps these utility pages out of the index; "follow" still lets
+      // crawlers traverse their internal links (preserving link equity).
+      upsertMeta('name', 'robots', 'noindex,follow');
     } else {
       removeMeta('name', 'robots');
     }
-  }, [title, description, image, url, locale, alternates, noindex]);
+  }, [title, description, image, imageWidth, imageHeight, url, locale, alternates, noindex]);
 }

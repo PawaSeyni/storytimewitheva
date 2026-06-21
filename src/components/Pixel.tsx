@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from '../lib/language';
 import helloUrl from '../assets/pixel/hello.svg';
 import readingUrl from '../assets/pixel/reading.svg';
 import readingInlineUrl from '../assets/pixel/reading-inline.svg';
@@ -29,13 +30,32 @@ const ART: Record<PixelMood, string> = {
   listening: listeningUrl,
 };
 
-const ALT: Record<PixelMood, string> = {
-  hello: 'Pixel the butterfly waving hello',
-  reading: 'Pixel the butterfly reading along',
-  praise: 'Pixel the butterfly holding a star',
-  sleepy: 'Pixel the butterfly resting',
-  pointing: 'Pixel the butterfly pointing at a word',
-  listening: 'Pixel the butterfly listening',
+// Per-language alt text so screen readers describe Pixel in the active locale.
+const ALT_TRANSLATIONS: Record<'en' | 'es' | 'fr', Record<PixelMood, string>> = {
+  en: {
+    hello: 'Pixel the butterfly waving hello',
+    reading: 'Pixel the butterfly reading along',
+    praise: 'Pixel the butterfly holding a star',
+    sleepy: 'Pixel the butterfly resting',
+    pointing: 'Pixel the butterfly pointing at a word',
+    listening: 'Pixel the butterfly listening',
+  },
+  es: {
+    hello: 'Pixel la mariposa saludando',
+    reading: 'Pixel la mariposa leyendo',
+    praise: 'Pixel la mariposa sosteniendo una estrella',
+    sleepy: 'Pixel la mariposa descansando',
+    pointing: 'Pixel la mariposa señalando una palabra',
+    listening: 'Pixel la mariposa escuchando',
+  },
+  fr: {
+    hello: 'Pixel le papillon qui dit bonjour',
+    reading: 'Pixel le papillon qui lit',
+    praise: 'Pixel le papillon tenant une étoile',
+    sleepy: 'Pixel le papillon qui se repose',
+    pointing: 'Pixel le papillon qui montre un mot',
+    listening: 'Pixel le papillon qui écoute',
+  },
 };
 
 function readEnabled(): boolean {
@@ -73,6 +93,8 @@ interface PixelProps {
 
 export default function Pixel({ mood = 'hello', size = 120, className, inline = false, title }: PixelProps) {
   const enabled = usePixelEnabled();
+  const ALT = useTranslation(ALT_TRANSLATIONS);
+
   if (!enabled) return null;
 
   const src = inline && mood === 'reading' ? readingInlineUrl : ART[mood];

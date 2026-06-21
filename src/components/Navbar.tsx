@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { Link } from './LocalizedLink';
@@ -48,6 +48,12 @@ export default function Navbar() {
   // Active state must ignore the /es | /fr language prefix, otherwise no nav
   // item ever highlights for Spanish/French visitors.
   const currentPath = splitLangFromPath(location.pathname).rest;
+
+  // Close the mobile menu on any navigation, including a language switch (which
+  // changes the path prefix) — the in-menu language switcher doesn't close it itself.
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
 
   const navLinks = [
     { to: '/', label: t.home },
@@ -107,6 +113,7 @@ export default function Navbar() {
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label={t.toggleMenu}
             aria-expanded={menuOpen}
+            aria-controls="mobile-nav"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {menuOpen
@@ -119,7 +126,7 @@ export default function Navbar() {
 
         {/* Mobile Nav */}
         {menuOpen && (
-          <div className="lg:hidden py-3 border-t border-gray-100">
+          <div id="mobile-nav" className="lg:hidden py-3 border-t border-gray-100">
             {navLinks.map(link => (
               <Link
                 key={link.to}

@@ -84,6 +84,8 @@ const TRANSLATIONS = {
     flashcardMode: 'Flashcard Mode',
     quizMode: 'Quiz Mode',
     flip: 'Flip',
+    cardFront: 'Card front, click to flip',
+    cardBack: 'Card back, click to flip',
     next: 'Next',
     previous: 'Previous',
     correct: 'Correct!',
@@ -106,6 +108,8 @@ const TRANSLATIONS = {
     flashcardMode: 'Modo tarjetas',
     quizMode: 'Modo quiz',
     flip: 'Voltear',
+    cardFront: 'Frente de la tarjeta, toca para voltear',
+    cardBack: 'Reverso de la tarjeta, toca para voltear',
     next: 'Siguiente',
     previous: 'Anterior',
     correct: '¡Correcto!',
@@ -128,6 +132,8 @@ const TRANSLATIONS = {
     flashcardMode: 'Mode cartes',
     quizMode: 'Mode quiz',
     flip: 'Retourner',
+    cardFront: 'Recto de la carte, touchez pour retourner',
+    cardBack: 'Verso de la carte, touchez pour retourner',
     next: 'Suivant',
     previous: 'Précédent',
     correct: 'Correct !',
@@ -371,7 +377,7 @@ export default function WordExplorerDemo() {
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') setFlipped((f) => !f);
             }}
-            aria-label={flipped ? 'Card back – click to flip' : 'Card front – click to flip'}
+            aria-label={flipped ? t.cardBack : t.cardFront}
           >
             {!flipped ? (
               <>
