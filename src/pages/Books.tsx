@@ -15,7 +15,7 @@ const FLAG_TO_LANG: Record<string, string> = { '🇺🇸': 'en', '🇪🇸': 'es
 const TRANSLATIONS = {
   en: {
     seoTitle: 'Our Magical Book Collection',
-    seoDesc: 'Browse all 18 books in the Eva Gallo Collection: multicultural picture books for children ages 3–9 about quiet wonder, kindness, and curiosity.',
+    seoDesc: 'Browse all {n} books in the Eva Gallo Collection: multicultural picture books for children ages 3–9 about quiet wonder, kindness, and curiosity.',
     heading: 'Our Magical Book Collection',
     subheading: 'Explore stories that inspire, educate, and delight young readers',
     searchPlaceholder: 'Search books by title or theme...',
@@ -39,7 +39,7 @@ const TRANSLATIONS = {
   },
   es: {
     seoTitle: 'Nuestra colección de libros mágicos',
-    seoDesc: 'Explora los 18 libros de la Colección Eva Gallo — álbumes multiculturales para niños de 3 a 9 años sobre asombro tranquilo, bondad y curiosidad.',
+    seoDesc: 'Explora los {n} libros de la Colección Eva Gallo — álbumes multiculturales para niños de 3 a 9 años sobre asombro tranquilo, bondad y curiosidad.',
     heading: 'Nuestra colección de libros mágicos',
     subheading: 'Descubre historias que inspiran, educan y deleitan a los lectores jóvenes',
     searchPlaceholder: 'Buscar libros por título o tema...',
@@ -63,7 +63,7 @@ const TRANSLATIONS = {
   },
   fr: {
     seoTitle: 'Notre collection de livres magiques',
-    seoDesc: 'Parcourez les 18 livres de la Collection Eva Gallo — albums multiculturels pour enfants de 3 à 9 ans sur l\'émerveillement tranquille, la bonté et la curiosité.',
+    seoDesc: 'Parcourez les {n} livres de la Collection Eva Gallo — albums multiculturels pour enfants de 3 à 9 ans sur l\'émerveillement tranquille, la bonté et la curiosité.',
     heading: 'Notre collection de livres magiques',
     subheading: 'Découvrez des histoires qui inspirent, instruisent et ravissent les jeunes lecteurs',
     searchPlaceholder: 'Rechercher un livre par titre ou thème...',
@@ -139,7 +139,7 @@ export default function Books() {
 
   return (
     <main>
-      <Seo title={t.seoTitle} description={t.seoDesc} path="/books" />
+      <Seo title={t.seoTitle} description={t.seoDesc.replace('{n}', String(books.length))} path="/books" />
       <JsonLd id="books" data={booksSchema} />
 
       <section className="bg-gradient-to-b from-purple-50 to-white py-16 px-4">
