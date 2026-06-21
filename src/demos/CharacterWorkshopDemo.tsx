@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -197,6 +197,8 @@ const TRAIT_ICONS = ['😊', '💪', '🤓', '😂', '🤗', '🎭', '⚡', '�
 
 export default function CharacterWorkshopDemo() {
   const t = useTranslation(TRANSLATIONS);
+  const scrollTimer = useRef<ReturnType<typeof setTimeout>>();
+  useEffect(() => () => clearTimeout(scrollTimer.current), []);
   const [selectedType, setSelectedType] = useState('');
   const [selectedTraits, setSelectedTraits] = useState<string[]>([]);
   const [charName, setCharName] = useState('');
@@ -221,7 +223,7 @@ export default function CharacterWorkshopDemo() {
 
   const handleShowSummary = () => {
     setShowSummary(true);
-    setTimeout(() => {
+    scrollTimer.current = setTimeout(() => {
       document.getElementById('summary-section')?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
   };

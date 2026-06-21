@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLanguage, useTranslation, type Language } from '../lib/language';
 import { track } from '../lib/analytics';
 
@@ -16,27 +16,52 @@ const MAILERLITE_FORM_ACTION =
 // on the success screen — closing the funnel leak where pins used to point
 // straight at the ungated PDF and captured no email. Each magnet maps to its
 // per-language PDF (single-file trilingual magnets repeat the same path).
-type Magnet = { tag: string; pdf: Record<Language, string> };
+type Magnet = { tag: string; title: Record<Language, string>; pdf: Record<Language, string> };
 const LEAD_MAGNETS: Record<string, Magnet> = {
   'bedtime-routine': {
     tag: 'bedtime-routine',
+    title: {
+      en: 'Get the Bedtime Chart',
+      es: 'Descarga la rutina de dormir',
+      fr: 'Téléchargez le tableau du coucher',
+    },
     pdf: { en: '/bedtime-routine.pdf', es: '/bedtime-routine-es.pdf', fr: '/bedtime-routine-fr.pdf' },
   },
   'bilingual-starter-kit': {
     tag: 'bilingual-starter-kit',
+    title: {
+      en: 'Download the FREE 20-Page Trilingual Starter Kit!',
+      es: '¡Descarga GRATIS el kit trilingüe de 20 páginas!',
+      fr: 'Téléchargez gratuitement le kit trilingue de 20 pages !',
+    },
     pdf: { en: '/bilingual-starter-kit.pdf', es: '/bilingual-starter-kit.pdf', fr: '/bilingual-starter-kit.pdf' },
   },
   'bilingual-flashcards': {
     tag: 'bilingual-flashcards',
+    title: {
+      en: 'Get Free Flashcards',
+      es: 'Descarga tarjetas bilingües',
+      fr: 'Téléchargez les cartes bilingues',
+    },
     pdf: { en: '/bilingual-flashcards.pdf', es: '/bilingual-flashcards.pdf', fr: '/bilingual-flashcards.pdf' },
   },
   'parents-guide': {
     tag: 'parents-guide',
+    title: {
+      en: "Get the Parent's Guide",
+      es: 'Descarga la guía para padres',
+      fr: 'Téléchargez le guide des parents',
+    },
     pdf: { en: '/parents-guide.pdf', es: '/parents-guide-es.pdf', fr: '/parents-guide-fr.pdf' },
   },
   'follow-up-activities': {
     tag: 'follow-up-activities',
-    pdf: { en: '/follow-up-activities.pdf', es: '/follow-up-activities.pdf', fr: '/follow-up-activities.pdf' },
+    title: {
+      en: 'Get 5 Reading Activities',
+      es: 'Descarga 5 actividades de lectura',
+      fr: 'Téléchargez 5 activités de lecture',
+    },
+    pdf: { en: '/follow-up-activities.pdf', es: '/follow-up-activities-es.pdf', fr: '/follow-up-activities-fr.pdf' },
   },
 };
 const DEFAULT_MAGNET = 'bilingual-starter-kit';
@@ -121,6 +146,13 @@ export default function EmailSignup() {
   const { language, setLanguage } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
   const [magnet] = useState<Magnet>(() => resolveMagnet());
+  const successRef = useRef<HTMLParagraphElement>(null);
+
+  // Move focus to the success message so screen-reader users learn the signup
+  // worked and the download link is available (the form they were on is gone).
+  useEffect(() => {
+    if (status === 'submitted') successRef.current?.focus();
+  }, [status]);
 
   // Honor `?lang=` from language-targeted pins (e.g. an ES pin links with
   // &lang=es) so the whole page + delivered PDF render in the pin's language,
@@ -177,7 +209,7 @@ export default function EmailSignup() {
     <section id="email-signup" className="scroll-mt-24 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 py-16 px-4">
       <div className="max-w-2xl mx-auto text-center">
         <div className="text-5xl mb-4">🎁</div>
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">{t.title}</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">{magnet.title[language]}</h2>
         <p className="text-purple-100 text-lg mb-6">{t.blurb}</p>
 
         <ul className="text-left inline-block text-purple-100 text-sm mb-8 space-y-2">
@@ -187,12 +219,13 @@ export default function EmailSignup() {
         </ul>
 
         {status === 'submitted' ? (
-          <div className="bg-white/20 rounded-2xl p-6 text-white">
+          <div className="bg-white/20 rounded-2xl p-6 text-white" role="status" aria-live="polite">
             <div className="text-4xl mb-2">🎉</div>
-            <p className="font-bold text-xl">{t.successHeading}</p>
+            <p ref={successRef} tabIndex={-1} className="font-bold text-xl outline-none">{t.successHeading}</p>
             <p className="text-purple-100 text-sm mt-1 mb-4">{t.successDetail}</p>
             <a
               href={magnet.pdf[language]}
+              download
               target="_blank"
               rel="noopener"
               className="inline-block px-6 py-3 bg-orange-700 hover:bg-orange-800 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all duration-200"
@@ -236,7 +269,7 @@ export default function EmailSignup() {
         )}
 
         {status === 'error' && (
-          <p className="mt-4 text-pink-100 text-sm bg-red-500/30 rounded-full inline-block px-4 py-2">
+          <p role="alert" className="mt-4 text-pink-100 text-sm bg-red-500/30 rounded-full inline-block px-4 py-2">
             {t.errorMessage}
           </p>
         )}

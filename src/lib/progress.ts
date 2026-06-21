@@ -35,7 +35,14 @@ export function loadProgress(): Progress {
 
 export function saveProgress(next: Progress): void {
   if (typeof window === 'undefined') return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+  // Persisting can throw (Safari Private Mode rejects any setItem; quota). Don't
+  // let that escape the click handlers that call this (book/activity status
+  // toggles, Profile clear). Still fire the event so in-memory listeners refresh.
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+  } catch {
+    /* storage unavailable — progress just won't persist this session */
+  }
   // Custom event so any component listening can refresh without polling.
   window.dispatchEvent(new CustomEvent('progresschange'));
 }
