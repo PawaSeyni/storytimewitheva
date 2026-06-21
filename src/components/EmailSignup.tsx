@@ -30,9 +30,9 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
   'bilingual-starter-kit': {
     tag: 'bilingual-starter-kit',
     title: {
-      en: 'Download the FREE 20-Page Bilingual Starter Kit!',
-      es: '¡Descarga GRATIS el kit bilingüe de 20 páginas!',
-      fr: 'Téléchargez gratuitement le kit bilingue de 20 pages !',
+      en: 'Download the FREE 20-Page Trilingual Starter Kit!',
+      es: '¡Descarga GRATIS el kit trilingüe de 20 páginas!',
+      fr: 'Téléchargez gratuitement le kit trilingue de 20 pages !',
     },
     pdf: { en: '/bilingual-starter-kit.pdf', es: '/bilingual-starter-kit.pdf', fr: '/bilingual-starter-kit.pdf' },
   },
