@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
 import { useTranslation } from '../lib/language';
-import { PRICING } from '../data/pricing';
 
 // Plain-language FAQ drafted from the site's actual behaviour (ages, languages,
 // Amazon purchase/price, read-aloud, free activities, on-device progress,
@@ -24,7 +23,7 @@ const TRANSLATIONS = {
     faqs: [
       { q: 'What ages are these books for?', a: 'The Eva Gallo Collection is written for children ages 3 to 9. Every book on the Books page shows its own recommended age range so you can pick the right fit.' },
       { q: 'What languages can we read and listen in?', a: 'The whole site works in English, Spanish, and French. Use the EN/ES/FR switch at the top. The activities and the “Listen” read-aloud work in all three. Several books are fully trilingual and more translations are on the way; each book shows the languages it’s available in.' },
-      { q: 'How do I buy a book, and what does it cost?', a: `Books are sold on Amazon: paperback ${PRICING.paperback} and eBook ${PRICING.ebook} (USD; Amazon shows the final price and availability). Tap “Buy on Amazon” on any book. Amazon handles payment, shipping, and returns.` },
+      { q: 'How do I buy a book, and what does it cost?', a: 'Books are sold on Amazon in paperback and eBook. Prices vary by title, and Amazon always shows the current price and availability. Tap “Buy on Amazon” on any book; Amazon handles payment, shipping, and returns.' },
       { q: 'Can my child listen to a story?', a: 'Yes, tap the 🔊 Listen button on any book to hear it read aloud, with natural pronunciation in the language you’ve selected. Great for pre-readers and for hearing a second language.' },
       { q: 'Are the activities and downloads really free?', a: 'Yes. All of the activities, read-alongs, and the 20-page bilingual starter kit are free. Only the books themselves are paid (on Amazon).' },
       { q: 'Do you collect any information about my child?', a: 'No. There are no child accounts or logins, and we don’t collect personal information from children. Reading progress is saved only in your browser and never sent to us. The only thing we collect is a parent’s email address if you choose to join the newsletter (with confirmation). See our Privacy Policy for details.' },
@@ -42,7 +41,7 @@ const TRANSLATIONS = {
     faqs: [
       { q: '¿Para qué edades son estos libros?', a: 'La Colección Eva Gallo está escrita para niños de 3 a 9 años. Cada libro en la página de Libros muestra su propio rango de edad recomendado para que elijas el adecuado.' },
       { q: '¿En qué idiomas podemos leer y escuchar?', a: 'Todo el sitio funciona en inglés, español y francés — usa el selector EN/ES/FR de arriba. Las actividades y la lectura en voz alta “Escuchar” funcionan en los tres. Varios libros son totalmente trilingües y vienen más traducciones; cada libro indica en qué idiomas está disponible.' },
-      { q: '¿Cómo compro un libro y cuánto cuesta?', a: `Los libros se venden en Amazon — tapa blanda ${PRICING.paperback} y eBook ${PRICING.ebook} (USD; Amazon muestra el precio final y la disponibilidad). Pulsa “Comprar en Amazon” en cualquier libro. Amazon gestiona el pago, el envío y las devoluciones.` },
+      { q: '¿Cómo compro un libro y cuánto cuesta?', a: 'Los libros se venden en Amazon en tapa blanda y eBook. El precio varía según el título, y Amazon siempre muestra el precio actual y la disponibilidad. Pulsa “Comprar en Amazon” en cualquier libro; Amazon gestiona el pago, el envío y las devoluciones.' },
       { q: '¿Mi peque puede escuchar una historia?', a: 'Sí — pulsa el botón 🔊 Escuchar en cualquier libro para oírlo en voz alta, con pronunciación natural en el idioma que hayas elegido. Ideal para quienes aún no leen y para escuchar un segundo idioma.' },
       { q: '¿Las actividades y descargas son realmente gratis?', a: 'Sí. Todas las actividades, las lecturas en voz alta y el kit de inicio bilingüe de 20 páginas son gratis. Solo los libros tienen costo (en Amazon).' },
       { q: '¿Recopilan información sobre mi hijo/a?', a: 'No. No hay cuentas ni inicios de sesión para niños, y no recopilamos información personal de menores. El progreso de lectura se guarda solo en tu navegador y nunca se nos envía. Lo único que recopilamos es el correo de un adulto si decides unirte al boletín (con confirmación). Consulta nuestra Política de privacidad.' },
@@ -60,7 +59,7 @@ const TRANSLATIONS = {
     faqs: [
       { q: 'À quel âge s’adressent ces livres ?', a: 'La Collection Eva Gallo est écrite pour les enfants de 3 à 9 ans. Chaque livre de la page Livres indique sa tranche d’âge recommandée pour vous aider à bien choisir.' },
       { q: 'Dans quelles langues peut-on lire et écouter ?', a: 'Tout le site fonctionne en anglais, espagnol et français — utilisez le sélecteur EN/ES/FR en haut. Les activités et la lecture à voix haute « Écouter » fonctionnent dans les trois langues. Plusieurs livres sont entièrement trilingues et d’autres traductions arrivent ; chaque livre indique les langues disponibles.' },
-      { q: 'Comment acheter un livre et combien coûte-t-il ?', a: `Les livres sont vendus sur Amazon — livre broché ${PRICING.paperback} et livre numérique ${PRICING.ebook} (USD ; Amazon affiche le prix final et la disponibilité). Appuyez sur « Acheter sur Amazon » sur n’importe quel livre. Amazon gère le paiement, la livraison et les retours.` },
+      { q: 'Comment acheter un livre et combien coûte-t-il ?', a: 'Les livres sont vendus sur Amazon en livre broché et en livre numérique. Le prix varie selon le titre, et Amazon affiche toujours le prix actuel et la disponibilité. Appuyez sur « Acheter sur Amazon » sur n’importe quel livre ; Amazon gère le paiement, la livraison et les retours.' },
       { q: 'Mon enfant peut-il écouter une histoire ?', a: 'Oui — appuyez sur le bouton 🔊 Écouter sur n’importe quel livre pour l’entendre lu à voix haute, avec une prononciation naturelle dans la langue choisie. Parfait pour les non-lecteurs et pour entendre une seconde langue.' },
       { q: 'Les activités et téléchargements sont-ils vraiment gratuits ?', a: 'Oui. Toutes les activités, les lectures à voix haute et le kit de démarrage bilingue de 20 pages sont gratuits. Seuls les livres sont payants (sur Amazon).' },
       { q: 'Collectez-vous des informations sur mon enfant ?', a: 'Non. Il n’y a ni comptes ni connexions pour les enfants, et nous ne collectons pas d’informations personnelles auprès des mineurs. La progression de lecture est enregistrée uniquement dans votre navigateur et ne nous est jamais envoyée. La seule chose que nous collectons est l’e-mail d’un adulte si vous choisissez de rejoindre la newsletter (avec confirmation). Consultez notre politique de confidentialité.' },
