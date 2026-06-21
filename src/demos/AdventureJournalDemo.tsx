@@ -153,7 +153,8 @@ export default function AdventureJournalDemo() {
     const saved = localStorage.getItem('adventureJournal');
     if (saved) {
       try {
-        setEntries(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) setEntries(parsed);
       } catch {
         /* ignore */
       }

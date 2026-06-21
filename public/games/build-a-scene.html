@@ -250,6 +250,10 @@
   </main>
 
   <script>
+    // Escape user-supplied text before it goes into innerHTML (scene captions).
+    const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => (
+      { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+    ));
     // ─── DATA ────────────────────────────────────────────────────────────────
     const stickers = {
       characters: ['👧','👦','👩','👨','👵','👴','🧒','🧑','👸','🤴','🧙','🧚','🧜','🧝','🦸','🦹'],
@@ -506,7 +510,7 @@
       container.innerHTML = savedScenes.slice(0,6).map(s => `
         <div class="rounded-xl border-2 border-purple-100 p-2 text-center bg-purple-50">
           <div class="text-lg mb-1">${s.stickers.slice(0,8) || '🎨'}</div>
-          <div class="text-xs font-bold text-purple-700 truncate">${s.caption}</div>
+          <div class="text-xs font-bold text-purple-700 truncate">${escapeHtml(s.caption)}</div>
           <div class="text-xs text-gray-400">${s.bg}</div>
         </div>
       `).join('');

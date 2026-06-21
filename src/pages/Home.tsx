@@ -90,7 +90,7 @@ const TRANSLATIONS = {
     seeAll: 'See All Activities →',
     activityPreview: [
       { emoji: '✍️', slug: 'story-builder', title: 'Story Dice Creator', desc: 'Roll the dice to mix characters, settings, and plot twists into a brand-new story.', ages: '6-9' },
-      { emoji: '🎭', slug: 'character-workshop', title: 'Character Workshop', desc: 'Step-by-step character builder — type, name, look, personality, powers, and backstory.', ages: '6-9' },
+      { emoji: '🎭', slug: 'character-workshop', title: 'Character Workshop', desc: 'Step-by-step character builder, type, name, look, personality, powers, and backstory.', ages: '6-9' },
       { emoji: '📓', slug: 'adventure-journal', title: 'Reading Journal', desc: "Record books you've read, favorite characters, and your thoughts. Saves to your device.", ages: '6-9' },
     ],
   },

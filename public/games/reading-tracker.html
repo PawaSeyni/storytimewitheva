@@ -302,6 +302,10 @@
   </main>
 
   <script>
+    // Escape user-supplied text before it goes into innerHTML (book titles / notes).
+    const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => (
+      { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+    ));
     // ─── STATE ───────────────────────────────────────────────────────────────
     const STORAGE_KEY = 'eva_reading_tracker_v1';
     let state = {
@@ -563,9 +567,9 @@
           <div class="log-entry flex items-center gap-3 p-3 rounded-2xl bg-amber-50 border border-amber-100">
             <div class="text-2xl">📖</div>
             <div class="flex-1 min-w-0">
-              <div class="font-extrabold text-gray-800 text-sm truncate">${entry.book}</div>
+              <div class="font-extrabold text-gray-800 text-sm truncate">${escapeHtml(entry.book)}</div>
               <div class="text-xs text-gray-500 font-semibold">${dateLabel} · ${entry.mins} min · <span class="text-yellow-500">${stars}</span></div>
-              ${entry.note ? `<div class="text-xs text-purple-600 font-semibold italic">"${entry.note}"</div>` : ''}
+              ${entry.note ? `<div class="text-xs text-purple-600 font-semibold italic">"${escapeHtml(entry.note)}"</div>` : ''}
             </div>
           </div>
         `;

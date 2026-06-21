@@ -39,7 +39,6 @@ export interface LocalizedBook {
   theme: string;
 }
 
-const AUTHOR_URL = 'https://www.amazon.com/author/evagallo';
 const dp = (asin: string) => `https://www.amazon.com/dp/${asin}`;
 
 export const books: Book[] = [
