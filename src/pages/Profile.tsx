@@ -11,7 +11,7 @@ import { useTranslation, useLanguage } from '../lib/language';
 const TRANSLATIONS = {
   en: {
     seoTitle: 'My Profile',
-    seoDesc: 'Your reading progress on Story Time with Eva — books read, want-to-read list, and activities completed. Saved locally on this device.',
+    seoDesc: 'Your reading progress on Story Time with Eva: books read, want-to-read list, and activities completed. Saved locally on this device.',
     heading: 'My Reading Profile',
     blurb: 'Your progress is saved on this device.',
     achievement: 'achievement',

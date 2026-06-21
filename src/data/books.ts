@@ -62,7 +62,7 @@ export const books: Book[] = [
       fr: 'Une aventure des couleurs avec Pixel et Hawel',
     },
     description: {
-      en: "Hawel wakes to find every color in the world swapped — banana blue, toast purple, sky doing something it shouldn't. With Pixel the butterfly, she sets off to find the Color Keeper and learn how red, yellow, and blue make every other color. A gentle first lesson in color theory.",
+      en: "Hawel wakes to find every color in the world swapped, banana blue, toast purple, sky doing something it shouldn't. With Pixel the butterfly, she sets off to find the Color Keeper and learn how red, yellow, and blue make every other color. A gentle first lesson in color theory.",
       es: 'Hawel despierta y descubre que todos los colores del mundo se han cambiado: el plátano es azul, la tostada morada y el cielo está haciendo algo raro. Con Pixel la mariposa, sale a buscar al Guardián de los Colores y a aprender cómo el rojo, el amarillo y el azul forman todos los demás colores. Una primera lección suave sobre teoría del color.',
       fr: "Hawel se réveille et découvre que toutes les couleurs du monde ont été échangées — la banane est bleue, le pain grillé violet et le ciel fait quelque chose qu'il ne devrait pas. Avec Pixel le papillon, elle part chercher la Gardienne des Couleurs et apprendre comment le rouge, le jaune et le bleu composent toutes les autres couleurs. Une douce première leçon de théorie des couleurs.",
     },
@@ -90,7 +90,7 @@ export const books: Book[] = [
       fr: 'Un album sur les voix qui se rejoignent',
     },
     description: {
-      en: 'In the village of Harmonia, every color sings its own song. When the colors argue about whose song is best, the music breaks apart — and only Pawa, a small glowing light who loves them all, can remind them how the symphony really works.',
+      en: 'In the village of Harmonia, every color sings its own song. When the colors argue about whose song is best, the music breaks apart, and only Pawa, a small glowing light who loves them all, can remind them how the symphony really works.',
       es: 'En el pueblo de Harmonía, cada color canta su propia canción. Cuando los colores se pelean por quién canta mejor, la música se rompe — y solo Pawa, una pequeña luz brillante que los quiere a todos, puede recordarles cómo funciona la verdadera sinfonía.',
       fr: "Dans le village d'Harmonia, chaque couleur chante sa propre chanson. Quand les couleurs se disputent pour savoir quelle chanson est la meilleure, la musique se brise — et seule Pawa, une petite lumière qui les aime toutes, peut leur rappeler comment fonctionne vraiment la symphonie.",
     },
@@ -147,7 +147,7 @@ export const books: Book[] = [
       fr: "Une histoire d'émerveillement nocturne et de magie tranquille",
     },
     description: {
-      en: 'Every night when Maya goes to bed, something magical happens. While Maya sleeps and dreams, her shadow wakes up and slips out the door for adventures of its own. The imprint flagship — quiet wonder, nighttime magic, and morning homecoming.',
+      en: 'Every night when Maya goes to bed, something magical happens. While Maya sleeps and dreams, her shadow wakes up and slips out the door for adventures of its own. The imprint flagship, quiet wonder, nighttime magic, and morning homecoming.',
       es: 'Cada noche, cuando Maya se va a la cama, ocurre algo mágico. Mientras Maya duerme y sueña, su sombra despierta y se escapa por la puerta hacia aventuras propias. El libro insignia de la colección: asombro tranquilo, magia nocturna y un regreso a casa al amanecer.',
       fr: "Chaque soir, quand Maya va se coucher, quelque chose de magique se produit. Pendant que Maya dort et rêve, son ombre se réveille et se glisse dehors pour vivre ses propres aventures. Le titre phare de la collection — émerveillement tranquille, magie nocturne et retour à la maison au petit matin.",
     },
@@ -419,7 +419,7 @@ export const books: Book[] = [
       fr: 'Une histoire sur l’océan caché dans une baignoire, une flaque et une mare',
     },
     description: {
-      en: 'A small yellow wooden boat sits on a shelf above the bathroom sink, watching the moon and dreaming of vast open ocean. Then one morning a boy carries him out to a sparkling puddle, and the adventure begins. A frog, a turtle, a goldfish, a duckling — each tiny water teaches the boat that the ocean was never the point. A gentle bedtime book about contentment and the wonder hidden in small worlds.',
+      en: 'A small yellow wooden boat sits on a shelf above the bathroom sink, watching the moon and dreaming of vast open ocean. Then one morning a boy carries him out to a sparkling puddle, and the adventure begins. A frog, a turtle, a goldfish, a duckling, each tiny water teaches the boat that the ocean was never the point. A gentle bedtime book about contentment and the wonder hidden in small worlds.',
       es: 'Un pequeño barco amarillo de madera está en un estante sobre el lavabo, mirando la luna y soñando con el vasto océano abierto. Hasta que una mañana un niño lo lleva a un charco brillante, y empieza la aventura. Una rana, una tortuga, un pez dorado, un patito — cada pequeño charco enseña al barco que el océano nunca fue lo importante. Un cuento tierno para la hora de dormir sobre el contentamiento y el asombro escondido en los mundos pequeños.',
       fr: 'Un petit bateau jaune en bois posé sur une étagère au-dessus du lavabo regarde la lune et rêve de vastes océans. Puis un matin, un enfant l’emporte vers une flaque scintillante, et l’aventure commence. Une grenouille, une tortue, un poisson rouge, un caneton — chaque petite étendue d’eau enseigne au bateau que l’océan n’était pas l’essentiel. Un doux livre du soir sur la satisfaction et l’émerveillement caché dans les petits mondes.',
     },

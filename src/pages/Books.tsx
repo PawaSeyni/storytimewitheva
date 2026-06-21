@@ -15,7 +15,7 @@ const FLAG_TO_LANG: Record<string, string> = { '🇺🇸': 'en', '🇪🇸': 'es
 const TRANSLATIONS = {
   en: {
     seoTitle: 'Our Magical Book Collection',
-    seoDesc: 'Browse all 18 books in the Eva Gallo Collection — multicultural picture books for children ages 3–9 about quiet wonder, kindness, and curiosity.',
+    seoDesc: 'Browse all 18 books in the Eva Gallo Collection: multicultural picture books for children ages 3–9 about quiet wonder, kindness, and curiosity.',
     heading: 'Our Magical Book Collection',
     subheading: 'Explore stories that inspire, educate, and delight young readers',
     searchPlaceholder: 'Search books by title or theme...',

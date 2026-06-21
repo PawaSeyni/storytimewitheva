@@ -26,7 +26,7 @@ const TRANSLATIONS = {
     emailPlaceholder: 'Enter your email address',
     submit: 'Get My Free Kit 🎨',
     submitting: 'Sending…',
-    successHeading: 'Almost there — check your inbox!',
+    successHeading: 'Almost there, check your inbox!',
     successDetail: 'Confirm your email and your Bilingual Starter Kit is on its way.',
     errorMessage: 'Something went wrong. Please try again or email contact@storytimewitheva.com.',
     privacy: '🔒 We respect your privacy. No spam, ever.',

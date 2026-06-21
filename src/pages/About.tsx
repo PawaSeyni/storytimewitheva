@@ -36,7 +36,7 @@ const TRANSLATIONS = {
     bio: [
       "This children's book series is a lively collection of imaginative stories from my childhood, created for kids ages 3 to 9.",
       'After a lifelong career in public health, I am now a full-time grandmother, caring for two young granddaughters with an endless appetite for bedtime stories.',
-      'My inspiration comes from childhood memories with my mother and aunt. This book — and the series it belongs to — is my way of passing down traditions and lessons from a time before digital media.',
+      'My inspiration comes from childhood memories with my mother and aunt. This book, and the series it belongs to, is my way of passing down traditions and lessons from a time before digital media.',
     ],
     motivation: 'My motivation is simple: to share that magic with a new generation.',
     viewBooks: '🛒 View Books on Amazon',
@@ -44,7 +44,7 @@ const TRANSLATIONS = {
     missionHeading: 'Our Mission & Values',
     cards: [
       { title: 'Our Story', text: "Story Time with Eva began with Eva Gallo, a grandmother and retired public-health worker who wanted to pass the bedtime stories of her own childhood on to a new generation. Every book in the collection grew from that simple wish: to make reading magical for families everywhere." },
-      { title: 'Why Books Matter', text: "Reading with Eva isn't just about words on a page — it's about opening doorways to new worlds, building vocabulary, and creating precious memories that last forever." },
+      { title: 'Why Books Matter', text: "Reading with Eva isn't just about words on a page, it's about opening doorways to new worlds, building vocabulary, and creating precious memories that last forever." },
       { title: 'Our Mission', text: 'We believe every child deserves access to stories that spark imagination, build empathy, and celebrate the joy of reading with Eva as their guide.' },
       { title: 'Our Values', text: 'Quality storytelling, inclusive representation, educational excellence, and making reading accessible and fun for all families around the world.' },
     ],

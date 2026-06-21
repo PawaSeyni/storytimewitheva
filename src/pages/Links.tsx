@@ -4,12 +4,12 @@ import { useTranslation } from '../lib/language';
 
 const TRANSLATIONS = {
   en: {
-    seoTitle: 'Story Time with Eva — Links',
+    seoTitle: 'Story Time with Eva: Links',
     seoDesc: 'Quick links from the Eva Gallo Collection: the books on Amazon, free printables, and where to follow along.',
     tagline: 'Multicultural picture books for curious minds · EN · ES · FR',
     sectionBooks: 'The Books',
     amazonCta: '📚 The Eva Gallo Collection on Amazon',
-    amazonSub: 'Browse the full collection — multicultural picture books, ages 3–9',
+    amazonSub: 'Browse the full collection: multicultural picture books, ages 3–9',
     sectionFreebies: 'Free Printables',
     bedtimeCta: '🌙 Bilingual Bedtime Routine Chart',
     bedtimeSub: 'Free PDF · EN · ES · FR available',
@@ -20,14 +20,14 @@ const TRANSLATIONS = {
     guideCta: '📖 Parent\'s Guide to Bilingual Reading',
     guideSub: 'Free PDF · available in EN · ES · FR',
     sectionFollow: 'Follow Along',
-    pinterestCta: '📌 Pinterest — daily reading inspiration',
+    pinterestCta: '📌 Pinterest: daily reading inspiration',
     instagramCta: '📷 Instagram @evagallo.books',
     threadsCta: '🧵 Threads @evagallo.books',
     tiktokCta: '🎵 TikTok @evagallo8',
     homepageCta: '🏠 Explore storytimewitheva.com',
     sectionEmail: 'Stay in touch',
     emailCta: '💌 Join the newsletter',
-    emailSub: 'Bedtime stories, reading tips, free printables — weekly',
+    emailSub: 'Bedtime stories, reading tips, free printables, weekly',
     footer: 'Story Time with Eva · An Eva Gallo Collection imprint',
   },
   es: {
