@@ -7,7 +7,7 @@ import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
 import { PRICING } from '../data/pricing';
 import { matchesAgeFilter } from '../lib/ages';
-import { useTranslation } from '../lib/language';
+import { useTranslation, useLanguage, localizePath } from '../lib/language';
 
 const SITE_URL = 'https://storytimewitheva.com';
 const FLAG_TO_LANG: Record<string, string> = { '🇺🇸': 'en', '🇪🇸': 'es', '🇫🇷': 'fr' };
@@ -91,10 +91,11 @@ export default function Books() {
   const [search, setSearch] = useState('');
   const [ageFilter, setAgeFilter] = useState('All');
   const t = useTranslation(TRANSLATIONS);
+  const { language } = useLanguage();
   const books = useBooks();
 
-  // ItemList of Book schema for the full catalog — gives search engines a
-  // per-title entry even though books don't have individual pages yet.
+  // ItemList of Book schema for the full catalog — each entry links to its
+  // on-site book page (localized), with Amazon kept under sameAs.
   const booksSchema = useMemo(
     () => ({
       '@context': 'https://schema.org',
@@ -109,14 +110,15 @@ export default function Books() {
           name: book.title,
           author: { '@type': 'Person', name: 'Eva Gallo' },
           inLanguage: book.languages.map(f => FLAG_TO_LANG[f]).filter(Boolean),
-          url: book.amazonUrl,
+          url: `${SITE_URL}${localizePath(`/books/${book.id}`, language)}/`,
+          sameAs: book.amazonUrl,
           image: book.coverImage.startsWith('http') ? book.coverImage : `${SITE_URL}${book.coverImage}`,
           ...(book.subtitle ? { alternativeHeadline: book.subtitle } : {}),
           abstract: book.description,
         },
       })),
     }),
-    [books],
+    [books, language],
   );
 
   // Internal age filter keys are language-invariant; UI labels come from t.
@@ -165,6 +167,7 @@ export default function Books() {
               <button
                 key={f.key}
                 onClick={() => setAgeFilter(f.key)}
+                aria-pressed={ageFilter === f.key}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                   ageFilter === f.key
                     ? 'bg-purple-600 text-white shadow-md'

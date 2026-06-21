@@ -3,7 +3,8 @@ import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
 import ReadAloudButton from '../components/ReadAloudButton';
-import { useTranslation } from '../lib/language';
+import { useMemo } from 'react';
+import { useTranslation, useLanguage, localizePath } from '../lib/language';
 import evaHeadshot from '../assets/eva-headshot.jpg';
 
 const SITE_URL = 'https://storytimewitheva.com';
@@ -15,7 +16,6 @@ const AUTHOR_SCHEMA = {
   jobTitle: 'Children’s Author',
   description:
     'Author of the Eva Gallo Collection of multicultural picture books for children ages 3–9.',
-  url: `${SITE_URL}/about`,
   image: `${SITE_URL}${evaHeadshot}`,
   sameAs: [
     'https://www.amazon.com/author/evagallo',
@@ -110,11 +110,17 @@ const CARD_STYLES = [
 
 export default function About() {
   const t = useTranslation(TRANSLATIONS);
+  const { language } = useLanguage();
+  // Per-language, trailing-slash URL matching the page's own canonical/hreflang.
+  const authorSchema = useMemo(
+    () => ({ ...AUTHOR_SCHEMA, url: `${SITE_URL}${localizePath('/about', language)}/` }),
+    [language],
+  );
 
   return (
     <main>
       <Seo title={t.seoTitle} description={t.seoDesc} path="/about" image={`${SITE_URL}${evaHeadshot}`} />
-      <JsonLd id="author" data={AUTHOR_SCHEMA} />
+      <JsonLd id="author" data={authorSchema} />
 
       <section className="bg-gradient-to-b from-amber-50 to-white py-14 px-4">
         <div className="max-w-3xl mx-auto text-center">

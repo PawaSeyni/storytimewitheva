@@ -446,7 +446,7 @@ export default function StoryBuilderDemo() {
             {[...savedStories].reverse().map((story, index) => (
               <div key={index} className="bg-white rounded-xl p-6 border-l-4 border-purple-500 shadow-lg">
                 <div className="text-purple-700 font-bold text-lg mb-2">
-                  {t.storyN}{savedStories.length - index} — {story.date}
+                  {t.storyN}{savedStories.length - index} · {story.date}
                 </div>
                 <div className="text-gray-700 leading-relaxed">{story.text}</div>
               </div>

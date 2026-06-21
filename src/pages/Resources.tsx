@@ -890,6 +890,7 @@ export default function Resources() {
               <button
                 key={cat.key}
                 onClick={() => setActiveCategory(cat.key)}
+                aria-pressed={activeCategory === cat.key}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                   activeCategory === cat.key
                     ? 'bg-purple-600 text-white shadow-md'

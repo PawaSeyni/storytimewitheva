@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -221,6 +221,14 @@ export default function CharacterWorkshopDemo() {
     }
   };
 
+  // Keyboard activation for the picker cards (styled <div>s, not <button>s).
+  const onActivate = (fn: () => void) => (e: ReactKeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      fn();
+    }
+  };
+
   const handleShowSummary = () => {
     setShowSummary(true);
     scrollTimer.current = setTimeout(() => {
@@ -257,8 +265,13 @@ export default function CharacterWorkshopDemo() {
           {t.types.map((typeName, i) => (
             <Card
               key={TYPE_ICONS[i]}
+              role="button"
+              tabIndex={0}
+              aria-pressed={selectedType === typeName}
+              aria-label={typeName}
               onClick={() => setSelectedType(typeName)}
-              className={`p-4 text-center cursor-pointer transition-all hover:scale-105 ${
+              onKeyDown={onActivate(() => setSelectedType(typeName))}
+              className={`p-4 text-center cursor-pointer transition-all hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
                 selectedType === typeName
                   ? 'bg-gradient-to-br from-pink-400 to-red-400 text-white ring-4 ring-pink-300'
                   : 'bg-white hover:bg-pink-50'
@@ -278,6 +291,7 @@ export default function CharacterWorkshopDemo() {
           value={charName}
           onChange={(e) => setCharName(e.target.value)}
           placeholder={t.namePlaceholder}
+          aria-label={t.step2}
           className="text-lg border-2 border-purple-400 focus:border-purple-600"
         />
       </div>
@@ -287,20 +301,20 @@ export default function CharacterWorkshopDemo() {
         <StepHeader n={3} title={t.step3} />
         <div className="space-y-3">
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">{t.colors}</label>
-            <Input value={colors} onChange={(e) => setColors(e.target.value)} placeholder={t.colorsPlaceholder} />
+            <label htmlFor="cw-colors" className="block text-sm font-bold text-gray-700 mb-1">{t.colors}</label>
+            <Input id="cw-colors" value={colors} onChange={(e) => setColors(e.target.value)} placeholder={t.colorsPlaceholder} />
           </div>
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">{t.eyes}</label>
-            <Input value={eyes} onChange={(e) => setEyes(e.target.value)} placeholder={t.eyesPlaceholder} />
+            <label htmlFor="cw-eyes" className="block text-sm font-bold text-gray-700 mb-1">{t.eyes}</label>
+            <Input id="cw-eyes" value={eyes} onChange={(e) => setEyes(e.target.value)} placeholder={t.eyesPlaceholder} />
           </div>
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">{t.features}</label>
-            <Input value={features} onChange={(e) => setFeatures(e.target.value)} placeholder={t.featuresPlaceholder} />
+            <label htmlFor="cw-features" className="block text-sm font-bold text-gray-700 mb-1">{t.features}</label>
+            <Input id="cw-features" value={features} onChange={(e) => setFeatures(e.target.value)} placeholder={t.featuresPlaceholder} />
           </div>
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">{t.outfit}</label>
-            <Input value={outfit} onChange={(e) => setOutfit(e.target.value)} placeholder={t.outfitPlaceholder} />
+            <label htmlFor="cw-outfit" className="block text-sm font-bold text-gray-700 mb-1">{t.outfit}</label>
+            <Input id="cw-outfit" value={outfit} onChange={(e) => setOutfit(e.target.value)} placeholder={t.outfitPlaceholder} />
           </div>
         </div>
         <div className="mt-4 bg-green-300 text-green-900 p-3 rounded-lg font-semibold text-sm">
@@ -316,8 +330,13 @@ export default function CharacterWorkshopDemo() {
           {t.traits.map((traitName, i) => (
             <Card
               key={TRAIT_ICONS[i]}
+              role="button"
+              tabIndex={0}
+              aria-pressed={selectedTraits.includes(traitName)}
+              aria-label={traitName}
               onClick={() => toggleTrait(traitName)}
-              className={`p-3 text-center cursor-pointer transition-all hover:scale-105 ${
+              onKeyDown={onActivate(() => toggleTrait(traitName))}
+              className={`p-3 text-center cursor-pointer transition-all hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
                 selectedTraits.includes(traitName)
                   ? 'bg-gradient-to-br from-purple-400 to-pink-400 text-white ring-4 ring-purple-300'
                   : 'bg-white hover:bg-purple-50'
@@ -338,6 +357,7 @@ export default function CharacterWorkshopDemo() {
           value={powers}
           onChange={(e) => setPowers(e.target.value)}
           placeholder={t.powersPlaceholder}
+          aria-label={t.step5}
           rows={3}
           className="border-2 border-blue-400"
         />
@@ -348,20 +368,20 @@ export default function CharacterWorkshopDemo() {
         <StepHeader n={6} title={t.step6} />
         <div className="space-y-3">
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">{t.homeLabel}</label>
-            <Input value={home} onChange={(e) => setHome(e.target.value)} placeholder={t.homePlaceholder} />
+            <label htmlFor="cw-home" className="block text-sm font-bold text-gray-700 mb-1">{t.homeLabel}</label>
+            <Input id="cw-home" value={home} onChange={(e) => setHome(e.target.value)} placeholder={t.homePlaceholder} />
           </div>
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">{t.lovesLabel}</label>
-            <Input value={loves} onChange={(e) => setLoves(e.target.value)} placeholder={t.lovesPlaceholder} />
+            <label htmlFor="cw-loves" className="block text-sm font-bold text-gray-700 mb-1">{t.lovesLabel}</label>
+            <Input id="cw-loves" value={loves} onChange={(e) => setLoves(e.target.value)} placeholder={t.lovesPlaceholder} />
           </div>
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">{t.fearsLabel}</label>
-            <Input value={fears} onChange={(e) => setFears(e.target.value)} placeholder={t.fearsPlaceholder} />
+            <label htmlFor="cw-fears" className="block text-sm font-bold text-gray-700 mb-1">{t.fearsLabel}</label>
+            <Input id="cw-fears" value={fears} onChange={(e) => setFears(e.target.value)} placeholder={t.fearsPlaceholder} />
           </div>
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">{t.goalLabel}</label>
-            <Input value={goal} onChange={(e) => setGoal(e.target.value)} placeholder={t.goalPlaceholder} />
+            <label htmlFor="cw-goal" className="block text-sm font-bold text-gray-700 mb-1">{t.goalLabel}</label>
+            <Input id="cw-goal" value={goal} onChange={(e) => setGoal(e.target.value)} placeholder={t.goalPlaceholder} />
           </div>
         </div>
       </div>

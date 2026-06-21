@@ -17,6 +17,7 @@ const TRANSLATIONS = {
     rights: '© 2025 Pawa Press Inc. · Story Time with Eva. All rights reserved.',
     privacy: 'Privacy Policy',
     terms: 'Terms of Use',
+    amazonAuthor: 'Amazon author page',
   },
   es: {
     tagline: '¡Donde las historias cobran vida! Libros y actividades bilingües mágicos para mentes curiosas.',
@@ -33,6 +34,7 @@ const TRANSLATIONS = {
     rights: '© 2025 Pawa Press Inc. · Story Time with Eva. Todos los derechos reservados.',
     privacy: 'Política de privacidad',
     terms: 'Términos de uso',
+    amazonAuthor: 'Página de autora en Amazon',
   },
   fr: {
     tagline: 'Où les histoires prennent vie ! Des livres et activités bilingues magiques pour les jeunes esprits curieux.',
@@ -49,6 +51,7 @@ const TRANSLATIONS = {
     rights: '© 2025 Pawa Press Inc. · Story Time with Eva. Tous droits réservés.',
     privacy: 'Politique de confidentialité',
     terms: 'Conditions d\'utilisation',
+    amazonAuthor: 'Page autrice sur Amazon',
   },
 };
 
@@ -113,7 +116,7 @@ export default function Footer() {
                 className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors text-lg">
                 🧵
               </a>
-              <a href="https://www.amazon.com/author/evagallo" target="_blank" rel="noopener noreferrer" aria-label="Amazon author page"
+              <a href="https://www.amazon.com/author/evagallo" target="_blank" rel="noopener noreferrer" aria-label={t.amazonAuthor}
                 className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors text-lg">
                 📚
               </a>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { X, AlertTriangle, Lightbulb, Download } from 'lucide-react';
@@ -637,6 +637,14 @@ export default function CraftCornerDemo() {
 
   const [selectedCraft, setSelectedCraft] = useState<CraftKey | null>(null);
   const craft = selectedCraft ? crafts[selectedCraft] : null;
+
+  // Keyboard activation for the craft cards (styled <div>s, not <button>s).
+  const onActivate = (fn: () => void) => (e: ReactKeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      fn();
+    }
+  };
   const meta = selectedCraft ? CRAFT_META[selectedCraft] : null;
 
   return (
@@ -673,8 +681,12 @@ export default function CraftCornerDemo() {
           return (
             <Card
               key={key}
+              role="button"
+              tabIndex={0}
+              aria-label={c.title}
               onClick={() => setSelectedCraft(key)}
-              className="bg-gradient-to-br from-yellow-100 to-orange-100 border-4 border-orange-300 p-6 cursor-pointer hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
+              onKeyDown={onActivate(() => setSelectedCraft(key))}
+              className="bg-gradient-to-br from-yellow-100 to-orange-100 border-4 border-orange-300 p-6 cursor-pointer hover:shadow-xl hover:-translate-y-2 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
             >
               <div className="text-6xl mb-4 text-center">{m.emoji}</div>
               <h3 className="text-xl font-bold text-gray-800 mb-2 text-center">{c.title}</h3>

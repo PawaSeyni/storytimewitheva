@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -361,6 +361,14 @@ export default function BookmarkCraftsDemo() {
   const currentAnimal = animals.find(a => a.emoji === selectedAnimal.emoji) ?? animals[0];
   const currentCountry = countries.find(c => c.emoji === selectedCountry.emoji) ?? countries[0];
 
+  // Keyboard activation for the picker cards (which are styled <div>s, not <button>s).
+  const onActivate = (fn: () => void) => (e: ReactKeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      fn();
+    }
+  };
+
   const loadTemplate = (templateKey: TemplateKey) => {
     const meta = TEMPLATE_META.find(m => m.id === templateKey);
     if (!meta) return;
@@ -486,8 +494,12 @@ export default function BookmarkCraftsDemo() {
           {TEMPLATE_META.map((template) => (
             <Card
               key={template.id}
+              role="button"
+              tabIndex={0}
               onClick={() => loadTemplate(template.id)}
-              className="bg-white p-3 sm:p-4 text-center cursor-pointer hover:scale-105 transition-transform"
+              onKeyDown={onActivate(() => loadTemplate(template.id))}
+              aria-label={t.templates[template.id].name}
+              className="bg-white p-3 sm:p-4 text-center cursor-pointer hover:scale-105 transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
             >
               <div className="text-3xl sm:text-4xl mb-2">{template.icon}</div>
               <div className="font-bold text-purple-700 text-sm sm:text-base">{t.templates[template.id].name}</div>
@@ -511,8 +523,13 @@ export default function BookmarkCraftsDemo() {
               {animals.map((animal) => (
                 <Card
                   key={animal.emoji}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={currentAnimal.emoji === animal.emoji}
+                  aria-label={animal.name}
                   onClick={() => setSelectedAnimal(animal)}
-                  className={`p-2 sm:p-3 text-center cursor-pointer transition-all hover:scale-105 ${
+                  onKeyDown={onActivate(() => setSelectedAnimal(animal))}
+                  className={`p-2 sm:p-3 text-center cursor-pointer transition-all hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
                     currentAnimal.emoji === animal.emoji
                       ? 'bg-gradient-to-br from-pink-400 to-red-400 text-white ring-4 ring-pink-300'
                       : 'bg-white'
@@ -532,8 +549,13 @@ export default function BookmarkCraftsDemo() {
               {countries.map((country) => (
                 <Card
                   key={country.emoji}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={currentCountry.emoji === country.emoji}
+                  aria-label={country.name}
                   onClick={() => setSelectedCountry(country)}
-                  className={`p-2 sm:p-3 text-center cursor-pointer transition-all hover:scale-105 ${
+                  onKeyDown={onActivate(() => setSelectedCountry(country))}
+                  className={`p-2 sm:p-3 text-center cursor-pointer transition-all hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
                     currentCountry.emoji === country.emoji
                       ? 'bg-gradient-to-br from-blue-400 to-cyan-400 text-white ring-4 ring-blue-300'
                       : 'bg-white'
@@ -551,10 +573,13 @@ export default function BookmarkCraftsDemo() {
             <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3">{t.chooseColor}</h3>
             <div className="grid grid-cols-5 gap-3">
               {COLORS.map((color, idx) => (
-                <div
+                <button
+                  type="button"
                   key={idx}
+                  aria-label={`${t.chooseColor} ${idx + 1}`}
+                  aria-pressed={selectedColor === color}
                   onClick={() => setSelectedColor(color)}
-                  className={`w-full aspect-square rounded-full cursor-pointer transition-all hover:scale-110 ${
+                  className={`w-full aspect-square rounded-full cursor-pointer transition-all hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 ${
                     selectedColor === color ? 'ring-4 ring-gray-800 scale-110' : 'ring-2 ring-white'
                   }`}
                   style={{ background: color }}
@@ -570,6 +595,7 @@ export default function BookmarkCraftsDemo() {
               value={bookmarkText}
               onChange={(e) => setBookmarkText(e.target.value)}
               placeholder={t.textPlaceholder}
+              aria-label={t.addText}
               maxLength={30}
               className="text-base sm:text-lg border-2 border-rose-400"
             />
@@ -582,8 +608,13 @@ export default function BookmarkCraftsDemo() {
               {PATTERN_KEYS.map((key) => (
                 <Card
                   key={key}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={selectedPatternKey === key}
+                  aria-label={t.patterns[key]}
                   onClick={() => setSelectedPatternKey(key)}
-                  className={`p-3 sm:p-4 text-center cursor-pointer transition-all hover:scale-105 ${
+                  onKeyDown={onActivate(() => setSelectedPatternKey(key))}
+                  className={`p-3 sm:p-4 text-center cursor-pointer transition-all hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
                     selectedPatternKey === key
                       ? 'bg-gradient-to-br from-purple-400 to-pink-400 text-white ring-4 ring-purple-300'
                       : 'bg-white'

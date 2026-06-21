@@ -87,8 +87,8 @@
     </div>
 
     <div class="bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 rounded-2xl p-5 mb-6 text-white shadow-lg">
-      <h2 class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
-      <ol class="list-decimal list-inside space-y-1 text-sm font-semibold">
+      <h2 class="font-extrabold text-lg mb-2" id="howToTitle">✨ How to Play ✨</h2>
+      <ol class="list-decimal list-inside space-y-1 text-sm font-semibold" id="howToList">
         <li>Pick a rhyme or song below</li>
         <li>Choose English 🇺🇸, Spanish 🇪🇸, or French 🇫🇷</li>
         <li>Press ▶ Play and follow the highlighted words</li>
@@ -128,13 +128,13 @@
         <button id="playBtn" class="pulse-play w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-full shadow-xl hover:shadow-2xl transition-all text-2xl font-extrabold flex items-center justify-center">▶</button>
         <button id="speedBtn" class="p-3 bg-gray-100 hover:bg-gray-200 rounded-full text-gray-600 transition-all font-bold text-sm" title="Speed">1×</button>
       </div>
-      <p class="text-center text-xs text-gray-400 mt-3 font-semibold">🔊 Words are read aloud using your device's voice, say them along!</p>
+      <p class="text-center text-xs text-gray-400 mt-3 font-semibold" id="readAloudNote">🔊 Words are read aloud using your device's voice, say them along!</p>
     </div>
 
     <div class="bg-pink-50 border-2 border-pink-200 rounded-2xl p-5 text-center">
-      <p class="font-bold text-pink-700 text-base mb-1">🖨️ Print the lyrics sheet!</p>
-      <p class="text-gray-500 text-sm mb-3">Download the FREE 20-Page Bilingual Activity Kit, includes printable lyrics in English and Spanish!</p>
-      <a href="/#email-signup" class="inline-block px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold rounded-full shadow hover:shadow-lg transition-all text-sm">Get Free Kit 🎨</a>
+      <p class="font-bold text-pink-700 text-base mb-1" id="printTitle">🖨️ Print the lyrics sheet!</p>
+      <p class="text-gray-500 text-sm mb-3" id="printDesc">Download the FREE 20-Page Bilingual Activity Kit, includes printable lyrics in English and Spanish!</p>
+      <a href="/#email-signup" id="printLink" class="inline-block px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold rounded-full shadow hover:shadow-lg transition-all text-sm">Get Free Kit 🎨</a>
     </div>
 
   </main>
@@ -162,34 +162,75 @@
 
     const songs = [
       {
-        id: 'twinkle', emoji: '⭐', title: 'Twinkle Twinkle', subtitle: 'Ages 3–7 · Classic Nursery Rhyme',
+        id: 'twinkle', emoji: '⭐', title: 'Twinkle Twinkle', subtitle: { en: 'Ages 3–7 · Classic Nursery Rhyme', es: 'Edades 3–7 · Rima clásica', fr: 'Âges 3–7 · Comptine classique' },
         en: ["Twinkle, twinkle, little star,","How I wonder what you are!","Up above the world so high,","Like a diamond in the sky.","Twinkle, twinkle, little star,","How I wonder what you are!"],
         es: ["Brilla, brilla, pequeña estrella,","¡Cómo me pregunto lo que eres!","Allá arriba en el mundo tan alto,","Como un diamante en el cielo.","Brilla, brilla, pequeña estrella,","¡Cómo me pregunto lo que eres!"],
         fr: ["Brille, brille, petite étoile,","Comme je me demande ce que tu es!","Là-haut dans le monde si haut,","Comme un diamant dans le ciel.","Brille, brille, petite étoile,","Comme je me demande ce que tu es!"],
         langCodes: { en: 'en-US', es: 'es-ES', fr: 'fr-FR' }
       },
       {
-        id: 'rainbow', emoji: '🌈', title: 'Rainbow Song', subtitle: 'Ages 3–7 · Colors & Nature',
+        id: 'rainbow', emoji: '🌈', title: 'Rainbow Song', subtitle: { en: 'Ages 3–7 · Colors & Nature', es: 'Edades 3–7 · Colores y naturaleza', fr: 'Âges 3–7 · Couleurs et nature' },
         en: ["Red and orange, yellow and green,","The most beautiful rainbow I have seen!","Blue and indigo, violet too,","A rainbow of colors, just for you!","Sing the colors, one by one,","A rainbow shining in the sun!"],
         es: ["Rojo y naranja, amarillo y verde,","¡El arcoíris más hermoso que he visto!","Azul e índigo, violeta también,","¡Un arcoíris de colores, solo para ti!","Canta los colores, uno por uno,","¡Un arcoíris brillando bajo el sol!"],
         fr: ["Rouge et orange, jaune et vert,","Le plus beau arc-en-ciel que j'ai vu!","Bleu et indigo, violet aussi,","Un arc-en-ciel de couleurs, juste pour toi!","Chante les couleurs, une par une,","Un arc-en-ciel brillant sous le soleil!"],
         langCodes: { en: 'en-US', es: 'es-ES', fr: 'fr-FR' }
       },
       {
-        id: 'animals', emoji: '🐾', title: 'Animal Friends', subtitle: 'Ages 3–6 · Animals & Sounds',
+        id: 'animals', emoji: '🐾', title: 'Animal Friends', subtitle: { en: 'Ages 3–6 · Animals & Sounds', es: 'Edades 3–6 · Animales y sonidos', fr: 'Âges 3–6 · Animaux et sons' },
         en: ["The dog says woof, the cat says meow,","The cow in the field says moo right now!","The bird sings tweet up in the tree,","All the animals are friends with me!","Woof and meow and moo and tweet,","Animal friends are so sweet!"],
         es: ["El perro dice guau, el gato dice miau,","¡La vaca en el campo dice mu ahora!","El pájaro canta pío en el árbol,","¡Todos los animales son mis amigos!","Guau y miau y mu y pío,","¡Los amigos animales son tan dulces!"],
         fr: ["Le chien dit ouaf, le chat dit miaou,","La vache dans le champ dit meuh maintenant!","L'oiseau chante cui-cui dans l'arbre,","Tous les animaux sont mes amis!","Ouaf et miaou et meuh et cui-cui,","Les amis animaux sont si doux!"],
         langCodes: { en: 'en-US', es: 'es-ES', fr: 'fr-FR' }
       },
       {
-        id: 'kindness', emoji: '💛', title: 'Kindness Song', subtitle: 'Ages 4–8 · Values & Character',
+        id: 'kindness', emoji: '💛', title: 'Kindness Song', subtitle: { en: 'Ages 4–8 · Values & Character', es: 'Edades 4–8 · Valores y carácter', fr: 'Âges 4–8 · Valeurs et caractère' },
         en: ["Be kind, be kind, every single day,","A smile and a hug can brighten the way!","Share your toys and share your heart,","Kindness is a beautiful art.","Be kind, be kind, to friends near and far,","Kindness makes you a shining star!"],
         es: ["Sé amable, sé amable, cada día,","¡Una sonrisa y un abrazo iluminan el camino!","Comparte tus juguetes y comparte tu corazón,","La amabilidad es un arte hermoso.","Sé amable, sé amable, con amigos cerca y lejos,","¡La amabilidad te hace una estrella brillante!"],
         fr: ["Sois gentil, sois gentil, chaque jour,","Un sourire et un câlin illuminent le chemin!","Partage tes jouets et partage ton coeur,","La gentillesse est un bel art.","Sois gentil, sois gentil, avec les amis proches et lointains,","La gentillesse fait de toi une étoile brillante!"],
         langCodes: { en: 'en-US', es: 'es-ES', fr: 'fr-FR' }
       },
     ];
+
+    // UI strings per language, applied on init and on language switch.
+    const UI = {
+      en: {
+        howToTitle: '✨ How to Play ✨',
+        howTo: ['Pick a rhyme or song below', 'Choose English 🇺🇸, Spanish 🇪🇸, or French 🇫🇷', 'Press ▶ Play and follow the highlighted words', 'Say each word out loud as it lights up!', 'Try singing it yourself, you are a superstar! 🌟'],
+        readAloud: "🔊 Words are read aloud using your device's voice, say them along!",
+        printTitle: '🖨️ Print the lyrics sheet!',
+        printDesc: 'Download the FREE 20-Page Bilingual Activity Kit, includes printable lyrics in English and Spanish!',
+        printLink: 'Get Free Kit 🎨',
+        alertNoTTS: 'Your browser does not support text-to-speech. Please try Chrome or Edge.',
+      },
+      es: {
+        howToTitle: '✨ Cómo jugar ✨',
+        howTo: ['Elige una rima o canción abajo', 'Elige inglés 🇺🇸, español 🇪🇸 o francés 🇫🇷', 'Pulsa ▶ y sigue las palabras resaltadas', '¡Di cada palabra en voz alta cuando se ilumine!', '¡Intenta cantarla tú, eres una estrella! 🌟'],
+        readAloud: '🔊 Las palabras se leen en voz alta con la voz de tu dispositivo, ¡dilas tú también!',
+        printTitle: '🖨️ ¡Imprime la hoja de letras!',
+        printDesc: 'Descarga GRATIS el kit bilingüe de 20 páginas, ¡incluye letras imprimibles en inglés y español!',
+        printLink: 'Recibe el kit gratis 🎨',
+        alertNoTTS: 'Tu navegador no admite lectura en voz alta. Prueba con Chrome o Edge.',
+      },
+      fr: {
+        howToTitle: '✨ Comment jouer ✨',
+        howTo: ['Choisis une comptine ou une chanson ci-dessous', 'Choisis anglais 🇺🇸, espagnol 🇪🇸 ou français 🇫🇷', 'Appuie sur ▶ et suis les mots surlignés', 'Dis chaque mot à voix haute quand il s\'allume !', 'Essaie de la chanter, tu es une star ! 🌟'],
+        readAloud: "🔊 Les mots sont lus à voix haute par ton appareil, dis-les avec lui !",
+        printTitle: '🖨️ Imprime la feuille de paroles !',
+        printDesc: 'Télécharge gratuitement le kit bilingue de 20 pages, avec des paroles imprimables en anglais et espagnol !',
+        printLink: 'Recevoir le kit gratuit 🎨',
+        alertNoTTS: "Ton navigateur ne prend pas en charge la lecture vocale. Essaie Chrome ou Edge.",
+      },
+    };
+
+    function applyUILang() {
+      const u = UI[currentLang] || UI.en;
+      document.getElementById('howToTitle').textContent = u.howToTitle;
+      document.getElementById('howToList').innerHTML = u.howTo.map(li => `<li>${li}</li>`).join('');
+      document.getElementById('readAloudNote').textContent = u.readAloud;
+      document.getElementById('printTitle').textContent = u.printTitle;
+      document.getElementById('printDesc').textContent = u.printDesc;
+      document.getElementById('printLink').textContent = u.printLink;
+    }
 
     let currentSong = songs[0];
     let currentLang = 'en';
@@ -226,12 +267,15 @@
         currentLang = tab.dataset.lang;
         stopPlayback();
         renderLyrics();
+        updateSongInfo();
+        applyUILang();
       });
     });
 
     function updateSongInfo() {
       document.getElementById('songTitle').textContent = currentSong.title;
-      document.getElementById('songSubtitle').textContent = currentSong.subtitle;
+      const sub = currentSong.subtitle;
+      document.getElementById('songSubtitle').textContent = typeof sub === 'string' ? sub : (sub[currentLang] || sub.en);
     }
 
     function renderLyrics() {
@@ -268,7 +312,7 @@
 
     function speakAllWords() {
       if (!window.speechSynthesis) {
-        alert('Your browser does not support text-to-speech. Please try Chrome or Edge.');
+        alert((UI[currentLang] || UI.en).alertNoTTS);
         return;
       }
       window.speechSynthesis.cancel();
@@ -372,6 +416,7 @@
       });
     }
     // Init
+    applyUILang();
     renderLyrics();
     updateSongInfo();
   </script>

@@ -372,6 +372,16 @@ export default function BingoDemo() {
     if (lines.length === 0) toast(t.noBingo);
   };
 
+  // Reset marks AND win state, so the win banner / green highlights don't persist
+  // over a cleared board.
+  const clearMarks = () => {
+    setCompletedSquares(new Set([12]));
+    setHasBingo(false);
+    setBingoLines([]);
+    setAwardedLines(new Set());
+    setFullCardAwarded(false);
+  };
+
   const toggleSquare = (index: number) => {
     if (currentCard[index]?.free) return;
     const next = new Set(completedSquares);
@@ -423,6 +433,7 @@ export default function BingoDemo() {
             <Button
               key={themeKey}
               onClick={() => changeTheme(themeKey)}
+              aria-pressed={currentTheme === themeKey}
               className={`rounded-full ${
                 currentTheme === themeKey
                   ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
@@ -450,12 +461,16 @@ export default function BingoDemo() {
         <h2 className="text-2xl font-bold text-center text-white mb-4">{themes[currentTheme].title}</h2>
         <div className="grid grid-cols-5 gap-1 sm:gap-2 max-w-2xl mx-auto">
           {currentCard.map((item, index) => (
-            <div
+            <button
+              type="button"
               key={index}
               onClick={() => toggleSquare(index)}
-              className={`aspect-square p-1 sm:p-2 flex flex-col items-center justify-center text-center text-[9px] sm:text-xs cursor-pointer rounded-lg sm:rounded-xl transition-all shadow-md overflow-hidden ${
+              disabled={item.free}
+              aria-label={item.text}
+              aria-pressed={item.free ? undefined : completedSquares.has(index)}
+              className={`aspect-square p-1 sm:p-2 flex flex-col items-center justify-center text-center text-[9px] sm:text-xs cursor-pointer rounded-lg sm:rounded-xl transition-all shadow-md overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
                 item.free
-                  ? 'bg-gradient-to-br from-pink-400 to-red-400 text-white font-bold'
+                  ? 'bg-gradient-to-br from-pink-400 to-red-400 text-white font-bold cursor-default'
                   : completedSquares.has(index)
                   ? isInBingoLine(index)
                     ? 'bg-gradient-to-br from-green-400 to-emerald-500 text-white scale-105 ring-2 sm:ring-4 ring-yellow-400'
@@ -463,9 +478,9 @@ export default function BingoDemo() {
                   : 'bg-white hover:bg-blue-50 hover:scale-105'
               }`}
             >
-              <span className="text-lg sm:text-2xl mb-0.5 sm:mb-1 leading-none">{item.emoji}</span>
+              <span aria-hidden="true" className="text-lg sm:text-2xl mb-0.5 sm:mb-1 leading-none">{item.emoji}</span>
               <span className="leading-tight break-words w-full">{item.text}</span>
-            </div>
+            </button>
           ))}
         </div>
       </div>
@@ -498,7 +513,7 @@ export default function BingoDemo() {
           {t.newCard}
         </Button>
         <Button
-          onClick={() => setCompletedSquares(new Set([12]))}
+          onClick={clearMarks}
           className="bg-gradient-to-r from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600 text-white font-bold px-8 py-6 rounded-full shadow-lg"
         >
           {t.clearAll}
