@@ -97,6 +97,7 @@ export default function Activities() {
               <button
                 key={f.key}
                 onClick={() => setAgeFilter(f.key)}
+                aria-pressed={ageFilter === f.key}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                   ageFilter === f.key
                     ? 'bg-purple-600 text-white shadow-md'

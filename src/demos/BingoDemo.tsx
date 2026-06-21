@@ -433,6 +433,7 @@ export default function BingoDemo() {
             <Button
               key={themeKey}
               onClick={() => changeTheme(themeKey)}
+              aria-pressed={currentTheme === themeKey}
               className={`rounded-full ${
                 currentTheme === themeKey
                   ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
