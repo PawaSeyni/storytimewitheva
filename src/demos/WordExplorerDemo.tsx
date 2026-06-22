@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, XCircle, RotateCcw } from 'lucide-react';
 import { useLanguage, useTranslation, type Language } from '../lib/language';
@@ -230,6 +230,9 @@ export default function WordExplorerDemo() {
   const [quizScore, setQuizScore] = useState(0);
   const [quizAnswered, setQuizAnswered] = useState<string | null>(null);
   const [quizCorrectAnswer, setQuizCorrectAnswer] = useState<string | null>(null);
+  // Questions answered so far this run — the score denominator ("correct out of
+  // answered"), so it never reads 0/0 and never counts the current unanswered question.
+  const [answeredCount, setAnsweredCount] = useState(0);
 
   const resetQuiz = (pool: WordEntry[] = filteredWords) => {
     setQuizWords(shuffle(pool));
@@ -237,7 +240,15 @@ export default function WordExplorerDemo() {
     setQuizScore(0);
     setQuizAnswered(null);
     setQuizCorrectAnswer(null);
+    setAnsweredCount(0);
   };
+
+  // A mid-question language switch recomputes the options/correct answer for the
+  // new target language; clear any locked answer so the highlight can't go stale.
+  useEffect(() => {
+    setQuizAnswered(null);
+    setQuizCorrectAnswer(null);
+  }, [language]);
 
   const handleCategoryChange = (cat: CategoryKey | 'all') => {
     setSelectedCategory(cat);
@@ -286,6 +297,7 @@ export default function WordExplorerDemo() {
     if (quizAnswered !== null) return;
     setQuizAnswered(option);
     setQuizCorrectAnswer(correctOption);
+    setAnsweredCount((c) => c + 1);
     if (option === correctOption) {
       setQuizScore((s) => s + 1);
     }
@@ -347,6 +359,7 @@ export default function WordExplorerDemo() {
             <button
               key={cat}
               onClick={() => handleCategoryChange(cat)}
+              aria-pressed={selectedCategory === cat}
               className={`rounded-full px-4 py-1 text-sm font-medium border transition-all ${
                 selectedCategory === cat
                   ? 'bg-teal-500 text-white border-teal-500 shadow'
@@ -440,7 +453,7 @@ export default function WordExplorerDemo() {
           {/* Score + restart */}
           <div className="flex items-center gap-3">
             <span className="text-sm font-semibold text-gray-600">
-              {t.score}: {quizScore} / {quizIndex + 1}
+              {t.score}: {quizScore}{answeredCount > 0 ? ` / ${answeredCount}` : ''}
             </span>
             <Button
               onClick={() => resetQuiz()}

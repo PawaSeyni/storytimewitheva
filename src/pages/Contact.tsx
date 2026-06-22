@@ -13,6 +13,7 @@ const TRANSLATIONS = {
     tip: 'We typically respond within 24-48 hours. For faster answers, check our FAQ section!',
     successHeading: 'Message Sent!',
     successDetail: 'Thank you for reaching out. Eva will get back to you within 24-48 hours.',
+    honeypotLabel: "Don't fill this out if you're human:",
     sendAnother: 'Send Another Message',
     nameLabel: 'Your Name',
     namePlaceholder: 'Jane Smith',
@@ -43,6 +44,7 @@ const TRANSLATIONS = {
     tip: 'Normalmente respondemos en 24-48 horas. ¡Para respuestas más rápidas, revisa la sección de preguntas frecuentes!',
     successHeading: '¡Mensaje enviado!',
     successDetail: 'Gracias por escribir. Eva te responderá en 24-48 horas.',
+    honeypotLabel: 'No rellenes esto si eres humano:',
     sendAnother: 'Enviar otro mensaje',
     nameLabel: 'Tu nombre',
     namePlaceholder: 'Juana Pérez',
@@ -73,6 +75,7 @@ const TRANSLATIONS = {
     tip: 'Nous répondons généralement sous 24 à 48 heures. Pour des réponses plus rapides, consultez la section FAQ !',
     successHeading: 'Message envoyé !',
     successDetail: 'Merci pour votre message. Eva vous répondra sous 24 à 48 heures.',
+    honeypotLabel: 'Ne remplissez pas ceci si vous êtes humain :',
     sendAnother: 'Envoyer un autre message',
     nameLabel: 'Votre nom',
     namePlaceholder: 'Jeanne Dupont',
@@ -182,7 +185,7 @@ export default function Contact() {
                   {/* Honeypot: hidden from real users, bots tend to fill it */}
                   <p className="hidden">
                     <label>
-                      Don't fill this out if you're human:{' '}
+                      {t.honeypotLabel}{' '}
                       <input name="bot-field" tabIndex={-1} autoComplete="off" />
                     </label>
                   </p>

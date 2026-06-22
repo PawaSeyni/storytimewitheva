@@ -138,7 +138,7 @@ export default function About() {
               {t.refrain}
             </p>
             <footer className="mt-3 text-sm text-gray-500 not-italic">
-              — {t.refrainAttr}
+              {language === 'en' ? '' : '— '}{t.refrainAttr}
             </footer>
           </blockquote>
         </div>

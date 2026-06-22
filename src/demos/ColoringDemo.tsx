@@ -837,6 +837,7 @@ export default function ColoringDemo() {
             <Button
               key={theme.key}
               onClick={() => setSelectedThemeIdx(index)}
+              aria-pressed={selectedThemeIdx === index}
               variant={selectedThemeIdx === index ? 'default' : 'outline'}
               className={`text-xs md:text-sm flex flex-col items-center gap-1 h-auto py-3 ${
                 selectedThemeIdx === index ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' : ''
@@ -872,7 +873,9 @@ export default function ColoringDemo() {
                   setSelectedColor(value);
                   setIsEraser(false);
                 }}
-                className={`w-full aspect-square rounded-xl transition-all hover:scale-110 ${
+                aria-label={t.colors[key]}
+                aria-pressed={selectedColor === value && !isEraser}
+                className={`w-full aspect-square rounded-xl transition-all hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 ${
                   selectedColor === value && !isEraser ? 'ring-4 ring-purple-500 scale-110' : 'ring-2 ring-gray-300'
                 }`}
                 style={{ backgroundColor: value }}
