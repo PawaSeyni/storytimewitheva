@@ -7,6 +7,7 @@
 // translated descriptions, subtitles, and themes.
 
 import { useLanguage, type Language } from '../lib/language';
+import { amazonDp } from '../lib/amazon';
 import colorsMixedUp from '../assets/covers/colors-mixed-up.webp';
 import rainbowSymphony from '../assets/covers/rainbow-symphony.webp';
 import towerTouchedSky from '../assets/covers/tower-touched-sky.webp';
@@ -39,7 +40,7 @@ export interface LocalizedBook {
   theme: string;
 }
 
-const dp = (asin: string) => `https://www.amazon.com/dp/${asin}`;
+const dp = amazonDp;
 
 export const books: Book[] = [
   // ---- 3 newer titles in production ----

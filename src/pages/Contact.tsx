@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Seo from '../components/Seo';
 import { useTranslation } from '../lib/language';
+import { AMAZON_AUTHOR_URL } from '../lib/amazon';
 
 const TRANSLATIONS = {
   en: {
@@ -289,7 +290,7 @@ export default function Contact() {
             <div className="bg-white rounded-2xl p-5 shadow-md border border-gray-50">
               <p className="font-semibold text-gray-800 text-sm mb-3">{t.followLabel}</p>
               <div className="flex gap-2">
-                <a href="https://www.amazon.com/author/evagallo" target="_blank" rel="noopener noreferrer"
+                <a href={AMAZON_AUTHOR_URL} target="_blank" rel="noopener noreferrer"
                   className="flex-1 py-2 bg-orange-50 border border-orange-200 rounded-xl text-center text-sm hover:bg-orange-100 transition-colors">
                   📚 Amazon
                 </a>

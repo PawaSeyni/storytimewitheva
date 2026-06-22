@@ -6,6 +6,7 @@ import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
 import { matchesAgeFilter } from '../lib/ages';
+import { AMAZON_AUTHOR_URL } from '../lib/amazon';
 import { useTranslation, useLanguage, localizePath } from '../lib/language';
 
 const SITE_URL = 'https://storytimewitheva.com';
@@ -113,7 +114,7 @@ export default function Books() {
           author: { '@type': 'Person', name: 'Eva Gallo' },
           inLanguage: book.languages.map(f => FLAG_TO_LANG[f]).filter(Boolean),
           url: `${SITE_URL}${localizePath(`/books/${book.id}`, language)}/`,
-          sameAs: book.amazonUrl,
+          sameAs: book.amazonUrl.split('?')[0], // clean product URL (no tracking param) for structured-data identity
           image: book.coverImage.startsWith('http') ? book.coverImage : `${SITE_URL}${book.coverImage}`,
           ...(book.subtitle ? { alternativeHeadline: book.subtitle } : {}),
           abstract: book.description,
@@ -235,7 +236,7 @@ export default function Books() {
           <h2 className="text-2xl font-bold text-gray-800 mb-3">{t.amazonHeading}</h2>
           <p className="text-gray-500 mb-6">{t.amazonBlurb}</p>
           <a
-            href="https://www.amazon.com/author/evagallo"
+            href={AMAZON_AUTHOR_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 text-lg"

@@ -43,7 +43,7 @@ const TRANSLATIONS = {
       {
         heading: 'Affiliate links',
         body: [
-          'Some links to Amazon and other retailers may be affiliate links. If you buy through them, we may earn a small commission at no additional cost to you. This helps support the project.',
+          'Links to Amazon on this site are affiliate links (Amazon Associates). If you buy through them, we may earn a small commission at no additional cost to you. This helps support the project.',
         ],
       },
       {
@@ -108,7 +108,7 @@ const TRANSLATIONS = {
       {
         heading: 'Enlaces de afiliado',
         body: [
-          'Algunos enlaces a Amazon y otras tiendas pueden ser de afiliado. Si compras a través de ellos, podemos ganar una pequeña comisión sin coste adicional para ti. Esto ayuda a sostener el proyecto.',
+          'Los enlaces a Amazon en este sitio son enlaces de afiliado (Amazon Associates). Si compras a través de ellos, podemos ganar una pequeña comisión sin coste adicional para ti. Esto ayuda a sostener el proyecto.',
         ],
       },
       {
@@ -173,7 +173,7 @@ const TRANSLATIONS = {
       {
         heading: 'Liens affiliés',
         body: [
-          'Certains liens vers Amazon et d\'autres marchands peuvent être des liens affiliés. Si vous achetez via ces liens, nous pouvons percevoir une petite commission sans coût supplémentaire pour vous. Cela aide à soutenir le projet.',
+          'Les liens vers Amazon sur ce site sont des liens affiliés (Amazon Associates). Si vous achetez via ces liens, nous pouvons percevoir une petite commission sans coût supplémentaire pour vous. Cela aide à soutenir le projet.',
         ],
       },
       {

@@ -1,5 +1,6 @@
 import { Link } from './LocalizedLink';
 import { useTranslation } from '../lib/language';
+import { AMAZON_AUTHOR_URL } from '../lib/amazon';
 
 const TRANSLATIONS = {
   en: {
@@ -116,7 +117,7 @@ export default function Footer() {
                 className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors text-lg">
                 🧵
               </a>
-              <a href="https://www.amazon.com/author/evagallo" target="_blank" rel="noopener noreferrer" aria-label={t.amazonAuthor}
+              <a href={AMAZON_AUTHOR_URL} target="_blank" rel="noopener noreferrer" aria-label={t.amazonAuthor}
                 className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors text-lg">
                 📚
               </a>

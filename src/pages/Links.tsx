@@ -1,6 +1,7 @@
 import { Link } from '../components/LocalizedLink';
 import Seo from '../components/Seo';
 import { useTranslation } from '../lib/language';
+import { AMAZON_AUTHOR_URL } from '../lib/amazon';
 
 const TRANSLATIONS = {
   en: {
@@ -102,7 +103,7 @@ export default function Links() {
       heading: t.sectionBooks,
       rows: [
         {
-          href: 'https://www.amazon.com/author/evagallo',
+          href: AMAZON_AUTHOR_URL,
           external: true,
           title: t.amazonCta,
           subtitle: t.amazonSub,
