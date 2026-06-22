@@ -5,7 +5,6 @@ import BookRecommendations from '../components/BookRecommendations';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
-import { PRICING } from '../data/pricing';
 import { matchesAgeFilter } from '../lib/ages';
 import { useTranslation, useLanguage, localizePath } from '../lib/language';
 
@@ -33,6 +32,7 @@ const TRANSLATIONS = {
     pricingHeading: 'Formats & Pricing',
     paperbackLabel: 'Paperback',
     ebookLabel: 'eBook',
+    seePrice: 'See price on Amazon',
     freeLabel: 'Always free',
     freeItems: 'Activities, read-alongs & the starter kit',
     pricingNote: 'Prices in USD. Final price and availability on Amazon.',
@@ -57,6 +57,7 @@ const TRANSLATIONS = {
     pricingHeading: 'Formatos y precios',
     paperbackLabel: 'Tapa blanda',
     ebookLabel: 'eBook',
+    seePrice: 'Consulta el precio en Amazon',
     freeLabel: 'Siempre gratis',
     freeItems: 'Actividades, lecturas en voz alta y el kit de inicio',
     pricingNote: 'Precios en USD. Precio final y disponibilidad en Amazon.',
@@ -81,6 +82,7 @@ const TRANSLATIONS = {
     pricingHeading: 'Formats et prix',
     paperbackLabel: 'Livre broché',
     ebookLabel: 'Livre numérique',
+    seePrice: 'Voir le prix sur Amazon',
     freeLabel: 'Toujours gratuit',
     freeItems: 'Activités, lectures à voix haute et le kit de démarrage',
     pricingNote: 'Prix en USD. Prix final et disponibilité sur Amazon.',
@@ -210,12 +212,12 @@ export default function Books() {
             <div className="bg-white rounded-2xl shadow-md border border-gray-50 p-6">
               <div className="text-3xl mb-2" aria-hidden>📖</div>
               <p className="font-semibold text-gray-800">{t.paperbackLabel}</p>
-              <p className="text-2xl font-extrabold text-purple-700 mt-1">{PRICING.paperback}</p>
+              <p className="text-sm font-semibold text-purple-600 mt-1">{t.seePrice}</p>
             </div>
             <div className="bg-white rounded-2xl shadow-md border border-gray-50 p-6">
               <div className="text-3xl mb-2" aria-hidden>📱</div>
               <p className="font-semibold text-gray-800">{t.ebookLabel}</p>
-              <p className="text-2xl font-extrabold text-purple-700 mt-1">{PRICING.ebook}</p>
+              <p className="text-sm font-semibold text-purple-600 mt-1">{t.seePrice}</p>
             </div>
             <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow-md border border-purple-100 p-6">
               <div className="text-3xl mb-2" aria-hidden>🎁</div>

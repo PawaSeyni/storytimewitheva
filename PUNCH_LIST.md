@@ -234,6 +234,47 @@ Open items from the audit. Most of the audit shipped in PR #1 (`fix/audit-quick-
 - [x] **Trailing-slash vs canonical mismatch** — FIXED. `Seo.tsx` canonical + hreflang and `gen-sitemap.mjs` now emit the trailing-slash form Netlify actually serves (`…/faq/`, `…/es/books/`; root stays `/`), so the canonical matches the served URL exactly (no more circular 301↔canonical signal). Internal links/routing stay slashless — React Router matches both, verified — and prerender navigates the slashed sitemap URLs fine (105/105, real content).
 - [x] **Home mobile Performance** — addressed (PR pending). Hero photo (the mobile LCP element) converted to a 1000px WebP (~317 KB JPEG → ~76 KB) with `fetchpriority="high"` + `loading="eager"`; the 1200px JPEG is kept only for `og:image` (broad social compatibility). Re-confirm the Lighthouse score from the PR's deploy preview / next production deploy.
 
+### QA cycle 6 — deferred a11y / polish (audit 2026-06-21)
+Sixth full QA pass. Security, build/tsc/lint, SEO/JSON-LD, translation symmetry, and game XSS all came back **clean**. The items below are the only open findings — all small, all non-blocking — deferred for a later batch. Recommended order: #1–#4 + #6 are clear wins; #5/#7 are borderline/optional.
+
+- [ ] **#1 WordExplorer category filter chips missing `aria-pressed`** — `src/demos/WordExplorerDemo.tsx:347`. Selection shown by color only; inconsistent with the site-wide filter pattern (Books/Activities/Resources/Bingo all set it). Sev: med. Fix: `aria-pressed={selectedCategory === cat}`.
+- [ ] **#2 ColoringDemo color swatches have no accessible name/state** — `src/demos/ColoringDemo.tsx:868`. Icon-only buttons with `title` but no `aria-label`/`aria-pressed`. Sev: med. Fix: `aria-label={t.colors[key]}` + `aria-pressed={selectedColor === value && !isEraser}`.
+- [ ] **#3 ColoringDemo theme buttons missing `aria-pressed`** — `src/demos/ColoringDemo.tsx:837`. Selected state visual-only. Sev: low. Fix: `aria-pressed={selectedThemeIdx === index}`.
+- [ ] **#4 WordExplorer quiz answer-state not reset on language switch** — `src/demos/WordExplorerDemo.tsx`. After answering, switching site language re-renders options in the new language but keeps the old-language `quizAnswered`/`quizCorrectAnswer`, so the correct-answer highlight lands on the wrong button. Sev: med. Fix: clear both in a `useEffect(..., [language])` (same pattern as the PuzzleAdventures cycle-3 reset). _(deferred since cycle 5)_
+- [ ] **#5 WordExplorer quiz denominator counts the current unanswered question** — `src/demos/WordExplorerDemo.tsx:443`. `quizScore / (quizIndex + 1)` shows e.g. "1 / 2" while Q2 is still unanswered. Sev: low / borderline (this was the deliberate cycle-3 "0/0" fix; defensible as "correct out of seen"). Optional fix: track an `answeredCount` and show `score / answeredCount`.
+- [ ] **#6 Hardcoded em dash renders in English** — `src/pages/About.tsx:140`. `— {t.refrainAttr}` is a literal U+2014 outside the translation object, so the English refrain attribution shows an em dash (house-rule violation). Sev: med. Fix: drop the dash for EN, or bake per-language punctuation into each `refrainAttr` string (FR/ES may keep theirs).
+- [ ] **#7 Contact honeypot label hardcoded English** — `src/pages/Contact.tsx:184`. `"Don't fill this out if you're human:"` inside a `hidden` spam-trap; read by screen readers in all languages. Sev: low / optional (leaving hardcoded is common practice). Fix: move to `t.honeypotLabel` if desired.
+
+### Amazon links audit (2026-06-21)
+Tested all 18 book Amazon links against live Amazon (`amazon.com/dp/<ASIN>`) for: opens correct book, correct marketplace, affiliate tracking, price accuracy, no misleading CTAs on unpublished titles.
+
+**Done / verified:**
+- [x] **Link integrity** — all 18 ASINs return HTTP 200 and the Amazon title matches the book id (e.g. `1997027038`→"The Day the Colors Got Mixed Up", `199697274X`→"The Emperor's True Treasure"). No broken or wrong-book links.
+- [x] **No misleading Buy CTAs** — all 18 are live, published product pages; none are unpublished/"currently unavailable" behind a Buy button.
+- [x] **Price mismatch FIXED (deferred to Amazon)** — audit found **14 of 18 paperbacks are ~$17.00 on Amazon** while the site showed a flat **$11.99 / $7.99** for every title (only colors-mixed-up, cloud-collector, heidis-journey-to-mastery, little-mapmaker were ~$11.99). Owner chose "defer to Amazon": BookDetail, Books "Formats & Pricing" cards, and FAQ now show "See (current) price on Amazon" (EN/ES/FR); `src/data/pricing.ts` deleted. Committed on branch **`fix/amazon-links-pricing` (`fd86c7b`)** — ⚠️ **NOT yet pushed/merged.**
+
+**Open:**
+- [ ] **Affiliate tag — BLOCKED on owner input.** No `tag=` param on any Amazon link, yet `Terms.tsx:46` claims "links … may be affiliate links … we may earn a small commission." Owner chose "Add my Associates tag" but the tag string is still needed (e.g. `evagallo-20`). Plan once provided: centralize a `withAffiliateTag()`/`AMAZON_ASSOCIATE_TAG` helper in `books.ts` and apply it to **every** book `dp()` link **and** all author-page links (`Books.tsx` CTA, `Links.tsx`, `Contact.tsx`, `Footer.tsx`). Then the Terms wording is accurate. Do NOT invent a tag — a wrong one misattributes commissions and violates Amazon Associates ToS.
+- [ ] **Marketplace localization (optional)** — every link is hardcoded to **amazon.com (US)** regardless of site language (EN/ES/FR all get .com). Functional, but consider geo/locale-aware links to amazon.ca/.es/.fr (operator is Canadian; confirm the same ASINs exist per marketplace before switching). Owner decision; low priority.
+- [ ] **Ship the pricing fix** — push branch `fix/amazon-links-pricing`, open PR, merge, verify live (awaiting owner "yes push"; may bundle with the affiliate change once the tag lands).
+- [ ] **Re-verify prices periodically** — since the site no longer states a number, this is low-risk, but spot-check that Amazon listings stay live.
+
+> Note: the **QA cycle 6** a11y/polish cluster above and this Amazon cluster are both written here but the underlying `PUNCH_LIST.md` change is uncommitted on the working tree (pending a docs push).
+
+### Owner QA punch list (added 2026-06-21)
+New to-do list from the owner. Not yet triaged/started — verify each against current code before assuming it's open (some may already be partly handled).
+
+- [ ] **1. Fix `/profile/` routing and content.** Profile is intentionally `noindex`; confirm the route renders correctly (not a soft-404), the localStorage-backed content shows, and `/es/profile/` `/fr/profile/` work.
+- [ ] **2. Verify free-kit signup end-to-end.** `EmailSignup.tsx` → MailerLite JSONP (group `storytimewitheva-signups`); confirm a real signup lands with correct `language`/`lead_magnet`/`name` and the lead-magnet PDF downloads. (See Gate A notes.)
+- [ ] **3. Standardize "bilingual" vs "trilingual" language across the site.** Site is EN/ES/FR (trilingual) but some copy/lead-magnet names still say "bilingual" (e.g. EmailSignup magnet titles, game print-kit blurbs). Pick one term and apply consistently.
+- [ ] **4. Fix mixed-language labels like "Edades 4-8 years."** Hunt for half-translated strings where an English word (e.g. "years") is left inside an ES/FR label, or vice versa. Check age ranges, subtitles, and game chrome.
+- [ ] **5. Standardize headers/footers on all activity/game pages.** The 12 standalone `public/games/*.html` pages have their own chrome; make the header/footer consistent across all of them (and with the SPA where reasonable).
+- [ ] **6. Manually test every Amazon link.** Automated check done 2026-06-21 (all 18 open the correct, published book — see "Amazon links audit" cluster). This item = a human click-through pass on a real device/marketplace, incl. affiliate-tag behaviour once the tag lands.
+- [ ] **7. Verify all "Listen" buttons work in EN/ES/FR.** Read-aloud (`speech.ts` / `ReadAlong.tsx` on book pages + game listen buttons) — confirm the correct-language voice is picked and audio plays in all three languages.
+- [ ] **8. Verify "Mark Read / Want to Read / Completed" persists in localStorage.** `lib/progress.ts` + BookStatusButton/ActivityStatusButton + Profile; confirm toggles persist across reloads and reflect on Profile.
+- [ ] **9. Test all forms: Contact, newsletter, feedback.** Contact → Netlify Forms; newsletter → MailerLite; feedback → Netlify Forms (`FeedbackWidget`). Submit each live and confirm it lands + notification fires.
+- [ ] **10. Add clear published / coming-soon status for each book.** `books.ts` currently has no status field; add one and gate the Buy CTA so any not-yet-published title shows a "coming soon" state instead of a live Buy button. (All 18 are currently published, but the field future-proofs new titles.)
+
 ---
 
 ## 🛠 Operational notes for future Claude sessions
