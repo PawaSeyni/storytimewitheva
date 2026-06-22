@@ -950,7 +950,7 @@ export default function Resources() {
         </div>
       </section>
 
-      {/* Full articles -- now trilingual (EN/ES/FR), data-driven from translations. */}
+      {/* Full articles -- data-driven from per-language (EN/ES/FR) translations. */}
       <ArticleMakingReadingMagical t={t.article1} />
       <ArticleAgeAppropriate t={t.article3} />
       <ArticleFollowUp t={t.article4} />
