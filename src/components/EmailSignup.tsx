@@ -15,7 +15,7 @@ const MAILERLITE_FORM_ACTION =
 // so the right freebie is both tagged on the subscriber AND delivered instantly
 // on the success screen — closing the funnel leak where pins used to point
 // straight at the ungated PDF and captured no email. Each magnet maps to its
-// per-language PDF (single-file trilingual magnets repeat the same path).
+// per-language PDF (single-file bilingual magnets repeat the same path).
 type Magnet = { tag: string; title: Record<Language, string>; pdf: Record<Language, string> };
 const LEAD_MAGNETS: Record<string, Magnet> = {
   'bedtime-routine': {
@@ -30,9 +30,9 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
   'bilingual-starter-kit': {
     tag: 'bilingual-starter-kit',
     title: {
-      en: 'Download the FREE 20-Page Trilingual Starter Kit!',
-      es: '¡Descarga GRATIS el kit trilingüe de 20 páginas!',
-      fr: 'Téléchargez gratuitement le kit trilingue de 20 pages !',
+      en: 'Download the FREE 20-Page Bilingual Starter Kit!',
+      es: '¡Descarga GRATIS el kit bilingüe de 20 páginas!',
+      fr: 'Téléchargez gratuitement le kit bilingue de 20 pages !',
     },
     pdf: { en: '/bilingual-starter-kit.pdf', es: '/bilingual-starter-kit.pdf', fr: '/bilingual-starter-kit.pdf' },
   },
@@ -40,8 +40,8 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
     tag: 'bilingual-flashcards',
     title: {
       en: 'Get Free Flashcards',
-      es: 'Descarga tarjetas trilingües',
-      fr: 'Téléchargez les cartes trilingues',
+      es: 'Descarga tarjetas bilingües',
+      fr: 'Téléchargez les cartes bilingues',
     },
     pdf: { en: '/bilingual-flashcards.pdf', es: '/bilingual-flashcards.pdf', fr: '/bilingual-flashcards.pdf' },
   },
