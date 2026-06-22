@@ -21,6 +21,8 @@ export interface Book {
   languages: string[];
   amazonUrl: string;
   featured?: boolean;
+  /** Publication state. Absent/'published' = live with a Buy CTA; 'coming-soon' shows a placeholder. */
+  status?: 'published' | 'coming-soon';
   title: LocalizedString;
   subtitle?: LocalizedString;
   description: LocalizedString;
@@ -34,6 +36,7 @@ export interface LocalizedBook {
   languages: string[];
   amazonUrl: string;
   featured?: boolean;
+  status?: 'published' | 'coming-soon';
   title: string;
   subtitle?: string;
   description: string;
@@ -41,6 +44,9 @@ export interface LocalizedBook {
 }
 
 const dp = amazonDp;
+
+/** A book not yet for sale — show a "coming soon" placeholder instead of a Buy CTA. */
+export const isComingSoon = (b: { status?: string }): boolean => b.status === 'coming-soon';
 
 export const books: Book[] = [
   // ---- 3 newer titles in production ----
@@ -547,6 +553,7 @@ function localize(book: Book, lang: Language): LocalizedBook {
     languages: book.languages,
     amazonUrl: book.amazonUrl,
     featured: book.featured,
+    status: book.status,
     title: book.title[lang] ?? book.title.en,
     subtitle: book.subtitle ? (book.subtitle[lang] ?? book.subtitle.en) : undefined,
     description: book.description[lang] ?? book.description.en,
