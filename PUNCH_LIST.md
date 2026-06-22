@@ -277,6 +277,11 @@ New to-do list from the owner. Not yet triaged/started — verify each against c
 
 ---
 
+### QA cycle 7 (2026-06-21)
+Full audit after Packages 1-5 + affiliate/pricing/book-status/bilingual. Build/security/correctness/i18n/a11y all clean. Two findings:
+- [x] **Game pages missing SEO metadata** — DONE 2026-06-21. The 12 `public/games/*.html` were sitemap-indexed but had no canonical/description/OG. Added per-game canonical + meta description + Open Graph/Twitter card (derived from each page's title + intro). Branch `chore/game-pages-seo-meta`.
+- [ ] **Game UI not localized (10 of 12)** — only `counting-numbers` + `rhyme-singalong` read `preferredLanguage` to localize their chrome; the other 10 games (matching, spelling-bee, story-map, world-geography, emotion-wheel, finish-the-story, build-a-scene, reading-tracker, sentence-builder, bilingual-flashcards) hardcode English UI + `en-US` TTS regardless of the chosen language. Sizeable enhancement: port the `preferredLanguage` pattern + wrap hardcoded UI strings in `{en,es,fr}` lookups. Pre-existing design state, not a regression. Sev: med. _(Its own package when prioritized.)_
+
 ## 🛠 Operational notes for future Claude sessions
 
 ### Deployment verification (REQUIRED)
