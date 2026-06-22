@@ -7,7 +7,7 @@ import NotFound from './NotFound';
 import ReadAlong from '../components/ReadAlong';
 import TapToTranslate from '../components/TapToTranslate';
 import BookStatusButton from '../components/BookStatusButton';
-import { books, useBook } from '../data/books';
+import { books, useBook, isComingSoon } from '../data/books';
 import { LANGUAGE_LABELS, SUPPORTED_LANGUAGES, localizePath, useLanguage, useTranslation } from '../lib/language';
 import type { Language } from '../lib/language';
 import { isAmazonCover, sizedCover } from '../lib/covers';
@@ -17,9 +17,9 @@ const SITE_URL = 'https://storytimewitheva.com';
 const FLAG_TO_LANG: Record<string, string> = { '🇺🇸': 'en', '🇪🇸': 'es', '🇫🇷': 'fr' };
 
 const TRANSLATIONS = {
-  en: { back: '← Back to all books', theme: 'Theme', paperback: 'Paperback', ebook: 'eBook', priceNote: 'See current price on Amazon', buy: '🛒 Buy on Amazon', coverAlt: 'book cover', ages: 'Ages', bilingualShow: '🌐 Read in two languages', bilingualHide: '🌐 Hide other languages', tapShow: '🔤 Tap words to translate', tapHide: '🔤 Stop translating' },
-  es: { back: '← Volver a todos los libros', theme: 'Tema', paperback: 'Tapa blanda', ebook: 'eBook', priceNote: 'Consulta el precio actual en Amazon', buy: '🛒 Comprar en Amazon', coverAlt: 'portada del libro', ages: 'Edades', bilingualShow: '🌐 Leer en dos idiomas', bilingualHide: '🌐 Ocultar otros idiomas', tapShow: '🔤 Toca para traducir', tapHide: '🔤 Dejar de traducir' },
-  fr: { back: '← Retour à tous les livres', theme: 'Thème', paperback: 'Livre broché', ebook: 'Livre numérique', priceNote: 'Voir le prix actuel sur Amazon', buy: '🛒 Acheter sur Amazon', coverAlt: 'couverture du livre', ages: 'Âges', bilingualShow: '🌐 Lire en deux langues', bilingualHide: '🌐 Masquer les autres langues', tapShow: '🔤 Touche pour traduire', tapHide: '🔤 Arrêter la traduction' },
+  en: { back: '← Back to all books', theme: 'Theme', paperback: 'Paperback', ebook: 'eBook', priceNote: 'See current price on Amazon', buy: '🛒 Buy on Amazon', comingSoon: '🔜 Coming soon', comingSoonNote: 'This title is on its way. Check back soon!', coverAlt: 'book cover', ages: 'Ages', bilingualShow: '🌐 Read in two languages', bilingualHide: '🌐 Hide other languages', tapShow: '🔤 Tap words to translate', tapHide: '🔤 Stop translating' },
+  es: { back: '← Volver a todos los libros', theme: 'Tema', paperback: 'Tapa blanda', ebook: 'eBook', priceNote: 'Consulta el precio actual en Amazon', buy: '🛒 Comprar en Amazon', comingSoon: '🔜 Próximamente', comingSoonNote: 'Este título está en camino. ¡Vuelve pronto!', coverAlt: 'portada del libro', ages: 'Edades', bilingualShow: '🌐 Leer en dos idiomas', bilingualHide: '🌐 Ocultar otros idiomas', tapShow: '🔤 Toca para traducir', tapHide: '🔤 Dejar de traducir' },
+  fr: { back: '← Retour à tous les livres', theme: 'Thème', paperback: 'Livre broché', ebook: 'Livre numérique', priceNote: 'Voir le prix actuel sur Amazon', buy: '🛒 Acheter sur Amazon', comingSoon: '🔜 Bientôt disponible', comingSoonNote: 'Ce titre arrive bientôt. Revenez vite !', coverAlt: 'couverture du livre', ages: 'Âges', bilingualShow: '🌐 Lire en deux langues', bilingualHide: '🌐 Masquer les autres langues', tapShow: '🔤 Touche pour traduire', tapHide: '🔤 Arrêter la traduction' },
 };
 
 export default function BookDetail() {
@@ -150,19 +150,29 @@ export default function BookDetail() {
               <BookStatusButton bookId={book.id} />
             </div>
 
-            <p className="text-sm text-gray-500 mb-3">
-              📖 {t.paperback} · 📱 {t.ebook} · {t.priceNote}
-            </p>
-
-            <a
-              href={book.amazonUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => track('Amazon Click', { book: book.id })}
-              className="inline-block w-full sm:w-auto text-center py-3 px-8 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-lg"
-            >
-              {t.buy}
-            </a>
+            {isComingSoon(book) ? (
+              <>
+                <p className="text-sm text-gray-500 mb-3">{t.comingSoonNote}</p>
+                <span className="inline-block w-full sm:w-auto text-center py-3 px-8 bg-gray-100 text-gray-500 font-bold rounded-full text-lg cursor-default">
+                  {t.comingSoon}
+                </span>
+              </>
+            ) : (
+              <>
+                <p className="text-sm text-gray-500 mb-3">
+                  📖 {t.paperback} · 📱 {t.ebook} · {t.priceNote}
+                </p>
+                <a
+                  href={book.amazonUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => track('Amazon Click', { book: book.id })}
+                  className="inline-block w-full sm:w-auto text-center py-3 px-8 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-lg"
+                >
+                  {t.buy}
+                </a>
+              </>
+            )}
           </div>
         </div>
       </div>

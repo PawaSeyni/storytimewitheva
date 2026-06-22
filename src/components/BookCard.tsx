@@ -1,4 +1,5 @@
 import type { LocalizedBook } from '../data/books';
+import { isComingSoon } from '../data/books';
 import { Link } from './LocalizedLink';
 import BookStatusButton from './BookStatusButton';
 import ReadAloudButton from './ReadAloudButton';
@@ -7,9 +8,9 @@ import { useTranslation } from '../lib/language';
 import { track } from '../lib/analytics';
 
 const TRANSLATIONS = {
-  en: { featured: 'Featured', discoverMore: 'Discover More ✨', buy: '🛒 Buy', coverAlt: 'book cover' },
-  es: { featured: 'Destacado', discoverMore: 'Descubrir más ✨', buy: '🛒 Comprar', coverAlt: 'portada del libro' },
-  fr: { featured: 'En vedette', discoverMore: 'Découvrir plus ✨', buy: '🛒 Acheter', coverAlt: 'couverture du livre' },
+  en: { featured: 'Featured', discoverMore: 'Discover More ✨', buy: '🛒 Buy', comingSoon: 'Coming soon', coverAlt: 'book cover' },
+  es: { featured: 'Destacado', discoverMore: 'Descubrir más ✨', buy: '🛒 Comprar', comingSoon: 'Próximamente', coverAlt: 'portada del libro' },
+  fr: { featured: 'En vedette', discoverMore: 'Découvrir plus ✨', buy: '🛒 Acheter', comingSoon: 'Bientôt disponible', coverAlt: 'couverture du livre' },
 };
 
 interface BookCardProps {
@@ -84,15 +85,24 @@ export default function BookCard({ book, priority = false }: BookCardProps) {
           >
             {t.discoverMore}
           </Link>
-          <a
-            href={book.amazonUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => track('Amazon Click', { book: book.id })}
-            className="btn-amazon text-xs px-3 py-2"
-          >
-            {t.buy}
-          </a>
+          {isComingSoon(book) ? (
+            <span
+              className="text-xs px-3 py-2 rounded-full bg-gray-100 text-gray-500 font-semibold cursor-default"
+              aria-label={t.comingSoon}
+            >
+              {t.comingSoon}
+            </span>
+          ) : (
+            <a
+              href={book.amazonUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => track('Amazon Click', { book: book.id })}
+              className="btn-amazon text-xs px-3 py-2"
+            >
+              {t.buy}
+            </a>
+          )}
         </div>
       </div>
     </div>
