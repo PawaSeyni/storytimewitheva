@@ -3,6 +3,7 @@ import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import ReadAloudButton from '../components/ReadAloudButton';
 import { useLanguage, useTranslation } from '../lib/language';
+import { amazonDp } from '../lib/amazon';
 
 // Free classroom/home printables (PDFs in /public). `localized` files ship an
 // -es / -fr variant; the rest are single-file. Order matches each language's
@@ -17,19 +18,14 @@ const TEACHER_DOWNLOADS = [
 // ---------------------------------------------------------------------------
 // Affiliate URLs -- single source of truth. Keep in sync with
 // outputs/social_media_infra/trackers/00_master_tracker.xlsx -> Affiliate_Links.
-// All Amazon links carry the storytimewi20-20 tracking ID.
+// The Associates tracking ID is centralized in lib/amazon (amazonDp appends it).
 // ---------------------------------------------------------------------------
 const AFFILIATE = {
-  // AF-001 -- SMARTERIOR Bedside Table Lamp for Kids
-  readingLamp: 'https://www.amazon.com/dp/B0FMJRR92L?tag=storytimewi20-20',
-  // AF-002 -- MAXYOYO 3-in-1 Kids Bean Bag Chair Couch
-  floorCushion: 'https://www.amazon.com/dp/B0DNZJ2W9C?tag=storytimewi20-20',
-  // AF-003 -- Chuiendi 4-Tier Montessori Front-Facing Bookshelf
-  bookshelf: 'https://www.amazon.com/dp/B0GJLKWVKJ?tag=storytimewi20-20',
-  // AF-004 -- Rory's Story Cubes Classic (Box) -- image-only dice, language-agnostic
-  storyCubes: 'https://www.amazon.com/dp/B07P3MB9H8?tag=storytimewi20-20',
-  // AF-005 -- SFOUR Astronaut Galaxy Projector
-  galaxyProjector: 'https://www.amazon.com/dp/B09Q2WL7C6?tag=storytimewi20-20',
+  readingLamp: amazonDp('B0FMJRR92L'), // AF-001 -- SMARTERIOR Bedside Table Lamp for Kids
+  floorCushion: amazonDp('B0DNZJ2W9C'), // AF-002 -- MAXYOYO 3-in-1 Kids Bean Bag Chair Couch
+  bookshelf: amazonDp('B0GJLKWVKJ'), // AF-003 -- Chuiendi 4-Tier Montessori Front-Facing Bookshelf
+  storyCubes: amazonDp('B07P3MB9H8'), // AF-004 -- Rory's Story Cubes Classic (Box)
+  galaxyProjector: amazonDp('B09Q2WL7C6'), // AF-005 -- SFOUR Astronaut Galaxy Projector
 } as const;
 
 // ---------------------------------------------------------------------------

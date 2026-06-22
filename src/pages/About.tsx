@@ -5,6 +5,7 @@ import JsonLd from '../components/JsonLd';
 import ReadAloudButton from '../components/ReadAloudButton';
 import { useMemo } from 'react';
 import { useTranslation, useLanguage, localizePath } from '../lib/language';
+import { AMAZON_AUTHOR_URL } from '../lib/amazon';
 import evaHeadshot from '../assets/eva-headshot.jpg';
 
 const SITE_URL = 'https://storytimewitheva.com';
@@ -177,7 +178,7 @@ export default function About() {
               </div>
               <div className="mt-4 flex gap-3">
                 <a
-                  href="https://www.amazon.com/author/evagallo"
+                  href={AMAZON_AUTHOR_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-sm"
