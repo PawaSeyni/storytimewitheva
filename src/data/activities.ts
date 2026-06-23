@@ -213,7 +213,7 @@ export const activities: Activity[] = [
     emoji: '🌍',
     ages: '4-8',
     game: true,
-    title: { en: 'Bilingual Word Flashcards', es: 'Tarjetas de palabras bilingües', fr: 'Cartes de mots bilingues' },
+    title: { en: 'Multilingual Word Flashcards', es: 'Tarjetas de palabras multilingües', fr: 'Cartes de mots multilingues' },
     desc: {
       en: 'Tap a card to flip it and hear the word in English, Spanish, and French.',
       es: 'Toca una tarjeta para girarla y escuchar la palabra en inglés, español y francés.',
@@ -330,7 +330,7 @@ export const activities: Activity[] = [
     emoji: '🧱',
     ages: '5-9',
     game: true,
-    title: { en: 'Bilingual Sentence Builder', es: 'Constructor de frases bilingüe', fr: 'Constructeur de phrases bilingue' },
+    title: { en: 'Multilingual Sentence Builder', es: 'Constructor de frases multilingüe', fr: 'Constructeur de phrases multilingue' },
     desc: {
       en: 'Tap words to build sentences in English, Spanish, and French.',
       es: 'Toca palabras para construir frases en inglés, español y francés.',
