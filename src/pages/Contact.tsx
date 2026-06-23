@@ -182,8 +182,12 @@ export default function Contact() {
                 >
                   {/* Required by Netlify Forms for SPA submissions */}
                   <input type="hidden" name="form-name" value="contact" />
-                  {/* Honeypot: hidden from real users, bots tend to fill it */}
-                  <p className="hidden">
+                  {/* Honeypot: bots tend to fill it; humans never see it. Hidden via
+                      INLINE off-screen styles (not a CSS class) so it can't flash
+                      visible on the prerendered page before the stylesheet loads, and
+                      aria-hidden + tabindex=-1 keep it out of the a11y tree + tab order.
+                      Off-screen (not display:none) so bots still fill it. */}
+                  <p aria-hidden="true" style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none' }}>
                     <label>
                       {t.honeypotLabel}{' '}
                       <input name="bot-field" tabIndex={-1} autoComplete="off" />
