@@ -16,6 +16,50 @@
   <meta name="twitter:description" content="Find the matching pairs, flip two cards to see if they match! A free interactive activity from Story Time with Eva." />
   <meta name="twitter:image" content="https://storytimewitheva.com/og-image.jpg" />
   <link rel="stylesheet" href="/games/games.css">
+  <script>
+    window.GAME_I18N = {
+      en: {
+        title: "🃏 Eva's Matching Adventure",
+        subtitle: 'Find the matching pairs, flip two cards to see if they match!',
+        howto1: 'Pick a theme: Animals, Colors, or Story Friends!',
+        howto2: 'Tap any card to flip it over',
+        howto3: 'Tap another card, if they match, they stay flipped! 🎉',
+        howto4: "If they don't match, they'll flip back, try to remember!",
+        howto5: 'Find all the pairs to win! 🏆',
+        themeAnimals: '🐾 Animals', themeColors: '🌈 Colors', themeFriends: '🧚 Story Friends',
+        pairsFound: 'Pairs Found', moves: 'Moves', time: 'Time',
+        celebTitle: 'You found all the pairs!', celebChampion: "You're a memory champion! ⭐",
+        harder: '💪 Try Harder Mode!', celebStats: 'You did it in {moves} moves and {time}! 🌟',
+      },
+      es: {
+        title: '🃏 La aventura de parejas de Eva',
+        subtitle: 'Encuentra las parejas, ¡voltea dos cartas para ver si coinciden!',
+        howto1: 'Elige un tema: ¡animales, colores o amigos de los cuentos!',
+        howto2: 'Toca cualquier carta para voltearla',
+        howto3: 'Toca otra carta; si coinciden, ¡se quedan volteadas! 🎉',
+        howto4: 'Si no coinciden, se voltean de nuevo, ¡intenta recordar!',
+        howto5: '¡Encuentra todas las parejas para ganar! 🏆',
+        themeAnimals: '🐾 Animales', themeColors: '🌈 Colores', themeFriends: '🧚 Amigos de cuentos',
+        pairsFound: 'Parejas', moves: 'Movimientos', time: 'Tiempo',
+        celebTitle: '¡Encontraste todas las parejas!', celebChampion: '¡Eres un campeón de la memoria! ⭐',
+        harder: '💪 ¡Modo difícil!', celebStats: '¡Lo lograste en {moves} movimientos y {time}! 🌟',
+      },
+      fr: {
+        title: "🃏 L'aventure des paires d'Eva",
+        subtitle: 'Trouve les paires, retourne deux cartes pour voir si elles correspondent !',
+        howto1: 'Choisis un thème : animaux, couleurs ou amis des histoires !',
+        howto2: 'Touche une carte pour la retourner',
+        howto3: 'Touche une autre carte ; si elles correspondent, elles restent retournées ! 🎉',
+        howto4: 'Si elles ne correspondent pas, elles se retournent, essaie de te souvenir !',
+        howto5: 'Trouve toutes les paires pour gagner ! 🏆',
+        themeAnimals: '🐾 Animaux', themeColors: '🌈 Couleurs', themeFriends: '🧚 Amis des histoires',
+        pairsFound: 'Paires', moves: 'Coups', time: 'Temps',
+        celebTitle: 'Tu as trouvé toutes les paires !', celebChampion: 'Tu es un champion de la mémoire ! ⭐',
+        harder: '💪 Mode difficile !', celebStats: 'Tu as réussi en {moves} coups et {time} ! 🌟',
+      },
+    };
+  </script>
+  <script src="/games/i18n.js"></script>
   <style>
     @font-face{font-family:'Lexend';src:url('/games/lexend.woff2') format('woff2');font-weight:100 900;font-display:swap;}
     * { font-family: 'Lexend', 'Segoe UI', system-ui, sans-serif; }
@@ -107,61 +151,54 @@
 
   <!-- Back -->
   <div class="max-w-3xl mx-auto px-4 pt-6">
-    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">
-      ← Back to Activities
-    </a>
-    <button id="markCompleted"
-      class="float-right px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">
-      ✓ Mark Completed
-    </button>
+    <a href="/activities" data-i18n="backToActivities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
+    <button id="markCompleted" data-i18n="markCompleted" class="float-right px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
   </div>
 
   <main class="max-w-3xl mx-auto px-4 pb-16 pt-4">
 
     <!-- Header -->
     <div class="text-center mb-6">
-      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">
-        🃏 Eva's Matching Adventure
-      </h1>
-      <p class="text-gray-500 text-base">Find the matching pairs, flip two cards to see if they match!</p>
+      <h1 data-i18n="title" class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">🃏 Eva's Matching Adventure</h1>
+      <p data-i18n="subtitle" class="text-gray-500 text-base">Find the matching pairs, flip two cards to see if they match!</p>
       <div class="w-20 h-1 bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400 mx-auto mt-4 rounded-full"></div>
     </div>
 
     <!-- How to Play -->
     <div class="bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-500 rounded-2xl p-5 mb-6 text-white shadow-lg">
-      <h2 class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
+      <h2 data-i18n="howToPlay" class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
       <ol class="list-decimal list-inside space-y-1 text-sm font-semibold">
-        <li>Pick a theme: Animals, Colors, or Story Friends!</li>
-        <li>Tap any card to flip it over</li>
-        <li>Tap another card, if they match, they stay flipped! 🎉</li>
-        <li>If they don't match, they'll flip back, try to remember!</li>
-        <li>Find all the pairs to win! 🏆</li>
+        <li data-i18n="howto1">Pick a theme: Animals, Colors, or Story Friends!</li>
+        <li data-i18n="howto2">Tap any card to flip it over</li>
+        <li data-i18n="howto3">Tap another card, if they match, they stay flipped! 🎉</li>
+        <li data-i18n="howto4">If they don't match, they'll flip back, try to remember!</li>
+        <li data-i18n="howto5">Find all the pairs to win! 🏆</li>
       </ol>
     </div>
 
     <!-- Theme Buttons -->
     <div class="flex flex-wrap justify-center gap-3 mb-5">
-      <button class="theme-btn active px-5 py-2 rounded-full border-2 border-purple-300 font-bold text-sm transition-all" data-theme="animals">🐾 Animals</button>
-      <button class="theme-btn px-5 py-2 rounded-full border-2 border-purple-300 font-bold text-sm text-gray-600 transition-all hover:bg-purple-50" data-theme="colors">🌈 Colors</button>
-      <button class="theme-btn px-5 py-2 rounded-full border-2 border-purple-300 font-bold text-sm text-gray-600 transition-all hover:bg-purple-50" data-theme="friends">🧚 Story Friends</button>
+      <button class="theme-btn active px-5 py-2 rounded-full border-2 border-purple-300 font-bold text-sm transition-all" data-theme="animals" data-i18n="themeAnimals">🐾 Animals</button>
+      <button class="theme-btn px-5 py-2 rounded-full border-2 border-purple-300 font-bold text-sm text-gray-600 transition-all hover:bg-purple-50" data-theme="colors" data-i18n="themeColors">🌈 Colors</button>
+      <button class="theme-btn px-5 py-2 rounded-full border-2 border-purple-300 font-bold text-sm text-gray-600 transition-all hover:bg-purple-50" data-theme="friends" data-i18n="themeFriends">🧚 Story Friends</button>
     </div>
 
     <!-- Stats Bar -->
     <div class="flex justify-between items-center bg-purple-50 rounded-2xl px-5 py-3 mb-5">
       <div class="text-center">
         <div class="text-2xl font-extrabold text-purple-700" id="pairsFound">0</div>
-        <div class="text-xs text-gray-500 font-bold">Pairs Found</div>
+        <div data-i18n="pairsFound" class="text-xs text-gray-500 font-bold">Pairs Found</div>
       </div>
       <div class="text-center">
         <div class="text-2xl font-extrabold text-pink-600" id="movesCount">0</div>
-        <div class="text-xs text-gray-500 font-bold">Moves</div>
+        <div data-i18n="moves" class="text-xs text-gray-500 font-bold">Moves</div>
       </div>
       <div class="text-center">
         <div class="text-2xl font-extrabold text-orange-500" id="timerDisplay">0:00</div>
-        <div class="text-xs text-gray-500 font-bold">Time</div>
+        <div data-i18n="time" class="text-xs text-gray-500 font-bold">Time</div>
       </div>
       <button id="resetBtn" class="px-4 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-full text-sm transition-all">
-        🔄 New Game
+        <span data-i18n="newGame">🔄 New Game</span>
       </button>
     </div>
 
@@ -171,15 +208,15 @@
     <!-- Celebration -->
     <div id="celebration" class="hidden text-center py-8 bg-gradient-to-r from-yellow-50 to-pink-50 rounded-3xl border-2 border-yellow-200">
       <div class="text-6xl mb-2">🎉</div>
-      <h2 class="text-2xl font-extrabold text-purple-700 mb-1">You found all the pairs!</h2>
+      <h2 data-i18n="celebTitle" class="text-2xl font-extrabold text-purple-700 mb-1">You found all the pairs!</h2>
       <p class="text-gray-600 mb-1" id="celebStats"></p>
-      <p class="text-gray-500 text-sm mb-4">You're a memory champion! ⭐</p>
+      <p data-i18n="celebChampion" class="text-gray-500 text-sm mb-4">You're a memory champion! ⭐</p>
       <div class="flex justify-center gap-3">
         <button id="playAgain" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">
-          🔄 Play Again!
+          <span data-i18n="playAgain">🔄 Play Again!</span>
         </button>
         <button id="harderBtn" class="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-400 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">
-          💪 Try Harder Mode!
+          <span data-i18n="harder">💪 Try Harder Mode!</span>
         </button>
       </div>
     </div>
@@ -377,7 +414,7 @@
       const m = Math.floor(seconds / 60);
       const s = seconds % 60;
       document.getElementById('celebStats').textContent =
-        `You did it in ${moves} moves and ${m}:${s.toString().padStart(2,'0')}! 🌟`;
+        window.t('celebStats').replace('{moves}', moves).replace('{time}', `${m}:${s.toString().padStart(2,'0')}`);
       document.getElementById('celebration').classList.remove('hidden');
     }
 
@@ -404,7 +441,7 @@
       initGame(currentTheme, true);
     });
     document.getElementById('markCompleted').addEventListener('click', function() {
-      this.textContent = '✅ Completed!';
+      this.textContent = window.t('completed');
       this.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     });
 
@@ -468,7 +505,7 @@
   if (btn) {
     btn.addEventListener('click', markDone);
     if (isDone()) {
-      btn.textContent = '✅ Completed!';
+      btn.textContent = window.t('completed');
       btn.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     }
   }

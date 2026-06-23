@@ -16,6 +16,104 @@
   <meta name="twitter:description" content="Eva started a story, now YOU get to finish it! A free interactive activity from Story Time with Eva." />
   <meta name="twitter:image" content="https://storytimewitheva.com/og-image.jpg" />
   <link rel="stylesheet" href="/games/games.css">
+  <script>
+    window.GAME_I18N = {
+      en: {
+        title: "Finish Eva's Story!",
+        subtitle: 'Eva started a story, now YOU get to finish it!',
+        howto1: 'Enter your name, then pick a story to finish',
+        howto2: "Read Eva's opening, she started it for you!",
+        howto3: 'Choose what happens next at each story step',
+        howto4: 'Write your own ending in the box',
+        howto5: 'Print your very own Story Certificate! 🎓',
+        nameHeading: "👋 First, what's your name?",
+        namePlaceholder: 'Type your name here...',
+        letsGo: "Let's Go! →",
+        pickStory: '📚 Choose a story to finish:',
+        choicesPlusEnding: '3 choices + your ending',
+        evasOpening: "📖 Eva's opening:",
+        storySoFar: '📝 Your story so far:',
+        orWriteOwn: 'Or write your own:',
+        freeWritePlaceholder: 'Write what happens next...',
+        useMyIdea: 'Use My Idea ✏️',
+        endingHeading: '🌟 Now write your ending!',
+        endingPrompt: 'How does YOUR story end? Write anything you like!',
+        endingPlaceholder: 'And then...',
+        finishMyStory: '🎉 Finish My Story!',
+        certPresents: 'Story Time with Eva presents',
+        certTitle: 'Story Ending Certificate',
+        certCertifies: 'This certifies that',
+        certFinished: 'has brilliantly finished the story:',
+        certComplete: 'Their complete story:',
+        certTagline: 'storytimewitheva.com | Keep reading, keep imagining! 📚',
+        printCert: '🖨️ Print Certificate',
+        newStory: '📖 Try Another Story!',
+      },
+      es: {
+        title: '¡Termina el cuento de Eva!',
+        subtitle: 'Eva empezó un cuento, ¡ahora TÚ lo terminas!',
+        howto1: 'Escribe tu nombre y elige un cuento para terminar',
+        howto2: '¡Lee el comienzo de Eva, ella lo empezó para ti!',
+        howto3: 'Elige qué pasa después en cada paso del cuento',
+        howto4: 'Escribe tu propio final en el recuadro',
+        howto5: '¡Imprime tu propio certificado del cuento! 🎓',
+        nameHeading: '👋 Primero, ¿cómo te llamas?',
+        namePlaceholder: 'Escribe tu nombre aquí...',
+        letsGo: '¡Vamos! →',
+        pickStory: '📚 Elige un cuento para terminar:',
+        choicesPlusEnding: '3 opciones + tu final',
+        evasOpening: '📖 El comienzo de Eva:',
+        storySoFar: '📝 Tu cuento hasta ahora:',
+        orWriteOwn: 'O escribe el tuyo:',
+        freeWritePlaceholder: 'Escribe qué pasa después...',
+        useMyIdea: 'Usar mi idea ✏️',
+        endingHeading: '🌟 ¡Ahora escribe tu final!',
+        endingPrompt: '¿Cómo termina TU cuento? ¡Escribe lo que quieras!',
+        endingPlaceholder: 'Y entonces...',
+        finishMyStory: '🎉 ¡Terminar mi cuento!',
+        certPresents: 'Story Time with Eva presenta',
+        certTitle: 'Certificado de final de cuento',
+        certCertifies: 'Esto certifica que',
+        certFinished: 'ha terminado de forma brillante el cuento:',
+        certComplete: 'Su cuento completo:',
+        certTagline: 'storytimewitheva.com | ¡Sigue leyendo, sigue imaginando! 📚',
+        printCert: '🖨️ Imprimir certificado',
+        newStory: '📖 ¡Probar otro cuento!',
+      },
+      fr: {
+        title: "Termine l'histoire d'Eva !",
+        subtitle: 'Eva a commencé une histoire, à TOI de la terminer !',
+        howto1: 'Écris ton nom, puis choisis une histoire à terminer',
+        howto2: "Lis le début d'Eva, elle l'a commencé pour toi !",
+        howto3: 'Choisis ce qui se passe ensuite à chaque étape',
+        howto4: 'Écris ta propre fin dans la case',
+        howto5: 'Imprime ton propre certificat d\'histoire ! 🎓',
+        nameHeading: "👋 D'abord, comment t'appelles-tu ?",
+        namePlaceholder: 'Écris ton nom ici...',
+        letsGo: "C'est parti ! →",
+        pickStory: '📚 Choisis une histoire à terminer :',
+        choicesPlusEnding: '3 choix + ta fin',
+        evasOpening: "📖 Le début d'Eva :",
+        storySoFar: '📝 Ton histoire jusqu\'ici :',
+        orWriteOwn: 'Ou écris la tienne :',
+        freeWritePlaceholder: 'Écris ce qui se passe ensuite...',
+        useMyIdea: 'Utiliser mon idée ✏️',
+        endingHeading: '🌟 Maintenant, écris ta fin !',
+        endingPrompt: 'Comment se termine TON histoire ? Écris ce que tu veux !',
+        endingPlaceholder: 'Et puis...',
+        finishMyStory: '🎉 Terminer mon histoire !',
+        certPresents: 'Story Time with Eva présente',
+        certTitle: 'Certificat de fin d\'histoire',
+        certCertifies: 'Ceci certifie que',
+        certFinished: "a brillamment terminé l'histoire :",
+        certComplete: 'Son histoire complète :',
+        certTagline: 'storytimewitheva.com | Continue à lire, continue à imaginer ! 📚',
+        printCert: '🖨️ Imprimer le certificat',
+        newStory: '📖 Essayer une autre histoire !',
+      },
+    };
+  </script>
+  <script src="/games/i18n.js"></script>
   <style>
     @font-face{font-family:'Lexend';src:url('/games/lexend.woff2') format('woff2');font-weight:100 900;font-display:swap;}
     * { font-family: 'Lexend', 'Segoe UI', system-ui, sans-serif; }
@@ -101,8 +199,8 @@
   </nav>
 
   <div class="max-w-3xl mx-auto px-4 pt-6 flex justify-between items-center">
-    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
-    <button id="markCompleted" class="px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
+    <a href="/activities" data-i18n="backToActivities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
+    <button id="markCompleted" data-i18n="markCompleted" class="px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
   </div>
 
   <main class="max-w-3xl mx-auto px-4 pb-16 pt-4">
@@ -110,30 +208,30 @@
     <!-- Header -->
     <div class="text-center mb-6">
       <div class="text-5xl mb-2 float">✍️</div>
-      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Finish Eva's Story!</h1>
-      <p class="text-gray-500 text-base">Eva started a story, now YOU get to finish it!</p>
+      <h1 data-i18n="title" class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Finish Eva's Story!</h1>
+      <p data-i18n="subtitle" class="text-gray-500 text-base">Eva started a story, now YOU get to finish it!</p>
       <div class="w-20 h-1 bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 mx-auto mt-4 rounded-full"></div>
     </div>
 
     <!-- How to Play -->
     <div class="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 rounded-2xl p-5 mb-6 text-white shadow-lg">
-      <h2 class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
+      <h2 data-i18n="howToPlay" class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
       <ol class="list-decimal list-inside space-y-1 text-sm font-semibold">
-        <li>Enter your name, then pick a story to finish</li>
-        <li>Read Eva's opening, she started it for you!</li>
-        <li>Choose what happens next at each story step</li>
-        <li>Write your own ending in the box</li>
-        <li>Print your very own Story Certificate! 🎓</li>
+        <li data-i18n="howto1">Enter your name, then pick a story to finish</li>
+        <li data-i18n="howto2">Read Eva's opening, she started it for you!</li>
+        <li data-i18n="howto3">Choose what happens next at each story step</li>
+        <li data-i18n="howto4">Write your own ending in the box</li>
+        <li data-i18n="howto5">Print your very own Story Certificate! 🎓</li>
       </ol>
     </div>
 
     <!-- Name Input -->
     <div id="nameSection" class="bg-white rounded-3xl shadow-xl border-2 border-purple-100 p-6 mb-5">
-      <h2 class="text-lg font-extrabold text-purple-700 mb-3">👋 First, what's your name?</h2>
+      <h2 data-i18n="nameHeading" class="text-lg font-extrabold text-purple-700 mb-3">👋 First, what's your name?</h2>
       <div class="flex gap-3">
         <input id="childName" type="text" placeholder="Type your name here..." maxlength="30"
           class="flex-1 px-4 py-3 rounded-2xl border-2 border-purple-200 font-bold text-gray-700 focus:outline-none focus:border-purple-400 text-base"/>
-        <button id="startBtn" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-2xl shadow hover:shadow-lg transition-all">
+        <button id="startBtn" data-i18n="letsGo" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-2xl shadow hover:shadow-lg transition-all">
           Let's Go! →
         </button>
       </div>
@@ -141,7 +239,7 @@
 
     <!-- Story Picker -->
     <div id="storyPicker" class="hidden mb-5 slide-up">
-      <h2 class="text-lg font-extrabold text-gray-700 mb-3 text-center">📚 Choose a story to finish:</h2>
+      <h2 data-i18n="pickStory" class="text-lg font-extrabold text-gray-700 mb-3 text-center">📚 Choose a story to finish:</h2>
       <div class="grid sm:grid-cols-2 gap-3" id="storyCards"></div>
     </div>
 
@@ -158,12 +256,12 @@
           <span class="font-extrabold text-purple-700 text-lg" id="storyTitle"></span>
         </div>
         <div class="bg-white/70 rounded-2xl p-4 mb-3">
-          <p class="text-xs font-bold text-purple-500 mb-1">📖 Eva's opening:</p>
+          <p data-i18n="evasOpening" class="text-xs font-bold text-purple-500 mb-1">📖 Eva's opening:</p>
           <p class="text-base font-bold text-gray-800 leading-relaxed italic" id="storyOpening"></p>
         </div>
         <!-- Built story so far -->
         <div id="storyBuilt" class="hidden bg-white/70 rounded-2xl p-4 mb-3">
-          <p class="text-xs font-bold text-purple-500 mb-1">📝 Your story so far:</p>
+          <p data-i18n="storySoFar" class="text-xs font-bold text-purple-500 mb-1">📝 Your story so far:</p>
           <p class="text-sm font-semibold text-gray-700 leading-relaxed" id="storyBuiltText"></p>
         </div>
       </div>
@@ -174,18 +272,18 @@
         <div class="grid sm:grid-cols-2 gap-3" id="choiceButtons"></div>
         <!-- Free write -->
         <div class="mt-4">
-          <p class="text-xs font-bold text-purple-500 mb-1">Or write your own:</p>
+          <p data-i18n="orWriteOwn" class="text-xs font-bold text-purple-500 mb-1">Or write your own:</p>
           <textarea id="freeWrite" class="w-full px-4 py-3 rounded-2xl border-2 border-purple-200 font-semibold text-gray-700 text-sm" placeholder="Write what happens next..."></textarea>
-          <button id="useMyIdea" class="mt-2 px-5 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-full text-sm transition-all">Use My Idea ✏️</button>
+          <button id="useMyIdea" data-i18n="useMyIdea" class="mt-2 px-5 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-full text-sm transition-all">Use My Idea ✏️</button>
         </div>
       </div>
 
       <!-- Final ending step -->
       <div id="endingSection" class="hidden bg-white rounded-3xl shadow-xl border-2 border-pink-100 p-6 mb-5 slide-up">
-        <h3 class="text-lg font-extrabold text-pink-600 mb-2">🌟 Now write your ending!</h3>
-        <p class="text-sm text-gray-500 font-semibold mb-3">How does YOUR story end? Write anything you like!</p>
+        <h3 data-i18n="endingHeading" class="text-lg font-extrabold text-pink-600 mb-2">🌟 Now write your ending!</h3>
+        <p data-i18n="endingPrompt" class="text-sm text-gray-500 font-semibold mb-3">How does YOUR story end? Write anything you like!</p>
         <textarea id="endingText" class="w-full px-4 py-3 rounded-2xl border-2 border-pink-200 font-semibold text-gray-700 text-sm" placeholder="And then..." rows="4"></textarea>
-        <button id="finishStory" class="mt-3 w-full py-3 bg-gradient-to-r from-pink-500 to-orange-400 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">
+        <button id="finishStory" data-i18n="finishMyStory" class="mt-3 w-full py-3 bg-gradient-to-r from-pink-500 to-orange-400 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">
           🎉 Finish My Story!
         </button>
       </div>
@@ -196,25 +294,25 @@
     <div id="certificateSection" class="hidden bounce-in">
       <div id="certificate">
         <div class="text-5xl mb-2">🏆</div>
-        <div class="text-xs font-bold text-purple-400 uppercase tracking-widest mb-1">Story Time with Eva presents</div>
-        <h2 class="text-2xl font-extrabold text-purple-700 mb-1">Story Ending Certificate</h2>
-        <p class="text-gray-500 text-sm mb-4">This certifies that</p>
+        <div data-i18n="certPresents" class="text-xs font-bold text-purple-400 uppercase tracking-widest mb-1">Story Time with Eva presents</div>
+        <h2 data-i18n="certTitle" class="text-2xl font-extrabold text-purple-700 mb-1">Story Ending Certificate</h2>
+        <p data-i18n="certCertifies" class="text-gray-500 text-sm mb-4">This certifies that</p>
         <p class="text-3xl font-extrabold text-orange-500 mb-4" id="certName"></p>
-        <p class="text-gray-600 text-sm mb-4">has brilliantly finished the story:</p>
+        <p data-i18n="certFinished" class="text-gray-600 text-sm mb-4">has brilliantly finished the story:</p>
         <p class="text-xl font-extrabold text-purple-700 mb-6" id="certStoryTitle"></p>
 
         <div class="bg-white rounded-2xl p-5 text-left mb-5 border-2 border-purple-100">
-          <p class="text-xs font-bold text-purple-400 mb-2 uppercase tracking-wide">Their complete story:</p>
+          <p data-i18n="certComplete" class="text-xs font-bold text-purple-400 mb-2 uppercase tracking-wide">Their complete story:</p>
           <p class="text-sm font-semibold text-gray-700 leading-relaxed italic" id="certFullStory"></p>
         </div>
 
         <div class="flex justify-center gap-2 text-2xl mb-4">⭐⭐⭐⭐⭐</div>
-        <p class="text-xs text-gray-400 font-bold">storytimewitheva.com | Keep reading, keep imagining! 📚</p>
+        <p data-i18n="certTagline" class="text-xs text-gray-400 font-bold">storytimewitheva.com | Keep reading, keep imagining! 📚</p>
       </div>
 
       <div class="flex gap-3 justify-center mt-5">
-        <button id="printCert" class="px-6 py-3 bg-purple-600 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">🖨️ Print Certificate</button>
-        <button id="newStory" class="px-6 py-3 bg-gradient-to-r from-pink-500 to-orange-400 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">📖 Try Another Story!</button>
+        <button id="printCert" data-i18n="printCert" class="px-6 py-3 bg-purple-600 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">🖨️ Print Certificate</button>
+        <button id="newStory" data-i18n="newStory" class="px-6 py-3 bg-gradient-to-r from-pink-500 to-orange-400 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">📖 Try Another Story!</button>
       </div>
     </div>
 
@@ -348,7 +446,7 @@
           onclick="startStory('${s.id}')">
           <div class="text-3xl mb-2">${s.emoji}</div>
           <div class="font-extrabold text-gray-800 text-sm mb-1">${s.title}</div>
-          <div class="text-xs text-gray-400 font-semibold">3 choices + your ending</div>
+          <div class="text-xs text-gray-400 font-semibold">${window.t('choicesPlusEnding')}</div>
         </button>
       `).join('');
     }
@@ -457,9 +555,15 @@
       document.getElementById('storyPicker').classList.remove('hidden');
     });
     document.getElementById('markCompleted').addEventListener('click', function() {
-      this.textContent = '✅ Completed!';
+      this.textContent = window.t('completed');
       this.classList.add('bg-green-100','border-green-400','text-green-700');
     });
+
+    // Localize input placeholders (i18n.js handles textContent via data-i18n,
+    // but placeholder attributes are set here using window.t).
+    document.getElementById('childName').placeholder = window.t('namePlaceholder');
+    document.getElementById('freeWrite').placeholder = window.t('freeWritePlaceholder');
+    document.getElementById('endingText').placeholder = window.t('endingPlaceholder');
 
     function speak(text) {
       if (!window.speechSynthesis) return;
@@ -527,7 +631,7 @@
   if (btn) {
     btn.addEventListener('click', markDone);
     if (isDone()) {
-      btn.textContent = '✅ Completed!';
+      btn.textContent = window.t('completed');
       btn.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     }
   }

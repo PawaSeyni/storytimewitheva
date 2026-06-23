@@ -16,6 +16,74 @@
   <meta name="twitter:description" content="Explore emotions: how do you feel today? A free interactive activity from Story Time with Eva." />
   <meta name="twitter:image" content="https://storytimewitheva.com/og-image.jpg" />
   <link rel="stylesheet" href="/games/games.css">
+  <script>
+    window.GAME_I18N = {
+      en: {
+        title: "Eva's Feelings Wheel",
+        subtitle: 'Explore emotions: how do you feel today?',
+        howto1: 'Tap an emotion on the wheel to learn about it',
+        howto2: "Read Eva's story moment about that feeling",
+        howto3: 'Answer: "Have you ever felt this way?"',
+        howto4: 'Explore all 8 emotions to fill your Feelings Journal!',
+        howto5: 'Print your journal page when you are done 🖨️',
+        tapPrompt: '👇 Tap an emotion to explore it!',
+        tapLabel: 'Tap an emotion!',
+        readyTitle: 'Ready to explore feelings?',
+        readyText: 'Tap any emotion on the wheel to discover how Eva felt in her stories, and share how YOU feel too!',
+        storyMoment: "📖 Eva's Story Moment:",
+        freeResponsePlaceholder: 'Or write your own answer...',
+        saveToJournal: '📓 Save to My Journal',
+        saved: '✅ Saved!',
+        journalTitle: '📓 My Feelings Journal',
+        journalIntro: 'Your answers will appear here as you explore each emotion.',
+        journalEmpty: 'No entries yet... start exploring the wheel! 💛',
+        defaultResponse: 'I explored this feeling!',
+      },
+      es: {
+        title: 'La rueda de emociones de Eva',
+        subtitle: 'Explora las emociones: ¿cómo te sientes hoy?',
+        howto1: 'Toca una emoción en la rueda para conocerla',
+        howto2: 'Lee el momento de la historia de Eva sobre ese sentimiento',
+        howto3: 'Responde: "¿Alguna vez te has sentido así?"',
+        howto4: '¡Explora las 8 emociones para llenar tu diario de sentimientos!',
+        howto5: 'Imprime tu página del diario cuando termines 🖨️',
+        tapPrompt: '👇 ¡Toca una emoción para explorarla!',
+        tapLabel: '¡Toca una emoción!',
+        readyTitle: '¿List@ para explorar los sentimientos?',
+        readyText: 'Toca cualquier emoción en la rueda para descubrir cómo se sintió Eva en sus cuentos, ¡y comparte cómo te sientes TÚ también!',
+        storyMoment: '📖 El momento de la historia de Eva:',
+        freeResponsePlaceholder: 'O escribe tu propia respuesta...',
+        saveToJournal: '📓 Guardar en mi diario',
+        saved: '✅ ¡Guardado!',
+        journalTitle: '📓 Mi diario de sentimientos',
+        journalIntro: 'Tus respuestas aparecerán aquí a medida que explores cada emoción.',
+        journalEmpty: 'Aún no hay anotaciones... ¡empieza a explorar la rueda! 💛',
+        defaultResponse: '¡Exploré este sentimiento!',
+      },
+      fr: {
+        title: "La roue des émotions d'Eva",
+        subtitle: "Explore les émotions : comment te sens-tu aujourd'hui ?",
+        howto1: 'Touche une émotion sur la roue pour la découvrir',
+        howto2: "Lis le moment de l'histoire d'Eva sur ce sentiment",
+        howto3: 'Réponds : « T\'es-tu déjà senti ainsi ? »',
+        howto4: 'Explore les 8 émotions pour remplir ton journal des sentiments !',
+        howto5: 'Imprime ta page de journal quand tu as terminé 🖨️',
+        tapPrompt: '👇 Touche une émotion pour l\'explorer !',
+        tapLabel: 'Touche une émotion !',
+        readyTitle: 'Prêt à explorer les sentiments ?',
+        readyText: "Touche n'importe quelle émotion sur la roue pour découvrir comment Eva s'est sentie dans ses histoires, et partage comment TOI tu te sens aussi !",
+        storyMoment: "📖 Le moment de l'histoire d'Eva :",
+        freeResponsePlaceholder: 'Ou écris ta propre réponse...',
+        saveToJournal: '📓 Enregistrer dans mon journal',
+        saved: '✅ Enregistré !',
+        journalTitle: '📓 Mon journal des sentiments',
+        journalIntro: 'Tes réponses apparaîtront ici au fur et à mesure que tu explores chaque émotion.',
+        journalEmpty: 'Aucune entrée pour le moment... commence à explorer la roue ! 💛',
+        defaultResponse: "J'ai exploré ce sentiment !",
+      },
+    };
+  </script>
+  <script src="/games/i18n.js"></script>
   <style>
     @font-face{font-family:'Lexend';src:url('/games/lexend.woff2') format('woff2');font-weight:100 900;font-display:swap;}
     * { font-family: 'Lexend', 'Segoe UI', system-ui, sans-serif; }
@@ -125,8 +193,8 @@
   </nav>
 
   <div class="max-w-4xl mx-auto px-4 pt-6">
-    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
-    <button id="markCompleted" class="float-right px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
+    <a href="/activities" data-i18n="backToActivities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
+    <button id="markCompleted" data-i18n="markCompleted" class="float-right px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
   </div>
 
   <main class="max-w-4xl mx-auto px-4 pb-16 pt-4">
@@ -134,20 +202,20 @@
     <!-- Header -->
     <div class="text-center mb-6">
       <div class="text-5xl mb-2">💛</div>
-      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Eva's Feelings Wheel</h1>
-      <p class="text-gray-500 text-base">Explore emotions: how do you feel today?</p>
+      <h1 data-i18n="title" class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Eva's Feelings Wheel</h1>
+      <p data-i18n="subtitle" class="text-gray-500 text-base">Explore emotions: how do you feel today?</p>
       <div class="w-20 h-1 bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400 mx-auto mt-4 rounded-full"></div>
     </div>
 
     <!-- How to Play -->
     <div class="bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-500 rounded-2xl p-5 mb-6 text-white shadow-lg">
-      <h2 class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
+      <h2 data-i18n="howToPlay" class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
       <ol class="list-decimal list-inside space-y-1 text-sm font-semibold">
-        <li>Tap an emotion on the wheel to learn about it</li>
-        <li>Read Eva's story moment about that feeling</li>
-        <li>Answer: "Have you ever felt this way?"</li>
-        <li>Explore all 8 emotions to fill your Feelings Journal!</li>
-        <li>Print your journal page when you are done 🖨️</li>
+        <li data-i18n="howto1">Tap an emotion on the wheel to learn about it</li>
+        <li data-i18n="howto2">Read Eva's story moment about that feeling</li>
+        <li data-i18n="howto3">Answer: "Have you ever felt this way?"</li>
+        <li data-i18n="howto4">Explore all 8 emotions to fill your Feelings Journal!</li>
+        <li data-i18n="howto5">Print your journal page when you are done 🖨️</li>
       </ol>
     </div>
 
@@ -155,7 +223,7 @@
 
       <!-- LEFT: Wheel -->
       <div class="flex flex-col items-center">
-        <p class="text-sm font-bold text-gray-500 mb-3">👇 Tap an emotion to explore it!</p>
+        <p data-i18n="tapPrompt" class="text-sm font-bold text-gray-500 mb-3">👇 Tap an emotion to explore it!</p>
 
         <div class="wheel-wrap spin-in">
           <!-- SVG Wheel -->
@@ -168,7 +236,7 @@
 
         <!-- Emotion label below wheel -->
         <div class="mt-4 text-center">
-          <div class="text-xl font-extrabold text-gray-700" id="wheelLabel">Tap an emotion!</div>
+          <div data-i18n="tapLabel" class="text-xl font-extrabold text-gray-700" id="wheelLabel">Tap an emotion!</div>
           <div class="text-sm text-gray-400 font-semibold" id="wheelLabelEs"></div>
         </div>
 
@@ -182,8 +250,8 @@
         <!-- Default state -->
         <div id="defaultPanel" class="bg-purple-50 rounded-3xl p-6 text-center border-2 border-purple-100">
           <div class="text-5xl mb-3">🌟</div>
-          <h3 class="text-lg font-extrabold text-purple-700 mb-2">Ready to explore feelings?</h3>
-          <p class="text-gray-500 text-sm">Tap any emotion on the wheel to discover how Eva felt in her stories, and share how YOU feel too!</p>
+          <h3 data-i18n="readyTitle" class="text-lg font-extrabold text-purple-700 mb-2">Ready to explore feelings?</h3>
+          <p data-i18n="readyText" class="text-gray-500 text-sm">Tap any emotion on the wheel to discover how Eva felt in her stories, and share how YOU feel too!</p>
         </div>
 
         <!-- Active emotion panel (hidden initially) -->
@@ -197,7 +265,7 @@
               </div>
             </div>
             <div class="bg-white/70 rounded-2xl p-3 mb-3">
-              <p class="text-xs font-bold text-purple-600 mb-1">📖 Eva's Story Moment:</p>
+              <p data-i18n="storyMoment" class="text-xs font-bold text-purple-600 mb-1">📖 Eva's Story Moment:</p>
               <p class="text-sm text-gray-700 font-semibold italic" id="activeStory"></p>
             </div>
             <p class="text-sm font-bold text-gray-600 mb-3" id="activeQuestion"></p>
@@ -208,7 +276,7 @@
               <input type="text" id="freeResponse" placeholder="Or write your own answer..." 
                 class="w-full px-3 py-2 rounded-xl border-2 border-purple-200 text-sm font-semibold focus:outline-none focus:border-purple-400 bg-white"/>
             </div>
-            <button id="saveToJournal" class="mt-3 w-full py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow hover:shadow-lg transition-all text-sm">
+            <button id="saveToJournal" data-i18n="saveToJournal" class="mt-3 w-full py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow hover:shadow-lg transition-all text-sm">
               📓 Save to My Journal
             </button>
           </div>
@@ -220,12 +288,12 @@
     <!-- Journal Section -->
     <div class="mt-8 bg-white rounded-3xl shadow-xl border-2 border-purple-100 p-6">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-extrabold text-purple-700">📓 My Feelings Journal</h2>
-        <button id="printJournal" class="px-4 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-full text-sm transition-all">🖨️ Print</button>
+        <h2 data-i18n="journalTitle" class="text-xl font-extrabold text-purple-700">📓 My Feelings Journal</h2>
+        <button id="printJournal" data-i18n="print" class="px-4 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-full text-sm transition-all">🖨️ Print</button>
       </div>
-      <p class="text-sm text-gray-400 font-semibold mb-4">Your answers will appear here as you explore each emotion.</p>
+      <p data-i18n="journalIntro" class="text-sm text-gray-400 font-semibold mb-4">Your answers will appear here as you explore each emotion.</p>
       <div id="journalEntries" class="space-y-2">
-        <p class="text-gray-300 text-sm font-semibold text-center py-4">No entries yet... start exploring the wheel! 💛</p>
+        <p data-i18n="journalEmpty" class="text-gray-300 text-sm font-semibold text-center py-4">No entries yet... start exploring the wheel! 💛</p>
       </div>
     </div>
 
@@ -440,7 +508,7 @@
 
     function saveToJournal() {
       if (!currentEmotion) return;
-      const response = document.getElementById('freeResponse').value.trim() || 'I explored this feeling!';
+      const response = document.getElementById('freeResponse').value.trim() || window.t('defaultResponse');
       journalEntries[currentEmotion.id] = { response, emoji: currentEmotion.emoji, name: currentEmotion.name };
       explored.add(currentEmotion.id);
       updateBadges();
@@ -448,10 +516,10 @@
 
       // Flash save button
       const btn = document.getElementById('saveToJournal');
-      btn.textContent = '✅ Saved!';
+      btn.textContent = window.t('saved');
       btn.classList.add('bg-green-500');
       setTimeout(() => {
-        btn.textContent = '📓 Save to My Journal';
+        btn.textContent = window.t('saveToJournal');
         btn.classList.remove('bg-green-500');
       }, 1500);
     }
@@ -466,7 +534,7 @@
     function renderJournal() {
       const container = document.getElementById('journalEntries');
       if (Object.keys(journalEntries).length === 0) {
-        container.innerHTML = '<p class="text-gray-300 text-sm font-semibold text-center py-4">No entries yet... start exploring the wheel! 💛</p>';
+        container.innerHTML = '<p class="text-gray-300 text-sm font-semibold text-center py-4">' + escapeHtml(window.t('journalEmpty')) + '</p>';
         return;
       }
       container.innerHTML = Object.values(journalEntries).map(entry => `
@@ -490,10 +558,17 @@
 
     document.getElementById('saveToJournal').addEventListener('click', saveToJournal);
     document.getElementById('markCompleted').addEventListener('click', function() {
-      this.textContent = '✅ Completed!';
+      this.textContent = window.t('completed');
       this.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     });
     document.getElementById('printJournal').addEventListener('click', () => window.print());
+
+    // Localize the free-response input placeholder (the i18n helper only sets
+    // textContent, so attributes are handled here).
+    (function () {
+      var input = document.getElementById('freeResponse');
+      if (input) input.setAttribute('placeholder', window.t('freeResponsePlaceholder'));
+    })();
 
     buildWheel();
     updateBadges();
@@ -554,7 +629,7 @@
   if (btn) {
     btn.addEventListener('click', markDone);
     if (isDone()) {
-      btn.textContent = '✅ Completed!';
+      btn.textContent = window.t('completed');
       btn.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     }
   }

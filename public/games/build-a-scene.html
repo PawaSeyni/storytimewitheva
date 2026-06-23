@@ -16,6 +16,77 @@
   <meta name="twitter:description" content="Drag characters and objects onto your scene to tell a story! A free interactive activity from Story Time with Eva." />
   <meta name="twitter:image" content="https://storytimewitheva.com/og-image.jpg" />
   <link rel="stylesheet" href="/games/games.css">
+  <script>
+    window.GAME_I18N = {
+      en: {
+        title: 'Build-a-Scene!',
+        subtitle: 'Drag characters and objects onto your scene to tell a story!',
+        howto1: '1️⃣ Pick a background',
+        howto2: '2️⃣ Drag stickers onto the scene',
+        howto3: '3️⃣ Add a speech bubble caption',
+        howto4: '4️⃣ Save or print your scene! 🖨️',
+        chooseBackground: '🏞️ Choose Background',
+        addStickers: '🎭 Add Stickers',
+        tabCharacters: '👧 Characters', tabAnimals: '🐾 Animals', tabNature: '🌿 Nature', tabObjects: '✨ Objects',
+        selectedSticker: '✏️ Selected Sticker',
+        size: 'Size', flip: '↔️ Flip', delete: '🗑️ Delete',
+        addSpeechBubble: '💬 Add Speech Bubble',
+        bubblePlaceholder: 'What are they saying?',
+        addToScene: '+ Add to Scene',
+        sceneCaption: '📝 Scene Caption',
+        captionPlaceholder: 'Give your scene a title...',
+        clear: '🗑️ Clear', save: '💾 Save', saved: '✅ Saved!', print: '🖨️ Print',
+        dragHint: 'Drag stickers from the palette onto the scene ☝️',
+        savedScenes: '🖼️ My Saved Scenes',
+        defaultSceneTitle: 'My Scene',
+      },
+      es: {
+        title: '¡Crea una escena!',
+        subtitle: '¡Arrastra personajes y objetos a tu escena para contar una historia!',
+        howto1: '1️⃣ Elige un fondo',
+        howto2: '2️⃣ Arrastra pegatinas a la escena',
+        howto3: '3️⃣ Añade un bocadillo de diálogo',
+        howto4: '4️⃣ ¡Guarda o imprime tu escena! 🖨️',
+        chooseBackground: '🏞️ Elige un fondo',
+        addStickers: '🎭 Añadir pegatinas',
+        tabCharacters: '👧 Personajes', tabAnimals: '🐾 Animales', tabNature: '🌿 Naturaleza', tabObjects: '✨ Objetos',
+        selectedSticker: '✏️ Pegatina seleccionada',
+        size: 'Tamaño', flip: '↔️ Voltear', delete: '🗑️ Borrar',
+        addSpeechBubble: '💬 Añadir bocadillo',
+        bubblePlaceholder: '¿Qué están diciendo?',
+        addToScene: '+ Añadir a la escena',
+        sceneCaption: '📝 Título de la escena',
+        captionPlaceholder: 'Dale un título a tu escena...',
+        clear: '🗑️ Borrar todo', save: '💾 Guardar', saved: '✅ ¡Guardado!', print: '🖨️ Imprimir',
+        dragHint: 'Arrastra pegatinas de la paleta a la escena ☝️',
+        savedScenes: '🖼️ Mis escenas guardadas',
+        defaultSceneTitle: 'Mi escena',
+      },
+      fr: {
+        title: 'Crée une scène !',
+        subtitle: 'Glisse des personnages et des objets sur ta scène pour raconter une histoire !',
+        howto1: '1️⃣ Choisis un décor',
+        howto2: '2️⃣ Glisse des autocollants sur la scène',
+        howto3: '3️⃣ Ajoute une bulle de dialogue',
+        howto4: '4️⃣ Enregistre ou imprime ta scène ! 🖨️',
+        chooseBackground: '🏞️ Choisis un décor',
+        addStickers: '🎭 Ajouter des autocollants',
+        tabCharacters: '👧 Personnages', tabAnimals: '🐾 Animaux', tabNature: '🌿 Nature', tabObjects: '✨ Objets',
+        selectedSticker: '✏️ Autocollant sélectionné',
+        size: 'Taille', flip: '↔️ Retourner', delete: '🗑️ Supprimer',
+        addSpeechBubble: '💬 Ajouter une bulle',
+        bubblePlaceholder: 'Que disent-ils ?',
+        addToScene: '+ Ajouter à la scène',
+        sceneCaption: '📝 Titre de la scène',
+        captionPlaceholder: 'Donne un titre à ta scène...',
+        clear: '🗑️ Tout effacer', save: '💾 Enregistrer', saved: '✅ Enregistré !', print: '🖨️ Imprimer',
+        dragHint: 'Glisse les autocollants de la palette sur la scène ☝️',
+        savedScenes: '🖼️ Mes scènes enregistrées',
+        defaultSceneTitle: 'Ma scène',
+      },
+    };
+  </script>
+  <script src="/games/i18n.js"></script>
   <style>
     @font-face{font-family:'Lexend';src:url('/games/lexend.woff2') format('woff2');font-weight:100 900;font-display:swap;}
     * { font-family: 'Lexend', 'Segoe UI', system-ui, sans-serif; }
@@ -153,8 +224,8 @@
   </nav>
 
   <div class="max-w-6xl mx-auto px-4 pt-6 flex justify-between items-center">
-    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
-    <button id="markCompleted" class="px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
+    <a href="/activities" data-i18n="backToActivities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
+    <button id="markCompleted" data-i18n="markCompleted" class="px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
   </div>
 
   <main class="max-w-6xl mx-auto px-4 pb-16 pt-4">
@@ -162,18 +233,18 @@
     <!-- Header -->
     <div class="text-center mb-5">
       <div class="text-5xl mb-2 float">🎨</div>
-      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Build-a-Scene!</h1>
-      <p class="text-gray-500 text-base">Drag characters and objects onto your scene to tell a story!</p>
+      <h1 data-i18n="title" class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Build-a-Scene!</h1>
+      <p data-i18n="subtitle" class="text-gray-500 text-base">Drag characters and objects onto your scene to tell a story!</p>
       <div class="w-20 h-1 bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 mx-auto mt-4 rounded-full"></div>
     </div>
 
     <!-- How to Play -->
     <div class="bg-gradient-to-r from-pink-400 via-purple-500 to-blue-500 rounded-2xl p-4 mb-5 text-white shadow-lg">
       <div class="grid sm:grid-cols-4 gap-2 text-center text-xs font-bold">
-        <div>1️⃣ Pick a background</div>
-        <div>2️⃣ Drag stickers onto the scene</div>
-        <div>3️⃣ Add a speech bubble caption</div>
-        <div>4️⃣ Save or print your scene! 🖨️</div>
+        <div data-i18n="howto1">1️⃣ Pick a background</div>
+        <div data-i18n="howto2">2️⃣ Drag stickers onto the scene</div>
+        <div data-i18n="howto3">3️⃣ Add a speech bubble caption</div>
+        <div data-i18n="howto4">4️⃣ Save or print your scene! 🖨️</div>
       </div>
     </div>
 
@@ -184,56 +255,56 @@
 
         <!-- Background Picker -->
         <div class="bg-white rounded-2xl shadow border-2 border-purple-100 p-4">
-          <h3 class="font-extrabold text-purple-700 text-sm mb-3">🏞️ Choose Background</h3>
+          <h3 data-i18n="chooseBackground" class="font-extrabold text-purple-700 text-sm mb-3">🏞️ Choose Background</h3>
           <div class="grid grid-cols-2 gap-2" id="bgPicker"></div>
         </div>
 
         <!-- Sticker Palette -->
         <div class="bg-white rounded-2xl shadow border-2 border-purple-100 p-4">
-          <h3 class="font-extrabold text-purple-700 text-sm mb-2">🎭 Add Stickers</h3>
+          <h3 data-i18n="addStickers" class="font-extrabold text-purple-700 text-sm mb-2">🎭 Add Stickers</h3>
           <!-- Tabs -->
           <div class="flex gap-1 mb-3 flex-wrap">
-            <button class="tab-btn active px-3 py-1 rounded-full border border-purple-200 text-xs font-bold transition-all" data-tab="characters">👧 Characters</button>
-            <button class="tab-btn px-3 py-1 rounded-full border border-purple-200 text-xs font-bold text-gray-600 transition-all hover:bg-purple-50" data-tab="animals">🐾 Animals</button>
-            <button class="tab-btn px-3 py-1 rounded-full border border-purple-200 text-xs font-bold text-gray-600 transition-all hover:bg-purple-50" data-tab="nature">🌿 Nature</button>
-            <button class="tab-btn px-3 py-1 rounded-full border border-purple-200 text-xs font-bold text-gray-600 transition-all hover:bg-purple-50" data-tab="objects">✨ Objects</button>
+            <button class="tab-btn active px-3 py-1 rounded-full border border-purple-200 text-xs font-bold transition-all" data-tab="characters" data-i18n="tabCharacters">👧 Characters</button>
+            <button class="tab-btn px-3 py-1 rounded-full border border-purple-200 text-xs font-bold text-gray-600 transition-all hover:bg-purple-50" data-tab="animals" data-i18n="tabAnimals">🐾 Animals</button>
+            <button class="tab-btn px-3 py-1 rounded-full border border-purple-200 text-xs font-bold text-gray-600 transition-all hover:bg-purple-50" data-tab="nature" data-i18n="tabNature">🌿 Nature</button>
+            <button class="tab-btn px-3 py-1 rounded-full border border-purple-200 text-xs font-bold text-gray-600 transition-all hover:bg-purple-50" data-tab="objects" data-i18n="tabObjects">✨ Objects</button>
           </div>
           <div id="stickerPalette" class="sticker-grid max-h-48 overflow-y-auto"></div>
         </div>
 
         <!-- Selected Sticker Controls -->
         <div id="stickerControls" class="hidden bg-white rounded-2xl shadow border-2 border-orange-100 p-4">
-          <h3 class="font-extrabold text-orange-600 text-sm mb-3">✏️ Selected Sticker</h3>
+          <h3 data-i18n="selectedSticker" class="font-extrabold text-orange-600 text-sm mb-3">✏️ Selected Sticker</h3>
           <div class="mb-3">
-            <label class="text-xs font-bold text-gray-500 block mb-1">Size</label>
+            <label data-i18n="size" class="text-xs font-bold text-gray-500 block mb-1">Size</label>
             <input type="range" id="sizeSlider" min="1" max="5" value="2.5" step="0.5" class="w-full"/>
           </div>
           <div class="flex gap-2">
-            <button id="flipBtn" class="flex-1 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-xl text-xs transition-all">↔️ Flip</button>
-            <button id="deleteBtn" class="flex-1 py-2 bg-red-100 hover:bg-red-200 text-red-600 font-bold rounded-xl text-xs transition-all">🗑️ Delete</button>
+            <button id="flipBtn" data-i18n="flip" class="flex-1 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-xl text-xs transition-all">↔️ Flip</button>
+            <button id="deleteBtn" data-i18n="delete" class="flex-1 py-2 bg-red-100 hover:bg-red-200 text-red-600 font-bold rounded-xl text-xs transition-all">🗑️ Delete</button>
           </div>
         </div>
 
         <!-- Speech Bubble -->
         <div class="bg-white rounded-2xl shadow border-2 border-purple-100 p-4">
-          <h3 class="font-extrabold text-purple-700 text-sm mb-2">💬 Add Speech Bubble</h3>
+          <h3 data-i18n="addSpeechBubble" class="font-extrabold text-purple-700 text-sm mb-2">💬 Add Speech Bubble</h3>
           <input type="text" id="bubbleText" placeholder="What are they saying?" maxlength="60"
             class="w-full px-3 py-2 rounded-xl border-2 border-purple-200 text-xs font-bold focus:outline-none focus:border-purple-400 mb-2"/>
-          <button id="addBubble" class="w-full py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-xl text-xs transition-all">+ Add to Scene</button>
+          <button id="addBubble" data-i18n="addToScene" class="w-full py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-xl text-xs transition-all">+ Add to Scene</button>
         </div>
 
         <!-- Caption -->
         <div class="bg-white rounded-2xl shadow border-2 border-purple-100 p-4">
-          <h3 class="font-extrabold text-purple-700 text-sm mb-2">📝 Scene Caption</h3>
+          <h3 data-i18n="sceneCaption" class="font-extrabold text-purple-700 text-sm mb-2">📝 Scene Caption</h3>
           <input type="text" id="captionText" placeholder="Give your scene a title..." maxlength="80"
             class="w-full px-3 py-2 rounded-xl border-2 border-purple-200 text-xs font-bold focus:outline-none focus:border-purple-400"/>
         </div>
 
         <!-- Actions -->
         <div class="flex gap-2">
-          <button id="clearScene" class="flex-1 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold rounded-xl text-sm transition-all">🗑️ Clear</button>
-          <button id="saveScene" class="flex-1 py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold rounded-xl text-sm shadow hover:shadow-lg transition-all">💾 Save</button>
-          <button id="printScene" class="flex-1 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 font-bold rounded-xl text-sm transition-all">🖨️ Print</button>
+          <button id="clearScene" data-i18n="clear" class="flex-1 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold rounded-xl text-sm transition-all">🗑️ Clear</button>
+          <button id="saveScene" data-i18n="save" class="flex-1 py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold rounded-xl text-sm shadow hover:shadow-lg transition-all">💾 Save</button>
+          <button id="printScene" data-i18n="print" class="flex-1 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 font-bold rounded-xl text-sm transition-all">🖨️ Print</button>
         </div>
       </div>
 
@@ -250,12 +321,12 @@
             <!-- Stickers placed here -->
             <div id="stickerLayer" class="absolute inset-0"></div>
           </div>
-          <p class="text-center text-xs text-gray-400 font-semibold mt-2">Drag stickers from the palette onto the scene ☝️</p>
+          <p data-i18n="dragHint" class="text-center text-xs text-gray-400 font-semibold mt-2">Drag stickers from the palette onto the scene ☝️</p>
         </div>
 
         <!-- Saved scenes -->
         <div id="savedScenesSection" class="hidden mt-4 bg-white rounded-2xl shadow border-2 border-purple-100 p-4">
-          <h3 class="font-extrabold text-purple-700 text-sm mb-3">🖼️ My Saved Scenes</h3>
+          <h3 data-i18n="savedScenes" class="font-extrabold text-purple-700 text-sm mb-3">🖼️ My Saved Scenes</h3>
           <div id="savedScenes" class="grid grid-cols-3 gap-2"></div>
         </div>
       </div>
@@ -300,6 +371,8 @@
       applyBackground(backgrounds[0]);
       setupCanvasDrop();
       setupCaptionSync();
+      document.getElementById('bubbleText').placeholder = window.t('bubblePlaceholder');
+      document.getElementById('captionText').placeholder = window.t('captionPlaceholder');
     }
 
     function buildBgPicker() {
@@ -505,15 +578,15 @@
 
     // Save (snapshot as text representation)
     document.getElementById('saveScene').addEventListener('click', () => {
-      const caption = document.getElementById('captionText').value || 'My Scene';
+      const caption = document.getElementById('captionText').value || window.t('defaultSceneTitle');
       const stickersOnCanvas = [...document.querySelectorAll('.placed-sticker')].map(s => s.textContent).join(' ');
       const saved = { caption, bg: selectedBg.label, stickers: stickersOnCanvas, time: new Date().toLocaleTimeString() };
       savedScenes.unshift(saved);
       renderSavedScenes();
       // Flash
       const btn = document.getElementById('saveScene');
-      btn.textContent = '✅ Saved!';
-      setTimeout(() => { btn.textContent = '💾 Save'; }, 1500);
+      btn.textContent = window.t('saved');
+      setTimeout(() => { btn.textContent = window.t('save'); }, 1500);
     });
 
     function renderSavedScenes() {
@@ -532,7 +605,7 @@
     // Print
     document.getElementById('printScene').addEventListener('click', () => window.print());
     document.getElementById('markCompleted').addEventListener('click', function() {
-      this.textContent = '✅ Completed!';
+      this.textContent = window.t('completed');
       this.classList.add('bg-green-100','border-green-400','text-green-700');
     });
 
@@ -594,7 +667,7 @@
   if (btn) {
     btn.addEventListener('click', markDone);
     if (isDone()) {
-      btn.textContent = '✅ Completed!';
+      btn.textContent = window.t('completed');
       btn.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     }
   }

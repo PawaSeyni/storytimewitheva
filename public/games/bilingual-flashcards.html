@@ -16,6 +16,59 @@
   <meta name="twitter:description" content="Tap a card to flip it and learn the word in another language! A free interactive activity from Story Time with Eva." />
   <meta name="twitter:image" content="https://storytimewitheva.com/og-image.jpg" />
   <link rel="stylesheet" href="/games/games.css">
+  <script>
+    window.GAME_I18N = {
+      en: {
+        title: '🌍 Bilingual Word Flashcards',
+        subtitle: 'Tap a card to flip it and learn the word in another language!',
+        howto1: 'Pick a category below (Colors, Animals, Numbers, or Feelings)',
+        howto2: 'Choose your language pair: English ↔ Spanish or English ↔ French',
+        howto3: 'Tap a card to flip it and see the translation!',
+        howto4: 'Say the word out loud in both languages',
+        howto5: 'Complete all cards to earn your Star Badge! ⭐',
+        langPairLabel: 'Language pair:',
+        catColors: '🎨 Colors', catAnimals: '🐾 Animals', catNumbers: '🔢 Numbers', catFeelings: '💛 Feelings',
+        cardsFlipped: 'Cards flipped: {flipped} / {total}', scoreLabel: '⭐ Score: {score}',
+        celebTitle: 'Amazing job!', celebSubtitle: "You flipped all the cards! You're a bilingual superstar! ⭐",
+        printTitle: '🖨️ Want a printable version?',
+        printBlurb: 'Download the FREE 20-Page Bilingual Activity Kit, includes vocabulary sheets, coloring pages, and more!',
+        getKit: 'Get Free Kit 🎨',
+      },
+      es: {
+        title: '🌍 Tarjetas de palabras bilingües',
+        subtitle: 'Toca una tarjeta para voltearla y aprende la palabra en otro idioma.',
+        howto1: 'Elige una categoría abajo (colores, animales, números o sentimientos)',
+        howto2: 'Elige tu par de idiomas: inglés ↔ español o inglés ↔ francés',
+        howto3: 'Toca una tarjeta para voltearla y ver la traducción.',
+        howto4: 'Di la palabra en voz alta en los dos idiomas',
+        howto5: '¡Completa todas las tarjetas para ganar tu estrella! ⭐',
+        langPairLabel: 'Par de idiomas:',
+        catColors: '🎨 Colores', catAnimals: '🐾 Animales', catNumbers: '🔢 Números', catFeelings: '💛 Sentimientos',
+        cardsFlipped: 'Tarjetas volteadas: {flipped} / {total}', scoreLabel: '⭐ Puntos: {score}',
+        celebTitle: '¡Increíble!', celebSubtitle: '¡Volteaste todas las tarjetas! ¡Eres una estrella bilingüe! ⭐',
+        printTitle: '🖨️ ¿Quieres una versión imprimible?',
+        printBlurb: 'Descarga el kit de actividades bilingües GRATIS de 20 páginas, incluye hojas de vocabulario, páginas para colorear y más.',
+        getKit: 'Obtener kit gratis 🎨',
+      },
+      fr: {
+        title: '🌍 Cartes de mots bilingues',
+        subtitle: 'Touche une carte pour la retourner et apprends le mot dans une autre langue !',
+        howto1: 'Choisis une catégorie ci-dessous (couleurs, animaux, nombres ou émotions)',
+        howto2: 'Choisis ta paire de langues : anglais ↔ espagnol ou anglais ↔ français',
+        howto3: 'Touche une carte pour la retourner et voir la traduction !',
+        howto4: 'Dis le mot à voix haute dans les deux langues',
+        howto5: 'Termine toutes les cartes pour gagner ton étoile ! ⭐',
+        langPairLabel: 'Paire de langues :',
+        catColors: '🎨 Couleurs', catAnimals: '🐾 Animaux', catNumbers: '🔢 Nombres', catFeelings: '💛 Émotions',
+        cardsFlipped: 'Cartes retournées : {flipped} / {total}', scoreLabel: '⭐ Score : {score}',
+        celebTitle: 'Bravo !', celebSubtitle: 'Tu as retourné toutes les cartes ! Tu es une superstar bilingue ! ⭐',
+        printTitle: '🖨️ Tu veux une version à imprimer ?',
+        printBlurb: 'Télécharge le kit d\'activités bilingues GRATUIT de 20 pages, avec des fiches de vocabulaire, des pages à colorier et plus encore !',
+        getKit: 'Obtenir le kit gratuit 🎨',
+      },
+    };
+  </script>
+  <script src="/games/i18n.js"></script>
   <style>
     @font-face{font-family:'Lexend';src:url('/games/lexend.woff2') format('woff2');font-weight:100 900;font-display:swap;}
     * { font-family: 'Lexend', 'Segoe UI', system-ui, sans-serif; }
@@ -101,10 +154,10 @@
 
   <!-- Back link -->
   <div class="max-w-4xl mx-auto px-4 pt-6">
-    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">
+    <a href="/activities" data-i18n="backToActivities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">
       ← Back to Activities
     </a>
-    <button id="markCompleted"
+    <button id="markCompleted" data-i18n="markCompleted"
       class="float-right px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">
       ✓ Mark Completed
     </button>
@@ -114,28 +167,28 @@
 
     <!-- Header -->
     <div class="text-center mb-8">
-      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">
+      <h1 data-i18n="title" class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">
         🌍 Bilingual Word Flashcards
       </h1>
-      <p class="text-gray-500 text-base">Tap a card to flip it and learn the word in another language!</p>
+      <p data-i18n="subtitle" class="text-gray-500 text-base">Tap a card to flip it and learn the word in another language!</p>
       <div class="w-20 h-1 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 mx-auto mt-4 rounded-full"></div>
     </div>
 
     <!-- How to Play -->
     <div class="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 rounded-2xl p-5 mb-6 text-white shadow-lg">
-      <h2 class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
+      <h2 data-i18n="howToPlay" class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
       <ol class="list-decimal list-inside space-y-1 text-sm font-semibold">
-        <li>Pick a category below (Colors, Animals, Numbers, or Feelings)</li>
-        <li>Choose your language pair: English ↔ Spanish or English ↔ French</li>
-        <li>Tap a card to flip it and see the translation!</li>
-        <li>Say the word out loud in both languages</li>
-        <li>Complete all cards to earn your Star Badge! ⭐</li>
+        <li data-i18n="howto1">Pick a category below (Colors, Animals, Numbers, or Feelings)</li>
+        <li data-i18n="howto2">Choose your language pair: English ↔ Spanish or English ↔ French</li>
+        <li data-i18n="howto3">Tap a card to flip it and see the translation!</li>
+        <li data-i18n="howto4">Say the word out loud in both languages</li>
+        <li data-i18n="howto5">Complete all cards to earn your Star Badge! ⭐</li>
       </ol>
     </div>
 
     <!-- Language Toggle -->
     <div class="flex justify-center gap-3 mb-5">
-      <span class="font-bold text-gray-600 self-center text-sm">Language pair:</span>
+      <span data-i18n="langPairLabel" class="font-bold text-gray-600 self-center text-sm">Language pair:</span>
       <button id="langES" class="lang-btn active px-4 py-2 rounded-full border-2 border-purple-300 font-bold text-sm transition-all">
         🇺🇸 EN ↔ 🇪🇸 ES
       </button>
@@ -146,10 +199,10 @@
 
     <!-- Category Buttons -->
     <div class="flex flex-wrap justify-center gap-3 mb-6">
-      <button class="cat-btn active px-5 py-2 rounded-full border-2 border-purple-300 font-bold text-sm transition-all" data-cat="colors">🎨 Colors</button>
-      <button class="cat-btn px-5 py-2 rounded-full border-2 border-purple-300 font-bold text-sm text-gray-600 transition-all hover:bg-purple-50" data-cat="animals">🐾 Animals</button>
-      <button class="cat-btn px-5 py-2 rounded-full border-2 border-purple-300 font-bold text-sm text-gray-600 transition-all hover:bg-purple-50" data-cat="numbers">🔢 Numbers</button>
-      <button class="cat-btn px-5 py-2 rounded-full border-2 border-purple-300 font-bold text-sm text-gray-600 transition-all hover:bg-purple-50" data-cat="feelings">💛 Feelings</button>
+      <button class="cat-btn active px-5 py-2 rounded-full border-2 border-purple-300 font-bold text-sm transition-all" data-cat="colors" data-i18n="catColors">🎨 Colors</button>
+      <button class="cat-btn px-5 py-2 rounded-full border-2 border-purple-300 font-bold text-sm text-gray-600 transition-all hover:bg-purple-50" data-cat="animals" data-i18n="catAnimals">🐾 Animals</button>
+      <button class="cat-btn px-5 py-2 rounded-full border-2 border-purple-300 font-bold text-sm text-gray-600 transition-all hover:bg-purple-50" data-cat="numbers" data-i18n="catNumbers">🔢 Numbers</button>
+      <button class="cat-btn px-5 py-2 rounded-full border-2 border-purple-300 font-bold text-sm text-gray-600 transition-all hover:bg-purple-50" data-cat="feelings" data-i18n="catFeelings">💛 Feelings</button>
     </div>
 
     <!-- Progress Bar -->
@@ -169,18 +222,18 @@
     <!-- Badge / Celebration -->
     <div id="celebration" class="hidden text-center py-8 bounce-in">
       <div class="text-6xl mb-3 sparkle">🏆</div>
-      <h2 class="text-2xl font-extrabold text-purple-700 mb-1">Amazing job!</h2>
-      <p class="text-gray-600 mb-4">You flipped all the cards! You're a bilingual superstar! ⭐</p>
-      <button id="playAgain" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all text-base">
+      <h2 data-i18n="celebTitle" class="text-2xl font-extrabold text-purple-700 mb-1">Amazing job!</h2>
+      <p data-i18n="celebSubtitle" class="text-gray-600 mb-4">You flipped all the cards! You're a bilingual superstar! ⭐</p>
+      <button id="playAgain" data-i18n="playAgain" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all text-base">
         🔄 Play Again!
       </button>
     </div>
 
     <!-- Printable Sheet CTA -->
     <div class="bg-purple-50 border-2 border-purple-200 rounded-2xl p-5 text-center">
-      <p class="font-bold text-purple-700 text-base mb-1">🖨️ Want a printable version?</p>
-      <p class="text-gray-500 text-sm mb-3">Download the FREE 20-Page Bilingual Activity Kit, includes vocabulary sheets, coloring pages, and more!</p>
-      <a href="/#email-signup" class="inline-block px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold rounded-full shadow hover:shadow-lg transition-all text-sm">
+      <p data-i18n="printTitle" class="font-bold text-purple-700 text-base mb-1">🖨️ Want a printable version?</p>
+      <p data-i18n="printBlurb" class="text-gray-500 text-sm mb-3">Download the FREE 20-Page Bilingual Activity Kit, includes vocabulary sheets, coloring pages, and more!</p>
+      <a href="/#email-signup" data-i18n="getKit" class="inline-block px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold rounded-full shadow hover:shadow-lg transition-all text-sm">
         Get Free Kit 🎨
       </a>
     </div>
@@ -334,8 +387,10 @@
     function updateProgress() {
       const total = vocab[currentCat].length;
       const flipped = flippedCards.size;
-      document.getElementById('progressLabel').textContent = `Cards flipped: ${flipped} / ${total}`;
-      document.getElementById('scoreLabel').textContent = `⭐ Score: ${score}`;
+      document.getElementById('progressLabel').textContent =
+        window.t('cardsFlipped').replace('{flipped}', flipped).replace('{total}', total);
+      document.getElementById('scoreLabel').textContent =
+        window.t('scoreLabel').replace('{score}', score);
       document.getElementById('progressBar').style.width = `${(flipped / total) * 100}%`;
     }
 
@@ -374,7 +429,7 @@
 
     // ─── MARK COMPLETED ─────────────────────────────────────────────────────────
     document.getElementById('markCompleted').addEventListener('click', function() {
-      this.textContent = '✅ Completed!';
+      this.textContent = window.t('completed');
       this.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     });
 
@@ -438,7 +493,7 @@
   if (btn) {
     btn.addEventListener('click', markDone);
     if (isDone()) {
-      btn.textContent = '✅ Completed!';
+      btn.textContent = window.t('completed');
       btn.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     }
   }
