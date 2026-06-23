@@ -4,7 +4,7 @@ import { AMAZON_AUTHOR_URL } from '../lib/amazon';
 
 const TRANSLATIONS = {
   en: {
-    tagline: 'Where stories come to life! Magical bilingual books and activities for curious young minds.',
+    tagline: 'Where stories come to life! Magical books and activities for curious minds, ages 3 to 12.',
     quickLinks: 'Quick Links',
     home: 'Home',
     books: 'Books',
@@ -21,7 +21,7 @@ const TRANSLATIONS = {
     amazonAuthor: 'Amazon author page',
   },
   es: {
-    tagline: '¡Donde las historias cobran vida! Libros y actividades bilingües mágicos para mentes curiosas.',
+    tagline: '¡Donde las historias cobran vida! Libros y actividades mágicos para mentes curiosas de 3 a 12 años.',
     quickLinks: 'Enlaces rápidos',
     home: 'Inicio',
     books: 'Libros',
@@ -38,7 +38,7 @@ const TRANSLATIONS = {
     amazonAuthor: 'Página de autora en Amazon',
   },
   fr: {
-    tagline: 'Où les histoires prennent vie ! Des livres et activités bilingues magiques pour les jeunes esprits curieux.',
+    tagline: 'Où les histoires prennent vie ! Des livres et activités magiques pour les esprits curieux de 3 à 12 ans.',
     quickLinks: 'Liens rapides',
     home: 'Accueil',
     books: 'Livres',
