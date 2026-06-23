@@ -258,9 +258,9 @@ const ELEMENTS_LIST: ElementKey[] = ['character', 'setting', 'goal', 'problem', 
 
 const ICONS: Record<ElementKey, string> = {
   character: '👤',
-  setting: '🗺️',
+  setting: '🌍',
   goal: '🎯',
-  problem: '⚠️',
+  problem: '🚧',
   solution: '💡',
   twist: '🌟',
 };
