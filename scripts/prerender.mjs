@@ -81,10 +81,21 @@ await new Promise(resolve => server.listen(PORT, resolve));
 // Only prerender SPA routes. Sitemap entries with a file extension (e.g. the
 // standalone /games/<slug>.html pages) are already static and must NOT be
 // snapshotted — they'd just stall waiting for the SPA's ready flag.
-const routes = routesFromSitemap(await readFile(path.join(DIST, 'sitemap.xml'), 'utf8')).filter(
+const sitemapRoutes = routesFromSitemap(await readFile(path.join(DIST, 'sitemap.xml'), 'utf8')).filter(
   r => !path.extname(r),
 );
-console.log(`Prerendering ${routes.length} routes…`);
+
+// SPA routes deliberately kept out of the sitemap because they're noindex
+// utility pages (Profile, Search). They still need a prerendered shell — without
+// one, the Netlify SPA fallback serves the HOME page's HTML for them, so a
+// crawler or a pre-hydration paint shows the homepage instead of the real page.
+// Mounted at every language prefix, exactly like App.tsx routeDefs × LANG_PREFIXES.
+const NOINDEX_SPA_ROUTES = ['/profile', '/search'];
+const LANG_PREFIXES = ['', '/es', '/fr'];
+const extraRoutes = NOINDEX_SPA_ROUTES.flatMap(p => LANG_PREFIXES.map(pre => `${pre}${p}`));
+
+const routes = [...new Set([...sitemapRoutes, ...extraRoutes])];
+console.log(`Prerendering ${routes.length} routes (${extraRoutes.length} noindex SPA routes)…`);
 
 // Best-effort: if Chromium can't launch warn and exit 0 so the working SPA
 // still deploys. Prerender is an enhancement, not a hard build requirement.
