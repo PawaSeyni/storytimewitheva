@@ -55,7 +55,7 @@ const TRANSLATIONS = {
     seoDesc: 'The Eva Gallo Collection: picture books for children ages 3–9 about quiet wonder, nighttime magic, and morning homecoming. Read with us and explore free activities.',
     heroLine1: 'Where Stories',
     heroLine2: 'Come to Life!',
-    heroSubtitle: 'Discover magical bilingual books, fun activities, and reading adventures for curious minds of all ages with Eva',
+    heroSubtitle: 'Discover magical books, fun activities, and reading adventures for curious minds of all ages with Eva',
     heroImageAlt: 'Eva reading a bedtime picture book with her grandchildren',
     ctaBooksPrefix: '✨ Browse',
     ctaBooksSuffix: 'Magical Books',
