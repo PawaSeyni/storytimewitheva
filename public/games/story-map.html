@@ -16,6 +16,77 @@
   <meta name="twitter:description" content="Explore the world through Eva&#x27;s books, tap a pin to discover the story! A free interactive activity from Story Time with Eva." />
   <meta name="twitter:image" content="https://storytimewitheva.com/og-image.jpg" />
   <link rel="stylesheet" href="/games/games.css">
+  <script>
+    window.GAME_I18N = {
+      en: {
+        title: "Eva's Story Map",
+        subtitle: "Explore the world through Eva's books, tap a pin to discover the story!",
+        placesVisited: 'Places Visited',
+        totalStories: 'Total Stories',
+        continents: 'Continents',
+        filterAll: '🌍 All',
+        filterAfrica: '🌍 Africa',
+        filterAmericas: '🌎 Americas',
+        filterEurope: '🏰 Europe',
+        filterAsia: '🌏 Asia',
+        filterOceania: '🦘 Oceania',
+        tapHint: '📍 Tap any pin to explore that story!',
+        defaultTitle: 'Tap a pin on the map!',
+        defaultDesc: "Each pin marks the setting of one of Eva's stories. Explore all 10 to become a World Story Explorer!",
+        summaryLabel: '📖 Story Summary:',
+        funFactLabel: '🌍 Fun Fact:',
+        readBook: '📚 Read This Book →',
+        prev: '← Prev',
+        next: 'Next →',
+        allStories: "📚 All of Eva's Stories",
+      },
+      es: {
+        title: 'El mapa de cuentos de Eva',
+        subtitle: 'Explora el mundo a través de los libros de Eva, ¡toca un pin para descubrir el cuento!',
+        placesVisited: 'Lugares visitados',
+        totalStories: 'Cuentos en total',
+        continents: 'Continentes',
+        filterAll: '🌍 Todos',
+        filterAfrica: '🌍 África',
+        filterAmericas: '🌎 América',
+        filterEurope: '🏰 Europa',
+        filterAsia: '🌏 Asia',
+        filterOceania: '🦘 Oceanía',
+        tapHint: '📍 ¡Toca cualquier pin para explorar ese cuento!',
+        defaultTitle: '¡Toca un pin en el mapa!',
+        defaultDesc: 'Cada pin marca el escenario de uno de los cuentos de Eva. ¡Explora los 10 para convertirte en Explorador de Cuentos del Mundo!',
+        summaryLabel: '📖 Resumen del cuento:',
+        funFactLabel: '🌍 Dato curioso:',
+        readBook: '📚 Leer este libro →',
+        prev: '← Anterior',
+        next: 'Siguiente →',
+        allStories: '📚 Todos los cuentos de Eva',
+      },
+      fr: {
+        title: "La carte des histoires d'Eva",
+        subtitle: "Explore le monde à travers les livres d'Eva, touche un repère pour découvrir l'histoire !",
+        placesVisited: 'Lieux visités',
+        totalStories: 'Histoires au total',
+        continents: 'Continents',
+        filterAll: '🌍 Tous',
+        filterAfrica: '🌍 Afrique',
+        filterAmericas: '🌎 Amériques',
+        filterEurope: '🏰 Europe',
+        filterAsia: '🌏 Asie',
+        filterOceania: '🦘 Océanie',
+        tapHint: '📍 Touche un repère pour explorer cette histoire !',
+        defaultTitle: 'Touche un repère sur la carte !',
+        defaultDesc: "Chaque repère marque le décor de l'une des histoires d'Eva. Explore les 10 pour devenir Explorateur des histoires du monde !",
+        summaryLabel: "📖 Résumé de l'histoire :",
+        funFactLabel: '🌍 Le savais-tu :',
+        readBook: '📚 Lire ce livre →',
+        prev: '← Précédent',
+        next: 'Suivant →',
+        allStories: "📚 Toutes les histoires d'Eva",
+      },
+    };
+  </script>
+  <script src="/games/i18n.js"></script>
   <style>
     @font-face{font-family:'Lexend';src:url('/games/lexend.woff2') format('woff2');font-weight:100 900;font-display:swap;}
     * { font-family: 'Lexend', 'Segoe UI', system-ui, sans-serif; }
@@ -170,8 +241,8 @@
   </nav>
 
   <div class="max-w-7xl mx-auto px-4 pt-6 flex justify-between items-center">
-    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
-    <button id="markCompleted" class="px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
+    <a href="/activities" data-i18n="backToActivities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
+    <button id="markCompleted" data-i18n="markCompleted" class="px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
   </div>
 
   <main class="max-w-7xl mx-auto px-4 pb-16 pt-4">
@@ -179,8 +250,8 @@
     <!-- Header -->
     <div class="text-center mb-6">
       <div class="text-5xl mb-2 float">🗺️</div>
-      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Eva's Story Map</h1>
-      <p class="text-gray-500 text-base">Explore the world through Eva's books, tap a pin to discover the story!</p>
+      <h1 data-i18n="title" class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Eva's Story Map</h1>
+      <p data-i18n="subtitle" class="text-gray-500 text-base">Explore the world through Eva's books, tap a pin to discover the story!</p>
       <div class="w-20 h-1 bg-gradient-to-r from-blue-400 via-teal-400 to-green-400 mx-auto mt-4 rounded-full"></div>
     </div>
 
@@ -188,26 +259,26 @@
     <div class="flex flex-wrap justify-center gap-4 mb-5">
       <div class="bg-white rounded-2xl px-5 py-3 shadow border-2 border-blue-100 text-center">
         <div class="text-2xl font-extrabold text-blue-600" id="visitedCount">0</div>
-        <div class="text-xs text-gray-500 font-bold">Places Visited</div>
+        <div data-i18n="placesVisited" class="text-xs text-gray-500 font-bold">Places Visited</div>
       </div>
       <div class="bg-white rounded-2xl px-5 py-3 shadow border-2 border-purple-100 text-center">
         <div class="text-2xl font-extrabold text-purple-600">10</div>
-        <div class="text-xs text-gray-500 font-bold">Total Stories</div>
+        <div data-i18n="totalStories" class="text-xs text-gray-500 font-bold">Total Stories</div>
       </div>
       <div class="bg-white rounded-2xl px-5 py-3 shadow border-2 border-green-100 text-center">
         <div class="text-2xl font-extrabold text-green-600">6</div>
-        <div class="text-xs text-gray-500 font-bold">Continents</div>
+        <div data-i18n="continents" class="text-xs text-gray-500 font-bold">Continents</div>
       </div>
     </div>
 
     <!-- Continent filter -->
     <div class="flex flex-wrap gap-2 justify-center mb-5">
-      <button class="continent-btn active px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold transition-all" data-continent="all">🌍 All</button>
-      <button class="continent-btn px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-continent="Africa">🌍 Africa</button>
-      <button class="continent-btn px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-continent="Americas">🌎 Americas</button>
-      <button class="continent-btn px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-continent="Europe">🏰 Europe</button>
-      <button class="continent-btn px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-continent="Asia">🌏 Asia</button>
-      <button class="continent-btn px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-continent="Oceania">🦘 Oceania</button>
+      <button class="continent-btn active px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold transition-all" data-continent="all" data-i18n="filterAll">🌍 All</button>
+      <button class="continent-btn px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-continent="Africa" data-i18n="filterAfrica">🌍 Africa</button>
+      <button class="continent-btn px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-continent="Americas" data-i18n="filterAmericas">🌎 Americas</button>
+      <button class="continent-btn px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-continent="Europe" data-i18n="filterEurope">🏰 Europe</button>
+      <button class="continent-btn px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-continent="Asia" data-i18n="filterAsia">🌏 Asia</button>
+      <button class="continent-btn px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-continent="Oceania" data-i18n="filterOceania">🦘 Oceania</button>
     </div>
 
     <div class="grid lg:grid-cols-3 gap-6">
@@ -258,7 +329,7 @@
           <div id="pinLayer" class="absolute inset-0 pointer-events-none"></div>
         </div>
 
-        <p class="text-center text-xs text-gray-400 font-semibold mt-2">📍 Tap any pin to explore that story!</p>
+        <p data-i18n="tapHint" class="text-center text-xs text-gray-400 font-semibold mt-2">📍 Tap any pin to explore that story!</p>
       </div>
 
       <!-- BOOK PANEL -->
@@ -267,8 +338,8 @@
         <!-- Default state -->
         <div id="defaultPanel" class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl border-2 border-blue-100 p-6 text-center h-full flex flex-col justify-center">
           <div class="text-5xl mb-3">📍</div>
-          <h3 class="text-lg font-extrabold text-purple-700 mb-2">Tap a pin on the map!</h3>
-          <p class="text-sm text-gray-500 font-semibold mb-4">Each pin marks the setting of one of Eva's stories. Explore all 10 to become a World Story Explorer!</p>
+          <h3 data-i18n="defaultTitle" class="text-lg font-extrabold text-purple-700 mb-2">Tap a pin on the map!</h3>
+          <p data-i18n="defaultDesc" class="text-sm text-gray-500 font-semibold mb-4">Each pin marks the setting of one of Eva's stories. Explore all 10 to become a World Story Explorer!</p>
           <div class="grid grid-cols-2 gap-2" id="miniBookGrid"></div>
         </div>
 
@@ -287,13 +358,13 @@
 
             <!-- Summary -->
             <div class="bg-purple-50 rounded-2xl p-3 mb-3">
-              <p class="text-xs font-bold text-purple-500 mb-1">📖 Story Summary:</p>
+              <p data-i18n="summaryLabel" class="text-xs font-bold text-purple-500 mb-1">📖 Story Summary:</p>
               <p class="text-sm font-semibold text-gray-700 leading-relaxed" id="bookSummary"></p>
             </div>
 
             <!-- Fun fact -->
             <div class="fun-fact-card mb-3">
-              <p class="text-xs font-bold text-blue-500 mb-1">🌍 Fun Fact:</p>
+              <p data-i18n="funFactLabel" class="text-xs font-bold text-blue-500 mb-1">🌍 Fun Fact:</p>
               <p class="text-sm font-semibold text-gray-700" id="bookFact"></p>
             </div>
 
@@ -302,6 +373,7 @@
 
             <!-- CTA -->
             <a id="bookLink" href="https://storytimewitheva.com/books" target="_blank"
+              data-i18n="readBook"
               class="block w-full py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all text-center text-sm">
               📚 Read This Book →
             </a>
@@ -309,8 +381,8 @@
 
           <!-- Navigation -->
           <div class="flex gap-2">
-            <button id="prevBook" class="flex-1 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold rounded-full text-sm transition-all">← Prev</button>
-            <button id="nextBook" class="flex-1 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-full text-sm transition-all">Next →</button>
+            <button id="prevBook" data-i18n="prev" class="flex-1 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold rounded-full text-sm transition-all">← Prev</button>
+            <button id="nextBook" data-i18n="next" class="flex-1 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-full text-sm transition-all">Next →</button>
           </div>
         </div>
       </div>
@@ -318,7 +390,7 @@
 
     <!-- Book grid at bottom -->
     <div class="mt-8 bg-white rounded-3xl shadow-xl border-2 border-purple-100 p-6">
-      <h2 class="text-xl font-extrabold text-purple-700 mb-4 text-center">📚 All of Eva's Stories</h2>
+      <h2 data-i18n="allStories" class="text-xl font-extrabold text-purple-700 mb-4 text-center">📚 All of Eva's Stories</h2>
       <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-3" id="allBooksGrid"></div>
     </div>
 
@@ -602,7 +674,7 @@
     });
 
     document.getElementById('markCompleted').addEventListener('click', function() {
-      this.textContent = '✅ Completed!';
+      this.textContent = window.t('completed');
       this.classList.add('bg-green-100','border-green-400','text-green-700');
     });
 
@@ -677,7 +749,7 @@
   if (btn) {
     btn.addEventListener('click', markDone);
     if (isDone()) {
-      btn.textContent = '✅ Completed!';
+      btn.textContent = window.t('completed');
       btn.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     }
   }

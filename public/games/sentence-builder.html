@@ -16,6 +16,98 @@
   <meta name="twitter:description" content="Arrange the word tiles to build the correct sentence! A free interactive activity from Story Time with Eva." />
   <meta name="twitter:image" content="https://storytimewitheva.com/og-image.jpg" />
   <link rel="stylesheet" href="/games/games.css">
+  <script>
+    window.GAME_I18N = {
+      en: {
+        title: 'Sentence Builder',
+        subtitle: 'Arrange the word tiles to build the correct sentence!',
+        howto1: 'Look at the picture clue and the scrambled word tiles',
+        howto2: 'Drag (or tap) the tiles into the correct order',
+        howto3: 'Press "Check!" to see if you got it right',
+        howto4: 'See the sentence in Spanish and French too! 🌍',
+        howto5: 'Complete all sentences to earn your Explorer Badge! 🏅',
+        levelBeginner: '🌱 Beginner',
+        levelIntermediate: '🌿 Intermediate',
+        levelAdvanced: '🌳 Advanced',
+        sentenceLabel: 'Sentence',
+        ofLabel: 'of',
+        hint: '💡 Hint',
+        hintOrder: '💡 The correct order is:',
+        buildHere: '📝 Build your sentence here:',
+        dropPlaceholder: 'Tap or drag words here...',
+        wordTiles: '🔤 Word tiles:',
+        reset: '🔄 Reset',
+        check: '✓ Check!',
+        next: 'Next →',
+        clue: 'Clue: "{clue}"',
+        clickRemove: 'Click to remove',
+        correct: '🎉 Correct! {pts} ⭐',
+        notQuite: 'Not quite! The correct order was: ',
+        celebTitle: 'Bilingual Explorer!',
+        celebSub: 'You can build sentences in English, Spanish, and French! 🌍',
+        celebStats: 'You scored {score} stars across all {total} sentences!',
+      },
+      es: {
+        title: 'Constructor de frases',
+        subtitle: '¡Ordena las fichas de palabras para construir la frase correcta!',
+        howto1: 'Mira la pista de la imagen y las fichas de palabras desordenadas',
+        howto2: 'Arrastra (o toca) las fichas en el orden correcto',
+        howto3: 'Pulsa "¡Comprobar!" para ver si acertaste',
+        howto4: '¡Mira la frase también en español y francés! 🌍',
+        howto5: '¡Completa todas las frases para ganar tu insignia de explorador! 🏅',
+        levelBeginner: '🌱 Principiante',
+        levelIntermediate: '🌿 Intermedio',
+        levelAdvanced: '🌳 Avanzado',
+        sentenceLabel: 'Frase',
+        ofLabel: 'de',
+        hint: '💡 Pista',
+        hintOrder: '💡 El orden correcto es:',
+        buildHere: '📝 Construye tu frase aquí:',
+        dropPlaceholder: 'Toca o arrastra las palabras aquí...',
+        wordTiles: '🔤 Fichas de palabras:',
+        reset: '🔄 Reiniciar',
+        check: '✓ ¡Comprobar!',
+        next: 'Siguiente →',
+        clue: 'Pista: "{clue}"',
+        clickRemove: 'Haz clic para quitar',
+        correct: '🎉 ¡Correcto! {pts} ⭐',
+        notQuite: 'Casi. El orden correcto era: ',
+        celebTitle: '¡Explorador bilingüe!',
+        celebSub: '¡Puedes construir frases en inglés, español y francés! 🌍',
+        celebStats: '¡Conseguiste {score} estrellas en las {total} frases!',
+      },
+      fr: {
+        title: 'Constructeur de phrases',
+        subtitle: 'Range les tuiles de mots pour construire la bonne phrase !',
+        howto1: "Regarde l'indice illustré et les tuiles de mots mélangées",
+        howto2: 'Glisse (ou touche) les tuiles dans le bon ordre',
+        howto3: 'Appuie sur « Vérifier ! » pour voir si tu as réussi',
+        howto4: 'Découvre la phrase aussi en espagnol et en français ! 🌍',
+        howto5: "Complète toutes les phrases pour gagner ton badge d'explorateur ! 🏅",
+        levelBeginner: '🌱 Débutant',
+        levelIntermediate: '🌿 Intermédiaire',
+        levelAdvanced: '🌳 Avancé',
+        sentenceLabel: 'Phrase',
+        ofLabel: 'sur',
+        hint: '💡 Indice',
+        hintOrder: "💡 Le bon ordre est :",
+        buildHere: '📝 Construis ta phrase ici :',
+        dropPlaceholder: 'Touche ou glisse les mots ici...',
+        wordTiles: '🔤 Tuiles de mots :',
+        reset: '🔄 Réinitialiser',
+        check: '✓ Vérifier !',
+        next: 'Suivant →',
+        clue: 'Indice : « {clue} »',
+        clickRemove: 'Clique pour retirer',
+        correct: '🎉 Correct ! {pts} ⭐',
+        notQuite: "Pas tout à fait ! Le bon ordre était : ",
+        celebTitle: 'Explorateur bilingue !',
+        celebSub: 'Tu peux construire des phrases en anglais, espagnol et français ! 🌍',
+        celebStats: 'Tu as obtenu {score} étoiles sur les {total} phrases !',
+      },
+    };
+  </script>
+  <script src="/games/i18n.js"></script>
   <style>
     @font-face{font-family:'Lexend';src:url('/games/lexend.woff2') format('woff2');font-weight:100 900;font-display:swap;}
     * { font-family: 'Lexend', 'Segoe UI', system-ui, sans-serif; }
@@ -156,8 +248,8 @@
   </nav>
 
   <div class="max-w-3xl mx-auto px-4 pt-6 flex justify-between items-center">
-    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
-    <button id="markCompleted" class="px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
+    <a href="/activities" data-i18n="backToActivities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
+    <button id="markCompleted" data-i18n="markCompleted" class="px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
   </div>
 
   <main class="max-w-3xl mx-auto px-4 pb-16 pt-4">
@@ -165,20 +257,20 @@
     <!-- Header -->
     <div class="text-center mb-6">
       <div class="text-5xl mb-2 float">🌐</div>
-      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Sentence Builder</h1>
-      <p class="text-gray-500 text-base">Arrange the word tiles to build the correct sentence!</p>
+      <h1 data-i18n="title" class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Sentence Builder</h1>
+      <p data-i18n="subtitle" class="text-gray-500 text-base">Arrange the word tiles to build the correct sentence!</p>
       <div class="w-20 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 mx-auto mt-4 rounded-full"></div>
     </div>
 
     <!-- How to Play -->
     <div class="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-2xl p-5 mb-6 text-white shadow-lg">
-      <h2 class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
+      <h2 data-i18n="howToPlay" class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
       <ol class="list-decimal list-inside space-y-1 text-sm font-semibold">
-        <li>Look at the picture clue and the scrambled word tiles</li>
-        <li>Drag (or tap) the tiles into the correct order</li>
-        <li>Press "Check!" to see if you got it right</li>
-        <li>See the sentence in Spanish and French too! 🌍</li>
-        <li>Complete all sentences to earn your Explorer Badge! 🏅</li>
+        <li data-i18n="howto1">Look at the picture clue and the scrambled word tiles</li>
+        <li data-i18n="howto2">Drag (or tap) the tiles into the correct order</li>
+        <li data-i18n="howto3">Press "Check!" to see if you got it right</li>
+        <li data-i18n="howto4">See the sentence in Spanish and French too! 🌍</li>
+        <li data-i18n="howto5">Complete all sentences to earn your Explorer Badge! 🏅</li>
       </ol>
     </div>
 
@@ -186,9 +278,9 @@
     <div class="flex flex-wrap gap-2 justify-between items-center mb-4">
       <!-- Level -->
       <div class="flex gap-1">
-        <button class="level-tab active px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold transition-all" data-level="beginner">🌱 Beginner</button>
-        <button class="level-tab px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-level="intermediate">🌿 Intermediate</button>
-        <button class="level-tab px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-level="advanced">🌳 Advanced</button>
+        <button class="level-tab active px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold transition-all" data-level="beginner" data-i18n="levelBeginner">🌱 Beginner</button>
+        <button class="level-tab px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-level="intermediate" data-i18n="levelIntermediate">🌿 Intermediate</button>
+        <button class="level-tab px-4 py-2 rounded-full border-2 border-purple-200 text-sm font-bold text-gray-600 transition-all hover:bg-purple-50" data-level="advanced" data-i18n="levelAdvanced">🌳 Advanced</button>
       </div>
       <!-- Score -->
       <div class="flex gap-3 text-sm font-extrabold">
@@ -205,8 +297,8 @@
 
       <!-- Round info -->
       <div class="flex justify-between text-xs font-bold text-gray-400 mb-4">
-        <span>Sentence <span id="roundNum" class="text-purple-600 font-extrabold">1</span> of <span id="totalNum">8</span></span>
-        <button id="hintBtn" class="text-yellow-600 hover:text-yellow-700">💡 Hint</button>
+        <span><span data-i18n="sentenceLabel">Sentence</span> <span id="roundNum" class="text-purple-600 font-extrabold">1</span> <span data-i18n="ofLabel">of</span> <span id="totalNum">8</span></span>
+        <button id="hintBtn" data-i18n="hint" class="text-yellow-600 hover:text-yellow-700">💡 Hint</button>
       </div>
 
       <!-- Picture clue -->
@@ -217,21 +309,21 @@
 
       <!-- Hint row -->
       <div id="hintRow" class="hidden text-center mb-3 slide-up">
-        <p class="text-xs font-bold text-yellow-600 mb-1">💡 The correct order is:</p>
+        <p data-i18n="hintOrder" class="text-xs font-bold text-yellow-600 mb-1">💡 The correct order is:</p>
         <div id="hintWords"></div>
       </div>
 
       <!-- Drop zone -->
       <div class="mb-3">
-        <p class="text-xs font-bold text-purple-500 mb-2">📝 Build your sentence here:</p>
+        <p data-i18n="buildHere" class="text-xs font-bold text-purple-500 mb-2">📝 Build your sentence here:</p>
         <div id="dropZone" onclick="handleDropZoneClick(event)">
-          <span class="text-gray-300 text-sm font-bold" id="dropPlaceholder">Tap or drag words here...</span>
+          <span class="text-gray-300 text-sm font-bold" id="dropPlaceholder" data-i18n="dropPlaceholder">Tap or drag words here...</span>
         </div>
       </div>
 
       <!-- Word tile bank -->
       <div class="mb-4">
-        <p class="text-xs font-bold text-gray-400 mb-2">🔤 Word tiles:</p>
+        <p data-i18n="wordTiles" class="text-xs font-bold text-gray-400 mb-2">🔤 Word tiles:</p>
         <div id="tilePalette" class="flex flex-wrap gap-2 min-h-12 p-2 bg-gray-50 rounded-2xl border-2 border-gray-100"></div>
       </div>
 
@@ -258,20 +350,20 @@
 
       <!-- Buttons -->
       <div class="flex gap-3">
-        <button id="clearBtn" class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-600 font-extrabold rounded-full transition-all">🔄 Reset</button>
-        <button id="checkBtn" class="flex-2 flex-grow py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">✓ Check!</button>
-        <button id="nextBtn" class="hidden flex-1 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">Next →</button>
+        <button id="clearBtn" data-i18n="reset" class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-600 font-extrabold rounded-full transition-all">🔄 Reset</button>
+        <button id="checkBtn" data-i18n="check" class="flex-2 flex-grow py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">✓ Check!</button>
+        <button id="nextBtn" data-i18n="next" class="hidden flex-1 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">Next →</button>
       </div>
     </div>
 
     <!-- Celebration -->
     <div id="celebration" class="hidden text-center py-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl border-2 border-purple-200 bounce-in">
       <div class="text-6xl mb-2">🏅</div>
-      <h2 class="text-2xl font-extrabold text-purple-700 mb-1">Bilingual Explorer!</h2>
+      <h2 data-i18n="celebTitle" class="text-2xl font-extrabold text-purple-700 mb-1">Bilingual Explorer!</h2>
       <p class="text-gray-600 mb-1" id="celebStats"></p>
-      <p class="text-gray-500 text-sm mb-4">You can build sentences in English, Spanish, and French! 🌍</p>
+      <p data-i18n="celebSub" class="text-gray-500 text-sm mb-4">You can build sentences in English, Spanish, and French! 🌍</p>
       <div class="flex justify-center gap-3">
-        <button id="playAgain" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">🔄 Play Again!</button>
+        <button id="playAgain" data-i18n="playAgain" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">🔄 Play Again!</button>
       </div>
     </div>
 
@@ -387,13 +479,13 @@
       const s = queue[currentIdx];
       document.getElementById('roundNum').textContent = currentIdx + 1;
       document.getElementById('pictureClue').textContent = s.emoji;
-      document.getElementById('clueLabel').textContent = `Clue: "${s.clue}"`;
+      document.getElementById('clueLabel').textContent = window.t('clue').replace('{clue}', s.clue);
       document.getElementById('feedback').textContent = '';
       document.getElementById('translationReveal').classList.add('hidden');
       document.getElementById('nextBtn').classList.add('hidden');
       document.getElementById('hintRow').classList.add('hidden');
       document.getElementById('dropZone').className = 'mb-3';
-      document.getElementById('dropZone').innerHTML = '<span class="text-gray-300 text-sm font-bold" id="dropPlaceholder">Tap or drag words here...</span>';
+      document.getElementById('dropZone').innerHTML = '<span class="text-gray-300 text-sm font-bold" id="dropPlaceholder">' + window.t('dropPlaceholder') + '</span>';
       updateProgressDots();
 
       // Shuffle tiles
@@ -461,7 +553,7 @@
       placedTile.className = `word-tile placed ${colorClass} border-2`;
       placedTile.textContent = word;
       placedTile.dataset.placedIdx = placedWords.length - 1;
-      placedTile.title = 'Click to remove';
+      placedTile.title = window.t('clickRemove');
       placedTile.addEventListener('click', () => removePlacedTile(parseInt(placedTile.dataset.placedIdx)));
       dz.appendChild(placedTile);
     }
@@ -481,7 +573,7 @@
       dz.innerHTML = '';
       const remaining = placedWords.filter(Boolean);
       if (remaining.length === 0) {
-        dz.innerHTML = '<span class="text-gray-300 text-sm font-bold" id="dropPlaceholder">Tap or drag words here...</span>';
+        dz.innerHTML = '<span class="text-gray-300 text-sm font-bold" id="dropPlaceholder">' + window.t('dropPlaceholder') + '</span>';
       } else {
         remaining.forEach((entry, i) => {
           const colorClass = tileColors[entry.idx % tileColors.length];
@@ -516,14 +608,14 @@
         document.getElementById('scoreNum').textContent = score;
         document.getElementById('streakNum').textContent = streak;
         dz.classList.add('correct');
-        document.getElementById('feedback').innerHTML = `<span class="text-green-600 bounce-in">🎉 Correct! ${hintUsed ? '+1' : '+2'} ⭐</span>`;
+        document.getElementById('feedback').innerHTML = `<span class="text-green-600 bounce-in">${window.t('correct').replace('{pts}', hintUsed ? '+1' : '+2')}</span>`;
         speak(`Correct! ${correct.join(' ')}. In Spanish: ${s.es}. In French: ${s.fr}.`);
       } else {
         streak = 0;
         document.getElementById('streakNum').textContent = '0';
         dz.classList.add('wrong');
         dz.classList.add('shake');
-        document.getElementById('feedback').innerHTML = `<span class="text-red-500">Not quite! The correct order was: <strong>${correct.join(' ')}</strong></span>`;
+        document.getElementById('feedback').innerHTML = `<span class="text-red-500">${window.t('notQuite')}<strong>${correct.join(' ')}</strong></span>`;
         speak(`The correct sentence is: ${correct.join(' ')}`);
       }
 
@@ -544,7 +636,7 @@
       renderTilePalette();
       const dz = document.getElementById('dropZone');
       dz.className = 'mb-3';
-      dz.innerHTML = '<span class="text-gray-300 text-sm font-bold" id="dropPlaceholder">Tap or drag words here...</span>';
+      dz.innerHTML = '<span class="text-gray-300 text-sm font-bold" id="dropPlaceholder">' + window.t('dropPlaceholder') + '</span>';
     });
 
     // Hint
@@ -569,14 +661,14 @@
     });
 
     function showCelebration() {
-      document.getElementById('celebStats').textContent = `You scored ${score} stars across all ${queue.length} sentences!`;
+      document.getElementById('celebStats').textContent = window.t('celebStats').replace('{score}', score).replace('{total}', queue.length);
       document.getElementById('celebration').classList.remove('hidden');
       speak('Congratulations! You are a Bilingual Explorer!');
     }
 
     document.getElementById('playAgain').addEventListener('click', () => initGame(currentLevel));
     document.getElementById('markCompleted').addEventListener('click', function() {
-      this.textContent = '✅ Completed!';
+      this.textContent = window.t('completed');
       this.classList.add('bg-green-100','border-green-400','text-green-700');
     });
 
@@ -648,7 +740,7 @@
   if (btn) {
     btn.addEventListener('click', markDone);
     if (isDone()) {
-      btn.textContent = '✅ Completed!';
+      btn.textContent = window.t('completed');
       btn.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     }
   }

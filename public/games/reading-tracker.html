@@ -16,6 +16,113 @@
   <meta name="twitter:description" content="Track your daily reading time and build a reading streak together! A free interactive activity from Story Time with Eva." />
   <meta name="twitter:image" content="https://storytimewitheva.com/og-image.jpg" />
   <link rel="stylesheet" href="/games/games.css">
+  <script>
+    window.GAME_I18N = {
+      en: {
+        title: 'Reading Tracker',
+        subtitle: 'Track your daily reading time and build a reading streak together!',
+        printReport: '🖨️ Print Report',
+        setupHeading: '👋 Set Up Your Reading Profile',
+        childName: "Child's Name",
+        childNamePh: 'e.g. Sofia',
+        parentName: "Parent's Name",
+        parentNamePh: 'e.g. Mom / Dad',
+        dailyGoal: 'Daily Reading Goal',
+        goal10: '⏱️ 10 min', goal15: '⏱️ 15 min', goal20: '⏱️ 20 min', goal30: '⏱️ 30 min',
+        startTracking: '🚀 Start Tracking!',
+        dayStreak: 'Day Streak', booksRead: 'Books Read', totalMinutes: 'Total Minutes', badgesEarned: 'Badges Earned',
+        timerHeading: '⏱️ Reading Timer',
+        goalLabel: 'Goal: {n} min',
+        timerStart: '▶ Start', timerPause: '⏸ Pause', timerReset: '↺ Reset',
+        goalReached: '🎉 Goal reached! Great reading!',
+        logHeading: "📝 Log Today's Reading",
+        bookTitle: 'Book Title', bookTitlePh: 'What did you read?',
+        minutesRead: 'Minutes Read', minutesReadPh: 'e.g. 15',
+        ratingPrompt: 'How was the reading? ⭐',
+        favMoment: 'Favorite moment (optional)', favMomentPh: 'e.g. The dragon scene!',
+        logSession: '✅ Log This Session!',
+        calendarHeading: '📅 Reading Calendar',
+        sun: 'Sun', mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri', sat: 'Sat',
+        legendRead: 'Read!', legendToday: 'Today',
+        badgesHeading: '🏅 Badges Earned',
+        logListHeading: '📖 Reading Log',
+        clearAll: 'Clear All',
+        emptyLog: 'No sessions logged yet... start reading! 📚',
+        clearConfirm: 'Clear all reading history? This cannot be undone.',
+        months: 'January,February,March,April,May,June,July,August,September,October,November,December',
+        dateLocale: 'en-US',
+      },
+      es: {
+        title: 'Registro de lectura',
+        subtitle: '¡Registra tu tiempo de lectura diario y crea una racha de lectura juntos!',
+        printReport: '🖨️ Imprimir informe',
+        setupHeading: '👋 Configura tu perfil de lectura',
+        childName: 'Nombre del niño/a',
+        childNamePh: 'p. ej. Sofía',
+        parentName: 'Nombre del padre/madre',
+        parentNamePh: 'p. ej. Mamá / Papá',
+        dailyGoal: 'Meta de lectura diaria',
+        goal10: '⏱️ 10 min', goal15: '⏱️ 15 min', goal20: '⏱️ 20 min', goal30: '⏱️ 30 min',
+        startTracking: '🚀 ¡Empezar a registrar!',
+        dayStreak: 'Días seguidos', booksRead: 'Libros leídos', totalMinutes: 'Minutos totales', badgesEarned: 'Insignias ganadas',
+        timerHeading: '⏱️ Cronómetro de lectura',
+        goalLabel: 'Meta: {n} min',
+        timerStart: '▶ Empezar', timerPause: '⏸ Pausar', timerReset: '↺ Reiniciar',
+        goalReached: '🎉 ¡Meta alcanzada! ¡Buena lectura!',
+        logHeading: '📝 Registra la lectura de hoy',
+        bookTitle: 'Título del libro', bookTitlePh: '¿Qué leíste?',
+        minutesRead: 'Minutos leídos', minutesReadPh: 'p. ej. 15',
+        ratingPrompt: '¿Qué tal la lectura? ⭐',
+        favMoment: 'Momento favorito (opcional)', favMomentPh: 'p. ej. ¡La escena del dragón!',
+        logSession: '✅ ¡Registrar esta sesión!',
+        calendarHeading: '📅 Calendario de lectura',
+        sun: 'Dom', mon: 'Lun', tue: 'Mar', wed: 'Mié', thu: 'Jue', fri: 'Vie', sat: 'Sáb',
+        legendRead: '¡Leído!', legendToday: 'Hoy',
+        badgesHeading: '🏅 Insignias ganadas',
+        logListHeading: '📖 Registro de lectura',
+        clearAll: 'Borrar todo',
+        emptyLog: 'Aún no hay sesiones registradas... ¡empieza a leer! 📚',
+        clearConfirm: '¿Borrar todo el historial de lectura? Esto no se puede deshacer.',
+        months: 'enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre',
+        dateLocale: 'es-ES',
+      },
+      fr: {
+        title: 'Suivi de lecture',
+        subtitle: 'Suis ton temps de lecture quotidien et construis une série de lecture ensemble !',
+        printReport: '🖨️ Imprimer le rapport',
+        setupHeading: '👋 Configure ton profil de lecture',
+        childName: "Nom de l'enfant",
+        childNamePh: 'p. ex. Sofia',
+        parentName: 'Nom du parent',
+        parentNamePh: 'p. ex. Maman / Papa',
+        dailyGoal: 'Objectif de lecture quotidien',
+        goal10: '⏱️ 10 min', goal15: '⏱️ 15 min', goal20: '⏱️ 20 min', goal30: '⏱️ 30 min',
+        startTracking: '🚀 Commencer le suivi !',
+        dayStreak: 'Jours de suite', booksRead: 'Livres lus', totalMinutes: 'Minutes totales', badgesEarned: 'Badges gagnés',
+        timerHeading: '⏱️ Minuteur de lecture',
+        goalLabel: 'Objectif : {n} min',
+        timerStart: '▶ Démarrer', timerPause: '⏸ Pause', timerReset: '↺ Réinitialiser',
+        goalReached: '🎉 Objectif atteint ! Belle lecture !',
+        logHeading: "📝 Note la lecture d'aujourd'hui",
+        bookTitle: 'Titre du livre', bookTitlePh: "Qu'as-tu lu ?",
+        minutesRead: 'Minutes lues', minutesReadPh: 'p. ex. 15',
+        ratingPrompt: 'Comment était la lecture ? ⭐',
+        favMoment: 'Moment préféré (optionnel)', favMomentPh: 'p. ex. La scène du dragon !',
+        logSession: '✅ Enregistrer cette séance !',
+        calendarHeading: '📅 Calendrier de lecture',
+        sun: 'Dim', mon: 'Lun', tue: 'Mar', wed: 'Mer', thu: 'Jeu', fri: 'Ven', sat: 'Sam',
+        legendRead: 'Lu !', legendToday: "Aujourd'hui",
+        badgesHeading: '🏅 Badges gagnés',
+        logListHeading: '📖 Journal de lecture',
+        clearAll: 'Tout effacer',
+        emptyLog: 'Aucune séance enregistrée pour le moment... commence à lire ! 📚',
+        clearConfirm: 'Effacer tout l\'historique de lecture ? Cette action est irréversible.',
+        months: 'janvier,février,mars,avril,mai,juin,juillet,août,septembre,octobre,novembre,décembre',
+        dateLocale: 'fr-FR',
+      },
+    };
+  </script>
+  <script src="/games/i18n.js"></script>
   <style>
     @font-face{font-family:'Lexend';src:url('/games/lexend.woff2') format('woff2');font-weight:100 900;font-display:swap;}
     * { font-family: 'Lexend', 'Segoe UI', system-ui, sans-serif; }
@@ -128,10 +235,10 @@
   </nav>
 
   <div class="max-w-5xl mx-auto px-4 pt-6 flex justify-between items-center">
-    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
+    <a href="/activities" data-i18n="backToActivities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
     <div class="flex gap-2">
-      <button id="printBtn" class="no-print px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-full text-sm font-bold transition-all">🖨️ Print Report</button>
-      <button id="markCompleted" class="no-print px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
+      <button id="printBtn" data-i18n="printReport" class="no-print px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-full text-sm font-bold transition-all">🖨️ Print Report</button>
+      <button id="markCompleted" data-i18n="markCompleted" class="no-print px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
     </div>
   </div>
 
@@ -140,36 +247,36 @@
     <!-- Header -->
     <div class="text-center mb-6">
       <div class="text-5xl mb-2 float">📚</div>
-      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Reading Tracker</h1>
-      <p class="text-gray-500 text-base">Track your daily reading time and build a reading streak together!</p>
+      <h1 data-i18n="title" class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Reading Tracker</h1>
+      <p data-i18n="subtitle" class="text-gray-500 text-base">Track your daily reading time and build a reading streak together!</p>
       <div class="w-20 h-1 bg-gradient-to-r from-amber-400 via-orange-400 to-pink-400 mx-auto mt-4 rounded-full"></div>
     </div>
 
     <!-- Setup (shown first time) -->
     <div id="setupSection" class="bg-white rounded-3xl shadow-xl border-2 border-amber-100 p-6 mb-6">
-      <h2 class="text-lg font-extrabold text-amber-700 mb-4">👋 Set Up Your Reading Profile</h2>
+      <h2 data-i18n="setupHeading" class="text-lg font-extrabold text-amber-700 mb-4">👋 Set Up Your Reading Profile</h2>
       <div class="grid sm:grid-cols-2 gap-4 mb-4">
         <div>
-          <label class="text-xs font-bold text-gray-500 block mb-1">Child's Name</label>
+          <label data-i18n="childName" class="text-xs font-bold text-gray-500 block mb-1">Child's Name</label>
           <input id="childNameInput" type="text" placeholder="e.g. Sofia" maxlength="20"
             class="w-full px-4 py-3 rounded-2xl border-2 border-amber-200 font-bold text-gray-700 focus:outline-none focus:border-amber-400"/>
         </div>
         <div>
-          <label class="text-xs font-bold text-gray-500 block mb-1">Parent's Name</label>
+          <label data-i18n="parentName" class="text-xs font-bold text-gray-500 block mb-1">Parent's Name</label>
           <input id="parentNameInput" type="text" placeholder="e.g. Mom / Dad" maxlength="20"
             class="w-full px-4 py-3 rounded-2xl border-2 border-amber-200 font-bold text-gray-700 focus:outline-none focus:border-amber-400"/>
         </div>
       </div>
       <div class="mb-4">
-        <label class="text-xs font-bold text-gray-500 block mb-2">Daily Reading Goal</label>
+        <label data-i18n="dailyGoal" class="text-xs font-bold text-gray-500 block mb-2">Daily Reading Goal</label>
         <div class="flex gap-2 flex-wrap">
-          <button class="goal-btn active px-4 py-2 rounded-full border-2 border-amber-200 text-sm font-bold transition-all" data-mins="10">⏱️ 10 min</button>
-          <button class="goal-btn px-4 py-2 rounded-full border-2 border-amber-200 text-sm font-bold text-gray-600 transition-all hover:bg-amber-50" data-mins="15">⏱️ 15 min</button>
-          <button class="goal-btn px-4 py-2 rounded-full border-2 border-amber-200 text-sm font-bold text-gray-600 transition-all hover:bg-amber-50" data-mins="20">⏱️ 20 min</button>
-          <button class="goal-btn px-4 py-2 rounded-full border-2 border-amber-200 text-sm font-bold text-gray-600 transition-all hover:bg-amber-50" data-mins="30">⏱️ 30 min</button>
+          <button class="goal-btn active px-4 py-2 rounded-full border-2 border-amber-200 text-sm font-bold transition-all" data-mins="10" data-i18n="goal10">⏱️ 10 min</button>
+          <button class="goal-btn px-4 py-2 rounded-full border-2 border-amber-200 text-sm font-bold text-gray-600 transition-all hover:bg-amber-50" data-mins="15" data-i18n="goal15">⏱️ 15 min</button>
+          <button class="goal-btn px-4 py-2 rounded-full border-2 border-amber-200 text-sm font-bold text-gray-600 transition-all hover:bg-amber-50" data-mins="20" data-i18n="goal20">⏱️ 20 min</button>
+          <button class="goal-btn px-4 py-2 rounded-full border-2 border-amber-200 text-sm font-bold text-gray-600 transition-all hover:bg-amber-50" data-mins="30" data-i18n="goal30">⏱️ 30 min</button>
         </div>
       </div>
-      <button id="startTracking" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-400 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">
+      <button id="startTracking" data-i18n="startTracking" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-400 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">
         🚀 Start Tracking!
       </button>
     </div>
@@ -182,22 +289,22 @@
         <div class="bg-white rounded-2xl shadow border-2 border-orange-100 p-4 text-center">
           <div class="text-3xl streak-fire" id="streakEmoji">🔥</div>
           <div class="text-2xl font-extrabold text-orange-500" id="streakCount">0</div>
-          <div class="text-xs text-gray-500 font-bold">Day Streak</div>
+          <div data-i18n="dayStreak" class="text-xs text-gray-500 font-bold">Day Streak</div>
         </div>
         <div class="bg-white rounded-2xl shadow border-2 border-purple-100 p-4 text-center">
           <div class="text-3xl">📖</div>
           <div class="text-2xl font-extrabold text-purple-600" id="totalBooks">0</div>
-          <div class="text-xs text-gray-500 font-bold">Books Read</div>
+          <div data-i18n="booksRead" class="text-xs text-gray-500 font-bold">Books Read</div>
         </div>
         <div class="bg-white rounded-2xl shadow border-2 border-blue-100 p-4 text-center">
           <div class="text-3xl">⏱️</div>
           <div class="text-2xl font-extrabold text-blue-600" id="totalMins">0</div>
-          <div class="text-xs text-gray-500 font-bold">Total Minutes</div>
+          <div data-i18n="totalMinutes" class="text-xs text-gray-500 font-bold">Total Minutes</div>
         </div>
         <div class="bg-white rounded-2xl shadow border-2 border-green-100 p-4 text-center">
           <div class="text-3xl">🏆</div>
           <div class="text-2xl font-extrabold text-green-600" id="badgeCount">0</div>
-          <div class="text-xs text-gray-500 font-bold">Badges Earned</div>
+          <div data-i18n="badgesEarned" class="text-xs text-gray-500 font-bold">Badges Earned</div>
         </div>
       </div>
 
@@ -206,7 +313,7 @@
 
         <!-- Timer -->
         <div class="bg-white rounded-3xl shadow-xl border-2 border-purple-100 p-6 text-center">
-          <h2 class="text-lg font-extrabold text-purple-700 mb-4">⏱️ Reading Timer</h2>
+          <h2 data-i18n="timerHeading" class="text-lg font-extrabold text-purple-700 mb-4">⏱️ Reading Timer</h2>
           <div class="timer-ring mb-4">
             <svg width="160" height="160" viewBox="0 0 160 160">
               <defs>
@@ -225,29 +332,29 @@
             </div>
           </div>
           <div class="flex gap-2 justify-center">
-            <button id="timerStart" class="px-5 py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow hover:shadow-lg transition-all text-sm">▶ Start</button>
-            <button id="timerPause" class="hidden px-5 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 font-extrabold rounded-full text-sm transition-all">⏸ Pause</button>
-            <button id="timerReset" class="px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 font-extrabold rounded-full text-sm transition-all">↺ Reset</button>
+            <button id="timerStart" data-i18n="timerStart" class="px-5 py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow hover:shadow-lg transition-all text-sm">▶ Start</button>
+            <button id="timerPause" data-i18n="timerPause" class="hidden px-5 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 font-extrabold rounded-full text-sm transition-all">⏸ Pause</button>
+            <button id="timerReset" data-i18n="timerReset" class="px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 font-extrabold rounded-full text-sm transition-all">↺ Reset</button>
           </div>
-          <div id="goalReached" class="hidden mt-3 text-green-600 font-extrabold text-sm bounce-in">🎉 Goal reached! Great reading!</div>
+          <div id="goalReached" data-i18n="goalReached" class="hidden mt-3 text-green-600 font-extrabold text-sm bounce-in">🎉 Goal reached! Great reading!</div>
         </div>
 
         <!-- Log Form -->
         <div class="bg-white rounded-3xl shadow-xl border-2 border-amber-100 p-6" id="logForm">
-          <h2 class="text-lg font-extrabold text-amber-700 mb-4">📝 Log Today's Reading</h2>
+          <h2 data-i18n="logHeading" class="text-lg font-extrabold text-amber-700 mb-4">📝 Log Today's Reading</h2>
           <div class="space-y-3">
             <div>
-              <label class="text-xs font-bold text-gray-500 block mb-1">Book Title</label>
+              <label data-i18n="bookTitle" class="text-xs font-bold text-gray-500 block mb-1">Book Title</label>
               <input id="logBook" type="text" placeholder="What did you read?" maxlength="60"
                 class="w-full px-3 py-2 rounded-xl border-2 border-amber-200 font-bold text-gray-700 text-sm focus:outline-none focus:border-amber-400"/>
             </div>
             <div>
-              <label class="text-xs font-bold text-gray-500 block mb-1">Minutes Read</label>
+              <label data-i18n="minutesRead" class="text-xs font-bold text-gray-500 block mb-1">Minutes Read</label>
               <input id="logMins" type="number" min="1" max="120" placeholder="e.g. 15"
                 class="w-full px-3 py-2 rounded-xl border-2 border-amber-200 font-bold text-gray-700 text-sm focus:outline-none focus:border-amber-400"/>
             </div>
             <div>
-              <label class="text-xs font-bold text-gray-500 block mb-1">How was the reading? ⭐</label>
+              <label data-i18n="ratingPrompt" class="text-xs font-bold text-gray-500 block mb-1">How was the reading? ⭐</label>
               <div class="flex gap-1" id="starRating">
                 <span class="star text-2xl cursor-pointer star-empty" data-star="1">★</span>
                 <span class="star text-2xl cursor-pointer star-empty" data-star="2">★</span>
@@ -257,11 +364,11 @@
               </div>
             </div>
             <div>
-              <label class="text-xs font-bold text-gray-500 block mb-1">Favorite moment (optional)</label>
+              <label data-i18n="favMoment" class="text-xs font-bold text-gray-500 block mb-1">Favorite moment (optional)</label>
               <input id="logNote" type="text" placeholder="e.g. The dragon scene!" maxlength="80"
                 class="w-full px-3 py-2 rounded-xl border-2 border-amber-200 font-semibold text-gray-700 text-sm focus:outline-none focus:border-amber-400"/>
             </div>
-            <button id="logSession" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-400 text-white font-extrabold rounded-full shadow hover:shadow-lg transition-all text-sm">
+            <button id="logSession" data-i18n="logSession" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-400 text-white font-extrabold rounded-full shadow hover:shadow-lg transition-all text-sm">
               ✅ Log This Session!
             </button>
           </div>
@@ -271,7 +378,7 @@
       <!-- Calendar -->
       <div class="bg-white rounded-3xl shadow-xl border-2 border-purple-100 p-6">
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-lg font-extrabold text-purple-700">📅 Reading Calendar</h2>
+          <h2 data-i18n="calendarHeading" class="text-lg font-extrabold text-purple-700">📅 Reading Calendar</h2>
           <div class="flex items-center gap-2">
             <button id="calPrev" class="w-8 h-8 rounded-full bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold transition-all">‹</button>
             <span class="text-sm font-extrabold text-gray-700" id="calMonthLabel"></span>
@@ -279,35 +386,35 @@
           </div>
         </div>
         <div class="grid grid-cols-7 gap-1 text-center mb-2">
-          <div class="text-xs font-bold text-gray-400">Sun</div>
-          <div class="text-xs font-bold text-gray-400">Mon</div>
-          <div class="text-xs font-bold text-gray-400">Tue</div>
-          <div class="text-xs font-bold text-gray-400">Wed</div>
-          <div class="text-xs font-bold text-gray-400">Thu</div>
-          <div class="text-xs font-bold text-gray-400">Fri</div>
-          <div class="text-xs font-bold text-gray-400">Sat</div>
+          <div data-i18n="sun" class="text-xs font-bold text-gray-400">Sun</div>
+          <div data-i18n="mon" class="text-xs font-bold text-gray-400">Mon</div>
+          <div data-i18n="tue" class="text-xs font-bold text-gray-400">Tue</div>
+          <div data-i18n="wed" class="text-xs font-bold text-gray-400">Wed</div>
+          <div data-i18n="thu" class="text-xs font-bold text-gray-400">Thu</div>
+          <div data-i18n="fri" class="text-xs font-bold text-gray-400">Fri</div>
+          <div data-i18n="sat" class="text-xs font-bold text-gray-400">Sat</div>
         </div>
         <div class="grid grid-cols-7 gap-1 justify-items-center" id="calGrid"></div>
         <div class="flex gap-3 mt-3 text-xs font-bold justify-center">
-          <span class="flex items-center gap-1"><span class="w-4 h-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 inline-block"></span> Read!</span>
-          <span class="flex items-center gap-1"><span class="w-4 h-4 rounded-full border-2 border-orange-400 inline-block"></span> Today</span>
+          <span class="flex items-center gap-1"><span class="w-4 h-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 inline-block"></span> <span data-i18n="legendRead">Read!</span></span>
+          <span class="flex items-center gap-1"><span class="w-4 h-4 rounded-full border-2 border-orange-400 inline-block"></span> <span data-i18n="legendToday">Today</span></span>
         </div>
       </div>
 
       <!-- Badges -->
       <div class="bg-white rounded-3xl shadow-xl border-2 border-yellow-100 p-6">
-        <h2 class="text-lg font-extrabold text-yellow-700 mb-4">🏅 Badges Earned</h2>
+        <h2 data-i18n="badgesHeading" class="text-lg font-extrabold text-yellow-700 mb-4">🏅 Badges Earned</h2>
         <div class="grid grid-cols-3 sm:grid-cols-6 gap-3" id="badgesGrid"></div>
       </div>
 
       <!-- Reading Log -->
       <div class="bg-white rounded-3xl shadow-xl border-2 border-blue-100 p-6">
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-lg font-extrabold text-blue-700">📖 Reading Log</h2>
-          <button id="clearLog" class="no-print text-xs text-red-400 hover:text-red-600 font-bold transition-all">Clear All</button>
+          <h2 data-i18n="logListHeading" class="text-lg font-extrabold text-blue-700">📖 Reading Log</h2>
+          <button id="clearLog" data-i18n="clearAll" class="no-print text-xs text-red-400 hover:text-red-600 font-bold transition-all">Clear All</button>
         </div>
         <div id="logList" class="space-y-2">
-          <p class="text-gray-300 text-sm font-semibold text-center py-4">No sessions logged yet... start reading! 📚</p>
+          <p data-i18n="emptyLog" class="text-gray-300 text-sm font-semibold text-center py-4">No sessions logged yet... start reading! 📚</p>
         </div>
       </div>
 
@@ -362,6 +469,19 @@
     function saveState() {
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
     }
+
+    // ─── PLACEHOLDERS (applyGameI18n only handles textContent) ─────────────────
+    function setPlaceholders() {
+      var ph = {
+        childNameInput: 'childNamePh', parentNameInput: 'parentNamePh',
+        logBook: 'bookTitlePh', logMins: 'minutesReadPh', logNote: 'favMomentPh',
+      };
+      Object.keys(ph).forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.placeholder = window.t(ph[id]);
+      });
+    }
+    setPlaceholders();
 
     // ─── SETUP ───────────────────────────────────────────────────────────────
     const hasData = loadState();
@@ -505,7 +625,7 @@
       document.getElementById('totalBooks').textContent = state.log.length;
       document.getElementById('totalMins').textContent = state.totalMins;
       document.getElementById('badgeCount').textContent = state.badges.length;
-      document.getElementById('timerGoalLabel').textContent = `Goal: ${state.goalMins} min`;
+      document.getElementById('timerGoalLabel').textContent = window.t('goalLabel').replace('{n}', state.goalMins);
       goalMins = state.goalMins;
       renderCalendar();
       renderBadges();
@@ -518,7 +638,7 @@
     calMonth = now.getMonth();
 
     function renderCalendar() {
-      const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      const months = window.t('months').split(',');
       document.getElementById('calMonthLabel').textContent = `${months[calMonth]} ${calYear}`;
       const grid = document.getElementById('calGrid');
       const firstDay = new Date(calYear, calMonth, 1).getDay();
@@ -569,12 +689,12 @@
     function renderLog() {
       const list = document.getElementById('logList');
       if (state.log.length === 0) {
-        list.innerHTML = '<p class="text-gray-300 text-sm font-semibold text-center py-4">No sessions logged yet... start reading! 📚</p>';
+        list.innerHTML = '<p class="text-gray-300 text-sm font-semibold text-center py-4">' + window.t('emptyLog') + '</p>';
         return;
       }
       list.innerHTML = state.log.slice(0, 20).map(entry => {
         const d = new Date(entry.date);
-        const dateLabel = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const dateLabel = d.toLocaleDateString(window.t('dateLocale'), { month: 'short', day: 'numeric' });
         const stars = '★'.repeat(entry.stars) + '☆'.repeat(5 - entry.stars);
         return `
           <div class="log-entry flex items-center gap-3 p-3 rounded-2xl bg-amber-50 border border-amber-100">
@@ -590,7 +710,7 @@
     }
 
     document.getElementById('clearLog').addEventListener('click', () => {
-      if (!confirm('Clear all reading history? This cannot be undone.')) return;
+      if (!confirm(window.t('clearConfirm'))) return;
       state = { ...state, streak: 0, lastReadDate: null, totalBooks: 0, totalMins: 0, readDates: [], log: [], badges: [] };
       saveState();
       renderDashboard();
@@ -598,10 +718,13 @@
 
     document.getElementById('printBtn').addEventListener('click', () => window.print());
     document.getElementById('markCompleted').addEventListener('click', function() {
-      this.textContent = '✅ Completed!';
+      this.textContent = window.t('completed');
       this.classList.add('bg-green-100','border-green-400','text-green-700');
     });
 
+    // Seed the timer goal label for the first-time setup flow (renderDashboard
+    // overwrites it once a profile exists).
+    document.getElementById('timerGoalLabel').textContent = window.t('goalLabel').replace('{n}', goalMins);
     updateTimerDisplay();
   </script>
 
@@ -660,7 +783,7 @@
   if (btn) {
     btn.addEventListener('click', markDone);
     if (isDone()) {
-      btn.textContent = '✅ Completed!';
+      btn.textContent = window.t('completed');
       btn.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     }
   }

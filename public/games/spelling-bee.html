@@ -16,6 +16,74 @@
   <meta name="twitter:description" content="Listen to the word, then tap the letters to spell it! A free interactive activity from Story Time with Eva." />
   <meta name="twitter:image" content="https://storytimewitheva.com/og-image.jpg" />
   <link rel="stylesheet" href="/games/games.css">
+  <script>
+    window.GAME_I18N = {
+      en: {
+        title: "Eva's Spelling Bee!",
+        subtitle: 'Listen to the word, then tap the letters to spell it!',
+        howto1: 'Choose your level: Beginner 🌱, Explorer 🗺️, or Champion 🏆',
+        howto2: 'Press 🔊 to hear the word spoken aloud',
+        howto3: 'Tap the letters in the correct order to spell the word',
+        howto4: 'Use 💡 Hint if you get stuck (costs 1 star)',
+        howto5: 'Spell all words to become a Spelling Bee Champion! 🐝',
+        levelBeginner: '🌱 Beginner', levelExplorer: '🗺️ Explorer', levelChampion: '🏆 Champion',
+        statWord: 'Word', statStars: 'Stars ⭐', statStreak: 'Streak 🔥', statTotal: 'Total',
+        hearWord: '🔊 Hear the Word', hint: '💡 Hint (-1⭐)',
+        clear: '🗑️ Clear', check: '✓ Check Spelling!',
+        celebTitle: 'Spelling Bee Champion!', celebSub: 'You spelled every word perfectly! 🐝⭐',
+        nextLevel: '⬆️ Next Level!',
+        fbTapAll: 'Tap all the letters first! 🤔',
+        fbCorrect: '🎉 Correct! +{points} ⭐',
+        fbWrong: 'Not quite... try again! 💪',
+        fbHint: '💡 Hint used! First {count} {letterWord} revealed.',
+        letterSingular: 'letter', letterPlural: 'letters',
+        celebStats: 'You scored {score} stars on {total} words! 🌟',
+      },
+      es: {
+        title: '¡El concurso de ortografía de Eva!',
+        subtitle: 'Escucha la palabra y luego toca las letras para escribirla.',
+        howto1: 'Elige tu nivel: Principiante 🌱, Explorador 🗺️ o Campeón 🏆',
+        howto2: 'Pulsa 🔊 para escuchar la palabra en voz alta',
+        howto3: 'Toca las letras en el orden correcto para escribir la palabra',
+        howto4: 'Usa 💡 Pista si te atascas (cuesta 1 estrella)',
+        howto5: '¡Escribe todas las palabras para ser campeón de ortografía! 🐝',
+        levelBeginner: '🌱 Principiante', levelExplorer: '🗺️ Explorador', levelChampion: '🏆 Campeón',
+        statWord: 'Palabra', statStars: 'Estrellas ⭐', statStreak: 'Racha 🔥', statTotal: 'Total',
+        hearWord: '🔊 Escuchar la palabra', hint: '💡 Pista (-1⭐)',
+        clear: '🗑️ Borrar', check: '✓ ¡Revisar ortografía!',
+        celebTitle: '¡Campeón de ortografía!', celebSub: '¡Escribiste cada palabra a la perfección! 🐝⭐',
+        nextLevel: '⬆️ ¡Siguiente nivel!',
+        fbTapAll: '¡Toca todas las letras primero! 🤔',
+        fbCorrect: '🎉 ¡Correcto! +{points} ⭐',
+        fbWrong: 'Casi... ¡inténtalo de nuevo! 💪',
+        fbHint: '💡 ¡Pista usada! Se revelaron las primeras {count} {letterWord}.',
+        letterSingular: 'letra', letterPlural: 'letras',
+        celebStats: '¡Conseguiste {score} estrellas en {total} palabras! 🌟',
+      },
+      fr: {
+        title: "Le concours d'orthographe d'Eva !",
+        subtitle: 'Écoute le mot, puis touche les lettres pour l’écrire !',
+        howto1: 'Choisis ton niveau : Débutant 🌱, Explorateur 🗺️ ou Champion 🏆',
+        howto2: 'Appuie sur 🔊 pour entendre le mot à voix haute',
+        howto3: 'Touche les lettres dans le bon ordre pour écrire le mot',
+        howto4: 'Utilise 💡 Indice si tu es bloqué (coûte 1 étoile)',
+        howto5: 'Écris tous les mots pour devenir champion d’orthographe ! 🐝',
+        levelBeginner: '🌱 Débutant', levelExplorer: '🗺️ Explorateur', levelChampion: '🏆 Champion',
+        statWord: 'Mot', statStars: 'Étoiles ⭐', statStreak: 'Série 🔥', statTotal: 'Total',
+        hearWord: '🔊 Entendre le mot', hint: '💡 Indice (-1⭐)',
+        clear: '🗑️ Effacer', check: '✓ Vérifier l’orthographe !',
+        celebTitle: 'Champion d’orthographe !', celebSub: 'Tu as écrit chaque mot parfaitement ! 🐝⭐',
+        nextLevel: '⬆️ Niveau suivant !',
+        fbTapAll: 'Touche d’abord toutes les lettres ! 🤔',
+        fbCorrect: '🎉 Correct ! +{points} ⭐',
+        fbWrong: 'Presque... essaie encore ! 💪',
+        fbHint: '💡 Indice utilisé ! Les {count} premières {letterWord} sont révélées.',
+        letterSingular: 'lettre', letterPlural: 'lettres',
+        celebStats: 'Tu as obtenu {score} étoiles sur {total} mots ! 🌟',
+      },
+    };
+  </script>
+  <script src="/games/i18n.js"></script>
   <style>
     @font-face{font-family:'Lexend';src:url('/games/lexend.woff2') format('woff2');font-weight:100 900;font-display:swap;}
     * { font-family: 'Lexend', 'Segoe UI', system-ui, sans-serif; }
@@ -116,54 +184,54 @@
   </nav>
 
   <div class="max-w-3xl mx-auto px-4 pt-6">
-    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
-    <button id="markCompleted" class="float-right px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
+    <a href="/activities" data-i18n="backToActivities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
+    <button id="markCompleted" data-i18n="markCompleted" class="float-right px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
   </div>
 
   <main class="max-w-3xl mx-auto px-4 pb-16 pt-4">
 
     <div class="text-center mb-6">
       <div class="text-5xl mb-2 bee-fly">🐝</div>
-      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Eva's Spelling Bee!</h1>
-      <p class="text-gray-500 text-base">Listen to the word, then tap the letters to spell it!</p>
+      <h1 data-i18n="title" class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Eva's Spelling Bee!</h1>
+      <p data-i18n="subtitle" class="text-gray-500 text-base">Listen to the word, then tap the letters to spell it!</p>
       <div class="w-20 h-1 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 mx-auto mt-4 rounded-full"></div>
     </div>
 
     <div class="bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-500 rounded-2xl p-5 mb-6 text-white shadow-lg">
-      <h2 class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
+      <h2 data-i18n="howToPlay" class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
       <ol class="list-decimal list-inside space-y-1 text-sm font-semibold">
-        <li>Choose your level: Beginner 🌱, Explorer 🗺️, or Champion 🏆</li>
-        <li>Press 🔊 to hear the word spoken aloud</li>
-        <li>Tap the letters in the correct order to spell the word</li>
-        <li>Use 💡 Hint if you get stuck (costs 1 star)</li>
-        <li>Spell all words to become a Spelling Bee Champion! 🐝</li>
+        <li data-i18n="howto1">Choose your level: Beginner 🌱, Explorer 🗺️, or Champion 🏆</li>
+        <li data-i18n="howto2">Press 🔊 to hear the word spoken aloud</li>
+        <li data-i18n="howto3">Tap the letters in the correct order to spell the word</li>
+        <li data-i18n="howto4">Use 💡 Hint if you get stuck (costs 1 star)</li>
+        <li data-i18n="howto5">Spell all words to become a Spelling Bee Champion! 🐝</li>
       </ol>
     </div>
 
     <!-- Level Selector -->
     <div class="flex justify-center gap-3 mb-5">
-      <button class="level-btn active px-5 py-2 rounded-full border-2 border-yellow-300 font-bold text-sm transition-all" data-level="beginner">🌱 Beginner</button>
-      <button class="level-btn px-5 py-2 rounded-full border-2 border-yellow-300 font-bold text-sm text-gray-600 transition-all hover:bg-yellow-50" data-level="explorer">🗺️ Explorer</button>
-      <button class="level-btn px-5 py-2 rounded-full border-2 border-yellow-300 font-bold text-sm text-gray-600 transition-all hover:bg-yellow-50" data-level="champion">🏆 Champion</button>
+      <button class="level-btn active px-5 py-2 rounded-full border-2 border-yellow-300 font-bold text-sm transition-all" data-level="beginner" data-i18n="levelBeginner">🌱 Beginner</button>
+      <button class="level-btn px-5 py-2 rounded-full border-2 border-yellow-300 font-bold text-sm text-gray-600 transition-all hover:bg-yellow-50" data-level="explorer" data-i18n="levelExplorer">🗺️ Explorer</button>
+      <button class="level-btn px-5 py-2 rounded-full border-2 border-yellow-300 font-bold text-sm text-gray-600 transition-all hover:bg-yellow-50" data-level="champion" data-i18n="levelChampion">🏆 Champion</button>
     </div>
 
     <!-- Stats -->
     <div class="flex justify-between items-center bg-yellow-50 rounded-2xl px-5 py-3 mb-5 border-2 border-yellow-100">
       <div class="text-center">
         <div class="text-2xl font-extrabold text-yellow-600" id="wordNum">1</div>
-        <div class="text-xs text-gray-500 font-bold">Word</div>
+        <div data-i18n="statWord" class="text-xs text-gray-500 font-bold">Word</div>
       </div>
       <div class="text-center">
         <div class="text-2xl font-extrabold text-purple-600" id="scoreDisplay">0</div>
-        <div class="text-xs text-gray-500 font-bold">Stars ⭐</div>
+        <div data-i18n="statStars" class="text-xs text-gray-500 font-bold">Stars ⭐</div>
       </div>
       <div class="text-center">
         <div class="text-2xl font-extrabold text-green-600" id="streakDisplay">0</div>
-        <div class="text-xs text-gray-500 font-bold">Streak 🔥</div>
+        <div data-i18n="statStreak" class="text-xs text-gray-500 font-bold">Streak 🔥</div>
       </div>
       <div class="text-center">
         <div class="text-2xl font-extrabold text-pink-600" id="totalWords">8</div>
-        <div class="text-xs text-gray-500 font-bold">Total</div>
+        <div data-i18n="statTotal" class="text-xs text-gray-500 font-bold">Total</div>
       </div>
     </div>
 
@@ -185,10 +253,10 @@
 
       <!-- Listen Button -->
       <div class="flex justify-center gap-3 mb-5">
-        <button id="listenBtn" class="px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all text-base">
+        <button id="listenBtn" data-i18n="hearWord" class="px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all text-base">
           🔊 Hear the Word
         </button>
-        <button id="hintBtn" class="px-5 py-3 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-full transition-all text-sm">
+        <button id="hintBtn" data-i18n="hint" class="px-5 py-3 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-full transition-all text-sm">
           💡 Hint (-1⭐)
         </button>
       </div>
@@ -204,10 +272,10 @@
 
       <!-- Action Buttons -->
       <div class="flex justify-center gap-3 mt-5">
-        <button id="clearBtn" class="px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold rounded-full transition-all text-sm">
+        <button id="clearBtn" data-i18n="clear" class="px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold rounded-full transition-all text-sm">
           🗑️ Clear
         </button>
-        <button id="checkBtn" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">
+        <button id="checkBtn" data-i18n="check" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">
           ✓ Check Spelling!
         </button>
       </div>
@@ -216,12 +284,12 @@
     <!-- Celebration -->
     <div id="celebration" class="hidden text-center py-8 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-3xl border-2 border-yellow-200 bounce-in">
       <div class="text-6xl mb-2">🏆</div>
-      <h2 class="text-2xl font-extrabold text-purple-700 mb-1">Spelling Bee Champion!</h2>
+      <h2 data-i18n="celebTitle" class="text-2xl font-extrabold text-purple-700 mb-1">Spelling Bee Champion!</h2>
       <p class="text-gray-600 mb-1" id="celebStats"></p>
-      <p class="text-gray-500 text-sm mb-4">You spelled every word perfectly! 🐝⭐</p>
+      <p data-i18n="celebSub" class="text-gray-500 text-sm mb-4">You spelled every word perfectly! 🐝⭐</p>
       <div class="flex justify-center gap-3">
-        <button id="playAgain" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">🔄 Play Again!</button>
-        <button id="nextLevel" class="px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-400 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">⬆️ Next Level!</button>
+        <button id="playAgain" data-i18n="playAgain" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">🔄 Play Again!</button>
+        <button id="nextLevel" data-i18n="nextLevel" class="px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-400 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">⬆️ Next Level!</button>
       </div>
     </div>
 
@@ -380,7 +448,7 @@
       const slotsEl = document.getElementById('answerSlots');
 
       if (typed.length < currentWord.length) {
-        document.getElementById('feedback').innerHTML = '<span class="text-orange-500">Tap all the letters first! 🤔</span>';
+        document.getElementById('feedback').innerHTML = `<span class="text-orange-500">${window.t('fbTapAll')}</span>`;
         return;
       }
 
@@ -396,7 +464,7 @@
         streak++;
         document.getElementById('scoreDisplay').textContent = score;
         document.getElementById('streakDisplay').textContent = streak;
-        document.getElementById('feedback').innerHTML = `<span class="text-green-600 bounce-in">🎉 Correct! +${points} ⭐</span>`;
+        document.getElementById('feedback').innerHTML = `<span class="text-green-600 bounce-in">${window.t('fbCorrect').replace('{points}', points)}</span>`;
         speakFeedback('Correct! Well done!');
         setTimeout(() => {
           currentWordIdx++;
@@ -413,7 +481,7 @@
         });
         slotsEl.classList.add('shake');
         setTimeout(() => slotsEl.classList.remove('shake'), 600);
-        document.getElementById('feedback').innerHTML = '<span class="text-red-500">Not quite... try again! 💪</span>';
+        document.getElementById('feedback').innerHTML = `<span class="text-red-500">${window.t('fbWrong')}</span>`;
         speakFeedback('Try again!');
         setTimeout(() => {
           typedLetters = [];
@@ -449,7 +517,8 @@
           typedLetters.push({ letter, tileIdx });
         }
       }
-      document.getElementById('feedback').innerHTML = `<span class="text-purple-500">💡 Hint used! First ${revealCount} letter${revealCount > 1 ? 's' : ''} revealed.</span>`;
+      const letterWord = window.t(revealCount > 1 ? 'letterPlural' : 'letterSingular');
+      document.getElementById('feedback').innerHTML = `<span class="text-purple-500">${window.t('fbHint').replace('{count}', revealCount).replace('{letterWord}', letterWord)}</span>`;
     }
 
     function speakWord(word) {
@@ -475,7 +544,7 @@
 
     function showCelebration() {
       document.getElementById('celebStats').textContent =
-        `You scored ${score} stars on ${words.length} words! 🌟`;
+        window.t('celebStats').replace('{score}', score).replace('{total}', words.length);
       document.getElementById('celebration').classList.remove('hidden');
       speakFeedback('Congratulations! You are a Spelling Bee Champion!');
     }
@@ -513,7 +582,7 @@
     });
 
     document.getElementById('markCompleted').addEventListener('click', function() {
-      this.textContent = '✅ Completed!';
+      this.textContent = window.t('completed');
       this.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     });
 
@@ -593,7 +662,7 @@
   if (btn) {
     btn.addEventListener('click', markDone);
     if (isDone()) {
-      btn.textContent = '✅ Completed!';
+      btn.textContent = window.t('completed');
       btn.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     }
   }

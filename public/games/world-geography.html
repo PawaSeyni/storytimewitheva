@@ -16,6 +16,65 @@
   <meta name="twitter:description" content="A country lights up on the map... can you name it? A free interactive activity from Story Time with Eva." />
   <meta name="twitter:image" content="https://storytimewitheva.com/og-image.jpg" />
   <link rel="stylesheet" href="/games/games.css">
+  <script>
+    window.GAME_I18N = {
+      en: {
+        title: "Eva's World Explorer",
+        subtitle: 'A country lights up on the map... can you name it?',
+        howto1: 'A country will light up in orange on the world map',
+        howto2: 'Read the fun fact clue about that country',
+        howto3: 'Tap the correct country name from the 4 choices!',
+        howto4: 'Earn stars for every correct answer 🌟',
+        howto5: 'Explore all continents to become a World Explorer! 🌍',
+        levelBeginner: '🌱 Beginner', levelExplorer: '🗺️ Explorer', levelChampion: '🏆 Champion',
+        question: 'Question', stars: 'Stars ⭐', streak: 'Streak 🔥',
+        whichCountry: 'Which country is this?', clueLabel: '🔍 Clue:', loading: 'Loading...',
+        nextCountry: 'Next Country →', countriesExplored: 'Countries Explored',
+        celebTitle: 'World Explorer Champion!', celebSubtitle: 'You explored countries from every continent! 🌟',
+        harderLevel: '⬆️ Harder Level!',
+        correct: "🎉 Correct! That's {name}! +2 ⭐",
+        wrong: 'Not quite! It was {name}. Keep exploring! 💪',
+        celebStats: 'You scored {score} stars exploring {count} countries!',
+      },
+      es: {
+        title: 'La exploradora del mundo de Eva',
+        subtitle: 'Un país se ilumina en el mapa... ¿puedes nombrarlo?',
+        howto1: 'Un país se iluminará en naranja en el mapa del mundo',
+        howto2: 'Lee la pista del dato curioso sobre ese país',
+        howto3: '¡Toca el nombre correcto del país entre las 4 opciones!',
+        howto4: 'Gana estrellas por cada respuesta correcta 🌟',
+        howto5: '¡Explora todos los continentes para ser un explorador del mundo! 🌍',
+        levelBeginner: '🌱 Principiante', levelExplorer: '🗺️ Explorador', levelChampion: '🏆 Campeón',
+        question: 'Pregunta', stars: 'Estrellas ⭐', streak: 'Racha 🔥',
+        whichCountry: '¿Qué país es este?', clueLabel: '🔍 Pista:', loading: 'Cargando...',
+        nextCountry: 'Siguiente país →', countriesExplored: 'Países explorados',
+        celebTitle: '¡Campeón explorador del mundo!', celebSubtitle: '¡Exploraste países de todos los continentes! 🌟',
+        harderLevel: '⬆️ ¡Nivel más difícil!',
+        correct: '🎉 ¡Correcto! ¡Es {name}! +2 ⭐',
+        wrong: '¡Casi! Era {name}. ¡Sigue explorando! 💪',
+        celebStats: '¡Conseguiste {score} estrellas explorando {count} países!',
+      },
+      fr: {
+        title: "L'exploratrice du monde d'Eva",
+        subtitle: "Un pays s'illumine sur la carte... peux-tu le nommer ?",
+        howto1: "Un pays va s'illuminer en orange sur la carte du monde",
+        howto2: "Lis l'indice amusant sur ce pays",
+        howto3: 'Touche le bon nom de pays parmi les 4 choix !',
+        howto4: 'Gagne des étoiles pour chaque bonne réponse 🌟',
+        howto5: 'Explore tous les continents pour devenir un explorateur du monde ! 🌍',
+        levelBeginner: '🌱 Débutant', levelExplorer: '🗺️ Explorateur', levelChampion: '🏆 Champion',
+        question: 'Question', stars: 'Étoiles ⭐', streak: 'Série 🔥',
+        whichCountry: 'Quel est ce pays ?', clueLabel: '🔍 Indice :', loading: 'Chargement...',
+        nextCountry: 'Pays suivant →', countriesExplored: 'Pays explorés',
+        celebTitle: 'Champion explorateur du monde !', celebSubtitle: 'Tu as exploré des pays de tous les continents ! 🌟',
+        harderLevel: '⬆️ Niveau plus difficile !',
+        correct: "🎉 Bravo ! C'est {name} ! +2 ⭐",
+        wrong: "Pas tout à fait ! C'était {name}. Continue d'explorer ! 💪",
+        celebStats: 'Tu as obtenu {score} étoiles en explorant {count} pays !',
+      },
+    };
+  </script>
+  <script src="/games/i18n.js"></script>
   <style>
     @font-face{font-family:'Lexend';src:url('/games/lexend.woff2') format('woff2');font-weight:100 900;font-display:swap;}
     * { font-family: 'Lexend', 'Segoe UI', system-ui, sans-serif; }
@@ -145,8 +204,8 @@
   </nav>
 
   <div class="max-w-5xl mx-auto px-4 pt-6">
-    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
-    <button id="markCompleted" class="float-right px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
+    <a href="/activities" data-i18n="backToActivities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
+    <button id="markCompleted" data-i18n="markCompleted" class="float-right px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
   </div>
 
   <main class="max-w-5xl mx-auto px-4 pb-16 pt-4">
@@ -154,45 +213,45 @@
     <!-- Header -->
     <div class="text-center mb-6">
       <div class="text-5xl mb-2">🌍</div>
-      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Eva's World Explorer</h1>
-      <p class="text-gray-500 text-base">A country lights up on the map... can you name it?</p>
+      <h1 data-i18n="title" class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Eva's World Explorer</h1>
+      <p data-i18n="subtitle" class="text-gray-500 text-base">A country lights up on the map... can you name it?</p>
       <div class="w-20 h-1 bg-gradient-to-r from-blue-400 via-green-400 to-purple-400 mx-auto mt-4 rounded-full"></div>
     </div>
 
     <!-- How to Play -->
     <div class="bg-gradient-to-r from-blue-400 via-teal-400 to-green-500 rounded-2xl p-5 mb-6 text-white shadow-lg">
-      <h2 class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
+      <h2 data-i18n="howToPlay" class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
       <ol class="list-decimal list-inside space-y-1 text-sm font-semibold">
-        <li>A country will light up in orange on the world map</li>
-        <li>Read the fun fact clue about that country</li>
-        <li>Tap the correct country name from the 4 choices!</li>
-        <li>Earn stars for every correct answer 🌟</li>
-        <li>Explore all continents to become a World Explorer! 🌍</li>
+        <li data-i18n="howto1">A country will light up in orange on the world map</li>
+        <li data-i18n="howto2">Read the fun fact clue about that country</li>
+        <li data-i18n="howto3">Tap the correct country name from the 4 choices!</li>
+        <li data-i18n="howto4">Earn stars for every correct answer 🌟</li>
+        <li data-i18n="howto5">Explore all continents to become a World Explorer! 🌍</li>
       </ol>
     </div>
 
     <!-- Level Selector -->
     <div class="flex justify-center gap-3 mb-5">
-      <button class="level-btn active px-5 py-2 rounded-full border-2 border-blue-300 font-bold text-sm transition-all" data-level="beginner">🌱 Beginner</button>
-      <button class="level-btn px-5 py-2 rounded-full border-2 border-blue-300 font-bold text-sm text-gray-600 transition-all hover:bg-blue-50" data-level="explorer">🗺️ Explorer</button>
-      <button class="level-btn px-5 py-2 rounded-full border-2 border-blue-300 font-bold text-sm text-gray-600 transition-all hover:bg-blue-50" data-level="champion">🏆 Champion</button>
+      <button class="level-btn active px-5 py-2 rounded-full border-2 border-blue-300 font-bold text-sm transition-all" data-level="beginner" data-i18n="levelBeginner">🌱 Beginner</button>
+      <button class="level-btn px-5 py-2 rounded-full border-2 border-blue-300 font-bold text-sm text-gray-600 transition-all hover:bg-blue-50" data-level="explorer" data-i18n="levelExplorer">🗺️ Explorer</button>
+      <button class="level-btn px-5 py-2 rounded-full border-2 border-blue-300 font-bold text-sm text-gray-600 transition-all hover:bg-blue-50" data-level="champion" data-i18n="levelChampion">🏆 Champion</button>
     </div>
 
     <!-- Stats Bar -->
     <div class="flex justify-between items-center bg-blue-50 rounded-2xl px-5 py-3 mb-5 border-2 border-blue-100">
       <div class="text-center">
         <div class="text-2xl font-extrabold text-blue-600" id="qNum">1</div>
-        <div class="text-xs text-gray-500 font-bold">Question</div>
+        <div data-i18n="question" class="text-xs text-gray-500 font-bold">Question</div>
       </div>
       <div class="text-center">
         <div class="text-2xl font-extrabold text-purple-600" id="scoreDisplay">0</div>
-        <div class="text-xs text-gray-500 font-bold">Stars ⭐</div>
+        <div data-i18n="stars" class="text-xs text-gray-500 font-bold">Stars ⭐</div>
       </div>
       <div class="text-center">
         <div class="text-2xl font-extrabold text-green-600" id="streakDisplay">0</div>
-        <div class="text-xs text-gray-500 font-bold">Streak 🔥</div>
+        <div data-i18n="streak" class="text-xs text-gray-500 font-bold">Streak 🔥</div>
       </div>
-      <button id="resetBtn" class="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 font-bold rounded-full text-sm transition-all">🔄 New Game</button>
+      <button id="resetBtn" data-i18n="newGame" class="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 font-bold rounded-full text-sm transition-all">🔄 New Game</button>
     </div>
 
     <!-- Progress -->
@@ -299,14 +358,14 @@
             <span class="text-2xl" id="qEmoji">🌍</span>
             <div>
               <div class="text-xs font-bold text-blue-500 uppercase tracking-wide" id="qContinent">Continent</div>
-              <div class="text-sm font-extrabold text-gray-700">Which country is this?</div>
+              <div data-i18n="whichCountry" class="text-sm font-extrabold text-gray-700">Which country is this?</div>
             </div>
           </div>
 
           <!-- Fun fact clue -->
           <div class="bg-blue-50 rounded-2xl p-3 mb-4 border border-blue-100">
-            <p class="text-xs font-bold text-blue-600 mb-1">🔍 Clue:</p>
-            <p class="text-sm font-bold text-gray-700" id="qClue">Loading...</p>
+            <p data-i18n="clueLabel" class="text-xs font-bold text-blue-600 mb-1">🔍 Clue:</p>
+            <p class="text-sm font-bold text-gray-700" id="qClue" data-i18n="loading">Loading...</p>
           </div>
 
           <!-- Answer options -->
@@ -324,14 +383,14 @@
             <p class="text-xs text-gray-600 font-semibold" id="revealFact"></p>
           </div>
 
-          <button id="nextBtn" class="hidden mt-3 w-full py-2 bg-gradient-to-r from-blue-500 to-teal-500 text-white font-extrabold rounded-full shadow hover:shadow-lg transition-all text-sm">
+          <button id="nextBtn" data-i18n="nextCountry" class="hidden mt-3 w-full py-2 bg-gradient-to-r from-blue-500 to-teal-500 text-white font-extrabold rounded-full shadow hover:shadow-lg transition-all text-sm">
             Next Country →
           </button>
         </div>
 
         <!-- Explored countries -->
         <div class="bg-white rounded-2xl shadow border-2 border-blue-50 p-4">
-          <p class="text-xs font-extrabold text-gray-500 mb-2 uppercase tracking-wide">Countries Explored</p>
+          <p data-i18n="countriesExplored" class="text-xs font-extrabold text-gray-500 mb-2 uppercase tracking-wide">Countries Explored</p>
           <div id="exploredList" class="flex flex-wrap gap-1"></div>
         </div>
 
@@ -341,12 +400,12 @@
     <!-- Celebration -->
     <div id="celebration" class="hidden text-center py-8 bg-gradient-to-r from-blue-50 to-green-50 rounded-3xl border-2 border-blue-200 mt-6 bounce-in">
       <div class="text-6xl mb-2">🌍</div>
-      <h2 class="text-2xl font-extrabold text-purple-700 mb-1">World Explorer Champion!</h2>
+      <h2 data-i18n="celebTitle" class="text-2xl font-extrabold text-purple-700 mb-1">World Explorer Champion!</h2>
       <p class="text-gray-600 mb-1" id="celebStats"></p>
-      <p class="text-gray-500 text-sm mb-4">You explored countries from every continent! 🌟</p>
+      <p data-i18n="celebSubtitle" class="text-gray-500 text-sm mb-4">You explored countries from every continent! 🌟</p>
       <div class="flex justify-center gap-3">
-        <button id="playAgain" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">🔄 Play Again!</button>
-        <button id="nextLevelBtn" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-teal-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">⬆️ Harder Level!</button>
+        <button id="playAgain" data-i18n="playAgain" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">🔄 Play Again!</button>
+        <button id="nextLevelBtn" data-i18n="harderLevel" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-teal-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">⬆️ Harder Level!</button>
       </div>
     </div>
 
@@ -485,7 +544,7 @@
         document.getElementById('scoreDisplay').textContent = score;
         document.getElementById('streakDisplay').textContent = streak;
         document.getElementById(`opt-${chosen}`).classList.add('correct');
-        document.getElementById('feedback').innerHTML = `<span class="text-green-600">🎉 Correct! That's ${c.name}! +2 ⭐</span>`;
+        document.getElementById('feedback').innerHTML = `<span class="text-green-600">${window.t('correct').replace('{name}', c.name)}</span>`;
         const el = document.getElementById(correct);
         if (el) { el.classList.remove('highlighted'); el.classList.add('correct-flash'); }
         speak(`Correct! That is ${c.name}! ${c.fact}`);
@@ -495,7 +554,7 @@
         document.getElementById(`opt-${chosen}`).classList.add('wrong');
         document.getElementById(`opt-${chosen}`).classList.add('shake');
         document.getElementById(`opt-${correct}`).classList.add('correct');
-        document.getElementById('feedback').innerHTML = `<span class="text-red-500">Not quite! It was ${c.name}. Keep exploring! 💪</span>`;
+        document.getElementById('feedback').innerHTML = `<span class="text-red-500">${window.t('wrong').replace('{name}', c.name)}</span>`;
         const el = document.getElementById(correct);
         if (el) { el.classList.remove('highlighted'); el.classList.add('correct-flash'); }
         speak(`The answer was ${c.name}. ${c.fact}`);
@@ -528,7 +587,7 @@
 
     function showCelebration() {
       document.getElementById('progressBar').style.width = '100%';
-      document.getElementById('celebStats').textContent = `You scored ${score} stars exploring ${queue.length} countries!`;
+      document.getElementById('celebStats').textContent = window.t('celebStats').replace('{score}', score).replace('{count}', queue.length);
       document.getElementById('celebration').classList.remove('hidden');
       speak('Congratulations! You are a World Explorer Champion!');
     }
@@ -556,7 +615,7 @@
       initGame(next);
     });
     document.getElementById('markCompleted').addEventListener('click', function() {
-      this.textContent = '✅ Completed!';
+      this.textContent = window.t('completed');
       this.classList.add('bg-green-100','border-green-400','text-green-700');
     });
 
@@ -639,7 +698,7 @@
   if (btn) {
     btn.addEventListener('click', markDone);
     if (isDone()) {
-      btn.textContent = '✅ Completed!';
+      btn.textContent = window.t('completed');
       btn.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     }
   }
