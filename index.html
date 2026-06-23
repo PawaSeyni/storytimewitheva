@@ -50,11 +50,12 @@
       that POSTs (URL-encoded) to "/" with `form-name=contact`. The two must
       share the same field names — keep them in sync.
     -->
-    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+    <form name="contact" netlify netlify-honeypot="website" hidden>
       <input type="text" name="name" />
       <input type="email" name="email" />
       <input type="text" name="subject" />
       <textarea name="message"></textarea>
+      <input type="text" name="website" />
     </form>
 
     <!--
