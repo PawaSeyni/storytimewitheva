@@ -1,9 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Link } from '../components/LocalizedLink';
-import { BookOpen, BookMarked, CheckCircle2, Star, User, Trash2 } from 'lucide-react';
+import { BookOpen, BookMarked, CheckCircle2, Star, User, Trash2, NotebookPen, BarChart3 } from 'lucide-react';
 import { useBooks, books as rawBooks } from '../data/books';
 import { useActivities } from '../data/activities';
-import { loadProgress, clearProgress, type Progress } from '../lib/progress';
+import {
+  loadProgress,
+  clearProgress,
+  loadReadingJournal,
+  loadReadingTracker,
+  type Progress,
+  type JournalEntry,
+  type ReadingTracker,
+} from '../lib/progress';
 import Seo from '../components/Seo';
 import Pixel from '../components/Pixel';
 import { useTranslation, useLanguage } from '../lib/language';
@@ -39,6 +47,18 @@ const TRANSLATIONS = {
     statStreak: 'Keep it up!',
     statStreakLabel: 'Reading Streak',
     statWantToRead: 'On Your Reading List',
+    journalSection: 'Reading Journal',
+    journalEmpty: 'No journal entries yet. Record a book in the journal to see it here.',
+    journalCta: 'Open the reading journal',
+    journalFavCharacter: 'Favorite character',
+    journalFavScene: 'Favorite scene',
+    trackerSection: 'Reading Tracker',
+    trackerEmpty: 'No reading sessions logged yet. Log a session in the tracker to see it here.',
+    trackerCta: 'Open the reading tracker',
+    trackerSessionsLabel: 'Sessions',
+    trackerMinsLabel: 'Minutes read',
+    trackerStreakLabel: 'Day streak',
+    minShort: 'min',
   },
   es: {
     seoTitle: 'Mi perfil',
@@ -70,6 +90,18 @@ const TRANSLATIONS = {
     statStreak: 'Sigue así',
     statStreakLabel: 'Racha de lectura',
     statWantToRead: 'En tu lista de lectura',
+    journalSection: 'Diario de lectura',
+    journalEmpty: 'Aún no hay entradas. Registra un libro en el diario para verlo aquí.',
+    journalCta: 'Abrir el diario de lectura',
+    journalFavCharacter: 'Personaje favorito',
+    journalFavScene: 'Escena favorita',
+    trackerSection: 'Registro de lectura',
+    trackerEmpty: 'Aún no hay sesiones registradas. Registra una sesión para verla aquí.',
+    trackerCta: 'Abrir el registro de lectura',
+    trackerSessionsLabel: 'Sesiones',
+    trackerMinsLabel: 'Minutos leídos',
+    trackerStreakLabel: 'Días seguidos',
+    minShort: 'min',
   },
   fr: {
     seoTitle: 'Mon profil',
@@ -101,6 +133,18 @@ const TRANSLATIONS = {
     statStreak: 'Continuez comme ca',
     statStreakLabel: 'Serie de lecture',
     statWantToRead: 'Sur votre liste de lecture',
+    journalSection: 'Journal de lecture',
+    journalEmpty: 'Aucune entrée pour l\'instant. Enregistrez un livre dans le journal pour le voir ici.',
+    journalCta: 'Ouvrir le journal de lecture',
+    journalFavCharacter: 'Personnage préféré',
+    journalFavScene: 'Scène préférée',
+    trackerSection: 'Suivi de lecture',
+    trackerEmpty: 'Aucune séance enregistrée pour l\'instant. Enregistrez une séance dans le suivi pour la voir ici.',
+    trackerCta: 'Ouvrir le suivi de lecture',
+    trackerSessionsLabel: 'Séances',
+    trackerMinsLabel: 'Minutes lues',
+    trackerStreakLabel: 'Jours d\'affilée',
+    minShort: 'min',
   },
 };
 
@@ -177,13 +221,19 @@ function ItemList({ items, emptyMsg, emptyCta }: ItemListProps) {
 
 export default function Profile() {
   const [progress, setProgress] = useState<Progress>(() => loadProgress());
+  const [journal, setJournal] = useState<JournalEntry[]>(() => loadReadingJournal());
+  const [tracker, setTracker] = useState<ReadingTracker | null>(() => loadReadingTracker());
   const t = useTranslation(TRANSLATIONS);
   const { language } = useLanguage();
   const activities = useActivities();
   const books = useBooks();
 
   useEffect(() => {
-    const sync = () => setProgress(loadProgress());
+    const sync = () => {
+      setProgress(loadProgress());
+      setJournal(loadReadingJournal());
+      setTracker(loadReadingTracker());
+    };
     window.addEventListener('progresschange', sync);
     window.addEventListener('storage', sync);
     return () => {
@@ -191,6 +241,26 @@ export default function Profile() {
       window.removeEventListener('storage', sync);
     };
   }, []);
+
+  const dateLocale = ({ en: 'en-US', es: 'es-ES', fr: 'fr-FR' } as const)[language] ?? 'en-US';
+  const fmtDate = (value: string): string => {
+    if (!value) return '';
+    // Date-only strings ("YYYY-MM-DD", from the journal) parse as UTC midnight,
+    // which renders as the previous day in negative-offset timezones. Parse those
+    // as local. ISO timestamps (from the tracker) are left to the Date ctor.
+    const dateOnly = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+    const d = dateOnly
+      ? new Date(Number(dateOnly[1]), Number(dateOnly[2]) - 1, Number(dateOnly[3]))
+      : new Date(value);
+    if (Number.isNaN(d.getTime())) return value;
+    return d.toLocaleDateString(dateLocale, { year: 'numeric', month: 'short', day: 'numeric' });
+  };
+  const starRating = (n: number): string => {
+    const clamped = Math.max(0, Math.min(5, Math.round(n)));
+    return '★'.repeat(clamped) + '☆'.repeat(5 - clamped);
+  };
+
+  const trackerSessions = tracker?.log ?? [];
 
   const booksRead: ProgressItem[] = progress.booksRead
     .map((id) => books.find((b) => b.id === id))
@@ -225,12 +295,19 @@ export default function Profile() {
   })();
 
   const hasAnyProgress =
-    progress.booksRead.length + progress.booksWantToRead.length + progress.activitiesCompleted.length > 0;
+    progress.booksRead.length +
+      progress.booksWantToRead.length +
+      progress.activitiesCompleted.length +
+      journal.length +
+      trackerSessions.length >
+    0;
 
   const handleClear = () => {
     if (window.confirm(t.clearConfirm)) {
       clearProgress();
       setProgress(loadProgress());
+      setJournal(loadReadingJournal());
+      setTracker(loadReadingTracker());
     }
   };
 
@@ -353,6 +430,113 @@ export default function Profile() {
                 emptyMsg={t.emptyActivities}
                 emptyCta={{ label: t.tryActivity, to: '/activities' }}
               />
+            </div>
+
+            {/* ---- Reading Tracker sessions ---- */}
+            <div className="bg-white rounded-2xl shadow p-6 md:col-span-2">
+              <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <BarChart3 className="w-5 h-5 text-amber-500" /> {t.trackerSection}
+              </h2>
+              {trackerSessions.length === 0 ? (
+                <div className="py-6 text-center">
+                  <Pixel mood="sleepy" size={88} className="block mx-auto mb-2" />
+                  <p className="text-gray-400 text-sm mb-3">{t.trackerEmpty}</p>
+                  <a
+                    href="/games/reading-tracker.html"
+                    className="text-sm font-semibold text-purple-600 hover:text-purple-800"
+                  >
+                    {t.trackerCta} →
+                  </a>
+                </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-3 gap-3 mb-4">
+                    <div className="bg-amber-50 rounded-xl p-3 text-center">
+                      <div className="text-xl font-bold text-amber-700">{tracker?.totalBooks ?? trackerSessions.length}</div>
+                      <div className="text-xs text-gray-500 font-medium">{t.trackerSessionsLabel}</div>
+                    </div>
+                    <div className="bg-amber-50 rounded-xl p-3 text-center">
+                      <div className="text-xl font-bold text-amber-700">{tracker?.totalMins ?? 0}</div>
+                      <div className="text-xs text-gray-500 font-medium">{t.trackerMinsLabel}</div>
+                    </div>
+                    <div className="bg-amber-50 rounded-xl p-3 text-center">
+                      <div className="text-xl font-bold text-amber-700">{tracker?.streak ?? 0}</div>
+                      <div className="text-xs text-gray-500 font-medium">{t.trackerStreakLabel}</div>
+                    </div>
+                  </div>
+                  <ul className="space-y-2">
+                    {trackerSessions.slice(0, 20).map((s, i) => (
+                      <li
+                        key={`${s.date}-${i}`}
+                        className="p-3 bg-white rounded-xl shadow-sm border border-gray-100"
+                      >
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-gray-800 font-semibold text-sm">{s.book}</span>
+                          <span className="text-yellow-500 text-sm flex-shrink-0" aria-label={`${s.stars} / 5`}>
+                            {starRating(s.stars)}
+                          </span>
+                        </div>
+                        <div className="text-xs text-gray-500 mt-0.5">
+                          {fmtDate(s.date)} · {s.mins} {t.minShort}
+                        </div>
+                        {s.note && <p className="text-sm text-gray-600 mt-1 italic">“{s.note}”</p>}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
+
+            {/* ---- Reading Journal entries ---- */}
+            <div className="bg-white rounded-2xl shadow p-6 md:col-span-2">
+              <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <NotebookPen className="w-5 h-5 text-orange-500" /> {t.journalSection}
+              </h2>
+              {journal.length === 0 ? (
+                <div className="py-6 text-center">
+                  <Pixel mood="sleepy" size={88} className="block mx-auto mb-2" />
+                  <p className="text-gray-400 text-sm mb-3">{t.journalEmpty}</p>
+                  <Link
+                    to="/activities/adventure-journal"
+                    className="text-sm font-semibold text-purple-600 hover:text-purple-800"
+                  >
+                    {t.journalCta} →
+                  </Link>
+                </div>
+              ) : (
+                <ul className="space-y-2">
+                  {[...journal].reverse().map((entry) => (
+                    <li
+                      key={entry.id}
+                      className="p-3 bg-white rounded-xl shadow-sm border border-gray-100"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-gray-800 font-semibold text-sm flex items-center gap-2">
+                          <span className="text-lg" aria-hidden>
+                            {entry.emoji}
+                          </span>
+                          {entry.bookTitle}
+                        </span>
+                        <span className="text-yellow-500 text-sm flex-shrink-0" aria-label={`${entry.rating} / 5`}>
+                          {starRating(entry.rating)}
+                        </span>
+                      </div>
+                      {entry.date && <div className="text-xs text-gray-500 mt-0.5">{fmtDate(entry.date)}</div>}
+                      {entry.favoriteCharacter && (
+                        <p className="text-xs text-gray-600 mt-1">
+                          <span className="font-medium">{t.journalFavCharacter}:</span> {entry.favoriteCharacter}
+                        </p>
+                      )}
+                      {entry.favoriteScene && (
+                        <p className="text-xs text-gray-600 mt-0.5">
+                          <span className="font-medium">{t.journalFavScene}:</span> {entry.favoriteScene}
+                        </p>
+                      )}
+                      {entry.thoughts && <p className="text-sm text-gray-600 mt-1 italic">“{entry.thoughts}”</p>}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
 
