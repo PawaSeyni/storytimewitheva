@@ -36,7 +36,7 @@ export interface LocalizedActivity {
 export const activities: Activity[] = [
   {
     slug: 'story-builder',
-    emoji: '✍️',
+    emoji: '📝',
     ages: '6-9',
     title: {
       en: 'Story Dice Creator',
@@ -116,7 +116,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'craft-corner',
-    emoji: '✂️',
+    emoji: '🧶',
     ages: '6-9',
     title: {
       en: "Eva's Craft Corner",
@@ -288,7 +288,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'world-geography',
-    emoji: '🗺️',
+    emoji: '🌍',
     ages: '6-9',
     game: true,
     title: { en: 'World Geography Map', es: 'Mapa de geografía del mundo', fr: 'Carte de géographie du monde' },
@@ -301,7 +301,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'build-a-scene',
-    emoji: '🏗️',
+    emoji: '🎬',
     ages: '4-8',
     game: true,
     title: { en: 'Build-a-Scene', es: 'Crea una escena', fr: 'Compose une scène' },
@@ -314,7 +314,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'finish-the-story',
-    emoji: '✏️',
+    emoji: '📖',
     ages: '6-9',
     game: true,
     title: { en: 'Finish the Story', es: 'Termina la historia', fr: 'Termine l\'histoire' },

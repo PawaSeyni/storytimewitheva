@@ -32,3 +32,6 @@ vite.config.ts.timestamp-*
 
 # Netlify CLI local state
 .netlify/
+
+# local editor/preview config
+.claude/

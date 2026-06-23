@@ -54,7 +54,7 @@ export default function BookCard({ book, priority = false }: BookCardProps) {
       <div className="p-5 flex flex-col flex-1">
         <div className="flex items-center gap-2 mb-2">
           <span className="text-xs bg-purple-100 text-purple-700 font-medium px-2 py-0.5 rounded-full">
-            {book.ageRange}
+            {book.ageRange.replace('-', '–')}
           </span>
           <span className="text-sm">{book.languages.join('')}</span>
         </div>
