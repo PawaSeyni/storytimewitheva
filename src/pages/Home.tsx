@@ -79,7 +79,7 @@ const TRANSLATIONS = {
     benefits: [
       { emoji: '🌍', title: 'Read in three languages', desc: 'Switch between English, Spanish, and French anytime, made for bilingual families and language learners.' },
       { emoji: '🔊', title: 'Hear every story', desc: 'Tap Listen on any book to hear it read aloud with natural pronunciation in each language.' },
-      { emoji: '🎨', title: 'Free activities & printables', desc: 'Story dice, coloring, a reading journal, and a free bilingual starter kit, all free.' },
+      { emoji: '🎨', title: 'Free activities & printables', desc: 'Story dice, coloring, a reading journal, and a free trilingual starter kit, all free.' },
       { emoji: '💜', title: 'Gentle stories with heart', desc: 'Quiet, values-rich picture books about kindness, courage, and wonder for ages 3–9.' },
     ],
     activitiesTitle: 'Fun Activities with Eva',
@@ -123,7 +123,7 @@ const TRANSLATIONS = {
     benefits: [
       { emoji: '🌍', title: 'Lee en tres idiomas', desc: 'Cambia entre inglés, español y francés cuando quieras — ideal para familias bilingües y para aprender idiomas.' },
       { emoji: '🔊', title: 'Escucha cada historia', desc: 'Pulsa Escuchar en cualquier libro para oírlo en voz alta con pronunciación natural en cada idioma.' },
-      { emoji: '🎨', title: 'Actividades y descargables gratis', desc: 'Dados de historias, páginas para colorear, un diario de lectura y un kit de inicio bilingüe — todo gratis.' },
+      { emoji: '🎨', title: 'Actividades y descargables gratis', desc: 'Dados de historias, páginas para colorear, un diario de lectura y un kit de inicio trilingüe — todo gratis.' },
       { emoji: '💜', title: 'Historias tiernas con valores', desc: 'Libros ilustrados serenos sobre la bondad, la valentía y el asombro, para edades de 3 a 9 años.' },
     ],
     activitiesTitle: 'Actividades divertidas con Eva',
@@ -167,7 +167,7 @@ const TRANSLATIONS = {
     benefits: [
       { emoji: '🌍', title: 'Lisez en trois langues', desc: 'Passez de l\'anglais à l\'espagnol et au français à tout moment — parfait pour les familles bilingues et l\'apprentissage des langues.' },
       { emoji: '🔊', title: 'Écoutez chaque histoire', desc: 'Appuyez sur Écouter sur n\'importe quel livre pour l\'entendre lu à voix haute avec une prononciation naturelle dans chaque langue.' },
-      { emoji: '🎨', title: 'Activités et imprimables gratuits', desc: 'Dés à histoires, coloriages, un journal de lecture et un kit de démarrage bilingue — tout gratuit.' },
+      { emoji: '🎨', title: 'Activités et imprimables gratuits', desc: 'Dés à histoires, coloriages, un journal de lecture et un kit de démarrage trilingue — tout gratuit.' },
       { emoji: '💜', title: 'Des histoires douces et porteuses de sens', desc: 'Des albums paisibles sur la gentillesse, le courage et l\'émerveillement, pour les 3 à 9 ans.' },
     ],
     activitiesTitle: 'Activités amusantes avec Eva',
