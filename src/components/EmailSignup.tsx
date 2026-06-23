@@ -30,9 +30,9 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
   'bilingual-starter-kit': {
     tag: 'bilingual-starter-kit',
     title: {
-      en: 'Download the FREE 20-Page Bilingual Starter Kit!',
-      es: '¡Descarga GRATIS el kit bilingüe de 20 páginas!',
-      fr: 'Téléchargez gratuitement le kit bilingue de 20 pages !',
+      en: 'Download the FREE 20-Page Trilingual Starter Kit!',
+      es: '¡Descarga GRATIS el kit trilingüe de 20 páginas!',
+      fr: 'Téléchargez gratuitement le kit trilingue de 20 pages !',
     },
     pdf: { en: '/bilingual-starter-kit.pdf', es: '/bilingual-starter-kit.pdf', fr: '/bilingual-starter-kit.pdf' },
   },
@@ -78,7 +78,7 @@ function resolveMagnet(): Magnet {
 
 const TRANSLATIONS = {
   en: {
-    blurb: 'Join our growing community of parents making reading fun. Get coloring pages, reading guides, and bilingual activities delivered straight to your inbox.',
+    blurb: 'Join our growing community of parents making reading fun. Get coloring pages, reading guides, and multilingual activities delivered straight to your inbox.',
     bullets: [
       '✓ 20-page activity pack (English, Spanish & French)',
       '✓ Age-appropriate book recommendations',
@@ -97,7 +97,7 @@ const TRANSLATIONS = {
     audienceNote: 'For parents & guardians. Please sign up on your child’s behalf.',
   },
   es: {
-    blurb: 'Únete a nuestra comunidad de padres que hacen divertida la lectura. Recibe páginas para colorear, guías de lectura y actividades bilingües directamente en tu correo.',
+    blurb: 'Únete a nuestra comunidad de padres que hacen divertida la lectura. Recibe páginas para colorear, guías de lectura y actividades multilingües directamente en tu correo.',
     bullets: [
       '✓ Pack de 20 páginas de actividades (inglés, español y francés)',
       '✓ Recomendaciones de libros por edad',
@@ -116,7 +116,7 @@ const TRANSLATIONS = {
     audienceNote: 'Para padres y tutores. Por favor, regístrate en nombre de tu peque.',
   },
   fr: {
-    blurb: 'Rejoignez notre communauté de parents qui rendent la lecture amusante. Recevez des pages à colorier, des guides de lecture et des activités bilingues directement dans votre boîte mail.',
+    blurb: 'Rejoignez notre communauté de parents qui rendent la lecture amusante. Recevez des pages à colorier, des guides de lecture et des activités multilingues directement dans votre boîte mail.',
     bullets: [
       '✓ Pack d\'activités de 20 pages (anglais, espagnol et français)',
       '✓ Recommandations de livres par tranche d\'âge',
