@@ -13,7 +13,6 @@ const TRANSLATIONS = {
     tip: 'We typically respond within 24-48 hours. For faster answers, check our FAQ section!',
     successHeading: 'Message Sent!',
     successDetail: 'Thank you for reaching out. Eva will get back to you within 24-48 hours.',
-    honeypotLabel: "Don't fill this out if you're human:",
     sendAnother: 'Send Another Message',
     nameLabel: 'Your Name',
     namePlaceholder: 'Jane Smith',
@@ -44,7 +43,6 @@ const TRANSLATIONS = {
     tip: 'Normalmente respondemos en 24-48 horas. ¡Para respuestas más rápidas, revisa la sección de preguntas frecuentes!',
     successHeading: '¡Mensaje enviado!',
     successDetail: 'Gracias por escribir. Eva te responderá en 24-48 horas.',
-    honeypotLabel: 'No rellenes esto si eres humano:',
     sendAnother: 'Enviar otro mensaje',
     nameLabel: 'Tu nombre',
     namePlaceholder: 'Juana Pérez',
@@ -75,7 +73,6 @@ const TRANSLATIONS = {
     tip: 'Nous répondons généralement sous 24 à 48 heures. Pour des réponses plus rapides, consultez la section FAQ !',
     successHeading: 'Message envoyé !',
     successDetail: 'Merci pour votre message. Eva vous répondra sous 24 à 48 heures.',
-    honeypotLabel: 'Ne remplissez pas ceci si vous êtes humain :',
     sendAnother: 'Envoyer un autre message',
     nameLabel: 'Votre nom',
     namePlaceholder: 'Jeanne Dupont',
@@ -126,7 +123,7 @@ export default function Contact() {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: encodeFormData({
           'form-name': 'contact',
-          'bot-field': '', // honeypot — bots fill it, humans leave it blank
+          website: '', // honeypot — bots fill it, humans leave it blank
           ...form,
         }),
       });
@@ -178,21 +175,20 @@ export default function Contact() {
                   name="contact"
                   method="POST"
                   data-netlify="true"
-                  data-netlify-honeypot="bot-field"
+                  data-netlify-honeypot="website"
                 >
                   {/* Required by Netlify Forms for SPA submissions */}
                   <input type="hidden" name="form-name" value="contact" />
-                  {/* Honeypot: bots tend to fill it; humans never see it. Hidden via
-                      INLINE off-screen styles (not a CSS class) so it can't flash
-                      visible on the prerendered page before the stylesheet loads, and
-                      aria-hidden + tabindex=-1 keep it out of the a11y tree + tab order.
-                      Off-screen (not display:none) so bots still fill it. */}
-                  <p aria-hidden="true" style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none' }}>
-                    <label>
-                      {t.honeypotLabel}{' '}
-                      <input name="bot-field" tabIndex={-1} autoComplete="off" />
-                    </label>
-                  </p>
+                  {/* Honeypot: a decoy "Website" field bots fill but humans never see.
+                      Neutral name/label so it reads as innocuous even if a crawler or
+                      text extractor scrapes the DOM. Hidden via INLINE off-screen styles
+                      (CSS-independent, so no pre-CSS flash) + aria-hidden (out of the a11y
+                      tree) + tabindex=-1 / autocomplete=off (out of tab order + autofill).
+                      Off-screen rather than display:none so bots still fill it. */}
+                  <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none' }}>
+                    <label htmlFor="contact-website">Website</label>
+                    <input id="contact-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                  </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                       <label htmlFor="contact-name" className="block text-sm font-medium text-gray-700 mb-1">{t.nameLabel}</label>
