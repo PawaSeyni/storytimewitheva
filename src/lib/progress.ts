@@ -85,12 +85,14 @@ export function setActivityCompleted(slug: string, completed: boolean): Progress
 export function clearProgress(): Progress {
   const next = empty();
   saveProgress(next);
-  // The Reading Tracker and Reading Journal games persist under their own keys
-  // (see below). "Clear all progress" should wipe those too.
+  // Several activities persist under their own keys (see below, plus the
+  // Coloring gallery and Bookmark designer). "Clear all progress" should wipe
+  // every user-created store, not just the readingProgress one.
   if (typeof window !== 'undefined') {
     try {
-      localStorage.removeItem(READING_TRACKER_KEY);
-      localStorage.removeItem(READING_JOURNAL_KEY);
+      for (const key of EXTRA_PROGRESS_KEYS) {
+        localStorage.removeItem(key);
+      }
     } catch {
       /* storage unavailable */
     }
@@ -199,3 +201,25 @@ export function loadReadingJournal(): JournalEntry[] {
     return [];
   }
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Other user-created stores
+//
+// These activities save the user's own creations under their own keys but are
+// not surfaced on the Profile page. They are listed here only so that
+// "Clear all progress" can remove them along with everything else.
+//   - 'coloringGallery'  — saved coloring artwork (src/demos/ColoringDemo.tsx)
+//   - 'bookmarkDesign'   — saved bookmark design (src/demos/BookmarkCraftsDemo.tsx)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const COLORING_GALLERY_KEY = 'coloringGallery';
+const BOOKMARK_DESIGN_KEY = 'bookmarkDesign';
+
+// Every namespaced store that "Clear all progress" should wipe (the main
+// readingProgress store is cleared separately via saveProgress(empty())).
+const EXTRA_PROGRESS_KEYS = [
+  READING_TRACKER_KEY,
+  READING_JOURNAL_KEY,
+  COLORING_GALLERY_KEY,
+  BOOKMARK_DESIGN_KEY,
+];
