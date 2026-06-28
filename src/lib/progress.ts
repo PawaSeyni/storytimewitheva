@@ -85,5 +85,117 @@ export function setActivityCompleted(slug: string, completed: boolean): Progress
 export function clearProgress(): Progress {
   const next = empty();
   saveProgress(next);
+  // The Reading Tracker and Reading Journal games persist under their own keys
+  // (see below). "Clear all progress" should wipe those too.
+  if (typeof window !== 'undefined') {
+    try {
+      localStorage.removeItem(READING_TRACKER_KEY);
+      localStorage.removeItem(READING_JOURNAL_KEY);
+    } catch {
+      /* storage unavailable */
+    }
+  }
   return next;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Reading Tracker entries
+//
+// Owned by the standalone vanilla-JS game at public/games/reading-tracker.html,
+// which persists under its own key. We read that key here (read-only) so the
+// Profile page can surface logged sessions. The schema below mirrors the shape
+// the game writes; keep them in sync.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const READING_TRACKER_KEY = 'eva_reading_tracker_v1';
+
+export interface ReadingTrackerSession {
+  date: string; // ISO timestamp
+  book: string;
+  mins: number;
+  stars: number;
+  note: string;
+}
+
+export interface ReadingTracker {
+  childName: string;
+  totalBooks: number;
+  totalMins: number;
+  streak: number;
+  log: ReadingTrackerSession[];
+}
+
+export function loadReadingTracker(): ReadingTracker | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = localStorage.getItem(READING_TRACKER_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<ReadingTracker>;
+    const log = Array.isArray(parsed.log)
+      ? parsed.log
+          .filter((e): e is ReadingTrackerSession => Boolean(e) && typeof e === 'object')
+          .map((e) => ({
+            date: typeof e.date === 'string' ? e.date : '',
+            book: typeof e.book === 'string' ? e.book : '',
+            mins: typeof e.mins === 'number' ? e.mins : 0,
+            stars: typeof e.stars === 'number' ? e.stars : 0,
+            note: typeof e.note === 'string' ? e.note : '',
+          }))
+      : [];
+    return {
+      childName: typeof parsed.childName === 'string' ? parsed.childName : '',
+      totalBooks: typeof parsed.totalBooks === 'number' ? parsed.totalBooks : log.length,
+      totalMins: typeof parsed.totalMins === 'number' ? parsed.totalMins : 0,
+      streak: typeof parsed.streak === 'number' ? parsed.streak : 0,
+      log,
+    };
+  } catch {
+    return null;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Reading Journal entries
+//
+// Owned by the Adventure Journal demo (src/demos/AdventureJournalDemo.tsx),
+// which persists an array under its own key. We read it here (read-only) so the
+// Profile page can surface saved entries. Keep this schema in sync with that
+// component's Entry type.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const READING_JOURNAL_KEY = 'adventureJournal';
+
+export interface JournalEntry {
+  id: number;
+  bookTitle: string;
+  date: string; // YYYY-MM-DD
+  rating: number;
+  favoriteCharacter: string;
+  favoriteScene: string;
+  thoughts: string;
+  emoji: string;
+}
+
+export function loadReadingJournal(): JournalEntry[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem(READING_JOURNAL_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .filter((e): e is Record<string, unknown> => Boolean(e) && typeof e === 'object')
+      .map((e) => ({
+        id: typeof e.id === 'number' ? e.id : 0,
+        bookTitle: typeof e.bookTitle === 'string' ? e.bookTitle : '',
+        date: typeof e.date === 'string' ? e.date : '',
+        rating: typeof e.rating === 'number' ? e.rating : 0,
+        favoriteCharacter: typeof e.favoriteCharacter === 'string' ? e.favoriteCharacter : '',
+        favoriteScene: typeof e.favoriteScene === 'string' ? e.favoriteScene : '',
+        thoughts: typeof e.thoughts === 'string' ? e.thoughts : '',
+        emoji: typeof e.emoji === 'string' ? e.emoji : '📖',
+      }));
+  } catch {
+    return [];
+  }
 }
