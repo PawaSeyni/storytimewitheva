@@ -7,20 +7,20 @@
 
 # Force the legacy netlify.app subdomain to redirect to the custom domain.
 # (Netlify's automatic "primary domain" redirect doesn't always engage; this
-# explicit rule is version-controlled and reliable. Must come BEFORE the SPA
-# fallback so it wins, and uses `force = true` to override any static match.)
+# explicit rule is version-controlled and reliable. Uses `force = true` to
+# override any static match.)
 [[redirects]]
   from = "https://storytimewitheva.netlify.app/*"
   to = "https://storytimewitheva.com/:splat"
   status = 301
   force = true
 
-# SPA fallback: every unknown route returns index.html so React Router
-# can resolve it client-side. Status 200 (not 301) keeps the URL intact.
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# No SPA catch-all on purpose. Every real route (incl. /es,/fr variants, all book
+# pages, and the noindex /profile,/search) is prerendered to its own static
+# index.html by scripts/prerender.mjs, so unmatched URLs fall through to Netlify's
+# auto-served dist/404.html (real HTTP 404) instead of the home page (soft-404).
+# The prerender step is REQUIRED: if it fails, the build fails and the last good
+# deploy stays live, so removing this fallback never leaves real routes unserved.
 
 [[headers]]
   for = "/*"

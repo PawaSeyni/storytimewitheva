@@ -97,8 +97,11 @@ const extraRoutes = NOINDEX_SPA_ROUTES.flatMap(p => LANG_PREFIXES.map(pre => `${
 const routes = [...new Set([...sitemapRoutes, ...extraRoutes])];
 console.log(`Prerendering ${routes.length} routes (${extraRoutes.length} noindex SPA routes)…`);
 
-// Best-effort: if Chromium can't launch warn and exit 0 so the working SPA
-// still deploys. Prerender is an enhancement, not a hard build requirement.
+// Prerender is REQUIRED: if Chromium can't launch or any route fails to render,
+// exit non-zero so the build fails and Netlify keeps the last good deploy. The
+// SPA fallback (`/* -> /index.html 200`) that used to serve a working shell for
+// every URL has been removed (it caused soft-404s — unknown URLs returned the
+// home page with HTTP 200), so a partial prerender must NOT ship silently.
 let launchOpts;
 if (IS_CI) {
   const chromium = (await import('@sparticuz/chromium')).default;
@@ -123,10 +126,10 @@ let browser;
 try {
   browser = await puppeteer.launch(launchOpts);
 } catch (e) {
-  console.warn(`⚠️  Prerender skipped — could not launch Chrome: ${e.message}`);
-  console.warn('   Shipping the client-rendered SPA build as-is.');
+  console.error(`❌ Prerender could not launch Chrome: ${e.message}`);
+  console.error('   Failing the build so the last good deploy stays live.');
   server.close();
-  process.exit(0);
+  process.exit(1);
 }
 console.log('Chrome launched OK');
 
@@ -158,11 +161,30 @@ for (const route of routes) {
   }
 }
 
+// Emit a real 404 page: snapshot the NotFound route (it sets robots=noindex) and
+// write it to dist/404.html. With the SPA catch-all removed, Netlify serves this
+// with a proper HTTP 404 for any unmatched URL — no more soft-404 home fallback.
+try {
+  const page = await browser.newPage();
+  await page.goto(ORIGIN + '/__prerender_not_found__', { waitUntil: 'load', timeout: 30000 });
+  await page.waitForFunction('window.__PRERENDER_READY__ === true', { timeout: 10000 }).catch(() => {});
+  await page
+    .waitForFunction("!document.querySelector('[data-prerender-loading]')", { timeout: 10000 })
+    .catch(() => {});
+  await writeFile(path.join(DIST, '404.html'), await page.content());
+  await page.close();
+  console.log('Wrote dist/404.html (NotFound snapshot, noindex).');
+} catch (e) {
+  failures.push(`404.html — ${e.message}`);
+}
+
 await browser.close();
 server.close();
 
 console.log(`Prerendered ${ok}/${routes.length} routes.`);
 if (failures.length) {
-  // Don't fail the deploy: unprerendered routes still work via the SPA fallback.
-  console.warn('⚠️  Some routes did not prerender (SPA fallback will serve them):\n  ' + failures.join('\n  '));
+  // Prerender is required (the SPA fallback was removed). Fail the build so the
+  // last good deploy stays live rather than shipping soft-404s / missing routes.
+  console.error('❌ Prerender failed for:\n  ' + failures.join('\n  '));
+  process.exit(1);
 }
