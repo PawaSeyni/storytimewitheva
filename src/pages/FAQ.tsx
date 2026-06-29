@@ -21,7 +21,7 @@ const TRANSLATIONS = {
     heading: 'Frequently Asked Questions',
     subheading: 'Everything parents, caregivers, and teachers ask most',
     faqs: [
-      { q: 'What ages are these books for?', a: 'The Eva Gallo Collection is written for children ages 3 to 9. Every book on the Books page shows its own recommended age range so you can pick the right fit.' },
+      { q: 'What ages are these books for?', a: 'The Eva Gallo Collection is written for children ages 3–9. Every book on the Books page shows its own recommended age range so you can pick the right fit.' },
       { q: 'What languages can we read and listen in?', a: 'The whole site works in English, Spanish, and French. Use the EN/ES/FR switch at the top. The activities and the “Listen” read-aloud work in all three. Eva’s books are bilingual, pairing English with Spanish or French, and more translations are on the way; each book shows the languages it’s available in.' },
       { q: 'How do I buy a book, and what does it cost?', a: 'Books are sold on Amazon in paperback and eBook. Prices vary by title, and Amazon always shows the current price and availability. Tap “Buy on Amazon” on any book; Amazon handles payment, shipping, and returns.' },
       { q: 'Can my child listen to a story?', a: 'Yes, tap the 🔊 Listen button on any book to hear it read aloud, with natural pronunciation in the language you’ve selected. Great for pre-readers and for hearing a second language.' },
