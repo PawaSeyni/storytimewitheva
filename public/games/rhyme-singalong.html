@@ -16,6 +16,29 @@
   <meta name="twitter:description" content="Read along as the words light up, then sing it yourself! A free interactive activity from Story Time with Eva." />
   <meta name="twitter:image" content="https://storytimewitheva.com/og-image.jpg" />
   <link rel="stylesheet" href="/games/games.css">
+  <script>
+    // Game-specific chrome strings for the shared i18n helper (/games/i18n.js).
+    // COMMON keys (backToActivities, markCompleted, completed, ...) come from the
+    // helper itself; these are this game's own visible strings.
+    window.GAME_I18N = {
+      en: {
+        gameTitle: 'Rhyme & Sing-Along with Eva',
+        gameSubtitle: 'Read along as the words light up, then sing it yourself!',
+        playSong: 'Play song',
+      },
+      es: {
+        gameTitle: 'Rimas y canciones con Eva',
+        gameSubtitle: 'Lee las palabras mientras se iluminan, ¡y luego cántalas tú!',
+        playSong: 'Reproducir canción',
+      },
+      fr: {
+        gameTitle: 'Comptines et chansons avec Eva',
+        gameSubtitle: 'Lis les mots qui s\'illuminent, puis chante-les toi-même !',
+        playSong: 'Lire la chanson',
+      },
+    };
+  </script>
+  <script src="/games/i18n.js"></script>
   <style>
     @font-face{font-family:'Lexend';src:url('/games/lexend.woff2') format('woff2');font-weight:100 900;font-display:swap;}
     * { font-family: 'Lexend', 'Segoe UI', system-ui, sans-serif; }
@@ -86,16 +109,16 @@
   </nav>
 
   <div class="max-w-4xl mx-auto px-4 pt-6">
-    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
-    <button id="markCompleted" class="float-right px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
+    <a href="/activities" data-i18n="backToActivities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
+    <button id="markCompleted" data-i18n="markCompleted" class="float-right px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
   </div>
 
   <main class="max-w-4xl mx-auto px-4 pb-16 pt-4">
 
     <div class="text-center mb-6">
       <div class="text-5xl mb-2">🎵</div>
-      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Rhyme & Sing-Along with Eva</h1>
-      <p class="text-gray-500 text-base">Read along as the words light up, then sing it yourself!</p>
+      <h1 data-i18n="gameTitle" class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Rhyme & Sing-Along with Eva</h1>
+      <p data-i18n="gameSubtitle" class="text-gray-500 text-base">Read along as the words light up, then sing it yourself!</p>
       <div class="w-20 h-1 bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 mx-auto mt-4 rounded-full"></div>
     </div>
 
@@ -125,7 +148,7 @@
       <div class="flex items-center justify-between mb-4">
         <div>
           <h2 class="text-xl font-extrabold text-gray-800" id="songTitle">Twinkle Twinkle</h2>
-          <p class="text-sm text-gray-400 font-semibold" id="songSubtitle">Ages 3–7 · Classic Nursery Rhyme</p>
+          <p class="text-sm text-gray-500 font-semibold" id="songSubtitle">Ages 3–7 · Classic Nursery Rhyme</p>
         </div>
         <div id="waveAnim" class="hidden items-center gap-1 h-8">
           <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
@@ -138,10 +161,10 @@
       <div id="lyricsDisplay" class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-5 min-h-40 mb-5 text-center leading-loose"></div>
       <div class="flex items-center justify-center gap-4">
         <button id="restartBtn" class="p-3 bg-gray-100 hover:bg-gray-200 rounded-full text-gray-600 transition-all font-bold text-lg" title="Restart">⏮</button>
-        <button id="playBtn" class="pulse-play w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-full shadow-xl hover:shadow-2xl transition-all text-2xl font-extrabold flex items-center justify-center">▶</button>
+        <button id="playBtn" aria-label="Play song" class="pulse-play w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-full shadow-xl hover:shadow-2xl transition-all text-2xl font-extrabold flex items-center justify-center">▶</button>
         <button id="speedBtn" class="p-3 bg-gray-100 hover:bg-gray-200 rounded-full text-gray-600 transition-all font-bold text-sm" title="Speed">1×</button>
       </div>
-      <p class="text-center text-xs text-gray-400 mt-3 font-semibold" id="readAloudNote">🔊 Words are read aloud using your device's voice, say them along!</p>
+      <p class="text-center text-xs text-gray-500 mt-3 font-semibold" id="readAloudNote">🔊 Words are read aloud using your device's voice, say them along!</p>
     </div>
 
     <div class="bg-pink-50 border-2 border-pink-200 rounded-2xl p-5 text-center">
@@ -414,7 +437,7 @@
     });
 
     document.getElementById('markCompleted').addEventListener('click', function() {
-      this.textContent = '✅ Completed!';
+      this.textContent = window.t ? window.t('completed') : '✅ Completed!';
       this.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     });
 
@@ -428,6 +451,8 @@
         t.classList.toggle('text-gray-600', !active);
       });
     }
+    // Localize the emoji-only play button's accessible name via the shared helper.
+    if (window.t) document.getElementById('playBtn').setAttribute('aria-label', window.t('playSong'));
     // Init
     applyUILang();
     renderLyrics();
@@ -489,7 +514,7 @@
   if (btn) {
     btn.addEventListener('click', markDone);
     if (isDone()) {
-      btn.textContent = '✅ Completed!';
+      btn.textContent = window.t ? window.t('completed') : '✅ Completed!';
       btn.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     }
   }

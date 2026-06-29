@@ -150,7 +150,7 @@ export default function About() {
             <div className="flex-shrink-0 w-full md:w-72">
               <img
                 src={evaHeadshot}
-                alt={t.photoNote}
+                alt=""
                 width={800}
                 height={800}
                 className="w-full aspect-square rounded-2xl shadow-xl border-4 border-white ring-4 ring-purple-100 object-cover"

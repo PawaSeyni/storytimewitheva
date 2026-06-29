@@ -159,7 +159,7 @@ export default function Contact() {
               {status === 'submitted' ? (
                 <div className="text-center py-12">
                   <div className="text-6xl mb-4">🎉</div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-2">{t.successHeading}</h3>
+                  <h2 className="text-2xl font-bold text-gray-800 mb-2">{t.successHeading}</h2>
                   <p className="text-gray-500">{t.successDetail}</p>
                   <button
                     onClick={() => setStatus('idle')}
@@ -264,7 +264,7 @@ export default function Contact() {
           <div className="space-y-4">
             <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl p-6 text-white text-center shadow-lg">
               <span className="text-4xl">🐾</span>
-              <h3 className="font-bold text-xl mt-2 mb-1">{t.sidebarHeading}</h3>
+              <h2 className="font-bold text-xl mt-2 mb-1">{t.sidebarHeading}</h2>
               <p className="text-purple-100 text-sm">{t.sidebarBlurb}</p>
             </div>
 

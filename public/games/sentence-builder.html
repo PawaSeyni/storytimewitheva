@@ -43,7 +43,7 @@
         clickRemove: 'Click to remove',
         correct: '🎉 Correct! {pts} ⭐',
         notQuite: 'Not quite! The correct order was: ',
-        celebTitle: 'Bilingual Explorer!',
+        celebTitle: 'Multilingual Explorer!',
         celebSub: 'You can build sentences in English, Spanish, and French! 🌍',
         celebStats: 'You scored {score} stars across all {total} sentences!',
       },
@@ -72,7 +72,7 @@
         clickRemove: 'Haz clic para quitar',
         correct: '🎉 ¡Correcto! {pts} ⭐',
         notQuite: 'Casi. El orden correcto era: ',
-        celebTitle: '¡Explorador bilingüe!',
+        celebTitle: '¡Explorador multilingüe!',
         celebSub: '¡Puedes construir frases en inglés, español y francés! 🌍',
         celebStats: '¡Conseguiste {score} estrellas en las {total} frases!',
       },
@@ -101,7 +101,7 @@
         clickRemove: 'Clique pour retirer',
         correct: '🎉 Correct ! {pts} ⭐',
         notQuite: "Pas tout à fait ! Le bon ordre était : ",
-        celebTitle: 'Explorateur bilingue !',
+        celebTitle: 'Explorateur multilingue !',
         celebSub: 'Tu peux construire des phrases en anglais, espagnol et français ! 🌍',
         celebStats: 'Tu as obtenu {score} étoiles sur les {total} phrases !',
       },
@@ -317,7 +317,7 @@
       <div class="mb-3">
         <p data-i18n="buildHere" class="text-xs font-bold text-purple-500 mb-2">📝 Build your sentence here:</p>
         <div id="dropZone" onclick="handleDropZoneClick(event)">
-          <span class="text-gray-300 text-sm font-bold" id="dropPlaceholder" data-i18n="dropPlaceholder">Tap or drag words here...</span>
+          <span class="text-gray-500 text-sm font-bold" id="dropPlaceholder" data-i18n="dropPlaceholder">Tap or drag words here...</span>
         </div>
       </div>
 
@@ -359,7 +359,7 @@
     <!-- Celebration -->
     <div id="celebration" class="hidden text-center py-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl border-2 border-purple-200 bounce-in">
       <div class="text-6xl mb-2">🏅</div>
-      <h2 data-i18n="celebTitle" class="text-2xl font-extrabold text-purple-700 mb-1">Bilingual Explorer!</h2>
+      <h2 data-i18n="celebTitle" class="text-2xl font-extrabold text-purple-700 mb-1">Multilingual Explorer!</h2>
       <p class="text-gray-600 mb-1" id="celebStats"></p>
       <p data-i18n="celebSub" class="text-gray-500 text-sm mb-4">You can build sentences in English, Spanish, and French! 🌍</p>
       <div class="flex justify-center gap-3">
@@ -485,7 +485,7 @@
       document.getElementById('nextBtn').classList.add('hidden');
       document.getElementById('hintRow').classList.add('hidden');
       document.getElementById('dropZone').className = 'mb-3';
-      document.getElementById('dropZone').innerHTML = '<span class="text-gray-300 text-sm font-bold" id="dropPlaceholder">' + window.t('dropPlaceholder') + '</span>';
+      document.getElementById('dropZone').innerHTML = '<span class="text-gray-500 text-sm font-bold" id="dropPlaceholder">' + window.t('dropPlaceholder') + '</span>';
       updateProgressDots();
 
       // Shuffle tiles
@@ -580,7 +580,7 @@
       dz.innerHTML = '';
       const remaining = placedWords.filter(Boolean);
       if (remaining.length === 0) {
-        dz.innerHTML = '<span class="text-gray-300 text-sm font-bold" id="dropPlaceholder">' + window.t('dropPlaceholder') + '</span>';
+        dz.innerHTML = '<span class="text-gray-500 text-sm font-bold" id="dropPlaceholder">' + window.t('dropPlaceholder') + '</span>';
       } else {
         remaining.forEach((entry, i) => {
           const colorClass = tileColors[entry.idx % tileColors.length];
@@ -649,7 +649,7 @@
       renderTilePalette();
       const dz = document.getElementById('dropZone');
       dz.className = 'mb-3';
-      dz.innerHTML = '<span class="text-gray-300 text-sm font-bold" id="dropPlaceholder">' + window.t('dropPlaceholder') + '</span>';
+      dz.innerHTML = '<span class="text-gray-500 text-sm font-bold" id="dropPlaceholder">' + window.t('dropPlaceholder') + '</span>';
     });
 
     // Hint
@@ -676,7 +676,7 @@
     function showCelebration() {
       document.getElementById('celebStats').textContent = window.t('celebStats').replace('{score}', score).replace('{total}', queue.length);
       document.getElementById('celebration').classList.remove('hidden');
-      speak('Congratulations! You are a Bilingual Explorer!');
+      speak('Congratulations! You are a Multilingual Explorer!');
     }
 
     document.getElementById('playAgain').addEventListener('click', () => initGame(currentLevel));

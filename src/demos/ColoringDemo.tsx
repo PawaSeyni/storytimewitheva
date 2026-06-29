@@ -533,7 +533,12 @@ function readGallery(): GalleryItem[] {
   try {
     const raw = localStorage.getItem(GALLERY_KEY);
     if (!raw) return [];
-    return JSON.parse(raw) as GalleryItem[];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (it): it is GalleryItem =>
+        !!it && typeof it.dataUrl === 'string' && typeof it.template === 'string' && typeof it.savedAt === 'string',
+    );
   } catch {
     return [];
   }

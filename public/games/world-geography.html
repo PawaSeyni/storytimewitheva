@@ -35,6 +35,7 @@
         correct: "🎉 Correct! That's {name}! +2 ⭐",
         wrong: 'Not quite! It was {name}. Keep exploring! 💪',
         celebStats: 'You scored {score} stars exploring {count} countries!',
+        legendFind: 'Find this country!', legendCorrect: 'Correct!', legendWrong: 'Wrong',
       },
       es: {
         title: 'La exploradora del mundo de Eva',
@@ -53,6 +54,7 @@
         correct: '🎉 ¡Correcto! ¡Es {name}! +2 ⭐',
         wrong: '¡Casi! Era {name}. ¡Sigue explorando! 💪',
         celebStats: '¡Conseguiste {score} estrellas explorando {count} países!',
+        legendFind: '¡Encuentra este país!', legendCorrect: '¡Correcto!', legendWrong: 'Incorrecto',
       },
       fr: {
         title: "L'exploratrice du monde d'Eva",
@@ -71,6 +73,7 @@
         correct: "🎉 Bravo ! C'est {name} ! +2 ⭐",
         wrong: "Pas tout à fait ! C'était {name}. Continue d'explorer ! 💪",
         celebStats: 'Tu as obtenu {score} étoiles en explorant {count} pays !',
+        legendFind: 'Trouve ce pays !', legendCorrect: 'Correct !', legendWrong: 'Incorrect',
       },
     };
   </script>
@@ -343,9 +346,9 @@
 
         <!-- Map legend -->
         <div class="flex gap-3 mt-2 text-xs font-bold justify-center flex-wrap">
-          <span class="flex items-center gap-1"><span class="w-4 h-4 rounded bg-orange-400 inline-block"></span> Find this country!</span>
-          <span class="flex items-center gap-1"><span class="w-4 h-4 rounded bg-green-400 inline-block"></span> Correct!</span>
-          <span class="flex items-center gap-1"><span class="w-4 h-4 rounded bg-red-400 inline-block"></span> Wrong</span>
+          <span class="flex items-center gap-1"><span class="w-4 h-4 rounded bg-orange-400 inline-block"></span> <span data-i18n="legendFind">Find this country!</span></span>
+          <span class="flex items-center gap-1"><span class="w-4 h-4 rounded bg-green-400 inline-block"></span> <span data-i18n="legendCorrect">Correct!</span></span>
+          <span class="flex items-center gap-1"><span class="w-4 h-4 rounded bg-red-400 inline-block"></span> <span data-i18n="legendWrong">Wrong</span></span>
         </div>
       </div>
 
