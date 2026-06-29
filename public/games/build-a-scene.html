@@ -379,6 +379,8 @@
       const c = document.getElementById('bgPicker');
       c.innerHTML = backgrounds.map((bg,i) => `
         <div class="bg-option ${i===0?'active':''}" id="bg-${bg.id}" onclick="applyBackground(backgrounds[${i}])"
+          role="button" tabindex="0" aria-label="${bg.label}"
+          onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();applyBackground(backgrounds[${i}]);}"
           style="${bg.style} display:flex; align-items:center; justify-content:center; font-size:1.5rem; height:50px;">
           ${bg.emoji}
         </div>
@@ -398,7 +400,9 @@
       const palette = document.getElementById('stickerPalette');
       palette.innerHTML = stickers[tab].map(s => `
         <div class="sticker-item" draggable="true" data-emoji="${s}"
+          role="button" tabindex="0" aria-label="${s}"
           ondragstart="onStickerDragStart(event, '${s}')"
+          onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();addStickerCenter('${s}');}"
           onclick="addStickerCenter('${s}')">
           ${s}
         </div>
@@ -452,9 +456,16 @@
       el.style.fontSize = '2.5rem';
       el.dataset.size = '2.5';
       el.dataset.flipped = 'false';
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('aria-label', emoji);
 
       // Click to select
       el.addEventListener('click', e => { e.stopPropagation(); selectSticker(id); });
+      // Keyboard: Enter/Space selects the sticker (same as click)
+      el.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); selectSticker(id); }
+      });
 
       // Drag to move
       makeDraggable(el);

@@ -326,7 +326,7 @@
 
       grid.innerHTML = cards.map((emoji, i) => `
         <div class="card-scene h-20 md:h-24" id="scene-${i}">
-          <div class="card-inner" id="card-${i}" onclick="handleFlip(${i})">
+          <div class="card-inner" id="card-${i}" role="button" tabindex="0" aria-label="Card ${i + 1}" onclick="handleFlip(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();handleFlip(${i});}">
             <!-- Back (question mark) -->
             <div class="card-face bg-gradient-to-br from-purple-400 to-pink-400 shadow-md">
               <span class="text-3xl">❓</span>
@@ -368,6 +368,11 @@
         document.getElementById('pairsFound').textContent = pairsFound;
         document.getElementById(`scene-${a}`).classList.add('card-matched');
         document.getElementById(`scene-${b}`).classList.add('card-matched');
+        // Matched cards can no longer be played: remove from tab order and disable.
+        [a, b].forEach(idx => {
+          const c = document.getElementById(`card-${idx}`);
+          if (c) { c.setAttribute('tabindex', '-1'); c.setAttribute('aria-disabled', 'true'); }
+        });
         // Speak the word
         speakEmoji(cards[a]);
         flipped = [];
