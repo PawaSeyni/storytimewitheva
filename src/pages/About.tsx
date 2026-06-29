@@ -155,7 +155,7 @@ export default function About() {
                 height={800}
                 className="w-full aspect-square rounded-2xl shadow-xl border-4 border-white ring-4 ring-purple-100 object-cover"
               />
-              <p className="text-center text-xs text-gray-400 mt-3 italic">{t.photoNote}</p>
+              <p className="text-center text-xs text-gray-500 mt-3 italic">{t.photoNote}</p>
             </div>
 
             <div>

@@ -15,7 +15,7 @@ const TRANSLATIONS = {
     faq: 'FAQ',
     connect: 'Connect with Eva',
     connectBlurb: 'Join our community for weekly tips, new stories, and exclusive activities!',
-    rights: '© 2025 Pawa Press Inc. · Story Time with Eva. All rights reserved.',
+    rights: '© {year} Pawa Press Inc. · Story Time with Eva. All rights reserved.',
     privacy: 'Privacy Policy',
     terms: 'Terms of Use',
     amazonAuthor: 'Amazon author page',
@@ -32,7 +32,7 @@ const TRANSLATIONS = {
     faq: 'Preguntas frecuentes',
     connect: 'Conecta con Eva',
     connectBlurb: '¡Únete a nuestra comunidad para consejos semanales, historias nuevas y actividades exclusivas!',
-    rights: '© 2025 Pawa Press Inc. · Story Time with Eva. Todos los derechos reservados.',
+    rights: '© {year} Pawa Press Inc. · Story Time with Eva. Todos los derechos reservados.',
     privacy: 'Política de privacidad',
     terms: 'Términos de uso',
     amazonAuthor: 'Página de autora en Amazon',
@@ -49,7 +49,7 @@ const TRANSLATIONS = {
     faq: 'FAQ',
     connect: 'Connectez-vous avec Eva',
     connectBlurb: 'Rejoignez notre communauté pour des conseils hebdomadaires, de nouvelles histoires et des activités exclusives !',
-    rights: '© 2025 Pawa Press Inc. · Story Time with Eva. Tous droits réservés.',
+    rights: '© {year} Pawa Press Inc. · Story Time with Eva. Tous droits réservés.',
     privacy: 'Politique de confidentialité',
     terms: 'Conditions d\'utilisation',
     amazonAuthor: 'Page autrice sur Amazon',
@@ -142,7 +142,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-gray-400">
-          <p>{t.rights}</p>
+          <p>{t.rights.replace('{year}', String(new Date().getFullYear()))}</p>
           <div className="flex gap-4">
             <Link to="/privacy" className="text-gray-400 hover:text-white transition-colors">{t.privacy}</Link>
             <Link to="/terms" className="text-gray-400 hover:text-white transition-colors">{t.terms}</Link>
