@@ -49,6 +49,7 @@ export default function BookDetail() {
       image: ogImage,
       url: `${SITE_URL}${localizePath(`/books/${book.id}`, language)}/`,
       ...(book.subtitle ? { alternativeHeadline: book.subtitle } : {}),
+      ...(book.amazonUrl ? { sameAs: book.amazonUrl.split('?')[0] } : {}),
       abstract: book.description,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -35,7 +35,7 @@ const TRANSLATIONS = {
     photoNote: 'Eva Gallo, author',
     bioHeading: 'A Note from the Author',
     bio: [
-      "This children's book series is a lively collection of imaginative stories from my childhood, created for kids ages 3 to 9.",
+      "This children's book series is a lively collection of imaginative stories from my childhood, created for kids ages 3–9.",
       'After a lifelong career in public health, I am now a full-time grandmother, caring for two young granddaughters with an endless appetite for bedtime stories.',
       'My inspiration comes from childhood memories with my mother and aunt. This book, and the series it belongs to, is my way of passing down traditions and lessons from a time before digital media.',
     ],
