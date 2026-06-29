@@ -498,11 +498,13 @@
       const palette = document.getElementById('tilePalette');
       palette.innerHTML = availableWords.map((word, i) => {
         const colorClass = tileColors[i % tileColors.length];
-        return `<div class="word-tile ${colorClass} border-2" 
+        return `<div class="word-tile ${colorClass} border-2"
           id="tile-${i}" data-word="${word}" data-idx="${i}"
           draggable="true"
+          role="button" tabindex="0"
           ondragstart="onTileDragStart(event, ${i})"
-          onclick="tapTile(${i})">
+          onclick="tapTile(${i})"
+          onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tapTile(${i});}">
           ${word}
         </div>`;
       }).join('');
@@ -554,7 +556,12 @@
       placedTile.textContent = word;
       placedTile.dataset.placedIdx = placedWords.length - 1;
       placedTile.title = window.t('clickRemove');
+      placedTile.setAttribute('role', 'button');
+      placedTile.tabIndex = 0;
       placedTile.addEventListener('click', () => removePlacedTile(parseInt(placedTile.dataset.placedIdx)));
+      placedTile.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); removePlacedTile(parseInt(placedTile.dataset.placedIdx)); }
+      });
       dz.appendChild(placedTile);
     }
 
@@ -581,7 +588,13 @@
           t.className = `word-tile placed ${colorClass} border-2`;
           t.textContent = entry.word;
           t.dataset.placedIdx = placedWords.indexOf(entry);
+          t.title = window.t('clickRemove');
+          t.setAttribute('role', 'button');
+          t.tabIndex = 0;
           t.addEventListener('click', () => removePlacedTile(parseInt(t.dataset.placedIdx)));
+          t.addEventListener('keydown', (ev) => {
+            if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); removePlacedTile(parseInt(t.dataset.placedIdx)); }
+          });
           dz.appendChild(t);
         });
       }

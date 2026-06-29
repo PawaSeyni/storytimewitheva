@@ -103,6 +103,8 @@
     }
     .emotion-seg:hover { filter: brightness(1.15); transform: scale(1.05); }
     .emotion-seg.active { filter: brightness(1.2) drop-shadow(0 0 8px rgba(0,0,0,0.3)); transform: scale(1.08); }
+    /* Keyboard focus indicator for the SVG wheel segments (no other focus style exists) */
+    [role="button"]:focus-visible { outline: 3px solid #7c3aed; outline-offset: 2px; }
 
     /* Slide up for response panel */
     @keyframes slide-up {
@@ -433,7 +435,16 @@
         path.setAttribute('stroke-width', '3');
         path.setAttribute('class', 'emotion-seg');
         path.setAttribute('id', `seg-${em.id}`);
+        // Keyboard accessibility: make each SVG segment focusable and operable.
+        // SVG elements require tabindex/role/aria-label set as attributes.
+        const segName = (window.GAME_LANG === 'es' ? em.nameEs : window.GAME_LANG === 'fr' ? em.nameFr : em.name);
+        path.setAttribute('tabindex', '0');
+        path.setAttribute('role', 'button');
+        path.setAttribute('aria-label', segName);
         path.addEventListener('click', () => selectEmotion(em));
+        path.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectEmotion(em); }
+        });
         svg.appendChild(path);
 
         // Emoji label

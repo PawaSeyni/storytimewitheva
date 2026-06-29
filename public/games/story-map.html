@@ -561,7 +561,8 @@
       const c = document.getElementById('miniBookGrid');
       c.innerHTML = books.map(b => `
         <div class="text-center p-2 rounded-xl bg-white border-2 border-gray-100 cursor-pointer hover:border-purple-300 transition-all"
-          onclick="showBook('${b.id}')">
+          onclick="showBook('${b.id}')" tabindex="0" role="button" aria-label="${b.title}, ${b.location}"
+          onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showBook('${b.id}');}">
           <div class="text-2xl">${b.emoji}</div>
           <div class="text-xs font-bold text-gray-600 truncate">${b.location}</div>
         </div>
@@ -572,7 +573,8 @@
       const c = document.getElementById('allBooksGrid');
       c.innerHTML = books.map(b => `
         <div class="book-card relative bg-white rounded-2xl border-2 border-gray-100 p-3 cursor-pointer hover:border-purple-300 transition-all"
-          id="bookcard-${b.id}" onclick="showBook('${b.id}')">
+          id="bookcard-${b.id}" onclick="showBook('${b.id}')" tabindex="0" role="button" aria-label="${b.title}, ${b.location}, ${b.continent}"
+          onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showBook('${b.id}');}">
           <div class="text-3xl mb-1 text-center">${b.emoji}</div>
           <div class="text-xs font-extrabold text-gray-700 text-center leading-tight">${b.title}</div>
           <div class="text-xs text-gray-400 font-semibold text-center">${b.location}</div>
@@ -603,6 +605,15 @@
           ${visited.has(b.id) ? '<div class="visited-badge">✓</div>' : ''}
         `;
         pin.addEventListener('click', () => showBook(b.id));
+        pin.setAttribute('tabindex', '0');
+        pin.setAttribute('role', 'button');
+        pin.setAttribute('aria-label', `${b.title}, ${b.location}`);
+        pin.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            showBook(b.id);
+          }
+        });
         layer.appendChild(pin);
       });
     }
