@@ -226,7 +226,7 @@ export default function Books() {
               <p className="text-sm text-gray-600 mt-1">{t.freeItems}</p>
             </div>
           </div>
-          <p className="text-xs text-gray-400 mt-4">{t.pricingNote}</p>
+          <p className="text-xs text-gray-500 mt-4">{t.pricingNote}</p>
         </div>
       </section>
 

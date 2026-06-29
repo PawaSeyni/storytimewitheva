@@ -184,7 +184,7 @@ function ItemList({ items, emptyMsg, emptyCta }: ItemListProps) {
     return (
       <div className="py-6 text-center">
         <Pixel mood="sleepy" size={88} className="block mx-auto mb-2" />
-        <p className="text-gray-400 text-sm mb-3">{emptyMsg}</p>
+        <p className="text-gray-500 text-sm mb-3">{emptyMsg}</p>
         {emptyCta && (
           <Link to={emptyCta.to} className="text-sm font-semibold text-purple-600 hover:text-purple-800">
             {emptyCta.label} →
@@ -440,7 +440,7 @@ export default function Profile() {
               {trackerSessions.length === 0 ? (
                 <div className="py-6 text-center">
                   <Pixel mood="sleepy" size={88} className="block mx-auto mb-2" />
-                  <p className="text-gray-400 text-sm mb-3">{t.trackerEmpty}</p>
+                  <p className="text-gray-500 text-sm mb-3">{t.trackerEmpty}</p>
                   <a
                     href="/games/reading-tracker.html"
                     className="text-sm font-semibold text-purple-600 hover:text-purple-800"
@@ -495,7 +495,7 @@ export default function Profile() {
               {journal.length === 0 ? (
                 <div className="py-6 text-center">
                   <Pixel mood="sleepy" size={88} className="block mx-auto mb-2" />
-                  <p className="text-gray-400 text-sm mb-3">{t.journalEmpty}</p>
+                  <p className="text-gray-500 text-sm mb-3">{t.journalEmpty}</p>
                   <Link
                     to="/activities/adventure-journal"
                     className="text-sm font-semibold text-purple-600 hover:text-purple-800"

@@ -295,7 +295,7 @@
       </div>
       <p data-i18n="journalIntro" class="text-sm text-gray-400 font-semibold mb-4">Your answers will appear here as you explore each emotion.</p>
       <div id="journalEntries" class="space-y-2">
-        <p data-i18n="journalEmpty" class="text-gray-300 text-sm font-semibold text-center py-4">No entries yet... start exploring the wheel! 💛</p>
+        <p data-i18n="journalEmpty" class="text-gray-500 text-sm font-semibold text-center py-4">No entries yet... start exploring the wheel! 💛</p>
       </div>
     </div>
 
@@ -545,7 +545,7 @@
     function renderJournal() {
       const container = document.getElementById('journalEntries');
       if (Object.keys(journalEntries).length === 0) {
-        container.innerHTML = '<p class="text-gray-300 text-sm font-semibold text-center py-4">' + escapeHtml(window.t('journalEmpty')) + '</p>';
+        container.innerHTML = '<p class="text-gray-500 text-sm font-semibold text-center py-4">' + escapeHtml(window.t('journalEmpty')) + '</p>';
         return;
       }
       container.innerHTML = Object.values(journalEntries).map(entry => `

@@ -16,6 +16,50 @@
   <meta name="twitter:description" content="Listen to the story, then tap the right number! A free interactive activity from Story Time with Eva." />
   <meta name="twitter:image" content="https://storytimewitheva.com/og-image.jpg" />
   <link rel="stylesheet" href="/games/games.css">
+  <script>
+    window.GAME_I18N = {
+      en: {
+        title: "Eva's Counting Story",
+        subtitle: 'Listen to the story, then tap the right number!',
+        howto1: "Listen to Eva's short story sentence",
+        howto2: 'Count the objects you see on screen',
+        howto3: 'Tap the correct number on the number pad!',
+        howto4: 'Learn the number in English, Spanish, and French',
+        howto5: 'Complete all 10 rounds to earn your Star Badge! ⭐',
+        round: 'Round', of: 'of 10', score: '⭐ Score:', streak: '🔥 Streak:',
+        listen: 'Hear the Story', transLabel: '🌍 That number in 3 languages:', next: 'Next Story →',
+        chartTitle: '🌍 Bilingual Number Chart',
+        celebTitle: 'Counting Champion!', celebSub: 'You counted all the way to 10 in 3 languages! 🌍⭐',
+      },
+      es: {
+        title: 'El cuento de los números de Eva',
+        subtitle: 'Escucha el cuento, ¡luego toca el número correcto!',
+        howto1: 'Escucha la frase del cuento de Eva',
+        howto2: 'Cuenta los objetos que ves en pantalla',
+        howto3: '¡Toca el número correcto en el teclado!',
+        howto4: 'Aprende el número en inglés, español y francés',
+        howto5: '¡Completa las 10 rondas para ganar tu insignia de estrella! ⭐',
+        round: 'Ronda', of: 'de 10', score: '⭐ Puntos:', streak: '🔥 Racha:',
+        listen: 'Escuchar el cuento', transLabel: '🌍 Ese número en 3 idiomas:', next: 'Siguiente cuento →',
+        chartTitle: '🌍 Tabla de números bilingüe',
+        celebTitle: '¡Campeón de los números!', celebSub: '¡Contaste hasta 10 en 3 idiomas! 🌍⭐',
+      },
+      fr: {
+        title: "L'histoire des nombres d'Eva",
+        subtitle: "Écoute l'histoire, puis touche le bon nombre !",
+        howto1: "Écoute la phrase de l'histoire d'Eva",
+        howto2: "Compte les objets que tu vois à l'écran",
+        howto3: 'Touche le bon nombre sur le clavier !',
+        howto4: 'Apprends le nombre en anglais, espagnol et français',
+        howto5: 'Termine les 10 manches pour gagner ton badge étoile ! ⭐',
+        round: 'Manche', of: 'sur 10', score: '⭐ Score :', streak: '🔥 Série :',
+        listen: "Écouter l'histoire", transLabel: '🌍 Ce nombre en 3 langues :', next: 'Histoire suivante →',
+        chartTitle: '🌍 Tableau des nombres bilingue',
+        celebTitle: 'Champion des nombres !', celebSub: 'Tu as compté jusqu\'à 10 en 3 langues ! 🌍⭐',
+      },
+    };
+  </script>
+  <script src="/games/i18n.js"></script>
   <style>
     @font-face{font-family:'Lexend';src:url('/games/lexend.woff2') format('woff2');font-weight:100 900;font-display:swap;}
     * { font-family: 'Lexend', 'Segoe UI', system-ui, sans-serif; }
@@ -121,8 +165,8 @@
   </nav>
 
   <div class="max-w-3xl mx-auto px-4 pt-6">
-    <a href="/activities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
-    <button id="markCompleted" class="float-right px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
+    <a href="/activities" data-i18n="backToActivities" class="inline-flex items-center gap-1 text-purple-600 font-semibold hover:underline text-sm">← Back to Activities</a>
+    <button id="markCompleted" data-i18n="markCompleted" class="float-right px-4 py-2 border-2 border-purple-300 text-purple-600 rounded-full text-sm font-bold hover:bg-purple-50 transition-all">✓ Mark Completed</button>
   </div>
 
   <main class="max-w-3xl mx-auto px-4 pb-16 pt-4">
@@ -130,20 +174,20 @@
     <!-- Header -->
     <div class="text-center mb-6">
       <div class="text-5xl mb-2">🔢</div>
-      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Eva's Counting Story</h1>
-      <p class="text-gray-500 text-base">Listen to the story, then tap the right number!</p>
+      <h1 data-i18n="title" class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Eva's Counting Story</h1>
+      <p data-i18n="subtitle" class="text-gray-500 text-base">Listen to the story, then tap the right number!</p>
       <div class="w-20 h-1 bg-gradient-to-r from-green-400 via-cyan-400 to-purple-400 mx-auto mt-4 rounded-full"></div>
     </div>
 
     <!-- How to Play -->
     <div class="bg-gradient-to-r from-green-400 via-teal-400 to-cyan-500 rounded-2xl p-5 mb-6 text-white shadow-lg">
-      <h2 class="font-extrabold text-lg mb-2" id="howToTitle">✨ How to Play ✨</h2>
+      <h2 data-i18n="howToPlay" class="font-extrabold text-lg mb-2" id="howToTitle">✨ How to Play ✨</h2>
       <ol class="list-decimal list-inside space-y-1 text-sm font-semibold" id="howToList">
-        <li>Listen to Eva's short story sentence</li>
-        <li>Count the objects you see on screen</li>
-        <li>Tap the correct number on the number pad!</li>
-        <li>Learn the number in English, Spanish, and French</li>
-        <li>Complete all 10 rounds to earn your Star Badge! ⭐</li>
+        <li data-i18n="howto1">Listen to Eva's short story sentence</li>
+        <li data-i18n="howto2">Count the objects you see on screen</li>
+        <li data-i18n="howto3">Tap the correct number on the number pad!</li>
+        <li data-i18n="howto4">Learn the number in English, Spanish, and French</li>
+        <li data-i18n="howto5">Complete all 10 rounds to earn your Star Badge! ⭐</li>
       </ol>
     </div>
 
@@ -162,15 +206,15 @@
 
       <!-- Score bar -->
       <div class="flex justify-between text-sm font-bold text-gray-500 mb-4">
-        <span><span id="lblRound">Round</span> <span id="roundNum" class="text-purple-600">1</span> <span id="lblOf">of 10</span></span>
-        <span><span id="lblScore">⭐ Score:</span> <span id="scoreNum" class="text-orange-500">0</span></span>
-        <span><span id="lblStreak">🔥 Streak:</span> <span id="streakNum" class="text-pink-500">0</span></span>
+        <span><span id="lblRound" data-i18n="round">Round</span> <span id="roundNum" class="text-purple-600">1</span> <span id="lblOf" data-i18n="of">of 10</span></span>
+        <span><span id="lblScore" data-i18n="score">⭐ Score:</span> <span id="scoreNum" class="text-orange-500">0</span></span>
+        <span><span id="lblStreak" data-i18n="streak">🔥 Streak:</span> <span id="streakNum" class="text-pink-500">0</span></span>
       </div>
 
       <!-- Story sentence -->
       <div class="bg-gradient-to-br from-green-50 to-cyan-50 rounded-2xl p-4 mb-4 text-center">
         <button id="listenBtn" class="mb-3 px-5 py-2 bg-gradient-to-r from-green-400 to-teal-400 text-white font-extrabold rounded-full shadow hover:shadow-lg transition-all text-sm">
-          🔊 <span id="listenBtnLabel">Hear the Story</span>
+          🔊 <span id="listenBtnLabel" data-i18n="listen">Hear the Story</span>
         </button>
         <p class="text-lg font-extrabold text-gray-800 leading-relaxed" id="storySentence">Loading...</p>
       </div>
@@ -183,7 +227,7 @@
 
       <!-- Number translation reveal -->
       <div id="translationReveal" class="hidden text-center bg-purple-50 rounded-2xl p-3 mb-4 bounce-in">
-        <p class="text-xs font-bold text-purple-500 mb-1" id="transLabel">🌍 That number in 3 languages:</p>
+        <p class="text-xs font-bold text-purple-500 mb-1" id="transLabel" data-i18n="transLabel">🌍 That number in 3 languages:</p>
         <div class="flex justify-center gap-4 text-base font-extrabold">
           <span class="text-blue-600" id="transEN"></span>
           <span class="text-red-500" id="transES"></span>
@@ -197,24 +241,24 @@
       <!-- Next button -->
       <div class="text-center">
         <button id="nextBtn" class="hidden px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">
-          <span id="nextBtnLabel">Next Story →</span>
+          <span id="nextBtnLabel" data-i18n="next">Next Story →</span>
         </button>
       </div>
     </div>
 
     <!-- Number Chart -->
     <div class="bg-white rounded-3xl shadow-xl border-2 border-purple-100 p-5">
-      <h2 class="text-lg font-extrabold text-purple-700 mb-3 text-center" id="chartTitle">🌍 Bilingual Number Chart</h2>
+      <h2 class="text-lg font-extrabold text-purple-700 mb-3 text-center" id="chartTitle" data-i18n="chartTitle">🌍 Bilingual Number Chart</h2>
       <div class="grid grid-cols-5 gap-2 justify-items-center" id="numberChart"></div>
     </div>
 
     <!-- Celebration -->
     <div id="celebration" class="hidden text-center py-8 bg-gradient-to-r from-green-50 to-cyan-50 rounded-3xl border-2 border-green-200 mt-6 bounce-in">
       <div class="text-6xl mb-2">🏆</div>
-      <h2 class="text-2xl font-extrabold text-purple-700 mb-1" id="celebTitle">Counting Champion!</h2>
+      <h2 class="text-2xl font-extrabold text-purple-700 mb-1" id="celebTitle" data-i18n="celebTitle">Counting Champion!</h2>
       <p class="text-gray-600 mb-1" id="celebStats"></p>
-      <p class="text-gray-500 text-sm mb-4" id="celebSub">You counted all the way to 10 in 3 languages! 🌍⭐</p>
-      <button id="playAgain" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">🔄 Play Again!</button>
+      <p class="text-gray-500 text-sm mb-4" id="celebSub" data-i18n="celebSub">You counted all the way to 10 in 3 languages! 🌍⭐</p>
+      <button id="playAgain" data-i18n="playAgain" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">🔄 Play Again!</button>
     </div>
 
   </main>
@@ -258,59 +302,33 @@
 
     let currentLang = 'en';
 
-    // UI strings per language, applied on init and on language switch so the
-    // chrome/feedback follow the selected language (number data is separate).
-    const UI = {
+    // Interpolated feedback strings per language. Static chrome (headings,
+    // labels, buttons) is localized via i18n.js + GAME_I18N + data-i18n; only
+    // the strings that embed a value (correct word, answer, score) live here.
+    const FEEDBACK = {
       en: {
-        howToTitle: '✨ How to Play ✨',
-        howTo: ["Listen to Eva's short story sentence", 'Count the objects you see on screen', 'Tap the correct number on the number pad!', 'Learn the number in English, Spanish, and French', 'Complete all 10 rounds to earn your Star Badge! ⭐'],
-        round: 'Round', of: 'of 10', score: '⭐ Score:', streak: '🔥 Streak:',
-        listen: 'Hear the Story', transLabel: '🌍 That number in 3 languages:', next: 'Next Story →',
-        chartTitle: '🌍 Bilingual Number Chart',
         correct: (w) => `🎉 Correct! That's ${w}! +2 ⭐`,
         wrong: (n) => `Not quite! The answer was ${n}. Keep going! 💪`,
-        celebTitle: 'Counting Champion!', celebSub: 'You counted all the way to 10 in 3 languages! 🌍⭐',
-        celebStats: (s) => `You scored ${s} stars across all 10 rounds! 🌟`, playAgain: '🔄 Play Again!',
+        celebStats: (s) => `You scored ${s} stars across all 10 rounds! 🌟`,
       },
       es: {
-        howToTitle: '✨ Cómo jugar ✨',
-        howTo: ['Escucha la frase del cuento de Eva', 'Cuenta los objetos que ves en pantalla', '¡Toca el número correcto en el teclado!', 'Aprende el número en inglés, español y francés', '¡Completa las 10 rondas para ganar tu insignia de estrella! ⭐'],
-        round: 'Ronda', of: 'de 10', score: '⭐ Puntos:', streak: '🔥 Racha:',
-        listen: 'Escuchar el cuento', transLabel: '🌍 Ese número en 3 idiomas:', next: 'Siguiente cuento →',
-        chartTitle: '🌍 Tabla de números bilingüe',
         correct: (w) => `🎉 ¡Correcto! ¡Es ${w}! +2 ⭐`,
         wrong: (n) => `¡Casi! La respuesta era ${n}. ¡Sigue así! 💪`,
-        celebTitle: '¡Campeón de los números!', celebSub: '¡Contaste hasta 10 en 3 idiomas! 🌍⭐',
-        celebStats: (s) => `¡Conseguiste ${s} estrellas en las 10 rondas! 🌟`, playAgain: '🔄 ¡Jugar de nuevo!',
+        celebStats: (s) => `¡Conseguiste ${s} estrellas en las 10 rondas! 🌟`,
       },
       fr: {
-        howToTitle: '✨ Comment jouer ✨',
-        howTo: ["Écoute la phrase de l'histoire d'Eva", "Compte les objets que tu vois à l'écran", 'Touche le bon nombre sur le clavier !', "Apprends le nombre en anglais, espagnol et français", 'Termine les 10 manches pour gagner ton badge étoile ! ⭐'],
-        round: 'Manche', of: 'sur 10', score: '⭐ Score :', streak: '🔥 Série :',
-        listen: "Écouter l'histoire", transLabel: '🌍 Ce nombre en 3 langues :', next: 'Histoire suivante →',
-        chartTitle: '🌍 Tableau des nombres bilingue',
         correct: (w) => `🎉 Bravo ! C'est ${w} ! +2 ⭐`,
         wrong: (n) => `Presque ! La réponse était ${n}. Continue ! 💪`,
-        celebTitle: 'Champion des nombres !', celebSub: 'Tu as compté jusqu\'à 10 en 3 langues ! 🌍⭐',
-        celebStats: (s) => `Tu as gagné ${s} étoiles sur les 10 manches ! 🌟`, playAgain: '🔄 Rejouer !',
+        celebStats: (s) => `Tu as gagné ${s} étoiles sur les 10 manches ! 🌟`,
       },
     };
 
+    // Re-apply localized chrome for the currently selected language. The
+    // language tabs change currentLang, so we point the shared i18n helper at
+    // it and let it re-localize every [data-i18n] element.
     function applyUILang() {
-      const u = UI[currentLang] || UI.en;
-      document.getElementById('howToTitle').textContent = u.howToTitle;
-      document.getElementById('howToList').innerHTML = u.howTo.map(li => `<li>${li}</li>`).join('');
-      document.getElementById('lblRound').textContent = u.round;
-      document.getElementById('lblOf').textContent = u.of;
-      document.getElementById('lblScore').textContent = u.score;
-      document.getElementById('lblStreak').textContent = u.streak;
-      document.getElementById('listenBtnLabel').textContent = u.listen;
-      document.getElementById('transLabel').textContent = u.transLabel;
-      document.getElementById('nextBtnLabel').textContent = u.next;
-      document.getElementById('chartTitle').textContent = u.chartTitle;
-      document.getElementById('celebTitle').textContent = u.celebTitle;
-      document.getElementById('celebSub').textContent = u.celebSub;
-      document.getElementById('playAgain').textContent = u.playAgain;
+      window.GAME_LANG = currentLang;
+      if (window.applyGameI18n) window.applyGameI18n();
     }
 
     let currentRound = 0;
@@ -415,7 +433,7 @@
         document.getElementById('scoreNum').textContent = score;
         document.getElementById('streakNum').textContent = streak;
         document.getElementById(`nbtn-${chosen}`).classList.add('correct');
-        document.getElementById('feedback').innerHTML = `<span class="text-green-600 bounce-in">${(UI[currentLang]||UI.en).correct(num[currentLang])}</span>`;
+        document.getElementById('feedback').innerHTML = `<span class="text-green-600 bounce-in">${(FEEDBACK[currentLang]||FEEDBACK.en).correct(num[currentLang])}</span>`;
         speak(`Correct! ${correct} is ${num.en} in English, ${num.es} in Spanish, and ${num.fr} in French!`);
         showTranslation(num);
       } else {
@@ -424,7 +442,7 @@
         document.getElementById(`nbtn-${chosen}`).classList.add('wrong');
         document.getElementById(`nbtn-${chosen}`).classList.add('shake');
         document.getElementById(`nbtn-${correct}`).classList.add('correct');
-        document.getElementById('feedback').innerHTML = `<span class="text-red-500">${(UI[currentLang]||UI.en).wrong(correct)}</span>`;
+        document.getElementById('feedback').innerHTML = `<span class="text-red-500">${(FEEDBACK[currentLang]||FEEDBACK.en).wrong(correct)}</span>`;
         speak(`The answer was ${correct}. ${num.en}!`);
         showTranslation(num);
       }
@@ -463,7 +481,7 @@
     }
 
     function showCelebration() {
-      document.getElementById('celebStats').textContent = (UI[currentLang]||UI.en).celebStats(score);
+      document.getElementById('celebStats').textContent = (FEEDBACK[currentLang]||FEEDBACK.en).celebStats(score);
       document.getElementById('celebration').classList.remove('hidden');
       speak('Congratulations! You are a Counting Champion!');
     }
@@ -490,7 +508,7 @@
 
     document.getElementById('playAgain').addEventListener('click', initGame);
     document.getElementById('markCompleted').addEventListener('click', function() {
-      this.textContent = '✅ Completed!';
+      this.textContent = window.t('completed');
       this.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     });
 
@@ -562,7 +580,7 @@
   if (btn) {
     btn.addEventListener('click', markDone);
     if (isDone()) {
-      btn.textContent = '✅ Completed!';
+      btn.textContent = window.t('completed');
       btn.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     }
   }

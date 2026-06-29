@@ -41,6 +41,8 @@ type SkipList = { title: string; items: { lead: string; rest: string }[] };
 // target="_blank" + small "(affiliate)" badge for FTC clarity.
 // ---------------------------------------------------------------------------
 function AffiliateLink({ href, children }: { href: string; children: React.ReactNode }) {
+  const { language } = useLanguage();
+  const badge = language === 'es' ? '(afiliado)' : language === 'fr' ? '(affilié)' : '(affiliate)';
   return (
     <a
       href={href}
@@ -49,7 +51,7 @@ function AffiliateLink({ href, children }: { href: string; children: React.React
       className="text-amber-700 hover:text-amber-900 underline decoration-amber-300 hover:decoration-amber-700 underline-offset-2 font-medium"
     >
       {children}
-      <span className="ml-1 text-xs text-amber-600/70">(affiliate)</span>
+      <span className="ml-1 text-xs text-amber-600/70">{badge}</span>
     </a>
   );
 }
