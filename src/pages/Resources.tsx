@@ -394,8 +394,11 @@ const TRANSLATIONS = {
         { title: 'De 4 a 5 a\xf1os: el reconocimiento de patrones y la magia de “ya s\xe9 esta palabra”', body: [
           'Alrededor de los cuatro a\xf1os los ni\xf1os empiezan a notar que las letras corresponden a sonidos. Busca libros con frases repetitivas que puedan corear contigo. Ir pasando el dedo por debajo de las palabras al leer es una de las cosas m\xe1s poderosas que puedes hacer en esta etapa.',
         ] },
-        { title: 'De 5 a 7 a\xf1os: la decodificaci\xf3n y el amor por leer', body: [
-          'Este es el a\xf1o en que muchos ni\xf1os descifran el c\xf3digo. Lo que cultivas en casa es algo que la escuela no puede alcanzar del todo: el amor por una historia por s\xed misma. Los libros biling\xfces de Eva son ideales como libros puente: suficientemente familiares para sentirse seguros, suficientemente ricos para crecer.',
+        { title: 'De 5 a 6 a\xf1os: empieza la decodificaci\xf3n, y tambi\xe9n las ganas de leer solo', body: [
+          'Este es el a\xf1o en que muchos ni\xf1os descifran el c\xf3digo. Los sonidos de las vocales, las palabras de uso frecuente, darse cuenta de que las marcas negras de la p\xe1gina producen la misma historia cada vez: hace clic. Tu peque puede empezar a intentar leer carteles, cajas de cereales, todo. Alimenta esas ganas. Ten una cesta de libros de lectura f\xe1cil cerca de la mesa del desayuno. La meta no es la perfecci\xf3n sino el impulso. Los errores son la prueba de que la lectura est\xe1 ocurriendo.',
+        ] },
+        { title: 'De 6 a 7 a\xf1os: de leer a leer por placer', body: [
+          'A estas alturas, la mayor\xeda de los ni\xf1os ya decodifican formalmente en la escuela. Lo que cultivas en casa es algo que la escuela no puede alcanzar del todo: el amor por una historia por s\xed misma. Libros de cap\xedtulos cortos, c\xf3mics, diarios ilustrados: cualquier cosa que mantenga a un ni\xf1o despierto pasada la hora de dormir con una linterna. D\xe9jalos. El h\xe1bito que construyes ahora es el que los acompa\xf1ar\xe1 en la secundaria, el bachillerato y m\xe1s all\xe1. Los libros biling\xfces de Eva Gallo son ideales como libros puente: suficientemente familiares para sentirse seguros, suficientemente ricos para crecer.',
         ] },
         { title: 'Sobre los plazos', body: [
           'Estas ventanas son gu\xedas, no calificaciones. Lo que siempre puedes hacer, a cualquier edad, es leer con tu peque. Eso nunca falla.',
@@ -610,8 +613,11 @@ const TRANSLATIONS = {
         { title: 'De 4 \xe0 5 ans\xa0: la reconnaissance des structures', body: [
           'Vers quatre ans, les enfants commencent \xe0 remarquer que les lettres correspondent \xe0 des sons. Cherchez des livres avec des phrases r\xe9p\xe9titives que l’enfant peut entonner avec vous. Passer le doigt sous les mots en lisant est l’une des choses les plus puissantes que vous puissiez faire \xe0 ce stade.',
         ] },
-        { title: 'De 5 \xe0 7 ans\xa0: le d\xe9codage et l’amour de lire', body: [
-          'C’est l’ann\xe9e o\xf9 beaucoup d’enfants d\xe9cryptent le code. Ce que vous cultivez \xe0 la maison, c’est quelque chose que l’\xe9cole ne peut pas pleinement atteindre\xa0: l’amour d’une histoire pour elle-m\xeame. Les histoires bilingues d’Eva sont des livres ponts id\xe9aux.',
+        { title: 'De 5 \xe0 6 ans\xa0: le d\xe9codage commence, et l’envie de lire seul aussi', body: [
+          'C’est l’ann\xe9e o\xf9 beaucoup d’enfants d\xe9cryptent le code. Les sons des voyelles, les mots outils, la prise de conscience que les marques noires sur la page produisent la m\xeame histoire \xe0 chaque fois\xa0: le d\xe9clic se produit. Votre enfant peut se mettre \xe0 lire les panneaux, les bo\xeetes de c\xe9r\xe9ales, tout. Nourrissez cette faim. Gardez un panier de petits livres faciles pr\xe8s de la table du petit-d\xe9jeuner. Le but n’est pas la perfection mais l’\xe9lan. Les erreurs prouvent que la lecture est en train de se produire.',
+        ] },
+        { title: 'De 6 \xe0 7 ans\xa0: de la lecture au plaisir de lire', body: [
+          '\xc0 pr\xe9sent, la plupart des enfants d\xe9codent formellement \xe0 l’\xe9cole. Ce que vous cultivez \xe0 la maison, c’est quelque chose que l’\xe9cole ne peut pas pleinement atteindre\xa0: l’amour d’une histoire pour elle-m\xeame. Des romans \xe0 chapitres courts, des bandes dessin\xe9es, des journaux illustr\xe9s\xa0: tout ce qui pousse un enfant \xe0 veiller apr\xe8s l’heure du coucher avec une lampe de poche. Laissez-les faire. L’habitude que vous construisez maintenant est celle qui les accompagnera au coll\xe8ge, au lyc\xe9e et au-del\xe0. Les histoires bilingues d’Eva Gallo sont ici des livres ponts parfaits\xa0: assez familiers pour rassurer, assez riches pour faire grandir.',
         ] },
         { title: 'Une note sur les d\xe9lais', body: [
           'Ces fen\xeatres sont des rep\xe8res, pas des bulletins de notes. Ce que vous pouvez toujours faire, \xe0 tout \xe2ge, c’est lire avec votre enfant. C’est la seule chose qui ne rate jamais.',
