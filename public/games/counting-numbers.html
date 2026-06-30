@@ -228,9 +228,9 @@
       <div id="translationReveal" class="hidden text-center bg-purple-50 rounded-2xl p-3 mb-4 bounce-in">
         <p class="text-xs font-bold text-purple-500 mb-1" id="transLabel" data-i18n="transLabel">🌍 That number in 3 languages:</p>
         <div class="flex justify-center gap-4 text-base font-extrabold">
-          <span class="text-blue-600" id="transEN"></span>
-          <span class="text-red-500" id="transES"></span>
-          <span class="text-indigo-600" id="transFR"></span>
+          <span class="text-blue-600" id="transEN" lang="en"></span>
+          <span class="text-red-500" id="transES" lang="es"></span>
+          <span class="text-indigo-600" id="transFR" lang="fr"></span>
         </div>
       </div>
 
@@ -373,8 +373,8 @@
       c.innerHTML = numbers.map((n,i) => `
         <div class="chart-cell ${bgColors[i]}">
           <div class="text-xl font-extrabold ${textColors[i]}">${n.n}</div>
-          <div class="text-xs font-bold ${textColors[i]}">${n.en}</div>
-          <div class="text-xs text-gray-500">${n.es}</div>
+          <div class="text-xs font-bold ${textColors[i]}" lang="en">${n.en}</div>
+          <div class="text-xs text-gray-500" lang="es">${n.es}</div>
         </div>
       `).join('');
     }
@@ -527,14 +527,14 @@
   <footer class="bg-gray-800 text-white py-10 mt-10">
     <div class="max-w-7xl mx-auto px-4 text-center">
       <p class="font-extrabold text-lg mb-1">🐾 Story Time with Eva</p>
-      <p class="text-gray-400 text-sm mb-4">Where stories come to life! Magical books and activities for curious minds, ages 3–9.</p>
+      <p data-i18n="footerTagline" class="text-gray-400 text-sm mb-4">Where stories come to life! Magical books and activities for curious minds, ages 3–9.</p>
       <div class="flex justify-center gap-4 text-sm text-gray-400">
         <a href="/" class="hover:text-white">Home</a>
         <a href="/books" class="hover:text-white">Books</a>
         <a href="/activities" class="hover:text-white">Activities</a>
         <a href="/about" class="hover:text-white">About Eva</a>
       </div>
-      <p class="text-gray-500 text-xs mt-4">© 2026 Story Time with Eva. All rights reserved.</p>
+      <p class="text-gray-500 text-xs mt-4">© 2026 Story Time with Eva. <span data-i18n="rights">All rights reserved.</span></p>
     </div>
   </footer>
 

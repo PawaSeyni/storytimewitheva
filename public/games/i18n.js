@@ -24,6 +24,8 @@
       playAgain: '🔄 Play Again!',
       newGame: '🔄 New Game',
       print: '🖨️ Print',
+      footerTagline: 'Where stories come to life! Magical books and activities for curious minds, ages 3–9.',
+      rights: 'All rights reserved.',
     },
     es: {
       backToActivities: '← Volver a actividades',
@@ -33,6 +35,8 @@
       playAgain: '🔄 ¡Jugar de nuevo!',
       newGame: '🔄 Nuevo juego',
       print: '🖨️ Imprimir',
+      footerTagline: '¡Donde las historias cobran vida! Libros y actividades mágicos para mentes curiosas de 3 a 9 años.',
+      rights: 'Todos los derechos reservados.',
     },
     fr: {
       backToActivities: '← Retour aux activités',
@@ -42,6 +46,8 @@
       playAgain: '🔄 Rejouer !',
       newGame: '🔄 Nouvelle partie',
       print: '🖨️ Imprimer',
+      footerTagline: 'Où les histoires prennent vie ! Des livres et activités magiques pour les esprits curieux de 3 à 9 ans.',
+      rights: 'Tous droits réservés.',
     },
   };
 
