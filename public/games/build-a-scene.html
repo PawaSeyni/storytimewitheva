@@ -255,13 +255,13 @@
 
         <!-- Background Picker -->
         <div class="bg-white rounded-2xl shadow border-2 border-purple-100 p-4">
-          <h3 data-i18n="chooseBackground" class="font-extrabold text-purple-700 text-sm mb-3">🏞️ Choose Background</h3>
+          <h2 data-i18n="chooseBackground" class="font-extrabold text-purple-700 text-sm mb-3">🏞️ Choose Background</h2>
           <div class="grid grid-cols-2 gap-2" id="bgPicker"></div>
         </div>
 
         <!-- Sticker Palette -->
         <div class="bg-white rounded-2xl shadow border-2 border-purple-100 p-4">
-          <h3 data-i18n="addStickers" class="font-extrabold text-purple-700 text-sm mb-2">🎭 Add Stickers</h3>
+          <h2 data-i18n="addStickers" class="font-extrabold text-purple-700 text-sm mb-2">🎭 Add Stickers</h2>
           <!-- Tabs -->
           <div class="flex gap-1 mb-3 flex-wrap">
             <button class="tab-btn active px-3 py-1 rounded-full border border-purple-200 text-xs font-bold transition-all" data-tab="characters" data-i18n="tabCharacters">👧 Characters</button>
@@ -274,9 +274,9 @@
 
         <!-- Selected Sticker Controls -->
         <div id="stickerControls" class="hidden bg-white rounded-2xl shadow border-2 border-orange-100 p-4">
-          <h3 data-i18n="selectedSticker" class="font-extrabold text-orange-600 text-sm mb-3">✏️ Selected Sticker</h3>
+          <h2 data-i18n="selectedSticker" class="font-extrabold text-orange-600 text-sm mb-3">✏️ Selected Sticker</h2>
           <div class="mb-3">
-            <label data-i18n="size" class="text-xs font-bold text-gray-500 block mb-1">Size</label>
+            <label for="sizeSlider" data-i18n="size" class="text-xs font-bold text-gray-500 block mb-1">Size</label>
             <input type="range" id="sizeSlider" min="1" max="5" value="2.5" step="0.5" class="w-full"/>
           </div>
           <div class="flex gap-2">
@@ -287,16 +287,16 @@
 
         <!-- Speech Bubble -->
         <div class="bg-white rounded-2xl shadow border-2 border-purple-100 p-4">
-          <h3 data-i18n="addSpeechBubble" class="font-extrabold text-purple-700 text-sm mb-2">💬 Add Speech Bubble</h3>
-          <input type="text" id="bubbleText" placeholder="What are they saying?" maxlength="60"
+          <h2 data-i18n="addSpeechBubble" class="font-extrabold text-purple-700 text-sm mb-2">💬 Add Speech Bubble</h2>
+          <input type="text" id="bubbleText" aria-label="Speech bubble text" placeholder="What are they saying?" maxlength="60"
             class="w-full px-3 py-2 rounded-xl border-2 border-purple-200 text-xs font-bold focus:outline-none focus:border-purple-400 mb-2"/>
           <button id="addBubble" data-i18n="addToScene" class="w-full py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-xl text-xs transition-all">+ Add to Scene</button>
         </div>
 
         <!-- Caption -->
         <div class="bg-white rounded-2xl shadow border-2 border-purple-100 p-4">
-          <h3 data-i18n="sceneCaption" class="font-extrabold text-purple-700 text-sm mb-2">📝 Scene Caption</h3>
-          <input type="text" id="captionText" placeholder="Give your scene a title..." maxlength="80"
+          <h2 data-i18n="sceneCaption" class="font-extrabold text-purple-700 text-sm mb-2">📝 Scene Caption</h2>
+          <input type="text" id="captionText" aria-label="Scene caption" placeholder="Give your scene a title..." maxlength="80"
             class="w-full px-3 py-2 rounded-xl border-2 border-purple-200 text-xs font-bold focus:outline-none focus:border-purple-400"/>
         </div>
 
@@ -321,12 +321,12 @@
             <!-- Stickers placed here -->
             <div id="stickerLayer" class="absolute inset-0"></div>
           </div>
-          <p data-i18n="dragHint" class="text-center text-xs text-gray-400 font-semibold mt-2">Drag stickers from the palette onto the scene ☝️</p>
+          <p data-i18n="dragHint" class="text-center text-xs text-gray-500 font-semibold mt-2">Drag stickers from the palette onto the scene ☝️</p>
         </div>
 
         <!-- Saved scenes -->
         <div id="savedScenesSection" class="hidden mt-4 bg-white rounded-2xl shadow border-2 border-purple-100 p-4">
-          <h3 data-i18n="savedScenes" class="font-extrabold text-purple-700 text-sm mb-3">🖼️ My Saved Scenes</h3>
+          <h2 data-i18n="savedScenes" class="font-extrabold text-purple-700 text-sm mb-3">🖼️ My Saved Scenes</h2>
           <div id="savedScenes" class="grid grid-cols-3 gap-2"></div>
         </div>
       </div>
@@ -608,7 +608,7 @@
         <div class="rounded-xl border-2 border-purple-100 p-2 text-center bg-purple-50">
           <div class="text-lg mb-1">${s.stickers.slice(0,8) || '🎨'}</div>
           <div class="text-xs font-bold text-purple-700 truncate">${escapeHtml(s.caption)}</div>
-          <div class="text-xs text-gray-400">${s.bg}</div>
+          <div class="text-xs text-gray-500">${s.bg}</div>
         </div>
       `).join('');
     }
@@ -633,7 +633,7 @@
         <a href="/activities" class="hover:text-white">Activities</a>
         <a href="/about" class="hover:text-white">About Eva</a>
       </div>
-      <p class="text-gray-500 text-xs mt-4">© 2025 Story Time with Eva. All rights reserved.</p>
+      <p class="text-gray-500 text-xs mt-4">© 2026 Story Time with Eva. All rights reserved.</p>
     </div>
   </footer>
 

@@ -39,6 +39,7 @@
         bookTitle: 'Book Title', bookTitlePh: 'What did you read?',
         minutesRead: 'Minutes Read', minutesReadPh: 'e.g. 15',
         ratingPrompt: 'How was the reading? ⭐',
+        rateStar: 'Rate {n} star', rateStars: 'Rate {n} stars',
         favMoment: 'Favorite moment (optional)', favMomentPh: 'e.g. The dragon scene!',
         logSession: '✅ Log This Session!',
         calendarHeading: '📅 Reading Calendar',
@@ -73,6 +74,7 @@
         bookTitle: 'Título del libro', bookTitlePh: '¿Qué leíste?',
         minutesRead: 'Minutos leídos', minutesReadPh: 'p. ej. 15',
         ratingPrompt: '¿Qué tal la lectura? ⭐',
+        rateStar: 'Calificar con {n} estrella', rateStars: 'Calificar con {n} estrellas',
         favMoment: 'Momento favorito (opcional)', favMomentPh: 'p. ej. ¡La escena del dragón!',
         logSession: '✅ ¡Registrar esta sesión!',
         calendarHeading: '📅 Calendario de lectura',
@@ -107,6 +109,7 @@
         bookTitle: 'Titre du livre', bookTitlePh: "Qu'as-tu lu ?",
         minutesRead: 'Minutes lues', minutesReadPh: 'p. ex. 15',
         ratingPrompt: 'Comment était la lecture ? ⭐',
+        rateStar: 'Noter {n} étoile', rateStars: 'Noter {n} étoiles',
         favMoment: 'Moment préféré (optionnel)', favMomentPh: 'p. ex. La scène du dragon !',
         logSession: '✅ Enregistrer cette séance !',
         calendarHeading: '📅 Calendrier de lecture',
@@ -356,11 +359,11 @@
             <div>
               <label data-i18n="ratingPrompt" class="text-xs font-bold text-gray-500 block mb-1">How was the reading? ⭐</label>
               <div class="flex gap-1" id="starRating">
-                <span class="star text-2xl cursor-pointer star-empty" data-star="1">★</span>
-                <span class="star text-2xl cursor-pointer star-empty" data-star="2">★</span>
-                <span class="star text-2xl cursor-pointer star-empty" data-star="3">★</span>
-                <span class="star text-2xl cursor-pointer star-empty" data-star="4">★</span>
-                <span class="star text-2xl cursor-pointer star-empty" data-star="5">★</span>
+                <span class="star text-2xl cursor-pointer star-empty" data-star="1" role="button" tabindex="0">★</span>
+                <span class="star text-2xl cursor-pointer star-empty" data-star="2" role="button" tabindex="0">★</span>
+                <span class="star text-2xl cursor-pointer star-empty" data-star="3" role="button" tabindex="0">★</span>
+                <span class="star text-2xl cursor-pointer star-empty" data-star="4" role="button" tabindex="0">★</span>
+                <span class="star text-2xl cursor-pointer star-empty" data-star="5" role="button" tabindex="0">★</span>
               </div>
             </div>
             <div>
@@ -553,13 +556,25 @@
     });
 
     // ─── STAR RATING ─────────────────────────────────────────────────────────
+    function applyRating(n) {
+      selectedStars = n;
+      document.querySelectorAll('.star').forEach((s, i) => {
+        s.classList.toggle('star-filled', i < selectedStars);
+        s.classList.toggle('star-empty', i >= selectedStars);
+        s.setAttribute('aria-pressed', i < selectedStars ? 'true' : 'false');
+      });
+    }
     document.querySelectorAll('.star').forEach(star => {
-      star.addEventListener('click', () => {
-        selectedStars = parseInt(star.dataset.star);
-        document.querySelectorAll('.star').forEach((s, i) => {
-          s.classList.toggle('star-filled', i < selectedStars);
-          s.classList.toggle('star-empty', i >= selectedStars);
-        });
+      const n = parseInt(star.dataset.star);
+      // Localized accessible name, e.g. "Rate 3 stars" (falls back to English).
+      star.setAttribute('aria-label', window.t(n === 1 ? 'rateStar' : 'rateStars').replace('{n}', n));
+      star.setAttribute('aria-pressed', 'false');
+      star.addEventListener('click', () => applyRating(n));
+      star.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          applyRating(n);
+        }
       });
     });
 
@@ -600,7 +615,7 @@
       document.getElementById('logMins').value = '';
       document.getElementById('logNote').value = '';
       selectedStars = 0;
-      document.querySelectorAll('.star').forEach(s => { s.classList.remove('star-filled'); s.classList.add('star-empty'); });
+      document.querySelectorAll('.star').forEach(s => { s.classList.remove('star-filled'); s.classList.add('star-empty'); s.setAttribute('aria-pressed', 'false'); });
       timerRunning = false;
       clearInterval(timerInterval);
       timerSeconds = 0;
@@ -738,7 +753,7 @@
         <a href="/activities" class="hover:text-white">Activities</a>
         <a href="/about" class="hover:text-white">About Eva</a>
       </div>
-      <p class="text-gray-500 text-xs mt-4">© 2025 Story Time with Eva. All rights reserved.</p>
+      <p class="text-gray-500 text-xs mt-4">© 2026 Story Time with Eva. All rights reserved.</p>
     </div>
   </footer>
 

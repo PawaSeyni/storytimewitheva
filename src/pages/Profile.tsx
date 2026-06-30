@@ -553,7 +553,7 @@ export default function Profile() {
             </div>
           )}
 
-          <p className="mt-8 text-center text-xs text-gray-400">{t.deviceNote}</p>
+          <p className="mt-8 text-center text-xs text-gray-500">{t.deviceNote}</p>
         </div>
       </section>
     </main>

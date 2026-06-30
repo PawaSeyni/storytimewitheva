@@ -27,7 +27,7 @@
         howto4: "If they don't match, they'll flip back, try to remember!",
         howto5: 'Find all the pairs to win! 🏆',
         themeAnimals: '🐾 Animals', themeColors: '🌈 Colors', themeFriends: '🧚 Story Friends',
-        pairsFound: 'Pairs Found', moves: 'Moves', time: 'Time',
+        pairsFound: 'Pairs Found', moves: 'Moves', time: 'Time', card: 'Card',
         celebTitle: 'You found all the pairs!', celebChampion: "You're a memory champion! ⭐",
         harder: '💪 Try Harder Mode!', celebStats: 'You did it in {moves} moves and {time}! 🌟',
       },
@@ -40,7 +40,7 @@
         howto4: 'Si no coinciden, se voltean de nuevo, ¡intenta recordar!',
         howto5: '¡Encuentra todas las parejas para ganar! 🏆',
         themeAnimals: '🐾 Animales', themeColors: '🌈 Colores', themeFriends: '🧚 Amigos de cuentos',
-        pairsFound: 'Parejas', moves: 'Movimientos', time: 'Tiempo',
+        pairsFound: 'Parejas', moves: 'Movimientos', time: 'Tiempo', card: 'Carta',
         celebTitle: '¡Encontraste todas las parejas!', celebChampion: '¡Eres un campeón de la memoria! ⭐',
         harder: '💪 ¡Modo difícil!', celebStats: '¡Lo lograste en {moves} movimientos y {time}! 🌟',
       },
@@ -53,7 +53,7 @@
         howto4: 'Si elles ne correspondent pas, elles se retournent, essaie de te souvenir !',
         howto5: 'Trouve toutes les paires pour gagner ! 🏆',
         themeAnimals: '🐾 Animaux', themeColors: '🌈 Couleurs', themeFriends: '🧚 Amis des histoires',
-        pairsFound: 'Paires', moves: 'Coups', time: 'Temps',
+        pairsFound: 'Paires', moves: 'Coups', time: 'Temps', card: 'Carte',
         celebTitle: 'Tu as trouvé toutes les paires !', celebChampion: 'Tu es un champion de la mémoire ! ⭐',
         harder: '💪 Mode difficile !', celebStats: 'Tu as réussi en {moves} coups et {time} ! 🌟',
       },
@@ -326,7 +326,7 @@
 
       grid.innerHTML = cards.map((emoji, i) => `
         <div class="card-scene h-20 md:h-24" id="scene-${i}">
-          <div class="card-inner" id="card-${i}" role="button" tabindex="0" aria-label="Card ${i + 1}" onclick="handleFlip(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();handleFlip(${i});}">
+          <div class="card-inner" id="card-${i}" role="button" tabindex="0" aria-label="${window.t('card')} ${i + 1}" aria-pressed="false" onclick="handleFlip(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();handleFlip(${i});}">
             <!-- Back (question mark) -->
             <div class="card-face bg-gradient-to-br from-purple-400 to-pink-400 shadow-md">
               <span class="text-3xl">❓</span>
@@ -348,6 +348,7 @@
 
       const cardEl = document.getElementById(`card-${i}`);
       cardEl.classList.add('revealed');
+      cardEl.setAttribute('aria-pressed', 'true');
       flipped.push(i);
 
       if (flipped.length === 2) {
@@ -387,6 +388,8 @@
         setTimeout(() => {
           document.getElementById(`card-${a}`).classList.remove('revealed');
           document.getElementById(`card-${b}`).classList.remove('revealed');
+          document.getElementById(`card-${a}`).setAttribute('aria-pressed', 'false');
+          document.getElementById(`card-${b}`).setAttribute('aria-pressed', 'false');
           document.getElementById(`scene-${a}`).classList.remove('card-wrong');
           document.getElementById(`scene-${b}`).classList.remove('card-wrong');
           flipped = [];
@@ -465,7 +468,7 @@
         <a href="/activities" class="hover:text-white">Activities</a>
         <a href="/about" class="hover:text-white">About Eva</a>
       </div>
-      <p class="text-gray-500 text-xs mt-4">© 2025 Story Time with Eva. All rights reserved.</p>
+      <p class="text-gray-500 text-xs mt-4">© 2026 Story Time with Eva. All rights reserved.</p>
     </div>
   </footer>
 

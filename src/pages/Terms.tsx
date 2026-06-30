@@ -221,7 +221,7 @@ export default function Terms() {
         <div className="max-w-3xl mx-auto text-center">
           <div className="text-5xl mb-4">📜</div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-3">{t.title}</h1>
-          <p className="text-gray-400 text-sm">{t.updated}</p>
+          <p className="text-gray-500 text-sm">{t.updated}</p>
         </div>
       </section>
 

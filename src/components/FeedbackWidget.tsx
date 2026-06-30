@@ -89,6 +89,23 @@ export default function FeedbackWidget() {
     firstControlRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setOpen(false);
+      // Trap Tab within the open dialog so focus can't drift to the page behind it.
+      if (e.key === 'Tab' && panelRef.current) {
+        const f = panelRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        );
+        if (f.length) {
+          const first = f[0];
+          const last = f[f.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
     };
     const onClick = (e: MouseEvent) => {
       const target = e.target as Node;
@@ -210,7 +227,7 @@ export default function FeedbackWidget() {
             {status === 'submitting' ? t.sending : t.send}
           </button>
 
-          <p className="mt-2 text-center text-[11px] text-gray-400">{t.privacy}</p>
+          <p className="mt-2 text-center text-[11px] text-gray-500">{t.privacy}</p>
         </div>
       )}
 

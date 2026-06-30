@@ -28,6 +28,7 @@
         howto5: 'Complete all cards to earn your Star Badge! ⭐',
         langPairLabel: 'Language pair:',
         catColors: '🎨 Colors', catAnimals: '🐾 Animals', catNumbers: '🔢 Numbers', catFeelings: '💛 Feelings',
+        flashcard: 'flashcard',
         cardsFlipped: 'Cards flipped: {flipped} / {total}', scoreLabel: '⭐ Score: {score}',
         celebTitle: 'Amazing job!', celebSubtitle: "You flipped all the cards! You're a multilingual superstar! ⭐",
         printTitle: '🖨️ Want a printable version?',
@@ -44,6 +45,7 @@
         howto5: '¡Completa todas las tarjetas para ganar tu estrella! ⭐',
         langPairLabel: 'Par de idiomas:',
         catColors: '🎨 Colores', catAnimals: '🐾 Animales', catNumbers: '🔢 Números', catFeelings: '💛 Sentimientos',
+        flashcard: 'tarjeta',
         cardsFlipped: 'Tarjetas volteadas: {flipped} / {total}', scoreLabel: '⭐ Puntos: {score}',
         celebTitle: '¡Increíble!', celebSubtitle: '¡Volteaste todas las tarjetas! ¡Eres una estrella multilingüe! ⭐',
         printTitle: '🖨️ ¿Quieres una versión imprimible?',
@@ -60,6 +62,7 @@
         howto5: 'Termine toutes les cartes pour gagner ton étoile ! ⭐',
         langPairLabel: 'Paire de langues :',
         catColors: '🎨 Couleurs', catAnimals: '🐾 Animaux', catNumbers: '🔢 Nombres', catFeelings: '💛 Émotions',
+        flashcard: 'carte',
         cardsFlipped: 'Cartes retournées : {flipped} / {total}', scoreLabel: '⭐ Score : {score}',
         celebTitle: 'Bravo !', celebSubtitle: 'Tu as retourné toutes les cartes ! Tu es une superstar multilingue ! ⭐',
         printTitle: '🖨️ Tu veux une version à imprimer ?',
@@ -323,7 +326,7 @@
       const words = vocab[currentCat];
       grid.innerHTML = words.map((w, i) => `
         <div class="card-scene h-44 md:h-52" id="scene-${i}">
-          <div class="card-flip" id="card-${i}" role="button" tabindex="0" aria-label="${w.en}, ${window.t('subtitle')}" onclick="flipCard(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();flipCard(${i});}">
+          <div class="card-flip" id="card-${i}" role="button" tabindex="0" aria-label="${w.en} ${window.t('flashcard')}" aria-pressed="false" onclick="flipCard(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();flipCard(${i});}">
             <!-- Front: English -->
             <div class="card-front ${w.bg} shadow-lg border-2 border-white">
               <div class="text-5xl mb-3">${w.emoji}</div>
@@ -347,6 +350,7 @@
       const card = document.getElementById(`card-${i}`);
       if (!card.classList.contains('flipped')) {
         card.classList.add('flipped');
+        card.setAttribute('aria-pressed', 'true');
         if (!flippedCards.has(i)) {
           flippedCards.add(i);
           score += 10;
@@ -362,6 +366,7 @@
         }
       } else {
         card.classList.remove('flipped');
+        card.setAttribute('aria-pressed', 'false');
       }
     }
 
@@ -448,7 +453,7 @@
         <a href="/activities" class="hover:text-white">Activities</a>
         <a href="/about" class="hover:text-white">About Eva</a>
       </div>
-      <p class="text-gray-500 text-xs mt-4">© 2025 Story Time with Eva. All rights reserved.</p>
+      <p class="text-gray-500 text-xs mt-4">© 2026 Story Time with Eva. All rights reserved.</p>
     </div>
   </footer>
 
