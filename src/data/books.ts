@@ -361,14 +361,14 @@ export const books: Book[] = [
     languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
     amazonUrl: dp('1997027054'),
     title: {
-      en: 'Leo and the Wolf: A Lesson About Honesty',
-      es: 'Leo y el lobo: una lección sobre la honestidad',
-      fr: 'Léo et le loup : une leçon sur l’honnêteté',
+      en: 'Leo and the Wolf',
+      es: 'Leo y el lobo',
+      fr: 'Léo et le loup',
     },
     subtitle: {
-      en: 'A Timeless Story About Trust, Honesty, and Starting Again',
-      es: 'Un cuento atemporal sobre la confianza, la honestidad y empezar de nuevo',
-      fr: 'Un conte intemporel sur la confiance, l’honnêteté et le nouveau départ',
+      en: 'A Timeless Illustrated Fable About Honesty, Trust, and Second Chances – The Boy Who Cried Wolf Retold for Kids Ages 4–8',
+      es: 'Una fábula ilustrada atemporal sobre la honestidad, la confianza y las segundas oportunidades – El niño que gritó lobo, contado de nuevo para niños de 4 a 8 años',
+      fr: 'Une fable illustrée intemporelle sur l’honnêteté, la confiance et les secondes chances – Le garçon qui criait au loup, raconté pour les enfants de 4 à 8 ans',
     },
     description: {
       en: 'Leo loves his first real job as a shepherd. Then the hours get long and a small mischief slips into his face. "WOLF! WOLF!" he shouts. The villagers come running and find nothing. He does it again. They stop coming. And then one evening, yellow eyes appear at the edge of the forest. Real teeth. A real wolf. A retelling of the timeless fable about trust, honesty, and the long road back.',
@@ -393,9 +393,9 @@ export const books: Book[] = [
       fr: 'Russet le renard apprend une leçon',
     },
     subtitle: {
-      en: 'A Quiet Tale About Listening, Patience, and Growing Up',
-      es: 'Un cuento tranquilo sobre escuchar, la paciencia y crecer',
-      fr: 'Un conte tranquille sur l’écoute, la patience et le fait de grandir',
+      en: 'A Gentle Illustrated Fable About Listening, Humility, and Patience – A Clever Fox Story of Growing Up, for Kids Ages 4–8',
+      es: 'Una fábula ilustrada tierna sobre escuchar, la humildad y la paciencia – La historia de un zorro astuto que crece, para niños de 4 a 8 años',
+      fr: 'Une douce fable illustrée sur l’écoute, l’humilité et la patience – L’histoire d’un renard malin qui grandit, pour les enfants de 4 à 8 ans',
     },
     description: {
       en: 'Russet is sure he is the cleverest fox in the den. Faster than his siblings. Smarter than the farmer. Too quick to ever get caught. So when his mother warns him about the dogs and the wire fence, he barely listens. Then comes the night the wire wraps around his leg. A picture book fable about humility, listening, and the quiet wisdom of taking your time.',
@@ -420,9 +420,9 @@ export const books: Book[] = [
       fr: 'Le grand rêve d’un petit bateau',
     },
     subtitle: {
-      en: 'A Story About Finding the Ocean in a Bathtub, a Puddle, and a Pond',
-      es: 'Una historia sobre encontrar el océano en una bañera, un charco y un estanque',
-      fr: 'Une histoire sur l’océan caché dans une baignoire, une flaque et une mare',
+      en: "A Calming Illustrated Bedtime Storybook About Contentment, Gratitude, and Wonder – A Little Toy Boat's Big Adventure for Kids Ages 3–7",
+      es: 'Un cuento ilustrado y calmante para dormir sobre el contentamiento, la gratitud y el asombro – La gran aventura de un barquito de juguete, para niños de 3 a 7 años',
+      fr: 'Une histoire illustrée et apaisante pour le soir sur la satisfaction, la gratitude et l’émerveillement – La grande aventure d’un petit bateau-jouet, pour les enfants de 3 à 7 ans',
     },
     description: {
       en: 'A small yellow wooden boat sits on a shelf above the bathroom sink, watching the moon and dreaming of vast open ocean. Then one morning a boy carries him out to a sparkling puddle, and the adventure begins. A frog, a turtle, a goldfish, a duckling, each tiny water teaches the boat that the ocean was never the point. A gentle bedtime book about contentment and the wonder hidden in small worlds.',
@@ -442,14 +442,14 @@ export const books: Book[] = [
     languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
     amazonUrl: dp('B0H35ZJKCR'),
     title: {
-      en: "Heidi's Journey to Mastery: Through Diligence",
-      es: 'El camino de Heidi hacia la maestría: a través de la constancia',
-      fr: 'Le chemin de Heidi vers la maîtrise : par la persévérance',
+      en: "Heidi's Journey to Mastery",
+      es: 'El camino de Heidi hacia la maestría',
+      fr: 'Le chemin de Heidi vers la maîtrise',
     },
     subtitle: {
-      en: 'A Picture Book About Patience, Apprenticeship, and Becoming Good at Something',
-      es: 'Un álbum sobre la paciencia, el aprendizaje y llegar a ser bueno en algo',
-      fr: 'Un album sur la patience, l’apprentissage et le fait de devenir bon en quelque chose',
+      en: "An Inspiring Illustrated STEM Storybook About Perseverance, Patience, and Learning by Doing – A Young Inventor's Growth Mindset Story for Kids Ages 5–9",
+      es: 'Un álbum ilustrado STEM inspirador sobre la perseverancia, la paciencia y aprender haciendo – La historia de una joven inventora y su mentalidad de crecimiento, para niños de 5 a 9 años',
+      fr: 'Un album illustré STEM inspirant sur la persévérance, la patience et l’apprentissage par la pratique – L’histoire d’une jeune inventrice et de son état d’esprit de croissance, pour les enfants de 5 à 9 ans',
     },
     description: {
       en: "Seven-year-old Heidi dreams of inventions. Solar cars. Wind-turbine bridges. A small robot to clean the lake outside her grandfather Anders's workshop in Granholm. So when she finally crosses the threshold expecting gears and tools, she is surprised when he hands her a broom. Month after month, she sweeps. Then she sorts parts. Then she watches. Then she asks. A picture book about the slow patient road from dreaming to making.",
@@ -474,9 +474,9 @@ export const books: Book[] = [
       fr: 'La collectionneuse de nuages',
     },
     subtitle: {
-      en: 'A Story About Wonder, Letting Go, and Watching the Sky',
-      es: 'Una historia sobre el asombro, soltar y mirar el cielo',
-      fr: 'Une histoire sur l’émerveillement, le lâcher-prise et le ciel qu’on regarde',
+      en: 'An Enchanting Illustrated STEM Storybook About Clouds, Weather, and Letting Go – Discovering the Wonders of the Sky for Curious Kids Ages 4–8',
+      es: 'Un cuento ilustrado STEM encantador sobre las nubes, el clima y soltar – Descubriendo las maravillas del cielo, para niños curiosos de 4 a 8 años',
+      fr: 'Un album illustré STEM enchanteur sur les nuages, la météo et le lâcher-prise – À la découverte des merveilles du ciel, pour les enfants curieux de 4 à 8 ans',
     },
     description: {
       en: 'Luna loves the sky. The way clouds change shape, drift across the horizon, dance with the wind. When Grandpa Chen gives her a butterfly net and a glass jar, she sets out into the meadow with one big plan: collect one cloud of every kind. She meets cumulus clouds that float just out of reach, wispy cirrus painted high across the sky, and slowly learns that some things are too beautiful to keep. A picture book about wonder, attention, and the gift of letting beautiful things stay where they are.',
@@ -501,9 +501,9 @@ export const books: Book[] = [
       fr: 'La petite cartographe',
     },
     subtitle: {
-      en: 'A Story About Imagination, Drawing, and Making the World a Place You Can Go',
-      es: 'Una historia sobre la imaginación, el dibujo y convertir el mundo en un lugar al que puedes ir',
-      fr: 'Une histoire sur l’imagination, le dessin et le monde qu’on transforme en lieu où l’on peut aller',
+      en: 'An Enchanting Illustrated Storybook About Imagination, Creativity, and Maps – A Magical Drawing Adventure for Curious Kids Ages 4–8',
+      es: 'Un cuento ilustrado encantador sobre la imaginación, la creatividad y los mapas – Una aventura mágica de dibujo para niños curiosos de 4 a 8 años',
+      fr: 'Un album illustré enchanteur sur l’imagination, la créativité et les cartes – Une aventure magique de dessin pour les enfants curieux de 4 à 8 ans',
     },
     description: {
       en: 'Maya is five, and she draws maps. Maps of her bedroom. Maps of the kitchen. Maps of the backyard with the tire swing. Her dog Pepper sits beside her with a red bandana while she works. Then one day Maya draws a castle deep in the tall grass, and when she walks out to find it, it is exactly where she put it. Soon a river runs through a crack in the sidewalk because she sketched fish in it. A picture book about how imagination, attention, and a pencil are enough to make a world.',
@@ -528,9 +528,9 @@ export const books: Book[] = [
       fr: 'Pawa et le petit nuage arc-en-ciel',
     },
     subtitle: {
-      en: 'A Tale of Self-Worth and Transformation',
-      es: 'Un cuento sobre la propia valía y la transformación',
-      fr: 'Un conte sur l’estime de soi et la transformation',
+      en: 'A Gentle Illustrated Storybook About Big Feelings, Self-Worth, and Rainbows – How Rain and Sunshine Make Something Beautiful, for Kids Ages 3–7',
+      es: 'Un cuento ilustrado tierno sobre las emociones grandes, la propia valía y los arcoíris – Cómo la lluvia y el sol crean algo hermoso, para niños de 3 a 7 años',
+      fr: 'Un album illustré tout en douceur sur les grandes émotions, l’estime de soi et les arcs-en-ciel – Comment la pluie et le soleil créent quelque chose de beau, pour les enfants de 3 à 7 ans',
     },
     description: {
       en: 'Cirro is a little gray cloud who feels heavy and sad after a storm. He believes his tears only make the world messy and wet. But Pawa the wise Sun knows a quiet secret: when rain meets light, something extraordinary happens. Through Cirro\'s gentle transformation, young readers discover that the feelings that seem like too much are often the very things that make beauty possible.',
