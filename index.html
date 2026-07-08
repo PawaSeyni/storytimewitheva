@@ -35,14 +35,13 @@
     <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- Privacy-friendly analytics by Plausible (added 2026-05-20).
-         Proxied through this domain (/js/paw.js + /api/paw, see netlify.toml) so
-         ad-blockers that block the plausible.io host don't undercount traffic. -->
-    <script async src="/js/paw.js"></script>
-    <script>
-      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-      plausible.init({ endpoint: "/api/paw" })
-    </script>
+    <!-- Web analytics by Cloudflare (cookieless, no consent banner, free).
+         Token comes from the Cloudflare dashboard: Web Analytics ->
+         storytimewitheva.com -> JS snippet. Cloudflare Web Analytics is
+         pageviews-only (no custom events), so the track() calls in the app
+         are dormant no-ops. -->
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "3e1353475094499095f2feaf20b6d8a5"}'></script>
   </head>
   <body>
     <!--
