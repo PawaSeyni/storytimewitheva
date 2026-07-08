@@ -1,6 +1,7 @@
 import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { useLanguage, useTranslation } from '../lib/language';
 import { getActiveId, isSpeechSupported, play, stop, subscribe } from '../lib/speech';
+import { track } from '../lib/analytics';
 
 const TRANSLATIONS = {
   en: { listen: 'Read along', stop: 'Stop', listenAria: 'Read this aloud and follow along', stopAria: 'Stop reading' },
@@ -59,6 +60,7 @@ export default function ReadAlong({ text, className = '' }: ReadAlongProps) {
       return;
     }
     setActiveWord(-1);
+    track('Read Aloud', { language });
     play(id, text, language, {
       onBoundary: (charIndex) => {
         const toks = tokensRef.current;

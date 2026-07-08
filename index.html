@@ -35,11 +35,13 @@
     <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- Privacy-friendly analytics by Plausible (added 2026-05-20) -->
-    <script async src="https://plausible.io/js/pa-gzJ4DP5LRQ39ZXessq04G.js"></script>
+    <!-- Privacy-friendly analytics by Plausible (added 2026-05-20).
+         Proxied through this domain (/js/paw.js + /api/paw, see netlify.toml) so
+         ad-blockers that block the plausible.io host don't undercount traffic. -->
+    <script async src="/js/paw.js"></script>
     <script>
       window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-      plausible.init()
+      plausible.init({ endpoint: "/api/paw" })
     </script>
   </head>
   <body>

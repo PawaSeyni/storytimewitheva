@@ -15,6 +15,20 @@
   status = 301
   force = true
 
+# Plausible analytics proxy: serve the tracker script and event endpoint from this
+# first-party domain (innocuous /js/paw.js + /api/paw paths) so ad-blockers that
+# block the plausible.io host don't undercount traffic. status = 200 makes Netlify
+# proxy (not redirect) to Plausible. index.html points the snippet at these paths.
+[[redirects]]
+  from = "/js/paw.js"
+  to = "https://plausible.io/js/pa-gzJ4DP5LRQ39ZXessq04G.js"
+  status = 200
+
+[[redirects]]
+  from = "/api/paw"
+  to = "https://plausible.io/api/event"
+  status = 200
+
 # No SPA catch-all on purpose. Every real route (incl. /es,/fr variants, all book
 # pages, and the noindex /profile,/search) is prerendered to its own static
 # index.html by scripts/prerender.mjs, so unmatched URLs fall through to Netlify's
