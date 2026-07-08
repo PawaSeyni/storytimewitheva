@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from '../components/LocalizedLink';
 import Seo from '../components/Seo';
@@ -29,6 +29,12 @@ export default function BookDetail() {
   const t = useTranslation(TRANSLATIONS);
   const [bilingual, setBilingual] = useState(false);
   const [tapMode, setTapMode] = useState(false);
+
+  // Fire one "Book View" per book (guarded against the prerender crawler in track()).
+  const bookId = book?.id;
+  useEffect(() => {
+    if (bookId) track('Book View', { book: bookId });
+  }, [bookId]);
 
   const cover = book?.coverImage ?? '';
   const amazon = isAmazonCover(cover);

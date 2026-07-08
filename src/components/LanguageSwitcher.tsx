@@ -1,5 +1,6 @@
 import { LANGUAGE_LABELS, SUPPORTED_LANGUAGES, useLanguage, useTranslation } from '../lib/language';
 import type { Language } from '../lib/language';
+import { track } from '../lib/analytics';
 
 const TRANSLATIONS = {
   en: { group: 'Language', switchTo: (n: string) => `Switch to ${n}` },
@@ -43,7 +44,10 @@ export default function LanguageSwitcher({ vertical = false }: LanguageSwitcherP
           <button
             key={lang}
             type="button"
-            onClick={() => setLanguage(lang)}
+            onClick={() => {
+              if (lang !== language) track('Language Switch', { language: lang });
+              setLanguage(lang);
+            }}
             aria-label={t.switchTo(name)}
             aria-pressed={active}
             title={name}
