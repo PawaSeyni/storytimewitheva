@@ -3,7 +3,7 @@ import { useTranslation } from '../lib/language';
 
 // Plain-language privacy policy. Content reflects the site's ACTUAL data
 // practices as implemented in code:
-//   • Newsletter  -> MailerLite (email + optional first name, double opt-in)
+//   • Newsletter  -> MailerLite (email + optional first name, single opt-in)
 //   • Contact     -> Netlify Forms (name, email, subject, message)
 //   • Analytics   -> Plausible (cookieless, aggregate, no personal data)
 //   • Feedback widget -> Netlify Forms (rating, page, language, optional comment)
@@ -43,7 +43,7 @@ const TRANSLATIONS = {
       {
         heading: 'Newsletter sign-up',
         body: [
-          'If you join our mailing list, we collect your email address and, optionally, your first name. This is handled by MailerLite with double opt-in (you must confirm by email). We use it only to send the free activity kit and occasional reading tips and updates. You can unsubscribe at any time using the link in every email.',
+          'If you join our mailing list, we collect your email address and, optionally, your first name. This is handled by MailerLite (single opt-in: you are added directly, without a confirmation email). We use it only to send the free activity kit and occasional reading tips and updates. You can unsubscribe at any time using the link in every email.',
         ],
       },
       {
@@ -110,7 +110,7 @@ const TRANSLATIONS = {
       {
         heading: 'Suscripción al boletín',
         body: [
-          'Si te unes a nuestra lista, recopilamos tu correo electrónico y, opcionalmente, tu nombre. Lo gestiona MailerLite con doble confirmación (debes confirmar por correo). Lo usamos solo para enviar el kit gratuito y, de vez en cuando, consejos de lectura y novedades. Puedes darte de baja en cualquier momento con el enlace de cada correo.',
+          'Si te unes a nuestra lista, recopilamos tu correo electrónico y, opcionalmente, tu nombre. Lo gestiona MailerLite (opt-in simple: te suscribes directamente, sin correo de confirmación). Lo usamos solo para enviar el kit gratuito y, de vez en cuando, consejos de lectura y novedades. Puedes darte de baja en cualquier momento con el enlace de cada correo.',
         ],
       },
       {
@@ -177,7 +177,7 @@ const TRANSLATIONS = {
       {
         heading: 'Inscription à la newsletter',
         body: [
-          'Si vous rejoignez notre liste, nous collectons votre adresse e-mail et, facultativement, votre prénom. Cela est géré par MailerLite avec double opt-in (vous devez confirmer par e-mail). Nous l\'utilisons uniquement pour envoyer le kit gratuit et, occasionnellement, des conseils de lecture et des nouvelles. Vous pouvez vous désinscrire à tout moment via le lien présent dans chaque e-mail.',
+          'Si vous rejoignez notre liste, nous collectons votre adresse e-mail et, facultativement, votre prénom. Cela est géré par MailerLite (opt-in simple : vous êtes inscrit directement, sans e-mail de confirmation). Nous l\'utilisons uniquement pour envoyer le kit gratuit et, occasionnellement, des conseils de lecture et des nouvelles. Vous pouvez vous désinscrire à tout moment via le lien présent dans chaque e-mail.',
         ],
       },
       {

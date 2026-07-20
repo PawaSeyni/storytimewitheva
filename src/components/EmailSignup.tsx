@@ -5,9 +5,9 @@ import { track } from '../lib/analytics';
 // MailerLite embedded form action — group "storytimewitheva-signups", form
 // "Bilingual Starter Kit — site signup". Custom fields `language` and
 // `lead_magnet` are pre-registered on the MailerLite account, so they get
-// attached to the subscriber on submit. Double opt-in is ON, so MailerLite
-// sends the confirmation email; the welcome automation fires once the user
-// confirms (subscriber_joins_group trigger).
+// attached to the subscriber on submit. Single opt-in is ON, so MailerLite
+// adds the subscriber directly; the welcome automation fires when the user
+// joins (subscriber_joins_group trigger).
 const MAILERLITE_FORM_ACTION =
   'https://assets.mailerlite.com/jsonp/2363396/forms/187942934227715798/subscribe';
 
@@ -90,7 +90,7 @@ const TRANSLATIONS = {
     submit: 'Get My Free Kit 🎨',
     submitting: 'Sending…',
     successHeading: 'Success, your download is ready!',
-    successDetail: 'Tap below to grab your freebie. We also sent a confirmation email so you don’t miss future printables.',
+    successDetail: 'Tap below to grab your freebie. You’re on the list, so new printables and reading tips are on the way.',
     download: '📥 Download your free PDF',
     errorMessage: 'Something went wrong. Please try again or email contact@storytimewitheva.com.',
     privacy: '🔒 We respect your privacy. No spam, ever.',
@@ -109,7 +109,7 @@ const TRANSLATIONS = {
     submit: 'Quiero mi kit gratis 🎨',
     submitting: 'Enviando…',
     successHeading: '¡Listo! Tu descarga está disponible.',
-    successDetail: 'Toca abajo para obtener tu recurso gratis. También te enviamos un correo de confirmación para que no te pierdas futuros materiales.',
+    successDetail: 'Toca abajo para obtener tu recurso gratis. Ya estás en la lista, así que pronto recibirás más materiales y consejos de lectura.',
     download: '📥 Descarga tu PDF gratis',
     errorMessage: 'Algo salió mal. Inténtalo de nuevo o escríbenos a contact@storytimewitheva.com.',
     privacy: '🔒 Respetamos tu privacidad. Nunca spam.',
@@ -128,7 +128,7 @@ const TRANSLATIONS = {
     submit: 'Recevoir mon kit gratuit 🎨',
     submitting: 'Envoi…',
     successHeading: 'C’est fait ! Votre téléchargement est prêt.',
-    successDetail: 'Cliquez ci-dessous pour récupérer votre ressource gratuite. Nous avons aussi envoyé un email de confirmation pour ne rien manquer.',
+    successDetail: 'Cliquez ci-dessous pour récupérer votre ressource gratuite. Vous êtes inscrit, de nouveaux imprimables et conseils de lecture arrivent bientôt.',
     download: '📥 Téléchargez votre PDF gratuit',
     errorMessage: 'Une erreur est survenue. Réessayez ou écrivez à contact@storytimewitheva.com.',
     privacy: '🔒 Nous respectons votre vie privée. Jamais de spam.',
@@ -182,8 +182,8 @@ export default function EmailSignup() {
     try {
       // MailerLite's JSONP endpoint doesn't return CORS headers, so we
       // can't read the response. `no-cors` lets the POST go through —
-      // double opt-in means MailerLite will email the user the
-      // confirmation link regardless of what we surface in the UI.
+      // single opt-in means MailerLite adds the subscriber directly, so
+      // the success screen can promise the freebie right away.
       await fetch(MAILERLITE_FORM_ACTION, {
         method: 'POST',
         body: formData,
