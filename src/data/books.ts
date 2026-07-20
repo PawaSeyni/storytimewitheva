@@ -8,6 +8,9 @@
 
 import { useLanguage, type Language } from '../lib/language';
 import { amazonDp } from '../lib/amazon';
+import colorsMixedUp from '../assets/covers/colors-mixed-up.webp';
+import rainbowSymphony from '../assets/covers/rainbow-symphony.webp';
+import towerTouchedSky from '../assets/covers/tower-touched-sky.webp';
 
 type LocalizedString = Record<Language, string>;
 
@@ -49,7 +52,7 @@ export const books: Book[] = [
   // ---- 3 newer titles in production ----
   {
     id: 'colors-mixed-up',
-    coverImage: 'https://m.media-amazon.com/images/I/61QxVRou1VL.jpg',
+    coverImage: colorsMixedUp,
     ageRange: '4-7',
     languages: ['🇺🇸'],
     amazonUrl: dp('1997027038'),
@@ -77,7 +80,7 @@ export const books: Book[] = [
   },
   {
     id: 'rainbow-symphony',
-    coverImage: 'https://m.media-amazon.com/images/I/61ZTtomTZvL.jpg',
+    coverImage: rainbowSymphony,
     ageRange: '3-6',
     languages: ['🇺🇸'],
     amazonUrl: dp('1997027003'),
@@ -105,7 +108,7 @@ export const books: Book[] = [
   },
   {
     id: 'tower-touched-sky',
-    coverImage: 'https://m.media-amazon.com/images/I/71%2B2OVFr4IL.jpg',
+    coverImage: towerTouchedSky,
     ageRange: '5-9',
     languages: ['🇺🇸'],
     amazonUrl: dp('1996972995'),

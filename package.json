@@ -12,7 +12,9 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "build:games-css": "tailwindcss -c scripts/games.tailwind.config.cjs -i scripts/games-tw-input.css -o public/games/games.css --minify",
-    "patch:games": "node scripts/patch-games.mjs"
+    "patch:games": "node scripts/patch-games.mjs",
+    "refresh-covers": "node scripts/refresh-covers.mjs",
+    "maintenance": "node scripts/maintenance.mjs"
   },
   "dependencies": {
     "@fontsource-variable/lexend": "^5.2.11",
