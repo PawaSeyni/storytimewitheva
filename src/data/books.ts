@@ -8,9 +8,6 @@
 
 import { useLanguage, type Language } from '../lib/language';
 import { amazonDp } from '../lib/amazon';
-import colorsMixedUp from '../assets/covers/colors-mixed-up.webp';
-import rainbowSymphony from '../assets/covers/rainbow-symphony.webp';
-import towerTouchedSky from '../assets/covers/tower-touched-sky.webp';
 
 type LocalizedString = Record<Language, string>;
 
@@ -52,7 +49,7 @@ export const books: Book[] = [
   // ---- 3 newer titles in production ----
   {
     id: 'colors-mixed-up',
-    coverImage: colorsMixedUp,
+    coverImage: 'https://m.media-amazon.com/images/I/61QxVRou1VL.jpg',
     ageRange: '4-7',
     languages: ['🇺🇸'],
     amazonUrl: dp('1997027038'),
@@ -80,7 +77,7 @@ export const books: Book[] = [
   },
   {
     id: 'rainbow-symphony',
-    coverImage: rainbowSymphony,
+    coverImage: 'https://m.media-amazon.com/images/I/61ZTtomTZvL.jpg',
     ageRange: '3-6',
     languages: ['🇺🇸'],
     amazonUrl: dp('1997027003'),
@@ -108,7 +105,7 @@ export const books: Book[] = [
   },
   {
     id: 'tower-touched-sky',
-    coverImage: towerTouchedSky,
+    coverImage: 'https://m.media-amazon.com/images/I/71%2B2OVFr4IL.jpg',
     ageRange: '5-9',
     languages: ['🇺🇸'],
     amazonUrl: dp('1996972995'),
@@ -137,7 +134,7 @@ export const books: Book[] = [
   // ---- 8 titles live on Amazon ----
   {
     id: 'mayas-shadow',
-    coverImage: 'https://m.media-amazon.com/images/I/619qWXXkRwL.jpg',
+    coverImage: 'https://m.media-amazon.com/images/I/61hBrMvhhRL.jpg',
     ageRange: '3-7',
     languages: ['🇺🇸'],
     amazonUrl: dp('1996972812'),
@@ -165,7 +162,7 @@ export const books: Book[] = [
   },
   {
     id: 'sparrow-saved-forest',
-    coverImage: 'https://m.media-amazon.com/images/I/61+OZTchcCL.jpg',
+    coverImage: 'https://m.media-amazon.com/images/I/61IthxrIcFL.jpg',
     ageRange: '4-8',
     languages: ['🇺🇸'],
     amazonUrl: dp('1996972685'),
@@ -192,7 +189,7 @@ export const books: Book[] = [
   },
   {
     id: 'diegos-brave-leap',
-    coverImage: 'https://m.media-amazon.com/images/I/71XLCAup1CL.jpg',
+    coverImage: 'https://m.media-amazon.com/images/I/71z9fEOWb-L.jpg',
     ageRange: '4-8',
     languages: ['🇺🇸'],
     amazonUrl: dp('1996972863'),
@@ -219,7 +216,7 @@ export const books: Book[] = [
   },
   {
     id: 'butterfly-effect',
-    coverImage: 'https://m.media-amazon.com/images/I/71Ihs65rZFL.jpg',
+    coverImage: 'https://m.media-amazon.com/images/I/71wLOYuguIL.jpg',
     ageRange: '5-9',
     languages: ['🇺🇸'],
     amazonUrl: dp('1996972774'),
@@ -246,7 +243,7 @@ export const books: Book[] = [
   },
   {
     id: 'emperors-true-treasure',
-    coverImage: 'https://m.media-amazon.com/images/I/714jyt2r6TL.jpg',
+    coverImage: 'https://m.media-amazon.com/images/I/71ztFYD6z6L.jpg',
     ageRange: '5-9',
     languages: ['🇺🇸'],
     amazonUrl: dp('199697274X'),
@@ -273,7 +270,7 @@ export const books: Book[] = [
   },
   {
     id: 'crooked-little-apple-tree',
-    coverImage: 'https://m.media-amazon.com/images/I/713GxuodwVL.jpg',
+    coverImage: 'https://m.media-amazon.com/images/I/71Qt1STow5L.jpg',
     ageRange: '4-8',
     languages: ['🇺🇸'],
     amazonUrl: dp('1996972715'),
@@ -300,7 +297,7 @@ export const books: Book[] = [
   },
   {
     id: 'true-beauty-meadowbrook',
-    coverImage: 'https://m.media-amazon.com/images/I/712M0yodc0L.jpg',
+    coverImage: 'https://m.media-amazon.com/images/I/71NtIMdhG2L.jpg',
     ageRange: '4-8',
     languages: ['🇺🇸'],
     amazonUrl: dp('1996972650'),
@@ -327,7 +324,7 @@ export const books: Book[] = [
   },
   {
     id: 'sanding-block',
-    coverImage: 'https://m.media-amazon.com/images/I/710y9Kd57tL.jpg',
+    coverImage: 'https://m.media-amazon.com/images/I/71Z%2BTeKb4TL.jpg',
     ageRange: '5-9',
     languages: ['🇺🇸'],
     amazonUrl: dp('1996972898'),
@@ -356,7 +353,7 @@ export const books: Book[] = [
   // ---- 7 newer titles, added 2026-05-29 ----
   {
     id: 'leo-and-the-wolf',
-    coverImage: 'https://m.media-amazon.com/images/I/61GgsTi1z4L.jpg',
+    coverImage: 'https://m.media-amazon.com/images/I/61ml%2BbdnJKL.jpg',
     ageRange: '4-8',
     languages: ['🇺🇸'],
     amazonUrl: dp('1997027054'),
@@ -437,7 +434,7 @@ export const books: Book[] = [
   },
   {
     id: 'heidis-journey-to-mastery',
-    coverImage: 'https://m.media-amazon.com/images/I/91BfUbqNR9L.jpg',
+    coverImage: 'https://m.media-amazon.com/images/I/91Z3ipmFctL.jpg',
     ageRange: '5-9',
     languages: ['🇺🇸'],
     amazonUrl: dp('B0H35ZJKCR'),
@@ -464,7 +461,7 @@ export const books: Book[] = [
   },
   {
     id: 'cloud-collector',
-    coverImage: 'https://m.media-amazon.com/images/I/91wvx5C9wYL.jpg',
+    coverImage: 'https://m.media-amazon.com/images/I/91LSk016ZfL.jpg',
     ageRange: '4-8',
     languages: ['🇺🇸'],
     amazonUrl: dp('B0H1DXZ1KH'),
@@ -491,7 +488,7 @@ export const books: Book[] = [
   },
   {
     id: 'little-mapmaker',
-    coverImage: 'https://m.media-amazon.com/images/I/91oyc%2BLU-GL.jpg',
+    coverImage: 'https://m.media-amazon.com/images/I/918-3L7uzaL.jpg',
     ageRange: '4-8',
     languages: ['🇺🇸'],
     amazonUrl: dp('B0GZJPZS74'),
@@ -518,7 +515,7 @@ export const books: Book[] = [
   },
   {
     id: 'pawa-rainbow-cloud',
-    coverImage: 'https://m.media-amazon.com/images/I/61-eXffo5xL.jpg',
+    coverImage: 'https://m.media-amazon.com/images/I/61zr49LAzAL.jpg',
     ageRange: '3-7',
     languages: ['🇺🇸'],
     amazonUrl: dp('1996972936'),
