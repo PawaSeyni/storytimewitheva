@@ -84,6 +84,8 @@ Without this, every dollar of paid traffic is wasted: form looks fine but throws
   > ⚠️ **SUPERSEDED 2026-08-04:** now **single opt-in** (PR #70). The browser no longer posts to the JSONP
   > endpoint at all — a **Netlify Function** calls the MailerLite API server-side (PR #74). See Verified & Live.
 - [x] **A2** PDF live at https://storytimewitheva.netlify.app/bilingual-starter-kit.pdf
+  > ⚠️ **SUPERSEDED 2026-08-04:** lead-magnet PDFs are now **gated** — the raw path 404s; delivery is via a
+  > hashed URL (`/bilingual-starter-kit.<hash>.pdf`) on the success screen + welcome email (PR #74).
 - [x] **A3** `EmailSignup.tsx` posts (no-cors fetch) to the MailerLite JSONP endpoint with `fields[email] / fields[name] / fields[language] / fields[lead_magnet]`; submitting / submitted / error states wired, optional first-name field added above email (EN/ES/FR placeholders), EN/ES/FR copy updated to reflect the double-opt-in confirmation step
   > ⚠️ **SUPERSEDED 2026-08-04:** the no-cors JSONP POST returned 503 and silently dropped emails. Replaced
   > by a server-side Netlify Function; copy switched to single-opt-in wording (PR #74 / #70).
@@ -117,8 +119,12 @@ Nice-to-have before turning on paid traffic.
 
 - [x] **C1** Custom domain `storytimewitheva.com` LIVE. Apex → Netlify (`75.2.60.5`), valid Let's Encrypt cert (auto-renew), `www` → apex (301), `netlify.app` → apex (301). `SITE_URL` in `Seo.tsx` + `sitemap.xml` + `robots.txt` all on the custom domain (0 netlify.app refs). Lead-magnet PDFs serve over the domain. Verified end-to-end 2026-06-10.
 - [x] **C2** Plausible analytics LIVE since 2026-05-20. Site-keyed script (`plausible.io/js/pa-gzJ4DP5LRQ39ZXessq04G.js`) + `plausible.init()` queue in `index.html` `<head>`. Verified 2026-06-10: script serves 200, is present on the live `storytimewitheva.com` HTML, and the site is registered in a Plausible account (tracking active).
+  > ⚠️ **SUPERSEDED 2026-08-04:** analytics migrated **Plausible → Cloudflare Web Analytics** (cookieless, free,
+  > no consent banner); the Plausible script + first-party proxy were removed (PR #66 / #68).
 - [x] **C3** Toast system live (`src/lib/toast.tsx`, no deps, info/success/error + auto-dismiss + stacking) via `ToastProvider` in `main.tsx`. All `alert()` placeholders replaced — used in StoryBuilder (copy/save), BookmarkCrafts (save), Bingo (no-bingo). Zero `alert()` calls remain in `src/`. The one remaining `window.confirm` (Profile "Clear all progress") is left intentionally — correct primitive for a destructive yes/no; a toast can't capture a choice.
-- [ ] **C4** Update this PUNCH_LIST as gates close
+- [x] **C4** Update this PUNCH_LIST as gates close — **DONE 2026-08-04.** Added the "Verified & live"
+  section at the top; reconciled superseded entries (A1/A2/A3/A5 lead-capture, C2 analytics). **All three
+  release gates (A lead-capture, B truthfulness, C polish) are now CLOSED.**
 
 ---
 
