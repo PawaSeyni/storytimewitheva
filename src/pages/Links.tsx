@@ -114,10 +114,12 @@ export default function Links() {
     {
       heading: t.sectionFreebies,
       rows: [
-        { href: '/bedtime-routine.pdf', external: true, title: t.bedtimeCta, subtitle: t.bedtimeSub, variant: 'secondary' },
-        { href: '/bilingual-starter-kit.pdf', external: true, title: t.starterCta, subtitle: t.starterSub, variant: 'secondary' },
-        { href: '/bilingual-flashcards.pdf', external: true, title: t.flashCta, subtitle: t.flashSub, variant: 'secondary' },
-        { href: '/parents-guide.pdf', external: true, title: t.guideCta, subtitle: t.guideSub, variant: 'secondary' },
+        // Route freebies through the signup form (magnet pre-selected via ?lm=) so
+        // they capture an email instead of handing out the ungated PDF directly.
+        { href: '/?lm=bedtime-routine#email-signup', external: false, title: t.bedtimeCta, subtitle: t.bedtimeSub, variant: 'secondary' },
+        { href: '/?lm=bilingual-starter-kit#email-signup', external: false, title: t.starterCta, subtitle: t.starterSub, variant: 'secondary' },
+        { href: '/?lm=bilingual-flashcards#email-signup', external: false, title: t.flashCta, subtitle: t.flashSub, variant: 'secondary' },
+        { href: '/?lm=parents-guide#email-signup', external: false, title: t.guideCta, subtitle: t.guideSub, variant: 'secondary' },
       ],
     },
     {
