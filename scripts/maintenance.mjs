@@ -107,12 +107,56 @@ await Promise.all(
   add('Covers', 'cover ART freshness', 'info', 'run `npm run refresh-covers -- --dry` (needs a browser; Amazon blocks plain HTTP)');
 }
 
+// ── Funnel (P0-critical: guards the signup + PDF-gate regression) ──────────────
+{
+  // Subscribe function: POST an intentionally-invalid email. The function rejects
+  // it with 422 BEFORE any MailerLite call (creates no subscriber), which proves it
+  // is deployed, executing, AND that MAILERLITE_API_KEY is set (a missing key returns
+  // 500 first). This is the guard against the silent-503 "success but email lost" bug.
+  let subCode = 0;
+  try {
+    const r = await fetch(bust(`${SITE}/.netlify/functions/subscribe`), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'maintenance-check-do-not-subscribe', language: 'en' }),
+      signal: AbortSignal.timeout(20000),
+    });
+    subCode = r.status;
+  } catch {
+    subCode = 0;
+  }
+  const subMsg =
+    subCode === 422 ? 'reachable + executing + MAILERLITE_API_KEY set'
+    : subCode === 500 ? 'FUNCTION UP but MAILERLITE_API_KEY NOT set — signups will error'
+    : subCode === 404 ? 'FUNCTION NOT DEPLOYED — signups broken'
+    : subCode === 0 ? 'no response / timeout'
+    : `unexpected HTTP ${subCode}`;
+  add('Funnel', 'subscribe function captures email', subCode === 422 ? 'pass' : 'fail', subMsg);
+
+  // Lead-magnet PDFs: the hashed URLs must resolve (delivery), the un-hashed base
+  // URLs must 404 (gate). A leaked base URL means the gate regressed.
+  const es = await readFile(path.join(ROOT, 'src', 'components', 'EmailSignup.tsx'), 'utf8');
+  const hashed = [...new Set([...es.matchAll(/'(\/[^']+\.pdf)'/g)].map(m => m[1]))];
+  const delivered = await Promise.all(hashed.map(p => head(SITE + p).then(r => r.code)));
+  const dBad = delivered.filter(c => c !== 200).length;
+  add('Funnel', 'lead-magnet PDFs deliver', hashed.length && dBad === 0 ? 'pass' : 'fail',
+      `${hashed.length - dBad}/${hashed.length} hashed URLs return 200`);
+
+  const raws = [...new Set(hashed.map(p => p.replace(/\.[0-9a-f]{12}\.pdf$/, '.pdf')))];
+  const rawCodes = await Promise.all(raws.map(p => head(SITE + p).then(r => r.code)));
+  const leaked = raws.filter((p, i) => rawCodes[i] === 200);
+  add('Funnel', 'raw PDF URLs gated', leaked.length === 0 ? 'pass' : 'fail',
+      leaked.length ? `LEAKED (200): ${leaked.join(', ')}` : `all ${raws.length} un-hashed paths 404`);
+}
+
 // ── Integrations ───────────────────────────────────────────────────────────
 {
   const idx = await readFile(path.join(ROOT, 'index.html'), 'utf8');
   const signup = await readFile(path.join(ROOT, 'src', 'components', 'EmailSignup.tsx'), 'utf8');
-  const ml = (signup.match(/assets\.mailerlite\.com\/jsonp\/(\d+)\/forms\/(\d+)/) || []);
-  add('Integrations', 'MailerLite form wired', ml[1] ? 'pass' : 'fail', ml[1] ? `account ${ml[1]}, form ${ml[2]}` : 'form action not found');
+  const wired = /SUBSCRIBE_ENDPOINT\s*=\s*'\/\.netlify\/functions\/subscribe'/.test(signup) && /fetch\(SUBSCRIBE_ENDPOINT/.test(signup);
+  add('Integrations', 'signup wired to function', wired ? 'pass' : 'fail', wired ? 'posts to /.netlify/functions/subscribe' : 'NOT wired to the subscribe function');
+  const fn = existsSync(path.join(ROOT, 'netlify', 'functions', 'subscribe.mjs'));
+  add('Integrations', 'subscribe function present', fn ? 'pass' : 'fail', fn ? 'netlify/functions/subscribe.mjs' : 'function file missing');
   const forms = ['name="contact"', 'name="feedback"'].filter(f => idx.includes(f));
   add('Integrations', 'Netlify form placeholders', forms.length === 2 ? 'pass' : 'warn', `${forms.length}/2 registered in index.html`);
   const hp = /netlify-honeypot/.test(idx);
