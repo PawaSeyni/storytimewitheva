@@ -8,6 +8,7 @@ import ReadAlong from '../components/ReadAlong';
 import TapToTranslate from '../components/TapToTranslate';
 import BookStatusButton from '../components/BookStatusButton';
 import { books, useBook, isComingSoon } from '../data/books';
+import { BOOK_RATINGS } from '../data/ratings';
 import { LANGUAGE_LABELS, SUPPORTED_LANGUAGES, localizePath, useLanguage, useTranslation } from '../lib/language';
 import type { Language } from '../lib/language';
 import { isAmazonCover, sizedCover } from '../lib/covers';
@@ -17,9 +18,9 @@ const SITE_URL = 'https://storytimewitheva.com';
 const FLAG_TO_LANG: Record<string, string> = { '🇺🇸': 'en', '🇪🇸': 'es', '🇫🇷': 'fr' };
 
 const TRANSLATIONS = {
-  en: { back: '← Back to all books', theme: 'Theme', paperback: 'Paperback', ebook: 'eBook', priceNote: 'See current price on Amazon', buy: '🛒 Buy on Amazon', comingSoon: '🔜 Coming soon', comingSoonNote: 'This title is on its way. Check back soon!', coverAlt: 'book cover', ages: 'Ages', agesSuffix: '', bookLangs: 'Available in English · Spanish and French coming soon', pageAudioNote: 'Page and audio available in Spanish, English, and French', bilingualShow: '🌐 Show description in other languages', bilingualHide: '🌐 Hide other languages', tapShow: '🔤 Tap words to translate', tapHide: '🔤 Stop translating' },
-  es: { back: '← Volver a todos los libros', theme: 'Tema', paperback: 'Tapa blanda', ebook: 'eBook', priceNote: 'Consulta el precio actual en Amazon', buy: '🛒 Comprar en Amazon', comingSoon: '🔜 Próximamente', comingSoonNote: 'Este título está en camino. ¡Vuelve pronto!', coverAlt: 'portada del libro', ages: 'Edades', agesSuffix: 'años', bookLangs: 'Disponible en inglés · Español y francés próximamente', pageAudioNote: 'Página y audio disponibles en español, inglés y francés', bilingualShow: '🌐 Mostrar la descripción en otros idiomas', bilingualHide: '🌐 Ocultar otros idiomas', tapShow: '🔤 Toca para traducir', tapHide: '🔤 Dejar de traducir' },
-  fr: { back: '← Retour à tous les livres', theme: 'Thème', paperback: 'Livre broché', ebook: 'Livre numérique', priceNote: 'Voir le prix actuel sur Amazon', buy: '🛒 Acheter sur Amazon', comingSoon: '🔜 Bientôt disponible', comingSoonNote: 'Ce titre arrive bientôt. Revenez vite !', coverAlt: 'couverture du livre', ages: 'Âges', agesSuffix: 'ans', bookLangs: 'Disponible en anglais · Espagnol et français bientôt disponibles', pageAudioNote: 'Page et audio disponibles en espagnol, anglais et français', bilingualShow: '🌐 Afficher la description dans d\'autres langues', bilingualHide: '🌐 Masquer les autres langues', tapShow: '🔤 Touche pour traduire', tapHide: '🔤 Arrêter la traduction' },
+  en: { back: '← Back to all books', theme: 'Theme', paperback: 'Paperback', ebook: 'eBook', priceNote: 'See current price on Amazon', buy: '🛒 Buy on Amazon', comingSoon: '🔜 Coming soon', comingSoonNote: 'This title is on its way. Check back soon!', coverAlt: 'book cover', ages: 'Ages', agesSuffix: '', bookLangs: 'Available in English · Spanish and French coming soon', pageAudioNote: 'Page and audio available in Spanish, English, and French', bilingualShow: '🌐 Show description in other languages', bilingualHide: '🌐 Hide other languages', tapShow: '🔤 Tap words to translate', tapHide: '🔤 Stop translating', ratedOn: 'on Amazon', ratingsWord: 'ratings' },
+  es: { back: '← Volver a todos los libros', theme: 'Tema', paperback: 'Tapa blanda', ebook: 'eBook', priceNote: 'Consulta el precio actual en Amazon', buy: '🛒 Comprar en Amazon', comingSoon: '🔜 Próximamente', comingSoonNote: 'Este título está en camino. ¡Vuelve pronto!', coverAlt: 'portada del libro', ages: 'Edades', agesSuffix: 'años', bookLangs: 'Disponible en inglés · Español y francés próximamente', pageAudioNote: 'Página y audio disponibles en español, inglés y francés', bilingualShow: '🌐 Mostrar la descripción en otros idiomas', bilingualHide: '🌐 Ocultar otros idiomas', tapShow: '🔤 Toca para traducir', tapHide: '🔤 Dejar de traducir', ratedOn: 'en Amazon', ratingsWord: 'valoraciones' },
+  fr: { back: '← Retour à tous les livres', theme: 'Thème', paperback: 'Livre broché', ebook: 'Livre numérique', priceNote: 'Voir le prix actuel sur Amazon', buy: '🛒 Acheter sur Amazon', comingSoon: '🔜 Bientôt disponible', comingSoonNote: 'Ce titre arrive bientôt. Revenez vite !', coverAlt: 'couverture du livre', ages: 'Âges', agesSuffix: 'ans', bookLangs: 'Disponible en anglais · Espagnol et français bientôt disponibles', pageAudioNote: 'Page et audio disponibles en espagnol, anglais et français', bilingualShow: '🌐 Afficher la description dans d\'autres langues', bilingualHide: '🌐 Masquer les autres langues', tapShow: '🔤 Touche pour traduire', tapHide: '🔤 Arrêter la traduction', ratedOn: 'sur Amazon', ratingsWord: 'évaluations' },
 };
 
 export default function BookDetail() {
@@ -50,6 +51,11 @@ export default function BookDetail() {
     // rather than mislabel an ASIN as an ISBN.
     const asin = book.amazonUrl.match(/\/dp\/([0-9A-Za-z]+)/)?.[1];
     const isbn = asin && /^[0-9]{9}[0-9Xx]$/.test(asin) ? asin : undefined;
+    // Only mark up a rating that is REAL and shown on this page (see the visible
+    // stars below). BOOK_RATINGS holds live Amazon numbers scraped by
+    // scripts/refresh-ratings.mjs; a book with no ratings yet isn't in the map,
+    // so no aggregateRating is emitted (never invent one — Google policy).
+    const rating = BOOK_RATINGS[book.id];
     return {
       '@context': 'https://schema.org',
       '@type': 'Book',
@@ -61,6 +67,17 @@ export default function BookDetail() {
       image: ogImage,
       url: `${SITE_URL}${localizePath(`/books/${book.id}`, language)}/`,
       ...(isbn ? { isbn } : {}),
+      ...(rating
+        ? {
+            aggregateRating: {
+              '@type': 'AggregateRating',
+              ratingValue: rating.ratingValue,
+              reviewCount: rating.reviewCount,
+              bestRating: 5,
+              worstRating: 1,
+            },
+          }
+        : {}),
       ...(book.subtitle ? { alternativeHeadline: book.subtitle } : {}),
       ...(book.amazonUrl ? { sameAs: book.amazonUrl.split('?')[0] } : {}),
       abstract: book.description,
@@ -175,6 +192,15 @@ export default function BookDetail() {
               </>
             ) : (
               <>
+                {BOOK_RATINGS[book.id] && (
+                  <p className="mb-3 flex items-center gap-1.5 text-sm">
+                    <span className="text-amber-500" aria-hidden>★</span>
+                    <span className="font-semibold text-gray-800">{BOOK_RATINGS[book.id].ratingValue.toFixed(1)}</span>
+                    <span className="text-gray-500">
+                      {t.ratedOn} · {BOOK_RATINGS[book.id].reviewCount} {t.ratingsWord}
+                    </span>
+                  </p>
+                )}
                 <p className="text-sm text-gray-500 mb-3">
                   📖 {t.paperback} · 📱 {t.ebook} · {t.priceNote}
                 </p>

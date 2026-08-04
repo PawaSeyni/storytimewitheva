@@ -14,6 +14,7 @@
     "build:games-css": "tailwindcss -c scripts/games.tailwind.config.cjs -i scripts/games-tw-input.css -o public/games/games.css --minify",
     "patch:games": "node scripts/patch-games.mjs",
     "refresh-covers": "node scripts/refresh-covers.mjs",
+    "refresh-ratings": "node scripts/refresh-ratings.mjs",
     "maintenance": "node scripts/maintenance.mjs"
   },
   "dependencies": {
