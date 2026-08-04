@@ -149,7 +149,19 @@ for (const route of routes) {
     await page
       .waitForFunction("!document.querySelector('[data-prerender-loading]')", { timeout: 10000 })
       .catch(() => {});
-    const html = await page.content();
+    let html = await page.content();
+    // LCP hint: preload the hero image with its REAL hashed URL, taken from this
+    // page's own rendered HTML — so it can never drift out of date (Vite re-hashes
+    // the asset whenever it changes). Injected only on routes that actually render
+    // the hero (home + /es,/fr), never site-wide. The <img> already carries
+    // fetchpriority="high"; this adds the preload tag some auditors look for.
+    const hero = html.match(/\/assets\/eva-reading-[A-Za-z0-9_-]+\.webp/);
+    if (hero && !html.includes('rel="preload" as="image"')) {
+      html = html.replace(
+        '</head>',
+        `<link rel="preload" as="image" href="${hero[0]}" fetchpriority="high"></head>`,
+      );
+    }
     const outDir = route === '/' ? DIST : path.join(DIST, route);
     await mkdir(outDir, { recursive: true });
     await writeFile(path.join(outDir, 'index.html'), html);
