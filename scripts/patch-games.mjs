@@ -25,24 +25,6 @@ const syncSnippet = (slug) => `
   var KEY = 'readingProgress';
   function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
   function isDone() { var p = load(); return Array.isArray(p.activitiesCompleted) && p.activitiesCompleted.indexOf(SLUG) > -1; }
-  function track() {
-    // Fire the same "Activity Complete" Plausible event the React app sends,
-    // via the script-less events API so games stay zero-external on load (this
-    // request only fires on the completion click, not on page load).
-    try {
-      fetch('https://plausible.io/api/event', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        keepalive: true,
-        body: JSON.stringify({
-          name: 'Activity Complete',
-          url: location.href,
-          domain: 'storytimewitheva.com',
-          props: { activity: SLUG }
-        })
-      });
-    } catch (e) {}
-  }
   function markDone() {
     var p = load();
     p.booksRead = Array.isArray(p.booksRead) ? p.booksRead : [];
@@ -52,13 +34,12 @@ const syncSnippet = (slug) => `
     if (!already) p.activitiesCompleted.push(SLUG);
     localStorage.setItem(KEY, JSON.stringify(p));
     try { window.dispatchEvent(new CustomEvent('progresschange')); } catch (e) {}
-    if (!already) track();
   }
   var btn = document.getElementById('markCompleted');
   if (btn) {
     btn.addEventListener('click', markDone);
     if (isDone()) {
-      btn.textContent = '✅ Completed!';
+      btn.textContent = window.t('completed');
       btn.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
     }
   }
@@ -104,8 +85,11 @@ for (const file of files) {
     changed = true;
   }
 
-  // 2. Inject (or refresh) the progress-sync + analytics script. Strip any
-  //    previously-injected block first so re-running upgrades it in place.
+  // 2. Inject (or refresh) the progress-sync script. Strip any previously-
+  //    injected block first so re-running upgrades it in place. (An older
+  //    version also POSTed an "Activity Complete" event to plausible.io; that
+  //    was removed when analytics moved to Cloudflare Web Analytics, whose free
+  //    beacon has no custom-events API — re-running scrubs it from every game.)
   const existingBlock = new RegExp(`\\n?<!-- ${MARKER}[\\s\\S]*?</script>\\n?`);
   html = html.replace(existingBlock, '\n');
   if (html.includes('</body>')) {

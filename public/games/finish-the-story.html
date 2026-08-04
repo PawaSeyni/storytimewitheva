@@ -591,6 +591,7 @@
   </footer>
 
 
+
 <!-- STE_PROGRESS_SYNC: injected by scripts/patch-games.mjs -->
 <script>
 (function () {
@@ -598,24 +599,6 @@
   var KEY = 'readingProgress';
   function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
   function isDone() { var p = load(); return Array.isArray(p.activitiesCompleted) && p.activitiesCompleted.indexOf(SLUG) > -1; }
-  function track() {
-    // Fire the same "Activity Complete" Plausible event the React app sends,
-    // via the script-less events API so games stay zero-external on load (this
-    // request only fires on the completion click, not on page load).
-    try {
-      fetch('https://plausible.io/api/event', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        keepalive: true,
-        body: JSON.stringify({
-          name: 'Activity Complete',
-          url: location.href,
-          domain: 'storytimewitheva.com',
-          props: { activity: SLUG }
-        })
-      });
-    } catch (e) {}
-  }
   function markDone() {
     var p = load();
     p.booksRead = Array.isArray(p.booksRead) ? p.booksRead : [];
@@ -625,7 +608,6 @@
     if (!already) p.activitiesCompleted.push(SLUG);
     localStorage.setItem(KEY, JSON.stringify(p));
     try { window.dispatchEvent(new CustomEvent('progresschange')); } catch (e) {}
-    if (!already) track();
   }
   var btn = document.getElementById('markCompleted');
   if (btn) {
