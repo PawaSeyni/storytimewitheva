@@ -18,9 +18,9 @@ const SITE_URL = 'https://storytimewitheva.com';
 const FLAG_TO_LANG: Record<string, string> = { '🇺🇸': 'en', '🇪🇸': 'es', '🇫🇷': 'fr' };
 
 const TRANSLATIONS = {
-  en: { back: '← Back to all books', theme: 'Theme', paperback: 'Paperback', ebook: 'eBook', priceNote: 'See current price on Amazon', buy: '🛒 Buy on Amazon', comingSoon: '🔜 Coming soon', comingSoonNote: 'This title is on its way. Check back soon!', coverAlt: 'book cover', ages: 'Ages', agesSuffix: '', bookLangs: 'Available in English · Spanish and French coming soon', pageAudioNote: 'Page and audio available in Spanish, English, and French', bilingualShow: '🌐 Show description in other languages', bilingualHide: '🌐 Hide other languages', tapShow: '🔤 Tap words to translate', tapHide: '🔤 Stop translating', ratedOn: 'on Amazon', ratingsWord: 'ratings' },
-  es: { back: '← Volver a todos los libros', theme: 'Tema', paperback: 'Tapa blanda', ebook: 'eBook', priceNote: 'Consulta el precio actual en Amazon', buy: '🛒 Comprar en Amazon', comingSoon: '🔜 Próximamente', comingSoonNote: 'Este título está en camino. ¡Vuelve pronto!', coverAlt: 'portada del libro', ages: 'Edades', agesSuffix: 'años', bookLangs: 'Disponible en inglés · Español y francés próximamente', pageAudioNote: 'Página y audio disponibles en español, inglés y francés', bilingualShow: '🌐 Mostrar la descripción en otros idiomas', bilingualHide: '🌐 Ocultar otros idiomas', tapShow: '🔤 Toca para traducir', tapHide: '🔤 Dejar de traducir', ratedOn: 'en Amazon', ratingsWord: 'valoraciones' },
-  fr: { back: '← Retour à tous les livres', theme: 'Thème', paperback: 'Livre broché', ebook: 'Livre numérique', priceNote: 'Voir le prix actuel sur Amazon', buy: '🛒 Acheter sur Amazon', comingSoon: '🔜 Bientôt disponible', comingSoonNote: 'Ce titre arrive bientôt. Revenez vite !', coverAlt: 'couverture du livre', ages: 'Âges', agesSuffix: 'ans', bookLangs: 'Disponible en anglais · Espagnol et français bientôt disponibles', pageAudioNote: 'Page et audio disponibles en espagnol, anglais et français', bilingualShow: '🌐 Afficher la description dans d\'autres langues', bilingualHide: '🌐 Masquer les autres langues', tapShow: '🔤 Touche pour traduire', tapHide: '🔤 Arrêter la traduction', ratedOn: 'sur Amazon', ratingsWord: 'évaluations' },
+  en: { back: '← Back to all books', theme: 'Theme', paperback: 'Paperback', ebook: 'eBook', priceNote: 'See current price on Amazon', buy: '🛒 Buy on Amazon', comingSoon: '🔜 Coming soon', comingSoonNote: 'This title is on its way. Check back soon!', coverAlt: 'book cover', ages: 'Ages', agesSuffix: '', bookLangs: 'Available in English · Spanish and French coming soon', pageAudioNote: 'Page and audio available in Spanish, English, and French', bilingualShow: '🌐 Show description in other languages', bilingualHide: '🌐 Hide other languages', tapShow: '🔤 Tap words to translate', tapHide: '🔤 Stop translating', ratedOn: 'on Amazon', ratingsWord: 'ratings', homeCrumb: 'Home', booksCrumb: 'Books' },
+  es: { back: '← Volver a todos los libros', theme: 'Tema', paperback: 'Tapa blanda', ebook: 'eBook', priceNote: 'Consulta el precio actual en Amazon', buy: '🛒 Comprar en Amazon', comingSoon: '🔜 Próximamente', comingSoonNote: 'Este título está en camino. ¡Vuelve pronto!', coverAlt: 'portada del libro', ages: 'Edades', agesSuffix: 'años', bookLangs: 'Disponible en inglés · Español y francés próximamente', pageAudioNote: 'Página y audio disponibles en español, inglés y francés', bilingualShow: '🌐 Mostrar la descripción en otros idiomas', bilingualHide: '🌐 Ocultar otros idiomas', tapShow: '🔤 Toca para traducir', tapHide: '🔤 Dejar de traducir', ratedOn: 'en Amazon', ratingsWord: 'valoraciones', homeCrumb: 'Inicio', booksCrumb: 'Libros' },
+  fr: { back: '← Retour à tous les livres', theme: 'Thème', paperback: 'Livre broché', ebook: 'Livre numérique', priceNote: 'Voir le prix actuel sur Amazon', buy: '🛒 Acheter sur Amazon', comingSoon: '🔜 Bientôt disponible', comingSoonNote: 'Ce titre arrive bientôt. Revenez vite !', coverAlt: 'couverture du livre', ages: 'Âges', agesSuffix: 'ans', bookLangs: 'Disponible en anglais · Espagnol et français bientôt disponibles', pageAudioNote: 'Page et audio disponibles en espagnol, anglais et français', bilingualShow: '🌐 Afficher la description dans d\'autres langues', bilingualHide: '🌐 Masquer les autres langues', tapShow: '🔤 Touche pour traduire', tapHide: '🔤 Arrêter la traduction', ratedOn: 'sur Amazon', ratingsWord: 'évaluations', homeCrumb: 'Accueil', booksCrumb: 'Livres' },
 };
 
 export default function BookDetail() {
@@ -85,6 +85,27 @@ export default function BookDetail() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug, language, ogImage]);
 
+  // Home › Books › Title trail. URLs use the trailing-slash form Netlify serves
+  // (same as Seo.tsx canonicals), and the visible <nav> below mirrors it so the
+  // markup matches on-page content.
+  const crumbUrl = (p: string) => {
+    const lp = localizePath(p, language);
+    return lp === '/' ? `${SITE_URL}/` : `${SITE_URL}${lp}/`;
+  };
+  const breadcrumbSchema = useMemo(() => {
+    if (!book) return null;
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: t.homeCrumb, item: crumbUrl('/') },
+        { '@type': 'ListItem', position: 2, name: t.booksCrumb, item: crumbUrl('/books') },
+        { '@type': 'ListItem', position: 3, name: book.title, item: crumbUrl(`/books/${book.id}`) },
+      ],
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug, language, t.homeCrumb, t.booksCrumb]);
+
   // Unknown id → real (noindex) 404 rather than a blank page.
   if (!book) return <NotFound />;
 
@@ -96,11 +117,18 @@ export default function BookDetail() {
     <main className="py-8 px-4">
       <Seo title={book.title} description={book.subtitle || book.description} path={`/books/${book.id}`} image={ogImage} />
       <JsonLd id="book" data={bookSchema} />
+      {breadcrumbSchema && <JsonLd id="breadcrumb" data={breadcrumbSchema} />}
 
       <div className="max-w-4xl mx-auto">
-        <Link to="/books" className="inline-flex items-center gap-1 text-sm font-semibold text-purple-600 hover:text-purple-800 transition-colors">
-          {t.back}
-        </Link>
+        <nav aria-label="Breadcrumb" className="text-sm">
+          <ol className="flex flex-wrap items-center gap-1.5 text-gray-500">
+            <li><Link to="/" className="font-semibold text-purple-600 hover:text-purple-800 transition-colors">{t.homeCrumb}</Link></li>
+            <li aria-hidden className="text-gray-400">›</li>
+            <li><Link to="/books" className="font-semibold text-purple-600 hover:text-purple-800 transition-colors">{t.booksCrumb}</Link></li>
+            <li aria-hidden className="text-gray-400">›</li>
+            <li className="font-medium text-gray-700 truncate max-w-[16rem]" aria-current="page">{book.title}</li>
+          </ol>
+        </nav>
 
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           <div className="rounded-3xl overflow-hidden shadow-xl bg-gray-100 aspect-square">
