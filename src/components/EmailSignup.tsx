@@ -8,8 +8,11 @@ import { track } from '../lib/analytics';
 // attached to the subscriber on submit. Single opt-in is ON, so MailerLite
 // adds the subscriber directly; the welcome automation fires when the user
 // joins (subscriber_joins_group trigger).
-const MAILERLITE_FORM_ACTION =
-  'https://assets.mailerlite.com/jsonp/2363396/forms/187942934227715798/subscribe';
+// Server-side subscribe endpoint (Netlify Function: netlify/functions/subscribe.mjs).
+// Replaces the old browser->MailerLite JSONP POST, which returned 503 and — under
+// mode:'no-cors' — silently dropped every email while showing "success". The
+// function calls MailerLite's API with the account token and returns a real result.
+const SUBSCRIBE_ENDPOINT = '/.netlify/functions/subscribe';
 
 // Lead-magnet registry. Pins/FB posts deep-link to the form with `?lm=<slug>`
 // so the right freebie is both tagged on the subscriber AND delivered instantly
@@ -25,7 +28,7 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
       es: 'Descarga la rutina de dormir',
       fr: 'Téléchargez le tableau du coucher',
     },
-    pdf: { en: '/bedtime-routine.pdf', es: '/bedtime-routine-es.pdf', fr: '/bedtime-routine-fr.pdf' },
+    pdf: { en: '/bedtime-routine.7cdc728eb026.pdf', es: '/bedtime-routine-es.9db70549b2cb.pdf', fr: '/bedtime-routine-fr.91d87fe35749.pdf' },
   },
   'bilingual-starter-kit': {
     tag: 'bilingual-starter-kit',
@@ -34,7 +37,7 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
       es: '¡Descarga GRATIS el kit trilingüe de 20 páginas!',
       fr: 'Téléchargez gratuitement le kit trilingue de 20 pages !',
     },
-    pdf: { en: '/bilingual-starter-kit.pdf', es: '/bilingual-starter-kit.pdf', fr: '/bilingual-starter-kit.pdf' },
+    pdf: { en: '/bilingual-starter-kit.67152acba3fc.pdf', es: '/bilingual-starter-kit.67152acba3fc.pdf', fr: '/bilingual-starter-kit.67152acba3fc.pdf' },
   },
   'bilingual-flashcards': {
     tag: 'bilingual-flashcards',
@@ -43,7 +46,7 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
       es: 'Descarga tarjetas bilingües',
       fr: 'Téléchargez les cartes bilingues',
     },
-    pdf: { en: '/bilingual-flashcards.pdf', es: '/bilingual-flashcards.pdf', fr: '/bilingual-flashcards.pdf' },
+    pdf: { en: '/bilingual-flashcards.8d2eff72661a.pdf', es: '/bilingual-flashcards.8d2eff72661a.pdf', fr: '/bilingual-flashcards.8d2eff72661a.pdf' },
   },
   'parents-guide': {
     tag: 'parents-guide',
@@ -52,7 +55,7 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
       es: 'Descarga la guía para padres',
       fr: 'Téléchargez le guide des parents',
     },
-    pdf: { en: '/parents-guide.pdf', es: '/parents-guide-es.pdf', fr: '/parents-guide-fr.pdf' },
+    pdf: { en: '/parents-guide.12ba12f60096.pdf', es: '/parents-guide-es.5c21d77b24d2.pdf', fr: '/parents-guide-fr.16a27a138de4.pdf' },
   },
   'follow-up-activities': {
     tag: 'follow-up-activities',
@@ -61,7 +64,7 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
       es: 'Descarga 5 actividades de lectura',
       fr: 'Téléchargez 5 activités de lecture',
     },
-    pdf: { en: '/follow-up-activities.pdf', es: '/follow-up-activities-es.pdf', fr: '/follow-up-activities-fr.pdf' },
+    pdf: { en: '/follow-up-activities.43818dc842cc.pdf', es: '/follow-up-activities-es.a733da2b2546.pdf', fr: '/follow-up-activities-fr.e605cd5fa2d4.pdf' },
   },
 };
 const DEFAULT_MAGNET = 'bilingual-starter-kit';
@@ -160,6 +163,15 @@ export default function EmailSignup() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // A pre-hydration native submit posts to the function, which 303-redirects
+  // back with ?signup=<result>. Reflect that so those visitors still see the
+  // success screen (or an error) rather than a bare reload.
+  useEffect(() => {
+    const r = (readParam('signup') || '').toLowerCase();
+    if (r === 'ok') setStatus('submitted');
+    else if (r === 'invalid' || r === 'error') setStatus('error');
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || status === 'submitting') return;
@@ -168,36 +180,25 @@ export default function EmailSignup() {
 
     const trimmedName = firstName.trim();
 
-    const formData = new FormData();
-    formData.append('fields[email]', email);
-    // MailerLite's default "Name" field has key `name` (id 1). Keep this
-    // submission optional — empty names just leave the field blank, which
-    // the welcome email handles with a `{$name|default:'…'}` fallback.
-    if (trimmedName) formData.append('fields[name]', trimmedName);
-    formData.append('fields[language]', language);
-    formData.append('fields[lead_magnet]', magnet.tag);
-    formData.append('ml-submit', '1');
-    formData.append('anticsrf', 'true');
-
     try {
-      // MailerLite's JSONP endpoint doesn't return CORS headers, so we
-      // can't read the response. `no-cors` lets the POST go through —
-      // single opt-in means MailerLite adds the subscriber directly, so
-      // the success screen can promise the freebie right away.
-      await fetch(MAILERLITE_FORM_ACTION, {
+      const res = await fetch(SUBSCRIBE_ENDPOINT, {
         method: 'POST',
-        body: formData,
-        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, name: trimmedName, language, lead_magnet: magnet.tag }),
       });
-      setStatus('submitted');
-      track('Signup', { language });
-      setEmail('');
-      setFirstName('');
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.ok) {
+        setStatus('submitted');
+        track('Signup', { language });
+        setEmail('');
+        setFirstName('');
+      } else {
+        // Real failure now surfaces instead of a silent "success" on a lost email.
+        console.error('Signup rejected:', res.status, data);
+        setStatus('error');
+      }
     } catch (err) {
-      // `no-cors` fetch only throws on hard network failure (offline,
-      // DNS, request aborted). Show the inline error so the user can
-      // retry or fall back to email.
-      console.error('MailerLite signup failed:', err);
+      console.error('Signup request failed:', err);
       setStatus('error');
     }
   };
@@ -231,9 +232,21 @@ export default function EmailSignup() {
             </a>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3 max-w-md mx-auto">
+          <form
+            onSubmit={handleSubmit}
+            action={SUBSCRIBE_ENDPOINT}
+            method="post"
+            className="flex flex-col gap-3 max-w-md mx-auto"
+          >
+            {/* Native-fallback fields: if the form is submitted before React
+                hydrates (no onSubmit yet), the browser posts these directly to
+                the function, which redirects back — so no email is ever lost to
+                a pre-hydration GET. */}
+            <input type="hidden" name="language" value={language} />
+            <input type="hidden" name="lead_magnet" value={magnet.tag} />
             <input
               type="text"
+              name="name"
               value={firstName}
               onChange={e => setFirstName(e.target.value)}
               placeholder={t.firstNamePlaceholder}
@@ -245,6 +258,7 @@ export default function EmailSignup() {
             <div className="flex flex-col sm:flex-row gap-3">
               <input
                 type="email"
+                name="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder={t.emailPlaceholder}
