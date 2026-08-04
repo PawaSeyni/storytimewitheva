@@ -120,7 +120,7 @@ export default function About() {
 
   return (
     <main>
-      <Seo title={t.seoTitle} description={t.seoDesc} path="/about" image={`${SITE_URL}${evaHeadshot}`} />
+      <Seo title={t.seoTitle} description={t.seoDesc} path="/about" image={`${SITE_URL}${evaHeadshot}`} imageWidth={800} imageHeight={800} />
       <JsonLd id="author" data={authorSchema} />
 
       <section className="bg-gradient-to-b from-amber-50 to-white py-14 px-4">

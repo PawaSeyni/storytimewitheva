@@ -199,7 +199,7 @@ export default function Home() {
 
   return (
     <main>
-      <Seo title={t.seoTitle} bare description={t.seoDesc} path="/" image={`${SITE_URL}${evaReading}`} />
+      <Seo title={t.seoTitle} bare description={t.seoDesc} path="/" image={`${SITE_URL}${evaReading}`} imageWidth={1200} imageHeight={900} />
       <JsonLd id="org" data={ORG_SCHEMA} />
 
       {/* Hero Section */}
