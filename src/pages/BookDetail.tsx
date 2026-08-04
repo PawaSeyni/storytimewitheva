@@ -45,15 +45,22 @@ export default function BookDetail() {
   // the derived ogImage) are the real inputs. url tracks the localized canonical.
   const bookSchema = useMemo(() => {
     if (!book) return null;
+    // KDP paperback ASINs that are 10-char numeric ARE the ISBN-10; the 3
+    // B0-prefixed ASINs are Amazon-only ids with no ISBN — omit isbn there
+    // rather than mislabel an ASIN as an ISBN.
+    const asin = book.amazonUrl.match(/\/dp\/([0-9A-Za-z]+)/)?.[1];
+    const isbn = asin && /^[0-9]{9}[0-9Xx]$/.test(asin) ? asin : undefined;
     return {
       '@context': 'https://schema.org',
       '@type': 'Book',
       name: book.title,
       author: { '@type': 'Person', name: 'Eva Gallo' },
+      publisher: { '@type': 'Organization', name: 'Pawa Press Inc.' },
       inLanguage: book.languages.map(f => FLAG_TO_LANG[f]).filter(Boolean),
       bookFormat: 'https://schema.org/Paperback',
       image: ogImage,
       url: `${SITE_URL}${localizePath(`/books/${book.id}`, language)}/`,
+      ...(isbn ? { isbn } : {}),
       ...(book.subtitle ? { alternativeHeadline: book.subtitle } : {}),
       ...(book.amazonUrl ? { sameAs: book.amazonUrl.split('?')[0] } : {}),
       abstract: book.description,
