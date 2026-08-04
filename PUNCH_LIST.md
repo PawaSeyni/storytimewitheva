@@ -12,6 +12,66 @@ progresses — it's the canonical "what's done / what's not" record.
 
 ---
 
+## ✅ Verified & live — session update 2026-08-04
+
+All items below shipped to `main`, deployed to production (**storytimewitheva.com**), and
+**live-verified**. Run `npm run maintenance` for the current dashboard (last run: **30 pass · 0 fail**).
+
+### P0 — lead-capture funnel (was silently broken; now fixed)
+- [x] **Email capture fixed.** The old browser→MailerLite JSONP POST returned **HTTP 503** and, under
+  `mode:'no-cors'`, showed "success" while dropping **every** email (reproduced live). Replaced with a
+  server-side **Netlify Function** `netlify/functions/subscribe.mjs` that calls the MailerLite API with
+  **`MAILERLITE_API_KEY`** (Netlify env var — required). The form POSTs to `/.netlify/functions/subscribe`,
+  shows a real error on failure, and has a native pre-hydration fallback (303→`/?signup=ok`). **Supersedes
+  A3 + the A5 "503 is normal" note below.** Verified: GET→405, invalid→422, valid→200 `{ok:true,grouped:true}`,
+  real subscriber created via API. **PR #74.**
+- [x] **Lead-magnet PDFs gated.** All 11 PDFs renamed to unguessable hashed filenames; raw `/name.pdf`
+  paths now **404**. Delivery = hashed link on the success screen + the welcome email. **PR #74.**
+- [x] **/links funnel leak closed.** The link-in-bio page linked the freebies as direct PDF downloads
+  (bypassing email capture); each now routes to the signup with its magnet pre-selected
+  (`/?lm=<magnet>#email-signup`). **PR #76.**
+- [x] **MailerLite → single opt-in.** Site copy updated EN/ES/FR (no "confirmation email" language); the
+  double-opt-in toggle was flipped **OFF** on the "Bilingual Starter Kit — site signup" form. **Supersedes
+  the "double opt-in ON" in A1.** **PR #70.**
+- [x] **Regression guard added.** `npm run maintenance` now has a **Funnel** group (subscribe fn returns
+  422 to an invalid email = up + key set; hashed PDFs 200; raw PDFs 404). Exits non-zero on FAIL. **PR #75.**
+
+### SEO / rendering
+- [x] **SSR / pre-rendering confirmed** (2026-08-04). Static prerender of all **123 sitemap routes**; `#root`
+  is populated in the raw HTML for **all** user-agents (not bot-gated). `curl -A Googlebot …` returns real
+  `<h1>`/content. Mechanism: `scripts/prerender.mjs`, required (fails the build if it breaks).
+- [x] **Real 404s.** Removed the SPA `/* → /index.html 200` catch-all; unknown URLs + invalid book slugs
+  return **HTTP 404** with a noindex NotFound page. **PR #60.**
+- [x] **Google Search Console** verified (DNS Domain + HTML meta tag); sitemap = 123 URLs, status Success. **PR #69.**
+
+### Analytics
+- [x] **Switched Plausible → Cloudflare Web Analytics** (cookieless, free, no consent banner); the Plausible
+  first-party proxy was removed. Beacon live on every page. **PR #66 / #68.**
+
+### Catalog
+- [x] **Books are English-only.** Single 🇺🇸 flag (was 🇺🇸🇪🇸🇫🇷), Book JSON-LD `inLanguage:["en"]`,
+  detail copy "Available in English · Spanish and French coming soon" (EN/ES/FR). **PR #71.**
+- [x] **All 18 covers refreshed** from current Amazon art (16/18 were stale). 3 featured titles regenerated
+  as local optimized `.webp` (700×700). New `npm run refresh-covers` tool re-scrapes on demand. **PR #72 / #73.**
+- [x] **Amazon/KDP metadata pass** — shorter titles + long SEO subtitles (EN/ES/FR). **PR #67.**
+
+### Full audit (two passes) — all findings shipped
+- [x] Copy / house-rules: em-dashes out of English, ages standardized to "3–9", Trilingual Starter Kit /
+  Multilingual activities naming, Amazon overpromise softened. **PR #59 / #62 / #63 / #64.**
+- [x] Game keyboard a11y — all 6 click-only games now keyboard-playable. **PR #61.**
+- [x] Game i18n — all 12 games fully trilingual incl. footers. **PR #62 / #64.**
+- [x] Accessibility tier-2 — game form labels, heading order, contrast, aria-labels, FeedbackWidget focus
+  trap. **PR #63.**
+- [x] Resources article EN/ES/FR section parity. **PR #65.**
+- [x] Profile: Reading Tracker / Journal entries + clear-progress. **PR #57 / #58.** Profile prerender fix
+  (was serving the homepage). **PR #54.**
+
+### Owner-side follow-ups (done)
+- [x] Repointed the MailerLite welcome-email download link to the new hashed URL.
+- [x] Deleted the P0 test subscribers.
+
+---
+
 ## 🚦 Release gates (active work)
 
 Three gates to get to a real launch. Top-to-bottom priority. Detailed task list lives in the task tracker (#12 onward).
@@ -21,10 +81,19 @@ Three gates to get to a real launch. Top-to-bottom priority. Detailed task list 
 Without this, every dollar of paid traffic is wasted: form looks fine but throws away the email and never delivers the promised PDF.
 
 - [x] **A1** MailerLite audience set up: group `storytimewitheva-signups` (id `187942568670005101`), custom fields `language` + `lead_magnet`, embedded form "Bilingual Starter Kit — site signup" (id `187942934227715798`), action URL `https://assets.mailerlite.com/jsonp/2363396/forms/187942934227715798/subscribe`, double opt-in ON
+  > ⚠️ **SUPERSEDED 2026-08-04:** now **single opt-in** (PR #70). The browser no longer posts to the JSONP
+  > endpoint at all — a **Netlify Function** calls the MailerLite API server-side (PR #74). See Verified & Live.
 - [x] **A2** PDF live at https://storytimewitheva.netlify.app/bilingual-starter-kit.pdf
 - [x] **A3** `EmailSignup.tsx` posts (no-cors fetch) to the MailerLite JSONP endpoint with `fields[email] / fields[name] / fields[language] / fields[lead_magnet]`; submitting / submitted / error states wired, optional first-name field added above email (EN/ES/FR placeholders), EN/ES/FR copy updated to reflect the double-opt-in confirmation step
+  > ⚠️ **SUPERSEDED 2026-08-04:** the no-cors JSONP POST returned 503 and silently dropped emails. Replaced
+  > by a server-side Netlify Function; copy switched to single-opt-in wording (PR #74 / #70).
 - [x] **A4** Welcome automation built in MailerLite (id `187944859858895989`) — trigger `subscriber_joins_group`, 4 emails (Bilingual Starter Kit → Parent's Reading Guide → Bilingual Flashcards → Bedtime Routine Chart) with 3 / 4 / 5-day delays between them. Email #1 (welcome) carries the multilingual EN/ES/FR copy from `Welcome_Email_Copy.pdf` with `{$name|default:'…'}` merge-tag greetings (fallbacks: `there` / `amigo/a` / `à toi`). Trilingual subject + short plain-text fallback are set via MCP; full HTML body lives at `email-drafts/welcome-multilingual.html` for Eva to paste into the MailerLite block editor. Currently in draft — Eva needs to design/style each email and **activate** before live traffic
 - [x] **A5** End-to-end test signup flow verified on the live site in EN / ES / FR. Three test subscribers (`pnguer+ml-test-{en,es,fr}@gmail.com`) created via the real `EmailSignup` form, each landed in `storytimewitheva-signups` with `status=unconfirmed`, `source=webform`, the correct `language` value, `lead_magnet=bilingual-starter-kit`, and the captured first name. Double-opt-in confirmations sent by MailerLite. Form's POST returns HTTP 503 to the browser (opaque under `no-cors`) but the subscriber still records — this is normal for direct-to-JSONP submissions and not a real failure.
+
+> ⛔ **THIS WAS WRONG (corrected 2026-08-04).** The 503 meant subscribers were **NOT** recorded — every email
+> submitted through the live form was silently dropped (verified: `POST …/subscribe → 503`, no subscriber). Root
+> cause: MailerLite's JSONP endpoint no longer accepts raw POSTs, and `no-cors` hid the failure behind a fake
+> "success". **Fixed** with the server-side Netlify Function (PR #74) — see the Verified & Live section at the top.
 
 ✅ **A4 follow-up RESOLVED (2026-06-10):** all 9 lead-magnet PDFs now live in `public/` — `bilingual-starter-kit`, `bilingual-flashcards`, `follow-up-activities`, `bedtime-routine{,-es,-fr}`, `parents-guide{,-es,-fr}`. Nurture-email links no longer point to missing files. Automation can be activated without broken links.
 
