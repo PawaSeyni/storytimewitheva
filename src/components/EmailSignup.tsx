@@ -349,10 +349,23 @@ export function hasLeadMagnetRequest(): boolean {
   return Boolean(LEAD_MAGNETS[(readParam('lm') || '').toLowerCase()]);
 }
 
-function resolveMagnet(): { magnet: Magnet; focused: boolean } {
-  const slug = (readParam('lm') || '').toLowerCase();
+function resolveMagnet(slugOverride?: string): { magnet: Magnet; focused: boolean } {
+  const slug = (slugOverride ?? readParam('lm') ?? '').toLowerCase();
   const match = LEAD_MAGNETS[slug];
   return { magnet: match ?? LEAD_MAGNETS[DEFAULT_MAGNET], focused: Boolean(match) };
+}
+
+/** True when `slug` is a lead magnet we have a dedicated offer for. Used by the
+ *  /free/:magnet landing route to 404 unknown slugs. */
+export function isKnownMagnet(slug: string | undefined): boolean {
+  return Boolean(slug && LEAD_MAGNETS[slug.toLowerCase()]);
+}
+
+/** Resolved per-language offer copy for a magnet — used by the landing page for
+ *  its <title>/description. Falls back to English. */
+export function magnetCopy(slug: string, language: Language): MagnetCopy | null {
+  const m = LEAD_MAGNETS[slug.toLowerCase()];
+  return m ? m.copy[language] ?? m.copy.en : null;
 }
 
 const TRANSLATIONS = {
@@ -398,13 +411,13 @@ const PREVIEW_DIMS: Record<string, { w: number; h: number }> = {
   '/previews/bilingual-bundle.webp': { w: 720, h: 509 },
 };
 
-export default function EmailSignup() {
+export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } = {}) {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'submitted' | 'error'>('idle');
   const { language, setLanguage } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
-  const [{ magnet, focused }] = useState(() => resolveMagnet());
+  const [{ magnet, focused }] = useState(() => resolveMagnet(magnetSlug));
   const [utm] = useState(readUtm);
   const offer = magnet.copy[language] ?? magnet.copy.en;
   const successRef = useRef<HTMLParagraphElement>(null);
