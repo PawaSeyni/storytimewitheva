@@ -421,6 +421,36 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
   const [utm] = useState(readUtm);
   const offer = magnet.copy[language] ?? magnet.copy.en;
   const successRef = useRef<HTMLParagraphElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const firedView = useRef(false);
+  const firedStart = useRef(false);
+
+  // Funnel: fire "Form View" once the signup section scrolls into view, and
+  // "Form Start" on the first interaction with the form. Aggregate, no PII.
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || firedView.current) return;
+    const io = new IntersectionObserver(
+      entries => {
+        // Fire as soon as the section enters the viewport. A fractional threshold
+        // would never trigger for a section taller than the viewport (mobile).
+        if (entries[0].isIntersecting && !firedView.current) {
+          firedView.current = true;
+          track('Form View', { language, lead_magnet: magnet.tag });
+          io.disconnect();
+        }
+      },
+      { threshold: 0 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [language, magnet.tag]);
+
+  const onFormStart = () => {
+    if (firedStart.current) return;
+    firedStart.current = true;
+    track('Form Start', { language, lead_magnet: magnet.tag });
+  };
 
   // Move focus to the success message so screen-reader users learn the signup
   // worked and the download link is available (the form they were on is gone).
@@ -451,6 +481,7 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
     if (!email || status === 'submitting') return;
 
     setStatus('submitting');
+    track('Form Submit', { language, lead_magnet: magnet.tag });
 
     const trimmedName = firstName.trim();
 
@@ -463,7 +494,9 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.ok) {
         setStatus('submitted');
-        track('Signup', { language });
+        // Backend confirmed a MailerLite subscriber — the aggregate conversion
+        // event. Fired only on real success, never on submit/view.
+        track('Lead Created', { language, lead_magnet: magnet.tag });
         setEmail('');
         setFirstName('');
       } else {
@@ -478,7 +511,7 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
   };
 
   return (
-    <section id="email-signup" className="scroll-mt-24 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 py-16 px-4">
+    <section ref={sectionRef} id="email-signup" className="scroll-mt-24 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 py-16 px-4">
       <div className="max-w-2xl mx-auto text-center">
         <div className="text-5xl mb-4">🎁</div>
         {/* Headline/blurb/bullets/CTA all come from the resolved magnet's copy
@@ -528,6 +561,7 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
                       download
                       target="_blank"
                       rel="noopener"
+                      onClick={() => track('Magnet Download', { language, lead_magnet: magnet.tag, asset: item.href[language] })}
                       className="flex items-center gap-3 px-4 py-3 bg-white/15 hover:bg-white/25 rounded-xl font-semibold transition-colors duration-200"
                     >
                       <span aria-hidden="true">📥</span>
@@ -542,6 +576,7 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
                 download
                 target="_blank"
                 rel="noopener"
+                onClick={() => track('Magnet Download', { language, lead_magnet: magnet.tag, asset: magnet.pdf[language] })}
                 className="inline-block px-6 py-3 bg-orange-700 hover:bg-orange-800 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all duration-200"
               >
                 {t.download}
@@ -551,6 +586,7 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
         ) : (
           <form
             onSubmit={handleSubmit}
+            onFocus={onFormStart}
             action={SUBSCRIBE_ENDPOINT}
             method="post"
             className="flex flex-col gap-3 max-w-md mx-auto"

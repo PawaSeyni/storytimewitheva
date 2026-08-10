@@ -236,7 +236,7 @@ export default function BookDetail() {
                   href={book.amazonUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => track('Amazon Click', { book: book.id })}
+                  onClick={() => track('Purchase Click', { book: book.id, destination: 'amazon' })}
                   className="inline-block w-full sm:w-auto text-center py-3 px-8 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-lg"
                 >
                   {t.buy}

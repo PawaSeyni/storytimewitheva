@@ -100,7 +100,7 @@ export default function BookCard({ book, priority = false }: BookCardProps) {
               href={book.amazonUrl}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => track('Amazon Click', { book: book.id })}
+              onClick={() => track('Purchase Click', { book: book.id, destination: 'amazon' })}
               className="btn-amazon text-xs px-3 py-2"
             >
               {t.buy}

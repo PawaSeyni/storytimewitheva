@@ -77,14 +77,18 @@ await Promise.all(
   add('SEO', 'JSON-LD blocks', jsonld > 0 ? 'pass' : 'warn', `${jsonld} on homepage`);
 }
 
-// ── Analytics ──────────────────────────────────────────────────────────────
+// ── Analytics (privacy-first: Plausible, cookieless, custom funnel events) ───
 {
   const home = pages['/']?.body || '';
-  const cf = /cloudflareinsights\.com\/beacon/.test(home);
-  add('Analytics', 'Cloudflare Web Analytics beacon', cf ? 'pass' : 'fail', cf ? 'beacon script present' : 'beacon MISSING from homepage');
-  const tok = (home.match(/token"?:\s*"?&quot;?([0-9a-f]{20,})/) || home.match(/token&quot;:\s*&quot;([0-9a-f]{20,})/) || [])[1];
-  add('Analytics', 'beacon token', tok ? 'pass' : 'warn', tok ? `…${tok.slice(-8)}` : 'could not read token from HTML');
-  add('Analytics', 'Plausible removed', /plausible/i.test(home) ? 'warn' : 'pass', /plausible/i.test(home) ? 'stale Plausible reference found' : 'no Plausible references');
+  const plausible = /plausible\.io\/js\/script/.test(home);
+  add('Analytics', 'Plausible script present', plausible ? 'pass' : 'fail', plausible ? 'cookieless analytics loaded' : 'Plausible script MISSING from homepage');
+  const queue = /window\.plausible\s*=\s*window\.plausible\s*\|\|/.test(home);
+  add('Analytics', 'custom-events queue snippet', queue ? 'pass' : 'warn', queue ? 'window.plausible() enabled for funnel events' : 'queue snippet missing — early custom events may be dropped');
+  const domain = /data-domain="storytimewitheva\.com"/.test(home);
+  add('Analytics', 'data-domain', domain ? 'pass' : 'warn', domain ? 'reports to storytimewitheva.com' : 'data-domain not found');
+  // The old ad-tracker-free promise: no Cloudflare beacon, no Meta/GA pixels.
+  const noTrackers = !/cloudflareinsights|connect\.facebook|fbevents|googletagmanager|google-analytics/.test(home);
+  add('Analytics', 'no ad trackers / extra beacons', noTrackers ? 'pass' : 'warn', noTrackers ? 'no pixel/GTM/Cloudflare on homepage' : 'unexpected tracker found');
 }
 
 // ── Covers ─────────────────────────────────────────────────────────────────

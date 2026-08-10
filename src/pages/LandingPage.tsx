@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from '../components/LocalizedLink';
 import Seo from '../components/Seo';
 import NotFound from './NotFound';
 import EmailSignup, { isKnownMagnet, magnetCopy } from '../components/EmailSignup';
 import { useLanguage, useTranslation } from '../lib/language';
+import { track } from '../lib/analytics';
 
 const SITE_URL = 'https://storytimewitheva.com';
 
@@ -28,9 +30,17 @@ export default function LandingPage() {
   const { magnet } = useParams();
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
+  const known = isKnownMagnet(magnet);
+
+  // Top of the funnel: one aggregate "Landing View" per page view (mount only —
+  // not re-fired if `?lang=` flips the language a tick later).
+  useEffect(() => {
+    if (known) track('Landing View', { language, lead_magnet: String(magnet), landing_page: `/free/${magnet}` });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // A bad/edited pin URL gets a real 404, never a broken or default offer.
-  if (!isKnownMagnet(magnet)) return <NotFound />;
+  if (!known) return <NotFound />;
 
   const copy = magnetCopy(magnet as string, language);
   const year = new Date().getFullYear();
@@ -58,7 +68,10 @@ export default function LandingPage() {
       </header>
 
       <main className="flex-1">
-        <EmailSignup magnet={magnet} />
+        {/* key remounts the signup (fresh magnet + a new Form View) if the
+            :magnet param ever changes client-side — landing pages are normally
+            full-load ad entries, but this keeps it correct either way. */}
+        <EmailSignup key={magnet} magnet={magnet} />
       </main>
 
       {/* Credibility + the post-conversion path, kept below the offer. */}
