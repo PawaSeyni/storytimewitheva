@@ -38,16 +38,17 @@
     <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- Privacy-first analytics: Plausible. Cookieless, no consent banner, no
-         cross-site tracking, aggregate-only — consistent with the brand's "no
-         cookies / no ad trackers / no child profiles" privacy policy. Unlike
-         Cloudflare Web Analytics (pageviews-only), Plausible supports the custom
-         funnel events fired via window.plausible() in src/lib/analytics.ts.
-         Reports by domain to the Plausible account that owns storytimewitheva.com;
-         no secret key is needed. The queue snippet captures events sent before
-         the deferred script finishes loading. -->
-    <script defer data-domain="storytimewitheva.com" src="https://plausible.io/js/script.js"></script>
-    <script>window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}</script>
+    <!-- Privacy-friendly analytics by Plausible (cookieless, no consent banner,
+         no cross-site tracking, aggregate-only) — consistent with the brand's
+         "no cookies / no ad trackers / no child profiles" privacy policy. This is
+         the exact site-keyed install snippet from the Plausible dashboard, so
+         data registers to this site. It also enables the custom funnel events
+         fired via window.plausible() in src/lib/analytics.ts. -->
+    <script async src="https://plausible.io/js/pa-gzJ4DP5LRQ39ZXessq04G.js"></script>
+    <script>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
   </head>
   <body>
     <!--
