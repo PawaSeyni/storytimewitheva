@@ -314,6 +314,28 @@ function readParam(name: string): string | null {
 }
 
 /**
+ * Campaign attribution from the URL's `utm_*` params, mapped to short MailerLite
+ * field names. Captured at mount so it survives the `?signup=ok` redirect round
+ * trip. Stored on the subscriber so paid signups can be attributed to a source /
+ * campaign / creative (the subscribe function drops these gracefully if the
+ * matching MailerLite fields don't exist yet).
+ */
+const UTM_MAP: Array<[string, string]> = [
+  ['utm_source', 'source'],
+  ['utm_medium', 'medium'],
+  ['utm_campaign', 'campaign'],
+  ['utm_content', 'content'],
+];
+function readUtm(): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const [param, field] of UTM_MAP) {
+    const v = readParam(param);
+    if (v) out[field] = v.slice(0, 120);
+  }
+  return out;
+}
+
+/**
  * Resolve the requested magnet. `focused` is true when the visitor arrived on a
  * `?lm=` deep link, i.e. they clicked a pin/ad for ONE specific freebie. In that
  * case the section becomes a single-offer landing block (its headline, blurb,
@@ -337,16 +359,8 @@ function resolveMagnet(): { magnet: Magnet; focused: boolean } {
 
 const TRANSLATIONS = {
   en: {
-    blurb: 'Join our growing community of parents making reading fun. Get coloring pages, reading guides, and multilingual activities delivered straight to your inbox.',
-    bullets: [
-      '✓ 20-page activity pack (English, Spanish & French)',
-      '✓ Age-appropriate book recommendations',
-      '✓ Fun story prompts & creative activities',
-      '✓ No spam, unsubscribe anytime',
-    ],
     firstNamePlaceholder: 'First name (optional)',
     emailPlaceholder: 'Enter your email address',
-    submit: 'Get My Free Kit 🎨',
     submitting: 'Sending…',
     successHeading: 'Success, your download is ready!',
     successDetail: 'Tap below to grab your freebie. You’re on the list, so new printables and reading tips are on the way.',
@@ -356,16 +370,8 @@ const TRANSLATIONS = {
     audienceNote: 'For parents & guardians. Please sign up on your child’s behalf.',
   },
   es: {
-    blurb: 'Únete a nuestra comunidad de padres que hacen divertida la lectura. Recibe páginas para colorear, guías de lectura y actividades multilingües directamente en tu correo.',
-    bullets: [
-      '✓ Pack de 20 páginas de actividades (inglés, español y francés)',
-      '✓ Recomendaciones de libros por edad',
-      '✓ Divertidas ideas de historias y actividades creativas',
-      '✓ Sin spam, cancela cuando quieras',
-    ],
     firstNamePlaceholder: 'Nombre (opcional)',
     emailPlaceholder: 'Escribe tu correo electrónico',
-    submit: 'Quiero mi kit gratis 🎨',
     submitting: 'Enviando…',
     successHeading: '¡Listo! Tu descarga está disponible.',
     successDetail: 'Toca abajo para obtener tu recurso gratis. Ya estás en la lista, así que pronto recibirás más materiales y consejos de lectura.',
@@ -375,16 +381,8 @@ const TRANSLATIONS = {
     audienceNote: 'Para padres y tutores. Por favor, regístrate en nombre de tu peque.',
   },
   fr: {
-    blurb: 'Rejoignez notre communauté de parents qui rendent la lecture amusante. Recevez des pages à colorier, des guides de lecture et des activités multilingues directement dans votre boîte mail.',
-    bullets: [
-      '✓ Pack d\'activités de 20 pages (anglais, espagnol et français)',
-      '✓ Recommandations de livres par tranche d\'âge',
-      '✓ Idées d\'histoires et activités créatives',
-      '✓ Pas de spam, désinscription à tout moment',
-    ],
     firstNamePlaceholder: 'Prénom (facultatif)',
     emailPlaceholder: 'Entrez votre adresse e-mail',
-    submit: 'Recevoir mon kit gratuit 🎨',
     submitting: 'Envoi…',
     successHeading: 'C’est fait ! Votre téléchargement est prêt.',
     successDetail: 'Cliquez ci-dessous pour récupérer votre ressource gratuite. Vous êtes inscrit, de nouveaux imprimables et conseils de lecture arrivent bientôt.',
@@ -409,6 +407,7 @@ export default function EmailSignup() {
   const { language, setLanguage } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
   const [{ magnet, focused }] = useState(() => resolveMagnet());
+  const [utm] = useState(readUtm);
   const offer = magnet.copy[language] ?? magnet.copy.en;
   const successRef = useRef<HTMLParagraphElement>(null);
 
@@ -448,7 +447,7 @@ export default function EmailSignup() {
       const res = await fetch(SUBSCRIBE_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, name: trimmedName, language, lead_magnet: magnet.tag }),
+        body: JSON.stringify({ email, name: trimmedName, language, lead_magnet: magnet.tag, ...utm }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.ok) {
@@ -551,6 +550,9 @@ export default function EmailSignup() {
                 a pre-hydration GET. */}
             <input type="hidden" name="language" value={language} />
             <input type="hidden" name="lead_magnet" value={magnet.tag} />
+            {Object.entries(utm).map(([k, v]) => (
+              <input key={k} type="hidden" name={k} value={v} />
+            ))}
             <input
               type="text"
               name="name"
