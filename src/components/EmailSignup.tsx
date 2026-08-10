@@ -20,14 +20,125 @@ const SUBSCRIBE_ENDPOINT = '/.netlify/functions/subscribe';
 // straight at the ungated PDF and captured no email. Each magnet maps to its
 // per-language PDF (single-file bilingual magnets repeat the same path).
 type MagnetCopy = { title: string; blurb: string; bullets: string[]; cta: string };
+/** One downloadable item inside a multi-resource magnet. */
+type BundleItem = { label: Record<Language, string>; href: Record<Language, string> };
+
 type Magnet = {
   tag: string;
   copy: Record<Language, MagnetCopy>;
+  /** Primary/fallback download. Also what a single-file magnet delivers. */
   pdf: Record<Language, string>;
+  /** Multi-resource magnets deliver this list instead of the single `pdf`.
+   *  Rendered as named links rather than a zip on purpose: most of this traffic
+   *  is mobile, and a parent on a phone cannot easily open a zip. */
+  bundle?: BundleItem[];
   /** Optional product shot. Drop a file in /public and reference it here; the
    *  section renders the preview only when one exists, so art can land later
    *  without another code change. */
   preview?: string;
+};
+
+/**
+ * The five resources the "Bilingual Learning Bundle" pins and Facebook posts have
+ * been promising (P-008, P-015, FB-009/020/023). Before 2026-08-10 that promise
+ * resolved to the single 20-page starter kit, so four fifths of the offer was
+ * never delivered. These are real files, all verified 200 on production, with the
+ * language-specific edition served where one exists.
+ */
+const BUNDLE_ITEMS: BundleItem[] = [
+  {
+    label: {
+      en: '20-page Trilingual Starter Kit',
+      es: 'Kit trilingüe de 20 páginas',
+      fr: 'Kit trilingue de 20 pages',
+    },
+    href: {
+      en: '/bilingual-starter-kit.67152acba3fc.pdf',
+      es: '/bilingual-starter-kit.67152acba3fc.pdf',
+      fr: '/bilingual-starter-kit.67152acba3fc.pdf',
+    },
+  },
+  {
+    label: {
+      en: '30 Bilingual Flashcards',
+      es: '30 tarjetas bilingües',
+      fr: '30 cartes bilingues',
+    },
+    href: {
+      en: '/bilingual-flashcards.8d2eff72661a.pdf',
+      es: '/bilingual-flashcards.8d2eff72661a.pdf',
+      fr: '/bilingual-flashcards.8d2eff72661a.pdf',
+    },
+  },
+  {
+    label: {
+      en: 'Bedtime Routine Chart',
+      es: 'Tabla de rutina de dormir',
+      fr: 'Tableau de la routine du soir',
+    },
+    href: {
+      en: '/bedtime-routine.7cdc728eb026.pdf',
+      es: '/bedtime-routine-es.9db70549b2cb.pdf',
+      fr: '/bedtime-routine-fr.91d87fe35749.pdf',
+    },
+  },
+  {
+    label: {
+      en: "Parent's Guide to Bilingual Reading",
+      es: 'Guía para criar un lector bilingüe',
+      fr: 'Guide pour élever un lecteur bilingue',
+    },
+    href: {
+      en: '/parents-guide.12ba12f60096.pdf',
+      es: '/parents-guide-es.5c21d77b24d2.pdf',
+      fr: '/parents-guide-fr.16a27a138de4.pdf',
+    },
+  },
+  {
+    label: {
+      en: '5 Follow-Up Activities After Reading',
+      es: '5 actividades para después del cuento',
+      fr: '5 activités pour après l\'histoire',
+    },
+    href: {
+      en: '/follow-up-activities.43818dc842cc.pdf',
+      es: '/follow-up-activities-es.a733da2b2546.pdf',
+      fr: '/follow-up-activities-fr.e605cd5fa2d4.pdf',
+    },
+  },
+];
+
+const BUNDLE_COPY: Record<Language, MagnetCopy> = {
+  en: {
+    title: 'The FREE Bilingual Learning Bundle, all 5 resources',
+    blurb: 'Everything we use at home, in one go: the starter kit, the flashcards, the bedtime chart, the parent\'s guide and the follow-up activities.',
+    bullets: [
+      '✓ 5 printables, not a sample of one',
+      '✓ English, Spanish and French throughout',
+      '✓ Yours to keep, print as often as you like',
+    ],
+    cta: 'Send me all 5',
+  },
+  es: {
+    title: 'El Paquete Bilingüe GRATIS, los 5 recursos',
+    blurb: 'Todo lo que usamos en casa, de una vez: el kit de inicio, las tarjetas, la tabla de rutina, la guía para padres y las actividades para después del cuento.',
+    bullets: [
+      '✓ 5 imprimibles, no una muestra',
+      '✓ Inglés, español y francés en todo el paquete',
+      '✓ Tuyo para siempre, imprímelo las veces que quieras',
+    ],
+    cta: 'Envíame los 5 recursos',
+  },
+  fr: {
+    title: 'Le Pack Bilingue GRATUIT, les 5 ressources',
+    blurb: 'Tout ce que nous utilisons à la maison, d\'un coup : le kit de démarrage, les cartes, le tableau du soir, le guide des parents et les activités d\'après lecture.',
+    bullets: [
+      '✓ 5 documents à imprimer, pas un échantillon',
+      '✓ Anglais, espagnol et français dans tout le pack',
+      '✓ À garder, à imprimer autant de fois que vous voulez',
+    ],
+    cta: 'Envoyez-moi les 5 ressources',
+  },
 };
 
 const LEAD_MAGNETS: Record<string, Magnet> = {
@@ -68,40 +179,22 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
     },
     pdf: { en: '/bedtime-routine.7cdc728eb026.pdf', es: '/bedtime-routine-es.9db70549b2cb.pdf', fr: '/bedtime-routine-fr.91d87fe35749.pdf' },
   },
+  // Every live asset pointing here promises the five-resource bundle (P-008,
+  // P-015, FB-009/020/023). Those pins and posts are already published and
+  // cannot be edited, so this slug delivers the bundle rather than the single
+  // kit. `bilingual-bundle` below is the clearer alias for new links.
   'bilingual-starter-kit': {
-    tag: 'bilingual-starter-kit',
-    copy: {
-      en: {
-        title: 'The FREE 20-page trilingual starter kit',
-        blurb: 'Everything we use at home to keep three languages alive at bedtime, in one printable pack.',
-        bullets: [
-          '✓ 20 pages of activities in English, Spanish and French',
-          '✓ Book recommendations by age',
-          '✓ Story prompts that survive a tired evening',
-        ],
-        cta: 'Send me the kit',
-      },
-      es: {
-        title: 'El kit trilingüe de 20 páginas, GRATIS',
-        blurb: 'Todo lo que usamos en casa para mantener tres idiomas vivos a la hora de dormir, en un solo paquete imprimible.',
-        bullets: [
-          '✓ 20 páginas de actividades en inglés, español y francés',
-          '✓ Recomendaciones de libros por edad',
-          '✓ Ideas de historias que aguantan una noche cansada',
-        ],
-        cta: 'Envíame el kit gratis',
-      },
-      fr: {
-        title: 'Le kit trilingue de 20 pages, GRATUIT',
-        blurb: 'Tout ce que nous utilisons à la maison pour garder trois langues vivantes au moment du coucher, en un seul pack à imprimer.',
-        bullets: [
-          '✓ 20 pages d\'activités en anglais, espagnol et français',
-          '✓ Des livres conseillés par âge',
-          '✓ Des idées d\'histoires qui tiennent un soir de fatigue',
-        ],
-        cta: 'Envoyez-moi le kit',
-      },
-    },
+    tag: 'bilingual-bundle',
+    preview: '/previews/bilingual-bundle.webp',
+    copy: BUNDLE_COPY,
+    bundle: BUNDLE_ITEMS,
+    pdf: { en: '/bilingual-starter-kit.67152acba3fc.pdf', es: '/bilingual-starter-kit.67152acba3fc.pdf', fr: '/bilingual-starter-kit.67152acba3fc.pdf' },
+  },
+  'bilingual-bundle': {
+    tag: 'bilingual-bundle',
+    preview: '/previews/bilingual-bundle.webp',
+    copy: BUNDLE_COPY,
+    bundle: BUNDLE_ITEMS,
     pdf: { en: '/bilingual-starter-kit.67152acba3fc.pdf', es: '/bilingual-starter-kit.67152acba3fc.pdf', fr: '/bilingual-starter-kit.67152acba3fc.pdf' },
   },
   'bilingual-flashcards': {
@@ -302,6 +395,13 @@ const TRANSLATIONS = {
   },
 };
 
+/** Intrinsic sizes of the preview images, so the browser reserves the right box
+ *  and the offer does not jump while the art loads (CLS). */
+const PREVIEW_DIMS: Record<string, { w: number; h: number }> = {
+  '/previews/bedtime-routine.webp': { w: 720, h: 639 },
+  '/previews/bilingual-bundle.webp': { w: 720, h: 509 },
+};
+
 export default function EmailSignup() {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
@@ -382,8 +482,8 @@ export default function EmailSignup() {
           <img
             src={magnet.preview}
             alt=""
-            width={720}
-            height={639}
+            width={PREVIEW_DIMS[magnet.preview]?.w ?? 720}
+            height={PREVIEW_DIMS[magnet.preview]?.h ?? 639}
             loading="eager"
             decoding="async"
             className="mx-auto mb-6 w-64 md:w-80 rounded-2xl shadow-2xl ring-1 ring-white/20"
@@ -401,15 +501,37 @@ export default function EmailSignup() {
             <div className="text-4xl mb-2">🎉</div>
             <p ref={successRef} tabIndex={-1} className="font-bold text-xl outline-none">{t.successHeading}</p>
             <p className="text-purple-100 text-sm mt-1 mb-4">{t.successDetail}</p>
-            <a
-              href={magnet.pdf[language]}
-              download
-              target="_blank"
-              rel="noopener"
-              className="inline-block px-6 py-3 bg-orange-700 hover:bg-orange-800 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all duration-200"
-            >
-              {t.download}
-            </a>
+            {magnet.bundle ? (
+              /* Multi-resource magnet: one named link per file. Deliberately not
+                 a zip — most of this traffic is mobile and a parent on a phone
+                 cannot easily open one. */
+              <ul className="text-left space-y-2">
+                {magnet.bundle.map((item, i) => (
+                  <li key={i}>
+                    <a
+                      href={item.href[language]}
+                      download
+                      target="_blank"
+                      rel="noopener"
+                      className="flex items-center gap-3 px-4 py-3 bg-white/15 hover:bg-white/25 rounded-xl font-semibold transition-colors duration-200"
+                    >
+                      <span aria-hidden="true">📥</span>
+                      <span>{item.label[language]}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <a
+                href={magnet.pdf[language]}
+                download
+                target="_blank"
+                rel="noopener"
+                className="inline-block px-6 py-3 bg-orange-700 hover:bg-orange-800 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all duration-200"
+              >
+                {t.download}
+              </a>
+            )}
           </div>
         ) : (
           <form
