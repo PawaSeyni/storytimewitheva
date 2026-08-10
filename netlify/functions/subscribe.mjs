@@ -82,10 +82,10 @@ export async function handler(event) {
         name: params.get('name') || params.get('fields[name]'),
         language: params.get('language') || params.get('fields[language]'),
         lead_magnet: params.get('lead_magnet') || params.get('fields[lead_magnet]'),
-        source: params.get('source'),
-        medium: params.get('medium'),
-        campaign: params.get('campaign'),
-        content: params.get('content'),
+        utm_source: params.get('utm_source'),
+        utm_medium: params.get('utm_medium'),
+        utm_campaign: params.get('utm_campaign'),
+        utm_content: params.get('utm_content'),
       };
     } else {
       body = JSON.parse(event.body || '{}');
@@ -114,7 +114,7 @@ export async function handler(event) {
   // rejects an unknown field (non-email 422) we retry with core fields only, so
   // a signup is NEVER lost over attribution metadata.
   const utm = {};
-  for (const k of ['source', 'medium', 'campaign', 'content']) {
+  for (const k of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content']) {
     const v = String(body[k] || '').trim().slice(0, 120);
     if (v) utm[k] = v;
   }

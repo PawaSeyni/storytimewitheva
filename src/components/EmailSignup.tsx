@@ -320,17 +320,15 @@ function readParam(name: string): string | null {
  * campaign / creative (the subscribe function drops these gracefully if the
  * matching MailerLite fields don't exist yet).
  */
-const UTM_MAP: Array<[string, string]> = [
-  ['utm_source', 'source'],
-  ['utm_medium', 'medium'],
-  ['utm_campaign', 'campaign'],
-  ['utm_content', 'content'],
-];
+// Field keys pass through unchanged (URL `utm_source` -> MailerLite field
+// `utm_source`). "source" alone is reserved in MailerLite, so the utm_ prefix is
+// kept end to end.
+const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
 function readUtm(): Record<string, string> {
   const out: Record<string, string> = {};
-  for (const [param, field] of UTM_MAP) {
-    const v = readParam(param);
-    if (v) out[field] = v.slice(0, 120);
+  for (const k of UTM_KEYS) {
+    const v = readParam(k);
+    if (v) out[k] = v.slice(0, 120);
   }
   return out;
 }
