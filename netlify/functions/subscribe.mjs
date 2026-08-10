@@ -82,6 +82,10 @@ export async function handler(event) {
         name: params.get('name') || params.get('fields[name]'),
         language: params.get('language') || params.get('fields[language]'),
         lead_magnet: params.get('lead_magnet') || params.get('fields[lead_magnet]'),
+        source: params.get('source'),
+        medium: params.get('medium'),
+        campaign: params.get('campaign'),
+        content: params.get('content'),
       };
     } else {
       body = JSON.parse(event.body || '{}');
@@ -101,14 +105,28 @@ export async function handler(event) {
     return isForm ? redirect('/?signup=invalid#email-signup') : json(422, { ok: false, error: 'invalid_email' });
   }
 
-  const fields = { language };
-  if (name) fields.name = name;
-  if (leadMagnet) fields.lead_magnet = leadMagnet;
+  const coreFields = { language };
+  if (name) coreFields.name = name;
+  if (leadMagnet) coreFields.lead_magnet = leadMagnet;
+
+  // Campaign attribution (utm_* mapped to source/medium/campaign/content). These
+  // only persist if the matching MailerLite custom fields exist; if MailerLite
+  // rejects an unknown field (non-email 422) we retry with core fields only, so
+  // a signup is NEVER lost over attribution metadata.
+  const utm = {};
+  for (const k of ['source', 'medium', 'campaign', 'content']) {
+    const v = String(body[k] || '').trim().slice(0, 120);
+    if (v) utm[k] = v;
+  }
 
   const groupId = await resolveGroupId();
-  const payload = { email, fields, ...(groupId ? { groups: [groupId] } : {}) };
+  const subscribe = fields =>
+    ml('/subscribers', { method: 'POST', body: JSON.stringify({ email, fields, ...(groupId ? { groups: [groupId] } : {}) }) });
 
-  const r = await ml('/subscribers', { method: 'POST', body: JSON.stringify(payload) });
+  let r = await subscribe({ ...coreFields, ...utm });
+  if (!r.ok && r.status === 422 && !r.data?.errors?.email && Object.keys(utm).length) {
+    r = await subscribe(coreFields);
+  }
 
   // 200/201 = created/updated. 422 with an email error is a real validation
   // failure; other non-2xx are upstream problems we surface as a retryable error.
