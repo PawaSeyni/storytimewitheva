@@ -1,8 +1,9 @@
+import { useMemo } from 'react';
 import { Link } from '../components/LocalizedLink';
 import { useBooks } from '../data/books';
 import { activities } from '../data/activities';
 import BookCard from '../components/BookCard';
-import EmailSignup from '../components/EmailSignup';
+import EmailSignup, { hasLeadMagnetRequest } from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
 import Pixel from '../components/Pixel';
@@ -197,10 +198,22 @@ export default function Home() {
     { number: `${activities.length}`, label: t.statActivities, emoji: '🎨' },
   ];
 
+  // Visitors arriving on a `?lm=` deep link clicked an ad or pin for ONE
+  // specific freebie. Showing them the hero, featured books, "How It Works",
+  // benefits and activities first buried the offer ~4,000px down a ~5,100px
+  // page (measured on production 2026-08-10) and the hero's own calls to action
+  // pointed at the catalogue, not at the thing they came for. For that traffic
+  // the offer goes first and the rest of the homepage becomes supporting
+  // content below it. Organic visitors see the page exactly as before.
+  const offerFirst = useMemo(() => hasLeadMagnetRequest(), []);
+
   return (
     <main>
       <Seo title={t.seoTitle} bare description={t.seoDesc} path="/" image={`${SITE_URL}${evaReading}`} imageWidth={1200} imageHeight={900} />
       <JsonLd id="org" data={ORG_SCHEMA} />
+
+      {/* Deep-link traffic: the offer they clicked for, before anything else. */}
+      {offerFirst && <EmailSignup />}
 
       {/* Hero Section */}
       <section className="hero-bg min-h-[85vh] flex items-center justify-center relative overflow-hidden px-4 py-20">
@@ -365,8 +378,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Email Signup */}
-      <EmailSignup />
+      {/* Email Signup — omitted here when it has already run above, so the
+          page never carries two #email-signup anchors. */}
+      {!offerFirst && <EmailSignup />}
     </main>
   );
 }
