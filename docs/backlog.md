@@ -29,7 +29,7 @@ person, not code) · `blocked`.
 | D2 | **User-submitted puzzle bank** — lets visitors submit puzzles. Requires a backend + moderation, which reverses the no-backend static architecture. | P3 | Architecture decision. |
 | D3 | **Marketplace localization (Amazon OneLink)** — link `.ca/.es/.fr` (+`.co.uk`) Associates accounts, then drop the OneLink `<script>` into `index.html`. Feasibility confirmed; blocked on owner account linking. | P3 | `blocked` on owner. |
 | D4 | **Host the QA spec at a public URL** (Option B) — noindexed `/qa/` path on Netlify so an external tester gets a real link (no Claude login). Ready on say-so. | P2 | Optional; file already delivered. |
-| D5 | **⭐ Architecture fork: dedicated landing pages vs. offer-first homepage.** The remediation plan's Core Principle says the homepage must not do two jobs — it wants dedicated paid-landing pages (`/free/bedtime-routine`) separate from the site. We shipped offer-first *on the homepage* (#86). Decide: keep offer-first (done, simpler) or build dedicated pages (plan's rec — cleaner separation, distraction removal, clean URLs, redirects). | P1 | The biggest strategic call. Everything in E5 / remediation "clean URLs / dedicated pages" hangs off this. |
+| D5 | ✅ **DECIDED + SHIPPED** — templated dedicated landing pages. One `LandingPage` component serves `/free/:magnet` (localized `/es/free/…`, `/fr/free/…`), reusing `EmailSignup`'s money-path logic; distraction-free (no navbar/footer/feedback), noindex, prerendered, out of the sitemap. All 5 magnets × 3 langs populated from config. Proven with Spanish Bedtime Routine. **Owner remaining:** repoint ad/pin URLs to `/free/…` (optional `?lm=` still works, so no redirects needed). | P1 | — |
 | D6 | **Events-capable analytics for the funnel** (remediation P1/§7). Cloudflare's free tier is **page-views only** — it cannot fire `lead_form_start` / `lead_submit` / `lead_created` / `download` or the **Meta Lead** event. Choose a tool (Meta Pixel + a funnel-events analytics such as paid Plausible / PostHog / GA4), then instrument. | P1 | Blocks measurable ROI on paid traffic. Also unblocks E4. |
 
 ## Marketing / content
@@ -79,9 +79,9 @@ funnel PRs already satisfy roughly half of it. Two things stand out:
 | Confirmation + immediate delivery | P1 | ✅ **done** | success screen + download link(s) |
 | QA before advertising resumes | P1 | ✅ **done** | `docs/qa-funnel-conversion-spec.md` |
 | Stop mismatched traffic (pause legacy ad URLs) | P0 | ⬜ owner | pause/repoint ads in Meta/Pinterest |
-| Dedicated landing pages (separate from homepage) | P0 | ❌ **decision → D5** | current = offer-first homepage |
-| Clean path URLs (`/free/bedtime-routine`) + redirects | P0 | ❌ → D5 | current uses `?lm=` query params |
-| Remove distractions (nav/catalog on paid pages) | P1 | ❌ → E5 | depends on D5 |
+| Dedicated landing pages (separate from homepage) | P0 | ✅ **done (D5)** | templated `/free/:magnet`, all 5×3 combos |
+| Clean path URLs (`/free/bedtime-routine`) | P0 | ✅ **done (D5)** | `?lm=` still works too, so no redirects needed |
+| Remove distractions (nav/catalog on paid pages) | P1 | ✅ **done (D5)** | landing pages render zero site chrome |
 | Instrument funnel + **Meta Lead event** | P1 | ❌ **gap → D6** | Cloudflare = page views only |
 | Capture + store UTM `source`/`campaign` on subscriber | P1 | ❌ → E4 | only `language`+`lead_magnet` stored today |
 | Post-signup: recommend books after download | P1 | ⚠️ partial | success delivers; doesn't yet cross-sell |

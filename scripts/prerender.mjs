@@ -91,8 +91,15 @@ const sitemapRoutes = routesFromSitemap(await readFile(path.join(DIST, 'sitemap.
 // crawler or a pre-hydration paint shows the homepage instead of the real page.
 // Mounted at every language prefix, exactly like App.tsx routeDefs × LANG_PREFIXES.
 const NOINDEX_SPA_ROUTES = ['/profile', '/search'];
+// Dedicated lead-magnet landing pages (/free/<slug>) — noindex and kept out of
+// the sitemap, but prerendered so paid traffic gets an instant first paint
+// (matters for ad conversion + Quality Score). Slugs come from LEAD_MAGNETS in
+// src/components/EmailSignup.tsx; keep in sync when a magnet's page should ship.
+const LANDING_SLUGS = ['bedtime-routine', 'bilingual-bundle', 'bilingual-flashcards', 'parents-guide', 'follow-up-activities'];
 const LANG_PREFIXES = ['', '/es', '/fr'];
-const extraRoutes = NOINDEX_SPA_ROUTES.flatMap(p => LANG_PREFIXES.map(pre => `${pre}${p}`));
+const extraRoutes = [...NOINDEX_SPA_ROUTES, ...LANDING_SLUGS.map(s => `/free/${s}`)].flatMap(p =>
+  LANG_PREFIXES.map(pre => `${pre}${p}`),
+);
 
 const routes = [...new Set([...sitemapRoutes, ...extraRoutes])];
 console.log(`Prerendering ${routes.length} routes (${extraRoutes.length} noindex SPA routes)…`);
