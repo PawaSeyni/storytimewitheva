@@ -6,29 +6,69 @@ import { useTranslation } from './lib/language';
  * Scroll to a #hash target after navigation. React Router doesn't do this for
  * client-side navigations, so links like /#email-signup (and the localized
  * /es/#email-signup) wouldn't scroll to the section on their own.
+ *
+ * Why `behavior: 'instant'` and not 'smooth' (regression fixed 2026-08-10):
+ * every paid and organic lead-magnet deep link (`/?lm=...#email-signup`) was
+ * landing visitors at the TOP of a ~5,000px homepage instead of on the signup
+ * form ~3,900px down. Measured live on storytimewitheva.com: with the previous
+ * `behavior: 'smooth'`, window.scrollY stayed at 0 for the full 3s after
+ * scrollIntoView() -- the smooth scroll is silently cancelled here (the app
+ * also sets `html { scroll-behavior: smooth }` globally, and Chrome drops a
+ * programmatic smooth scroll issued during hydration). The identical call with
+ * `behavior: 'instant'` lands on 3884px every time.
+ *
+ * 'instant' is also the right UX for a deep link: someone arriving from a
+ * Pinterest pin should see the offer immediately, not watch a multi-second
+ * animation scroll past five screens of unrelated content.
+ *
+ * We also wait for the target offset to STABILISE before stopping. The page
+ * prerenders to static HTML then hydrates while below-the-fold images load, so
+ * an early scroll can land against a stale layout.
  */
 function ScrollToHash() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
     if (!hash) return;
-    // The destination may be a lazy-loaded page, so the target element isn't in
-    // the DOM yet. Poll briefly until it appears, then scroll to it.
-    const id = hash.slice(1);
+
+    // Stop the browser restoring a previous scroll position on top of ours.
+    const previousRestoration = history.scrollRestoration;
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+    const id = decodeURIComponent(hash.slice(1));
     let tries = 0;
+    let lastTop = -1;
+    let settled = 0;
     let timer: ReturnType<typeof setTimeout>;
+
     const tryScroll = () => {
+      // The destination may be a lazy-loaded page, so the target element isn't
+      // in the DOM yet. Poll briefly until it appears.
       const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else if (tries++ < 40) {
-        timer = setTimeout(tryScroll, 100); // up to ~4s while the page mounts
+      if (!el) {
+        if (tries++ < 40) timer = setTimeout(tryScroll, 100); // up to ~4s
+        return;
       }
+
+      const top = Math.round(el.getBoundingClientRect().top + window.scrollY);
+      // Scroll on every pass so the visitor gets there fast, then keep
+      // correcting until the offset stops moving (images/fonts settling).
+      el.scrollIntoView({ behavior: 'instant', block: 'start' });
+
+      settled = top === lastTop ? settled + 1 : 0;
+      lastTop = top;
+      // Two identical offsets in a row = layout settled. Give up after ~4s.
+      if (settled < 2 && tries++ < 40) timer = setTimeout(tryScroll, 100);
     };
+
     tryScroll();
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      if ('scrollRestoration' in history) history.scrollRestoration = previousRestoration;
+    };
   }, [pathname, hash]);
   return null;
 }
+
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import FeedbackWidget from './components/FeedbackWidget';
