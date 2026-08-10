@@ -15,7 +15,7 @@
 
 import http from 'node:http';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { existsSync, statSync } from 'node:fs';
+import { existsSync, statSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 // On CI (Netlify) use @sparticuz/chromium — a statically-linked build that
@@ -95,8 +95,38 @@ const NOINDEX_SPA_ROUTES = ['/profile', '/search'];
 // the sitemap, but prerendered so paid traffic gets an instant first paint
 // (matters for ad conversion + Quality Score). Slugs come from LEAD_MAGNETS in
 // src/components/EmailSignup.tsx; keep in sync when a magnet's page should ship.
-const LANDING_SLUGS = ['bedtime-routine', 'bilingual-bundle', 'bilingual-flashcards', 'parents-guide', 'follow-up-activities'];
+// Every slug registered in LEAD_MAGNETS (src/components/EmailSignup.tsx) must be
+// listed here. There is deliberately NO SPA catch-all in netlify.toml, so a route
+// that is not prerendered returns a real 404 — even though isKnownMagnet() accepts
+// it and the app would render it fine client-side. `bilingual-starter-kit` is the
+// alias that five already-published assets point at (P-008, P-015, FB-009/020/023
+// via `?lm=`), so /free/bilingual-starter-kit is the URL a human is most likely to
+// construct by analogy. It 404'd in all three languages until 2026-08-10.
+const LANDING_SLUGS = ['bedtime-routine', 'bilingual-bundle', 'bilingual-starter-kit', 'bilingual-flashcards', 'parents-guide', 'follow-up-activities'];
 const LANG_PREFIXES = ['', '/es', '/fr'];
+
+// Guard against drift: parse the magnet registry and fail the build if any
+// registered slug has no prerendered landing page. Without this the mismatch is
+// silent — the route simply 404s in production, which is exactly how
+// `bilingual-starter-kit` went unnoticed.
+{
+  const registry = readFileSync(new URL('../src/components/EmailSignup.tsx', import.meta.url), 'utf8');
+  const block = registry.slice(
+    registry.indexOf('const LEAD_MAGNETS'),
+    registry.indexOf('const DEFAULT_MAGNET'),
+  );
+  const registered = [...block.matchAll(/^ {2}'([a-z0-9-]+)': \{/gm)].map(m => m[1]);
+  const missing = registered.filter(slug => !LANDING_SLUGS.includes(slug));
+  if (missing.length) {
+    console.error(
+      `\nPrerender aborted: these LEAD_MAGNETS slugs have no /free/ landing page ` +
+      `and would return a hard 404 in production:\n  ${missing.join('\n  ')}\n` +
+      `Add them to LANDING_SLUGS in scripts/prerender.mjs.\n`,
+    );
+    process.exit(1);
+  }
+  console.log(`Landing-page guard OK: ${registered.length} magnet slugs all prerendered.`);
+}
 const extraRoutes = [...NOINDEX_SPA_ROUTES, ...LANDING_SLUGS.map(s => `/free/${s}`)].flatMap(p =>
   LANG_PREFIXES.map(pre => `${pre}${p}`),
 );
