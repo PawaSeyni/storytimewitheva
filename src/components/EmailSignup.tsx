@@ -471,10 +471,15 @@ export default function EmailSignup() {
     <section id="email-signup" className="scroll-mt-24 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 py-16 px-4">
       <div className="max-w-2xl mx-auto text-center">
         <div className="text-5xl mb-4">🎁</div>
+        {/* Headline/blurb/bullets/CTA all come from the resolved magnet's copy
+            (`offer`). On a `?lm=` deep link that's the requested magnet; with no
+            `?lm=` it's DEFAULT_MAGNET (the bundle) — so the organic homepage
+            signup stays coherent with what it actually delivers, instead of
+            pairing the bundle headline with a generic newsletter blurb. */}
         <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
-          {focused ? offer.title : magnet.copy[language].title}
+          {offer.title}
         </h2>
-        <p className="text-purple-100 text-lg mb-6">{focused ? offer.blurb : t.blurb}</p>
+        <p className="text-purple-100 text-lg mb-6">{offer.blurb}</p>
 
         {/* Product shot, so the visitor sees the thing the pin promised before
             being asked for an email. Only rendered when art exists. */}
@@ -491,7 +496,7 @@ export default function EmailSignup() {
         )}
 
         <ul className="text-left inline-block text-purple-100 text-sm mb-8 space-y-2">
-          {(focused ? offer.bullets : t.bullets).map((item, i) => (
+          {offer.bullets.map((item, i) => (
             <li key={i} className="flex items-start gap-2">{item}</li>
           ))}
         </ul>
@@ -575,7 +580,7 @@ export default function EmailSignup() {
                 disabled={status === 'submitting'}
                 className="px-6 py-3 bg-orange-700 hover:bg-orange-800 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all duration-200 whitespace-nowrap disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                {status === 'submitting' ? t.submitting : focused ? offer.cta : t.submit}
+                {status === 'submitting' ? t.submitting : offer.cta}
               </button>
             </div>
           </form>
