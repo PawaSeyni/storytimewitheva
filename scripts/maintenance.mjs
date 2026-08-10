@@ -80,12 +80,12 @@ await Promise.all(
 // ── Analytics (privacy-first: Plausible, cookieless, custom funnel events) ───
 {
   const home = pages['/']?.body || '';
-  const plausible = /plausible\.io\/js\/script/.test(home);
+  const plausible = /plausible\.io\/js\/(script|pa-)/.test(home);
   add('Analytics', 'Plausible script present', plausible ? 'pass' : 'fail', plausible ? 'cookieless analytics loaded' : 'Plausible script MISSING from homepage');
   const queue = /window\.plausible\s*=\s*window\.plausible\s*\|\|/.test(home);
   add('Analytics', 'custom-events queue snippet', queue ? 'pass' : 'warn', queue ? 'window.plausible() enabled for funnel events' : 'queue snippet missing — early custom events may be dropped');
-  const domain = /data-domain="storytimewitheva\.com"/.test(home);
-  add('Analytics', 'data-domain', domain ? 'pass' : 'warn', domain ? 'reports to storytimewitheva.com' : 'data-domain not found');
+  const init = /plausible\.init\(\)/.test(home);
+  add('Analytics', 'site-keyed init', init ? 'pass' : 'warn', init ? 'plausible.init() bootstraps the site-keyed script' : 'plausible.init() not found');
   // The old ad-tracker-free promise: no Cloudflare beacon, no Meta/GA pixels.
   const noTrackers = !/cloudflareinsights|connect\.facebook|fbevents|googletagmanager|google-analytics/.test(home);
   add('Analytics', 'no ad trackers / extra beacons', noTrackers ? 'pass' : 'warn', noTrackers ? 'no pixel/GTM/Cloudflare on homepage' : 'unexpected tracker found');
