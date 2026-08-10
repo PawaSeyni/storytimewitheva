@@ -56,7 +56,7 @@ const TRANSLATIONS = {
       {
         heading: 'Analytics',
         body: [
-          'We use Plausible Analytics to understand which pages are popular. Plausible is privacy-friendly: it uses no cookies, does not track you across sites, and collects only aggregate, anonymous statistics. It does not identify you personally.',
+          'We use Plausible Analytics to understand which pages are popular and which steps of our free-printable signup people use. Plausible is privacy-friendly: it uses no cookies, does not track you across sites, and collects only aggregate, anonymous statistics — never your email, your name, or any personal detail. It does not identify you personally.',
         ],
       },
       {
@@ -123,7 +123,7 @@ const TRANSLATIONS = {
       {
         heading: 'Analíticas',
         body: [
-          'Usamos Plausible Analytics para saber qué páginas son populares. Plausible respeta la privacidad: no usa cookies, no te rastrea entre sitios y solo recopila estadísticas anónimas y agregadas. No te identifica personalmente.',
+          'Usamos Plausible Analytics para saber qué páginas son populares y qué pasos de la descarga gratuita usan las personas. Plausible respeta la privacidad: no usa cookies, no te rastrea entre sitios y solo recopila estadísticas anónimas y agregadas, nunca tu correo, tu nombre ni ningún dato personal. No te identifica personalmente.',
         ],
       },
       {
@@ -190,7 +190,7 @@ const TRANSLATIONS = {
       {
         heading: 'Analyses',
         body: [
-          'Nous utilisons Plausible Analytics pour savoir quelles pages sont populaires. Plausible respecte la vie privée : sans cookies, sans suivi entre sites, il ne collecte que des statistiques anonymes et agrégées. Il ne vous identifie pas personnellement.',
+          'Nous utilisons Plausible Analytics pour savoir quelles pages sont populaires et quelles étapes de l\'inscription à nos ressources gratuites sont utilisées. Plausible respecte la vie privée : sans cookies, sans suivi entre sites, il ne collecte que des statistiques anonymes et agrégées, jamais votre e-mail, votre nom ni aucune donnée personnelle. Il ne vous identifie pas personnellement.',
         ],
       },
       {
