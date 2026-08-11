@@ -78,3 +78,9 @@
 
   [[plugins.inputs.audits]]
     path = "about"
+
+# CORS for hosted pin assets (Pinterest composer automation fetches these)
+[[headers]]
+  for = "/pins/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
