@@ -20,6 +20,11 @@ export interface Book {
   ageRange: string;
   languages: string[];
   amazonUrl: string;
+  /** Per-language edition links for books published as their own Amazon product
+   *  in another language (e.g. a French edition on its own ASIN). When the site
+   *  is viewed in that language the Buy CTA points here; other languages fall
+   *  back to `amazonUrl` (the English edition). */
+  amazonUrlByLang?: Partial<Record<Language, string>>;
   featured?: boolean;
   /** Publication state. Absent/'published' = live with a Buy CTA; 'coming-soon' shows a placeholder. */
   status?: 'published' | 'coming-soon';
@@ -358,8 +363,9 @@ export const books: Book[] = [
     id: 'leo-and-the-wolf',
     coverImage: 'https://m.media-amazon.com/images/I/61ml%2BbdnJKL.jpg',
     ageRange: '4-8',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇫🇷'],
     amazonUrl: dp('1997027054'),
+    amazonUrlByLang: { fr: dp('B0HFCPRBVL') }, // published French edition (Leo et le Loup)
     title: {
       en: 'Leo and the Wolf',
       es: 'Leo y el lobo',
@@ -551,7 +557,7 @@ function localize(book: Book, lang: Language): LocalizedBook {
     coverImage: book.coverImage,
     ageRange: book.ageRange,
     languages: book.languages,
-    amazonUrl: book.amazonUrl,
+    amazonUrl: book.amazonUrlByLang?.[lang] ?? book.amazonUrl,
     featured: book.featured,
     status: book.status,
     title: book.title[lang] ?? book.title.en,
