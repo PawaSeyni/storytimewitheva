@@ -144,8 +144,9 @@ export const books: Book[] = [
     id: 'mayas-shadow',
     coverImage: 'https://m.media-amazon.com/images/I/61hBrMvhhRL.jpg',
     ageRange: '3-7',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇫🇷'],
     amazonUrl: dp('1996972812'),
+    amazonUrlByLang: { fr: dp('1996972820') }, // French edition (Les aventures de l'ombre de Maya)
     featured: true,
     title: {
       en: "The Adventures of Maya's Shadow",
@@ -199,8 +200,9 @@ export const books: Book[] = [
     id: 'diegos-brave-leap',
     coverImage: 'https://m.media-amazon.com/images/I/71z9fEOWb-L.jpg',
     ageRange: '4-8',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇫🇷'],
     amazonUrl: dp('1996972863'),
+    amazonUrlByLang: { fr: dp('199697288X') }, // French edition (Le saut courageux de Diego)
     title: {
       en: "Diego's Brave Leap",
       es: 'El salto valiente de Diego',
@@ -226,8 +228,9 @@ export const books: Book[] = [
     id: 'butterfly-effect',
     coverImage: 'https://m.media-amazon.com/images/I/71wLOYuguIL.jpg',
     ageRange: '5-9',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇫🇷'],
     amazonUrl: dp('1996972774'),
+    amazonUrlByLang: { fr: dp('1996972790') }, // French edition (L'effet papillon)
     title: {
       en: 'The Butterfly Effect',
       es: 'El efecto mariposa',
@@ -280,8 +283,9 @@ export const books: Book[] = [
     id: 'crooked-little-apple-tree',
     coverImage: 'https://m.media-amazon.com/images/I/71Qt1STow5L.jpg',
     ageRange: '4-8',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇫🇷'],
     amazonUrl: dp('1996972715'),
+    amazonUrlByLang: { fr: dp('1996972731') }, // French edition (Le petit pommier tordu)
     title: {
       en: 'The Crooked Little Apple Tree',
       es: 'El manzanito torcido',
@@ -391,8 +395,9 @@ export const books: Book[] = [
     id: 'russet-the-fox',
     coverImage: 'https://m.media-amazon.com/images/I/71vg4083EVL.jpg',
     ageRange: '4-8',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇫🇷'],
     amazonUrl: dp('1997027046'),
+    amazonUrlByLang: { fr: dp('B0HFCJ1TPG') }, // French edition (Rousseau le Renard apprend une leçon)
     title: {
       en: 'Russet the Fox Learns a Lesson',
       es: 'Russet el zorro aprende una lección',
@@ -445,8 +450,9 @@ export const books: Book[] = [
     id: 'heidis-journey-to-mastery',
     coverImage: 'https://m.media-amazon.com/images/I/91Z3ipmFctL.jpg',
     ageRange: '5-9',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇫🇷'],
     amazonUrl: dp('B0H35ZJKCR'),
+    amazonUrlByLang: { fr: dp('1997027275') }, // French edition (Le Voyage de Heidi vers la Maîtrise)
     title: {
       en: "Heidi's Journey to Mastery",
       es: 'El camino de Heidi hacia la maestría',
@@ -526,8 +532,9 @@ export const books: Book[] = [
     id: 'pawa-rainbow-cloud',
     coverImage: 'https://m.media-amazon.com/images/I/61zr49LAzAL.jpg',
     ageRange: '3-7',
-    languages: ['🇺🇸'],
+    languages: ['🇺🇸', '🇫🇷'],
     amazonUrl: dp('1996972936'),
+    amazonUrlByLang: { fr: dp('1996972952') }, // French edition (Pawa et le Petit Nuage Arc-en-ciel)
     title: {
       en: 'Pawa and the Little Rainbow Cloud',
       es: 'Pawa y la pequeña nube arcoíris',
