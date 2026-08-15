@@ -556,6 +556,34 @@ export const books: Book[] = [
       fr: 'Estime de soi et transformation',
     },
   },
+  {
+    id: 'miras-thousand-cubes',
+    coverImage: 'https://m.media-amazon.com/images/I/712yhi3sGHL.jpg',
+    ageRange: '5-9',
+    languages: ['🇺🇸', '🇫🇷'],
+    amazonUrl: dp('1996972839'),
+    amazonUrlByLang: { fr: dp('1996972855') }, // French edition (Les mille cubes de Mira)
+    title: {
+      en: "Mira's Thousand Cubes",
+      es: 'Los mil cubos de Mira',
+      fr: 'Les mille cubes de Mira',
+    },
+    subtitle: {
+      en: 'A Story About Patience, Practice, and Mastery',
+      es: 'Una historia sobre la paciencia, la práctica y la maestría',
+      fr: 'Une histoire sur la patience, la pratique et la maîtrise',
+    },
+    description: {
+      en: "In a mountain village of stone carvers, young Mira dreams of sculpting eagles and dancing figures. When Master Hiroshi takes her on as his apprentice, her first task is to carve a thousand identical cubes, not eagles, not dancers. Through aching hands and frustration, she finds the lesson hidden in repetition: the quiet art of doing the small thing well, and how great things take time.",
+      es: 'En un pueblo de montaña de talladores de piedra, la joven Mira sueña con esculpir águilas y figuras danzantes. Cuando el maestro Hiroshi la acepta como aprendiz, su primera tarea es tallar mil cubos idénticos: ni águilas ni bailarines. Entre manos doloridas y frustración, descubre la lección escondida en la repetición: el arte tranquilo de hacer bien lo pequeño y cómo las grandes cosas llevan tiempo.',
+      fr: "Dans un village de montagne réputé pour ses sculpteurs, la jeune Mira rêve de tailler des aigles et des danseurs dans la pierre. Quand Maître Hiroshi la prend enfin comme apprentie, sa première tâche est de sculpter mille cubes identiques — ni aigles, ni danseurs. À travers les mains endolories et la frustration, Mira découvre la leçon cachée dans la répétition : l'art tranquille de bien faire les petites choses, et comment les grandes choses prennent du temps.",
+    },
+    theme: {
+      en: 'Patience and mastery',
+      es: 'Paciencia y maestría',
+      fr: 'Patience et maîtrise',
+    },
+  },
 ];
 
 function localize(book: Book, lang: Language): LocalizedBook {
