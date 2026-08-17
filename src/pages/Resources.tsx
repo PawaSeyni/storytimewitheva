@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from '../components/LocalizedLink';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import ReadAloudButton from '../components/ReadAloudButton';
@@ -831,7 +832,6 @@ export default function Resources() {
   const [activeCategory, setActiveCategory] = useState<CategoryKey>('all');
   const [search, setSearch] = useState('');
   const t = useTranslation(TRANSLATIONS);
-  const { language } = useLanguage();
 
   const categoryButtons: { key: CategoryKey; label: string }[] = [
     { key: 'all', label: t.categories.all },
@@ -977,21 +977,23 @@ export default function Resources() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
             {t.teachers.downloads.map((d, i) => {
               const file = TEACHER_DOWNLOADS[i];
-              const href = `/${file.file}${file.localized && language !== 'en' ? `-${language}` : ''}.pdf`;
+              // Route to the dedicated /free/<magnet> landing page (email capture)
+              // instead of a raw PDF path. The old /<file>.pdf links 404 (PDFs are
+              // gated behind hashed filenames since the P0 funnel fix) AND captured
+              // no email. The landing page delivers the correct-language PDF after
+              // signup; LocalizedLink adds the /es,/fr prefix to keep the language.
+              const to = `/free/${file.file}`;
               return (
-                <a
+                <Link
                   key={i}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  download
+                  to={to}
                   className="bg-white rounded-2xl shadow-md hover:shadow-xl border border-gray-50 p-5 flex flex-col transition-all"
                 >
                   <span className="text-3xl mb-2" aria-hidden>{file.emoji}</span>
                   <h3 className="font-bold text-gray-800 mb-1 leading-snug">{d.title}</h3>
                   <p className="text-gray-500 text-sm leading-relaxed flex-1">{d.desc}</p>
                   <span className="mt-3 text-sm font-semibold text-purple-600">⬇ {t.teachers.downloadCta}</span>
-                </a>
+                </Link>
               );
             })}
           </div>
