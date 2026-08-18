@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && npm run prerender",
-    "build:spa": "tsc && vite build",
+    "build": "npm run gen:downloads && tsc && vite build && npm run prerender",
+    "build:spa": "npm run gen:downloads && tsc && vite build",
     "prerender": "node scripts/prerender.mjs",
     "gen:sitemap": "node scripts/gen-sitemap.mjs",
+    "gen:downloads": "node scripts/gen-download-redirects.mjs",
     "preview": "vite preview",
     "lint": "eslint .",
     "build:games-css": "tailwindcss -c scripts/games.tailwind.config.cjs -i scripts/games-tw-input.css -o public/games/games.css --minify",
