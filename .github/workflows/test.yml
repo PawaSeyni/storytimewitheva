@@ -1,0 +1,25 @@
+# Funnel test suite. Guards the money path (pin click → subscriber → PDF).
+# Runs headless invariants + the built-artifact e2e on every push/PR.
+#
+# Deliberately NOT here (run by a human before/after a flight):
+#   • npm run test:smoke      — hits live production (Layer 1/5/6.1 pre-flight)
+#   • RUN_LIVE_SIGNUP=1 …     — writes a real MailerLite subscriber (Layer 3.6)
+name: test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test                       # Layer 0 + 2.5 + 7 (headless, no browser)
+      - run: npm run build                  # proves the prerender abort guard + builds dist/
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --project=local   # Layers 2, 3, 4 against the built artifact

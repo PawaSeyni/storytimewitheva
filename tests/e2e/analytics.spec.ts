@@ -1,0 +1,85 @@
+// Layer 4 — Plausible funnel events. analytics.ts short-circuits when
+// navigator.webdriver is true, so to test that events fire we present as a real
+// user; to test that they DON'T fire on the prerender crawler we leave
+// webdriver true. Either way we stub window.plausible and assert on the stub,
+// never on real network — do not "fix" the webdriver check to make this pass.
+import { test, expect, type Page } from '@playwright/test';
+
+const SUBSCRIBE = '**/.netlify/functions/subscribe';
+
+async function installPlausibleStub(page: Page, { realUser }: { realUser: boolean }) {
+  await page.addInitScript((realUser) => {
+    // @ts-expect-error test shim
+    window.__ev = [];
+    const fn = (e: string, o?: { props?: Record<string, unknown> }) => {
+      // @ts-expect-error test shim
+      window.__ev.push({ e, props: o?.props ?? {} });
+    };
+    // @ts-expect-error test shim
+    fn.init = () => {};
+    // @ts-expect-error test shim
+    fn.q = [];
+    // @ts-expect-error test shim
+    window.plausible = fn;
+    if (realUser) Object.defineProperty(navigator, 'webdriver', { get: () => false, configurable: true });
+  }, realUser);
+  await page.route(/plausible\.io/, (r) => r.abort());
+}
+
+const readEvents = (page: Page) =>
+  page.evaluate(() => (window as unknown as { __ev: { e: string; props: Record<string, unknown> }[] }).__ev);
+
+test('4.1 the full happy path fires the funnel events in order', async ({ page }) => {
+  await installPlausibleStub(page, { realUser: true });
+  await page.route(SUBSCRIBE, (r) =>
+    r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true }) })
+  );
+
+  await page.goto('/free/bedtime-routine?utm_source=pinterest&utm_medium=paid_social&utm_campaign=bedtime_en&utm_content=P-001');
+  await page.fill('#email-signup input[name="name"]', 'Test Person'); // focus → Form Start
+  await page.fill('#email-signup input[name="email"]', 'e2e@example.com');
+  await page.click('#email-signup button[type="submit"]');
+  await expect(page.locator('[role="status"]')).toBeVisible();
+  await page.click('#email-signup a[download]'); // → Magnet Download
+
+  const names = (await readEvents(page)).map((x) => x.e);
+  const order = ['Landing View', 'Form View', 'Form Start', 'Form Submit', 'Lead Created', 'Magnet Download'];
+  const idx = order.map((n) => names.indexOf(n));
+  for (const [i, n] of order.entries()) expect(idx[i], `${n} fired`).toBeGreaterThanOrEqual(0);
+  for (let i = 1; i < idx.length; i++) expect(idx[i], `${order[i]} after ${order[i - 1]}`).toBeGreaterThan(idx[i - 1]);
+  // exactly once each
+  for (const n of order) expect(names.filter((x) => x === n).length, `${n} once`).toBe(1);
+});
+
+test('4.2/4.3 events carry UTMs + lead_magnet and NEVER carry PII', async ({ page }) => {
+  await installPlausibleStub(page, { realUser: true });
+  await page.route(SUBSCRIBE, (r) =>
+    r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true }) })
+  );
+  await page.goto('/free/parents-guide?utm_source=pinterest&utm_medium=paid_social&utm_campaign=parents-guide_en_us&utm_content=P-014');
+  await page.fill('#email-signup input[name="name"]', 'Jane Secret');
+  await page.fill('#email-signup input[name="email"]', 'jane.secret@example.com');
+  await page.click('#email-signup button[type="submit"]');
+  await expect(page.locator('[role="status"]')).toBeVisible();
+
+  const events = await readEvents(page);
+  const lead = events.find((e) => e.e === 'Lead Created');
+  expect(lead?.props.lead_magnet).toBe('parents-guide');
+  expect(lead?.props.utm_campaign).toBe('parents-guide_en_us');
+
+  const PII = ['email', 'name', 'first_name', 'firstname', 'subscriber_id', 'id'];
+  const blob = JSON.stringify(events).toLowerCase();
+  expect(blob).not.toContain('jane.secret@example.com');
+  expect(blob).not.toContain('jane secret');
+  for (const e of events) for (const k of Object.keys(e.props)) expect(PII).not.toContain(k.toLowerCase());
+});
+
+// TEST 4.4 — the prerender crawler (navigator.webdriver === true) must fire
+// zero events, so a deploy produces no phantom hits.
+test('4.4 no events fire when navigator.webdriver is true', async ({ page }) => {
+  await installPlausibleStub(page, { realUser: false });
+  await page.goto('/free/bedtime-routine');
+  await page.fill('#email-signup input[name="email"]', 'e2e@example.com');
+  const events = await readEvents(page);
+  expect(events.length, `expected no events, got ${JSON.stringify(events)}`).toBe(0);
+});
