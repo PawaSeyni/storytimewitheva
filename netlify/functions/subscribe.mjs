@@ -62,6 +62,21 @@ export async function handler(event) {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: { Allow: 'POST' } };
   if (event.httpMethod !== 'POST') return json(405, { ok: false, error: 'method_not_allowed' });
 
+  // Anti-abuse layer 1 — origin check. A browser fetch from our own site always
+  // sends an Origin; if one is present it must be ours (blocks another site
+  // scripting fetches against this endpoint). A MISSING Origin (native-form
+  // fallback, some privacy settings) is allowed so we never drop a real signup.
+  // NOTE: this is defense-in-depth, not a rate limit — a header-less scripted
+  // client can still reach the endpoint. The durable control is Turnstile or
+  // Netlify edge rate-limiting (see remediation notes); both need provisioning.
+  const origin = event.headers['origin'] || event.headers['Origin'] || '';
+  if (origin) {
+    let host = '';
+    try { host = new URL(origin).hostname; } catch { host = 'invalid'; }
+    const allowed = host === 'storytimewitheva.com' || host.endsWith('.netlify.app') || host === 'localhost';
+    if (!allowed) return json(403, { ok: false, error: 'bad_origin' });
+  }
+
   if (!process.env.MAILERLITE_API_KEY) {
     console.error('MAILERLITE_API_KEY is not set');
     return json(500, { ok: false, error: 'not_configured' });
@@ -88,6 +103,7 @@ export async function handler(event) {
         utm_medium: params.get('utm_medium'),
         utm_campaign: params.get('utm_campaign'),
         utm_content: params.get('utm_content'),
+        company: params.get('company'),
       };
     } else {
       body = JSON.parse(event.body || '{}');
@@ -96,6 +112,13 @@ export async function handler(event) {
     return json(400, { ok: false, error: 'bad_request' });
   }
   const redirect = to => ({ statusCode: 303, headers: { Location: to, 'Cache-Control': 'no-store' }, body: '' });
+
+  // Anti-abuse layer 2 — honeypot. `company` is a hidden field no human sees.
+  // Anything in it is a bot: return a success-shaped response WITHOUT creating a
+  // subscriber, so the bot gets no signal it was filtered.
+  if (String(body.company || '').trim()) {
+    return isForm ? redirect('/?signup=ok#email-signup') : json(200, { ok: true, grouped: true });
+  }
 
   const email = String(body.email || '').trim().toLowerCase();
   const name = String(body.name || '').trim().slice(0, 80);
@@ -121,9 +144,17 @@ export async function handler(event) {
     if (v) utm[k] = v;
   }
 
+  // The welcome automation is triggered by joining `storytimewitheva-signups`, so
+  // grouping is mandatory. If the group id can't be resolved (transient MailerLite
+  // failure or misconfig), fail with a retryable error rather than silently
+  // creating an ungrouped subscriber who would never enter the welcome sequence.
   const groupId = await resolveGroupId();
+  if (!groupId) {
+    console.error('Group resolution failed; refusing to create an ungrouped subscriber');
+    return isForm ? redirect('/?signup=error#email-signup') : json(503, { ok: false, error: 'group_unavailable' });
+  }
   const subscribe = fields =>
-    ml('/subscribers', { method: 'POST', body: JSON.stringify({ email, fields, ...(groupId ? { groups: [groupId] } : {}) }) });
+    ml('/subscribers', { method: 'POST', body: JSON.stringify({ email, fields, groups: [groupId] }) });
 
   let r = await subscribe({ ...coreFields, ...utm });
   if (!r.ok && r.status === 422 && !r.data?.errors?.email && Object.keys(utm).length) {
@@ -142,7 +173,7 @@ export async function handler(event) {
     } catch (err) {
       console.error('Pinterest conversion send failed', err);
     }
-    return isForm ? redirect('/?signup=ok#email-signup') : json(200, { ok: true, grouped: !!groupId });
+    return isForm ? redirect('/?signup=ok#email-signup') : json(200, { ok: true, grouped: true });
   }
   if (r.status === 422 && r.data?.errors?.email) {
     return isForm ? redirect('/?signup=invalid#email-signup') : json(422, { ok: false, error: 'invalid_email' });
