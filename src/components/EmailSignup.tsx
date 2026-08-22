@@ -428,6 +428,7 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
   const offer = magnet.copy[language] ?? magnet.copy.en;
   const successRef = useRef<HTMLParagraphElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const hpRef = useRef<HTMLInputElement>(null); // honeypot; real users never fill it
   const firedView = useRef(false);
   const firedStart = useRef(false);
 
@@ -495,7 +496,7 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
       const res = await fetch(SUBSCRIBE_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, name: trimmedName, language, lead_magnet: magnet.tag, ...utm }),
+        body: JSON.stringify({ email, name: trimmedName, language, lead_magnet: magnet.tag, company: hpRef.current?.value || '', ...utm }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.ok) {
@@ -603,6 +604,19 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
                 a pre-hydration GET. */}
             <input type="hidden" name="language" value={language} />
             <input type="hidden" name="lead_magnet" value={magnet.tag} />
+            {/* Honeypot: off-screen, hidden from humans and assistive tech, but
+                bots fill it. The subscribe function drops any submission that
+                carries a `company` value. Not type=hidden on purpose — a visible
+                text input off-screen is what naive bots actually fill. */}
+            <input
+              type="text"
+              name="company"
+              ref={hpRef}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className="absolute left-[-9999px] top-0 h-px w-px opacity-0"
+            />
             {Object.entries(utm).map(([k, v]) => (
               <input key={k} type="hidden" name={k} value={v} />
             ))}
