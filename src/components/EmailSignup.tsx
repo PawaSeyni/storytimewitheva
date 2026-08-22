@@ -199,6 +199,7 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
   },
   'bilingual-flashcards': {
     tag: 'bilingual-flashcards',
+    preview: '/previews/bilingual-flashcards.webp',
     copy: {
       en: {
         title: '30 bilingual flashcards, FREE to print',
@@ -235,6 +236,7 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
   },
   'parents-guide': {
     tag: 'parents-guide',
+    preview: '/previews/parents-guide.webp',
     copy: {
       en: {
         title: "The parent's guide to raising a bilingual reader, FREE",
@@ -271,6 +273,7 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
   },
   'follow-up-activities': {
     tag: 'follow-up-activities',
+    preview: '/previews/follow-up-activities.webp',
     copy: {
       en: {
         title: '5 things to do when the story ends, FREE',
@@ -409,6 +412,9 @@ const TRANSLATIONS = {
 const PREVIEW_DIMS: Record<string, { w: number; h: number }> = {
   '/previews/bedtime-routine.webp': { w: 720, h: 639 },
   '/previews/bilingual-bundle.webp': { w: 720, h: 509 },
+  '/previews/bilingual-flashcards.webp': { w: 720, h: 932 },
+  '/previews/parents-guide.webp': { w: 720, h: 932 },
+  '/previews/follow-up-activities.webp': { w: 720, h: 932 },
 };
 
 export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } = {}) {
