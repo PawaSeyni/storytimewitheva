@@ -39,20 +39,24 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# Public root images (previews, favicon, OG) are NOT content-hashed, so they must
+# NOT be immutable — a replaced file (e.g. a re-rendered /previews/*.webp) has to
+# be able to propagate. 1 day + revalidate keeps them cached without pinning a
+# stale image for a year. (Vite's hashed assets under /assets/* stay immutable.)
 [[headers]]
   for = "/*.png"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=86400, must-revalidate"
 
 [[headers]]
   for = "/*.webp"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=86400, must-revalidate"
 
 [[headers]]
   for = "/*.svg"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=86400, must-revalidate"
 
 # Lighthouse audit runs after every successful deploy.
 # Reports go to the deploy summary in the Netlify dashboard.
