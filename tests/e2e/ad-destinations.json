@@ -1,0 +1,4 @@
+{
+  "_help": "Layer 6.1 LIVE AD PRE-FLIGHT. Before setting any Pinterest/FB flight Active, paste each ad's destination URL VERBATIM from Campaign Manager into `urls` below (copy, do not retype), commit, and run `npm run test:smoke`. This is the check that would have caught the 2026-08-03 raw-PDF flight: the routes were fine, the AD pointed at a .pdf. An empty list SKIPS the live-ad check (loudly) — a green suite does NOT mean the ads are verified. You can also pass URLs via the AD_DESTINATIONS env var (a JSON array, or whitespace/newline-separated) for a one-off without editing this file.",
+  "urls": []
+}
