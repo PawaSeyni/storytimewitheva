@@ -57,7 +57,7 @@ const TRANSLATIONS = {
         heading: 'Analytics',
         body: [
           'We use Plausible Analytics to understand which pages are popular and which steps of our free-printable signup people use. Plausible is privacy-friendly: it uses no cookies, does not track you across sites, and collects only aggregate, anonymous statistics — never your email, your name, or any personal detail. It does not identify you personally.',
-          'If you subscribe for a free printable, we also share a one-way hashed (irreversible) version of your email address with Pinterest, solely to measure whether one of our Pinterest ads led to your signup. This happens on our server, sets no cookies, and sends no browsing history; Pinterest receives the hash, never your readable email. It applies only to adults who sign up and never involves any child\'s information. To opt your address out, email contact@storytimewitheva.com.',
+          'If you subscribe for a free printable, we also share a one-way hashed (irreversible) version of your email address with Pinterest, solely to measure whether one of our Pinterest ads led to your signup. This happens on our server and sets no cookies; we share only that hash, and no IP address, browsing activity, or other identifier. Pinterest never receives your readable email. It applies only to adults who sign up and never involves any child\'s information. To opt your address out, email contact@storytimewitheva.com.',
         ],
       },
       {
@@ -125,7 +125,7 @@ const TRANSLATIONS = {
         heading: 'Analíticas',
         body: [
           'Usamos Plausible Analytics para saber qué páginas son populares y qué pasos de la descarga gratuita usan las personas. Plausible respeta la privacidad: no usa cookies, no te rastrea entre sitios y solo recopila estadísticas anónimas y agregadas, nunca tu correo, tu nombre ni ningún dato personal. No te identifica personalmente.',
-          'Si te suscribes para recibir un recurso gratuito, también compartimos una versión cifrada de forma irreversible de tu correo electrónico con Pinterest, únicamente para medir si uno de nuestros anuncios en Pinterest te llevó a suscribirte. Esto ocurre en nuestro servidor, no usa cookies y no envía tu historial de navegación; Pinterest recibe el hash, nunca tu correo legible. Solo se aplica a adultos que se suscriben y nunca incluye información de ningún niño. Para excluir tu dirección, escribe a contact@storytimewitheva.com.',
+          'Si te suscribes para recibir un recurso gratuito, también compartimos una versión cifrada de forma irreversible de tu correo electrónico con Pinterest, únicamente para medir si uno de nuestros anuncios en Pinterest te llevó a suscribirte. Esto ocurre en nuestro servidor y no usa cookies; compartimos solo ese hash, sin tu dirección IP, tu actividad de navegación ni ningún otro identificador. Pinterest nunca recibe tu correo legible. Solo se aplica a adultos que se suscriben y nunca incluye información de ningún niño. Para excluir tu dirección, escribe a contact@storytimewitheva.com.',
         ],
       },
       {
@@ -193,7 +193,7 @@ const TRANSLATIONS = {
         heading: 'Analyses',
         body: [
           'Nous utilisons Plausible Analytics pour savoir quelles pages sont populaires et quelles étapes de l\'inscription à nos ressources gratuites sont utilisées. Plausible respecte la vie privée : sans cookies, sans suivi entre sites, il ne collecte que des statistiques anonymes et agrégées, jamais votre e-mail, votre nom ni aucune donnée personnelle. Il ne vous identifie pas personnellement.',
-          'Si vous vous inscrivez pour recevoir une ressource gratuite, nous partageons aussi une version hachée et irréversible de votre adresse e-mail avec Pinterest, uniquement pour mesurer si l\'une de nos publicités Pinterest a mené à votre inscription. Cela se passe sur notre serveur, sans cookies et sans envoi de votre historique de navigation ; Pinterest reçoit le haché, jamais votre e-mail lisible. Cela ne concerne que les adultes qui s\'inscrivent et n\'implique jamais les informations d\'un enfant. Pour exclure votre adresse, écrivez à contact@storytimewitheva.com.',
+          'Si vous vous inscrivez pour recevoir une ressource gratuite, nous partageons aussi une version hachée et irréversible de votre adresse e-mail avec Pinterest, uniquement pour mesurer si l\'une de nos publicités Pinterest a mené à votre inscription. Cela se passe sur notre serveur et sans cookies ; nous ne partageons que ce haché, sans votre adresse IP, votre activité de navigation ni aucun autre identifiant. Pinterest ne reçoit jamais votre e-mail lisible. Cela ne concerne que les adultes qui s\'inscrivent et n\'implique jamais les informations d\'un enfant. Pour exclure votre adresse, écrivez à contact@storytimewitheva.com.',
         ],
       },
       {

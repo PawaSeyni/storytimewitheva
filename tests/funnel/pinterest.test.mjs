@@ -25,15 +25,12 @@ test('4.5b — buildSignupEvent produces a signup event carrying the magnet', ()
   assert.deepEqual(ev.user_data.em, [EXPECTED_HASH]);
 });
 
-test('4.5d — the event NEVER contains the raw email or name (only the hash)', () => {
-  const ev = buildSignupEvent({
-    email: RAW_EMAIL,
-    leadMagnet: 'bedtime-routine',
-    eventId: 'id-2',
-    eventTime: 2000,
-    clientIp: '203.0.113.9',
-    userAgent: 'Mozilla/5.0',
-  });
+test('4.5d — the event carries ONLY the hashed email: no raw email, no IP, no UA', () => {
+  const ev = buildSignupEvent({ email: RAW_EMAIL, leadMagnet: 'bedtime-routine', eventId: 'id-2', eventTime: 2000 });
+  // user_data must contain exactly `em` and nothing else (no IP / UA identifiers).
+  assert.deepEqual(Object.keys(ev.user_data), ['em']);
+  assert.equal(ev.user_data.client_ip_address, undefined);
+  assert.equal(ev.user_data.client_user_agent, undefined);
   const blob = JSON.stringify(ev).toLowerCase();
   assert.ok(!blob.includes('jane.secret@example.com'), 'raw email leaked');
   assert.ok(!blob.includes('jane secret'), 'name leaked');
@@ -59,7 +56,7 @@ test('sendSignupConversion POSTs a bearer-authed signup with the hashed email on
   process.env.PINTEREST_AD_ACCOUNT_ID = '549770651316';
   let captured = null;
   const res = await sendSignupConversion(
-    { email: RAW_EMAIL, leadMagnet: 'parents-guide', clientIp: '203.0.113.9', userAgent: 'UA' },
+    { email: RAW_EMAIL, leadMagnet: 'parents-guide' },
     {
       fetchImpl: async (url, opts) => {
         captured = { url, opts };
@@ -79,5 +76,10 @@ test('sendSignupConversion POSTs a bearer-authed signup with the hashed email on
   assert.equal(sent.data[0].event_name, 'signup');
   assert.equal(sent.data[0].event_time, 5000); // ms → s
   assert.deepEqual(sent.data[0].user_data.em, [EXPECTED_HASH]);
-  assert.ok(!captured.opts.body.toLowerCase().includes('jane.secret@example.com'), 'raw email in request body');
+  // hashed email ONLY — no IP / UA in the request body
+  assert.deepEqual(Object.keys(sent.data[0].user_data), ['em']);
+  const bodyLc = captured.opts.body.toLowerCase();
+  assert.ok(!bodyLc.includes('jane.secret@example.com'), 'raw email in request body');
+  assert.ok(!bodyLc.includes('client_ip_address'), 'IP field in request body');
+  assert.ok(!bodyLc.includes('client_user_agent'), 'UA field in request body');
 });
