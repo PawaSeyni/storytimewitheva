@@ -10,6 +10,10 @@
     "prerender": "node scripts/prerender.mjs",
     "gen:sitemap": "node scripts/gen-sitemap.mjs",
     "gen:downloads": "node scripts/gen-download-redirects.mjs",
+    "test": "node --test tests/funnel/*.test.mjs",
+    "test:e2e": "playwright test",
+    "test:smoke": "PW_NO_SERVER=1 playwright test --project=smoke --grep @smoke --workers=2",
+    "test:all": "npm run test && npm run build && npm run test:e2e",
     "preview": "vite preview",
     "lint": "eslint .",
     "build:games-css": "tailwindcss -c scripts/games.tailwind.config.cjs -i scripts/games-tw-input.css -o public/games/games.css --minify",
@@ -27,6 +31,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@playwright/test": "^1.62.1",
     "@sparticuz/chromium": "^149.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
