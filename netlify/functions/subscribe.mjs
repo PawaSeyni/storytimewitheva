@@ -134,16 +134,11 @@ export async function handler(event) {
   // failure; other non-2xx are upstream problems we surface as a retryable error.
   if (r.ok) {
     // Best-effort server-side Pinterest conversion (privacy-first: hashed email
-    // only, no browser pixel/cookie). Fired only on confirmed success. A failure
-    // here must never affect the signup result, so it is fully swallowed.
+    // ONLY — no browser pixel/cookie, and deliberately no IP or user-agent).
+    // Fired only on confirmed success. A failure here must never affect the
+    // signup result, so it is fully swallowed.
     try {
-      const fwd = String(event.headers['x-forwarded-for'] || '').split(',')[0].trim();
-      await sendSignupConversion({
-        email,
-        leadMagnet,
-        clientIp: event.headers['x-nf-client-connection-ip'] || fwd || undefined,
-        userAgent: event.headers['user-agent'] || event.headers['User-Agent'] || undefined,
-      });
+      await sendSignupConversion({ email, leadMagnet });
     } catch (err) {
       console.error('Pinterest conversion send failed', err);
     }

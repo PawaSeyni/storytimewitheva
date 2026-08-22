@@ -28,12 +28,15 @@ export const hashEmail = (email) => sha256Hex(String(email).trim().toLowerCase()
 /**
  * Build one Pinterest CAPI `signup` event. Pure: no I/O, no clock, no
  * randomness (event_time / event_id are injected), so it is unit-testable.
- * NEVER includes the raw email — only the hashed `em`.
+ *
+ * Privacy: the ONLY identifier sent is the SHA-256-hashed email. We deliberately
+ * do NOT send the visitor's IP address or user-agent — Pinterest's `em` is
+ * enough to attribute a conversion, and omitting IP/UA keeps the payload exactly
+ * what the privacy policy discloses ("only a hashed version of your email, and
+ * no other information about you").
  */
-export function buildSignupEvent({ email, leadMagnet, eventId, eventTime, clientIp, userAgent }) {
+export function buildSignupEvent({ email, leadMagnet, eventId, eventTime }) {
   const user_data = { em: [hashEmail(email)] };
-  if (clientIp) user_data.client_ip_address = clientIp;
-  if (userAgent) user_data.client_user_agent = userAgent;
 
   const custom_data = { num_items: 1 };
   if (leadMagnet) {
@@ -58,7 +61,7 @@ export function buildSignupEvent({ email, leadMagnet, eventId, eventTime, client
  * subscribe response). Clock/uuid/fetch are injectable for tests.
  */
 export async function sendSignupConversion(
-  { email, leadMagnet, clientIp, userAgent },
+  { email, leadMagnet },
   { fetchImpl = fetch, now = Date.now, uuid = randomUUID } = {}
 ) {
   const token = process.env.PINTEREST_CONVERSIONS_TOKEN;
@@ -68,8 +71,6 @@ export async function sendSignupConversion(
   const data = buildSignupEvent({
     email,
     leadMagnet,
-    clientIp,
-    userAgent,
     eventId: uuid(),
     eventTime: Math.floor(now() / 1000),
   });
