@@ -1,4 +1,25 @@
 {
   "_help": "Layer 6.1 LIVE AD PRE-FLIGHT. Before setting any Pinterest/FB flight Active, paste each ad's destination URL VERBATIM from Campaign Manager into `urls` below (copy, do not retype), commit, and run `npm run test:smoke`. This is the check that would have caught the 2026-08-03 raw-PDF flight: the routes were fine, the AD pointed at a .pdf. An empty list SKIPS the live-ad check (loudly) — a green suite does NOT mean the ads are verified. You can also pass URLs via the AD_DESTINATIONS env var (a JSON array, or whitespace/newline-separated) for a one-off without editing this file.",
-  "urls": []
+
+  "_captured": "2026-08-22 by Cowork, read verbatim from the ad edit panel's URL preview in Campaign Manager (advertiser 549770651316, campaign 626759591183 'US EN - Bedtime & Bundle Test - Aug 2026', ad group 2680091911709). Copy this file to tests/e2e/ad-destinations.json in the repo and commit.",
+
+  "urls": [
+    "https://storytimewitheva.com/free/parents-guide?utm_source=pinterest&utm_medium=paid_social&utm_campaign=parents-guide_en_us&utm_content=P-014",
+    "https://storytimewitheva.com/free/bedtime-routine?utm_source=pinterest&utm_medium=paid_social&utm_campaign=bedtime_en_us&utm_content=P-010"
+  ],
+
+  "_active_ads": {
+    "687317265949": "P-014 · 5 Tips to Raise a Bilingual Reader · Approved, serving",
+    "687317265945": "P-010 · Back to School Bedtime Reset · Approved, serving"
+  },
+
+  "_paused_ads": {
+    "687317265943": "P-015 · FREE Bilingual Learning Bundle · PAUSED 2026-08-22 (ADS-001). Destination verified live and correct: https://storytimewitheva.com/free/bilingual-bundle?utm_source=pinterest&utm_medium=paid_social&utm_campaign=bundle_en_us&utm_content=P-015 — move this into `urls` if the ad is ever re-enabled."
+  },
+
+  "_notes": [
+    "Flight hard-stops 2026-08-27 (ADS-003, runs unchanged). After that these URLs are historical until a new flight is built.",
+    "ADS-004: no new flight may be booked until LP-001 closes, so expect `urls` to be stale between flights. Re-capture verbatim at the start of every flight rather than trusting this file.",
+    "All three URLs above were also functionally pre-flighted on 2026-08-22: each returned 200 text/html, rendered the signup form, correct magnet, correct locale, with window.plausible present."
+  ]
 }
