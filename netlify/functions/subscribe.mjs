@@ -16,6 +16,8 @@
 // MailerLite API: https://developers.mailerlite.com/docs — POST /api/subscribers
 // upserts by email; `groups` takes group IDs, so we resolve the id by name once.
 
+import { sendSignupConversion } from './_pinterest.mjs';
+
 const API = 'https://connect.mailerlite.com/api';
 const GROUP_NAME = process.env.MAILERLITE_GROUP || 'storytimewitheva-signups';
 const VALID_LANG = new Set(['en', 'es', 'fr']);
@@ -131,6 +133,20 @@ export async function handler(event) {
   // 200/201 = created/updated. 422 with an email error is a real validation
   // failure; other non-2xx are upstream problems we surface as a retryable error.
   if (r.ok) {
+    // Best-effort server-side Pinterest conversion (privacy-first: hashed email
+    // only, no browser pixel/cookie). Fired only on confirmed success. A failure
+    // here must never affect the signup result, so it is fully swallowed.
+    try {
+      const fwd = String(event.headers['x-forwarded-for'] || '').split(',')[0].trim();
+      await sendSignupConversion({
+        email,
+        leadMagnet,
+        clientIp: event.headers['x-nf-client-connection-ip'] || fwd || undefined,
+        userAgent: event.headers['user-agent'] || event.headers['User-Agent'] || undefined,
+      });
+    } catch (err) {
+      console.error('Pinterest conversion send failed', err);
+    }
     return isForm ? redirect('/?signup=ok#email-signup') : json(200, { ok: true, grouped: !!groupId });
   }
   if (r.status === 422 && r.data?.errors?.email) {
