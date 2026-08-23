@@ -51,9 +51,16 @@ type PlausibleValue = string | number | boolean;
 
 declare global {
   interface Window {
-    plausible?: (event: string, options?: { props?: Record<string, PlausibleValue>; callback?: () => void }) => void;
+    plausible?: PlausibleFn;
   }
 }
+
+// The inline stub in index.html sets `stub: true` on the function it installs.
+// The real site-keyed script replaces window.plausible with its own function
+// (no `stub` flag) once it loads. We use that to know when it's safe to send.
+type PlausibleFn = ((event: string, options?: { props?: Record<string, PlausibleValue>; callback?: () => void }) => void) & {
+  stub?: boolean;
+};
 
 // Campaign attribution we ARE allowed to attach (metadata only, from the URL).
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'] as const;
@@ -86,9 +93,51 @@ export function sanitizeProps(merged: Record<string, unknown>): Record<string, P
   return out;
 }
 
+// The site-keyed pa-*.js loads async and does NOT flush window.plausible.q, so
+// any event fired before it loads would be lost (this is the bug that silently
+// dropped Form Start → Lead Created for fast-interacting visitors). We buffer our
+// events and flush them to the REAL function once it has replaced the stub.
+type Queued = { event: FunnelEvent; props?: Record<string, PlausibleValue> };
+const buffer: Queued[] = [];
+let pollTimer: ReturnType<typeof setInterval> | undefined;
+
+// Ready = window.plausible exists and is the real script, not our inline stub.
+function plausibleReady(): boolean {
+  const p = typeof window !== 'undefined' ? window.plausible : undefined;
+  return typeof p === 'function' && p.stub !== true;
+}
+
+function flush(): void {
+  if (!plausibleReady()) return;
+  const p = window.plausible!;
+  while (buffer.length) {
+    const { event, props } = buffer.shift()!;
+    try {
+      p(event, props ? { props } : undefined);
+    } catch {
+      // never let analytics break the page
+    }
+  }
+  if (pollTimer) {
+    clearInterval(pollTimer);
+    pollTimer = undefined;
+  }
+}
+
+function scheduleFlush(): void {
+  if (plausibleReady()) {
+    flush();
+    return;
+  }
+  // Real script not loaded yet — poll until it is, then flush the buffer.
+  if (typeof window !== 'undefined' && !pollTimer) pollTimer = setInterval(flush, 200);
+}
+
 /**
  * Fire an aggregate funnel event. Campaign UTMs (from the current URL) are
  * attached automatically; only allowlisted, non-PII dimensions are ever sent.
+ * Events are buffered and delivered once the analytics script is ready, so none
+ * are lost to the async-load race.
  */
 export function track(event: FunnelEvent, props?: FunnelProps): void {
   if (typeof window === 'undefined') return;
@@ -96,9 +145,6 @@ export function track(event: FunnelEvent, props?: FunnelProps): void {
   // navigator.webdriver) so mount-fired events don't send phantom hits on deploy.
   if (typeof navigator !== 'undefined' && navigator.webdriver) return;
   const clean = sanitizeProps({ ...utmProps(), ...(props || {}) });
-  try {
-    window.plausible?.(event, Object.keys(clean).length ? { props: clean } : undefined);
-  } catch {
-    // never let analytics break the page
-  }
+  buffer.push({ event, props: Object.keys(clean).length ? clean : undefined });
+  scheduleFlush();
 }
