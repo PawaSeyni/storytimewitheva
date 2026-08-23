@@ -11,6 +11,7 @@
     "gen:sitemap": "node scripts/gen-sitemap.mjs",
     "gen:downloads": "node scripts/gen-download-redirects.mjs",
     "test": "node --test tests/funnel/*.test.mjs",
+    "test:seo": "node --test tests/seo/*.test.mjs",
     "test:e2e": "playwright test",
     "test:smoke": "PW_NO_SERVER=1 playwright test --project=smoke --grep @smoke --workers=2",
     "test:all": "npm run test && npm run build && npm run test:e2e",

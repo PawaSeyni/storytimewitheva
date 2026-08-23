@@ -21,5 +21,6 @@ jobs:
       - run: npm run lint
       - run: npm test                       # Layer 0 + 2.5 + 7 (headless, no browser)
       - run: npm run build                  # proves the prerender abort guard + builds dist/
+      - run: npm run test:seo               # per-route SEO assertions against prerendered dist/
       - run: npx playwright install --with-deps chromium
       - run: npx playwright test --project=local   # Layers 2, 3, 4 against the built artifact
