@@ -94,3 +94,41 @@ test('4.4 no events fire when navigator.webdriver is true', async ({ page }) => 
   const events = await readEvents(page);
   expect(events.length, `expected no events, got ${JSON.stringify(events)}`).toBe(0);
 });
+
+// TEST 4.5 — REGRESSION: events fired BEFORE the async pa-*.js loads must be
+// buffered and flushed once it arrives. The new script does not flush
+// window.plausible.q, so without our own buffer these were silently lost
+// (Form Start → Lead Created vanished for fast-interacting visitors).
+test('4.5 events fired before the analytics script loads are buffered, then flushed', async ({ page }) => {
+  // Real user (so tracking runs), but block the real script so only index.html's
+  // marked stub exists when the funnel events fire. Do NOT install the test stub.
+  await page.addInitScript(() => Object.defineProperty(navigator, 'webdriver', { get: () => false, configurable: true }));
+  await page.route(/plausible\.io\/js\/pa-.*\.js/, (r) => r.abort());
+  await page.route(SUBSCRIBE, (r) =>
+    r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true }) })
+  );
+
+  await page.goto('/free/bedtime-routine');
+  await page.fill('#email-signup input[name="name"]', 'BufferTest');
+  await page.fill('#email-signup input[name="email"]', 'buf@example.com');
+  await page.click('#email-signup button[type="submit"]');
+  await expect(page.locator('[role="status"]')).toBeVisible();
+
+  // Only the marked stub exists → nothing delivered yet.
+  expect(await page.evaluate(() => (window as unknown as { plausible?: { stub?: boolean } }).plausible?.stub === true)).toBe(true);
+
+  // Simulate the real script arriving (a non-stub window.plausible).
+  await page.evaluate(() => {
+    (window as unknown as { __ev: string[] }).__ev = [];
+    (window as unknown as { plausible: (n: string) => void }).plausible = (n) =>
+      (window as unknown as { __ev: string[] }).__ev.push(n);
+  });
+  await expect
+    .poll(() => page.evaluate(() => (window as unknown as { __ev?: string[] }).__ev?.length ?? 0))
+    .toBeGreaterThan(0);
+
+  const flushed = await page.evaluate(() => (window as unknown as { __ev: string[] }).__ev);
+  for (const n of ['Landing View', 'Form View', 'Form Start', 'Form Submit', 'Lead Created']) {
+    expect(flushed, `${n} flushed after script load`).toContain(n);
+  }
+});

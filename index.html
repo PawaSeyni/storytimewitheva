@@ -40,15 +40,21 @@
 
     <!-- Privacy-friendly analytics by Plausible (cookieless, no consent banner,
          no cross-site tracking, aggregate-only) — consistent with the brand's
-         "no cookies / no ad trackers / no child profiles" privacy policy. This is
-         the exact site-keyed install snippet from the Plausible dashboard, so
-         data registers to this site. It also enables the custom funnel events
-         fired via window.plausible() in src/lib/analytics.ts. -->
-    <script async src="https://plausible.io/js/pa-gzJ4DP5LRQ39ZXessq04G.js"></script>
+         "no cookies / no ad trackers / no child profiles" privacy policy.
+         The inline stub is defined FIRST and flagged `stub:true`; the async
+         site-keyed script replaces it on load. src/lib/analytics.ts buffers
+         custom events until the real script is ready and then flushes them,
+         because the new pa-*.js does NOT flush window.plausible.q — so events
+         fired before it loads would otherwise be silently dropped. -->
     <script>
-      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-      plausible.init()
+      if (!window.plausible) {
+        window.plausible = function () { (window.plausible.q = window.plausible.q || []).push(arguments) };
+        window.plausible.stub = true;
+      }
+      window.plausible.init = window.plausible.init || function (o) { window.plausible.o = o || {} };
+      window.plausible.init();
     </script>
+    <script async src="https://plausible.io/js/pa-gzJ4DP5LRQ39ZXessq04G.js"></script>
   </head>
   <body>
     <!--
