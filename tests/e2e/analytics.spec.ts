@@ -67,11 +67,22 @@ test('4.2/4.3 events carry UTMs + lead_magnet and NEVER carry PII', async ({ pag
   expect(lead?.props.lead_magnet).toBe('parents-guide');
   expect(lead?.props.utm_campaign).toBe('parents-guide_en_us');
 
-  const PII = ['email', 'name', 'first_name', 'firstname', 'subscriber_id', 'id'];
   const blob = JSON.stringify(events).toLowerCase();
   expect(blob).not.toContain('jane.secret@example.com');
   expect(blob).not.toContain('jane secret');
-  for (const e of events) for (const k of Object.keys(e.props)) expect(PII).not.toContain(k.toLowerCase());
+
+  // Default-deny: every prop key on every event must be in the analytics
+  // allowlist (approved aggregate dimensions + campaign UTMs). Anything else —
+  // including any PII-shaped key — must have been stripped by sanitizeProps.
+  const ALLOWED = new Set([
+    'language', 'lead_magnet', 'landing_page', 'asset', 'book', 'destination', 'activity',
+    'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+  ]);
+  for (const e of events) {
+    for (const k of Object.keys(e.props)) {
+      expect(ALLOWED.has(k), `unexpected analytics prop key "${k}" on "${e.e}"`).toBe(true);
+    }
+  }
 });
 
 // TEST 4.4 — the prerender crawler (navigator.webdriver === true) must fire

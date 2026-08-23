@@ -10,28 +10,62 @@
 // MailerLite holds subscriber identity. The two are deliberately NEVER joined —
 // no email / name / subscriber_id ever reaches an event property.
 //
-// Funnel events fired at their call sites:
-//   Landing View · Form View · Form Start · Form Submit · Lead Created ·
-//   Magnet Download · Book View · Purchase Click
-// (Language Switch / Read Aloud / Activity Complete are harmless product events.)
+// PII protection is DEFAULT-DENY: both the event name and the property keys are
+// a fixed allowlist (compile-time via the types below, and again at runtime via
+// sanitizeProps). A call site cannot introduce a new key (e.g. `customer_email`)
+// — it won't type-check, and even a dynamically-typed caller is stripped at
+// runtime because the key isn't in ALLOWED_PROP_KEYS.
 
-type Props = Record<string, string | number | boolean>;
+// The complete funnel + product event taxonomy. Adding an event means adding it
+// here first (so the name is intentional and greppable).
+export type FunnelEvent =
+  | 'Landing View'
+  | 'Form View'
+  | 'Form Start'
+  | 'Form Submit'
+  | 'Lead Created'
+  | 'Magnet Download'
+  | 'Book View'
+  | 'Purchase Click'
+  | 'Language Switch'
+  | 'Read Aloud'
+  | 'Activity Complete';
+
+// The ONLY property keys allowed on any event. Aggregate dimensions only — never
+// anything that identifies a person.
+const ALLOWED_PROP_KEYS = [
+  'language',
+  'lead_magnet',
+  'landing_page',
+  'asset',
+  'book',
+  'destination',
+  'activity',
+] as const;
+type PropKey = (typeof ALLOWED_PROP_KEYS)[number];
+
+/** Aggregate, non-PII dimensions a call site may attach to an event. */
+export type FunnelProps = Partial<Record<PropKey, string | number | boolean>>;
+
+type PlausibleValue = string | number | boolean;
 
 declare global {
   interface Window {
-    plausible?: (event: string, options?: { props?: Props; callback?: () => void }) => void;
+    plausible?: (event: string, options?: { props?: Record<string, PlausibleValue>; callback?: () => void }) => void;
   }
 }
 
 // Campaign attribution we ARE allowed to attach (metadata only, from the URL).
-const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
-// Identity / PII that must stay isolated in MailerLite and NEVER reach analytics.
-const PII_KEYS = new Set(['email', 'name', 'first_name', 'firstname', 'subscriber_id', 'id']);
+const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'] as const;
 
-function utmProps(): Props {
+// Runtime allowlist = approved dimensions + campaign UTMs. Anything else is
+// dropped, so a mistaken or dynamically-typed call can never leak identity.
+const ALLOWED = new Set<string>([...ALLOWED_PROP_KEYS, ...UTM_KEYS]);
+
+function utmProps(): Record<string, string> {
   if (typeof window === 'undefined') return {};
   const p = new URLSearchParams(window.location.search);
-  const out: Props = {};
+  const out: Record<string, string> = {};
   for (const k of UTM_KEYS) {
     const v = p.get(k);
     if (v) out[k] = v.slice(0, 120);
@@ -40,19 +74,30 @@ function utmProps(): Props {
 }
 
 /**
- * Fire an aggregate funnel event. Campaign UTMs (from the current URL) are
- * attached automatically; any PII-shaped key is stripped defensively, so a
- * mistaken call site can never leak subscriber identity into analytics.
+ * Default-deny filter: keep ONLY allowlisted keys with primitive values.
+ * Exported so the guarantee is unit-testable independently of the DOM.
  */
-export function track(event: string, props?: Props): void {
+export function sanitizeProps(merged: Record<string, unknown>): Record<string, PlausibleValue> {
+  const out: Record<string, PlausibleValue> = {};
+  for (const [k, v] of Object.entries(merged)) {
+    if (!ALLOWED.has(k)) continue;
+    if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') out[k] = v;
+  }
+  return out;
+}
+
+/**
+ * Fire an aggregate funnel event. Campaign UTMs (from the current URL) are
+ * attached automatically; only allowlisted, non-PII dimensions are ever sent.
+ */
+export function track(event: FunnelEvent, props?: FunnelProps): void {
   if (typeof window === 'undefined') return;
   // Skip the build-time prerender crawler (headless Chromium sets
   // navigator.webdriver) so mount-fired events don't send phantom hits on deploy.
   if (typeof navigator !== 'undefined' && navigator.webdriver) return;
-  const merged: Props = { ...utmProps(), ...(props || {}) };
-  for (const k of Object.keys(merged)) if (PII_KEYS.has(k.toLowerCase())) delete merged[k];
+  const clean = sanitizeProps({ ...utmProps(), ...(props || {}) });
   try {
-    window.plausible?.(event, Object.keys(merged).length ? { props: merged } : undefined);
+    window.plausible?.(event, Object.keys(clean).length ? { props: clean } : undefined);
   } catch {
     // never let analytics break the page
   }
