@@ -208,9 +208,11 @@ is announced.
 
 ### Section G — Analytics (optional, informational)
 
-**G1 — Page view fires.** In DevTools → Network, filter for `cloudflareinsights`. **Expected:**
-a beacon request fires on page load. *Note:* per-magnet **conversion events are not tracked**
-by design (the analytics tier records page views only) — do not raise this as a bug.
+**G1 — Analytics fires.** In DevTools → Network, filter for `plausible.io`. **Expected:** a page
+view POSTs to `plausible.io/api/event` on load, and on the funnel path custom events
+(`Form Submit`, `Lead Created`, `Magnet Download`, …) POST too. *Note:* these events fire but must
+be configured as **Goals** in the Plausible dashboard to surface in reports (owner task) — do not
+raise that as a bug.
 
 ---
 
@@ -228,7 +230,7 @@ by design (the analytics tier records page views only) — do not raise this as 
 - Every magnet delivers the **correct, language-matched PDF** (§3.2), and un-hashed PDF URLs
   return 404 (C5).
 - Every happy-path signup produces a **subscriber record + welcome email** (D1–D3).
-- No console **errors** on load other than the known Cloudflare-beacon note (§7).
+- No console **errors** on load (§7 lists known non-bug behaviors).
 
 ---
 
@@ -237,11 +239,8 @@ by design (the analytics tier records page views only) — do not raise this as 
 - **Brief layout settle on `?lm=` deep links.** On these deep links the page may visibly
   "settle" (the offer snapping to the top) within the first moment of load. This is a known
   trade-off of the static-page architecture; the end state is correct.
-- **No preview image on 4 of 5 magnets.** Only `bedtime-routine` has artwork today; the others
-  are intentionally image-less until art is added.
-- **No conversion/goal events in analytics.** Only page views are collected (analytics tier
-  limitation) — see G1.
-- **Cloudflare beacon console message on non-production origins.** Irrelevant to the funnel.
+- **Funnel/goal events not yet showing in reports.** The events fire to Plausible (see G1) but
+  surface in reports only once configured as **Goals** in the Plausible dashboard (owner task).
 - **The default/organic signup headline mentions the "starter kit."** That is the intended
   general newsletter pitch when there is no `?lm=`.
 

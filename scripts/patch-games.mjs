@@ -87,9 +87,10 @@ for (const file of files) {
 
   // 2. Inject (or refresh) the progress-sync script. Strip any previously-
   //    injected block first so re-running upgrades it in place. (An older
-  //    version also POSTed an "Activity Complete" event to plausible.io; that
-  //    was removed when analytics moved to Cloudflare Web Analytics, whose free
-  //    beacon has no custom-events API — re-running scrubs it from every game.)
+  //    version also POSTed an "Activity Complete" event to plausible.io from the
+  //    game itself; that direct-from-game beacon was removed so the standalone
+  //    games stay zero-external on load — re-running scrubs it from every game.
+  //    Site analytics is Plausible, fired from the React app, not these games.)
   const existingBlock = new RegExp(`\\n?<!-- ${MARKER}[\\s\\S]*?</script>\\n?`);
   html = html.replace(existingBlock, '\n');
   if (html.includes('</body>')) {

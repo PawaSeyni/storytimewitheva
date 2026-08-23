@@ -45,8 +45,10 @@ All items below shipped to `main`, deployed to production (**storytimewitheva.co
 - [x] **Google Search Console** verified (DNS Domain + HTML meta tag); sitemap = 123 URLs, status Success. **PR #69.**
 
 ### Analytics
-- [x] **Switched Plausible → Cloudflare Web Analytics** (cookieless, free, no consent banner); the Plausible
-  first-party proxy was removed. Beacon live on every page. **PR #66 / #68.**
+- [x] **Analytics = Plausible (current).** History: Plausible → Cloudflare Web Analytics (PR #66/#68, 2026-08-04),
+  then **reverted to Plausible** (privacy-first D6, PR #93). Today's site is cookieless Plausible with a custom
+  **8-event funnel taxonomy** (Landing View → … → Lead Created → Magnet Download), no consent banner, and **no
+  Cloudflare beacon**. `scripts/maintenance.mjs` asserts no Cloudflare/Meta/GA trackers are present.
 
 ### Catalog
 - [x] **Books are English-only.** Single 🇺🇸 flag (was 🇺🇸🇪🇸🇫🇷), Book JSON-LD `inLanguage:["en"]`,
@@ -119,8 +121,8 @@ Nice-to-have before turning on paid traffic.
 
 - [x] **C1** Custom domain `storytimewitheva.com` LIVE. Apex → Netlify (`75.2.60.5`), valid Let's Encrypt cert (auto-renew), `www` → apex (301), `netlify.app` → apex (301). `SITE_URL` in `Seo.tsx` + `sitemap.xml` + `robots.txt` all on the custom domain (0 netlify.app refs). Lead-magnet PDFs serve over the domain. Verified end-to-end 2026-06-10.
 - [x] **C2** Plausible analytics LIVE since 2026-05-20. Site-keyed script (`plausible.io/js/pa-gzJ4DP5LRQ39ZXessq04G.js`) + `plausible.init()` queue in `index.html` `<head>`. Verified 2026-06-10: script serves 200, is present on the live `storytimewitheva.com` HTML, and the site is registered in a Plausible account (tracking active).
-  > ⚠️ **SUPERSEDED 2026-08-04:** analytics migrated **Plausible → Cloudflare Web Analytics** (cookieless, free,
-  > no consent banner); the Plausible script + first-party proxy were removed (PR #66 / #68).
+  > ℹ️ **UPDATE:** analytics briefly migrated Plausible → Cloudflare Web Analytics (PR #66/#68, 2026-08-04), then
+  > was **reverted to Plausible** (privacy-first D6, PR #93). **C2 stands: Plausible is current and live.**
 - [x] **C3** Toast system live (`src/lib/toast.tsx`, no deps, info/success/error + auto-dismiss + stacking) via `ToastProvider` in `main.tsx`. All `alert()` placeholders replaced — used in StoryBuilder (copy/save), BookmarkCrafts (save), Bingo (no-bingo). Zero `alert()` calls remain in `src/`. The one remaining `window.confirm` (Profile "Clear all progress") is left intentionally — correct primitive for a destructive yes/no; a toast can't capture a choice.
 - [x] **C4** Update this PUNCH_LIST as gates close — **DONE 2026-08-04.** Added the "Verified & live"
   section at the top; reconciled superseded entries (A1/A2/A3/A5 lead-capture, C2 analytics). **All three
