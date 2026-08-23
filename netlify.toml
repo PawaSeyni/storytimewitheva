@@ -32,15 +32,15 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-    # CSP — shipped Report-Only first (does NOT block; just reports violations to
-    # the browser console) so we can confirm nothing legitimate breaks before
-    # enforcing. `'unsafe-inline'` in script-src is required because all 12 games
-    # use inline <script>/onclick; the value of this policy is locking script/img/
-    # connect to known origins (self + Plausible + Amazon covers) and killing
-    # object/base/frame/form-action vectors. External resource loads confirmed:
-    # Plausible (script+connect) and m.media-amazon.com (cover images). No eval,
-    # no iframes. Once validated, this flips to `Content-Security-Policy`.
-    Content-Security-Policy-Report-Only = "default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://m.media-amazon.com; font-src 'self' data:; connect-src 'self' https://plausible.io; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+    # CSP — ENFORCED. Validated Report-Only first (2026-08-22) across home, /books,
+    # a book detail, a React game, a standalone inline-script game, and both
+    # landing pages incl. the signup submit: zero resource violations.
+    # `'unsafe-inline'` in script-src is required because all 12 games use inline
+    # <script>/onclick; the value here is locking script/img/connect to known
+    # origins (self + Plausible + Amazon covers) and killing object/base/frame/
+    # form-action vectors. No eval, no iframes. External loads: Plausible
+    # (script+connect) and m.media-amazon.com (cover images).
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://m.media-amazon.com; font-src 'self' data:; connect-src 'self' https://plausible.io; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
 
 # Long-cache for hashed static assets emitted by Vite
 [[headers]]
