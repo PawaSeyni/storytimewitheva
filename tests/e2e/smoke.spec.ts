@@ -78,7 +78,10 @@ test.describe('@smoke Layer 5 — delivery', () => {
         const pdf = await request.get(`/download/${magnet}${q}`); // follow
         expect(pdf.status()).toBe(200);
         expect(pdf.headers()['content-type'] || '').toContain('application/pdf');
-        expect(Number(pdf.headers()['content-length'] || '0')).toBeGreaterThan(1000);
+        // Assert on the actual downloaded body, not the content-length header:
+        // on a followed 302 that header is unreliable (can reflect the redirect
+        // hop) and flakes under concurrency, while the body is always the PDF.
+        expect((await pdf.body()).byteLength, 'PDF body size').toBeGreaterThan(1000);
       });
     }
   }
