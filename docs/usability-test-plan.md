@@ -80,10 +80,9 @@ Plausible). Define and watch:
 OWNER STEP: in the Plausible dashboard, add each as a **Goal** (Site settings →
 Goals → Add goal → Custom event) to see conversion rates, and optionally build a
 funnel. The events are sent automatically once live; goals just surface them.
-(The 12 standalone games also fire `Activity Complete` now, via the script-less
-Plausible events API injected by `scripts/patch-games.mjs` — so all 20
-activities report completion to the same goal. The games stay zero-external on
-load; the beacon only fires on the completion click.)
+(The 12 standalone games do NOT send analytics events — they only update the
+local progress store and stay zero-external on load. Site analytics is Plausible,
+fired from the React app, not from the standalone game HTML.)
 
 ## Privacy and consent (testing with children)
 

@@ -67,8 +67,9 @@ funnel PRs already satisfy roughly half of it. Two things stand out:
   homepage*; we shipped *offer-first on the homepage* — which the plan's Core Principle
   explicitly argues against ("do not make the homepage perform two incompatible jobs"). This is
   a real strategic decision, not a bug.
-- **Analytics gap (D6):** the plan's funnel instrumentation + Meta Lead event **cannot** run on
-  the current page-views-only Cloudflare tier.
+- **Analytics gap (D6) — RESOLVED (PR #93):** funnel instrumentation shipped on **Plausible** (custom
+  8-event taxonomy), replacing the earlier page-views-only Cloudflare tier. The Meta Lead event was
+  intentionally dropped (privacy-first — no ad pixel); conversion signal to Pinterest is server-side CAPI.
 
 | Plan item | Pri | Status | Where / next step |
 |---|---|---|---|
@@ -82,7 +83,7 @@ funnel PRs already satisfy roughly half of it. Two things stand out:
 | Dedicated landing pages (separate from homepage) | P0 | ✅ **done (D5)** | templated `/free/:magnet`, all 5×3 combos |
 | Clean path URLs (`/free/bedtime-routine`) | P0 | ✅ **done (D5)** | `?lm=` still works too, so no redirects needed |
 | Remove distractions (nav/catalog on paid pages) | P1 | ✅ **done (D5)** | landing pages render zero site chrome |
-| Instrument funnel + **Meta Lead event** | P1 | ❌ **gap → D6** | Cloudflare = page views only |
+| Instrument funnel + **Meta Lead event** | P1 | ✅ **funnel done (D6)** · Meta Lead dropped (privacy) | Plausible 8-event taxonomy (#93); no ad pixel by design |
 | Capture + store UTM `source`/`campaign` on subscriber | P1 | ❌ → E4 | only `language`+`lead_magnet` stored today |
 | Post-signup: recommend books after download | P1 | ⚠️ partial | success delivers; doesn't yet cross-sell |
 | Nurture sequence (5 value-first emails, Day 0/1/3/5/7) | P2 | ⚠️ partial | MailerLite automation exists; align cadence (owner) |

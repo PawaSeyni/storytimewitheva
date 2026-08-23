@@ -118,7 +118,7 @@ git push origin main
 | Symptom | First check | Then check |
 |---|---|---|
 | **Build failed** | Deploy log in dashboard | TypeScript errors? Push a fix. |
-| **Site shows old version** | Hard reload (`Cmd+Shift+R`); deploy "Published" status | Cloudflare DNS cache; wait up to TTL (3600s) |
+| **Site shows old version** | Hard reload (`Cmd+Shift+R`); deploy "Published" status | DNS/CDN cache (IONOS DNS + Netlify CDN); wait up to TTL (3600s) |
 | **Form submissions not arriving** | Forms tab — are submissions showing? | If yes → notification rule. If no → form-name match between Contact.tsx and index.html |
 | **HTTPS broken** | Domain settings → SSL/TLS status | Re-trigger "Verify DNS configuration" — Let's Encrypt should auto-retry |
 | **Custom domain not resolving** | DNS resolution via `dns.google/resolve?name=storytimewitheva.com&type=A` (must return `75.2.60.5`) | IONOS DNS settings (see section 3) |
