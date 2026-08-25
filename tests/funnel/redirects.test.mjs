@@ -39,3 +39,23 @@ test('TEST 0.4 — every magnet has a /download/ rule pointing at a real PDF', (
     assert.ok(existsSync(abs) && statSync(abs).size > 0, `redirect target missing: ${target}`);
   }
 });
+
+// Guards the specific incident found 2026-08-25: a pin created before PDFs were
+// hash-gated (2026-08-04) still pointed at the raw, un-hashed filename and 404'd
+// for months instead of ever reaching the signup. Any pin/ad still using an old
+// raw filename must land on the gated offer page, never a 404 and never a bare
+// PDF (a visitor here has not opted in yet).
+test('TEST 0.4 — legacy raw PDF filenames redirect to the gated offer page, not 404 or a bare PDF', () => {
+  const body = readFileSync(redirectsPath, 'utf8');
+  const langSuffix = { en: '', es: '-es', fr: '-fr' };
+  const langPrefix = { en: '', es: '/es', fr: '/fr' };
+  for (const f of readdirSync(path.join(ROOT, 'public')).filter((x) => x.endsWith('.pdf'))) {
+    const m = f.match(/^(.+?)(?:-(es|fr))?\.[0-9a-f]{6,}\.pdf$/);
+    if (!m) continue;
+    const [, magnet, lang = 'en'] = m;
+    const legacyPath = `/${magnet}${langSuffix[lang]}.pdf`;
+    const target = `${langPrefix[lang]}/?lm=${magnet}#email-signup`;
+    const line = new RegExp(`^${legacyPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s+${target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s+301\\s*$`, 'm');
+    assert.ok(line.test(body), `no legacy-safety-net redirect for ${legacyPath} -> ${target}`);
+  }
+});

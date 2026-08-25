@@ -28,3 +28,19 @@
 /download/parents-guide/  lang=es  /parents-guide-es.5c21d77b24d2.pdf  302
 /download/parents-guide/  lang=fr  /parents-guide-fr.16a27a138de4.pdf  302
 /download/parents-guide/  /parents-guide.12ba12f60096.pdf  302
+
+# Legacy safety net: pre-2026-08-04 raw filenames (no hash) that old pins/ads
+# may still point at. Sends to the GATED offer page, not the PDF directly —
+# a visitor landing here has not opted in yet.
+
+/bedtime-routine.pdf  /?lm=bedtime-routine#email-signup  301
+/bedtime-routine-es.pdf  /es/?lm=bedtime-routine#email-signup  301
+/bedtime-routine-fr.pdf  /fr/?lm=bedtime-routine#email-signup  301
+/bilingual-flashcards.pdf  /?lm=bilingual-flashcards#email-signup  301
+/bilingual-starter-kit.pdf  /?lm=bilingual-starter-kit#email-signup  301
+/follow-up-activities.pdf  /?lm=follow-up-activities#email-signup  301
+/follow-up-activities-es.pdf  /es/?lm=follow-up-activities#email-signup  301
+/follow-up-activities-fr.pdf  /fr/?lm=follow-up-activities#email-signup  301
+/parents-guide.pdf  /?lm=parents-guide#email-signup  301
+/parents-guide-es.pdf  /es/?lm=parents-guide#email-signup  301
+/parents-guide-fr.pdf  /fr/?lm=parents-guide#email-signup  301
