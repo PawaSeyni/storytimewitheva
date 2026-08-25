@@ -8,6 +8,17 @@
 //              /download/bedtime-routine?lang=es     -> Spanish PDF
 //              /download/bedtime-routine?lang=fr      -> French PDF
 // Magnets with a single shared file (starter kit, flashcards) ignore lang.
+//
+// LEGACY SAFETY NET: also redirects the pre-2026-08-04 raw, un-hashed filenames
+// (e.g. /bedtime-routine-es.pdf) to the gated offer page (/?lm=<magnet>#email-signup,
+// or /es|fr/?lm=<magnet>#email-signup). Those raw paths were the pin/ad destination
+// before PDFs were hash-gated; any pin created before that date, or any pin someone
+// points at a raw filename by habit, still 404'd until this was added (found
+// 2026-08-25: a 50k-impression Pinterest pin from 2026-06-08 was silently 404ing
+// visitors instead of ever showing the signup, see PUNCH_LIST.md for the writeup).
+// Landing on the offer page instead of the raw PDF is deliberate, not a fallback
+// compromise: a cold pin visitor has not opted in yet, so the destination must still
+// capture their email, not hand them the PDF directly.
 
 import { readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -66,6 +77,25 @@ for (const magnet of [...byMagnet.keys()].sort()) {
   }
   lines.push('');
 }
+
+lines.push(
+  '# Legacy safety net: pre-2026-08-04 raw filenames (no hash) that old pins/ads',
+  '# may still point at. Sends to the GATED offer page, not the PDF directly —',
+  '# a visitor landing here has not opted in yet.',
+  ''
+);
+const langPrefix = { en: '', es: '/es', fr: '/fr' };
+for (const magnet of [...byMagnet.keys()].sort()) {
+  const langs = byMagnet.get(magnet);
+  for (const lang of ['en', 'es', 'fr']) {
+    if (!langs[lang]) continue;
+    const suffix = lang === 'en' ? '' : `-${lang}`;
+    const legacyPath = `/${magnet}${suffix}.pdf`;
+    const target = `${langPrefix[lang]}/?lm=${magnet}#email-signup`;
+    lines.push(`${legacyPath}  ${target}  301`);
+  }
+}
+lines.push('');
 
 await writeFile(OUT, lines.join('\n'), 'utf8');
 
