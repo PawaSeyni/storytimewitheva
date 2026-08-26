@@ -38,7 +38,7 @@ test('2.3 ?lang= overrides the display language', async ({ page }) => {
 });
 
 // TEST 2.5 — the LP-001 guard. Every magnet must show its product shot.
-for (const magnet of ['bedtime-routine', 'parents-guide', 'bilingual-flashcards', 'follow-up-activities', 'woodworkers-patience']) {
+for (const magnet of ['bedtime-routine', 'parents-guide', 'bilingual-flashcards', 'follow-up-activities', 'leo-and-the-wolf']) {
   test(`2.5 ${magnet} shows a product-shot preview`, async ({ page }) => {
     await page.goto(`/free/${magnet}`);
     const img = page.locator(`img[src="/previews/${magnet}.webp"]`);
