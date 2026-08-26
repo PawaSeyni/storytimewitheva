@@ -97,6 +97,42 @@ for (const magnet of [...byMagnet.keys()].sort()) {
 }
 lines.push('');
 
+// RETIRED-MAGNET SAFETY NET: when a giveaway is swapped out, its old landing /
+// download / raw-pdf URLs may still live in published pins, posts, or ads. Those
+// routes are gone, so without this they 404 (a dead pin). Redirect every old
+// entry point to the current replacement offer, preserving language, so the
+// visitor lands on the live gated giveaway instead. Add a line here on each swap.
+const RETIRED = {
+  // retired slug -> replacement slug
+  'woodworkers-patience': 'leo-and-the-wolf', // swapped 2026-08-23 (PR #121)
+};
+if (Object.keys(RETIRED).length) {
+  lines.push(
+    '# Retired-magnet safety net: old pins/ads for a swapped-out giveaway must not',
+    '# 404 — redirect every old URL to the current replacement offer (gated).',
+    ''
+  );
+  for (const [retired, repl] of Object.entries(RETIRED)) {
+    // Landing pages (both slash forms so the rule wins before Netlify's slash 301).
+    for (const lang of ['en', 'es', 'fr']) {
+      const p = langPrefix[lang];
+      for (const base of [`${p}/free/${retired}`, `${p}/free/${retired}/`]) {
+        lines.push(`${base}  ${p}/free/${repl}  301`);
+      }
+    }
+    // Old stable download link.
+    for (const base of [`/download/${retired}`, `/download/${retired}/`]) {
+      lines.push(`${base}  /free/${repl}  301`);
+    }
+    // Old raw hashed-less pdf filenames -> the replacement's gated offer.
+    for (const lang of ['en', 'es', 'fr']) {
+      const suffix = lang === 'en' ? '' : `-${lang}`;
+      lines.push(`/${retired}${suffix}.pdf  ${langPrefix[lang]}/?lm=${repl}#email-signup  301`);
+    }
+  }
+  lines.push('');
+}
+
 await writeFile(OUT, lines.join('\n'), 'utf8');
 
 const count = byMagnet.size;
