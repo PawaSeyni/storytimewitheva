@@ -102,7 +102,7 @@ const NOINDEX_SPA_ROUTES = ['/profile', '/search'];
 // alias that five already-published assets point at (P-008, P-015, FB-009/020/023
 // via `?lm=`), so /free/bilingual-starter-kit is the URL a human is most likely to
 // construct by analogy. It 404'd in all three languages until 2026-08-10.
-const LANDING_SLUGS = ['bedtime-routine', 'bilingual-bundle', 'bilingual-starter-kit', 'bilingual-flashcards', 'parents-guide', 'follow-up-activities'];
+const LANDING_SLUGS = ['bedtime-routine', 'bilingual-bundle', 'bilingual-starter-kit', 'bilingual-flashcards', 'parents-guide', 'follow-up-activities', 'woodworkers-patience'];
 const LANG_PREFIXES = ['', '/es', '/fr'];
 
 // Guard against drift: parse the magnet registry and fail the build if any

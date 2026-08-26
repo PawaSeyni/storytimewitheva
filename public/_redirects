@@ -29,6 +29,11 @@
 /download/parents-guide/  lang=fr  /parents-guide-fr.16a27a138de4.pdf  302
 /download/parents-guide/  /parents-guide.12ba12f60096.pdf  302
 
+/download/woodworkers-patience  lang=fr  /woodworkers-patience-fr.9d80f424993c.pdf  302
+/download/woodworkers-patience  /woodworkers-patience.23321963bc64.pdf  302
+/download/woodworkers-patience/  lang=fr  /woodworkers-patience-fr.9d80f424993c.pdf  302
+/download/woodworkers-patience/  /woodworkers-patience.23321963bc64.pdf  302
+
 # Legacy safety net: pre-2026-08-04 raw filenames (no hash) that old pins/ads
 # may still point at. Sends to the GATED offer page, not the PDF directly —
 # a visitor landing here has not opted in yet.
@@ -44,3 +49,5 @@
 /parents-guide.pdf  /?lm=parents-guide#email-signup  301
 /parents-guide-es.pdf  /es/?lm=parents-guide#email-signup  301
 /parents-guide-fr.pdf  /fr/?lm=parents-guide#email-signup  301
+/woodworkers-patience.pdf  /?lm=woodworkers-patience#email-signup  301
+/woodworkers-patience-fr.pdf  /fr/?lm=woodworkers-patience#email-signup  301
