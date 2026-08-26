@@ -170,6 +170,27 @@ try {
 }
 console.log('Chrome launched OK');
 
+// Both readiness waits below are FATAL, not best-effort. A route whose React
+// tree never signals ready (crash, hang, unresolved lazy chunk) would otherwise
+// be snapshotted mid-render and counted as a success — shipping an empty shell
+// to a URL that has no SPA fallback behind it. Fail the build instead so the
+// last good deploy stays live.
+async function waitUntilReady(page) {
+  try {
+    await page.waitForFunction('window.__PRERENDER_READY__ === true', { timeout: 10000 });
+  } catch {
+    throw new Error('__PRERENDER_READY__ never fired within 10s (React never finished rendering)');
+  }
+  // Lazy-loaded routes (the demos) render a Suspense fallback tagged
+  // data-prerender-loading until their chunk resolves — wait it out so we
+  // snapshot the real demo, not the spinner.
+  try {
+    await page.waitForFunction("!document.querySelector('[data-prerender-loading]')", { timeout: 10000 });
+  } catch {
+    throw new Error('Suspense fallback still present after 10s (a lazy chunk never resolved)');
+  }
+}
+
 let ok = 0;
 const failures = [];
 
@@ -177,15 +198,7 @@ for (const route of routes) {
   const page = await browser.newPage();
   try {
     await page.goto(ORIGIN + route, { waitUntil: 'load', timeout: 30000 });
-    await page
-      .waitForFunction('window.__PRERENDER_READY__ === true', { timeout: 10000 })
-      .catch(() => {}); // fall back to the networkidle snapshot if the flag never fires
-    // Lazy-loaded routes (the demos) render a Suspense fallback tagged
-    // data-prerender-loading until their chunk resolves — wait it out so we
-    // snapshot the real demo, not the spinner.
-    await page
-      .waitForFunction("!document.querySelector('[data-prerender-loading]')", { timeout: 10000 })
-      .catch(() => {});
+    await waitUntilReady(page);
     let html = await page.content();
     // LCP hint: preload the hero image with its REAL hashed URL, taken from this
     // page's own rendered HTML — so it can never drift out of date (Vite re-hashes
@@ -216,10 +229,7 @@ for (const route of routes) {
 try {
   const page = await browser.newPage();
   await page.goto(ORIGIN + '/__prerender_not_found__', { waitUntil: 'load', timeout: 30000 });
-  await page.waitForFunction('window.__PRERENDER_READY__ === true', { timeout: 10000 }).catch(() => {});
-  await page
-    .waitForFunction("!document.querySelector('[data-prerender-loading]')", { timeout: 10000 })
-    .catch(() => {});
+  await waitUntilReady(page);
   await writeFile(path.join(DIST, '404.html'), await page.content());
   await page.close();
   console.log('Wrote dist/404.html (NotFound snapshot, noindex).');
