@@ -22,17 +22,19 @@
 /download/follow-up-activities/  lang=fr  /follow-up-activities-fr.e605cd5fa2d4.pdf  302
 /download/follow-up-activities/  /follow-up-activities.43818dc842cc.pdf  302
 
+/download/leo-and-the-wolf  lang=es  /leo-and-the-wolf-es.d333637d89f1.pdf  302
+/download/leo-and-the-wolf  lang=fr  /leo-and-the-wolf-fr.1f4898ed5b64.pdf  302
+/download/leo-and-the-wolf  /leo-and-the-wolf.3d3ec12b8ca1.pdf  302
+/download/leo-and-the-wolf/  lang=es  /leo-and-the-wolf-es.d333637d89f1.pdf  302
+/download/leo-and-the-wolf/  lang=fr  /leo-and-the-wolf-fr.1f4898ed5b64.pdf  302
+/download/leo-and-the-wolf/  /leo-and-the-wolf.3d3ec12b8ca1.pdf  302
+
 /download/parents-guide  lang=es  /parents-guide-es.5c21d77b24d2.pdf  302
 /download/parents-guide  lang=fr  /parents-guide-fr.16a27a138de4.pdf  302
 /download/parents-guide  /parents-guide.12ba12f60096.pdf  302
 /download/parents-guide/  lang=es  /parents-guide-es.5c21d77b24d2.pdf  302
 /download/parents-guide/  lang=fr  /parents-guide-fr.16a27a138de4.pdf  302
 /download/parents-guide/  /parents-guide.12ba12f60096.pdf  302
-
-/download/woodworkers-patience  lang=fr  /woodworkers-patience-fr.9d80f424993c.pdf  302
-/download/woodworkers-patience  /woodworkers-patience.23321963bc64.pdf  302
-/download/woodworkers-patience/  lang=fr  /woodworkers-patience-fr.9d80f424993c.pdf  302
-/download/woodworkers-patience/  /woodworkers-patience.23321963bc64.pdf  302
 
 # Legacy safety net: pre-2026-08-04 raw filenames (no hash) that old pins/ads
 # may still point at. Sends to the GATED offer page, not the PDF directly —
@@ -46,8 +48,9 @@
 /follow-up-activities.pdf  /?lm=follow-up-activities#email-signup  301
 /follow-up-activities-es.pdf  /es/?lm=follow-up-activities#email-signup  301
 /follow-up-activities-fr.pdf  /fr/?lm=follow-up-activities#email-signup  301
+/leo-and-the-wolf.pdf  /?lm=leo-and-the-wolf#email-signup  301
+/leo-and-the-wolf-es.pdf  /es/?lm=leo-and-the-wolf#email-signup  301
+/leo-and-the-wolf-fr.pdf  /fr/?lm=leo-and-the-wolf#email-signup  301
 /parents-guide.pdf  /?lm=parents-guide#email-signup  301
 /parents-guide-es.pdf  /es/?lm=parents-guide#email-signup  301
 /parents-guide-fr.pdf  /fr/?lm=parents-guide#email-signup  301
-/woodworkers-patience.pdf  /?lm=woodworkers-patience#email-signup  301
-/woodworkers-patience-fr.pdf  /fr/?lm=woodworkers-patience#email-signup  301

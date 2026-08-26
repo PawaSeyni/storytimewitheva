@@ -308,16 +308,17 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
     },
     pdf: { en: '/follow-up-activities.43818dc842cc.pdf', es: '/follow-up-activities-es.a733da2b2546.pdf', fr: '/follow-up-activities-fr.e605cd5fa2d4.pdf' },
   },
-  // A full free storybook (32-page picture book) as a lead magnet. English and
-  // French editions exist; Spanish is not translated yet, so `es` falls back to
-  // the English PDF and the Spanish copy says so (one-line swap when ES ships).
-  'woodworkers-patience': {
-    tag: 'woodworkers-patience',
-    preview: '/previews/woodworkers-patience.webp',
+  // The free-giveaway storybook: a full 32-page picture book, "Leo and the Wolf"
+  // (a boy-who-cried-wolf tale about honesty + courage). All three editions are
+  // real, professional translations — EN, ES, FR — so each language delivers its
+  // own book.
+  'leo-and-the-wolf': {
+    tag: 'leo-and-the-wolf',
+    preview: '/previews/leo-and-the-wolf.webp',
     copy: {
       en: {
-        title: 'The Sanding Block, a free storybook',
-        blurb: 'A woodworker\'s lesson in patience. Malik dreams of carving dragons and music boxes, but Master Anders hands him a broom, then a block of rough maple. A 32-page picture book for ages 4 to 8, yours to read together.',
+        title: 'Leo and the Wolf, a free storybook',
+        blurb: 'Leo is a shepherd for the very first time. One day he cries "Wolf!" just for fun, but when a real wolf appears, no one believes him. A picture book about honesty and courage for ages 4 to 8, yours to read together.',
         bullets: [
           '✓ A complete 32-page illustrated storybook',
           '✓ Ages 4 to 8, in English',
@@ -326,18 +327,18 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
         cta: 'Send me the storybook',
       },
       es: {
-        title: 'The Sanding Block, un cuento gratis',
-        blurb: 'La lección de paciencia de un carpintero. Malik sueña con tallar dragones y cajas de música, pero el maestro Anders le da una escoba y luego un bloque de arce. Un libro ilustrado de 32 páginas para edades de 4 a 8 años. Edición en inglés por ahora; la versión en español llegará pronto.',
+        title: 'Leo y el Lobo, un cuento gratis',
+        blurb: 'Leo es pastor por primera vez. Un día grita «¡Que viene el lobo!» solo para divertirse, pero cuando aparece un lobo de verdad, nadie le cree. Un libro ilustrado sobre la honestidad y el valor, para edades de 4 a 8 años, gratis para leer juntos.',
         bullets: [
           '✓ Un cuento ilustrado completo de 32 páginas',
-          '✓ Para edades de 4 a 8 años, en inglés',
+          '✓ Para edades de 4 a 8 años, en español',
           '✓ Se abre en cualquier teléfono, tableta o computadora (PDF)',
         ],
         cta: 'Envíenme el cuento',
       },
       fr: {
-        title: 'La leçon de patience du menuisier, une histoire gratuite',
-        blurb: 'Malik rêve de sculpter des dragons et des boîtes à musique, mais maître Anders lui tend un balai, puis un bloc d\'érable brut. Un album de 32 pages pour les 4 à 8 ans, à lire ensemble.',
+        title: 'Leo et le Loup, une histoire gratuite',
+        blurb: 'Leo est berger pour la première fois. Un jour, il crie « Au loup ! » juste pour rire, mais quand un vrai loup surgit, personne ne le croit. Un album sur la vérité et le courage, pour les 4 à 8 ans, gratuit à lire ensemble.',
         bullets: [
           '✓ Un album illustré complet de 32 pages',
           '✓ Pour les 4 à 8 ans, en français',
@@ -346,7 +347,7 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
         cta: 'Envoyez-moi l\'histoire',
       },
     },
-    pdf: { en: '/woodworkers-patience.23321963bc64.pdf', es: '/woodworkers-patience.23321963bc64.pdf', fr: '/woodworkers-patience-fr.9d80f424993c.pdf' },
+    pdf: { en: '/leo-and-the-wolf.3d3ec12b8ca1.pdf', es: '/leo-and-the-wolf-es.d333637d89f1.pdf', fr: '/leo-and-the-wolf-fr.1f4898ed5b64.pdf' },
   },
 };
 const DEFAULT_MAGNET = 'bilingual-starter-kit';
@@ -455,7 +456,7 @@ const PREVIEW_DIMS: Record<string, { w: number; h: number }> = {
   '/previews/bilingual-flashcards.webp': { w: 720, h: 932 },
   '/previews/parents-guide.webp': { w: 720, h: 932 },
   '/previews/follow-up-activities.webp': { w: 720, h: 932 },
-  '/previews/woodworkers-patience.webp': { w: 720, h: 727 },
+  '/previews/leo-and-the-wolf.webp': { w: 720, h: 720 },
 };
 
 export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } = {}) {
