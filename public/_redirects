@@ -54,3 +54,18 @@
 /parents-guide.pdf  /?lm=parents-guide#email-signup  301
 /parents-guide-es.pdf  /es/?lm=parents-guide#email-signup  301
 /parents-guide-fr.pdf  /fr/?lm=parents-guide#email-signup  301
+
+# Retired-magnet safety net: old pins/ads for a swapped-out giveaway must not
+# 404 — redirect every old URL to the current replacement offer (gated).
+
+/free/woodworkers-patience  /free/leo-and-the-wolf  301
+/free/woodworkers-patience/  /free/leo-and-the-wolf  301
+/es/free/woodworkers-patience  /es/free/leo-and-the-wolf  301
+/es/free/woodworkers-patience/  /es/free/leo-and-the-wolf  301
+/fr/free/woodworkers-patience  /fr/free/leo-and-the-wolf  301
+/fr/free/woodworkers-patience/  /fr/free/leo-and-the-wolf  301
+/download/woodworkers-patience  /free/leo-and-the-wolf  301
+/download/woodworkers-patience/  /free/leo-and-the-wolf  301
+/woodworkers-patience.pdf  /?lm=leo-and-the-wolf#email-signup  301
+/woodworkers-patience-es.pdf  /es/?lm=leo-and-the-wolf#email-signup  301
+/woodworkers-patience-fr.pdf  /fr/?lm=leo-and-the-wolf#email-signup  301
