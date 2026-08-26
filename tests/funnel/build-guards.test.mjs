@@ -2,6 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { execSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import { parseMagnets, parseLandingSlugs } from './_manifest.mjs';
 
 // TEST 0.5 — no raw PDF URL is hard-coded anywhere it could be pasted into an
@@ -32,4 +33,30 @@ test('TEST 0.2 — LEAD_MAGNETS and prerender LANDING_SLUGS are in sync', () => 
     landing,
     'LEAD_MAGNETS and LANDING_SLUGS diverged — `npm run build` would abort'
   );
+});
+
+// TEST 0.7 — the deploy-provenance chain stays wired. dist/version.json is what
+// makes "is commit X actually in production?" answerable from production rather
+// than from the Netlify dashboard; the no-store header is what stops a cached
+// copy from answering with the PREVIOUS deploy's SHA. Both are easy to drop by
+// accident while editing the build, and neither failure is visible at runtime,
+// so guard them structurally. (Missing SHA at build time is fatal inside
+// scripts/gen-version.mjs itself — that path needs no test here.)
+test('TEST 0.7 — build stamps deploy provenance and serves it uncached', () => {
+  const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
+  assert.match(
+    pkg.scripts.build,
+    /gen:version/,
+    'npm run build must run gen:version, or deploys ship with no provenance'
+  );
+  // Order matters: vite build wipes dist/, so a stamp written before it is lost.
+  assert.ok(
+    pkg.scripts.build.indexOf('vite build') < pkg.scripts.build.indexOf('gen:version'),
+    'gen:version must run AFTER vite build (which wipes dist/)'
+  );
+
+  const toml = readFileSync('netlify.toml', 'utf8');
+  const rule = toml.split('[[headers]]').find((b) => b.includes('for = "/version.json"'));
+  assert.ok(rule, 'netlify.toml needs a [[headers]] rule for /version.json');
+  assert.match(rule, /no-store/, '/version.json must be served no-store');
 });
