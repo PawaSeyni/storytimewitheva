@@ -308,6 +308,46 @@ const LEAD_MAGNETS: Record<string, Magnet> = {
     },
     pdf: { en: '/follow-up-activities.43818dc842cc.pdf', es: '/follow-up-activities-es.a733da2b2546.pdf', fr: '/follow-up-activities-fr.e605cd5fa2d4.pdf' },
   },
+  // A full free storybook (32-page picture book) as a lead magnet. English and
+  // French editions exist; Spanish is not translated yet, so `es` falls back to
+  // the English PDF and the Spanish copy says so (one-line swap when ES ships).
+  'woodworkers-patience': {
+    tag: 'woodworkers-patience',
+    preview: '/previews/woodworkers-patience.webp',
+    copy: {
+      en: {
+        title: 'The Sanding Block, a free storybook',
+        blurb: 'A woodworker\'s lesson in patience. Malik dreams of carving dragons and music boxes, but Master Anders hands him a broom, then a block of rough maple. A 32-page picture book for ages 4 to 8, yours to read together.',
+        bullets: [
+          '✓ A complete 32-page illustrated storybook',
+          '✓ Ages 4 to 8, in English',
+          '✓ Opens on any phone, tablet or computer (PDF)',
+        ],
+        cta: 'Send me the storybook',
+      },
+      es: {
+        title: 'The Sanding Block, un cuento gratis',
+        blurb: 'La lección de paciencia de un carpintero. Malik sueña con tallar dragones y cajas de música, pero el maestro Anders le da una escoba y luego un bloque de arce. Un libro ilustrado de 32 páginas para edades de 4 a 8 años. Edición en inglés por ahora; la versión en español llegará pronto.',
+        bullets: [
+          '✓ Un cuento ilustrado completo de 32 páginas',
+          '✓ Para edades de 4 a 8 años, en inglés',
+          '✓ Se abre en cualquier teléfono, tableta o computadora (PDF)',
+        ],
+        cta: 'Envíenme el cuento',
+      },
+      fr: {
+        title: 'La leçon de patience du menuisier, une histoire gratuite',
+        blurb: 'Malik rêve de sculpter des dragons et des boîtes à musique, mais maître Anders lui tend un balai, puis un bloc d\'érable brut. Un album de 32 pages pour les 4 à 8 ans, à lire ensemble.',
+        bullets: [
+          '✓ Un album illustré complet de 32 pages',
+          '✓ Pour les 4 à 8 ans, en français',
+          '✓ S\'ouvre sur n\'importe quel téléphone, tablette ou ordinateur (PDF)',
+        ],
+        cta: 'Envoyez-moi l\'histoire',
+      },
+    },
+    pdf: { en: '/woodworkers-patience.23321963bc64.pdf', es: '/woodworkers-patience.23321963bc64.pdf', fr: '/woodworkers-patience-fr.9d80f424993c.pdf' },
+  },
 };
 const DEFAULT_MAGNET = 'bilingual-starter-kit';
 
@@ -415,6 +455,7 @@ const PREVIEW_DIMS: Record<string, { w: number; h: number }> = {
   '/previews/bilingual-flashcards.webp': { w: 720, h: 932 },
   '/previews/parents-guide.webp': { w: 720, h: 932 },
   '/previews/follow-up-activities.webp': { w: 720, h: 932 },
+  '/previews/woodworkers-patience.webp': { w: 720, h: 727 },
 };
 
 export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } = {}) {

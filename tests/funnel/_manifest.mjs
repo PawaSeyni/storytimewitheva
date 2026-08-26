@@ -20,6 +20,7 @@ export const EXPECTED_SLUGS = [
   'bilingual-flashcards',
   'parents-guide',
   'follow-up-activities',
+  'woodworkers-patience',
 ];
 
 /** Parse LEAD_MAGNETS into { slug: { tag, preview|null, pdf:{en,es,fr} } }. */
