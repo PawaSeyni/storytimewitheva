@@ -42,6 +42,14 @@
     # (script+connect) and m.media-amazon.com (cover images).
     Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://m.media-amazon.com; font-src 'self' data:; connect-src 'self' https://plausible.io; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
 
+# Deploy provenance (scripts/gen-version.mjs). MUST NOT be cached: a stale copy
+# would report the PREVIOUS deploy's commit and make the verification chain lie
+# in the one direction that matters. `npm run verify:deploy` reads this.
+[[headers]]
+  for = "/version.json"
+  [headers.values]
+    Cache-Control = "no-store, max-age=0"
+
 # Long-cache for hashed static assets emitted by Vite
 [[headers]]
   for = "/assets/*"
