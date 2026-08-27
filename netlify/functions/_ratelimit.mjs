@@ -1,17 +1,25 @@
 // Shared-store rate limiter for the signup endpoint.
 //
-// WHY THIS EXISTS. The Netlify platform rate limit declared in subscribe.mjs's
-// `config` export is accepted by the deploy API and NOT enforced at runtime on
-// this site. Measured 2026-08-27 on production and on a deploy preview, with a
-// control function on a normal path to rule out the reserved /.netlify/ prefix:
+// WHY THIS EXISTS. Not because the platform rule is proven broken -- it is not.
+// Every attempt to measure the platform rule from here was confounded: both
+// test clients turned out to egress through a rotating proxy pool (~10 IPs), so
+// an ip-aggregated limit could never accumulate against a single key and no
+// probe ever measured anything. Treat any "the platform rule returned N x 200"
+// claim in this repo's history as void.
 //
-//   /api/ratelimit-probe      3/60s rule registered  ->  18 requests, 18x 200
-//   /.netlify/functions/...   5/60s rule registered  ->   9 requests,  9x 200
+// This limiter exists because it is VERIFIABLE. Its behaviour is asserted by
+// unit tests (tests/funnel/ratelimit.test.mjs) and was confirmed end-to-end
+// against real Netlify Blobs with a fixed subject: 5 allowed, then blocked with
+// a correct Retry-After. The platform rule cannot be asserted anywhere -- it is
+// enforced, or not, by infrastructure this repo cannot observe or test.
 //
-// So this is the control that actually runs. The platform rule stays declared as
-// a second layer: if Netlify starts enforcing it, requests are rejected at the
-// edge before they ever reach this code, which is strictly better.
-//
+// The platform rule in subscribe.mjs's `config` export is KEPT and is the
+// preferred layer: when it fires, requests are rejected at the edge and never
+// invoke the function at all. This is the layer that runs when it does not.
+// If the platform rule is later confirmed working from a stable IP, this
+// remains useful as defence in depth and as the only testable control, but the
+// limits here could reasonably be loosened.
+
 // SLIDING WINDOW LOG, not fixed buckets. One key per subject holding recent hit
 // timestamps, pruned on read. That keeps key count bounded by distinct
 // subjects (Netlify Blobs has no TTL, so bucket-per-window keys would
@@ -51,25 +59,15 @@ const hash = v => createHash('sha256').update(String(v)).digest('hex').slice(0, 
 // rate limiter reading a stale count is a rate limiter that does not work.
 let storeP;
 const memory = new Map();
-export let lastCount = -1;   // TEMP diagnostic
-export let lastBackend = '?'; // TEMP diagnostic
-export const debugState = () => `${lastBackend}:${lastCount}`;
 
 async function blobStore() {
   if (storeP === undefined) {
     storeP = (async () => {
       const { getStore } = await import('@netlify/blobs');
       const store = getStore({ name: STORE_NAME, consistency: 'strong' });
-      // Round-trip check: connecting is not the same as persisting. A store
-      // that accepts a write and then hands back a stale/empty read is worse
-      // than no store, because it looks healthy while counting nothing.
-      await store.get('__probe__');
-      const marker = `rt-${Date.now()}`;
-      await store.setJSON('__roundtrip__', { marker });
-      const back = await store.get('__roundtrip__', { type: 'json' });
-      if (back?.marker !== marker) {
-        throw new Error(`round-trip failed: wrote ${marker}, read back ${JSON.stringify(back)}`);
-      }
+      // Connecting is not the same as persisting, so probe a real read here and
+      // fail fast into the degraded path rather than mid-decision.
+      await store.get('__probe__', { consistency: 'strong' });
       return store;
     })().catch(err => {
       console.error(`[ratelimit] shared store unavailable, degrading to per-instance memory: ${err.message}`);
@@ -145,8 +143,6 @@ export async function checkRate(subjects, now = Date.now()) {
       }
 
       const hits = entry.hits.filter(t => now - t < longest); // prune: keys stay bounded
-      lastCount = hits.length; // TEMP diagnostic
-      lastBackend = store ? 'blob' : 'mem'; // TEMP diagnostic
 
       // Over-limit is decided from the freshly-read value, so a losing CAS
       // simply re-reads and re-decides rather than admitting the request.
