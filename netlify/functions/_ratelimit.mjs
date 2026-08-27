@@ -51,13 +51,25 @@ const hash = v => createHash('sha256').update(String(v)).digest('hex').slice(0, 
 // rate limiter reading a stale count is a rate limiter that does not work.
 let storeP;
 const memory = new Map();
+export let lastCount = -1;   // TEMP diagnostic
+export let lastBackend = '?'; // TEMP diagnostic
+export const debugState = () => `${lastBackend}:${lastCount}`;
 
 async function blobStore() {
   if (storeP === undefined) {
     storeP = (async () => {
       const { getStore } = await import('@netlify/blobs');
       const store = getStore({ name: STORE_NAME, consistency: 'strong' });
-      await store.get('__probe__'); // fail fast here rather than mid-decision
+      // Round-trip check: connecting is not the same as persisting. A store
+      // that accepts a write and then hands back a stale/empty read is worse
+      // than no store, because it looks healthy while counting nothing.
+      await store.get('__probe__');
+      const marker = `rt-${Date.now()}`;
+      await store.setJSON('__roundtrip__', { marker });
+      const back = await store.get('__roundtrip__', { type: 'json' });
+      if (back?.marker !== marker) {
+        throw new Error(`round-trip failed: wrote ${marker}, read back ${JSON.stringify(back)}`);
+      }
       return store;
     })().catch(err => {
       console.error(`[ratelimit] shared store unavailable, degrading to per-instance memory: ${err.message}`);
@@ -112,6 +124,8 @@ export async function checkRate(subjects, now = Date.now()) {
     }
 
     hits = hits.filter(t => now - t < longest); // prune as we go: keys stay bounded
+    lastCount = hits.length; // TEMP diagnostic
+    lastBackend = store ? 'blob' : 'mem'; // TEMP diagnostic
 
     for (const w of windows) {
       const inWindow = hits.filter(t => now - t < w.windowMs);

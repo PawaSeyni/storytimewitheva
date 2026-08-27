@@ -17,7 +17,7 @@
 // upserts by email; `groups` takes group IDs, so we resolve the id by name once.
 
 import { withLambda } from '@netlify/aws-lambda-compat';
-import { checkRate, clientIp } from './_ratelimit.mjs';
+import { checkRate, clientIp, debugState } from './_ratelimit.mjs';
 import { verifyHuman } from './_verify.mjs';
 import { sendSignupConversion } from './_pinterest.mjs';
 
@@ -100,7 +100,7 @@ export async function handler(event) {
   const ipRate = await checkRate({ ip });
   // TEMPORARY diagnostic (removed before merge): says whether an IP was
   // detected and whether the shared store is reachable, without leaking the IP.
-  rlDebugRef = `ip=${ip ? 1 : 0} degraded=${ipRate.degraded ? 1 : 0} hdrs=${Object.keys(event.headers || {}).filter(h => /^x-(nf|forwarded)/i.test(h)).join('|') || 'none'}`;
+  rlDebugRef = `ip=${ip ? 1 : 0} degraded=${ipRate.degraded ? 1 : 0} store=${debugState()}`;
   if (!ipRate.allowed) {
     console.warn(`[ratelimit] blocked ${ipRate.scope}${ipRate.degraded ? ' (degraded store)' : ''}`);
     return rateLimited(ipRate);
