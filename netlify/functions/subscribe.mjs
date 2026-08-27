@@ -27,9 +27,10 @@ const VALID_LANG = new Set(['en', 'es', 'fr']);
 
 let cachedGroupId = null; // warm across invocations in the same container
 
+let rlDebugRef = '';
 const json = (statusCode, body) => ({
   statusCode,
-  headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+  headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'x-rl-debug': rlDebugRef },
   body: JSON.stringify(body),
 });
 
@@ -97,6 +98,9 @@ export async function handler(event) {
   // reject at the edge if Netlify ever starts honouring it.
   const ip = clientIp(event.headers || {});
   const ipRate = await checkRate({ ip });
+  // TEMPORARY diagnostic (removed before merge): says whether an IP was
+  // detected and whether the shared store is reachable, without leaking the IP.
+  rlDebugRef = `ip=${ip ? 1 : 0} degraded=${ipRate.degraded ? 1 : 0} hdrs=${Object.keys(event.headers || {}).filter(h => /^x-(nf|forwarded)/i.test(h)).join('|') || 'none'}`;
   if (!ipRate.allowed) {
     console.warn(`[ratelimit] blocked ${ipRate.scope}${ipRate.degraded ? ' (degraded store)' : ''}`);
     return rateLimited(ipRate);
