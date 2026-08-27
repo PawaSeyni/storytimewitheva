@@ -79,14 +79,31 @@ async function blobStore() {
   return storeP;
 }
 
-async function readHits(store, key) {
-  if (!store) return memory.get(key) || [];
-  const v = await store.get(key, { type: 'json' });
-  return Array.isArray(v?.hits) ? v.hits : [];
+// Reads are EXPLICITLY strongly consistent per-operation, and the increment is
+// a compare-and-swap loop, not a read-modify-write.
+//
+// Why: measured 2026-08-27, sequential requests from one stable IP against one
+// bucket read back 3,2,2,1,1,2,3,0,4 instead of climbing 0..4 — writes were
+// being lost. A limiter that loses increments does not limit. ETag conditional
+// writes (onlyIfMatch / onlyIfNew) make the update atomic: if another
+// invocation wrote first, our write is refused and we retry against the
+// current value rather than clobbering it.
+const CAS_ATTEMPTS = 5;
+
+async function readEntry(store, key) {
+  if (!store) return { hits: memory.get(key) || [], etag: null, exists: memory.has(key) };
+  const r = await store.getWithMetadata(key, { type: 'json', consistency: 'strong' });
+  const hits = Array.isArray(r?.data?.hits) ? r.data.hits : [];
+  return { hits, etag: r?.etag ?? null, exists: r != null };
 }
-async function writeHits(store, key, hits) {
-  if (!store) { memory.set(key, hits); return; }
-  await store.setJSON(key, { hits });
+
+/** @returns true if the write landed, false if another writer beat us. */
+async function writeEntry(store, key, hits, { etag, exists }) {
+  if (!store) { memory.set(key, hits); return true; }
+  const opts = exists && etag ? { onlyIfMatch: etag } : { onlyIfNew: true };
+  const res = await store.setJSON(key, { hits }, opts);
+  // `modified: false` means the precondition failed — someone else wrote.
+  return res?.modified !== false;
 }
 
 // --- decision ------------------------------------------------------------
@@ -114,40 +131,58 @@ export async function checkRate(subjects, now = Date.now()) {
     const key = `${kind}:${hash(value)}`;
     const longest = Math.max(...windows.map(w => w.windowMs));
 
-    let hits;
-    try {
-      hits = await readHits(store, key);
-    } catch (err) {
-      console.error(`[ratelimit] read failed for ${kind}: ${err.message}`);
-      if (STRICT) return { allowed: false, retryAfter: 60, scope: 'store_error', degraded: true };
-      hits = memory.get(key) || [];
-    }
+    let denied = null;
+    let committed = false;
 
-    hits = hits.filter(t => now - t < longest); // prune as we go: keys stay bounded
-    lastCount = hits.length; // TEMP diagnostic
-    lastBackend = store ? 'blob' : 'mem'; // TEMP diagnostic
+    for (let attempt = 0; attempt < CAS_ATTEMPTS && !committed; attempt++) {
+      let entry;
+      try {
+        entry = await readEntry(store, key);
+      } catch (err) {
+        console.error(`[ratelimit] read failed for ${kind}: ${err.message}`);
+        if (STRICT) return { allowed: false, retryAfter: 60, scope: 'store_error', degraded: true };
+        entry = { hits: memory.get(key) || [], etag: null, exists: memory.has(key) };
+      }
 
-    for (const w of windows) {
-      const inWindow = hits.filter(t => now - t < w.windowMs);
-      if (inWindow.length >= w.max) {
-        const oldest = Math.min(...inWindow);
-        return {
-          allowed: false,
-          retryAfter: Math.max(1, Math.ceil((w.windowMs - (now - oldest)) / 1000)),
-          scope: w.label,
-          degraded,
-        };
+      const hits = entry.hits.filter(t => now - t < longest); // prune: keys stay bounded
+      lastCount = hits.length; // TEMP diagnostic
+      lastBackend = store ? 'blob' : 'mem'; // TEMP diagnostic
+
+      // Over-limit is decided from the freshly-read value, so a losing CAS
+      // simply re-reads and re-decides rather than admitting the request.
+      denied = null;
+      for (const w of windows) {
+        const inWindow = hits.filter(t => now - t < w.windowMs);
+        if (inWindow.length >= w.max) {
+          const oldest = Math.min(...inWindow);
+          denied = {
+            allowed: false,
+            retryAfter: Math.max(1, Math.ceil((w.windowMs - (now - oldest)) / 1000)),
+            scope: w.label,
+            degraded,
+          };
+          break;
+        }
+      }
+      if (denied) break;
+
+      hits.push(now);
+      try {
+        committed = await writeEntry(store, key, hits, entry);
+      } catch (err) {
+        console.error(`[ratelimit] write failed for ${kind}: ${err.message}`);
+        memory.set(key, hits); // keep counting on this instance at least
+        committed = true;
       }
     }
 
-    hits.push(now);
-    try {
-      await writeHits(store, key, hits);
-    } catch (err) {
-      // A failed write under-counts; it must not reject a request we already
-      // decided to allow. Mirror into memory so the instance still counts.
-      console.error(`[ratelimit] write failed for ${kind}: ${err.message}`);
-      memory.set(key, hits);
+    if (denied) return denied;
+    if (!committed) {
+      // Sustained contention on one key is itself an abuse signal: many
+      // simultaneous writers for the same subject. Refuse rather than admit an
+      // uncounted request.
+      console.warn(`[ratelimit] gave up after ${CAS_ATTEMPTS} CAS attempts for ${kind}`);
+      return { allowed: false, retryAfter: 5, scope: `${kind}/contention`, degraded };
     }
   }
 
