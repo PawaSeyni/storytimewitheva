@@ -9,11 +9,12 @@
 // scope, so the group-FAILURE case must run before any case that resolves it.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 
 process.env.MAILERLITE_API_KEY = 'test-key';
 delete process.env.PINTEREST_CONVERSIONS_TOKEN; // keep the conversion call skipped
 
-const { handler } = await import('../../netlify/functions/subscribe.mjs');
+const { handler, config } = await import('../../netlify/functions/subscribe.mjs');
 
 function stubFetch(routes) {
   const calls = [];
@@ -80,4 +81,31 @@ test('#2 happy path: subscriber is created WITH the resolved group', async () =>
   assert.equal(out.ok, true);
   assert.equal(out.grouped, true);
   assert.deepEqual(postBody.groups, ['G1'], 'subscriber must carry the group');
+});
+
+// #3 anti-abuse — the platform rate limit must be BOUND TO THE PATH THE BROWSER
+// ACTUALLY POSTS TO. This guards the precise failure that shipped before:
+// netlify/edge-functions/rate-limit-subscribe.mjs declared a 10/60s limit that
+// enforced nothing, and production served 13 rapid POSTs with 13x 200. A limit
+// pointed at the wrong path fails exactly that way — silently, looking correct
+// in review, provable only by hitting the live endpoint.
+test('#3 rate limit is declared on the endpoint the frontend actually calls', () => {
+  assert.ok(config, 'subscribe.mjs must export `config` — Netlify reads function rate limits only from there');
+  assert.equal(config.rateLimit?.action, 'rate_limit');
+  assert.ok(config.rateLimit?.windowLimit > 0, 'windowLimit must be set');
+  assert.ok(
+    config.rateLimit?.windowSize > 0 && config.rateLimit.windowSize <= 180,
+    'windowSize must be 1-180s (Netlify limit)'
+  );
+
+  // Parse the endpoint constant out of the component rather than duplicating it,
+  // so moving the endpoint breaks this test instead of silently unbinding the limit.
+  const ui = readFileSync('src/components/EmailSignup.tsx', 'utf8');
+  const m = ui.match(/SUBSCRIBE_ENDPOINT\s*=\s*['"`]([^'"`]+)['"`]/);
+  assert.ok(m, 'could not find SUBSCRIBE_ENDPOINT in EmailSignup.tsx');
+  assert.equal(
+    config.path,
+    m[1],
+    `rate limit is bound to ${config.path} but the browser POSTs to ${m?.[1]} — the limit would not apply`
+  );
 });
