@@ -91,11 +91,11 @@ export async function handler(event) {
   // the honeypot would catch, and it should cost as little work as possible.
   // The email scope runs later, once the body has been parsed and validated.
   //
-  // Defence in depth, not a replacement: the platform rule in the `config`
-  // export below is kept and is the PREFERRED layer, because when it fires the
-  // request is rejected at the edge and never invokes this function. Whether it
-  // fires is not something this repo can observe or test (see _ratelimit.mjs);
-  // this layer is the one whose behaviour is asserted by tests.
+  // This is the PRIMARY anti-abuse control, not a supplement: the platform rule
+  // in the `config` export below is accepted by Netlify and does not enforce
+  // (measured from a stable IP -- see _ratelimit.mjs). It is kept anyway, since
+  // if Netlify ever honours it the request is rejected at the edge and never
+  // invokes this function.
   const ip = clientIp(event.headers || {});
   const ipRate = await checkRate({ ip });
   if (!ipRate.allowed) {

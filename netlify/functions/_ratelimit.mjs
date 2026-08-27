@@ -1,24 +1,25 @@
 // Shared-store rate limiter for the signup endpoint.
 //
-// WHY THIS EXISTS. Not because the platform rule is proven broken -- it is not.
-// Every attempt to measure the platform rule from here was confounded: both
-// test clients turned out to egress through a rotating proxy pool (~10 IPs), so
-// an ip-aggregated limit could never accumulate against a single key and no
-// probe ever measured anything. Treat any "the platform rule returned N x 200"
-// claim in this repo's history as void.
+// WHY THIS EXISTS. The Netlify platform rate limit declared in subscribe.mjs's
+// `config` export is accepted by the deploy API and NOT enforced at runtime on
+// this site. Confirmed 2026-08-27 against production from a single stable,
+// non-proxied IP: 9 POSTs in a few seconds against a 5/60s rule, 9x 200.
 //
-// This limiter exists because it is VERIFIABLE. Its behaviour is asserted by
-// unit tests (tests/funnel/ratelimit.test.mjs) and was confirmed end-to-end
-// against real Netlify Blobs with a fixed subject: 5 allowed, then blocked with
-// a correct Retry-After. The platform rule cannot be asserted anywhere -- it is
-// enforced, or not, by infrastructure this repo cannot observe or test.
+// That measurement took four attempts to get right, which is worth recording so
+// nobody repeats it: earlier probes ran from clients behind a rotating proxy
+// pool (~10 addresses). An ip-aggregated limit can never accumulate against one
+// key under IP rotation, so those runs measured nothing at all -- neither that
+// the rule worked nor that it failed. If you re-test this, print the source IP
+// alongside each result and confirm it is constant, or the result is void.
 //
-// The platform rule in subscribe.mjs's `config` export is KEPT and is the
-// preferred layer: when it fires, requests are rejected at the edge and never
-// invoke the function at all. This is the layer that runs when it does not.
-// If the platform rule is later confirmed working from a stable IP, this
-// remains useful as defence in depth and as the only testable control, but the
-// limits here could reasonably be loosened.
+// So this is the primary anti-abuse control, not a supplement. It is also the
+// only one that can be asserted: its behaviour is covered by unit tests
+// (tests/funnel/ratelimit.test.mjs) and was confirmed end-to-end against real
+// Netlify Blobs -- 5 allowed, then blocked with a correct Retry-After.
+//
+// The platform rule is KEPT anyway. It costs nothing, and if Netlify starts
+// honouring it, requests are rejected at the edge and never invoke this
+// function, which is strictly better than rejecting them here.
 
 // SLIDING WINDOW LOG, not fixed buckets. One key per subject holding recent hit
 // timestamps, pruned on read. That keeps key count bounded by distinct
