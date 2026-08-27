@@ -217,7 +217,11 @@ export const config = {
   method: 'POST',
   rateLimit: {
     action: 'rate_limit',
-    aggregateBy: ['ip'],
+    // ['ip', 'domain'] — "per domain & IP address" is the aggregation available
+    // on non-Enterprise plans. ['ip'] alone is accepted by the deploy API and
+    // stored in the rule, but did NOT enforce when tested on preview 125
+    // (8 rapid POSTs, 8x 200); ['domain'] alone is Enterprise-only.
+    aggregateBy: ['ip', 'domain'],
     windowLimit: 5,
     windowSize: 60,
   },
