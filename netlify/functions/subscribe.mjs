@@ -214,7 +214,12 @@ export const config = {
   // Netlify always serves a function at /.netlify/functions/<name>, and
   // /.netlify/* cannot be intercepted by redirects, so it cannot be closed off.
   path: '/.netlify/functions/subscribe',
-  method: 'POST',
+  // Deliberately NO `method` here. Declaring method: 'POST' restricts the
+  // ROUTE, so anything else stops reaching the handler at all: it turned the
+  // handler's 405 for GET into a 404, and silently dropped its OPTIONS -> 204
+  // CORS preflight branch (both observed in production on 8ec408b). The
+  // handler already rejects non-POST itself, and the rate limit applies to the
+  // path regardless of method.
   rateLimit: {
     action: 'rate_limit',
     // ['ip', 'domain'] — "per domain & IP address" is the aggregation available
