@@ -17,6 +17,8 @@
 // upserts by email; `groups` takes group IDs, so we resolve the id by name once.
 
 import { withLambda } from '@netlify/aws-lambda-compat';
+import { checkRate, clientIp } from './_ratelimit.mjs';
+import { verifyHuman } from './_verify.mjs';
 import { sendSignupConversion } from './_pinterest.mjs';
 
 const API = 'https://connect.mailerlite.com/api';
@@ -29,6 +31,27 @@ const json = (statusCode, body) => ({
   statusCode,
   headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
   body: JSON.stringify(body),
+});
+
+// 429 carries Retry-After so a well-behaved client can back off instead of
+// hammering. Deliberately honest rather than a fake success: a real person who
+// trips this needs to know to wait, and a bot learning it is limited is fine.
+const rateLimited = ({ retryAfter, degraded }) => ({
+  statusCode: 429,
+  headers: {
+    'Content-Type': 'application/json',
+    'Cache-Control': 'no-store',
+    'Retry-After': String(retryAfter || 60),
+  },
+  body: JSON.stringify({
+    ok: false,
+    error: 'rate_limited',
+    retry_after: retryAfter || 60,
+    // true = shared store unreachable and this instance is counting in memory.
+    // Surfaced deliberately: it is the only way to tell a working shared-store
+    // limiter from a degraded per-instance one without reading function logs.
+    degraded: Boolean(degraded),
+  }),
 });
 
 async function ml(path, opts = {}) {
@@ -63,7 +86,23 @@ export async function handler(event) {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: { Allow: 'POST' } };
   if (event.httpMethod !== 'POST') return json(405, { ok: false, error: 'method_not_allowed' });
 
-  // Anti-abuse layer 1 — origin check. A browser fetch from our own site always
+  // Anti-abuse layer 1 — rate limit (IP scope). Deliberately FIRST: it must
+  // apply to every caller, including ones that never send an Origin and ones
+  // the honeypot would catch, and it should cost as little work as possible.
+  // The email scope runs later, once the body has been parsed and validated.
+  //
+  // This is the control that actually runs. The platform rule in the `config`
+  // export below is declared but not enforced by Netlify on this site (see
+  // _ratelimit.mjs for the measurements); it stays as a second layer that would
+  // reject at the edge if Netlify ever starts honouring it.
+  const ip = clientIp(event.headers || {});
+  const ipRate = await checkRate({ ip });
+  if (!ipRate.allowed) {
+    console.warn(`[ratelimit] blocked ${ipRate.scope}${ipRate.degraded ? ' (degraded store)' : ''}`);
+    return rateLimited(ipRate);
+  }
+
+  // Anti-abuse layer 2 — origin check. A browser fetch from our own site always
   // sends an Origin; if one is present it must be ours (blocks another site
   // scripting fetches against this endpoint). A MISSING Origin (native-form
   // fallback, some privacy settings) is allowed so we never drop a real signup.
@@ -114,7 +153,7 @@ export async function handler(event) {
   }
   const redirect = to => ({ statusCode: 303, headers: { Location: to, 'Cache-Control': 'no-store' }, body: '' });
 
-  // Anti-abuse layer 2 — honeypot. `company` is a hidden field no human sees.
+  // Anti-abuse layer 3 — honeypot. `company` is a hidden field no human sees.
   // Anything in it is a bot: return a success-shaped response WITHOUT creating a
   // subscriber, so the bot gets no signal it was filtered.
   if (String(body.company || '').trim()) {
@@ -129,6 +168,22 @@ export async function handler(event) {
   // Minimal server-side email sanity check (the client validates too).
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return isForm ? redirect('/?signup=invalid#email-signup') : json(422, { ok: false, error: 'invalid_email' });
+  }
+
+  // Anti-abuse layer 4 — rate limit (email scope). Caps repeated submissions of
+  // one address regardless of source IP, which IP limiting alone cannot do.
+  const emailRate = await checkRate({ email });
+  if (!emailRate.allowed) {
+    console.warn(`[ratelimit] blocked ${emailRate.scope}`);
+    return isForm ? redirect('/?signup=error#email-signup') : rateLimited(emailRate);
+  }
+
+  // Anti-abuse layer 5 — human verification. A no-op seam today (see
+  // _verify.mjs); wired here so adding Turnstile needs no change to this flow.
+  const verdict = await verifyHuman({ token: body.verification_token, ip });
+  if (!verdict.ok) {
+    console.warn(`[verify] rejected by ${verdict.provider}: ${verdict.reason || 'no reason given'}`);
+    return isForm ? redirect('/?signup=error#email-signup') : json(403, { ok: false, error: 'unverified' });
   }
 
   const coreFields = { language };
