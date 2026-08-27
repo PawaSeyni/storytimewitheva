@@ -16,6 +16,7 @@
 // MailerLite API: https://developers.mailerlite.com/docs — POST /api/subscribers
 // upserts by email; `groups` takes group IDs, so we resolve the id by name once.
 
+import { withLambda } from '@netlify/aws-lambda-compat';
 import { sendSignupConversion } from './_pinterest.mjs';
 
 const API = 'https://connect.mailerlite.com/api';
@@ -67,8 +68,8 @@ export async function handler(event) {
   // scripting fetches against this endpoint). A MISSING Origin (native-form
   // fallback, some privacy settings) is allowed so we never drop a real signup.
   // NOTE: this is defense-in-depth, not a rate limit — a header-less scripted
-  // client can still reach the endpoint. The durable control is Turnstile or
-  // Netlify edge rate-limiting (see remediation notes); both need provisioning.
+  // client can still reach the endpoint. The durable control is the platform
+  // rate limit in the `config` export at the bottom of this file.
   const origin = event.headers['origin'] || event.headers['Origin'] || '';
   if (origin) {
     let host = '';
@@ -181,3 +182,47 @@ export async function handler(event) {
   console.error('MailerLite subscribe failed', r.status, JSON.stringify(r.data));
   return isForm ? redirect('/?signup=error#email-signup') : json(502, { ok: false, error: 'upstream_error' });
 }
+
+// ---------------------------------------------------------------------------
+// Platform rate limit (audit #1). THIS is the durable anti-abuse control; the
+// origin check and honeypot above are defense-in-depth that a scripted client
+// can sidestep.
+//
+// It has to live here. Netlify applies function rate limits ONLY from a
+// function's own `config` export — not from netlify.toml, and NOT from an edge
+// function declared on this function's path. The previous attempt
+// (netlify/edge-functions/rate-limit-subscribe.mjs, deleted in this change) was
+// exactly that dead configuration: it declared 10/60s and enforced nothing.
+// Verified before this fix: 13 rapid POSTs to production returned 13x 200.
+//
+// `config` is a v2-functions feature and the handler above is legacy
+// Lambda-style, so withLambda() bridges the two. The named `handler` export is
+// kept deliberately: the unit tests drive it directly, and wrapping must not
+// cost us that coverage.
+//
+// 5 POSTs / 60s / IP. A human signs up once; five is generous headroom for a
+// double-click or a retry after a network blip, while capping a single-source
+// flood at 300/hour instead of unbounded. Rejected requests are blocked at the
+// edge, so they never invoke this function or reach MailerLite.
+export default withLambda(handler);
+
+export const config = {
+  // MUST match the endpoint the browser actually POSTs to
+  // (src/components/EmailSignup.tsx SUBSCRIBE_ENDPOINT), for both the fetch()
+  // path and the pre-hydration native form action. Binding the limit to a
+  // different public path would leave this one reachable and unprotected:
+  // Netlify always serves a function at /.netlify/functions/<name>, and
+  // /.netlify/* cannot be intercepted by redirects, so it cannot be closed off.
+  path: '/.netlify/functions/subscribe',
+  method: 'POST',
+  rateLimit: {
+    action: 'rate_limit',
+    // ['ip', 'domain'] — "per domain & IP address" is the aggregation available
+    // on non-Enterprise plans. ['ip'] alone is accepted by the deploy API and
+    // stored in the rule, but did NOT enforce when tested on preview 125
+    // (8 rapid POSTs, 8x 200); ['domain'] alone is Enterprise-only.
+    aggregateBy: ['ip', 'domain'],
+    windowLimit: 5,
+    windowSize: 60,
+  },
+};
