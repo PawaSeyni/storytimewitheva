@@ -14,7 +14,7 @@ import { readFileSync } from 'node:fs';
 process.env.MAILERLITE_API_KEY = 'test-key';
 delete process.env.PINTEREST_CONVERSIONS_TOKEN; // keep the conversion call skipped
 
-const { handler, config } = await import('../../netlify/functions/subscribe.mjs');
+const { handler, config, safeReturn } = await import('../../netlify/functions/subscribe.mjs');
 
 function stubFetch(routes) {
   const calls = [];
@@ -32,6 +32,11 @@ const jsonEvent = (body, headers = {}) => ({
   httpMethod: 'POST',
   headers: { 'content-type': 'application/json', ...headers },
   body: JSON.stringify(body),
+});
+const formEvent = (params, headers = {}) => ({
+  httpMethod: 'POST',
+  headers: { 'content-type': 'application/x-www-form-urlencoded', ...headers },
+  body: new URLSearchParams(params).toString(),
 });
 const GROUPS_OK = { match: (u, m) => u.includes('/groups') && m === 'GET', ok: true, status: 200, data: { data: [{ id: 'G1', name: 'storytimewitheva-signups' }] } };
 const SUBS_OK = { match: (u, m) => u.endsWith('/subscribers') && m === 'POST', ok: true, status: 201, data: { data: { id: 's1' } } };
@@ -108,4 +113,34 @@ test('#3 rate limit is declared on the endpoint the frontend actually calls', ()
     m[1],
     `rate limit is bound to ${config.path} but the browser POSTs to ${m?.[1]} — the limit would not apply`
   );
+});
+
+// #4 native-form fallback — a submit before React hydrates posts form-encoded and
+// is answered with a redirect BACK TO THE SAME localized landing page, not the
+// English root. Before this, every native-fallback signup (French/Spanish, or any
+// non-default magnet) landed on the wrong offer's success screen. `return_to` is
+// hard-validated to a same-site path so it can never become an open redirect.
+test('#4 safeReturn: same-site paths pass; scheme/protocol-relative/query/fragment fall back to /', () => {
+  for (const ok of ['/', '/fr/free/leo-and-the-wolf', '/es/free/parents-guide', '/books/emperors-true-treasure']) {
+    assert.equal(safeReturn(ok), ok, `must preserve ${ok}`);
+  }
+  for (const bad of ['//evil.example', 'https://evil.example/x', 'javascript:alert(1)', '/x?a=1', '/x#y', '/a b', '', null, undefined]) {
+    assert.equal(safeReturn(bad), '/', `must neutralize ${JSON.stringify(bad)}`);
+  }
+});
+
+test('#4 native form: success redirects back to the submitted localized landing path', async () => {
+  stubFetch([GROUPS_OK, SUBS_OK]);
+  const res = await handler(
+    formEvent({ email: 'fr@example.com', language: 'fr', lead_magnet: 'leo-and-the-wolf', return_to: '/fr/free/leo-and-the-wolf' })
+  );
+  assert.equal(res.statusCode, 303);
+  assert.equal(res.headers.Location, '/fr/free/leo-and-the-wolf?signup=ok#email-signup');
+});
+
+test('#4 native form: an off-site return_to is neutralized to the root', async () => {
+  stubFetch([GROUPS_OK, SUBS_OK]);
+  const res = await handler(formEvent({ email: 'fr2@example.com', return_to: '//evil.example/phish' }));
+  assert.equal(res.statusCode, 303);
+  assert.equal(res.headers.Location, '/?signup=ok#email-signup');
 });

@@ -54,6 +54,22 @@ export function parseMagnets() {
   return magnets;
 }
 
+/** Parse BUNDLE_ITEMS (the default-offer bundle) into [{ en, es, fr }] href sets.
+ *  These are content-hashed PDF paths hardcoded in EmailSignup.tsx that no other
+ *  test covered — a rename/re-hash would silently 404 part of the delivered bundle. */
+export function parseBundleItems() {
+  const src = readFileSync(SRC, 'utf8');
+  const start = src.indexOf('const BUNDLE_ITEMS');
+  if (start < 0) throw new Error('Could not locate BUNDLE_ITEMS block in EmailSignup.tsx');
+  const end = src.indexOf('];', start);
+  const block = src.slice(start, end < 0 ? src.length : end);
+  return [...block.matchAll(/href:\s*\{([^}]*)\}/g)].map((m) => ({
+    en: m[1].match(/en:\s*'([^']+)'/)?.[1] ?? null,
+    es: m[1].match(/es:\s*'([^']+)'/)?.[1] ?? null,
+    fr: m[1].match(/fr:\s*'([^']+)'/)?.[1] ?? null,
+  }));
+}
+
 /** LANDING_SLUGS array from scripts/prerender.mjs (the build-abort guard). */
 export function parseLandingSlugs() {
   const src = readFileSync(path.join(ROOT, 'scripts', 'prerender.mjs'), 'utf8');

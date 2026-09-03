@@ -646,6 +646,16 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
                 a pre-hydration GET. */}
             <input type="hidden" name="language" value={language} />
             <input type="hidden" name="lead_magnet" value={magnet.tag} />
+            {/* Where the native fallback should return to: this exact localized
+                landing path (baked per-route at prerender), so a pre-hydration
+                submit on e.g. /fr/free/leo-and-the-wolf lands back on the French
+                offer's success screen, not the English root. The function
+                (safeReturn) constrains this to a same-site path. */}
+            <input
+              type="hidden"
+              name="return_to"
+              value={typeof window !== 'undefined' ? window.location.pathname : ''}
+            />
             {/* Honeypot: off-screen, hidden from humans and assistive tech, but
                 bots fill it. The subscribe function drops any submission that
                 carries a `company` value. Not type=hidden on purpose — a visible

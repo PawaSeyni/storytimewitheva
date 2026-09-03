@@ -60,3 +60,35 @@ test('TEST 0.7 — build stamps deploy provenance and serves it uncached', () =>
   assert.ok(rule, 'netlify.toml needs a [[headers]] rule for /version.json');
   assert.match(rule, /no-store/, '/version.json must be served no-store');
 });
+
+// TEST 0.8 — a new book cannot ship as a silent hard-404. The chain that made
+// this possible: prerender reads the route set from dist/sitemap.xml (a copy of
+// the committed public/sitemap.xml), there is no SPA catch-all (an un-prerendered
+// route serves a real 404), and gen:sitemap was NOT in the build — so adding a
+// book to books.ts, building, and pushing left its /books/<id> URL out of the
+// sitemap, unprerendered, and 404ing to crawlers, with every test green.
+// Two guards close it: (a) gen:sitemap runs in the build BEFORE vite build (so
+// the deployed sitemap is always regenerated from books.ts), and (b) the
+// committed sitemap already covers every book (so the repo copy can't rot and a
+// drift is caught in review, not in production).
+test('TEST 0.8 — every book reaches the sitemap (build regenerates it; committed copy is current)', () => {
+  const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
+  assert.match(pkg.scripts.build, /gen:sitemap/, 'npm run build must run gen:sitemap');
+  assert.ok(
+    pkg.scripts.build.indexOf('gen:sitemap') < pkg.scripts.build.indexOf('vite build'),
+    'gen:sitemap must run BEFORE vite build (which copies public/sitemap.xml into dist/)'
+  );
+
+  // Same derivation gen-sitemap.mjs uses: top-level, quoted `    id: '...'`.
+  const booksSrc = readFileSync('src/data/books.ts', 'utf8');
+  const bookIds = [...booksSrc.matchAll(/^ {4}id: '([^']+)',/gm)].map((m) => m[1]);
+  assert.ok(bookIds.length > 0, 'no book ids parsed from books.ts — the regex or file shape changed');
+
+  const sitemap = readFileSync('public/sitemap.xml', 'utf8');
+  const missing = bookIds.filter((id) => !sitemap.includes(`<loc>https://storytimewitheva.com/books/${id}/</loc>`));
+  assert.deepEqual(
+    missing,
+    [],
+    `books present in books.ts but absent from public/sitemap.xml (run \`npm run gen:sitemap\` and commit): ${missing.join(', ')}`
+  );
+});

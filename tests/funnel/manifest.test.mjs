@@ -4,7 +4,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, statSync } from 'node:fs';
 import path from 'node:path';
-import { parseMagnets, EXPECTED_SLUGS, ROOT } from './_manifest.mjs';
+import { parseMagnets, parseBundleItems, EXPECTED_SLUGS, ROOT } from './_manifest.mjs';
 
 const magnets = parseMagnets();
 const pub = (p) => path.join(ROOT, 'public', p.replace(/^\//, ''));
@@ -31,6 +31,22 @@ test('TEST 0.3 — every magnet has a non-empty PDF for en/es/fr', () => {
       const p = m.pdf[lang];
       assert.ok(p, `${slug}.pdf.${lang} is not set`);
       assert.ok(nonEmptyFile(p), `${slug}.pdf.${lang} missing file: ${p}`);
+    }
+  }
+});
+
+// TEST 0.3b — the default-offer bundle delivers real files. BUNDLE_ITEMS in
+// EmailSignup.tsx hardcodes content-hashed PDF paths that TEST 0.3 (which only
+// walks LEAD_MAGNETS) never checked; a renamed or re-hashed file would silently
+// 404 part of the bundle every default signup receives.
+test('TEST 0.3b — every BUNDLE_ITEMS href is a non-empty PDF on disk (en/es/fr)', () => {
+  const items = parseBundleItems();
+  assert.ok(items.length >= 5, `expected the full bundle, parsed only ${items.length} items`);
+  for (const href of items) {
+    for (const lang of ['en', 'es', 'fr']) {
+      const p = href[lang];
+      assert.ok(p, `a bundle item is missing its ${lang} href`);
+      assert.ok(nonEmptyFile(p), `bundle item ${lang} file missing: ${p}`);
     }
   }
 });
