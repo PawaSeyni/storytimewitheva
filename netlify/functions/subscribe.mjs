@@ -82,6 +82,16 @@ async function resolveGroupId() {
   return cachedGroupId;
 }
 
+// Validate the native-form `return_to` down to a same-site path before it is
+// used as a Location. Only a single leading slash + a conservative path charset
+// is allowed; a protocol-relative `//host`, an absolute URL, a query, or a
+// fragment all fall back to the root. This is what keeps the field from becoming
+// an open redirect.
+export function safeReturn(raw) {
+  const p = String(raw || '');
+  return /^\/(?!\/)[A-Za-z0-9/_-]*$/.test(p) ? p : '/';
+}
+
 export async function handler(event) {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: { Allow: 'POST' } };
   if (event.httpMethod !== 'POST') return json(405, { ok: false, error: 'method_not_allowed' });
@@ -145,6 +155,7 @@ export async function handler(event) {
         utm_campaign: params.get('utm_campaign'),
         utm_content: params.get('utm_content'),
         company: params.get('company'),
+        return_to: params.get('return_to'),
       };
     } else {
       body = JSON.parse(event.body || '{}');
@@ -153,12 +164,18 @@ export async function handler(event) {
     return json(400, { ok: false, error: 'bad_request' });
   }
   const redirect = to => ({ statusCode: 303, headers: { Location: to, 'Cache-Control': 'no-store' }, body: '' });
+  // For the pre-hydration native-form fallback, return the visitor to the SAME
+  // localized landing page they submitted from (e.g. /fr/free/leo-and-the-wolf),
+  // not the English root — otherwise a French/Spanish or non-default-magnet
+  // signup lands on the wrong offer's success screen. `safeReturn` hard-limits
+  // this to a same-site path so the field can never become an open redirect.
+  const dest = state => redirect(`${safeReturn(body.return_to)}?signup=${state}#email-signup`);
 
   // Anti-abuse layer 3 — honeypot. `company` is a hidden field no human sees.
   // Anything in it is a bot: return a success-shaped response WITHOUT creating a
   // subscriber, so the bot gets no signal it was filtered.
   if (String(body.company || '').trim()) {
-    return isForm ? redirect('/?signup=ok#email-signup') : json(200, { ok: true, grouped: true });
+    return isForm ? dest('ok') : json(200, { ok: true, grouped: true });
   }
 
   const email = String(body.email || '').trim().toLowerCase();
@@ -168,7 +185,7 @@ export async function handler(event) {
 
   // Minimal server-side email sanity check (the client validates too).
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return isForm ? redirect('/?signup=invalid#email-signup') : json(422, { ok: false, error: 'invalid_email' });
+    return isForm ? dest('invalid') : json(422, { ok: false, error: 'invalid_email' });
   }
 
   // Anti-abuse layer 4 — rate limit (email scope). Caps repeated submissions of
@@ -176,7 +193,7 @@ export async function handler(event) {
   const emailRate = await checkRate({ email });
   if (!emailRate.allowed) {
     console.warn(`[ratelimit] blocked ${emailRate.scope}`);
-    return isForm ? redirect('/?signup=error#email-signup') : rateLimited(emailRate);
+    return isForm ? dest('error') : rateLimited(emailRate);
   }
 
   // Anti-abuse layer 5 — human verification. A no-op seam today (see
@@ -184,7 +201,7 @@ export async function handler(event) {
   const verdict = await verifyHuman({ token: body.verification_token, ip });
   if (!verdict.ok) {
     console.warn(`[verify] rejected by ${verdict.provider}: ${verdict.reason || 'no reason given'}`);
-    return isForm ? redirect('/?signup=error#email-signup') : json(403, { ok: false, error: 'unverified' });
+    return isForm ? dest('error') : json(403, { ok: false, error: 'unverified' });
   }
 
   const coreFields = { language };
@@ -208,7 +225,7 @@ export async function handler(event) {
   const groupId = await resolveGroupId();
   if (!groupId) {
     console.error('Group resolution failed; refusing to create an ungrouped subscriber');
-    return isForm ? redirect('/?signup=error#email-signup') : json(503, { ok: false, error: 'group_unavailable' });
+    return isForm ? dest('error') : json(503, { ok: false, error: 'group_unavailable' });
   }
   const subscribe = fields =>
     ml('/subscribers', { method: 'POST', body: JSON.stringify({ email, fields, groups: [groupId] }) });
@@ -230,13 +247,13 @@ export async function handler(event) {
     } catch (err) {
       console.error('Pinterest conversion send failed', err);
     }
-    return isForm ? redirect('/?signup=ok#email-signup') : json(200, { ok: true, grouped: true });
+    return isForm ? dest('ok') : json(200, { ok: true, grouped: true });
   }
   if (r.status === 422 && r.data?.errors?.email) {
-    return isForm ? redirect('/?signup=invalid#email-signup') : json(422, { ok: false, error: 'invalid_email' });
+    return isForm ? dest('invalid') : json(422, { ok: false, error: 'invalid_email' });
   }
   console.error('MailerLite subscribe failed', r.status, JSON.stringify(r.data));
-  return isForm ? redirect('/?signup=error#email-signup') : json(502, { ok: false, error: 'upstream_error' });
+  return isForm ? dest('error') : json(502, { ok: false, error: 'upstream_error' });
 }
 
 // ---------------------------------------------------------------------------

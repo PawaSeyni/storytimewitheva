@@ -6,33 +6,26 @@ import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { parseMagnets } from '../funnel/_manifest.mjs';
 
-const MAGNETS = [
-  'bedtime-routine',
-  'bilingual-starter-kit',
-  'bilingual-bundle',
-  'bilingual-flashcards',
-  'parents-guide',
-  'follow-up-activities',
-];
+// Single source of truth: derive every magnet list from the same LEAD_MAGNETS
+// block the app ships (via the shared registry parser). Hand-maintained copies
+// drifted before — the leo-and-the-wolf giveaway was added to the app but not
+// here, so a real /free/leo-and-the-wolf ad URL would have slipped the Layer 6.1
+// pre-flight (SLUG_TO_TAG[slug] → undefined → "unknown magnet — would 404").
+// Deriving makes that class of drift structurally impossible.
+const REGISTRY = parseMagnets(); // { slug: { tag, preview, pdf:{en,es,fr} } }
+const MAGNETS = Object.keys(REGISTRY);
 const LOCALES = ['', '/es', '/fr'];
-// magnet slugs that actually resolve to a /download/ rule (PDF-prefixed)
-const DOWNLOAD_MAGNETS = [
-  'bedtime-routine',
-  'parents-guide',
-  'follow-up-activities',
-  'bilingual-flashcards',
-  'bilingual-starter-kit',
-];
-// Landing-page slug → the lead_magnet tag the page actually posts (guarded by 3.4).
-const SLUG_TO_TAG: Record<string, string> = {
-  'bedtime-routine': 'bedtime-routine',
-  'bilingual-starter-kit': 'bilingual-bundle',
-  'bilingual-bundle': 'bilingual-bundle',
-  'bilingual-flashcards': 'bilingual-flashcards',
-  'parents-guide': 'parents-guide',
-  'follow-up-activities': 'follow-up-activities',
-};
+// A magnet resolves to a /download/<slug> rule only when it ships its OWN en PDF
+// (named `/<slug>.<hash>.pdf`). Aliases like bilingual-bundle — whose en PDF is
+// the starter kit's file — get no own rule, so they're excluded here, matching
+// scripts/gen-download-redirects.mjs.
+const DOWNLOAD_MAGNETS = MAGNETS.filter((s) => (REGISTRY[s].pdf.en || '').startsWith(`/${s}.`));
+// Landing-page slug → the lead_magnet tag the page actually posts (guarded by 6.1c).
+const SLUG_TO_TAG: Record<string, string> = Object.fromEntries(
+  MAGNETS.map((s) => [s, REGISTRY[s].tag as string]),
+);
 
 // ---- Layer 1: route coverage (the known route SPACE is serviceable) ----
 // This is NOT the ad pre-flight. It proves every landing route we ship is a real

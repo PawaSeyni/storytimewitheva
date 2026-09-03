@@ -56,6 +56,15 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# Lead-magnet PDFs are content-hashed (`<slug>.<hash>.pdf`, served via the stable
+# /download/<slug> 302), so a replaced file always gets a new filename — safe to
+# pin immutably for a year. Without this they fell under the default and were
+# re-fetched/revalidated on every download (each is multiple MB).
+[[headers]]
+  for = "/*.pdf"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
 # Public root images (previews, favicon, OG) are NOT content-hashed, so they must
 # NOT be immutable — a replaced file (e.g. a re-rendered /previews/*.webp) has to
 # be able to propagate. 1 day + revalidate keeps them cached without pinning a
