@@ -1027,6 +1027,33 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://storytimewitheva.com/books/fig-trees-secret/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/books/fig-trees-secret/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/books/fig-trees-secret/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/books/fig-trees-secret/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/books/fig-trees-secret/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/books/fig-trees-secret/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/books/fig-trees-secret/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/books/fig-trees-secret/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/books/fig-trees-secret/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/books/fig-trees-secret/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/books/fig-trees-secret/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/books/fig-trees-secret/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/books/fig-trees-secret/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/books/fig-trees-secret/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/books/fig-trees-secret/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://storytimewitheva.com/games/bilingual-flashcards.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

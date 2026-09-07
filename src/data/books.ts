@@ -584,6 +584,33 @@ export const books: Book[] = [
       fr: 'Patience et maîtrise',
     },
   },
+  {
+    id: 'fig-trees-secret',
+    coverImage: 'https://m.media-amazon.com/images/I/915RPJ4qRpL.jpg',
+    ageRange: '4-8',
+    languages: ['🇺🇸'],
+    amazonUrl: dp('B0H36V1P89'),
+    title: {
+      en: "The Fig Tree's Secret",
+      es: 'El secreto de la higuera',
+      fr: 'Le secret du figuier',
+    },
+    subtitle: {
+      en: 'A Mediterranean Tale of Heritage, Memory, and Family',
+      es: 'Un cuento mediterráneo de herencia, memoria y familia',
+      fr: "Un conte méditerranéen d'héritage, de mémoire et de famille",
+    },
+    description: {
+      en: "When Sofia inherits her grandmother's Mediterranean cottage, the gnarled old fig tree in the garden is first on her list to cut down. Then old Mr. Costas comes running through the gate and begins to tell her what the tree has watched: three hundred years of harvests, festivals, and recipes her grandmother kept by hand. A tender story about the trees and people we almost lose by going too fast, and how some inheritances are made of stories.",
+      es: 'Cuando Sofía hereda la casita mediterránea de su abuela, la vieja higuera nudosa del jardín es lo primero que quiere talar. Entonces el viejo señor Costas cruza corriendo la verja y empieza a contarle lo que el árbol ha visto: trescientos años de cosechas, fiestas y recetas que su abuela guardaba a mano. Un cuento tierno sobre los árboles y las personas que casi perdemos por ir demasiado deprisa, y sobre cómo algunas herencias están hechas de historias.',
+      fr: "Quand Sofia hérite de la maisonnette méditerranéenne de sa grand-mère, le vieux figuier noueux du jardin est la première chose qu'elle veut abattre. Puis le vieux monsieur Costas franchit le portail en courant et se met à lui raconter ce que l'arbre a vu : trois cents ans de récoltes, de fêtes et de recettes que sa grand-mère gardait de sa main. Un conte tendre sur les arbres et les gens que l'on perd presque à aller trop vite, et sur ces héritages qui sont faits d'histoires.",
+    },
+    theme: {
+      en: 'Heritage and memory',
+      es: 'Herencia y memoria',
+      fr: 'Héritage et mémoire',
+    },
+  },
 ];
 
 function localize(book: Book, lang: Language): LocalizedBook {
