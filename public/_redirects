@@ -36,6 +36,12 @@
 /download/parents-guide/  lang=fr  /parents-guide-fr.16a27a138de4.pdf  302
 /download/parents-guide/  /parents-guide.12ba12f60096.pdf  302
 
+# Bundle aliases: registered multi-file gated bundles that own no single PDF —
+# their stable /download link 301s to the gated offer page (cannot 302 one file).
+
+/download/bilingual-bundle  /free/bilingual-bundle  301
+/download/bilingual-bundle/  /free/bilingual-bundle  301
+
 # Legacy safety net: pre-2026-08-04 raw filenames (no hash) that old pins/ads
 # may still point at. Sends to the GATED offer page, not the PDF directly —
 # a visitor landing here has not opted in yet.

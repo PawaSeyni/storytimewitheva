@@ -78,6 +78,28 @@ for (const magnet of [...byMagnet.keys()].sort()) {
   lines.push('');
 }
 
+// BUNDLE-ALIAS SAFETY NET: some registered magnets are multi-file gated bundles
+// that own no single `<slug>.<hash>.pdf`, so the loop above emits no /download rule
+// for them — and a link built by analogy (e.g. /download/bilingual-bundle, the
+// in-code "clearer alias for new links") would hard-404. A bundle can't be handed
+// over as one 302'd file, so its stable /download link 301s to the GATED offer page
+// (/free/<slug>) instead. Keep in sync with the bundle magnets in EmailSignup.tsx.
+const BUNDLE_ALIASES = ['bilingual-bundle'];
+const missingBundles = BUNDLE_ALIASES.filter((s) => !byMagnet.has(s));
+if (missingBundles.length) {
+  lines.push(
+    '# Bundle aliases: registered multi-file gated bundles that own no single PDF —',
+    '# their stable /download link 301s to the gated offer page (cannot 302 one file).',
+    ''
+  );
+  for (const slug of missingBundles) {
+    for (const base of [`/download/${slug}`, `/download/${slug}/`]) {
+      lines.push(`${base}  /free/${slug}  301`);
+    }
+  }
+  lines.push('');
+}
+
 lines.push(
   '# Legacy safety net: pre-2026-08-04 raw filenames (no hash) that old pins/ads',
   '# may still point at. Sends to the GATED offer page, not the PDF directly —',

@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { execSync } from 'node:child_process';
 import { readFileSync, existsSync, statSync, readdirSync } from 'node:fs';
 import path from 'node:path';
-import { ROOT } from './_manifest.mjs';
+import { ROOT, parseMagnets } from './_manifest.mjs';
 
 const redirectsPath = path.join(ROOT, 'public', '_redirects');
 
@@ -37,6 +37,21 @@ test('TEST 0.4 — every magnet has a /download/ rule pointing at a real PDF', (
     const target = m[1].split('?')[0];
     const abs = path.join(ROOT, 'public', target.replace(/^\//, ''));
     assert.ok(existsSync(abs) && statSync(abs).size > 0, `redirect target missing: ${target}`);
+  }
+});
+
+// Every REGISTERED magnet (from the LEAD_MAGNETS registry, not just those that
+// own a PDF) must resolve to a /download/<slug> rule. A magnet like bilingual-bundle
+// owns no single PDF (it delivers 5 files), so the file-derived test above never
+// covered it — and /download/bilingual-bundle hard-404'd despite being the in-code
+// "clearer alias for new links." A bundle's /download 301s to its gated /free page;
+// a single-file magnet's /download 302s to the PDF. Either way it must not 404.
+test('TEST 0.4b — every registered magnet has a /download/ rule (bundles 301 to /free, files 302 to PDF)', () => {
+  const body = readFileSync(redirectsPath, 'utf8');
+  for (const slug of Object.keys(parseMagnets())) {
+    const rule = new RegExp(`^/download/${slug}\\s+(\\S+)\\s+30[12]\\s*$`, 'm');
+    const m = body.match(rule);
+    assert.ok(m, `registered magnet "${slug}" has no /download/${slug} rule — it would hard-404`);
   }
 });
 

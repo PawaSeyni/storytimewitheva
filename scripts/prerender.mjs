@@ -127,6 +127,42 @@ const LANG_PREFIXES = ['', '/es', '/fr'];
   }
   console.log(`Landing-page guard OK: ${registered.length} magnet slugs all prerendered.`);
 }
+
+// Book-page guard: the sitemap (and therefore this prerender's route list) derives
+// /books/<id> pages from src/data/books.ts via a strict regex (4-space indent,
+// single-quoted id). A book whose id line drifts from that shape is silently
+// dropped from BOTH the sitemap and the prerender -> hard 404 with a green build —
+// the same failure class as the landing guard above. Two checks: (1) any 4-space
+// `id:` line the strict parse misses = a formatting drift; (2) every parsed book
+// must actually have a /books/<id> route in the sitemap.
+{
+  const booksFull = readFileSync(new URL('../src/data/books.ts', import.meta.url), 'utf8');
+  // Scope to the books array only — the localize() helper below it has a 4-space
+  // `id: book.id,` line (no quotes) that must not count toward the loose check.
+  const booksSrc = booksFull.slice(0, booksFull.indexOf('function localize'));
+  const strictIds = [...booksSrc.matchAll(/^ {4}id: '([^']+)',/gm)].map(m => m[1]);
+  const looseCount = [...booksSrc.matchAll(/^ {4}id: /gm)].length;
+  if (looseCount !== strictIds.length) {
+    console.error(
+      `\nPrerender aborted: ${looseCount - strictIds.length} book id line(s) in books.ts ` +
+      `don't match the sitemap parser's \`    id: '...',\` shape, so they'd be dropped ` +
+      `from the sitemap + prerender (hard 404). Fix the formatting.\n`,
+    );
+    process.exit(1);
+  }
+  // Sitemap <loc>s are trailing-slashed (/books/<id>/); normalize before comparing.
+  const routeSet = new Set(sitemapRoutes.map(r => r.replace(/\/$/, '')));
+  const missingBooks = strictIds.filter(id => !routeSet.has(`/books/${id}`));
+  if (missingBooks.length) {
+    console.error(
+      `\nPrerender aborted: these books.ts ids are missing from the sitemap/prerender ` +
+      `(run \`npm run gen:sitemap\`):\n  ${missingBooks.join('\n  ')}\n`,
+    );
+    process.exit(1);
+  }
+  console.log(`Book-page guard OK: ${strictIds.length} books all in the sitemap.`);
+}
+
 const extraRoutes = [...NOINDEX_SPA_ROUTES, ...LANDING_SLUGS.map(s => `/free/${s}`)].flatMap(p =>
   LANG_PREFIXES.map(pre => `${pre}${p}`),
 );

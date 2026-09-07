@@ -68,6 +68,12 @@ export default function LandingPage() {
       </header>
 
       <main className="flex-1">
+        {/* Standalone landing pages ship without site chrome, so EmailSignup's
+            offer <h2> would otherwise be the page's first heading (no <h1>).
+            An sr-only <h1> gives the document a proper outline for screen readers
+            without altering the visual design (these pages are noindex, so this is
+            purely an a11y fix). */}
+        <h1 className="sr-only">{copy?.title ?? 'Free printable'}</h1>
         {/* key remounts the signup (fresh magnet + a new Form View) if the
             :magnet param ever changes client-side — landing pages are normally
             full-load ad entries, but this keeps it correct either way. */}
