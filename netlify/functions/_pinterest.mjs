@@ -29,13 +29,11 @@ export const hashEmail = (email) => sha256Hex(String(email).trim().toLowerCase()
  * Build one Pinterest CAPI `signup` event. Pure: no I/O, no clock, no
  * randomness (event_time / event_id are injected), so it is unit-testable.
  *
- * Privacy: the only personal identifier sent is the SHA-256-hashed email. The
- * payload also carries the lead-magnet slug (content_ids/content_category) — which
- * free printable converted, not a personal identifier — and nothing else. We
- * deliberately do NOT send the visitor's IP address or user-agent (Pinterest's `em`
- * is enough to attribute a conversion). This matches what the privacy policy
- * discloses: a hashed email plus which printable was requested, and no IP address,
- * browsing activity, or other identifier.
+ * Privacy: the ONLY identifier sent is the SHA-256-hashed email. We deliberately
+ * do NOT send the visitor's IP address or user-agent — Pinterest's `em` is
+ * enough to attribute a conversion, and omitting IP/UA keeps the payload exactly
+ * what the privacy policy discloses ("only a hashed version of your email, and
+ * no other information about you").
  */
 export function buildSignupEvent({ email, leadMagnet, eventId, eventTime }) {
   const user_data = { em: [hashEmail(email)] };
