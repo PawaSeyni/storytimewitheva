@@ -13,7 +13,7 @@ const TRANSLATIONS = {
     resources: 'Resources',
     about: 'About',
     contact: 'Contact',
-    profile: 'Profile',
+    profile: 'My Reading',
     search: 'Search',
     toggleMenu: 'Toggle menu',
   },
@@ -24,7 +24,7 @@ const TRANSLATIONS = {
     resources: 'Recursos',
     about: 'Acerca',
     contact: 'Contacto',
-    profile: 'Perfil',
+    profile: 'Mi lectura',
     search: 'Buscar',
     toggleMenu: 'Abrir menú',
   },
@@ -35,7 +35,7 @@ const TRANSLATIONS = {
     resources: 'Ressources',
     about: 'À propos',
     contact: 'Contact',
-    profile: 'Profil',
+    profile: 'Ma lecture',
     search: 'Recherche',
     toggleMenu: 'Ouvrir le menu',
   },
@@ -56,7 +56,6 @@ export default function Navbar() {
   }, [location.pathname]);
 
   const navLinks = [
-    { to: '/', label: t.home },
     { to: '/books', label: t.books },
     { to: '/activities', label: t.activities },
     { to: '/resources', label: t.resources },

@@ -18,7 +18,7 @@ import { useTranslation, useLanguage } from '../lib/language';
 
 const TRANSLATIONS = {
   en: {
-    seoTitle: 'My Profile',
+    seoTitle: 'My Reading',
     seoDesc: 'Your reading progress on Story Time with Eva: books read, want-to-read list, and activities completed. Saved locally on this device.',
     heading: 'My Reading Profile',
     blurb: 'Your progress is saved on this device.',
@@ -61,7 +61,7 @@ const TRANSLATIONS = {
     minShort: 'min',
   },
   es: {
-    seoTitle: 'Mi perfil',
+    seoTitle: 'Mi lectura',
     seoDesc: 'Tu progreso de lectura en Story Time with Eva — libros leídos, lista por leer y actividades completadas. Se guarda en este dispositivo.',
     heading: 'Mi perfil de lectura',
     blurb: 'Tu progreso se guarda en este dispositivo.',
@@ -104,7 +104,7 @@ const TRANSLATIONS = {
     minShort: 'min',
   },
   fr: {
-    seoTitle: 'Mon profil',
+    seoTitle: 'Ma lecture',
     seoDesc: 'Votre progression de lecture sur Story Time with Eva — livres lus, liste à lire et activités terminées. Sauvegardé localement sur cet appareil.',
     heading: 'Mon profil de lecture',
     blurb: 'Votre progression est sauvegardée sur cet appareil.',
