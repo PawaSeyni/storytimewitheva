@@ -71,7 +71,7 @@ export const books: Book[] = [
     editions: {
       en: { asin: '1997027038', cover: '/covers/colors-mixed-up-en.webp' },
       es: { asin: 'B0HHXNZ2YK', cover: '/covers/colors-mixed-up-es.webp' },
-      fr: { cover: '/covers/colors-mixed-up-fr.webp' },
+      fr: { asin: 'B0HHYVZBHH', cover: '/covers/colors-mixed-up-fr.webp' },
     },
     featured: true,
     title: {
@@ -101,7 +101,7 @@ export const books: Book[] = [
     editions: {
       en: { asin: '1997027003', cover: '/covers/rainbow-symphony-en.webp' },
       es: { asin: 'B0HHVDPBLD', cover: '/covers/rainbow-symphony-es.webp' },
-      fr: { cover: '/covers/rainbow-symphony-fr.webp' },
+      fr: { asin: 'B0HG5XPYTD', cover: '/covers/rainbow-symphony-fr.webp' },
     },
     featured: true,
     title: {
@@ -131,7 +131,7 @@ export const books: Book[] = [
     editions: {
       en: { asin: '1996972995', cover: '/covers/tower-touched-sky-en.webp' },
       es: { asin: 'B0HHW37V6W', cover: '/covers/tower-touched-sky-es.webp' },
-      fr: { cover: '/covers/tower-touched-sky-fr.webp' },
+      fr: { asin: 'B0HG3G7MNQ', cover: '/covers/tower-touched-sky-fr.webp' },
     },
     title: {
       en: 'The Tower That Touched the Sky',
@@ -192,7 +192,7 @@ export const books: Book[] = [
     editions: {
       en: { asin: '1996972685', cover: '/covers/sparrow-saved-forest-en.webp' },
       es: { asin: 'B0HHTJ3NYP', cover: '/covers/sparrow-saved-forest-es.webp' },
-      fr: { cover: '/covers/sparrow-saved-forest-fr.webp' },
+      fr: { asin: '1996972707', cover: '/covers/sparrow-saved-forest-fr.webp' },
     },
     title: {
       en: 'The Sparrow Who Saved the Forest',
@@ -337,7 +337,7 @@ export const books: Book[] = [
     editions: {
       en: { asin: '1996972650', cover: '/covers/true-beauty-meadowbrook-en.webp' },
       es: { asin: 'B0HHW3BG4K', cover: '/covers/true-beauty-meadowbrook-es.webp' },
-      fr: { cover: '/covers/true-beauty-meadowbrook-fr.webp' },
+      fr: { asin: '1996972677', cover: '/covers/true-beauty-meadowbrook-fr.webp' },
     },
     title: {
       en: 'The True Beauty of Meadowbrook',
@@ -366,7 +366,7 @@ export const books: Book[] = [
     editions: {
       en: { asin: '1996972898', cover: '/covers/sanding-block-en.webp' },
       es: { cover: '/covers/sanding-block-es.webp' },
-      fr: { cover: '/covers/sanding-block-fr.webp' },
+      fr: { asin: '199697291X', cover: '/covers/sanding-block-fr.webp' },
     },
     title: {
       en: 'The Sanding Block',
@@ -511,7 +511,7 @@ export const books: Book[] = [
     editions: {
       en: { asin: 'B0H1DXZ1KH', cover: '/covers/cloud-collector-en.webp' },
       es: { asin: 'B0GX32FKCB', cover: '/covers/cloud-collector-es.webp' },
-      fr: { cover: '/covers/cloud-collector-fr.webp' },
+      fr: { asin: '1996972987', cover: '/covers/cloud-collector-fr.webp' },
     },
     title: {
       en: 'The Cloud Collector',
@@ -540,7 +540,7 @@ export const books: Book[] = [
     editions: {
       en: { asin: 'B0GZJPZS74', cover: '/covers/little-mapmaker-en.webp' },
       es: { asin: 'B0HHVQ44J8', cover: '/covers/little-mapmaker-es.webp' },
-      fr: { cover: '/covers/little-mapmaker-fr.webp' },
+      fr: { asin: 'B0HG3Z4SF8', cover: '/covers/little-mapmaker-fr.webp' },
     },
     title: {
       en: 'The Little Mapmaker',
@@ -627,7 +627,7 @@ export const books: Book[] = [
     editions: {
       en: { asin: 'B0H36V1P89', cover: '/covers/fig-trees-secret-en.webp' },
       es: { asin: 'B0HHVVK17N', cover: '/covers/fig-trees-secret-es.webp' },
-      fr: { cover: '/covers/fig-trees-secret-fr.webp' },
+      fr: { asin: 'B0HG3GF4ML', cover: '/covers/fig-trees-secret-fr.webp' },
     },
     title: {
       en: "The Fig Tree's Secret",
