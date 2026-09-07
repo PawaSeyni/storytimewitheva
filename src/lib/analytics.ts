@@ -27,6 +27,7 @@ export type FunnelEvent =
   | 'Magnet Download'
   | 'Book View'
   | 'Purchase Click'
+  | 'Homepage CTA'
   | 'Language Switch'
   | 'Read Aloud'
   | 'Activity Complete';

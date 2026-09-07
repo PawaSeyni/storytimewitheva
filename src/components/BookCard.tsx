@@ -18,9 +18,12 @@ interface BookCardProps {
   /** Above-the-fold cards (featured row, first books page row) load eagerly to
    *  improve LCP; everything else stays lazy. */
   priority?: boolean;
+  /** Fired when the card's cover or title link is clicked (e.g. homepage
+   *  featured-book click tracking). */
+  onSelect?: () => void;
 }
 
-export default function BookCard({ book, priority = false }: BookCardProps) {
+export default function BookCard({ book, priority = false, onSelect }: BookCardProps) {
   const t = useTranslation(TRANSLATIONS);
 
   // Narration text for the read-aloud button — title, subtitle, and blurb.
@@ -34,7 +37,7 @@ export default function BookCard({ book, priority = false }: BookCardProps) {
 
   return (
     <div className="card group flex flex-col">
-      <Link to={href} className="block relative bg-gray-100 aspect-square overflow-hidden">
+      <Link to={href} onClick={onSelect} className="block relative bg-gray-100 aspect-square overflow-hidden">
         <img
           src={amazonCover ? sizedCover(book.coverImage, 400) : book.coverImage}
           srcSet={cardSrcSet}
@@ -62,7 +65,7 @@ export default function BookCard({ book, priority = false }: BookCardProps) {
           <span className="text-sm">{book.languages.join('')}</span>
         </div>
         <h3 className="font-bold text-gray-800 text-lg mb-1">
-          <Link to={href} className="hover:text-purple-700 transition-colors">
+          <Link to={href} onClick={onSelect} className="hover:text-purple-700 transition-colors">
             {book.title}
           </Link>
         </h3>
