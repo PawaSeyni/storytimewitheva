@@ -1,32 +1,35 @@
 // Eva Gallo Collection — published books in the imprint.
 //
-// Each book carries localized title/subtitle/description/theme. The 3 newer
-// titles (Colors Mixed Up, Rainbow Symphony, Tower) have official KDP-published
-// French translations; Spanish is in production so we provide good drafts.
-// The 8 Amazon-live titles keep their English titles (brand) but have
-// translated descriptions, subtitles, and themes.
+// Single source of truth for the catalog. Each book carries localized
+// title/subtitle/description/theme plus an `editions` map holding the per-language
+// Amazon ASIN + cover. localize(book, lang) resolves everything for one language
+// (falling back to English), so pages never store per-language content separately.
+// tests/funnel/catalog.test.mjs guards completeness (every book has an en edition;
+// every referenced cover exists; no orphan covers).
 
 import { useLanguage, type Language } from '../lib/language';
-import { amazonDp } from '../lib/amazon';
-import colorsMixedUp from '../assets/covers/colors-mixed-up.webp';
-import rainbowSymphony from '../assets/covers/rainbow-symphony.webp';
-import towerTouchedSky from '../assets/covers/tower-touched-sky.webp';
+import { amazonDp, AMAZON_AUTHOR_URL } from '../lib/amazon';
 
 type LocalizedString = Record<Language, string>;
 
+/** One language's Amazon edition and cover art. */
+interface Edition {
+  /** ASIN of this language's own Amazon product, if it has one. Absent → the Buy
+   *  CTA for this language falls back to the English edition. */
+  asin?: string;
+  /** Cover image for this language (self-hosted path or absolute URL). Absent →
+   *  falls back to the English cover. */
+  cover?: string;
+}
+
 export interface Book {
   id: string;
-  coverImage: string;
   ageRange: string;
-  /** Optional per-book override. When omitted, localize() shows all three site
-   *  languages (ALL_LANGUAGES) — every book's page is presented in EN/ES/FR. */
-  languages?: string[];
-  amazonUrl: string;
-  /** Per-language edition links for books published as their own Amazon product
-   *  in another language (e.g. a French edition on its own ASIN). When the site
-   *  is viewed in that language the Buy CTA points here; other languages fall
-   *  back to `amazonUrl` (the English edition). */
-  amazonUrlByLang?: Partial<Record<Language, string>>;
+  /** Per-language Amazon edition + cover — the single source of truth for covers
+   *  and Buy links. `en` is always present; `es`/`fr` appear only where that
+   *  language has its own cover and/or its own Amazon product. localize() resolves
+   *  the right one per language and falls back to `en`. */
+  editions: { en: Edition } & Partial<Record<Language, Edition>>;
   featured?: boolean;
   /** Publication state. Absent/'published' = live with a Buy CTA; 'coming-soon' shows a placeholder. */
   status?: 'published' | 'coming-soon';
@@ -57,32 +60,6 @@ const dp = amazonDp;
  *  independent of which Amazon editions exist. */
 export const ALL_LANGUAGES = ['🇺🇸', '🇪🇸', '🇫🇷'];
 
-/** Books whose language-specific covers are self-hosted at
- *  public/covers/<id>-<lang>.webp (generated from the interior-art folders).
- *  localize() serves the per-language cover for these; any book not listed here
- *  falls back to its single `coverImage` for every language. */
-const LOCALIZED_COVER_IDS = new Set<string>([
-  'colors-mixed-up', 'rainbow-symphony', 'tower-touched-sky', 'mayas-shadow',
-  'sparrow-saved-forest', 'diegos-brave-leap', 'butterfly-effect', 'emperors-true-treasure',
-  'crooked-little-apple-tree', 'true-beauty-meadowbrook', 'sanding-block', 'leo-and-the-wolf',
-  'russet-the-fox', 'heidis-journey-to-mastery', 'cloud-collector', 'little-mapmaker',
-  'pawa-rainbow-cloud', 'miras-thousand-cubes', 'fig-trees-secret',
-]);
-
-/** Spanish editions published as their own Amazon product (each ASIN verified live
- *  2026-09-07 to resolve to the correct Spanish title). localize() points the Buy
- *  CTA here when the site is in Spanish; a book with no entry falls back to the
- *  English edition. French per-language editions live in each book's
- *  `amazonUrlByLang.fr`. */
-const ES_EDITIONS: Record<string, string> = {
-  'colors-mixed-up': 'B0HHXNZ2YK', 'rainbow-symphony': 'B0HHVDPBLD', 'tower-touched-sky': 'B0HHW37V6W',
-  'mayas-shadow': 'B0HHWPG3FS', 'sparrow-saved-forest': 'B0HHTJ3NYP', 'butterfly-effect': 'B0HH8KM4SX',
-  'emperors-true-treasure': 'B0HHV9S5B5', 'crooked-little-apple-tree': 'B0HHT9PY5B',
-  'true-beauty-meadowbrook': 'B0HHW3BG4K', 'leo-and-the-wolf': 'B0H6N6ZBRL', 'russet-the-fox': 'B0H67H9F2W',
-  'cloud-collector': 'B0GX32FKCB', 'little-mapmaker': 'B0HHVQ44J8', 'pawa-rainbow-cloud': 'B0HH8F8XLQ',
-  'miras-thousand-cubes': 'B0HH8KWPD8', 'fig-trees-secret': 'B0HHVVK17N',
-};
-
 /** A book not yet for sale — show a "coming soon" placeholder instead of a Buy CTA. */
 export const isComingSoon = (b: { status?: string }): boolean => b.status === 'coming-soon';
 
@@ -90,9 +67,12 @@ export const books: Book[] = [
   // ---- 3 newer titles in production ----
   {
     id: 'colors-mixed-up',
-    coverImage: colorsMixedUp,
     ageRange: '4-7',
-    amazonUrl: dp('1997027038'),
+    editions: {
+      en: { asin: '1997027038', cover: '/covers/colors-mixed-up-en.webp' },
+      es: { asin: 'B0HHXNZ2YK', cover: '/covers/colors-mixed-up-es.webp' },
+      fr: { cover: '/covers/colors-mixed-up-fr.webp' },
+    },
     featured: true,
     title: {
       en: 'The Day the Colors Got Mixed Up',
@@ -117,9 +97,12 @@ export const books: Book[] = [
   },
   {
     id: 'rainbow-symphony',
-    coverImage: rainbowSymphony,
     ageRange: '3-6',
-    amazonUrl: dp('1997027003'),
+    editions: {
+      en: { asin: '1997027003', cover: '/covers/rainbow-symphony-en.webp' },
+      es: { asin: 'B0HHVDPBLD', cover: '/covers/rainbow-symphony-es.webp' },
+      fr: { cover: '/covers/rainbow-symphony-fr.webp' },
+    },
     featured: true,
     title: {
       en: 'The Rainbow Symphony',
@@ -144,9 +127,12 @@ export const books: Book[] = [
   },
   {
     id: 'tower-touched-sky',
-    coverImage: towerTouchedSky,
     ageRange: '5-9',
-    amazonUrl: dp('1996972995'),
+    editions: {
+      en: { asin: '1996972995', cover: '/covers/tower-touched-sky-en.webp' },
+      es: { asin: 'B0HHW37V6W', cover: '/covers/tower-touched-sky-es.webp' },
+      fr: { cover: '/covers/tower-touched-sky-fr.webp' },
+    },
     title: {
       en: 'The Tower That Touched the Sky',
       es: 'La torre que tocó el cielo',
@@ -172,10 +158,12 @@ export const books: Book[] = [
   // ---- 8 titles live on Amazon ----
   {
     id: 'mayas-shadow',
-    coverImage: 'https://m.media-amazon.com/images/I/61hBrMvhhRL.jpg',
     ageRange: '3-7',
-    amazonUrl: dp('1996972812'),
-    amazonUrlByLang: { fr: dp('1996972820') }, // French edition (Les aventures de l'ombre de Maya)
+    editions: {
+      en: { asin: '1996972812', cover: '/covers/mayas-shadow-en.webp' },
+      es: { asin: 'B0HHWPG3FS', cover: '/covers/mayas-shadow-es.webp' },
+      fr: { asin: '1996972820', cover: '/covers/mayas-shadow-fr.webp' },
+    },
     featured: true,
     title: {
       en: "The Adventures of Maya's Shadow",
@@ -200,9 +188,12 @@ export const books: Book[] = [
   },
   {
     id: 'sparrow-saved-forest',
-    coverImage: 'https://m.media-amazon.com/images/I/61IthxrIcFL.jpg',
     ageRange: '4-8',
-    amazonUrl: dp('1996972685'),
+    editions: {
+      en: { asin: '1996972685', cover: '/covers/sparrow-saved-forest-en.webp' },
+      es: { asin: 'B0HHTJ3NYP', cover: '/covers/sparrow-saved-forest-es.webp' },
+      fr: { cover: '/covers/sparrow-saved-forest-fr.webp' },
+    },
     title: {
       en: 'The Sparrow Who Saved the Forest',
       es: 'El gorrión que salvó el bosque',
@@ -226,10 +217,12 @@ export const books: Book[] = [
   },
   {
     id: 'diegos-brave-leap',
-    coverImage: 'https://m.media-amazon.com/images/I/71z9fEOWb-L.jpg',
     ageRange: '4-8',
-    amazonUrl: dp('1996972863'),
-    amazonUrlByLang: { fr: dp('199697288X') }, // French edition (Le saut courageux de Diego)
+    editions: {
+      en: { asin: '1996972863', cover: '/covers/diegos-brave-leap-en.webp' },
+      es: { cover: '/covers/diegos-brave-leap-es.webp' },
+      fr: { asin: '199697288X', cover: '/covers/diegos-brave-leap-fr.webp' },
+    },
     title: {
       en: "Diego's Brave Leap",
       es: 'El salto valiente de Diego',
@@ -253,10 +246,12 @@ export const books: Book[] = [
   },
   {
     id: 'butterfly-effect',
-    coverImage: 'https://m.media-amazon.com/images/I/71wLOYuguIL.jpg',
     ageRange: '5-9',
-    amazonUrl: dp('1996972774'),
-    amazonUrlByLang: { fr: dp('1996972790') }, // French edition (L'effet papillon)
+    editions: {
+      en: { asin: '1996972774', cover: '/covers/butterfly-effect-en.webp' },
+      es: { asin: 'B0HH8KM4SX', cover: '/covers/butterfly-effect-es.webp' },
+      fr: { asin: '1996972790', cover: '/covers/butterfly-effect-fr.webp' },
+    },
     title: {
       en: 'The Butterfly Effect',
       es: 'El efecto mariposa',
@@ -280,9 +275,12 @@ export const books: Book[] = [
   },
   {
     id: 'emperors-true-treasure',
-    coverImage: 'https://m.media-amazon.com/images/I/71ztFYD6z6L.jpg',
     ageRange: '5-9',
-    amazonUrl: dp('199697274X'),
+    editions: {
+      en: { asin: '199697274X', cover: '/covers/emperors-true-treasure-en.webp' },
+      es: { asin: 'B0HHV9S5B5', cover: '/covers/emperors-true-treasure-es.webp' },
+      fr: { cover: '/covers/emperors-true-treasure-fr.webp' },
+    },
     title: {
       en: "The Emperor's True Treasure",
       es: 'El verdadero tesoro del emperador',
@@ -306,10 +304,12 @@ export const books: Book[] = [
   },
   {
     id: 'crooked-little-apple-tree',
-    coverImage: 'https://m.media-amazon.com/images/I/71Qt1STow5L.jpg',
     ageRange: '4-8',
-    amazonUrl: dp('1996972715'),
-    amazonUrlByLang: { fr: dp('1996972731') }, // French edition (Le petit pommier tordu)
+    editions: {
+      en: { asin: '1996972715', cover: '/covers/crooked-little-apple-tree-en.webp' },
+      es: { asin: 'B0HHT9PY5B', cover: '/covers/crooked-little-apple-tree-es.webp' },
+      fr: { asin: '1996972731', cover: '/covers/crooked-little-apple-tree-fr.webp' },
+    },
     title: {
       en: 'The Crooked Little Apple Tree',
       es: 'El manzanito torcido',
@@ -333,9 +333,12 @@ export const books: Book[] = [
   },
   {
     id: 'true-beauty-meadowbrook',
-    coverImage: 'https://m.media-amazon.com/images/I/71NtIMdhG2L.jpg',
     ageRange: '4-8',
-    amazonUrl: dp('1996972650'),
+    editions: {
+      en: { asin: '1996972650', cover: '/covers/true-beauty-meadowbrook-en.webp' },
+      es: { asin: 'B0HHW3BG4K', cover: '/covers/true-beauty-meadowbrook-es.webp' },
+      fr: { cover: '/covers/true-beauty-meadowbrook-fr.webp' },
+    },
     title: {
       en: 'The True Beauty of Meadowbrook',
       es: 'La verdadera belleza de Meadowbrook',
@@ -359,9 +362,12 @@ export const books: Book[] = [
   },
   {
     id: 'sanding-block',
-    coverImage: 'https://m.media-amazon.com/images/I/71Z%2BTeKb4TL.jpg',
     ageRange: '5-9',
-    amazonUrl: dp('1996972898'),
+    editions: {
+      en: { asin: '1996972898', cover: '/covers/sanding-block-en.webp' },
+      es: { cover: '/covers/sanding-block-es.webp' },
+      fr: { cover: '/covers/sanding-block-fr.webp' },
+    },
     title: {
       en: 'The Sanding Block',
       es: 'El bloque de lijar',
@@ -387,10 +393,12 @@ export const books: Book[] = [
   // ---- 7 newer titles, added 2026-05-29 ----
   {
     id: 'leo-and-the-wolf',
-    coverImage: 'https://m.media-amazon.com/images/I/61ml%2BbdnJKL.jpg',
     ageRange: '4-8',
-    amazonUrl: dp('1997027054'),
-    amazonUrlByLang: { fr: dp('B0HFCPRBVL') }, // published French edition (Leo et le Loup)
+    editions: {
+      en: { asin: '1997027054', cover: '/covers/leo-and-the-wolf-en.webp' },
+      es: { asin: 'B0H6N6ZBRL', cover: '/covers/leo-and-the-wolf-es.webp' },
+      fr: { asin: 'B0HFCPRBVL', cover: '/covers/leo-and-the-wolf-fr.webp' },
+    },
     title: {
       en: 'Leo and the Wolf',
       es: 'Leo y el lobo',
@@ -414,10 +422,12 @@ export const books: Book[] = [
   },
   {
     id: 'russet-the-fox',
-    coverImage: 'https://m.media-amazon.com/images/I/71vg4083EVL.jpg',
     ageRange: '4-8',
-    amazonUrl: dp('1997027046'),
-    amazonUrlByLang: { fr: dp('B0HFCJ1TPG') }, // French edition (Rousseau le Renard apprend une leçon)
+    editions: {
+      en: { asin: '1997027046', cover: '/covers/russet-the-fox-en.webp' },
+      es: { asin: 'B0H67H9F2W', cover: '/covers/russet-the-fox-es.webp' },
+      fr: { asin: 'B0HFCJ1TPG', cover: '/covers/russet-the-fox-fr.webp' },
+    },
     title: {
       en: 'Russet the Fox Learns a Lesson',
       es: 'Russet el zorro aprende una lección',
@@ -441,9 +451,10 @@ export const books: Book[] = [
   },
   {
     id: 'little-boats-big-wish',
-    coverImage: 'https://m.media-amazon.com/images/I/71Zjj22p5sL.jpg',
     ageRange: '3-7',
-    amazonUrl: dp('1997027070'),
+    editions: {
+      en: { asin: '1997027070', cover: 'https://m.media-amazon.com/images/I/71Zjj22p5sL.jpg' },
+    },
     title: {
       en: "A Little Boat's Big Wish",
       es: 'El gran deseo de un pequeño barco',
@@ -467,10 +478,12 @@ export const books: Book[] = [
   },
   {
     id: 'heidis-journey-to-mastery',
-    coverImage: 'https://m.media-amazon.com/images/I/91Z3ipmFctL.jpg',
     ageRange: '5-9',
-    amazonUrl: dp('B0H35ZJKCR'),
-    amazonUrlByLang: { fr: dp('1997027275') }, // French edition (Le Voyage de Heidi vers la Maîtrise)
+    editions: {
+      en: { asin: 'B0H35ZJKCR', cover: '/covers/heidis-journey-to-mastery-en.webp' },
+      es: { cover: '/covers/heidis-journey-to-mastery-es.webp' },
+      fr: { asin: '1997027275', cover: '/covers/heidis-journey-to-mastery-fr.webp' },
+    },
     title: {
       en: "Heidi's Journey to Mastery",
       es: 'El camino de Heidi hacia la maestría',
@@ -494,9 +507,12 @@ export const books: Book[] = [
   },
   {
     id: 'cloud-collector',
-    coverImage: 'https://m.media-amazon.com/images/I/91LSk016ZfL.jpg',
     ageRange: '4-8',
-    amazonUrl: dp('B0H1DXZ1KH'),
+    editions: {
+      en: { asin: 'B0H1DXZ1KH', cover: '/covers/cloud-collector-en.webp' },
+      es: { asin: 'B0GX32FKCB', cover: '/covers/cloud-collector-es.webp' },
+      fr: { cover: '/covers/cloud-collector-fr.webp' },
+    },
     title: {
       en: 'The Cloud Collector',
       es: 'La coleccionista de nubes',
@@ -520,9 +536,12 @@ export const books: Book[] = [
   },
   {
     id: 'little-mapmaker',
-    coverImage: 'https://m.media-amazon.com/images/I/918-3L7uzaL.jpg',
     ageRange: '4-8',
-    amazonUrl: dp('B0GZJPZS74'),
+    editions: {
+      en: { asin: 'B0GZJPZS74', cover: '/covers/little-mapmaker-en.webp' },
+      es: { asin: 'B0HHVQ44J8', cover: '/covers/little-mapmaker-es.webp' },
+      fr: { cover: '/covers/little-mapmaker-fr.webp' },
+    },
     title: {
       en: 'The Little Mapmaker',
       es: 'La pequeña cartógrafa',
@@ -546,10 +565,12 @@ export const books: Book[] = [
   },
   {
     id: 'pawa-rainbow-cloud',
-    coverImage: 'https://m.media-amazon.com/images/I/61zr49LAzAL.jpg',
     ageRange: '3-7',
-    amazonUrl: dp('1996972936'),
-    amazonUrlByLang: { fr: dp('1996972952') }, // French edition (Pawa et le Petit Nuage Arc-en-ciel)
+    editions: {
+      en: { asin: '1996972936', cover: '/covers/pawa-rainbow-cloud-en.webp' },
+      es: { asin: 'B0HH8F8XLQ', cover: '/covers/pawa-rainbow-cloud-es.webp' },
+      fr: { asin: '1996972952', cover: '/covers/pawa-rainbow-cloud-fr.webp' },
+    },
     title: {
       en: 'Pawa and the Little Rainbow Cloud',
       es: 'Pawa y la pequeña nube arcoíris',
@@ -573,10 +594,12 @@ export const books: Book[] = [
   },
   {
     id: 'miras-thousand-cubes',
-    coverImage: 'https://m.media-amazon.com/images/I/712yhi3sGHL.jpg',
     ageRange: '5-9',
-    amazonUrl: dp('1996972839'),
-    amazonUrlByLang: { fr: dp('1996972855') }, // French edition (Les mille cubes de Mira)
+    editions: {
+      en: { asin: '1996972839', cover: '/covers/miras-thousand-cubes-en.webp' },
+      es: { asin: 'B0HH8KWPD8', cover: '/covers/miras-thousand-cubes-es.webp' },
+      fr: { asin: '1996972855', cover: '/covers/miras-thousand-cubes-fr.webp' },
+    },
     title: {
       en: "Mira's Thousand Cubes",
       es: 'Los mil cubos de Mira',
@@ -600,9 +623,12 @@ export const books: Book[] = [
   },
   {
     id: 'fig-trees-secret',
-    coverImage: 'https://m.media-amazon.com/images/I/915RPJ4qRpL.jpg',
     ageRange: '4-8',
-    amazonUrl: dp('B0H36V1P89'),
+    editions: {
+      en: { asin: 'B0H36V1P89', cover: '/covers/fig-trees-secret-en.webp' },
+      es: { asin: 'B0HHVVK17N', cover: '/covers/fig-trees-secret-es.webp' },
+      fr: { cover: '/covers/fig-trees-secret-fr.webp' },
+    },
     title: {
       en: "The Fig Tree's Secret",
       es: 'El secreto de la higuera',
@@ -627,15 +653,15 @@ export const books: Book[] = [
 ];
 
 function localize(book: Book, lang: Language): LocalizedBook {
+  const en = book.editions.en;
+  const ed = book.editions[lang] ?? en;
+  const asin = ed.asin ?? en.asin;
   return {
     id: book.id,
-    coverImage: LOCALIZED_COVER_IDS.has(book.id) ? `/covers/${book.id}-${lang}.webp` : book.coverImage,
+    coverImage: ed.cover ?? en.cover ?? '',
     ageRange: book.ageRange,
-    languages: book.languages ?? ALL_LANGUAGES,
-    amazonUrl:
-      book.amazonUrlByLang?.[lang] ??
-      (lang === 'es' && ES_EDITIONS[book.id] ? dp(ES_EDITIONS[book.id]) : undefined) ??
-      book.amazonUrl,
+    languages: ALL_LANGUAGES,
+    amazonUrl: asin ? dp(asin) : AMAZON_AUTHOR_URL,
     featured: book.featured,
     status: book.status,
     title: book.title[lang] ?? book.title.en,
