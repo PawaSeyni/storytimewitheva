@@ -6,6 +6,7 @@ import EmailSignup, { hasLeadMagnetRequest } from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
 import Pixel from '../components/Pixel';
+import TestimonialSection from '../components/TestimonialSection';
 import { useTranslation } from '../lib/language';
 import { track } from '../lib/analytics';
 import evaReadingWebp from '../assets/eva-reading.webp'; // optimized on-page hero (LCP)
@@ -70,6 +71,7 @@ const TRANSLATIONS = {
     ctaExploreBooks: 'Explore the Books',
     ctaExploreActivities: 'Explore Activities',
     heroAges: 'For ages 3–9 · English · Français · Español',
+    ctaFreeBundle: 'Get the Free Bundle',
     // Section 2 — multilingual
     mlTitle: 'One Magical World. Three Languages.',
     mlSupport: 'Stories and activities designed to help children read, imagine, and explore across languages.',
@@ -114,6 +116,7 @@ const TRANSLATIONS = {
     ctaExploreBooks: 'Explora los libros',
     ctaExploreActivities: 'Explora las actividades',
     heroAges: 'Para edades de 3 a 9 · English · Français · Español',
+    ctaFreeBundle: 'Recibe el paquete gratis',
     mlTitle: 'Un mundo mágico. Tres idiomas.',
     mlSupport: 'Historias y actividades diseñadas para ayudar a los niños a leer, imaginar y explorar entre idiomas.',
     mlNote: 'Leer y escuchar',
@@ -153,6 +156,7 @@ const TRANSLATIONS = {
     ctaExploreBooks: 'Explorer les livres',
     ctaExploreActivities: 'Explorer les activités',
     heroAges: 'Pour les 3 à 9 ans · English · Français · Español',
+    ctaFreeBundle: 'Recevoir le pack gratuit',
     mlTitle: 'Un monde magique. Trois langues.',
     mlSupport: 'Des histoires et des activités conçues pour aider les enfants à lire, imaginer et explorer d\'une langue à l\'autre.',
     mlNote: 'Lire et écouter',
@@ -236,6 +240,16 @@ export default function Home() {
               >
                 🎨 {t.ctaExploreActivities}
               </Link>
+            </div>
+            {/* Level-3 supporting CTA — subordinate to the two buttons above. */}
+            <div className="mt-4 flex justify-center lg:justify-start">
+              <a
+                href="#email-signup"
+                onClick={() => track('Homepage CTA', { destination: 'free-bundle' })}
+                className="text-sm font-semibold text-amber-200 hover:text-amber-100 underline underline-offset-4 decoration-amber-300/50"
+              >
+                🎁 {t.ctaFreeBundle} →
+              </a>
             </div>
             <p className="mt-6 text-sm font-medium text-purple-100/90">{t.heroAges}</p>
           </div>
@@ -394,6 +408,10 @@ export default function Home() {
           rendered yet: no approved testimonials exist and we never fabricate
           them. It ships as its own component in a later task (S1-010). */}
       {!offerFirst && <EmailSignup />}
+
+      {/* SECTION 8 — Loved by Families. Renders only when approved testimonials
+          exist (src/data/testimonials.ts); never a fabricated placeholder. */}
+      <TestimonialSection />
     </main>
   );
 }
