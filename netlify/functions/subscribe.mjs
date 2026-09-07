@@ -124,8 +124,18 @@ export async function handler(event) {
   if (origin) {
     let host = '';
     try { host = new URL(origin).hostname; } catch { host = 'invalid'; }
-    const allowed = host === 'storytimewitheva.com' || host.endsWith('.netlify.app') || host === 'localhost';
-    if (!allowed) return json(403, { ok: false, error: 'bad_origin' });
+    // Scope to THIS site only. The previous `.endsWith('.netlify.app')` allowed the
+    // whole TLD, so any Netlify account holder could host a page and drive
+    // cross-origin form POSTs at this endpoint. Match the apex plus this site's own
+    // netlify.app subdomain and its branch/deploy-preview forms
+    // (`<branch>--storytimewitheva.netlify.app`), and allow localhost ONLY under
+    // `netlify dev` (CONTEXT=dev), never in production.
+    const isOwnHost =
+      host === 'storytimewitheva.com' ||
+      /^([a-z0-9-]+--)?storytimewitheva\.netlify\.app$/.test(host);
+    const isDevHost =
+      process.env.CONTEXT === 'dev' && (host === 'localhost' || host === '127.0.0.1');
+    if (!(isOwnHost || isDevHost)) return json(403, { ok: false, error: 'bad_origin' });
   }
 
   if (!process.env.MAILERLITE_API_KEY) {

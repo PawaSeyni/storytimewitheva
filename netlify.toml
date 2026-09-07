@@ -7,6 +7,11 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  # The prerender step uses puppeteer-core + @sparticuz/chromium on CI (scripts/
+  # prerender.mjs), never the full `puppeteer` package — which would otherwise
+  # download ~150 MB of Chrome-for-Testing on every deploy (Netlify doesn't cache
+  # ~/.cache/puppeteer). Skip that download here; local dev still installs normally.
+  PUPPETEER_SKIP_DOWNLOAD = "true"
 
 # Force the legacy netlify.app subdomain to redirect to the custom domain.
 # (Netlify's automatic "primary domain" redirect doesn't always engage; this

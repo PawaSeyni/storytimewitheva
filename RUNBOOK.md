@@ -4,9 +4,9 @@ Single source of truth for operating, monitoring, and troubleshooting every serv
 
 **Site:** https://storytimewitheva.com
 **Repo:** https://github.com/PawaSeyni/storytimewitheva
-**Local path:** `/Users/papasnguer/Desktop/Organized/17_Completed_Books_Archive/Completed Books/Eva/storytimewitheva`
+**Local path:** `/Users/papasnguer/Desktop/storytimewitheva`
 **Owner:** Eva Gallo (`galloeva2612@gmail.com`)
-**Last updated:** 2026-05-21
+**Last updated:** 2026-09-07
 
 ---
 
@@ -104,6 +104,17 @@ git push origin main
 - Submissions visible at: **Site → Forms** in the dashboard
 - Email notification rule: forwards every submission to `galloeva2612@gmail.com` (set up under **Project configuration → Notifications → Form submission notifications**)
 
+### Functions (`netlify/functions/`)
+
+The email funnel runs on Netlify Functions, not the static forms:
+
+- **`subscribe.mjs`** — the newsletter/lead-magnet signup endpoint (`/.netlify/functions/subscribe`). Server-side MailerLite subscribe; honeypot + same-origin check + IP/email rate limiting; native-form fallback with a validated `return_to`. **Requires env var `MAILERLITE_API_KEY`** (Site configuration → Environment variables). Its in-function `config.rateLimit` is the platform rate limit and MUST stay bound to this path.
+- **`_ratelimit.mjs`** — shared sliding-window limiter (Netlify Blobs, fails open per-instance if Blobs is down).
+- **`_verify.mjs`** — human-verification seam (currently a no-op; wired for Turnstile — would add env var `TURNSTILE_SECRET`).
+- **`_pinterest.mjs`** — best-effort server-side Pinterest Conversions API (hashed email only). Optional env var `PINTEREST_CONVERSIONS_TOKEN`; inert if unset.
+
+**Env vars summary:** `MAILERLITE_API_KEY` (required), `PINTEREST_CONVERSIONS_TOKEN` (optional), `TURNSTILE_SECRET` (future). See `.env.example`.
+
 ### Routine
 
 | Frequency | Task |
@@ -197,9 +208,9 @@ After any deploy, navigate to:
 ### How the funnel works (data flow)
 
 1. Visitor fills out `EmailSignup.tsx` on storytimewitheva.com
-2. `EmailSignup.tsx` POSTs (no-cors) to the MailerLite JSONP endpoint with `fields[email]`, `fields[name]`, `fields[language]`, `fields[lead_magnet]`
-3. MailerLite creates a subscriber, sends double-opt-in confirmation
-4. Subscriber clicks confirmation → joins `storytimewitheva-signups` group
+2. `EmailSignup.tsx` POSTs (JSON, same-origin) to the **`/.netlify/functions/subscribe`** Netlify Function — NOT the old MailerLite JSONP endpoint (that no-cors path silently dropped signups and is exactly the bug this function replaced). A pre-hydration native `<form>` submit is captured by the same function and redirected back to the localized landing page.
+3. `subscribe.mjs` calls the MailerLite API server-side (token never in the browser), resolving the group id and adding the subscriber directly to `storytimewitheva-signups` — **single opt-in by default** (no confirmation click required; verify the account's opt-in setting if this changes). Group membership is mandatory: if the group can't be resolved the function fails with a retryable error rather than creating an ungrouped subscriber.
+4. On success it fires a best-effort server-side Pinterest conversion (hashed email only) and delivers the lead magnet.
 5. Welcome automation triggers (subscriber joined group → fire Email 1 immediately, then delays 3 / 4 / 5 days between Emails 2, 3, 4)
 
 ### Welcome automation contents (current)
@@ -357,7 +368,7 @@ This site references KDP — book cards link to Amazon product pages or author U
 
 ### Books currently linked from the site (`src/data/books.ts`)
 
-8 live on Amazon with ASIN-based URLs, 3 newer titles falling back to author URL until they list (Colors Mixed Up, Rainbow Symphony, Tower That Touched the Sky).
+20 books in `src/data/books.ts` (as of 2026-09-07). Most link to a specific Amazon ASIN via `dp('<ASIN>')`; a few fall back to the author URL until they list. Each book's `languages` flags + `amazonUrlByLang` reflect which editions are actually live. (This count changes as titles are added — the array in `books.ts` is the source of truth, not this line.)
 
 ### Routine (KDP-side, not site-side)
 
@@ -410,26 +421,28 @@ See PUNCH_LIST long-term backlog → "Social & marketing channels" cluster.
 
 ### "Want to add a new book to the site"
 
-1. Add cover image: `src/assets/covers/new-book.jpg` (square, ~800×800, ~150-200 KB)
-2. Edit `src/data/books.ts`:
+1. Cover image — two options:
+   - **Remote (most books do this):** set `coverImage: 'https://m.media-amazon.com/images/I/<id>.jpg'` — the Amazon cover URL (CSP allows `m.media-amazon.com`). No local file needed.
+   - **Local:** add `src/assets/covers/new-book.webp` (square, ~800×800; covers are `.webp`, not `.jpg`) and `import newBookCover from '../assets/covers/new-book.webp'` at the top of `books.ts`.
+2. Edit `src/data/books.ts` (Amazon-verify the ASIN is live/purchasable first):
    ```ts
    {
      id: 'new-book-slug',
-     coverImage: newBookCover,  // import at top of file
-     ageRange: '4-7 years',
-     languages: ['🇺🇸', '🇪🇸', '🇫🇷'],
+     coverImage: 'https://m.media-amazon.com/images/I/<id>.jpg',  // or a local .webp import
+     ageRange: '4-8',
+     languages: ['🇺🇸'],  // only the editions actually live; add 🇪🇸/🇫🇷 as they publish
      amazonUrl: dp('ASINHERE'),  // or AUTHOR_URL fallback
-     featured: false,
+     // amazonUrlByLang: { fr: dp('...') },  // optional, per-language editions
      title: { en: '...', es: '...', fr: '...' },
      subtitle: { en: '...', es: '...', fr: '...' },
-     description: { en: '...', es: '...', fr: '...' },
+     description: { en: '...', es: '...', fr: '...' },  // EN: no em dashes (house style)
      theme: { en: '...', es: '...', fr: '...' },
    },
    ```
-3. Run `npm run build` locally to verify TypeScript compiles
+3. Run `npm run build` — this typechecks AND **auto-regenerates `public/sitemap.xml` and prerenders the new `/books/<id>` (+`/es`,`/fr`) routes**. No manual sitemap step. (`tests/funnel` TEST 0.8 asserts every book is in the sitemap; the prerender has a book-drift guard.) Commit the regenerated `public/sitemap.xml` along with `books.ts`.
 4. Commit + push: `git commit -m "feat(books): add <title>" && git push`
-5. Netlify auto-deploys ~12s later
-6. Smoke test on production: navigate to `/books` and confirm the new card appears with all 3 languages working
+5. Netlify auto-deploys
+6. Smoke test on production: `/books/<id>` returns 200 and the card shows on `/books` in all 3 languages
 
 ### "Want to add a new lead magnet (PDF)"
 
