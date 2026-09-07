@@ -18,7 +18,9 @@ export interface Book {
   id: string;
   coverImage: string;
   ageRange: string;
-  languages: string[];
+  /** Optional per-book override. When omitted, localize() shows all three site
+   *  languages (ALL_LANGUAGES) — every book's page is presented in EN/ES/FR. */
+  languages?: string[];
   amazonUrl: string;
   /** Per-language edition links for books published as their own Amazon product
    *  in another language (e.g. a French edition on its own ASIN). When the site
@@ -50,6 +52,37 @@ export interface LocalizedBook {
 
 const dp = amazonDp;
 
+/** Every book's page is presented in all three site languages (EN/ES/FR) with
+ *  read-aloud and translated copy, so the card always shows all three flags,
+ *  independent of which Amazon editions exist. */
+export const ALL_LANGUAGES = ['🇺🇸', '🇪🇸', '🇫🇷'];
+
+/** Books whose language-specific covers are self-hosted at
+ *  public/covers/<id>-<lang>.webp (generated from the interior-art folders).
+ *  localize() serves the per-language cover for these; any book not listed here
+ *  falls back to its single `coverImage` for every language. */
+const LOCALIZED_COVER_IDS = new Set<string>([
+  'colors-mixed-up', 'rainbow-symphony', 'tower-touched-sky', 'mayas-shadow',
+  'sparrow-saved-forest', 'diegos-brave-leap', 'butterfly-effect', 'emperors-true-treasure',
+  'crooked-little-apple-tree', 'true-beauty-meadowbrook', 'sanding-block', 'leo-and-the-wolf',
+  'russet-the-fox', 'heidis-journey-to-mastery', 'cloud-collector', 'little-mapmaker',
+  'pawa-rainbow-cloud', 'miras-thousand-cubes', 'fig-trees-secret',
+]);
+
+/** Spanish editions published as their own Amazon product (each ASIN verified live
+ *  2026-09-07 to resolve to the correct Spanish title). localize() points the Buy
+ *  CTA here when the site is in Spanish; a book with no entry falls back to the
+ *  English edition. French per-language editions live in each book's
+ *  `amazonUrlByLang.fr`. */
+const ES_EDITIONS: Record<string, string> = {
+  'colors-mixed-up': 'B0HHXNZ2YK', 'rainbow-symphony': 'B0HHVDPBLD', 'tower-touched-sky': 'B0HHW37V6W',
+  'mayas-shadow': 'B0HHWPG3FS', 'sparrow-saved-forest': 'B0HHTJ3NYP', 'butterfly-effect': 'B0HH8KM4SX',
+  'emperors-true-treasure': 'B0HHV9S5B5', 'crooked-little-apple-tree': 'B0HHT9PY5B',
+  'true-beauty-meadowbrook': 'B0HHW3BG4K', 'leo-and-the-wolf': 'B0H6N6ZBRL', 'russet-the-fox': 'B0H67H9F2W',
+  'cloud-collector': 'B0GX32FKCB', 'little-mapmaker': 'B0HHVQ44J8', 'pawa-rainbow-cloud': 'B0HH8F8XLQ',
+  'miras-thousand-cubes': 'B0HH8KWPD8', 'fig-trees-secret': 'B0HHVVK17N',
+};
+
 /** A book not yet for sale — show a "coming soon" placeholder instead of a Buy CTA. */
 export const isComingSoon = (b: { status?: string }): boolean => b.status === 'coming-soon';
 
@@ -59,7 +92,6 @@ export const books: Book[] = [
     id: 'colors-mixed-up',
     coverImage: colorsMixedUp,
     ageRange: '4-7',
-    languages: ['🇺🇸'],
     amazonUrl: dp('1997027038'),
     featured: true,
     title: {
@@ -87,7 +119,6 @@ export const books: Book[] = [
     id: 'rainbow-symphony',
     coverImage: rainbowSymphony,
     ageRange: '3-6',
-    languages: ['🇺🇸'],
     amazonUrl: dp('1997027003'),
     featured: true,
     title: {
@@ -115,7 +146,6 @@ export const books: Book[] = [
     id: 'tower-touched-sky',
     coverImage: towerTouchedSky,
     ageRange: '5-9',
-    languages: ['🇺🇸'],
     amazonUrl: dp('1996972995'),
     title: {
       en: 'The Tower That Touched the Sky',
@@ -144,7 +174,6 @@ export const books: Book[] = [
     id: 'mayas-shadow',
     coverImage: 'https://m.media-amazon.com/images/I/61hBrMvhhRL.jpg',
     ageRange: '3-7',
-    languages: ['🇺🇸', '🇫🇷'],
     amazonUrl: dp('1996972812'),
     amazonUrlByLang: { fr: dp('1996972820') }, // French edition (Les aventures de l'ombre de Maya)
     featured: true,
@@ -173,7 +202,6 @@ export const books: Book[] = [
     id: 'sparrow-saved-forest',
     coverImage: 'https://m.media-amazon.com/images/I/61IthxrIcFL.jpg',
     ageRange: '4-8',
-    languages: ['🇺🇸'],
     amazonUrl: dp('1996972685'),
     title: {
       en: 'The Sparrow Who Saved the Forest',
@@ -200,7 +228,6 @@ export const books: Book[] = [
     id: 'diegos-brave-leap',
     coverImage: 'https://m.media-amazon.com/images/I/71z9fEOWb-L.jpg',
     ageRange: '4-8',
-    languages: ['🇺🇸', '🇫🇷'],
     amazonUrl: dp('1996972863'),
     amazonUrlByLang: { fr: dp('199697288X') }, // French edition (Le saut courageux de Diego)
     title: {
@@ -228,7 +255,6 @@ export const books: Book[] = [
     id: 'butterfly-effect',
     coverImage: 'https://m.media-amazon.com/images/I/71wLOYuguIL.jpg',
     ageRange: '5-9',
-    languages: ['🇺🇸', '🇫🇷'],
     amazonUrl: dp('1996972774'),
     amazonUrlByLang: { fr: dp('1996972790') }, // French edition (L'effet papillon)
     title: {
@@ -256,7 +282,6 @@ export const books: Book[] = [
     id: 'emperors-true-treasure',
     coverImage: 'https://m.media-amazon.com/images/I/71ztFYD6z6L.jpg',
     ageRange: '5-9',
-    languages: ['🇺🇸'],
     amazonUrl: dp('199697274X'),
     title: {
       en: "The Emperor's True Treasure",
@@ -283,7 +308,6 @@ export const books: Book[] = [
     id: 'crooked-little-apple-tree',
     coverImage: 'https://m.media-amazon.com/images/I/71Qt1STow5L.jpg',
     ageRange: '4-8',
-    languages: ['🇺🇸', '🇫🇷'],
     amazonUrl: dp('1996972715'),
     amazonUrlByLang: { fr: dp('1996972731') }, // French edition (Le petit pommier tordu)
     title: {
@@ -311,7 +335,6 @@ export const books: Book[] = [
     id: 'true-beauty-meadowbrook',
     coverImage: 'https://m.media-amazon.com/images/I/71NtIMdhG2L.jpg',
     ageRange: '4-8',
-    languages: ['🇺🇸'],
     amazonUrl: dp('1996972650'),
     title: {
       en: 'The True Beauty of Meadowbrook',
@@ -338,7 +361,6 @@ export const books: Book[] = [
     id: 'sanding-block',
     coverImage: 'https://m.media-amazon.com/images/I/71Z%2BTeKb4TL.jpg',
     ageRange: '5-9',
-    languages: ['🇺🇸'],
     amazonUrl: dp('1996972898'),
     title: {
       en: 'The Sanding Block',
@@ -367,7 +389,6 @@ export const books: Book[] = [
     id: 'leo-and-the-wolf',
     coverImage: 'https://m.media-amazon.com/images/I/61ml%2BbdnJKL.jpg',
     ageRange: '4-8',
-    languages: ['🇺🇸', '🇫🇷'],
     amazonUrl: dp('1997027054'),
     amazonUrlByLang: { fr: dp('B0HFCPRBVL') }, // published French edition (Leo et le Loup)
     title: {
@@ -395,7 +416,6 @@ export const books: Book[] = [
     id: 'russet-the-fox',
     coverImage: 'https://m.media-amazon.com/images/I/71vg4083EVL.jpg',
     ageRange: '4-8',
-    languages: ['🇺🇸', '🇫🇷'],
     amazonUrl: dp('1997027046'),
     amazonUrlByLang: { fr: dp('B0HFCJ1TPG') }, // French edition (Rousseau le Renard apprend une leçon)
     title: {
@@ -423,7 +443,6 @@ export const books: Book[] = [
     id: 'little-boats-big-wish',
     coverImage: 'https://m.media-amazon.com/images/I/71Zjj22p5sL.jpg',
     ageRange: '3-7',
-    languages: ['🇺🇸'],
     amazonUrl: dp('1997027070'),
     title: {
       en: "A Little Boat's Big Wish",
@@ -450,7 +469,6 @@ export const books: Book[] = [
     id: 'heidis-journey-to-mastery',
     coverImage: 'https://m.media-amazon.com/images/I/91Z3ipmFctL.jpg',
     ageRange: '5-9',
-    languages: ['🇺🇸', '🇫🇷'],
     amazonUrl: dp('B0H35ZJKCR'),
     amazonUrlByLang: { fr: dp('1997027275') }, // French edition (Le Voyage de Heidi vers la Maîtrise)
     title: {
@@ -478,7 +496,6 @@ export const books: Book[] = [
     id: 'cloud-collector',
     coverImage: 'https://m.media-amazon.com/images/I/91LSk016ZfL.jpg',
     ageRange: '4-8',
-    languages: ['🇺🇸'],
     amazonUrl: dp('B0H1DXZ1KH'),
     title: {
       en: 'The Cloud Collector',
@@ -505,7 +522,6 @@ export const books: Book[] = [
     id: 'little-mapmaker',
     coverImage: 'https://m.media-amazon.com/images/I/918-3L7uzaL.jpg',
     ageRange: '4-8',
-    languages: ['🇺🇸'],
     amazonUrl: dp('B0GZJPZS74'),
     title: {
       en: 'The Little Mapmaker',
@@ -532,7 +548,6 @@ export const books: Book[] = [
     id: 'pawa-rainbow-cloud',
     coverImage: 'https://m.media-amazon.com/images/I/61zr49LAzAL.jpg',
     ageRange: '3-7',
-    languages: ['🇺🇸', '🇫🇷'],
     amazonUrl: dp('1996972936'),
     amazonUrlByLang: { fr: dp('1996972952') }, // French edition (Pawa et le Petit Nuage Arc-en-ciel)
     title: {
@@ -560,7 +575,6 @@ export const books: Book[] = [
     id: 'miras-thousand-cubes',
     coverImage: 'https://m.media-amazon.com/images/I/712yhi3sGHL.jpg',
     ageRange: '5-9',
-    languages: ['🇺🇸', '🇫🇷'],
     amazonUrl: dp('1996972839'),
     amazonUrlByLang: { fr: dp('1996972855') }, // French edition (Les mille cubes de Mira)
     title: {
@@ -588,7 +602,6 @@ export const books: Book[] = [
     id: 'fig-trees-secret',
     coverImage: 'https://m.media-amazon.com/images/I/915RPJ4qRpL.jpg',
     ageRange: '4-8',
-    languages: ['🇺🇸'],
     amazonUrl: dp('B0H36V1P89'),
     title: {
       en: "The Fig Tree's Secret",
@@ -616,10 +629,13 @@ export const books: Book[] = [
 function localize(book: Book, lang: Language): LocalizedBook {
   return {
     id: book.id,
-    coverImage: book.coverImage,
+    coverImage: LOCALIZED_COVER_IDS.has(book.id) ? `/covers/${book.id}-${lang}.webp` : book.coverImage,
     ageRange: book.ageRange,
-    languages: book.languages,
-    amazonUrl: book.amazonUrlByLang?.[lang] ?? book.amazonUrl,
+    languages: book.languages ?? ALL_LANGUAGES,
+    amazonUrl:
+      book.amazonUrlByLang?.[lang] ??
+      (lang === 'es' && ES_EDITIONS[book.id] ? dp(ES_EDITIONS[book.id]) : undefined) ??
+      book.amazonUrl,
     featured: book.featured,
     status: book.status,
     title: book.title[lang] ?? book.title.en,
