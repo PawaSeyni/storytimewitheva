@@ -78,6 +78,14 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Age model
+
+| ID | Item | Evidence |
+|----|------|----------|
+| A-04 | **D-01 fixed: `/activities` now uses exact-age containment**, the same model as `/books`. The retired `3-5 / 6-8 / 9+` bands matched by OVERLAP, so filtering for a 3-year-old surfaced 8 activities that do not suit one, including a 5–9 spelling bee. Exact age 3 now returns 5 activities instead of 13. | #153 |
+| A-05 | **`matchesAgeFilter` deleted**, not left dormant. It was the last implementation of the retired model and its only caller was `/activities`; keeping it would have left two contradictory answers to "does this item suit this age?". | #153 |
+| A-06 | **Both pages locked by one test** — the retired band labels in all three languages must not reappear on either `/books` or `/activities`, and the exact-age chips must be present. | #153 |
+
 ### Standalone games
 
 | ID | Item | Evidence |
@@ -159,7 +167,6 @@ nothing reads those fields yet; the moment the UI ships, each becomes user-facin
 
 | ID | Item | Type | Notes |
 |----|------|------|-------|
-| D-01 | **`Activities.tsx` still uses the legacy overlap age filter** with its own `Ages 9+` bucket and `age3to5`/`age6to8`/`age9plus` keys, which `/books` retired in T-04. The two pages now disagree about what an age filter means. | open | Small, mechanical, and the last place the retired age model survives. |
 | D-02 | **`react-router` moderate advisory** — the only offered fix is a breaking v7 major. Deliberately deferred rather than force-upgraded mid-programme. | deferred | Re-evaluate when a v6 patch exists or at a natural upgrade window. |
 | D-03 | **11 lint warnings**, all `react-refresh/only-export-components`, 0 errors. Pre-existing and stable. | deferred | Cosmetic; touching them churns component files for no runtime benefit. |
 | D-05 | **Sprint 3–7 specifications are not in the repo.** Roughly 90 spec items remain unimplemented and are tracked only in the source documents. | open | Consider committing the specs so this punch list can be keyed to real IDs. |
