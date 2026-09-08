@@ -36,10 +36,13 @@ a data-fetching library, a routing rewrite, an i18n library, or any cookie-based
    its own `index.html`; there is **no SPA catch-all** in `netlify.toml`, so an
    un-prerendered route returns a real HTTP 404. The prerender step is required — a build
    that fails it keeps the last good deploy live. Any new route MUST be prerenderable.
-2. **English route vocabulary is fixed.** Routes are `/books`, `/activities`, `/resources`,
-   `/about`, `/contact`, `/profile`, `/search`, `/books/<id>`, `/activities/<slug>`,
-   `/free/<magnet>`. Language is a **path prefix** (`/es/…`, `/fr/…`), never a translated
-   slug. Do not localize route names.
+2. **English route vocabulary is fixed.** Routes are `/`, `/books`, `/books/<id>`,
+   `/collections/<themeId>`, `/activities`, `/activities/<slug>`, `/resources`, `/about`,
+   `/contact`, `/faq`, `/profile`, `/search`, `/privacy`, `/terms`, `/links`, `/free/<magnet>`.
+   Language is a **path prefix** (`/es/…`, `/fr/…`), never a translated slug. Do not localize
+   route names — there is no `/fr/livres`. The route table is defined once in `src/App.tsx`
+   (`routeDefs`) and mounted per prefix, so a route added there exists in all three languages
+   or in none.
 3. **Single source of truth for content** is typed data in `src/data/` (see §5), read via
    `localize()`-style hooks. Pages never store per-language content separately.
 4. **Cookie-free** core functionality (see ADR-001). No cookies may become a functional
@@ -104,7 +107,9 @@ a data-fetching library, a routing rewrite, an i18n library, or any cookie-based
 - **The build-safe catalog projection** (`scripts/lib/catalog.mjs`) is the ONE way build
   scripts and CI read content. It compiles a browser-free module with esbuild and evaluates it
   in-process, exposing `loadCatalog`, `bookRoutes`, `bookIds`, `loadTaxonomy`,
-  `loadContentIndex`, `loadResources`, `loadRelatedBooks`. **Every regex source-parse was
+  `loadContentIndex`, `loadResources`, `loadRelatedBooks`. **`esbuild` is a declared
+  devDependency for this reason** — it was previously reached only as a transitive dependency
+  of Vite, which would have broken the build on a Vite upgrade or a stricter installer. **Every regex source-parse was
   removed from the build path.** A load failure is a hard build error: silently falling back to
   source parsing is exactly the drift this replaces.
 - **Derivation, not duplication:** `scripts/gen-sitemap.mjs` derives book AND collection routes
@@ -198,8 +203,16 @@ npm run gen:downloads   # public/_redirects from hashed PDFs
 - [ ] Out-of-scope technologies explicitly named and avoided?
 
 ## Related documents
+
+**In this repository:**
 - `docs/adr/ADR-001-cookie-free-architecture.md` — the cookie-free decision record.
-- `docs/architecture/DATA_ARCHITECTURE.md` — entity/relationship definitions (Sprints 6–8).
-- `docs/architecture/CONTENT_VALIDATION_SPEC.md` — CI content validation.
-- `docs/testing/COOKIE_FREE_TEST_SPEC.md` — permanent cookie-free test suite.
-- `docs/sprints/SPRINT_{6,7,8}_TECHNICAL_IMPLEMENTATION.md` + matching `_TEST_PLAN.md`.
+- `docs/architecture/TAXONOMY_PROPOSAL.md` — the approved taxonomy v1 decision record.
+- `docs/PUNCH_LIST.md` — what has shipped in the content-architecture programme, what is
+  open, and what was explicitly decided against.
+- `docs/backlog.md` — the operational backlog, including the Sprint 6 gate items.
+
+**Referenced by the sprint specifications but NOT yet written** (do not cite these as if they
+exist): `DATA_ARCHITECTURE.md`, `CONTENT_VALIDATION_SPEC.md`, `COOKIE_FREE_TEST_SPEC.md`, and
+`docs/sprints/SPRINT_{6,7,8}_TECHNICAL_IMPLEMENTATION.md` with their matching `_TEST_PLAN.md`.
+The Sprint 1 and Sprint 3–7 specifications were supplied as attachments and are not stored
+here, which is tracked as `PUNCH_LIST.md` D-05.
