@@ -5,16 +5,14 @@ import Seo from '../components/Seo';
 import ReadAloudButton from '../components/ReadAloudButton';
 import { useLanguage, useTranslation } from '../lib/language';
 import { amazonDp } from '../lib/amazon';
+import { resources as RESOURCES, type Resource } from '../data/resources';
 
-// Free classroom/home printables (PDFs in /public). `localized` files ship an
-// -es / -fr variant; the rest are single-file. Order matches each language's
-// `teachers.downloads` array below.
-const TEACHER_DOWNLOADS = [
-  { emoji: '📘', file: 'parents-guide', localized: true },
-  { emoji: '🃏', file: 'bilingual-flashcards', localized: false },
-  { emoji: '✏️', file: 'follow-up-activities', localized: false },
-  { emoji: '🌙', file: 'bedtime-routine', localized: true },
-];
+// Resource identity, ordering, card metadata and localized title/description all
+// live in src/data/resources.ts — the single source of truth that gives every
+// resource a stable, globally unique ID for Book.relatedResourceIds to point at.
+// This page owns presentation and the long-form article bodies only.
+const ARTICLES: Resource[] = RESOURCES.filter((r) => r.kind === 'article');
+const DOWNLOADS: Resource[] = RESOURCES.filter((r) => r.kind === 'download');
 
 // ---------------------------------------------------------------------------
 // Affiliate URLs -- single source of truth. Keep in sync with
@@ -98,12 +96,6 @@ const TRANSLATIONS = {
       heading: 'For Teachers & Educators',
       intro: 'Eva’s printables are free to use at home or in the classroom. Download, print, and share – no sign-up needed.',
       downloadCta: 'Download PDF',
-      downloads: [
-        { title: 'Parent & Teacher Guide', desc: 'Discussion prompts and read-aloud tips for getting the most from each story.' },
-        { title: 'Bilingual Flashcards', desc: 'Printable English–Spanish vocabulary cards for classroom or home practice.' },
-        { title: 'Follow-Up Activities', desc: 'Worksheets and extension activities to do after reading a story.' },
-        { title: 'Reading Routine Chart', desc: 'A printable chart to help build a daily reading habit.' },
-      ],
       tipsHeading: 'Using Eva’s books in the classroom',
       tips: [
         'Read aloud as a group – tap 🔊 Listen to model pronunciation in English, Spanish, or French.',
@@ -112,14 +104,6 @@ const TRANSLATIONS = {
         'Use the bilingual flashcards for vocabulary warm-ups and language practice.',
       ],
     },
-    resources: [
-      { title: '10 Ways to Make Reading Time Magical', desc: 'Transform ordinary reading sessions into memorable adventures your child will love.', minutes: 5, anchor: 'making-reading-magical' },
-      { title: 'Age-Appropriate Reading Milestones', desc: "What to expect at each stage and how to support your child's literacy journey.", minutes: 8, anchor: 'age-appropriate-reading' },
-      { title: '5 Creative Follow-Up Activities After Reading', desc: 'Extend the learning and fun beyond the last page with these engaging activities.', minutes: 6, anchor: 'follow-up-activities' },
-      { title: 'Building a Love for Reading in Reluctant Readers', desc: 'Practical strategies to help children who resist reading discover the joy of books.', minutes: 7, anchor: 'reluctant-readers' },
-      { title: 'Creating the Perfect Reading Environment', desc: 'Design a space that makes your child excited to pick up a book.', minutes: 4, anchor: 'perfect-reading-environment' },
-      { title: 'Why Bilingual Reading Matters', desc: 'The science behind reading in two languages and why code-switching is a gift, not a problem.', minutes: 6, anchor: 'bilingual-reading' },
-    ],
     article1: {
       eyebrow: 'Reading Tips \xb7 5 min read',
       title: '10 Ways to Make Reading Time Magical',
@@ -317,12 +301,6 @@ const TRANSLATIONS = {
       heading: 'Para docentes y educadores',
       intro: 'Los materiales de Eva son gratuitos para usar en casa o en el aula. Descarga, imprime y comparte – sin registro.',
       downloadCta: 'Descargar PDF',
-      downloads: [
-        { title: 'Gu\xeda para familias y docentes', desc: 'Preguntas para conversar y consejos de lectura en voz alta para aprovechar cada historia.' },
-        { title: 'Tarjetas biling\xfces', desc: 'Tarjetas de vocabulario en ingl\xe9s y espa\xf1ol para practicar en clase o en casa.' },
-        { title: 'Actividades complementarias', desc: 'Fichas y actividades de ampliaci\xf3n para hacer despu\xe9s de leer.' },
-        { title: 'Tabla de rutina de lectura', desc: 'Una tabla imprimible para crear el h\xe1bito diario de leer.' },
-      ],
       tipsHeading: 'Usar los libros de Eva en el aula',
       tips: [
         'Lean en voz alta en grupo – pulsa 🔊 Escuchar para modelar la pronunciaci\xf3n en ingl\xe9s, espa\xf1ol o franc\xe9s.',
@@ -331,14 +309,6 @@ const TRANSLATIONS = {
         'Usa las tarjetas biling\xfces para calentamientos de vocabulario y pr\xe1ctica de idiomas.',
       ],
     },
-    resources: [
-      { title: '10 formas de hacer m\xe1gico el tiempo de lectura', desc: 'Transforma las sesiones de lectura cotidianas en aventuras memorables que tu peque adorar\xe1.', minutes: 5, anchor: 'making-reading-magical' },
-      { title: 'Hitos de lectura por edades', desc: 'Qu\xe9 esperar en cada etapa y c\xf3mo apoyar el camino lector de tu peque.', minutes: 8, anchor: 'age-appropriate-reading' },
-      { title: '5 actividades creativas para despu\xe9s de leer', desc: 'Alarga la diversi\xf3n y el aprendizaje m\xe1s all\xe1 de la \xfaltima p\xe1gina con estas actividades.', minutes: 6, anchor: 'follow-up-activities' },
-      { title: 'Cultivar el amor por la lectura en lectores reticentes', desc: 'Estrategias pr\xe1cticas para que los ni\xf1os que se resisten descubran el placer de los libros.', minutes: 7, anchor: 'reluctant-readers' },
-      { title: 'Crear el ambiente perfecto para leer', desc: 'Dise\xf1a un espacio que invite a tu peque a coger un libro con ganas.', minutes: 4, anchor: 'perfect-reading-environment' },
-      { title: 'Por qu\xe9 importa leer en dos idiomas', desc: 'La ciencia detr\xe1s de la lectura biling\xfce y por qu\xe9 mezclar idiomas es un don, no un problema.', minutes: 6, anchor: 'bilingual-reading' },
-    ],
     article1: {
       eyebrow: 'Consejos de lectura \xb7 5 min de lectura',
       title: '10 formas de hacer m\xe1gico el tiempo de lectura',
@@ -536,12 +506,6 @@ const TRANSLATIONS = {
       heading: 'Pour les enseignants et \xe9ducateurs',
       intro: 'Les supports d’Eva sont gratuits \xe0 utiliser \xe0 la maison ou en classe. T\xe9l\xe9chargez, imprimez et partagez – sans inscription.',
       downloadCta: 'T\xe9l\xe9charger le PDF',
-      downloads: [
-        { title: 'Guide parents & enseignants', desc: 'Questions de discussion et conseils de lecture \xe0 voix haute pour tirer le meilleur de chaque histoire.' },
-        { title: 'Cartes bilingues', desc: 'Cartes de vocabulaire anglais–espagnol \xe0 imprimer pour la classe ou la maison.' },
-        { title: 'Activit\xe9s compl\xe9mentaires', desc: 'Fiches et activit\xe9s de prolongement \xe0 faire apr\xe8s la lecture.' },
-        { title: 'Tableau de routine de lecture', desc: 'Un tableau \xe0 imprimer pour instaurer une habitude de lecture quotidienne.' },
-      ],
       tipsHeading: 'Utiliser les livres d’Eva en classe',
       tips: [
         'Lisez \xe0 voix haute en groupe – appuyez sur 🔊 \xc9couter pour mod\xe9liser la prononciation en anglais, espagnol ou fran\xe7ais.',
@@ -550,14 +514,6 @@ const TRANSLATIONS = {
         'Utilisez les cartes bilingues pour les \xe9chauffements de vocabulaire et la pratique des langues.',
       ],
     },
-    resources: [
-      { title: '10 fa\xe7ons de rendre le temps de lecture magique', desc: 'Transformez les s\xe9ances de lecture ordinaires en aventures inoubliables que votre enfant adorera.', minutes: 5, anchor: 'making-reading-magical' },
-      { title: 'Les \xe9tapes de lecture selon l’\xe2ge', desc: '\xc0 quoi s’attendre \xe0 chaque \xe9tape et comment soutenir le parcours de lecture de votre enfant.', minutes: 8, anchor: 'age-appropriate-reading' },
-      { title: '5 activit\xe9s cr\xe9atives \xe0 faire apr\xe8s la lecture', desc: 'Prolongez l’apprentissage et le plaisir au-del\xe0 de la derni\xe8re page avec ces activit\xe9s.', minutes: 6, anchor: 'follow-up-activities' },
-      { title: 'Faire aimer la lecture aux lecteurs r\xe9ticents', desc: 'Strat\xe9gies concr\xe8tes pour aider les enfants qui r\xe9sistent \xe0 d\xe9couvrir le plaisir des livres.', minutes: 7, anchor: 'reluctant-readers' },
-      { title: 'Cr\xe9er l’environnement de lecture id\xe9al', desc: 'Am\xe9nagez un espace qui donne envie \xe0 votre enfant de prendre un livre.', minutes: 4, anchor: 'perfect-reading-environment' },
-      { title: 'Pourquoi la lecture bilingue est importante', desc: 'La science derri\xe8re la lecture en deux langues et pourquoi m\xe9langer les langues est un don.', minutes: 6, anchor: 'bilingual-reading' },
-    ],
     article1: {
       eyebrow: 'Conseils de lecture \xb7 5 min de lecture',
       title: '10 fa\xe7ons de rendre le temps de lecture magique',
@@ -731,15 +687,6 @@ const TRANSLATIONS = {
   },
 };
 
-const RESOURCE_META = [
-  { emoji: '✨', categoryKey: 'readingTips', categoryColor: 'bg-blue-100 text-blue-700', popular: true },
-  { emoji: '📊', categoryKey: 'childDev', categoryColor: 'bg-green-100 text-green-700', popular: true },
-  { emoji: '🎨', categoryKey: 'activityIdeas', categoryColor: 'bg-orange-100 text-orange-700', popular: false },
-  { emoji: '💪', categoryKey: 'engagement', categoryColor: 'bg-pink-100 text-pink-700', popular: false },
-  { emoji: '🏠', categoryKey: 'readingTips', categoryColor: 'bg-blue-100 text-blue-700', popular: false },
-  { emoji: '🧠', categoryKey: 'childDev', categoryColor: 'bg-green-100 text-green-700', popular: false },
-] as const;
-
 type CategoryKey = 'all' | 'readingTips' | 'activityIdeas' | 'childDev' | 'engagement';
 
 // ---------------------------------------------------------------------------
@@ -832,6 +779,7 @@ export default function Resources() {
   const [activeCategory, setActiveCategory] = useState<CategoryKey>('all');
   const [search, setSearch] = useState('');
   const t = useTranslation(TRANSLATIONS);
+  const { language } = useLanguage();
 
   const categoryButtons: { key: CategoryKey; label: string }[] = [
     { key: 'all', label: t.categories.all },
@@ -841,10 +789,16 @@ export default function Resources() {
     { key: 'engagement', label: t.categories.engagement },
   ];
 
-  // Combine static meta with localized content.
-  const merged = t.resources.map((r, i) => ({
-    ...RESOURCE_META[i],
-    ...r,
+  // Project the shared resource model into this page's language.
+  const merged = ARTICLES.map((r) => ({
+    emoji: r.emoji,
+    categoryKey: r.categoryKey as Exclude<CategoryKey, 'all'>,
+    categoryColor: r.categoryColor,
+    popular: r.popular,
+    minutes: r.minutes,
+    anchor: r.slug,
+    title: r.title[language],
+    desc: r.description[language],
   }));
 
   const filtered = merged.filter(r => {
@@ -975,23 +929,22 @@ export default function Resources() {
             <p className="text-gray-500 max-w-2xl mx-auto">{t.teachers.intro}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
-            {t.teachers.downloads.map((d, i) => {
-              const file = TEACHER_DOWNLOADS[i];
+            {DOWNLOADS.map((d, i) => {
               // Route to the dedicated /free/<magnet> landing page (email capture)
               // instead of a raw PDF path. The old /<file>.pdf links 404 (PDFs are
               // gated behind hashed filenames since the P0 funnel fix) AND captured
               // no email. The landing page delivers the correct-language PDF after
               // signup; LocalizedLink adds the /es,/fr prefix to keep the language.
-              const to = `/free/${file.file}`;
+              const to = `/free/${d.slug}`;
               return (
                 <Link
                   key={i}
                   to={to}
                   className="bg-white rounded-2xl shadow-md hover:shadow-xl border border-gray-50 p-5 flex flex-col transition-all"
                 >
-                  <span className="text-3xl mb-2" aria-hidden>{file.emoji}</span>
-                  <h3 className="font-bold text-gray-800 mb-1 leading-snug">{d.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed flex-1">{d.desc}</p>
+                  <span className="text-3xl mb-2" aria-hidden>{d.emoji}</span>
+                  <h3 className="font-bold text-gray-800 mb-1 leading-snug">{d.title[language]}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed flex-1">{d.description[language]}</p>
                   <span className="mt-3 text-sm font-semibold text-purple-600">⬇ {t.teachers.downloadCta}</span>
                 </Link>
               );

@@ -14,6 +14,20 @@ import type { ThemeId } from './taxonomy';
 
 export type LocalizedString = Record<Language, string>;
 
+/** One read-aloud discussion prompt, in all three site languages.
+ *
+ *  Modeled as data (not prose in a page) so prompts can be reused by book pages,
+ *  the Parent & Teacher Guide, and printables without being retyped, and so
+ *  EN/FR/ES parity is enforced by CI rather than by hand.
+ *
+ *  `stage` marks WHEN to ask, which is what makes a prompt usable in a lesson:
+ *  before reading (activate prior knowledge), during (predict/notice), after
+ *  (reflect/connect). */
+export interface DiscussionQuestion {
+  stage: 'before' | 'during' | 'after';
+  prompt: LocalizedString;
+}
+
 /** One language's Amazon edition and cover art. */
 export interface Edition {
   /** ASIN of this language's own Amazon product, if it has one. Absent → the Buy
@@ -47,9 +61,15 @@ export interface Book {
    *  available from contentIndex.booksByThemeId. */
   relatedBookIds?: string[];
   relatedActivityIds?: string[];
-  /** Not yet usable: resources are not modeled as data with stable IDs. The field
-   *  exists so the contract is complete and validated once a resource model lands. */
+  /** References into the resource registry (src/data/resources.ts). IDs there are
+   *  kind-prefixed and globally unique because the article anchor and the download
+   *  slug `follow-up-activities` collide; a bare slug would resolve to the wrong one.
+   *  Validated in tests/funnel/relationships.test.mjs. */
   relatedResourceIds?: string[];
+  /** Read-aloud discussion prompts. The MODEL and its validation ship now; the
+   *  prompts themselves are editorial and are populated per book after sign-off,
+   *  so an absent/empty array is a valid state, not a defect. */
+  discussionQuestions?: DiscussionQuestion[];
   /** Per-language Amazon edition + cover — the single source of truth for covers
    *  and Buy links. `en` is always present; `es`/`fr` appear only where that
    *  language has its own cover and/or its own Amazon product. localize() resolves
