@@ -32,6 +32,24 @@ export interface Book {
    *  `theme` phrase below stays editorial display copy and is NEVER parsed to
    *  infer an ID. 1-3 per book; a theme is assigned only when central to the story. */
   themeIds: ThemeId[];
+  /** Canonical FORWARD relationships (taxonomy v1 §6). Canonical IDs, never route
+   *  slugs — identity is a content concern, routing is not. Editorial order within
+   *  each array is meaningful and preserved.
+   *
+   *  Reverse relationships (which books link TO this one, which books use an
+   *  activity) are DERIVED at build time in ./contentIndex.ts and are never
+   *  persisted here — persisting them would guarantee drift.
+   *
+   *  `relatedBookIds` is EDITORIAL curation and is deliberately left unpopulated
+   *  rather than auto-derived from shared themes: Sprint 6 ranks "editorial
+   *  relation" and "matched theme" as separate tiers, so deriving one from the
+   *  other would collapse them and fake curation. Theme-based relatedness is
+   *  available from contentIndex.booksByThemeId. */
+  relatedBookIds?: string[];
+  relatedActivityIds?: string[];
+  /** Not yet usable: resources are not modeled as data with stable IDs. The field
+   *  exists so the contract is complete and validated once a resource model lands. */
+  relatedResourceIds?: string[];
   /** Per-language Amazon edition + cover — the single source of truth for covers
    *  and Buy links. `en` is always present; `es`/`fr` appear only where that
    *  language has its own cover and/or its own Amazon product. localize() resolves

@@ -15,6 +15,7 @@
 import { useLanguage, type Language } from '../lib/language';
 import { amazonDp, AMAZON_AUTHOR_URL } from '../lib/amazon';
 import { books, ALL_LANGUAGES, type Book } from './books.data';
+import type { ThemeId } from './taxonomy';
 
 export { books, ALL_LANGUAGES };
 export type { Book, Edition, LocalizedString } from './books.data';
@@ -23,6 +24,9 @@ export interface LocalizedBook {
   id: string;
   coverImage: string;
   ageRange: string;
+  /** Stable theme IDs — filtering/collections resolve by ID, never by parsing the
+   *  localized `theme` phrase below (taxonomy v1). */
+  themeIds: ThemeId[];
   languages: string[];
   amazonUrl: string;
   featured?: boolean;
@@ -46,6 +50,7 @@ function localize(book: Book, lang: Language): LocalizedBook {
     id: book.id,
     coverImage: ed.cover ?? en.cover ?? '',
     ageRange: book.ageRange,
+    themeIds: book.themeIds,
     languages: ALL_LANGUAGES,
     amazonUrl: asin ? dp(asin) : AMAZON_AUTHOR_URL,
     featured: book.featured,

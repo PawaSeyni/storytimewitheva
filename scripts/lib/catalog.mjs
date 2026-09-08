@@ -15,6 +15,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const ENTRY = path.join(ROOT, 'src', 'data', 'books.data.ts');
 const TAXONOMY = path.join(ROOT, 'src', 'data', 'taxonomy.ts');
+const CONTENT_INDEX = path.join(ROOT, 'src', 'data', 'contentIndex.ts');
 
 /** Compile a browser-free TS module with esbuild and evaluate it in-process. */
 async function loadModule(entry) {
@@ -69,4 +70,11 @@ export async function bookRoutes() {
 export async function bookIds() {
   const { books } = await loadCatalog();
   return books.map((b) => b.id);
+}
+
+let indexCache = null;
+/** Derived reverse indexes + collection counts (never persisted in source). */
+export async function loadContentIndex() {
+  if (!indexCache) indexCache = await loadModule(CONTENT_INDEX);
+  return indexCache;
 }
