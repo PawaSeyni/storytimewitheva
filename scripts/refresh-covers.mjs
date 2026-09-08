@@ -4,7 +4,7 @@
 // id pins a SPECIFIC image version. When a cover is re-uploaded on KDP, Amazon
 // mints a new id and the old one keeps serving the OLD art forever, so the site
 // silently goes stale. This re-reads each book's current main image by ASIN and
-// rewrites src/data/books.ts.
+// rewrites src/data/books.data.ts.
 //
 // Amazon serves a bot wall to plain HTTP clients (curl gets ~4KB of nothing), so
 // we drive a real headless browser. Run:
@@ -25,7 +25,7 @@ import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const BOOKS = path.resolve(__dirname, '..', 'src', 'data', 'books.ts');
+const BOOKS = path.resolve(__dirname, '..', 'src', 'data', 'books.data.ts');
 const DRY = process.argv.includes('--dry');
 const UA =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 ' +
@@ -148,7 +148,7 @@ if (failures.length) {
 
 if (changed && !DRY) {
   await writeFile(BOOKS, lines.join('\n'));
-  console.log(`\nWrote ${path.relative(process.cwd(), BOOKS)}. Review with: git diff src/data/books.ts`);
+  console.log(`\nWrote ${path.relative(process.cwd(), BOOKS)}. Review with: git diff src/data/books.data.ts`);
 } else if (changed) {
   console.log('\nDry run — no files written.');
 }
