@@ -83,8 +83,9 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | ID | Item | Evidence |
 |----|------|----------|
 | P-01 | **E-01 closed: 60 prompts approved as-is and written in.** Three per book (`before` / `during` / `after`), 180 localized strings, all 20 books. | #154 |
+| P-04 | **Locked by two tests** — every prompt string must appear in that language's prerendered HTML, no page may leak another language's prompt, and the stage labels must be localized rather than English everywhere. | #155 |
 | P-02 | **Validated before approval, not after.** The draft was applied to a scratch copy, typechecked and run through the real relationship suite, then reverted, so sign-off held no surprises. Checked mechanically for empty strings, em dashes in the English, duplicates across the whole set, missing end punctuation, over-long prompts and id drift. | #154 |
-| P-03 | **Not rendered yet.** The prompts are data; no page displays them. This is the natural next step and the reason B-03 chose a shared resource strip: once a book page carries its own prompts it stops needing generic resources to feel specific. | open |
+| P-03 | **"Talk about it together" section** on all 20 book pages × 3 languages, prerendered. Addressed to the grown-up reading aloud, with localized stage labels (Before reading / While you read / After reading). Placed first, above the sections that point away from the book. | #155 |
 
 ### Age model
 

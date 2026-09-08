@@ -12,6 +12,7 @@ import BookCard from '../components/BookCard';
 import { relatedBooksFor } from '../data/relatedBooks';
 import ResourceStrip from '../components/ResourceStrip';
 import RelatedActivities from '../components/RelatedActivities';
+import DiscussionPrompts from '../components/DiscussionPrompts';
 import { BOOK_RATINGS } from '../data/ratings';
 import { LANGUAGE_LABELS, SUPPORTED_LANGUAGES, localizePath, useLanguage, useTranslation } from '../lib/language';
 import type { Language } from '../lib/language';
@@ -265,6 +266,8 @@ export default function BookDetail() {
           </div>
         </div>
       </div>
+
+      <DiscussionPrompts questions={raw?.discussionQuestions} />
 
       {related.length > 0 && (
         <section className="max-w-6xl mx-auto px-4 pb-14">
