@@ -1,5 +1,24 @@
-// localStorage-backed reading and activity progress.
-// No backend, no auth — progress lives on the current device only.
+import {
+  SHARED_KEYS,
+  getShared,
+  setShared,
+  getLegacy,
+  removeLegacy,
+  available,
+  type LegacyKey,
+} from './storage';
+
+// Reading and activity progress. No backend, no auth: progress lives on the current
+// device only.
+//
+// Storage goes through src/lib/storage.ts (S6-012), which owns availability probing,
+// JSON parsing, validation and failure handling. This module owns the SHAPE and the
+// domain rules only.
+//
+// The key stays the raw, unversioned `readingProgress`, in the SHARED tier, because all
+// 12 standalone games in public/games write it directly when a child taps "Mark
+// Completed". Namespacing it would not fail loudly: the games would keep writing the old
+// key, the SPA would read the new one, and completed activities would quietly disappear.
 
 export type BookStatus = 'read' | 'want_to_read' | null;
 
@@ -9,7 +28,20 @@ export interface Progress {
   activitiesCompleted: string[]; // activity slugs (e.g. "story-builder")
 }
 
-const STORAGE_KEY = 'readingProgress';
+const STORAGE_KEY = SHARED_KEYS.progress;
+
+/** Generic object guard for legacy payloads owned by the games and demos. */
+function isObject(v: unknown): v is Record<string, unknown> {
+  return Boolean(v) && typeof v === 'object' && !Array.isArray(v);
+}
+
+/** Shape guard for the legacy flat payload the games also write. */
+function isProgressLike(v: unknown): v is Partial<Progress> {
+  return Boolean(v) && typeof v === 'object' && !Array.isArray(v);
+}
+
+/** True when progress will actually survive a reload. Lets the UI be honest about it. */
+export const progressPersists = available;
 
 const empty = (): Progress => ({
   booksRead: [],
@@ -18,33 +50,25 @@ const empty = (): Progress => ({
 });
 
 export function loadProgress(): Progress {
-  if (typeof window === 'undefined') return empty();
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return empty();
-    const parsed = JSON.parse(raw) as Partial<Progress>;
-    return {
-      booksRead: Array.isArray(parsed.booksRead) ? parsed.booksRead : [],
-      booksWantToRead: Array.isArray(parsed.booksWantToRead) ? parsed.booksWantToRead : [],
-      activitiesCompleted: Array.isArray(parsed.activitiesCompleted) ? parsed.activitiesCompleted : [],
-    };
-  } catch {
-    return empty();
-  }
+  const parsed = getShared(STORAGE_KEY, isProgressLike);
+  if (!parsed) return empty();
+  // Each field is validated independently: a game writing one array must not invalidate
+  // the others, and a partial payload is normal rather than corrupt.
+  return {
+    booksRead: Array.isArray(parsed.booksRead) ? parsed.booksRead : [],
+    booksWantToRead: Array.isArray(parsed.booksWantToRead) ? parsed.booksWantToRead : [],
+    activitiesCompleted: Array.isArray(parsed.activitiesCompleted) ? parsed.activitiesCompleted : [],
+  };
 }
 
 export function saveProgress(next: Progress): void {
-  if (typeof window === 'undefined') return;
-  // Persisting can throw (Safari Private Mode rejects any setItem; quota). Don't
-  // let that escape the click handlers that call this (book/activity status
-  // toggles, Profile clear). Still fire the event so in-memory listeners refresh.
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-  } catch {
-    /* storage unavailable — progress just won't persist this session */
+  // Best effort by contract: the adapter never throws, and keeps an in-memory copy when
+  // the disk write fails, so the current session stays consistent even in Private Mode.
+  setShared(STORAGE_KEY, next);
+  // Fire regardless of whether it persisted, so listeners refresh either way.
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('progresschange'));
   }
-  // Custom event so any component listening can refresh without polling.
-  window.dispatchEvent(new CustomEvent('progresschange'));
 }
 
 export function getBookStatus(progress: Progress, bookId: string): BookStatus {
@@ -88,14 +112,8 @@ export function clearProgress(): Progress {
   // Several activities persist under their own keys (see below, plus the
   // Coloring gallery and Bookmark designer). "Clear all progress" should wipe
   // every user-created store, not just the readingProgress one.
-  if (typeof window !== 'undefined') {
-    try {
-      for (const key of EXTRA_PROGRESS_KEYS) {
-        localStorage.removeItem(key);
-      }
-    } catch {
-      /* storage unavailable */
-    }
+  for (const key of EXTRA_PROGRESS_KEYS) {
+    removeLegacy(key);
   }
   return next;
 }
@@ -109,7 +127,7 @@ export function clearProgress(): Progress {
 // the game writes; keep them in sync.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const READING_TRACKER_KEY = 'eva_reading_tracker_v1';
+const READING_TRACKER_KEY: LegacyKey = 'eva_reading_tracker_v1';
 
 export interface ReadingTrackerSession {
   date: string; // ISO timestamp
@@ -128,32 +146,26 @@ export interface ReadingTracker {
 }
 
 export function loadReadingTracker(): ReadingTracker | null {
-  if (typeof window === 'undefined') return null;
-  try {
-    const raw = localStorage.getItem(READING_TRACKER_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as Partial<ReadingTracker>;
-    const log = Array.isArray(parsed.log)
-      ? parsed.log
-          .filter((e): e is ReadingTrackerSession => Boolean(e) && typeof e === 'object')
-          .map((e) => ({
-            date: typeof e.date === 'string' ? e.date : '',
-            book: typeof e.book === 'string' ? e.book : '',
-            mins: typeof e.mins === 'number' ? e.mins : 0,
-            stars: typeof e.stars === 'number' ? e.stars : 0,
-            note: typeof e.note === 'string' ? e.note : '',
-          }))
-      : [];
-    return {
-      childName: typeof parsed.childName === 'string' ? parsed.childName : '',
-      totalBooks: typeof parsed.totalBooks === 'number' ? parsed.totalBooks : log.length,
-      totalMins: typeof parsed.totalMins === 'number' ? parsed.totalMins : 0,
-      streak: typeof parsed.streak === 'number' ? parsed.streak : 0,
-      log,
-    };
-  } catch {
-    return null;
-  }
+  const parsed = getLegacy(READING_TRACKER_KEY, isObject) as Partial<ReadingTracker> | null;
+  if (!parsed) return null;
+  const log = Array.isArray(parsed.log)
+    ? parsed.log
+        .filter((e): e is ReadingTrackerSession => Boolean(e) && typeof e === 'object')
+        .map((e) => ({
+          date: typeof e.date === 'string' ? e.date : '',
+          book: typeof e.book === 'string' ? e.book : '',
+          mins: typeof e.mins === 'number' ? e.mins : 0,
+          stars: typeof e.stars === 'number' ? e.stars : 0,
+          note: typeof e.note === 'string' ? e.note : '',
+        }))
+    : [];
+  return {
+    childName: typeof parsed.childName === 'string' ? parsed.childName : '',
+    totalBooks: typeof parsed.totalBooks === 'number' ? parsed.totalBooks : log.length,
+    totalMins: typeof parsed.totalMins === 'number' ? parsed.totalMins : 0,
+    streak: typeof parsed.streak === 'number' ? parsed.streak : 0,
+    log,
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -165,7 +177,7 @@ export function loadReadingTracker(): ReadingTracker | null {
 // component's Entry type.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const READING_JOURNAL_KEY = 'adventureJournal';
+const READING_JOURNAL_KEY: LegacyKey = 'adventureJournal';
 
 export interface JournalEntry {
   id: number;
@@ -179,27 +191,20 @@ export interface JournalEntry {
 }
 
 export function loadReadingJournal(): JournalEntry[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    const raw = localStorage.getItem(READING_JOURNAL_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-    return parsed
-      .filter((e): e is Record<string, unknown> => Boolean(e) && typeof e === 'object')
-      .map((e) => ({
-        id: typeof e.id === 'number' ? e.id : 0,
-        bookTitle: typeof e.bookTitle === 'string' ? e.bookTitle : '',
-        date: typeof e.date === 'string' ? e.date : '',
-        rating: typeof e.rating === 'number' ? e.rating : 0,
-        favoriteCharacter: typeof e.favoriteCharacter === 'string' ? e.favoriteCharacter : '',
-        favoriteScene: typeof e.favoriteScene === 'string' ? e.favoriteScene : '',
-        thoughts: typeof e.thoughts === 'string' ? e.thoughts : '',
-        emoji: typeof e.emoji === 'string' ? e.emoji : '📖',
-      }));
-  } catch {
-    return [];
-  }
+  const parsed = getLegacy(READING_JOURNAL_KEY, Array.isArray);
+  if (!parsed) return [];
+  return (parsed as unknown[])
+    .filter((e): e is Record<string, unknown> => Boolean(e) && typeof e === 'object')
+    .map((e) => ({
+      id: typeof e.id === 'number' ? e.id : 0,
+      bookTitle: typeof e.bookTitle === 'string' ? e.bookTitle : '',
+      date: typeof e.date === 'string' ? e.date : '',
+      rating: typeof e.rating === 'number' ? e.rating : 0,
+      favoriteCharacter: typeof e.favoriteCharacter === 'string' ? e.favoriteCharacter : '',
+      favoriteScene: typeof e.favoriteScene === 'string' ? e.favoriteScene : '',
+      thoughts: typeof e.thoughts === 'string' ? e.thoughts : '',
+      emoji: typeof e.emoji === 'string' ? e.emoji : '📖',
+    }));
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -212,12 +217,12 @@ export function loadReadingJournal(): JournalEntry[] {
 //   - 'bookmarkDesign'   — saved bookmark design (src/demos/BookmarkCraftsDemo.tsx)
 // ─────────────────────────────────────────────────────────────────────────────
 
-const COLORING_GALLERY_KEY = 'coloringGallery';
-const BOOKMARK_DESIGN_KEY = 'bookmarkDesign';
+const COLORING_GALLERY_KEY: LegacyKey = 'coloringGallery';
+const BOOKMARK_DESIGN_KEY: LegacyKey = 'bookmarkDesign';
 
 // Every namespaced store that "Clear all progress" should wipe (the main
 // readingProgress store is cleared separately via saveProgress(empty())).
-const EXTRA_PROGRESS_KEYS = [
+const EXTRA_PROGRESS_KEYS: LegacyKey[] = [
   READING_TRACKER_KEY,
   READING_JOURNAL_KEY,
   COLORING_GALLERY_KEY,

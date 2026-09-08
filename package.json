@@ -13,7 +13,7 @@
     "gen:inventory": "node scripts/gen-catalog-inventory.mjs",
     "gen:version": "node scripts/gen-version.mjs",
     "verify:deploy": "node scripts/verify-deploy.mjs",
-    "test": "node --test tests/funnel/*.test.mjs",
+    "test": "node --test tests/funnel/*.test.mjs tests/storage/*.test.mjs",
     "test:seo": "node --test tests/seo/*.test.mjs",
     "test:e2e": "playwright test",
     "test:smoke": "PW_NO_SERVER=1 playwright test --project=smoke --grep @smoke --workers=2",
