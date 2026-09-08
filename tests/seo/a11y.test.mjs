@@ -173,3 +173,42 @@ test('age filters — /books and /activities use the same exact-age model (D-01)
     }
   }
 });
+
+test('discussion prompts — every book page shows all three, in its own language (E-01)', () => {
+  // The prompts were data-only until this section shipped. Assert the real HTML so they
+  // cannot silently stop rendering, and so a missing FR/ES string is caught as a blank
+  // page region rather than as a passing unit test.
+  const decode = (s) => s.replace(/&#39;/g, "'").replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+  for (const b of books) {
+    const qs = b.discussionQuestions ?? [];
+    if (qs.length === 0) continue;
+    for (const [loc, prefix] of Object.entries(LOCALES)) {
+      const h = read(`${prefix}/books/${b.id}`);
+      assert.ok(h, `${prefix}/books/${b.id}: not prerendered`);
+      const text = decode(h);
+      for (const q of qs) {
+        assert.ok(
+          text.includes(q.prompt[loc]),
+          `${prefix}/books/${b.id}: missing the ${loc} "${q.stage}" prompt`,
+        );
+      }
+      // and NOT another language's copy of the same prompt
+      for (const other of Object.keys(LOCALES).filter((l) => l !== loc)) {
+        const foreign = qs[0].prompt[other];
+        if (foreign === qs[0].prompt[loc]) continue;
+        assert.ok(!text.includes(foreign), `${prefix}/books/${b.id}: leaked the ${other} prompt`);
+      }
+    }
+  }
+});
+
+test('discussion prompts — stage labels are localized, not English everywhere', () => {
+  const en = read('/books/mayas-shadow');
+  const fr = read('/fr/books/mayas-shadow');
+  const es = read('/es/books/mayas-shadow');
+  assert.ok(en.includes('Before reading') && en.includes('After reading'), 'EN stage labels');
+  assert.ok(fr.includes('Avant la lecture') && fr.includes('Après la lecture'), 'FR stage labels');
+  assert.ok(es.includes('Antes de leer') && es.includes('Después de leer'), 'ES stage labels');
+  assert.ok(!fr.includes('Before reading'), 'FR page still shows an English stage label');
+  assert.ok(!es.includes('Before reading'), 'ES page still shows an English stage label');
+});
