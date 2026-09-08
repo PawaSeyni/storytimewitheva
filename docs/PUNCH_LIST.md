@@ -168,7 +168,18 @@ The decision record lives in `backlog.md`; the shipped work is in §A above.
 |----|------|------|-------|
 | D-02 | **`react-router` moderate advisory** — the only offered fix is a breaking v7 major. Deliberately deferred rather than force-upgraded mid-programme. | deferred | Re-evaluate when a v6 patch exists or at a natural upgrade window. |
 | D-03 | **12 lint warnings**, all `react-refresh/only-export-components`, 0 errors. Pre-existing and stable. | deferred | Cosmetic; touching them churns component files for no runtime benefit. |
-| D-05 | **Sprint 3–7 specifications are not in the repo.** Roughly 90 spec items remain unimplemented and are tracked only in the source documents. | open | Consider committing the specs so this punch list can be keyed to real IDs. |
+| D-05 | ✅ **RESOLVED** — the six Sprint 3-8 specifications are in `docs/sprints/` (126 IDs) with a verified-subset traceability index. Tracking can now cite real IDs. | shipped | #156 |
+
+---
+
+## D2. Newly visible from the specs
+
+| ID | Item | Type | Notes |
+|----|------|------|-------|
+| N-01 | **S6-012: there is no `src/lib/storage.ts`.** Sprint 6 makes a single storage adapter non-negotiable — availability checks, `try/catch` parsing, shape validation, schema versioning, migration, best-effort writes that never throw at the UI — and Sprint 7 specifies journey progress running through it. `src/lib/progress.ts` still calls `localStorage` directly. | open | A **prerequisite**, not an improvement: further personalization work is blocked on it. The architecture reference has described it as "to be added" since #141. |
+| N-02 | **S6-007 implements 2 of 5 ranking reasons.** `relatedBooks.ts` covers `editorial` and `theme`; `related`, `age` and `preference` need the preferences model that does not exist yet. | open | Deliberate: the missing reasons depend on N-01. |
+| N-03 | **S3-007 breadcrumbs are not generalized.** `BreadcrumbList` markup is inline on two pages; the spec asks for a shared component with localized labels and stable URL segments. | open | Small, and it removes duplicated JSON-LD. |
+| N-04 | **S3-018/019/020 have no baseline artifacts.** No Search Console baseline, route/metadata inventory or post-deploy crawl record exists, and Sprint 3's definition of done requires them. | open | Owner/data task more than a code task. |
 
 ---
 
