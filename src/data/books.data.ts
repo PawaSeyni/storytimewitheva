@@ -61,6 +61,15 @@ export interface Book {
    *  "matched theme" as separate tiers, so a future regeneration must go back
    *  through sign-off rather than overwrite this field.
    *
+   *  Owner decision 2026-09-08 (B-01): two swaps give `butterfly-effect` and
+   *  `fig-trees-secret` an INCOMING link, so no book is reachable only from search and
+   *  `/books` once "You might also like" renders. Both are like-for-like on shared theme,
+   *  and each displaced the best-covered entry so the change costs the least discovery:
+   *    sparrow-saved-forest:   crooked-little-apple-tree -> butterfly-effect  (kindness)
+   *    emperors-true-treasure: little-boats-big-wish     -> fig-trees-secret  (gratitude)
+   *  Chosen over raising RELATED_BOOKS_LIMIT, which would have needed 5 slots and 28
+   *  mechanical cards site-wide to fix a gap affecting two books.
+   *
    *  Owner decision, same date: `leo-and-the-wolf` (honesty) and `fig-trees-secret`
    *  (heritage) KEEP their singleton themes. They therefore carry two related books
    *  each instead of three. Age-band-only matches were rejected as filler across
@@ -232,7 +241,7 @@ export const books: Book[] = [
     id: 'sparrow-saved-forest',
     ageRange: '4-8',
     themeIds: ['kindness', 'courage'],
-    relatedBookIds: ['diegos-brave-leap', 'crooked-little-apple-tree', 'true-beauty-meadowbrook'],
+    relatedBookIds: ['diegos-brave-leap', 'butterfly-effect', 'true-beauty-meadowbrook'],
     editions: {
       en: { asin: '1996972685', cover: '/covers/sparrow-saved-forest-en.webp' },
       es: { asin: 'B0HHTJ3NYP', cover: '/covers/sparrow-saved-forest-es.webp' },
@@ -325,7 +334,7 @@ export const books: Book[] = [
     id: 'emperors-true-treasure',
     ageRange: '5-9',
     themeIds: ['gratitude', 'humility-listening'],
-    relatedBookIds: ['tower-touched-sky', 'russet-the-fox', 'little-boats-big-wish'],
+    relatedBookIds: ['tower-touched-sky', 'russet-the-fox', 'fig-trees-secret'],
     editions: {
       en: { asin: '199697274X', cover: '/covers/emperors-true-treasure-en.webp' },
       es: { asin: 'B0HHV9S5B5', cover: '/covers/emperors-true-treasure-es.webp' },
