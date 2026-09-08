@@ -54,11 +54,19 @@ export interface Book {
    *  activity) are DERIVED at build time in ./contentIndex.ts and are never
    *  persisted here — persisting them would guarantee drift.
    *
-   *  `relatedBookIds` is EDITORIAL curation and is deliberately left unpopulated
-   *  rather than auto-derived from shared themes: Sprint 6 ranks "editorial
-   *  relation" and "matched theme" as separate tiers, so deriving one from the
-   *  other would collapse them and fake curation. Theme-based relatedness is
-   *  available from contentIndex.booksByThemeId. */
+   *  `relatedBookIds` is EDITORIAL curation. It was NOT auto-derived: ranked
+   *  candidates (shared themes x3 + same primary age band) were generated, then
+   *  approved by the owner on 2026-09-08. That approval is what makes these pairs
+   *  editorial rather than computed. Sprint 6 ranks "editorial relation" and
+   *  "matched theme" as separate tiers, so a future regeneration must go back
+   *  through sign-off rather than overwrite this field.
+   *
+   *  Owner decision, same date: `leo-and-the-wolf` (honesty) and `fig-trees-secret`
+   *  (heritage) KEEP their singleton themes. They therefore carry two related books
+   *  each instead of three. Age-band-only matches were rejected as filler across
+   *  the whole catalog: every pair here shares at least one theme.
+   *
+   *  Purely theme-based relatedness stays available from contentIndex.booksByThemeId. */
   relatedBookIds?: string[];
   relatedActivityIds?: string[];
   /** References into the resource registry (src/data/resources.ts). IDs there are
@@ -95,6 +103,7 @@ export const books: Book[] = [
     id: 'colors-mixed-up',
     ageRange: '4-7',
     themeIds: ['curiosity', 'creativity'],
+    relatedBookIds: ['little-mapmaker', 'heidis-journey-to-mastery', 'cloud-collector'],
     editions: {
       en: { asin: '1997027038', cover: '/covers/colors-mixed-up-en.webp' },
       es: { asin: 'B0HHXNZ2YK', cover: '/covers/colors-mixed-up-es.webp' },
@@ -126,6 +135,7 @@ export const books: Book[] = [
     id: 'rainbow-symphony',
     ageRange: '3-6',
     themeIds: ['diversity', 'creativity'],
+    relatedBookIds: ['mayas-shadow', 'colors-mixed-up', 'crooked-little-apple-tree'],
     editions: {
       en: { asin: '1997027003', cover: '/covers/rainbow-symphony-en.webp' },
       es: { asin: 'B0HHVDPBLD', cover: '/covers/rainbow-symphony-es.webp' },
@@ -157,6 +167,7 @@ export const books: Book[] = [
     id: 'tower-touched-sky',
     ageRange: '5-9',
     themeIds: ['humility-listening'],
+    relatedBookIds: ['emperors-true-treasure', 'russet-the-fox', 'cloud-collector'],
     editions: {
       en: { asin: '1996972995', cover: '/covers/tower-touched-sky-en.webp' },
       es: { asin: 'B0HHW37V6W', cover: '/covers/tower-touched-sky-es.webp' },
@@ -189,6 +200,7 @@ export const books: Book[] = [
     id: 'mayas-shadow',
     ageRange: '3-7',
     themeIds: ['wonder', 'creativity'],
+    relatedBookIds: ['little-mapmaker', 'rainbow-symphony', 'little-boats-big-wish'],
     editions: {
       en: { asin: '1996972812', cover: '/covers/mayas-shadow-en.webp' },
       es: { asin: 'B0HHWPG3FS', cover: '/covers/mayas-shadow-es.webp' },
@@ -220,6 +232,7 @@ export const books: Book[] = [
     id: 'sparrow-saved-forest',
     ageRange: '4-8',
     themeIds: ['kindness', 'courage'],
+    relatedBookIds: ['diegos-brave-leap', 'crooked-little-apple-tree', 'true-beauty-meadowbrook'],
     editions: {
       en: { asin: '1996972685', cover: '/covers/sparrow-saved-forest-en.webp' },
       es: { asin: 'B0HHTJ3NYP', cover: '/covers/sparrow-saved-forest-es.webp' },
@@ -250,6 +263,7 @@ export const books: Book[] = [
     id: 'diegos-brave-leap',
     ageRange: '4-8',
     themeIds: ['courage', 'emotions'],
+    relatedBookIds: ['sparrow-saved-forest', 'leo-and-the-wolf', 'pawa-rainbow-cloud'],
     editions: {
       en: { asin: '1996972863', cover: '/covers/diegos-brave-leap-en.webp' },
       es: { cover: '/covers/diegos-brave-leap-es.webp' },
@@ -280,6 +294,7 @@ export const books: Book[] = [
     id: 'butterfly-effect',
     ageRange: '5-9',
     themeIds: ['kindness'],
+    relatedBookIds: ['sparrow-saved-forest', 'crooked-little-apple-tree', 'true-beauty-meadowbrook'],
     editions: {
       en: { asin: '1996972774', cover: '/covers/butterfly-effect-en.webp' },
       es: { asin: 'B0HH8KM4SX', cover: '/covers/butterfly-effect-es.webp' },
@@ -310,6 +325,7 @@ export const books: Book[] = [
     id: 'emperors-true-treasure',
     ageRange: '5-9',
     themeIds: ['gratitude', 'humility-listening'],
+    relatedBookIds: ['tower-touched-sky', 'russet-the-fox', 'little-boats-big-wish'],
     editions: {
       en: { asin: '199697274X', cover: '/covers/emperors-true-treasure-en.webp' },
       es: { asin: 'B0HHV9S5B5', cover: '/covers/emperors-true-treasure-es.webp' },
@@ -340,6 +356,7 @@ export const books: Book[] = [
     id: 'crooked-little-apple-tree',
     ageRange: '4-8',
     themeIds: ['self-worth', 'diversity', 'kindness'],
+    relatedBookIds: ['true-beauty-meadowbrook', 'sparrow-saved-forest', 'rainbow-symphony'],
     editions: {
       en: { asin: '1996972715', cover: '/covers/crooked-little-apple-tree-en.webp' },
       es: { asin: 'B0HHT9PY5B', cover: '/covers/crooked-little-apple-tree-es.webp' },
@@ -370,6 +387,7 @@ export const books: Book[] = [
     id: 'true-beauty-meadowbrook',
     ageRange: '4-8',
     themeIds: ['self-worth', 'kindness', 'diversity'],
+    relatedBookIds: ['crooked-little-apple-tree', 'sparrow-saved-forest', 'rainbow-symphony'],
     editions: {
       en: { asin: '1996972650', cover: '/covers/true-beauty-meadowbrook-en.webp' },
       es: { asin: 'B0HHW3BG4K', cover: '/covers/true-beauty-meadowbrook-es.webp' },
@@ -400,6 +418,7 @@ export const books: Book[] = [
     id: 'sanding-block',
     ageRange: '5-9',
     themeIds: ['patience-mastery'],
+    relatedBookIds: ['heidis-journey-to-mastery', 'miras-thousand-cubes', 'russet-the-fox'],
     editions: {
       en: { asin: '1996972898', cover: '/covers/sanding-block-en.webp' },
       es: { cover: '/covers/sanding-block-es.webp' },
@@ -432,6 +451,7 @@ export const books: Book[] = [
     id: 'leo-and-the-wolf',
     ageRange: '4-8',
     themeIds: ['honesty', 'courage'],
+    relatedBookIds: ['sparrow-saved-forest', 'diegos-brave-leap'],
     editions: {
       en: { asin: '1997027054', cover: '/covers/leo-and-the-wolf-en.webp' },
       es: { asin: 'B0H6N6ZBRL', cover: '/covers/leo-and-the-wolf-es.webp' },
@@ -462,6 +482,7 @@ export const books: Book[] = [
     id: 'russet-the-fox',
     ageRange: '4-8',
     themeIds: ['humility-listening', 'patience-mastery'],
+    relatedBookIds: ['cloud-collector', 'tower-touched-sky', 'emperors-true-treasure'],
     editions: {
       en: { asin: '1997027046', cover: '/covers/russet-the-fox-en.webp' },
       es: { asin: 'B0H67H9F2W', cover: '/covers/russet-the-fox-es.webp' },
@@ -492,6 +513,7 @@ export const books: Book[] = [
     id: 'little-boats-big-wish',
     ageRange: '3-7',
     themeIds: ['gratitude', 'wonder'],
+    relatedBookIds: ['mayas-shadow', 'pawa-rainbow-cloud', 'emperors-true-treasure'],
     editions: {
       en: { asin: '1997027070', cover: 'https://m.media-amazon.com/images/I/71Zjj22p5sL.jpg' },
     },
@@ -520,6 +542,7 @@ export const books: Book[] = [
     id: 'heidis-journey-to-mastery',
     ageRange: '5-9',
     themeIds: ['patience-mastery', 'curiosity', 'creativity'],
+    relatedBookIds: ['miras-thousand-cubes', 'colors-mixed-up', 'little-mapmaker'],
     editions: {
       en: { asin: 'B0H35ZJKCR', cover: '/covers/heidis-journey-to-mastery-en.webp' },
       es: { cover: '/covers/heidis-journey-to-mastery-es.webp' },
@@ -550,6 +573,7 @@ export const books: Book[] = [
     id: 'cloud-collector',
     ageRange: '4-8',
     themeIds: ['curiosity', 'wonder', 'humility-listening'],
+    relatedBookIds: ['little-mapmaker', 'colors-mixed-up', 'russet-the-fox'],
     editions: {
       en: { asin: 'B0H1DXZ1KH', cover: '/covers/cloud-collector-en.webp' },
       es: { asin: 'B0GX32FKCB', cover: '/covers/cloud-collector-es.webp' },
@@ -580,6 +604,7 @@ export const books: Book[] = [
     id: 'little-mapmaker',
     ageRange: '4-8',
     themeIds: ['creativity', 'curiosity', 'wonder'],
+    relatedBookIds: ['colors-mixed-up', 'cloud-collector', 'mayas-shadow'],
     editions: {
       en: { asin: 'B0GZJPZS74', cover: '/covers/little-mapmaker-en.webp' },
       es: { asin: 'B0HHVQ44J8', cover: '/covers/little-mapmaker-es.webp' },
@@ -610,6 +635,7 @@ export const books: Book[] = [
     id: 'pawa-rainbow-cloud',
     ageRange: '3-7',
     themeIds: ['emotions', 'self-worth', 'wonder'],
+    relatedBookIds: ['mayas-shadow', 'little-boats-big-wish', 'diegos-brave-leap'],
     editions: {
       en: { asin: '1996972936', cover: '/covers/pawa-rainbow-cloud-en.webp' },
       es: { asin: 'B0HH8F8XLQ', cover: '/covers/pawa-rainbow-cloud-es.webp' },
@@ -640,6 +666,7 @@ export const books: Book[] = [
     id: 'miras-thousand-cubes',
     ageRange: '5-9',
     themeIds: ['patience-mastery', 'creativity'],
+    relatedBookIds: ['heidis-journey-to-mastery', 'sanding-block', 'colors-mixed-up'],
     editions: {
       en: { asin: '1996972839', cover: '/covers/miras-thousand-cubes-en.webp' },
       es: { asin: 'B0HH8KWPD8', cover: '/covers/miras-thousand-cubes-es.webp' },
@@ -670,6 +697,7 @@ export const books: Book[] = [
     id: 'fig-trees-secret',
     ageRange: '4-8',
     themeIds: ['heritage', 'gratitude'],
+    relatedBookIds: ['emperors-true-treasure', 'little-boats-big-wish'],
     editions: {
       en: { asin: 'B0H36V1P89', cover: '/covers/fig-trees-secret-en.webp' },
       es: { asin: 'B0HHVVK17N', cover: '/covers/fig-trees-secret-es.webp' },
