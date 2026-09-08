@@ -73,22 +73,51 @@ a data-fetching library, a routing rewrite, an i18n library, or any cookie-based
   hreflang.
 
 ## 5. Data architecture (source of truth)
-- `src/data/books.ts` — the catalog. Each `Book` has `id`, `ageRange`, `featured?`,
-  `status?`, localized `title/subtitle/description/theme`, and an **`editions`** map:
+- `src/data/books.data.ts` — the catalog, as a **browser-free** module. Its only import is a
+  type-only `Language` (erased at build), which is what lets Node and esbuild load the real
+  catalog instead of parsing its source. Each `Book` has `id`, `ageRange`, `themeIds`,
+  `status?`, `featured?`, localized `title/subtitle/description/theme`, the forward
+  relationship fields (`relatedBookIds`, `relatedActivityIds`, `relatedResourceIds`,
+  `discussionQuestions`), and an **`editions`** map:
   `{ en: Edition } & Partial<Record<Language, Edition>>` where `Edition = { asin?; cover? }`.
-  `localize(book, lang)` resolves the per-language cover + Buy link (falling back to `en`).
   This is the model to extend for any per-language asset.
+- `src/data/books.ts` — the **runtime surface only**. It re-exports the data and owns
+  `localize(book, lang)` (resolving the per-language cover + Buy link, falling back to `en`)
+  plus the `useBooks()/useBook()` hooks. Keeping React out of the data module is what makes
+  the projection below possible; do not move data back into this file.
+- `src/data/taxonomy.ts` — the theme and age-band registries (browser-free): 13 stable
+  `ThemeId`s with EN/FR/ES labels, 3 age bands, `THEME_COLLECTION_MINIMUM`, and the two
+  distinct age models (`supportsAge` exact containment vs `derivePrimaryAgeBand` primary fit).
+- `src/data/contentIndex.ts` — **derived** reverse indexes (`booksByThemeId`,
+  `booksByPrimaryAgeBand`, `incomingRelatedBookIds`, `booksByActivityId`, `themeCounts`,
+  collection eligibility). Nothing reverse is persisted in source; persisting it guarantees drift.
+- `src/data/resources.ts` — the parent/educator resource registry (browser-free) with
+  **kind-prefixed, globally unique** ids (`article-*` / `download-*`). The prefix is load-bearing:
+  a download slug and an article anchor are both `follow-up-activities`, and `relatedResourceIds`
+  is a flat string array, so a bare slug would resolve to the wrong resource.
+- `src/data/relatedBooks.ts` — the "You might also like" ranking: editorial tier first, topped
+  up from the shared-theme tier, never padded with age-band-only matches.
 - `src/data/activities.ts` — `Activity { slug, emoji, ages, title, desc, category, game? }`,
   all localized; `useActivities()/useActivity()` hooks.
 - `src/data/testimonials.ts` — empty by design; the homepage section renders nothing until
   real approved quotes exist (never fabricated).
-- **Derivation, not duplication:** `scripts/gen-sitemap.mjs` derives book routes from
-  `books.ts`; `scripts/gen-catalog-inventory.mjs` derives `docs/catalog-inventory.md`.
-  New structured data (collections, journeys) MUST likewise be the source for any generated
-  artifact (sitemap, inventory, validation), per the Sprint 3 PRD.
-- **Guards:** `tests/funnel/catalog.test.mjs` (every book has an `en` edition; declared
-  covers exist; no orphan covers) and the build-time book-page/landing guards in
-  `prerender.mjs`.
+- **The build-safe catalog projection** (`scripts/lib/catalog.mjs`) is the ONE way build
+  scripts and CI read content. It compiles a browser-free module with esbuild and evaluates it
+  in-process, exposing `loadCatalog`, `bookRoutes`, `bookIds`, `loadTaxonomy`,
+  `loadContentIndex`, `loadResources`, `loadRelatedBooks`. **Every regex source-parse was
+  removed from the build path.** A load failure is a hard build error: silently falling back to
+  source parsing is exactly the drift this replaces.
+- **Derivation, not duplication:** `scripts/gen-sitemap.mjs` derives book AND collection routes
+  through the projection; `scripts/gen-catalog-inventory.mjs` derives `docs/catalog-inventory.md`.
+  New structured data MUST likewise be the source for any generated artifact (sitemap,
+  inventory, validation), per the Sprint 3 PRD. Collections shipped on this rule: eligible
+  themes generate routes, and thin themes are blocked in three independent places (page 404,
+  sitemap derivation, prerender guard).
+- **Guards:** `tests/funnel/` covers catalog completeness (every book has an `en` edition;
+  declared covers exist; no orphan covers), taxonomy, relationships (every referenced id
+  resolves; no self-reference; EN/FR/ES parity), collections, related-books ranking, and
+  bidirectional sitemap/prerender parity — the build fails on extra routes as well as missing
+  ones. `tests/seo/a11y.test.mjs` locks heading order on collection and book pages.
 
 ## 6. Storage architecture
 - **Client-side only, cookie-free.** Persistence lives in `localStorage` via `src/lib/
@@ -151,7 +180,7 @@ same-origin allowlist, in-function rate limit, native-form `return_to`), `_ratel
 ## 12. Build pipeline (do not reorder without cause)
 ```
 npm run gen:downloads   # public/_redirects from hashed PDFs
-&& npm run gen:sitemap   # public/sitemap.xml from books.ts (+ future structured data)
+&& npm run gen:sitemap   # public/sitemap.xml via scripts/lib/catalog.mjs (books + collections)
 && tsc                   # typecheck
 && vite build            # bundle → dist/ (copies public/, incl. fresh sitemap)
 && npm run gen:version   # dist/version.json (commit SHA), AFTER vite wipes dist/
