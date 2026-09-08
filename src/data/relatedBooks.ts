@@ -12,7 +12,7 @@
 //
 // There is deliberately NO third tier. Age-band-only matches were rejected catalog-wide
 // as filler, so a book with too few thematic neighbours returns a SHORT list rather than
-// a padded one. See docs/PUNCH_LIST.md §F.
+// a padded one. See docs/PUNCH_LIST.md §E.
 
 import { books } from './books.data';
 

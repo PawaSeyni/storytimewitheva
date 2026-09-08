@@ -1,8 +1,9 @@
-# Discussion Prompts — Draft for Sign-Off (E-01)
+# Discussion Prompts — APPROVED (E-01)
 
-**Status: DRAFT. Nothing here is in the code.** `discussionQuestions` is still empty on all
-20 books. These prompts go into `src/data/books.data.ts` only after you approve them, and
-they can land book by book: an absent array is a valid state, a half-translated one is not.
+**Status: APPROVED as-is 2026-09-09 and written into `src/data/books.data.ts`.** All 20 books
+carry three prompts in EN, FR and ES. This document stays as the decision record and the
+editable source: change a prompt here, then re-apply from
+`docs/discussion-prompts.draft.json` so the two never drift.
 
 ## What the model already enforces
 The `DiscussionQuestion` type and its CI validation shipped in #143. Once populated, the
@@ -27,8 +28,16 @@ Each book gets three prompts, one per stage:
 - **FR and ES are adapted, not translated literally**, matching the site's practice: each
   should read as though it was written in that language first.
 
-## How to sign off
-Approve as-is, or mark the ones to change. Line edits are welcome, they are just copy.
+## Changing a prompt later
+CI enforces the shape, not the taste. Edit the prompt here and in
+`discussion-prompts.draft.json`, then update `books.data.ts`. The build fails on a missing
+FR or ES string, an unknown stage, or a duplicate prompt within a book, so a half-finished
+edit cannot ship.
+
+**Not yet rendered anywhere.** The prompts are data; no page displays them. That is the
+natural next step, and the reason the shared resource strip (B-03) was chosen over per-book
+resource pairing: once a book page carries its own prompts, it stops needing generic
+resources to feel specific.
 
 ---
 
