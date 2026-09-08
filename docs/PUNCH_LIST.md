@@ -78,6 +78,15 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Standalone games
+
+| ID | Item | Evidence |
+|----|------|----------|
+| G-01 | **C6-04 fixed: games follow the reader's language.** The chrome was always translatable — `public/games/i18n.js` and 12 games already had it — but it resolved language from `localStorage.preferredLanguage`, which the SPA writes **only** when someone clicks the language switcher. A reader arriving at `/fr/books/...` from a search result had nothing stored, so every game opened in English. The language now travels in `?lang=`, read ahead of storage, so it also survives private mode and blocked storage. | #152 |
+| G-02 | **Games no longer dump readers into the English site.** Every game's nav linked to `/`, `/books`, `/activities`, `/resources`, `/about` unprefixed — arguably worse than the chrome language, since it silently ended the reader's French session. `i18n.js` now rewrites internal links to the active prefix and localizes the five nav labels, in one place rather than twelve HTML files. `/games/*` links stay unprefixed by design. | #152 |
+| G-03 | **`src/lib/gameUrl.ts`** — all four call sites (book pages, `/activities`, `/search`, `/profile`) build game URLs through one helper so they cannot drift apart. | #152 |
+| G-04 | **Covered by real tests, not greps** — `tests/funnel/games-i18n.test.mjs` evaluates the actual `i18n.js` against a DOM stub: parameter precedence, rejection of unknown/junk language values, blocked storage, link prefixing, no double-prefixing, and nav label localization. The games are vanilla HTML outside Vite, so nothing else covered them at all. | #152 |
+
 ### Related-books UI (Sprint 6)
 
 | ID | Item | Evidence |
@@ -133,7 +142,6 @@ nothing reads those fields yet; the moment the UI ships, each becomes user-facin
 
 | ID | Item | Type | Notes |
 |----|------|------|-------|
-| C6-04 | **Games are English-only.** `/games/<slug>.html` is one static file per game with no language variant, so a French or Spanish reader following "Try an activity" lands on English. Pre-existing (`Activities.tsx` has always linked this way), now more visible because book pages surface games too. | open | Not introduced by #151; logged because the new section widens its reach. |
 | C6-02 | **Richer collection intros** — collection pages currently carry a short localized intro only. | open | Queued, not specified. |
 
 ---
