@@ -1,30 +1,25 @@
 // Generates docs/catalog-inventory.md — the Sprint 1 §10/§25 deliverable.
-// Reads the catalog source of truth (src/data/books.ts `editions` + activities.ts)
+// Reads the catalog source of truth via the build-safe projection (Sprint 3 S3-004):
+// scripts/lib/catalog.mjs loads real objects from src/data/books.data.ts.
 // and reports totals, per-language coverage, and gaps. Regenerable, so the
 // inventory never goes stale: `node scripts/gen-catalog-inventory.mjs`.
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadCatalog } from './lib/catalog.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const booksSrc = readFileSync(path.join(ROOT, 'src/data/books.ts'), 'utf8');
+const { books: catalogBooks } = await loadCatalog();
 const actSrc = readFileSync(path.join(ROOT, 'src/data/activities.ts'), 'utf8');
 const LANGS = ['en', 'es', 'fr'];
 
-// ---- Parse books: id, en title, and per-language edition (asin? / cover?) ----
-const bookBlocks = booksSrc.split(/\n {2}\{\n/).slice(1); // each book object body
-const books = [];
-for (const raw of bookBlocks) {
-  const id = raw.match(/^ {4}id: '([^']+)',/m)?.[1];
-  if (!id) continue;
-  const editions = {};
-  for (const lang of LANGS) {
-    const line = raw.match(new RegExp(`^ {6}${lang}: \\{([^}]*)\\}`, 'm'))?.[1];
-    editions[lang] = line ? { asin: /asin:/.test(line), cover: /cover:/.test(line) } : null;
-  }
-  // titles are always LocalizedString {en,es,fr} — parity guaranteed by the type
-  books.push({ id, editions });
-}
+// Per-book, per-language presence of an own Amazon edition (asin) and a cover.
+const books = catalogBooks.map((b) => ({
+  id: b.id,
+  editions: Object.fromEntries(
+    LANGS.map((l) => [l, b.editions?.[l] ? { asin: !!b.editions[l].asin, cover: !!b.editions[l].cover } : null]),
+  ),
+}));
 
 // ---- Parse activities ----
 const actBlocks = actSrc.split(/\n {2}\{\n/).slice(1);

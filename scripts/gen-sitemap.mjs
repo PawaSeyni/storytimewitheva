@@ -4,6 +4,7 @@
 // the sitemap can't drift from the catalog. Run: npm run gen:sitemap
 
 import { readFile, writeFile, readdir } from 'node:fs/promises';
+import { bookIds as loadBookIds } from './lib/catalog.mjs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -41,10 +42,11 @@ const staticPages = [
   ['/terms', 'yearly', '0.3'],
 ];
 
-// Book detail pages derived from src/data/books.ts `id` fields (top-level,
-// quoted — the localize() `id: book.id` has no quotes so it won't match).
-const booksSrc = await readFile(path.join(ROOT, 'src/data/books.ts'), 'utf8');
-const bookIds = [...booksSrc.matchAll(/^ {4}id: '([^']+)',/gm)].map(m => m[1]);
+// Book detail pages come from the build-safe catalog projection (Sprint 3 S3-004):
+// scripts/lib/catalog.mjs loads the REAL catalog objects from src/data/books.data.ts.
+// Previously this regex-parsed the TypeScript source, which silently missed any book
+// whose `id:` line drifted from the expected shape.
+const bookIds = await loadBookIds();
 const bookPages = bookIds.map(id => [`/books/${id}`, 'monthly', '0.8']);
 
 const pages = [...staticPages, ...bookPages];
