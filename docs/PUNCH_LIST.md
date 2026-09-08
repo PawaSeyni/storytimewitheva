@@ -16,7 +16,7 @@ in the code it is cited (`S1-010`, `S3-004`, `S3-005`, `S3-016`).
 **Legend.** `shipped` = merged and verified · `open` = actionable now · `editorial` = needs
 owner copy or a content decision, not code · `deferred` = knowingly parked with a reason.
 
-Last updated 2026-09-08 against `main` @ `eb96cf6`.
+Last updated 2026-09-08 against `main` @ `a1fa562`.
 
 ---
 
@@ -60,6 +60,16 @@ Last updated 2026-09-08 against `main` @ `eb96cf6`.
 | R-03 | **`Resources.tsx` consumes the registry** — `TEACHER_DOWNLOADS`, `RESOURCE_META` and six duplicated localized arrays deleted, along with the index-coupling that silently mislabeled cards when order changed. Copy was **moved, not rewritten**: rendered EN/FR/ES pages were byte-identical apart from the JS bundle hash. | #143 |
 | R-04 | **`loadResources()`** added to the build projection so scripts and tests read the same source as the catalog. | #143 |
 
+### Related-books UI (Sprint 6)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| U-01 | **B-04 decided: top up from the theme tier.** Two tiers, editorial first, theme matches filling only the seats the editorial tier left empty. A theme match can never displace or reorder a signed-off pair. No third tier: age-band-only filler stays rejected, so a book with too few thematic neighbours renders a short row. | #147 |
+| U-02 | **`src/data/relatedBooks.ts`** — browser-free, pure, deterministic ranking, loaded by the UI and by CI through the same projection, so an asserted rule is a rendered rule. | #147 |
+| U-03 | **"You might also like" section** on all 20 book pages × 3 languages, prerendered, using the existing `BookCard`. Localized heading is an `h2` above the h3 card titles. | #147 |
+| U-04 | **Locked by tests** — 5 ranking tests (tier order, no self-reference, theme-only top-up, non-empty, deterministic) and 2 a11y tests over the prerendered book pages. | #147 |
+| U-05 | **The top-up adds nothing today, by arithmetic** — 58 editorial slots, **0 theme top-ups**. The only two short lists (`leo-and-the-wolf`, `fig-trees-secret`) are short *because* their editorial pairs already exhausted their entire theme pool. The rule is a live safety net for future catalog edits, not a fix for the current data. Raising `RELATED_BOOKS_LIMIT` above 3 is what would make the theme tier visible. | #147 |
+
 ### Relationships
 
 | ID | Item | Evidence |
@@ -99,15 +109,14 @@ nothing reads those fields yet; the moment the UI ships, each becomes user-facin
 | **B-01** | **Two books have no incoming link.** `butterfly-effect` and `fig-trees-secret` appear in no other book's `relatedBookIds`, because every book they point at already had three stronger matches. | editorial | Once "You might also like" ships, these two are reachable only from search, `/books` and their collections. Fixing it means displacing an existing approved pair, which is an owner call. Check current state any time via `contentIndex.incomingRelatedBookIds`. |
 | **B-02** | **`relatedActivityIds` is empty on all 20 books.** The field and its validation exist; no book links to an activity. | editorial | Any Sprint 6/7 surface that renders book → activity links would render an empty section on every book page. |
 | **B-03** | **`relatedResourceIds` is empty on all 20 books.** The registry and reference validation now exist (R-01, L-05), so pairs can finally be written. | editorial | Same failure mode as B-02: a section that renders on 0 of 20 books. |
-| **B-04** | **Decide the fallback rule for a short related-books list.** With a max of 3 editorial pairs and two books holding only 2, the UI must either show a short row or top up from shared themes. | decision | Sprint 6 ranks "editorial relation" and "matched theme" as separate tiers, so topping up is legitimate — but the tier order and whether the two are visually distinguished must be decided before the component is written, not after. |
 
 ---
 
-## C. Open — Sprint 6 itself
+## C. Open — Sprint 6 remainder
 
 | ID | Item | Type | Notes |
 |----|------|------|-------|
-| C6-01 | **"You might also like" on book pages** — render `relatedBookIds` (editorial tier first), localized in EN/FR/ES, prerendered. | open | Blocked on B-04 for the fallback rule; B-01 determines whether two books get orphaned in the process. Build was started and stopped pending this punch list. |
+| C6-03 | **`RELATED_BOOKS_LIMIT` is 3.** At 3 the theme tier never fires (U-05). At 4 it would surface a genuine second-tier recommendation on most books. | decision | Owner call: more discovery vs a tighter, fully-editorial row. |
 | C6-02 | **Richer collection intros** — collection pages currently carry a short localized intro only. | open | Queued, not specified. |
 
 ---
