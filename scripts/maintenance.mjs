@@ -93,7 +93,7 @@ await Promise.all(
 
 // ── Covers ─────────────────────────────────────────────────────────────────
 {
-  const src = await readFile(path.join(ROOT, 'src', 'data', 'books.ts'), 'utf8');
+  const src = await readFile(path.join(ROOT, 'src', 'data', 'books.data.ts'), 'utf8');
   const urls = [...src.matchAll(/^ {4}coverImage: '([^']+)',$/gm)].map(m => m[1]);
   const localIds = [...src.matchAll(/^ {4}coverImage: ([A-Za-z]\w+),$/gm)].map(m => m[1]);
   const codes = await Promise.all(urls.map(u => head(u).then(r => r.code)));

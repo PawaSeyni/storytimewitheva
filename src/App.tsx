@@ -78,6 +78,7 @@ import Home from './pages/Home';
 // the homepage actually needs. The <Suspense> boundary below handles loading.
 const Books               = lazy(() => import('./pages/Books'));
 const BookDetail          = lazy(() => import('./pages/BookDetail'));
+const ThemeCollection     = lazy(() => import('./pages/ThemeCollection'));
 const Activities          = lazy(() => import('./pages/Activities'));
 const Resources           = lazy(() => import('./pages/Resources'));
 const About               = lazy(() => import('./pages/About'));
@@ -113,6 +114,7 @@ const routeDefs = [
   { path: '/', element: <Home /> },
   { path: '/books', element: <Books /> },
   { path: '/books/:slug', element: <BookDetail /> },
+  { path: '/collections/:themeId', element: <ThemeCollection /> },
   { path: '/activities', element: <Activities /> },
   { path: '/activities/story-builder', element: <DemoPage><StoryBuilderDemo /></DemoPage> },
   { path: '/activities/character-workshop', element: <DemoPage><CharacterWorkshopDemo /></DemoPage> },

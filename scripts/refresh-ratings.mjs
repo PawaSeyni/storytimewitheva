@@ -20,7 +20,7 @@ import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const BOOKS = path.resolve(__dirname, '..', 'src', 'data', 'books.ts');
+const BOOKS = path.resolve(__dirname, '..', 'src', 'data', 'books.data.ts');
 const OUT = path.resolve(__dirname, '..', 'src', 'data', 'ratings.ts');
 const DRY = process.argv.includes('--dry');
 const UA =

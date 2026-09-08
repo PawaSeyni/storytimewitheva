@@ -8,6 +8,26 @@ person, not code) · `blocked`.
 > **Sources folded in:** the full site audit (2026-08-10) and the **Lead-Magnet Remediation
 > Plan** PDF (2026-08-10) — the latter is tracked as its own section at the bottom with a
 > status-vs-current mapping, since ~half of it already shipped in PRs #86–#88.
+>
+> **Companion document:** the content-architecture programme (catalog → taxonomy → collections
+> → resources → relationships → related-books UI) is tracked in
+> [`PUNCH_LIST.md`](PUNCH_LIST.md). Items that gate that programme are listed there AND here,
+> keyed by the same ID, so neither document can quietly lose one.
+
+---
+
+## Sprint 6 gate — resolve BEFORE the related-books UI ships
+
+B-04 is decided and shipped. The remaining three are content gaps that the now-live
+"You might also like" section makes user-facing, so they are gates, not nice-to-haves.
+Full context in [`PUNCH_LIST.md` §B](PUNCH_LIST.md).
+
+| ID | Item | Pri | Status | Notes |
+|----|------|-----|--------|-------|
+| B-01 | **Two books have no incoming link** — `butterfly-effect` and `fig-trees-secret` appear in no other book's `relatedBookIds`, because every book they point at already had three stronger matches. | P1 | `decision` | Once the UI ships they are reachable only from search, `/books` and their collections. Fixing it displaces an already-approved pair, so it is an owner call. Current state is checkable any time from `contentIndex.incomingRelatedBookIds`. |
+| B-02 | **`relatedActivityIds` empty on all 20 books** — field and validation exist, no book links to an activity. | P1 | `human` | A book → activity section would render empty on 20 of 20 books. |
+| B-03 | **`relatedResourceIds` empty on all 20 books** — the resource registry and reference validation landed in #143, so pairs can now be written. | P1 | `human` | Same failure mode as B-02. |
+| B-04 | ✅ **DECIDED + SHIPPED** — top up from the theme tier. Editorial picks first and never reordered; theme matches fill only empty seats; no age-band third tier. | P1 | — | Note: at `RELATED_BOOKS_LIMIT = 3` the top-up currently adds **0** entries, because the two short lists already exhausted their theme pools. Raising the limit to 4 is the open follow-up (`PUNCH_LIST.md` C6-03). |
 
 ---
 
@@ -19,6 +39,7 @@ person, not code) · `blocked`.
 | E2 | **Remove the `?lm=` hydration reflow** — offer currently jumps to the top on deep-link load (prerender has it bottom, client re-renders to top). Reorder via CSS `order`/flex instead of DOM position so there's no flash. | P2 | S–M | Cosmetic only; end state already correct. Flagged in PR #86. |
 | E3 | **Content-Security-Policy header** — the one remaining best-practice gap. Needs per-path handling (SPA strict vs `/games/*` relaxed for inline scripts). Recommend shipping **report-only** first. | P3 | M | Low security value here (near-zero XSS surface). Owner call. |
 | E4 | **Capture UTM params + store `source`/`campaign` on the subscriber** (remediation §4/§7). Read `utm_*` from the URL, pass through the subscribe function into MailerLite fields (today only `language` + `lead_magnet` are stored). | P1 | S–M | Needs new MailerLite fields. Pairs with D6. |
+| E6 | **`Activities.tsx` still uses the legacy overlap age filter** with its own `Ages 9+` bucket and the `age3to5`/`age6to8`/`age9plus` keys that `/books` retired in taxonomy v1. The two pages now disagree about what an age filter means. | P2 | S | Last place the retired age model survives. `PUNCH_LIST.md` D-01. |
 | E5 | **Remove distractions on paid landing** (remediation P1) — strip the navbar/catalog/Activities CTAs from the paid-traffic experience. Only meaningful once D5 is decided. | P2 | S–M | Depends on D5. |
 
 ## Decision-gated — need an owner call before code

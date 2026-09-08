@@ -4,6 +4,7 @@
 // the sitemap can't drift from the catalog. Run: npm run gen:sitemap
 
 import { readFile, writeFile, readdir } from 'node:fs/promises';
+import { bookIds as loadBookIds, loadContentIndex } from './lib/catalog.mjs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -41,13 +42,21 @@ const staticPages = [
   ['/terms', 'yearly', '0.3'],
 ];
 
-// Book detail pages derived from src/data/books.ts `id` fields (top-level,
-// quoted — the localize() `id: book.id` has no quotes so it won't match).
-const booksSrc = await readFile(path.join(ROOT, 'src/data/books.ts'), 'utf8');
-const bookIds = [...booksSrc.matchAll(/^ {4}id: '([^']+)',/gm)].map(m => m[1]);
+// Book detail pages come from the build-safe catalog projection (Sprint 3 S3-004):
+// scripts/lib/catalog.mjs loads the REAL catalog objects from src/data/books.data.ts.
+// Previously this regex-parsed the TypeScript source, which silently missed any book
+// whose `id:` line drifted from the expected shape.
+const bookIds = await loadBookIds();
 const bookPages = bookIds.map(id => [`/books/${id}`, 'monthly', '0.8']);
 
-const pages = [...staticPages, ...bookPages];
+// Public theme collections (taxonomy v1 §9). ONLY collection-eligible themes get a
+// route: a theme below the two-book minimum stays a valid tag but must not generate
+// a thin page. Eligibility is derived in src/data/contentIndex.ts, so the sitemap can
+// never advertise a collection the app would 404.
+const { collectionEligibleThemeIds } = await loadContentIndex();
+const collectionPages = collectionEligibleThemeIds.map(id => [`/collections/${id}`, 'monthly', '0.7']);
+
+const pages = [...staticPages, ...bookPages, ...collectionPages];
 
 // Standalone games: single static URL each (self-contained pages with their
 // own internal EN/ES/FR toggles), so no per-language hreflang.
@@ -68,4 +77,4 @@ for (const file of gameFiles) {
 out += '</urlset>\n';
 
 await writeFile(path.join(ROOT, 'public/sitemap.xml'), out);
-console.log(`sitemap.xml: ${pages.length * LANGS.length} localized URLs + ${gameFiles.length} game URLs (${bookIds.length} book pages)`);
+console.log(`sitemap.xml: ${pages.length * LANGS.length} localized URLs + ${gameFiles.length} game URLs (${bookIds.length} book pages, ${collectionPages.length} collections)`);

@@ -5,7 +5,9 @@ import BookRecommendations from '../components/BookRecommendations';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
-import { matchesAgeFilter } from '../lib/ages';
+import { Link } from '../components/LocalizedLink';
+import { THEMES, THEME_IDS, supportsAge, type ThemeId } from '../data/taxonomy';
+import { collectionEligibleThemeIds } from '../data/contentIndex';
 import { AMAZON_AUTHOR_URL } from '../lib/amazon';
 import { useTranslation, useLanguage, localizePath } from '../lib/language';
 
@@ -20,9 +22,10 @@ const TRANSLATIONS = {
     subheading: 'Explore stories that inspire, educate, and delight young readers',
     searchPlaceholder: 'Search books by title or theme...',
     ageAll: 'All',
-    age3to5: '3-5 years',
-    age6to8: '6-8 years',
-    age9plus: '9+ years',
+      themeAll: 'All themes',
+      browseByTheme: 'Browse by theme',
+      ageLabel: 'Age',
+      themeLabel: 'Theme',
     showingBook: 'book',
     showingBooks: 'books',
     showing: 'Showing',
@@ -45,9 +48,10 @@ const TRANSLATIONS = {
     subheading: 'Descubre historias que inspiran, educan y deleitan a los lectores jóvenes',
     searchPlaceholder: 'Buscar libros por título o tema...',
     ageAll: 'Todos',
-    age3to5: '3-5 años',
-    age6to8: '6-8 años',
-    age9plus: '9+ años',
+      themeAll: 'Todos los temas',
+      browseByTheme: 'Explora por tema',
+      ageLabel: 'Edad',
+      themeLabel: 'Tema',
     showingBook: 'libro',
     showingBooks: 'libros',
     showing: 'Mostrando',
@@ -70,9 +74,10 @@ const TRANSLATIONS = {
     subheading: 'Découvrez des histoires qui inspirent, instruisent et ravissent les jeunes lecteurs',
     searchPlaceholder: 'Rechercher un livre par titre ou thème...',
     ageAll: 'Tous',
-    age3to5: '3-5 ans',
-    age6to8: '6-8 ans',
-    age9plus: '9+ ans',
+      themeAll: 'Tous les thèmes',
+      browseByTheme: 'Explorer par thème',
+      ageLabel: 'Âge',
+      themeLabel: 'Thème',
     showingBook: 'livre',
     showingBooks: 'livres',
     showing: 'Affichage de',
@@ -93,6 +98,7 @@ const TRANSLATIONS = {
 export default function Books() {
   const [search, setSearch] = useState('');
   const [ageFilter, setAgeFilter] = useState('All');
+  const [themeFilter, setThemeFilter] = useState<'All' | ThemeId>('All');
   const t = useTranslation(TRANSLATIONS);
   const { language } = useLanguage();
   const books = useBooks();
@@ -124,12 +130,13 @@ export default function Books() {
     [books, language],
   );
 
-  // Internal age filter keys are language-invariant; UI labels come from t.
+  // Taxonomy v1 §5.2 — suitability filtering resolves by EXACT age containment, so a
+  // 5-9 book never disappears when a parent picks age 5. Values are the single ages
+  // 3-9 (language-invariant); the old 3-5 / 6-8 / "9+" bands used overlap matching and
+  // "9+" wrongly implied content beyond age 9.
   const ageFilters: { key: string; label: string }[] = [
     { key: 'All', label: t.ageAll },
-    { key: '3-5', label: t.age3to5 },
-    { key: '6-8', label: t.age6to8 },
-    { key: '9+', label: t.age9plus },
+    ...['3', '4', '5', '6', '7', '8', '9'].map((a) => ({ key: a, label: a })),
   ];
 
   const filtered = books.filter(book => {
@@ -138,8 +145,10 @@ export default function Books() {
       book.title.toLowerCase().includes(q) ||
       book.description.toLowerCase().includes(q) ||
       book.theme.toLowerCase().includes(q);
-    const matchesAge = matchesAgeFilter(book.ageRange, ageFilter);
-    return matchesSearch && matchesAge;
+    const matchesAge = ageFilter === 'All' || supportsAge(book.ageRange, Number(ageFilter));
+    // Theme filtering resolves by stable ID — never by parsing the localized phrase.
+    const matchesTheme = themeFilter === 'All' || book.themeIds.includes(themeFilter);
+    return matchesSearch && matchesAge && matchesTheme;
   });
 
   return (
@@ -165,7 +174,23 @@ export default function Books() {
             />
           </div>
 
-          <div className="flex flex-wrap gap-2 justify-center">
+          <div className="flex justify-center">
+            <label className="flex items-center gap-2 text-sm text-gray-600">
+              <span className="font-medium">{t.themeLabel}</span>
+              <select
+                value={themeFilter}
+                onChange={(e) => setThemeFilter(e.target.value as 'All' | ThemeId)}
+                className="rounded-full border border-gray-200 px-4 py-2 text-sm text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-purple-300"
+              >
+                <option value="All">{t.themeAll}</option>
+                {THEME_IDS.map((id) => (
+                  <option key={id} value={id}>{THEMES[id].labels[language]}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <div role="group" aria-label={t.ageLabel} className="flex flex-wrap gap-2 justify-center">
             {ageFilters.map(f => (
               <button
                 key={f.key}
@@ -181,6 +206,26 @@ export default function Books() {
               </button>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Internal inbound links to the public theme collections. Without these the
+          collection routes would be orphans (indexable but unreachable by crawl). */}
+      <section className="px-4 pb-8">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-sm font-semibold text-gray-500 mb-3">{t.browseByTheme}</h2>
+          <ul className="flex flex-wrap gap-2">
+            {collectionEligibleThemeIds.map((id) => (
+              <li key={id}>
+                <Link
+                  to={`/collections/${id}`}
+                  className="inline-block px-3 py-1.5 rounded-full bg-purple-50 border border-purple-100 text-sm text-purple-700 hover:border-purple-300"
+                >
+                  {THEMES[id].labels[language]}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

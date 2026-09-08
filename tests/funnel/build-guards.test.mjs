@@ -4,6 +4,9 @@ import assert from 'node:assert/strict';
 import { execSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { parseMagnets, parseLandingSlugs } from './_manifest.mjs';
+import { bookIds } from '../../scripts/lib/catalog.mjs';
+
+const catalogIds = await bookIds();
 
 // TEST 0.5 — no raw PDF URL is hard-coded anywhere it could be pasted into an
 // ad. Guards the 2026-08-03 raw-PDF-destination incident (~CA$35, zero
@@ -79,16 +82,30 @@ test('TEST 0.8 — every book reaches the sitemap (build regenerates it; committ
     'gen:sitemap must run BEFORE vite build (which copies public/sitemap.xml into dist/)'
   );
 
-  // Same derivation gen-sitemap.mjs uses: top-level, quoted `    id: '...'`.
-  const booksSrc = readFileSync('src/data/books.ts', 'utf8');
-  const bookIds = [...booksSrc.matchAll(/^ {4}id: '([^']+)',/gm)].map((m) => m[1]);
-  assert.ok(bookIds.length > 0, 'no book ids parsed from books.ts — the regex or file shape changed');
+  // Ids come from the build-safe catalog projection (Sprint 3 S3-004) — the same
+  // source gen-sitemap.mjs now uses, so this can never drift from a regex.
+  assert.ok(catalogIds.length > 0, 'catalog projection returned no books');
 
   const sitemap = readFileSync('public/sitemap.xml', 'utf8');
-  const missing = bookIds.filter((id) => !sitemap.includes(`<loc>https://storytimewitheva.com/books/${id}/</loc>`));
+
+  // Direction 1 — every catalog book reaches the sitemap (else: hard 404).
+  const missing = catalogIds.filter((id) => !sitemap.includes(`<loc>https://storytimewitheva.com/books/${id}/</loc>`));
   assert.deepEqual(
     missing,
     [],
-    `books present in books.ts but absent from public/sitemap.xml (run \`npm run gen:sitemap\` and commit): ${missing.join(', ')}`
+    `books in the catalog but absent from public/sitemap.xml (run \`npm run gen:sitemap\` and commit): ${missing.join(', ')}`
+  );
+
+  // Direction 2 (Sprint 3 S3-005 — "zero missing OR EXTRA routes") — every book
+  // route in the sitemap resolves to a real catalog book. An extra entry would
+  // advertise a URL to crawlers that the app cannot render.
+  const sitemapBookIds = [...sitemap.matchAll(/<loc>https:\/\/storytimewitheva\.com\/books\/([^/<]+)\/<\/loc>/g)]
+    .map((m) => m[1]);
+  const known = new Set(catalogIds);
+  const extra = [...new Set(sitemapBookIds.filter((id) => !known.has(id)))];
+  assert.deepEqual(
+    extra,
+    [],
+    `sitemap advertises /books/<id> routes with no catalog book: ${extra.join(', ')}`
   );
 });
