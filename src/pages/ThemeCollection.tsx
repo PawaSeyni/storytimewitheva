@@ -26,16 +26,19 @@ const TRANSLATIONS = {
   en: {
     home: 'Home', books: 'Books', browseOther: 'Browse other themes',
     book: 'book', booksPlural: 'books', inThisCollection: 'in this collection',
+    booksHeading: 'Books in this collection',
     seoSuffix: 'Picture books about',
   },
   es: {
     home: 'Inicio', books: 'Libros', browseOther: 'Explora otros temas',
     book: 'libro', booksPlural: 'libros', inThisCollection: 'en esta colección',
+    booksHeading: 'Libros de esta colección',
     seoSuffix: 'Libros ilustrados sobre',
   },
   fr: {
     home: 'Accueil', books: 'Livres', browseOther: 'Explorer d\'autres thèmes',
     book: 'livre', booksPlural: 'livres', inThisCollection: 'dans cette collection',
+    booksHeading: 'Livres de cette collection',
     seoSuffix: 'Albums illustrés sur',
   },
 };
@@ -120,6 +123,11 @@ export default function ThemeCollection() {
       </section>
 
       <section className="py-12 px-4">
+        <div className="max-w-7xl mx-auto">
+          {/* Named heading keeps the document outline h1 -> h2 -> h3 (BookCard
+              titles are h3); without it the page skipped a level (WCAG 1.3.1). */}
+          <h2 className="sr-only">{t.booksHeading}</h2>
+        </div>
         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {inCollection.map((book, i) => (
             <BookCard key={book.id} book={book} priority={i < 3} />
