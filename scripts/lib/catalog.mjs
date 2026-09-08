@@ -16,6 +16,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 const ENTRY = path.join(ROOT, 'src', 'data', 'books.data.ts');
 const TAXONOMY = path.join(ROOT, 'src', 'data', 'taxonomy.ts');
 const CONTENT_INDEX = path.join(ROOT, 'src', 'data', 'contentIndex.ts');
+const RESOURCES = path.join(ROOT, 'src', 'data', 'resources.ts');
 
 /** Compile a browser-free TS module with esbuild and evaluate it in-process. */
 async function loadModule(entry) {
@@ -77,4 +78,11 @@ let indexCache = null;
 export async function loadContentIndex() {
   if (!indexCache) indexCache = await loadModule(CONTENT_INDEX);
   return indexCache;
+}
+
+let resourcesCache = null;
+/** The parent/educator resource registry (stable, kind-prefixed IDs). */
+export async function loadResources() {
+  if (!resourcesCache) resourcesCache = await loadModule(RESOURCES);
+  return resourcesCache;
 }
