@@ -78,6 +78,14 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Discussion prompts
+
+| ID | Item | Evidence |
+|----|------|----------|
+| P-01 | **E-01 closed: 60 prompts approved as-is and written in.** Three per book (`before` / `during` / `after`), 180 localized strings, all 20 books. | #154 |
+| P-02 | **Validated before approval, not after.** The draft was applied to a scratch copy, typechecked and run through the real relationship suite, then reverted, so sign-off held no surprises. Checked mechanically for empty strings, em dashes in the English, duplicates across the whole set, missing end punctuation, over-long prompts and id drift. | #154 |
+| P-03 | **Not rendered yet.** The prompts are data; no page displays them. This is the natural next step and the reason B-03 chose a shared resource strip: once a book page carries its own prompts it stops needing generic resources to feel specific. | open |
+
 ### Age model
 
 | ID | Item | Evidence |
@@ -136,13 +144,12 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 
 ---
 
-## B. Open — resolve BEFORE Sprint 6
+## B. Sprint 6 gate — all four resolved
 
-Sprint 6 renders relationship data. These items are invisible today precisely because
-nothing reads those fields yet; the moment the UI ships, each becomes user-facing.
-
-| ID | Item | Type | Why it gates Sprint 6 |
-|----|------|------|----------------------|
+B-01 (no incoming link) fixed by two editorial swaps · B-02 (`relatedActivityIds`) written
+in and rendered · B-03 (`relatedResourceIds`) resolved by choosing a shared strip over
+fabricated per-book pairing · B-04 (short-list fallback) decided as the theme-tier top-up.
+The decision record lives in `backlog.md`; the shipped work is in §A above.
 
 ---
 
@@ -154,26 +161,17 @@ nothing reads those fields yet; the moment the UI ships, each becomes user-facin
 
 ---
 
-## D. Open — editorial (owner copy required)
-
-| ID | Item | Notes |
-|----|------|-------|
-| E-01 | **Discussion prompt copy** for each book in EN/FR/ES. The model and CI validation ship; only the words are missing. An absent array stays valid, so this can land book by book. |
-| E-02 | **Reciprocal-link decision** for B-01 (same item, listed here because the fix is a content choice). |
-
----
-
-## E. Open — technical debt and deferred
+## D. Open — technical debt and deferred
 
 | ID | Item | Type | Notes |
 |----|------|------|-------|
 | D-02 | **`react-router` moderate advisory** — the only offered fix is a breaking v7 major. Deliberately deferred rather than force-upgraded mid-programme. | deferred | Re-evaluate when a v6 patch exists or at a natural upgrade window. |
-| D-03 | **11 lint warnings**, all `react-refresh/only-export-components`, 0 errors. Pre-existing and stable. | deferred | Cosmetic; touching them churns component files for no runtime benefit. |
+| D-03 | **12 lint warnings**, all `react-refresh/only-export-components`, 0 errors. Pre-existing and stable. | deferred | Cosmetic; touching them churns component files for no runtime benefit. |
 | D-05 | **Sprint 3–7 specifications are not in the repo.** Roughly 90 spec items remain unimplemented and are tracked only in the source documents. | open | Consider committing the specs so this punch list can be keyed to real IDs. |
 
 ---
 
-## F. Decided — not doing
+## E. Decided — not doing
 
 Recorded so they do not get quietly re-opened.
 

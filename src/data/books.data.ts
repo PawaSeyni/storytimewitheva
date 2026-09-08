@@ -114,6 +114,23 @@ export const books: Book[] = [
     themeIds: ['curiosity', 'creativity'],
     relatedBookIds: ['little-mapmaker', 'heidis-journey-to-mastery', 'cloud-collector'],
     relatedActivityIds: ['bookmark-designer', 'build-a-scene', 'coloring'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "If you could paint the sky any color at all, which one would you choose?",
+        es: "Si pudieras pintar el cielo del color que quisieras, ¿cuál elegirías?",
+        fr: "Si tu pouvais peindre le ciel de la couleur de ton choix, laquelle choisirais-tu ?",
+      } },
+      { stage: "during", prompt: {
+        en: "Hawel is looking for the Color Keeper. What do you think the Color Keeper looks like?",
+        es: "Hawel busca a la Guardiana de los colores. ¿Cómo crees que es?",
+        fr: "Hawel cherche la Gardienne des couleurs. À quoi ressemble-t-elle, à ton avis ?",
+      } },
+      { stage: "after", prompt: {
+        en: "Red, yellow and blue can make every other color. Which two would you mix first?",
+        es: "Con rojo, amarillo y azul se hacen todos los colores. ¿Cuáles mezclarías primero?",
+        fr: "Le rouge, le jaune et le bleu font toutes les autres couleurs. Lesquelles mélangerais-tu en premier ?",
+      } },
+    ],
     editions: {
       en: { asin: '1997027038', cover: '/covers/colors-mixed-up-en.webp' },
       es: { asin: 'B0HHXNZ2YK', cover: '/covers/colors-mixed-up-es.webp' },
@@ -147,6 +164,23 @@ export const books: Book[] = [
     themeIds: ['diversity', 'creativity'],
     relatedBookIds: ['mayas-shadow', 'colors-mixed-up', 'crooked-little-apple-tree'],
     relatedActivityIds: ['bilingual-flashcards', 'build-a-scene', 'coloring'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "Every color in Harmonia sings its own song. What sound do you think blue makes?",
+        es: "Cada color de Harmonia canta su propia canción. ¿Qué sonido crees que hace el azul?",
+        fr: "Chaque couleur d'Harmonia chante sa propre chanson. Quel son fait le bleu, à ton avis ?",
+      } },
+      { stage: "during", prompt: {
+        en: "The colors are arguing about whose song is best. What could Pawa say to help them?",
+        es: "Los colores discuten sobre quién canta mejor. ¿Qué podría decir Pawa para ayudarlos?",
+        fr: "Les couleurs se disputent pour savoir qui chante le mieux. Que pourrait dire Pawa pour les aider ?",
+      } },
+      { stage: "after", prompt: {
+        en: "The symphony only works when every voice joins in. Who would you want to sing with?",
+        es: "La sinfonía solo funciona cuando todas las voces cantan juntas. ¿Con quién te gustaría cantar?",
+        fr: "La symphonie ne fonctionne que si toutes les voix chantent ensemble. Avec qui aimerais-tu chanter ?",
+      } },
+    ],
     editions: {
       en: { asin: '1997027003', cover: '/covers/rainbow-symphony-en.webp' },
       es: { asin: 'B0HHVDPBLD', cover: '/covers/rainbow-symphony-es.webp' },
@@ -180,6 +214,23 @@ export const books: Book[] = [
     themeIds: ['humility-listening'],
     relatedBookIds: ['emperors-true-treasure', 'russet-the-fox', 'cloud-collector'],
     relatedActivityIds: ['adventure-journal', 'bingo', 'reading-tracker'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "Victor is about to build the tallest tower ever. What could go wrong if nobody asks questions?",
+        es: "Victor va a construir la torre más alta jamás imaginada. ¿Qué puede pasar si nadie hace preguntas?",
+        fr: "Victor va construire la plus haute tour jamais imaginée. Que peut-il arriver si personne ne pose de questions ?",
+      } },
+      { stage: "during", prompt: {
+        en: "One young engineer keeps raising his hand and nobody sees him. Have you ever felt like that?",
+        es: "Un ingeniero joven levanta la mano y nadie lo ve. ¿Alguna vez te has sentido así?",
+        fr: "Un jeune ingénieur lève la main et personne ne le voit. T'es-tu déjà senti comme lui ?",
+      } },
+      { stage: "after", prompt: {
+        en: "Victor learns to design with questions instead of certainty. What question would you have asked him?",
+        es: "Victor aprende a diseñar con preguntas en vez de certezas. ¿Qué pregunta le habrías hecho?",
+        fr: "Victor apprend à concevoir avec des questions plutôt qu'avec des certitudes. Quelle question lui aurais-tu posée ?",
+      } },
+    ],
     editions: {
       en: { asin: '1996972995', cover: '/covers/tower-touched-sky-en.webp' },
       es: { asin: 'B0HHW37V6W', cover: '/covers/tower-touched-sky-es.webp' },
@@ -214,6 +265,23 @@ export const books: Book[] = [
     themeIds: ['wonder', 'creativity'],
     relatedBookIds: ['little-mapmaker', 'rainbow-symphony', 'little-boats-big-wish'],
     relatedActivityIds: ['coloring', 'bookmark-designer', 'build-a-scene'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "Look at your shadow. Where do you think it goes when you fall asleep?",
+        es: "Mira tu sombra. ¿A dónde crees que va cuando te duermes?",
+        fr: "Regarde ton ombre. Où va-t-elle quand tu t'endors, à ton avis ?",
+      } },
+      { stage: "during", prompt: {
+        en: "Maya's shadow is out having an adventure. What would your shadow do all night?",
+        es: "La sombra de Maya se va de aventura. ¿Qué haría la tuya toda la noche?",
+        fr: "L'ombre de Maya part à l'aventure. Que ferait la tienne toute la nuit ?",
+      } },
+      { stage: "after", prompt: {
+        en: "The shadow always comes home by morning. What do you love about coming home?",
+        es: "La sombra siempre vuelve por la mañana. ¿Qué te gusta de volver a casa?",
+        fr: "L'ombre rentre toujours au petit matin. Qu'est-ce que tu aimes quand tu rentres à la maison ?",
+      } },
+    ],
     editions: {
       en: { asin: '1996972812', cover: '/covers/mayas-shadow-en.webp' },
       es: { asin: 'B0HHWPG3FS', cover: '/covers/mayas-shadow-es.webp' },
@@ -247,6 +315,23 @@ export const books: Book[] = [
     themeIds: ['kindness', 'courage'],
     relatedBookIds: ['diegos-brave-leap', 'butterfly-effect', 'true-beauty-meadowbrook'],
     relatedActivityIds: ['adventure-journal', 'bingo', 'character-workshop'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "The biggest animals do not notice the forest is in trouble. Who do you think will?",
+        es: "Los animales más grandes no ven que el bosque está en peligro. ¿Quién crees que sí lo verá?",
+        fr: "Les plus grands animaux ne voient pas que la forêt est en danger. Qui va s'en apercevoir, à ton avis ?",
+      } },
+      { stage: "during", prompt: {
+        en: "The sparrow is the smallest one there. What can someone small do that someone big cannot?",
+        es: "El gorrión es el más pequeño de todos. ¿Qué puede hacer alguien pequeño que los grandes no?",
+        fr: "Le moineau est le plus petit de tous. Que peut faire un petit que les grands ne peuvent pas ?",
+      } },
+      { stage: "after", prompt: {
+        en: "Name one small kind thing you could do tomorrow.",
+        es: "Di una pequeña amabilidad que podrías hacer mañana.",
+        fr: "Nomme une petite gentillesse que tu pourrais faire demain.",
+      } },
+    ],
     editions: {
       en: { asin: '1996972685', cover: '/covers/sparrow-saved-forest-en.webp' },
       es: { asin: 'B0HHTJ3NYP', cover: '/covers/sparrow-saved-forest-es.webp' },
@@ -279,6 +364,23 @@ export const books: Book[] = [
     themeIds: ['courage', 'emotions'],
     relatedBookIds: ['sparrow-saved-forest', 'leo-and-the-wolf', 'pawa-rainbow-cloud'],
     relatedActivityIds: ['character-workshop', 'emotion-wheel', 'finish-the-story'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "Diego is standing at the edge of a cliff and everyone is watching. How do you think his tummy feels?",
+        es: "Diego está al borde del acantilado y todos lo miran. ¿Cómo crees que siente la barriga?",
+        fr: "Diego est au bord de la falaise et tout le monde le regarde. Comment se sent son ventre, à ton avis ?",
+      } },
+      { stage: "during", prompt: {
+        en: "Being brave does not always feel brave on the inside. What helps you when you feel scared?",
+        es: "Ser valiente no siempre se siente valiente por dentro. ¿Qué te ayuda cuando tienes miedo?",
+        fr: "Être courageux ne se sent pas toujours courageux à l'intérieur. Qu'est-ce qui t'aide quand tu as peur ?",
+      } },
+      { stage: "after", prompt: {
+        en: "Tell me about a time you did something even though you felt nervous.",
+        es: "Cuéntame una vez que hiciste algo aunque estabas nervioso.",
+        fr: "Raconte-moi une fois où tu as fait quelque chose même si tu avais le trac.",
+      } },
+    ],
     editions: {
       en: { asin: '1996972863', cover: '/covers/diegos-brave-leap-en.webp' },
       es: { cover: '/covers/diegos-brave-leap-es.webp' },
@@ -311,6 +413,23 @@ export const books: Book[] = [
     themeIds: ['kindness'],
     relatedBookIds: ['sparrow-saved-forest', 'crooked-little-apple-tree', 'true-beauty-meadowbrook'],
     relatedActivityIds: ['adventure-journal', 'bingo', 'emotion-wheel'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "What do you think one small kind thing could turn into?",
+        es: "¿En qué crees que puede convertirse una pequeña amabilidad?",
+        fr: "En quoi une petite gentillesse pourrait-elle se transformer, à ton avis ?",
+      } },
+      { stage: "during", prompt: {
+        en: "The kindness keeps passing from one person to the next. Can you spot where it goes now?",
+        es: "La amabilidad pasa de una persona a otra. ¿Puedes ver a dónde va ahora?",
+        fr: "La gentillesse passe d'une personne à l'autre. Peux-tu voir où elle va maintenant ?",
+      } },
+      { stage: "after", prompt: {
+        en: "Someone was kind to you once and you still remember it. Who was it?",
+        es: "Alguien fue amable contigo y todavía lo recuerdas. ¿Quién fue?",
+        fr: "Quelqu'un a été gentil avec toi et tu t'en souviens encore. Qui était-ce ?",
+      } },
+    ],
     editions: {
       en: { asin: '1996972774', cover: '/covers/butterfly-effect-en.webp' },
       es: { asin: 'B0HH8KM4SX', cover: '/covers/butterfly-effect-es.webp' },
@@ -343,6 +462,23 @@ export const books: Book[] = [
     themeIds: ['gratitude', 'humility-listening'],
     relatedBookIds: ['tower-touched-sky', 'russet-the-fox', 'fig-trees-secret'],
     relatedActivityIds: ['adventure-journal', 'bingo', 'reading-tracker'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "The emperor has a palace full of gold and still feels empty. What do you think is missing?",
+        es: "El emperador tiene un palacio lleno de oro y aun así se siente vacío. ¿Qué crees que le falta?",
+        fr: "L'empereur a un palais rempli d'or et se sent quand même vide. Que lui manque-t-il, à ton avis ?",
+      } },
+      { stage: "during", prompt: {
+        en: "The villagers have almost nothing and seem happy. What do they have that he does not?",
+        es: "Los aldeanos casi no tienen nada y parecen felices. ¿Qué tienen ellos que él no tiene?",
+        fr: "Les villageois n'ont presque rien et semblent heureux. Qu'ont-ils que lui n'a pas ?",
+      } },
+      { stage: "after", prompt: {
+        en: "Name three things you have that no money could buy.",
+        es: "Nombra tres cosas que tienes y que el dinero no podría comprar.",
+        fr: "Nomme trois choses que tu as et qu'aucun argent ne pourrait acheter.",
+      } },
+    ],
     editions: {
       en: { asin: '199697274X', cover: '/covers/emperors-true-treasure-en.webp' },
       es: { asin: 'B0HHV9S5B5', cover: '/covers/emperors-true-treasure-es.webp' },
@@ -375,6 +511,23 @@ export const books: Book[] = [
     themeIds: ['self-worth', 'diversity', 'kindness'],
     relatedBookIds: ['true-beauty-meadowbrook', 'sparrow-saved-forest', 'rainbow-symphony'],
     relatedActivityIds: ['emotion-wheel', 'adventure-journal', 'bilingual-flashcards'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "The orchard only wants straight, perfect trees. What do you think of that rule?",
+        es: "El huerto solo quiere árboles rectos y perfectos. ¿Qué te parece esa regla?",
+        fr: "Le verger ne veut que des arbres bien droits et parfaits. Que penses-tu de cette règle ?",
+      } },
+      { stage: "during", prompt: {
+        en: "People have walked past this tree for years. What might they have missed?",
+        es: "La gente pasa junto a este árbol desde hace años. ¿Qué se habrán perdido?",
+        fr: "Les gens passent devant cet arbre depuis des années. Qu'ont-ils pu manquer ?",
+      } },
+      { stage: "after", prompt: {
+        en: "What is something about you that is not like anybody else?",
+        es: "¿Qué hay en ti que no se parece a nadie más?",
+        fr: "Qu'est-ce qui, chez toi, ne ressemble à personne d'autre ?",
+      } },
+    ],
     editions: {
       en: { asin: '1996972715', cover: '/covers/crooked-little-apple-tree-en.webp' },
       es: { asin: 'B0HHT9PY5B', cover: '/covers/crooked-little-apple-tree-es.webp' },
@@ -407,6 +560,23 @@ export const books: Book[] = [
     themeIds: ['self-worth', 'kindness', 'diversity'],
     relatedBookIds: ['crooked-little-apple-tree', 'sparrow-saved-forest', 'rainbow-symphony'],
     relatedActivityIds: ['emotion-wheel', 'adventure-journal', 'bilingual-flashcards'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "In this town everyone competes to look the most beautiful. Does that sound fun to you?",
+        es: "En este pueblo todos compiten por ser el más bello. ¿Te parece divertido?",
+        fr: "Dans cette ville, tout le monde rivalise de beauté. Cela te semble-t-il amusant ?",
+      } },
+      { stage: "during", prompt: {
+        en: "The quiet girl is doing something different from everyone else. What have you noticed her doing?",
+        es: "La niña callada hace algo distinto a los demás. ¿Qué has notado que hace?",
+        fr: "La petite fille discrète fait autrement que les autres. Qu'as-tu remarqué qu'elle fait ?",
+      } },
+      { stage: "after", prompt: {
+        en: "Who do you know who shines because of how kind they are?",
+        es: "¿A quién conoces que brilla por lo amable que es?",
+        fr: "Qui connais-tu qui brille par sa gentillesse ?",
+      } },
+    ],
     editions: {
       en: { asin: '1996972650', cover: '/covers/true-beauty-meadowbrook-en.webp' },
       es: { asin: 'B0HHW3BG4K', cover: '/covers/true-beauty-meadowbrook-es.webp' },
@@ -439,6 +609,23 @@ export const books: Book[] = [
     themeIds: ['patience-mastery'],
     relatedBookIds: ['heidis-journey-to-mastery', 'miras-thousand-cubes', 'russet-the-fox'],
     relatedActivityIds: ['bookmark-designer', 'craft-corner', 'puzzles'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "The boy wants to be a great woodworker today, right now. Do you think that can happen?",
+        es: "El niño quiere ser un gran carpintero hoy mismo. ¿Crees que se puede?",
+        fr: "Le garçon veut être un grand menuisier aujourd'hui, tout de suite. Penses-tu que c'est possible ?",
+      } },
+      { stage: "during", prompt: {
+        en: "His grandfather hands him a sanding block instead of a real tool. Why do you think he did that?",
+        es: "Su abuelo le da un bloque de lijar en vez de una herramienta de verdad. ¿Por qué crees que lo hizo?",
+        fr: "Son grand-père lui tend un bloc à poncer au lieu d'un vrai outil. Pourquoi, à ton avis ?",
+      } },
+      { stage: "after", prompt: {
+        en: "What is something you are slowly getting better at?",
+        es: "¿En qué estás mejorando poco a poco?",
+        fr: "Qu'est-ce que tu apprends petit à petit à mieux faire ?",
+      } },
+    ],
     editions: {
       en: { asin: '1996972898', cover: '/covers/sanding-block-en.webp' },
       es: { cover: '/covers/sanding-block-es.webp' },
@@ -473,6 +660,23 @@ export const books: Book[] = [
     themeIds: ['honesty', 'courage'],
     relatedBookIds: ['sparrow-saved-forest', 'diegos-brave-leap'],
     relatedActivityIds: ['character-workshop', 'finish-the-story', 'story-builder'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "Leo has a real job looking after the sheep. What do you think that job needs most?",
+        es: "Leo tiene un trabajo de verdad: cuidar las ovejas. ¿Qué crees que necesita más ese trabajo?",
+        fr: "Léo a un vrai métier : garder les moutons. De quoi ce métier a-t-il le plus besoin ?",
+      } },
+      { stage: "during", prompt: {
+        en: "The villagers came running twice and found nothing. Do you think they will come a third time?",
+        es: "Los aldeanos vinieron corriendo dos veces y no había nada. ¿Crees que vendrán una tercera vez?",
+        fr: "Les villageois sont accourus deux fois pour rien. Penses-tu qu'ils viendront une troisième fois ?",
+      } },
+      { stage: "after", prompt: {
+        en: "Trust breaks quickly and rebuilds slowly. How could Leo start earning it back?",
+        es: "La confianza se rompe rápido y se reconstruye despacio. ¿Cómo podría Leo recuperarla?",
+        fr: "La confiance se casse vite et se reconstruit lentement. Comment Léo pourrait-il la regagner ?",
+      } },
+    ],
     editions: {
       en: { asin: '1997027054', cover: '/covers/leo-and-the-wolf-en.webp' },
       es: { asin: 'B0H6N6ZBRL', cover: '/covers/leo-and-the-wolf-es.webp' },
@@ -505,6 +709,23 @@ export const books: Book[] = [
     themeIds: ['humility-listening', 'patience-mastery'],
     relatedBookIds: ['cloud-collector', 'tower-touched-sky', 'emperors-true-treasure'],
     relatedActivityIds: ['adventure-journal', 'bingo', 'bookmark-designer'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "Russet is sure he is the cleverest fox of all. What could go wrong for him?",
+        es: "Russet está seguro de ser el zorro más listo de todos. ¿Qué podría salirle mal?",
+        fr: "Russet est sûr d'être le renard le plus malin de tous. Que pourrait-il lui arriver ?",
+      } },
+      { stage: "during", prompt: {
+        en: "His mother warns him and he barely listens. What is she trying to tell him?",
+        es: "Su madre le advierte y él apenas la escucha. ¿Qué intenta decirle?",
+        fr: "Sa mère le prévient et il écoute à peine. Que cherche-t-elle à lui dire ?",
+      } },
+      { stage: "after", prompt: {
+        en: "Who gives you good advice? What is the last thing they told you?",
+        es: "¿Quién te da buenos consejos? ¿Cuál fue el último?",
+        fr: "Qui te donne de bons conseils ? Quel est le dernier qu'on t'a donné ?",
+      } },
+    ],
     editions: {
       en: { asin: '1997027046', cover: '/covers/russet-the-fox-en.webp' },
       es: { asin: 'B0H67H9F2W', cover: '/covers/russet-the-fox-es.webp' },
@@ -537,6 +758,23 @@ export const books: Book[] = [
     themeIds: ['gratitude', 'wonder'],
     relatedBookIds: ['mayas-shadow', 'pawa-rainbow-cloud', 'emperors-true-treasure'],
     relatedActivityIds: ['coloring', 'reading-tracker', 'rhyme-singalong'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "The little boat dreams of the big open ocean. Where would you sail first?",
+        es: "El barquito sueña con el mar abierto. ¿A dónde navegarías primero?",
+        fr: "Le petit bateau rêve du grand océan. Où voguerais-tu en premier ?",
+      } },
+      { stage: "during", prompt: {
+        en: "The boat is only in a puddle. Is he having a good time anyway?",
+        es: "El barco solo está en un charco. ¿Se está divirtiendo igual?",
+        fr: "Le bateau n'est que dans une flaque. S'amuse-t-il quand même ?",
+      } },
+      { stage: "after", prompt: {
+        en: "What small thing near you is more wonderful than it looks?",
+        es: "¿Qué cosa pequeña cerca de ti es más maravillosa de lo que parece?",
+        fr: "Quelle petite chose près de toi est plus merveilleuse qu'elle en a l'air ?",
+      } },
+    ],
     editions: {
       en: { asin: '1997027070', cover: 'https://m.media-amazon.com/images/I/71Zjj22p5sL.jpg' },
     },
@@ -567,6 +805,23 @@ export const books: Book[] = [
     themeIds: ['patience-mastery', 'curiosity', 'creativity'],
     relatedBookIds: ['miras-thousand-cubes', 'colors-mixed-up', 'little-mapmaker'],
     relatedActivityIds: ['bookmark-designer', 'craft-corner', 'build-a-scene'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "Heidi dreams of building solar cars and robots. What would you invent first?",
+        es: "Heidi sueña con coches solares y robots. ¿Qué inventarías tú primero?",
+        fr: "Heidi rêve de voitures solaires et de robots. Qu'inventerais-tu en premier ?",
+      } },
+      { stage: "during", prompt: {
+        en: "Her grandfather hands her a broom instead of tools. Does that seem fair to you?",
+        es: "Su abuelo le da una escoba en vez de herramientas. ¿Te parece justo?",
+        fr: "Son grand-père lui tend un balai au lieu d'outils. Cela te semble-t-il juste ?",
+      } },
+      { stage: "after", prompt: {
+        en: "Sweep, sort, watch, ask. Which of those would be hardest for you?",
+        es: "Barrer, ordenar, observar, preguntar. ¿Cuál te costaría más?",
+        fr: "Balayer, trier, observer, demander. Lequel serait le plus difficile pour toi ?",
+      } },
+    ],
     editions: {
       en: { asin: 'B0H35ZJKCR', cover: '/covers/heidis-journey-to-mastery-en.webp' },
       es: { cover: '/covers/heidis-journey-to-mastery-es.webp' },
@@ -599,6 +854,23 @@ export const books: Book[] = [
     themeIds: ['curiosity', 'wonder', 'humility-listening'],
     relatedBookIds: ['little-mapmaker', 'colors-mixed-up', 'russet-the-fox'],
     relatedActivityIds: ['rhyme-singalong', 'story-map', 'world-geography'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "Luna wants to catch one cloud of every kind in a jar. Do you think she can?",
+        es: "Luna quiere atrapar una nube de cada tipo en un frasco. ¿Crees que podrá?",
+        fr: "Luna veut attraper un nuage de chaque sorte dans un bocal. Penses-tu qu'elle y arrivera ?",
+      } },
+      { stage: "during", prompt: {
+        en: "Look out of the window. What shape is the sky making right now?",
+        es: "Mira por la ventana. ¿Qué forma tiene el cielo ahora mismo?",
+        fr: "Regarde par la fenêtre. Quelle forme fait le ciel en ce moment ?",
+      } },
+      { stage: "after", prompt: {
+        en: "Some things are too beautiful to keep. What would you rather just watch?",
+        es: "Algunas cosas son demasiado bellas para guardarlas. ¿Qué preferirías solo mirar?",
+        fr: "Certaines choses sont trop belles pour être gardées. Que préférerais-tu simplement regarder ?",
+      } },
+    ],
     editions: {
       en: { asin: 'B0H1DXZ1KH', cover: '/covers/cloud-collector-en.webp' },
       es: { asin: 'B0GX32FKCB', cover: '/covers/cloud-collector-es.webp' },
@@ -631,6 +903,23 @@ export const books: Book[] = [
     themeIds: ['creativity', 'curiosity', 'wonder'],
     relatedBookIds: ['colors-mixed-up', 'cloud-collector', 'mayas-shadow'],
     relatedActivityIds: ['coloring', 'story-map', 'world-geography'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "Maya draws maps of her bedroom and her backyard. What would you put on a map of your home?",
+        es: "Maya dibuja mapas de su cuarto y del jardín. ¿Qué pondrías en el mapa de tu casa?",
+        fr: "Maya dessine des cartes de sa chambre et du jardin. Que mettrais-tu sur la carte de chez toi ?",
+      } },
+      { stage: "during", prompt: {
+        en: "She drew a castle in the tall grass and it was really there. What would you draw next?",
+        es: "Dibujó un castillo entre la hierba alta y allí estaba de verdad. ¿Qué dibujarías después?",
+        fr: "Elle a dessiné un château dans les hautes herbes et il était vraiment là. Que dessinerais-tu ensuite ?",
+      } },
+      { stage: "after", prompt: {
+        en: "Let's make a map together. Where should it start?",
+        es: "Hagamos un mapa juntos. ¿Por dónde empieza?",
+        fr: "Faisons une carte ensemble. Par où commence-t-elle ?",
+      } },
+    ],
     editions: {
       en: { asin: 'B0GZJPZS74', cover: '/covers/little-mapmaker-en.webp' },
       es: { asin: 'B0HHVQ44J8', cover: '/covers/little-mapmaker-es.webp' },
@@ -663,6 +952,23 @@ export const books: Book[] = [
     themeIds: ['emotions', 'self-worth', 'wonder'],
     relatedBookIds: ['mayas-shadow', 'little-boats-big-wish', 'diegos-brave-leap'],
     relatedActivityIds: ['coloring', 'emotion-wheel', 'rhyme-singalong'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "Cirro is a little cloud who feels heavy and sad. What do you think might help him?",
+        es: "Cirro es una nubecita que se siente pesada y triste. ¿Qué crees que podría ayudarlo?",
+        fr: "Cirro est un petit nuage qui se sent lourd et triste. Qu'est-ce qui pourrait l'aider, à ton avis ?",
+      } },
+      { stage: "during", prompt: {
+        en: "Cirro thinks his tears only make a mess. Do you think that is true?",
+        es: "Cirro cree que sus lágrimas solo hacen desorden. ¿Crees que es cierto?",
+        fr: "Cirro croit que ses larmes ne font que du désordre. Est-ce vrai, à ton avis ?",
+      } },
+      { stage: "after", prompt: {
+        en: "Rain and sunshine together make a rainbow. What helps you after a really big feeling?",
+        es: "La lluvia y el sol juntos hacen un arcoíris. ¿Qué te ayuda después de una emoción muy grande?",
+        fr: "La pluie et le soleil ensemble font un arc-en-ciel. Qu'est-ce qui t'aide après une très grosse émotion ?",
+      } },
+    ],
     editions: {
       en: { asin: '1996972936', cover: '/covers/pawa-rainbow-cloud-en.webp' },
       es: { asin: 'B0HH8F8XLQ', cover: '/covers/pawa-rainbow-cloud-es.webp' },
@@ -695,6 +1001,23 @@ export const books: Book[] = [
     themeIds: ['patience-mastery', 'creativity'],
     relatedBookIds: ['heidis-journey-to-mastery', 'sanding-block', 'colors-mixed-up'],
     relatedActivityIds: ['bookmark-designer', 'craft-corner', 'build-a-scene'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "Mira wants to carve eagles. Her first task is a thousand plain cubes. How would you feel?",
+        es: "Mira quiere esculpir águilas. Su primera tarea: mil cubos simples. ¿Cómo te sentirías?",
+        fr: "Mira veut sculpter des aigles. Sa première tâche : mille cubes tout simples. Que ressentirais-tu ?",
+      } },
+      { stage: "during", prompt: {
+        en: "Her hands ache and she is frustrated. What do you think the cubes are teaching her?",
+        es: "Le duelen las manos y está frustrada. ¿Qué crees que le enseñan los cubos?",
+        fr: "Ses mains lui font mal et elle s'énerve. Que lui apprennent les cubes, à ton avis ?",
+      } },
+      { stage: "after", prompt: {
+        en: "What are your thousand cubes, the thing you have to practise over and over?",
+        es: "¿Cuáles son tus mil cubos, eso que tienes que practicar una y otra vez?",
+        fr: "Quels sont tes mille cubes à toi, la chose que tu dois répéter encore et encore ?",
+      } },
+    ],
     editions: {
       en: { asin: '1996972839', cover: '/covers/miras-thousand-cubes-en.webp' },
       es: { asin: 'B0HH8KWPD8', cover: '/covers/miras-thousand-cubes-es.webp' },
@@ -727,6 +1050,23 @@ export const books: Book[] = [
     themeIds: ['heritage', 'gratitude'],
     relatedBookIds: ['emperors-true-treasure', 'little-boats-big-wish'],
     relatedActivityIds: ['adventure-journal', 'bilingual-flashcards', 'bingo'],
+    discussionQuestions: [
+      { stage: "before", prompt: {
+        en: "Sofia wants to cut down an old fig tree. What do you think that tree has seen?",
+        es: "Sofía quiere talar una higuera vieja. ¿Qué crees que ha visto ese árbol?",
+        fr: "Sofia veut abattre un vieux figuier. Qu'a pu voir cet arbre, à ton avis ?",
+      } },
+      { stage: "during", prompt: {
+        en: "Mr. Costas remembers harvests and recipes from long ago. Who tells the old stories in your family?",
+        es: "El señor Costas recuerda cosechas y recetas de hace mucho. ¿Quién cuenta las historias antiguas en tu familia?",
+        fr: "M. Costas se souvient des récoltes et des recettes d'autrefois. Qui raconte les vieilles histoires dans ta famille ?",
+      } },
+      { stage: "after", prompt: {
+        en: "Some of what we inherit is made of stories. Which story would you keep?",
+        es: "Parte de lo que heredamos está hecho de historias. ¿Qué historia guardarías tú?",
+        fr: "Une partie de ce que l'on hérite est faite d'histoires. Quelle histoire garderais-tu ?",
+      } },
+    ],
     editions: {
       en: { asin: 'B0H36V1P89', cover: '/covers/fig-trees-secret-en.webp' },
       es: { asin: 'B0HHVVK17N', cover: '/covers/fig-trees-secret-es.webp' },

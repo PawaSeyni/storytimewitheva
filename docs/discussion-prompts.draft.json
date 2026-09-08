@@ -1,0 +1,522 @@
+{
+  "colors-mixed-up": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "If you could paint the sky any color at all, which one would you choose?",
+        "fr": "Si tu pouvais peindre le ciel de la couleur de ton choix, laquelle choisirais-tu ?",
+        "es": "Si pudieras pintar el cielo del color que quisieras, ¿cuál elegirías?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "Hawel is looking for the Color Keeper. What do you think the Color Keeper looks like?",
+        "fr": "Hawel cherche la Gardienne des couleurs. À quoi ressemble-t-elle, à ton avis ?",
+        "es": "Hawel busca a la Guardiana de los colores. ¿Cómo crees que es?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "Red, yellow and blue can make every other color. Which two would you mix first?",
+        "fr": "Le rouge, le jaune et le bleu font toutes les autres couleurs. Lesquelles mélangerais-tu en premier ?",
+        "es": "Con rojo, amarillo y azul se hacen todos los colores. ¿Cuáles mezclarías primero?"
+      }
+    }
+  ],
+  "rainbow-symphony": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "Every color in Harmonia sings its own song. What sound do you think blue makes?",
+        "fr": "Chaque couleur d'Harmonia chante sa propre chanson. Quel son fait le bleu, à ton avis ?",
+        "es": "Cada color de Harmonia canta su propia canción. ¿Qué sonido crees que hace el azul?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "The colors are arguing about whose song is best. What could Pawa say to help them?",
+        "fr": "Les couleurs se disputent pour savoir qui chante le mieux. Que pourrait dire Pawa pour les aider ?",
+        "es": "Los colores discuten sobre quién canta mejor. ¿Qué podría decir Pawa para ayudarlos?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "The symphony only works when every voice joins in. Who would you want to sing with?",
+        "fr": "La symphonie ne fonctionne que si toutes les voix chantent ensemble. Avec qui aimerais-tu chanter ?",
+        "es": "La sinfonía solo funciona cuando todas las voces cantan juntas. ¿Con quién te gustaría cantar?"
+      }
+    }
+  ],
+  "tower-touched-sky": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "Victor is about to build the tallest tower ever. What could go wrong if nobody asks questions?",
+        "fr": "Victor va construire la plus haute tour jamais imaginée. Que peut-il arriver si personne ne pose de questions ?",
+        "es": "Victor va a construir la torre más alta jamás imaginada. ¿Qué puede pasar si nadie hace preguntas?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "One young engineer keeps raising his hand and nobody sees him. Have you ever felt like that?",
+        "fr": "Un jeune ingénieur lève la main et personne ne le voit. T'es-tu déjà senti comme lui ?",
+        "es": "Un ingeniero joven levanta la mano y nadie lo ve. ¿Alguna vez te has sentido así?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "Victor learns to design with questions instead of certainty. What question would you have asked him?",
+        "fr": "Victor apprend à concevoir avec des questions plutôt qu'avec des certitudes. Quelle question lui aurais-tu posée ?",
+        "es": "Victor aprende a diseñar con preguntas en vez de certezas. ¿Qué pregunta le habrías hecho?"
+      }
+    }
+  ],
+  "mayas-shadow": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "Look at your shadow. Where do you think it goes when you fall asleep?",
+        "fr": "Regarde ton ombre. Où va-t-elle quand tu t'endors, à ton avis ?",
+        "es": "Mira tu sombra. ¿A dónde crees que va cuando te duermes?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "Maya's shadow is out having an adventure. What would your shadow do all night?",
+        "fr": "L'ombre de Maya part à l'aventure. Que ferait la tienne toute la nuit ?",
+        "es": "La sombra de Maya se va de aventura. ¿Qué haría la tuya toda la noche?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "The shadow always comes home by morning. What do you love about coming home?",
+        "fr": "L'ombre rentre toujours au petit matin. Qu'est-ce que tu aimes quand tu rentres à la maison ?",
+        "es": "La sombra siempre vuelve por la mañana. ¿Qué te gusta de volver a casa?"
+      }
+    }
+  ],
+  "sparrow-saved-forest": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "The biggest animals do not notice the forest is in trouble. Who do you think will?",
+        "fr": "Les plus grands animaux ne voient pas que la forêt est en danger. Qui va s'en apercevoir, à ton avis ?",
+        "es": "Los animales más grandes no ven que el bosque está en peligro. ¿Quién crees que sí lo verá?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "The sparrow is the smallest one there. What can someone small do that someone big cannot?",
+        "fr": "Le moineau est le plus petit de tous. Que peut faire un petit que les grands ne peuvent pas ?",
+        "es": "El gorrión es el más pequeño de todos. ¿Qué puede hacer alguien pequeño que los grandes no?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "Name one small kind thing you could do tomorrow.",
+        "fr": "Nomme une petite gentillesse que tu pourrais faire demain.",
+        "es": "Di una pequeña amabilidad que podrías hacer mañana."
+      }
+    }
+  ],
+  "diegos-brave-leap": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "Diego is standing at the edge of a cliff and everyone is watching. How do you think his tummy feels?",
+        "fr": "Diego est au bord de la falaise et tout le monde le regarde. Comment se sent son ventre, à ton avis ?",
+        "es": "Diego está al borde del acantilado y todos lo miran. ¿Cómo crees que siente la barriga?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "Being brave does not always feel brave on the inside. What helps you when you feel scared?",
+        "fr": "Être courageux ne se sent pas toujours courageux à l'intérieur. Qu'est-ce qui t'aide quand tu as peur ?",
+        "es": "Ser valiente no siempre se siente valiente por dentro. ¿Qué te ayuda cuando tienes miedo?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "Tell me about a time you did something even though you felt nervous.",
+        "fr": "Raconte-moi une fois où tu as fait quelque chose même si tu avais le trac.",
+        "es": "Cuéntame una vez que hiciste algo aunque estabas nervioso."
+      }
+    }
+  ],
+  "butterfly-effect": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "What do you think one small kind thing could turn into?",
+        "fr": "En quoi une petite gentillesse pourrait-elle se transformer, à ton avis ?",
+        "es": "¿En qué crees que puede convertirse una pequeña amabilidad?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "The kindness keeps passing from one person to the next. Can you spot where it goes now?",
+        "fr": "La gentillesse passe d'une personne à l'autre. Peux-tu voir où elle va maintenant ?",
+        "es": "La amabilidad pasa de una persona a otra. ¿Puedes ver a dónde va ahora?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "Someone was kind to you once and you still remember it. Who was it?",
+        "fr": "Quelqu'un a été gentil avec toi et tu t'en souviens encore. Qui était-ce ?",
+        "es": "Alguien fue amable contigo y todavía lo recuerdas. ¿Quién fue?"
+      }
+    }
+  ],
+  "emperors-true-treasure": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "The emperor has a palace full of gold and still feels empty. What do you think is missing?",
+        "fr": "L'empereur a un palais rempli d'or et se sent quand même vide. Que lui manque-t-il, à ton avis ?",
+        "es": "El emperador tiene un palacio lleno de oro y aun así se siente vacío. ¿Qué crees que le falta?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "The villagers have almost nothing and seem happy. What do they have that he does not?",
+        "fr": "Les villageois n'ont presque rien et semblent heureux. Qu'ont-ils que lui n'a pas ?",
+        "es": "Los aldeanos casi no tienen nada y parecen felices. ¿Qué tienen ellos que él no tiene?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "Name three things you have that no money could buy.",
+        "fr": "Nomme trois choses que tu as et qu'aucun argent ne pourrait acheter.",
+        "es": "Nombra tres cosas que tienes y que el dinero no podría comprar."
+      }
+    }
+  ],
+  "crooked-little-apple-tree": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "The orchard only wants straight, perfect trees. What do you think of that rule?",
+        "fr": "Le verger ne veut que des arbres bien droits et parfaits. Que penses-tu de cette règle ?",
+        "es": "El huerto solo quiere árboles rectos y perfectos. ¿Qué te parece esa regla?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "People have walked past this tree for years. What might they have missed?",
+        "fr": "Les gens passent devant cet arbre depuis des années. Qu'ont-ils pu manquer ?",
+        "es": "La gente pasa junto a este árbol desde hace años. ¿Qué se habrán perdido?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "What is something about you that is not like anybody else?",
+        "fr": "Qu'est-ce qui, chez toi, ne ressemble à personne d'autre ?",
+        "es": "¿Qué hay en ti que no se parece a nadie más?"
+      }
+    }
+  ],
+  "true-beauty-meadowbrook": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "In this town everyone competes to look the most beautiful. Does that sound fun to you?",
+        "fr": "Dans cette ville, tout le monde rivalise de beauté. Cela te semble-t-il amusant ?",
+        "es": "En este pueblo todos compiten por ser el más bello. ¿Te parece divertido?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "The quiet girl is doing something different from everyone else. What have you noticed her doing?",
+        "fr": "La petite fille discrète fait autrement que les autres. Qu'as-tu remarqué qu'elle fait ?",
+        "es": "La niña callada hace algo distinto a los demás. ¿Qué has notado que hace?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "Who do you know who shines because of how kind they are?",
+        "fr": "Qui connais-tu qui brille par sa gentillesse ?",
+        "es": "¿A quién conoces que brilla por lo amable que es?"
+      }
+    }
+  ],
+  "sanding-block": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "The boy wants to be a great woodworker today, right now. Do you think that can happen?",
+        "fr": "Le garçon veut être un grand menuisier aujourd'hui, tout de suite. Penses-tu que c'est possible ?",
+        "es": "El niño quiere ser un gran carpintero hoy mismo. ¿Crees que se puede?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "His grandfather hands him a sanding block instead of a real tool. Why do you think he did that?",
+        "fr": "Son grand-père lui tend un bloc à poncer au lieu d'un vrai outil. Pourquoi, à ton avis ?",
+        "es": "Su abuelo le da un bloque de lijar en vez de una herramienta de verdad. ¿Por qué crees que lo hizo?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "What is something you are slowly getting better at?",
+        "fr": "Qu'est-ce que tu apprends petit à petit à mieux faire ?",
+        "es": "¿En qué estás mejorando poco a poco?"
+      }
+    }
+  ],
+  "leo-and-the-wolf": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "Leo has a real job looking after the sheep. What do you think that job needs most?",
+        "fr": "Léo a un vrai métier : garder les moutons. De quoi ce métier a-t-il le plus besoin ?",
+        "es": "Leo tiene un trabajo de verdad: cuidar las ovejas. ¿Qué crees que necesita más ese trabajo?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "The villagers came running twice and found nothing. Do you think they will come a third time?",
+        "fr": "Les villageois sont accourus deux fois pour rien. Penses-tu qu'ils viendront une troisième fois ?",
+        "es": "Los aldeanos vinieron corriendo dos veces y no había nada. ¿Crees que vendrán una tercera vez?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "Trust breaks quickly and rebuilds slowly. How could Leo start earning it back?",
+        "fr": "La confiance se casse vite et se reconstruit lentement. Comment Léo pourrait-il la regagner ?",
+        "es": "La confianza se rompe rápido y se reconstruye despacio. ¿Cómo podría Leo recuperarla?"
+      }
+    }
+  ],
+  "russet-the-fox": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "Russet is sure he is the cleverest fox of all. What could go wrong for him?",
+        "fr": "Russet est sûr d'être le renard le plus malin de tous. Que pourrait-il lui arriver ?",
+        "es": "Russet está seguro de ser el zorro más listo de todos. ¿Qué podría salirle mal?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "His mother warns him and he barely listens. What is she trying to tell him?",
+        "fr": "Sa mère le prévient et il écoute à peine. Que cherche-t-elle à lui dire ?",
+        "es": "Su madre le advierte y él apenas la escucha. ¿Qué intenta decirle?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "Who gives you good advice? What is the last thing they told you?",
+        "fr": "Qui te donne de bons conseils ? Quel est le dernier qu'on t'a donné ?",
+        "es": "¿Quién te da buenos consejos? ¿Cuál fue el último?"
+      }
+    }
+  ],
+  "little-boats-big-wish": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "The little boat dreams of the big open ocean. Where would you sail first?",
+        "fr": "Le petit bateau rêve du grand océan. Où voguerais-tu en premier ?",
+        "es": "El barquito sueña con el mar abierto. ¿A dónde navegarías primero?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "The boat is only in a puddle. Is he having a good time anyway?",
+        "fr": "Le bateau n'est que dans une flaque. S'amuse-t-il quand même ?",
+        "es": "El barco solo está en un charco. ¿Se está divirtiendo igual?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "What small thing near you is more wonderful than it looks?",
+        "fr": "Quelle petite chose près de toi est plus merveilleuse qu'elle en a l'air ?",
+        "es": "¿Qué cosa pequeña cerca de ti es más maravillosa de lo que parece?"
+      }
+    }
+  ],
+  "heidis-journey-to-mastery": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "Heidi dreams of building solar cars and robots. What would you invent first?",
+        "fr": "Heidi rêve de voitures solaires et de robots. Qu'inventerais-tu en premier ?",
+        "es": "Heidi sueña con coches solares y robots. ¿Qué inventarías tú primero?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "Her grandfather hands her a broom instead of tools. Does that seem fair to you?",
+        "fr": "Son grand-père lui tend un balai au lieu d'outils. Cela te semble-t-il juste ?",
+        "es": "Su abuelo le da una escoba en vez de herramientas. ¿Te parece justo?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "Sweep, sort, watch, ask. Which of those would be hardest for you?",
+        "fr": "Balayer, trier, observer, demander. Lequel serait le plus difficile pour toi ?",
+        "es": "Barrer, ordenar, observar, preguntar. ¿Cuál te costaría más?"
+      }
+    }
+  ],
+  "cloud-collector": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "Luna wants to catch one cloud of every kind in a jar. Do you think she can?",
+        "fr": "Luna veut attraper un nuage de chaque sorte dans un bocal. Penses-tu qu'elle y arrivera ?",
+        "es": "Luna quiere atrapar una nube de cada tipo en un frasco. ¿Crees que podrá?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "Look out of the window. What shape is the sky making right now?",
+        "fr": "Regarde par la fenêtre. Quelle forme fait le ciel en ce moment ?",
+        "es": "Mira por la ventana. ¿Qué forma tiene el cielo ahora mismo?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "Some things are too beautiful to keep. What would you rather just watch?",
+        "fr": "Certaines choses sont trop belles pour être gardées. Que préférerais-tu simplement regarder ?",
+        "es": "Algunas cosas son demasiado bellas para guardarlas. ¿Qué preferirías solo mirar?"
+      }
+    }
+  ],
+  "little-mapmaker": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "Maya draws maps of her bedroom and her backyard. What would you put on a map of your home?",
+        "fr": "Maya dessine des cartes de sa chambre et du jardin. Que mettrais-tu sur la carte de chez toi ?",
+        "es": "Maya dibuja mapas de su cuarto y del jardín. ¿Qué pondrías en el mapa de tu casa?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "She drew a castle in the tall grass and it was really there. What would you draw next?",
+        "fr": "Elle a dessiné un château dans les hautes herbes et il était vraiment là. Que dessinerais-tu ensuite ?",
+        "es": "Dibujó un castillo entre la hierba alta y allí estaba de verdad. ¿Qué dibujarías después?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "Let's make a map together. Where should it start?",
+        "fr": "Faisons une carte ensemble. Par où commence-t-elle ?",
+        "es": "Hagamos un mapa juntos. ¿Por dónde empieza?"
+      }
+    }
+  ],
+  "pawa-rainbow-cloud": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "Cirro is a little cloud who feels heavy and sad. What do you think might help him?",
+        "fr": "Cirro est un petit nuage qui se sent lourd et triste. Qu'est-ce qui pourrait l'aider, à ton avis ?",
+        "es": "Cirro es una nubecita que se siente pesada y triste. ¿Qué crees que podría ayudarlo?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "Cirro thinks his tears only make a mess. Do you think that is true?",
+        "fr": "Cirro croit que ses larmes ne font que du désordre. Est-ce vrai, à ton avis ?",
+        "es": "Cirro cree que sus lágrimas solo hacen desorden. ¿Crees que es cierto?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "Rain and sunshine together make a rainbow. What helps you after a really big feeling?",
+        "fr": "La pluie et le soleil ensemble font un arc-en-ciel. Qu'est-ce qui t'aide après une très grosse émotion ?",
+        "es": "La lluvia y el sol juntos hacen un arcoíris. ¿Qué te ayuda después de una emoción muy grande?"
+      }
+    }
+  ],
+  "miras-thousand-cubes": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "Mira wants to carve eagles. Her first task is a thousand plain cubes. How would you feel?",
+        "fr": "Mira veut sculpter des aigles. Sa première tâche : mille cubes tout simples. Que ressentirais-tu ?",
+        "es": "Mira quiere esculpir águilas. Su primera tarea: mil cubos simples. ¿Cómo te sentirías?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "Her hands ache and she is frustrated. What do you think the cubes are teaching her?",
+        "fr": "Ses mains lui font mal et elle s'énerve. Que lui apprennent les cubes, à ton avis ?",
+        "es": "Le duelen las manos y está frustrada. ¿Qué crees que le enseñan los cubos?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "What are your thousand cubes, the thing you have to practise over and over?",
+        "fr": "Quels sont tes mille cubes à toi, la chose que tu dois répéter encore et encore ?",
+        "es": "¿Cuáles son tus mil cubos, eso que tienes que practicar una y otra vez?"
+      }
+    }
+  ],
+  "fig-trees-secret": [
+    {
+      "stage": "before",
+      "prompt": {
+        "en": "Sofia wants to cut down an old fig tree. What do you think that tree has seen?",
+        "fr": "Sofia veut abattre un vieux figuier. Qu'a pu voir cet arbre, à ton avis ?",
+        "es": "Sofía quiere talar una higuera vieja. ¿Qué crees que ha visto ese árbol?"
+      }
+    },
+    {
+      "stage": "during",
+      "prompt": {
+        "en": "Mr. Costas remembers harvests and recipes from long ago. Who tells the old stories in your family?",
+        "fr": "M. Costas se souvient des récoltes et des recettes d'autrefois. Qui raconte les vieilles histoires dans ta famille ?",
+        "es": "El señor Costas recuerda cosechas y recetas de hace mucho. ¿Quién cuenta las historias antiguas en tu familia?"
+      }
+    },
+    {
+      "stage": "after",
+      "prompt": {
+        "en": "Some of what we inherit is made of stories. Which story would you keep?",
+        "fr": "Une partie de ce que l'on hérite est faite d'histoires. Quelle histoire garderais-tu ?",
+        "es": "Parte de lo que heredamos está hecho de historias. ¿Qué historia guardarías tú?"
+      }
+    }
+  ]
+}
