@@ -211,8 +211,10 @@ npm run gen:downloads   # public/_redirects from hashed PDFs
   open, and what was explicitly decided against.
 - `docs/backlog.md` — the operational backlog, including the Sprint 6 gate items.
 
-**Referenced by the sprint specifications but NOT yet written** (do not cite these as if they
-exist): `DATA_ARCHITECTURE.md`, `CONTENT_VALIDATION_SPEC.md`, `COOKIE_FREE_TEST_SPEC.md`, and
-`docs/sprints/SPRINT_{6,7,8}_TECHNICAL_IMPLEMENTATION.md` with their matching `_TEST_PLAN.md`.
-The Sprint 1 and Sprint 3–7 specifications were supplied as attachments and are not stored
-here, which is tracked as `PUNCH_LIST.md` D-05.
+**Referenced by the sprint specifications but NOT yet written** (do not cite these as if
+they exist): `DATA_ARCHITECTURE.md`, `CONTENT_VALIDATION_SPEC.md`, `COOKIE_FREE_TEST_SPEC.md`
+and the per-sprint `_TEST_PLAN.md` files.
+
+**The sprint specifications themselves are now in the repo:** `docs/sprints/` holds Sprints
+3 to 8 (126 IDs) with a status index in `docs/sprints/README.md`. Every one of them opens
+with a Repository Verification Gate; honour it, because its paths have been wrong before.
