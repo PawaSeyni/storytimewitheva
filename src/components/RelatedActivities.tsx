@@ -1,5 +1,6 @@
 import { Link } from './LocalizedLink';
-import { useTranslation } from '../lib/language';
+import { useLanguage, useTranslation } from '../lib/language';
+import { gameUrl } from '../lib/gameUrl';
 import { useActivities } from '../data/activities';
 
 /**
@@ -22,6 +23,7 @@ const TRANSLATIONS = {
 
 export default function RelatedActivities({ slugs }: { slugs: string[] }) {
   const t = useTranslation(TRANSLATIONS);
+  const { language } = useLanguage();
   const all = useActivities();
   const items = slugs.map((s) => all.find((a) => a.slug === s)).filter((a) => a !== undefined);
   if (items.length === 0) return null;
@@ -58,7 +60,7 @@ export default function RelatedActivities({ slugs }: { slugs: string[] }) {
           const cls =
             'group bg-white rounded-2xl shadow-md hover:shadow-xl border border-gray-50 p-5 flex flex-col h-full transition-all';
           return a.game ? (
-            <a key={a.slug} href={`/games/${a.slug}.html`} className={cls}>{inner}</a>
+            <a key={a.slug} href={gameUrl(a.slug, language)} className={cls}>{inner}</a>
           ) : (
             <Link key={a.slug} to={`/activities/${a.slug}`} className={cls}>{inner}</Link>
           );

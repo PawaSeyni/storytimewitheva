@@ -126,8 +126,13 @@ test('a11y — every book page renders its paired activities (B-02)', () => {
       assert.ok(h, `${prefix}/books/${b.id}: not prerendered`);
       for (const slug of slugs) {
         const game = activities.find((a) => a.slug === slug)?.game;
-        // Games are standalone static HTML and are deliberately NOT language-prefixed.
-        const href = game ? `/games/${slug}.html` : `${prefix}/activities/${slug}`;
+        // Games are standalone static HTML and are deliberately NOT language-prefixed:
+        // one shared file serves all three languages, and the language travels in the
+        // query string (C6-04) so it survives an arrival with no stored preference.
+        const lang = prefix.replace('/', '');
+        const href = game
+          ? `/games/${slug}.html${lang ? `?lang=${lang}` : ''}`
+          : `${prefix}/activities/${slug}`;
         assert.ok(
           h.includes(`href="${href}"`),
           `${prefix}/books/${b.id}: missing activity link ${href}`,

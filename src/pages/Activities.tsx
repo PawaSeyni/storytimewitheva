@@ -6,7 +6,8 @@ import Seo from '../components/Seo';
 import { useActivities } from '../data/activities';
 import { isActivityCompleted, loadProgress, type Progress } from '../lib/progress';
 import { matchesAgeFilter } from '../lib/ages';
-import { useTranslation } from '../lib/language';
+import { useTranslation, useLanguage } from '../lib/language';
+import { gameUrl } from '../lib/gameUrl';
 
 const TRANSLATIONS = {
   en: {
@@ -63,6 +64,7 @@ export default function Activities() {
   const [progress, setProgress] = useState<Progress>(() => loadProgress());
   const [ageFilter, setAgeFilter] = useState('All');
   const t = useTranslation(TRANSLATIONS);
+  const { language } = useLanguage();
   const activities = useActivities();
 
   const ageFilters = [
@@ -150,7 +152,7 @@ export default function Activities() {
                       {act.game ? (
                         // Standalone HTML game — full-page static file in /public/games.
                         <a
-                          href={`/games/${act.slug}.html`}
+                          href={gameUrl(act.slug, language)}
                           className="text-sm font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 px-4 py-1.5 rounded-full shadow-sm transition-all"
                         >
                           {done ? t.openAgain : t.tryNow}

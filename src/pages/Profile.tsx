@@ -15,6 +15,7 @@ import {
 import Seo from '../components/Seo';
 import Pixel from '../components/Pixel';
 import { useTranslation, useLanguage } from '../lib/language';
+import { gameUrl } from '../lib/gameUrl';
 
 const TRANSLATIONS = {
   en: {
@@ -442,7 +443,7 @@ export default function Profile() {
                   <Pixel mood="sleepy" size={88} className="block mx-auto mb-2" />
                   <p className="text-gray-500 text-sm mb-3">{t.trackerEmpty}</p>
                   <a
-                    href="/games/reading-tracker.html"
+                    href={gameUrl('reading-tracker', language)}
                     className="text-sm font-semibold text-purple-600 hover:text-purple-800"
                   >
                     {t.trackerCta} →

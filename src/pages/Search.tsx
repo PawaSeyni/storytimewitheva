@@ -4,7 +4,8 @@ import Seo from '../components/Seo';
 import { useBooks } from '../data/books';
 import { useActivities } from '../data/activities';
 import { isAmazonCover, sizedCover } from '../lib/covers';
-import { useTranslation } from '../lib/language';
+import { useTranslation, useLanguage } from '../lib/language';
+import { gameUrl } from '../lib/gameUrl';
 
 const TRANSLATIONS = {
   en: {
@@ -48,6 +49,7 @@ const TRANSLATIONS = {
 export default function Search() {
   const [params, setParams] = useSearchParams();
   const t = useTranslation(TRANSLATIONS);
+  const { language } = useLanguage();
   const books = useBooks();
   const activities = useActivities();
 
@@ -138,7 +140,7 @@ export default function Search() {
                   );
                   const cls = 'bg-white rounded-2xl shadow-md hover:shadow-xl border border-gray-50 p-4 flex items-center gap-3 group transition-all';
                   return a.game ? (
-                    <a key={a.slug} href={`/games/${a.slug}.html`} className={cls}>{inner}</a>
+                    <a key={a.slug} href={gameUrl(a.slug, language)} className={cls}>{inner}</a>
                   ) : (
                     <Link key={a.slug} to={`/activities/${a.slug}`} className={cls}>{inner}</Link>
                   );

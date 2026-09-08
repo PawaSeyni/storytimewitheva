@@ -13,6 +13,18 @@
  *
  * Resolution order: per-game[lang] -> COMMON[lang] -> per-game.en -> COMMON.en -> key.
  * Game CONTENT (spelled words, story text) and its TTS stay as-is; only chrome localizes.
+ *
+ * LANGUAGE SOURCE (C6-04, fixed 2026-09-09): the ?lang= query parameter comes FIRST,
+ * localStorage second. localStorage alone was not enough: the SPA writes
+ * 'preferredLanguage' only when someone clicks the language switcher, so a visitor who
+ * arrived at /fr/books/... from a search result or a shared link had nothing stored and
+ * every game rendered in English. Site links now carry ?lang=, which also survives
+ * private mode and blocked storage.
+ *
+ * LINKS BACK TO THE SITE are rewritten to the active language prefix here rather than in
+ * twelve HTML files. Without it a French reader who opened a game was returned to the
+ * ENGLISH site by every nav link. /games/* links are left alone: games are shared, and
+ * carry their language in the query string instead.
  */
 (function () {
   var COMMON = {
@@ -51,12 +63,51 @@
     },
   };
 
+  var NAV = {
+    '/': { en: 'Home', es: 'Inicio', fr: 'Accueil' },
+    '/books': { en: 'Books', es: 'Libros', fr: 'Livres' },
+    '/activities': { en: 'Activities', es: 'Actividades', fr: 'Activités' },
+    '/resources': { en: 'Resources', es: 'Recursos', fr: 'Ressources' },
+    '/about': { en: 'About', es: 'Sobre Eva', fr: 'À propos' },
+  };
+
+  function isLang(v) {
+    return v === 'es' || v === 'fr' ? v : null;
+  }
+
   function resolveLang() {
+    // 1. explicit ?lang= — set by every in-site link to a game.
+    try {
+      var m = /[?&]lang=([a-z]{2})/.exec(window.location.search || '');
+      if (m && isLang(m[1])) return m[1];
+    } catch (e) {
+      /* ignore */
+    }
+    // 2. the switcher's stored preference, when there is one.
     try {
       var p = localStorage.getItem('preferredLanguage');
-      return p === 'es' || p === 'fr' ? p : 'en';
+      if (isLang(p)) return p;
     } catch (e) {
-      return 'en';
+      /* ignore */
+    }
+    return 'en';
+  }
+
+  /** Send site links back to the language the reader came in with. */
+  function localizeSiteLinks() {
+    var L = window.GAME_LANG;
+    if (L === 'en') return;
+    var links = document.querySelectorAll('a[href^="/"]');
+    for (var i = 0; i < links.length; i++) {
+      var a = links[i];
+      var href = a.getAttribute('href');
+      if (!href || href.indexOf('/games/') === 0) continue;      // games are shared
+      if (href.indexOf('/es/') === 0 || href.indexOf('/fr/') === 0) continue; // already prefixed
+      var label = NAV[href];
+      a.setAttribute('href', href === '/' ? '/' + L : '/' + L + href);
+      // Nav labels are plain text in the game HTML. Localize them too, unless the element
+      // already declares a data-i18n key (which apply() has just set).
+      if (label && label[L] && !a.getAttribute('data-i18n')) a.textContent = label[L];
     }
   }
 
@@ -80,6 +131,7 @@
       if (v != null) nodes[i].textContent = v;
     }
     document.documentElement.lang = window.GAME_LANG;
+    localizeSiteLinks();
   }
   window.applyGameI18n = apply;
 
