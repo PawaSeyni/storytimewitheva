@@ -16,7 +16,7 @@ in the code it is cited (`S1-010`, `S3-004`, `S3-005`, `S3-016`).
 **Legend.** `shipped` = merged and verified · `open` = actionable now · `editorial` = needs
 owner copy or a content decision, not code · `deferred` = knowingly parked with a reason.
 
-Last updated 2026-09-08 against `main` @ `eae1747`.
+Last updated 2026-09-09 against `main` @ `3477fd9`.
 
 ---
 
@@ -68,6 +68,15 @@ Last updated 2026-09-08 against `main` @ `eae1747`.
 | A-02 | **`esbuild` declared as a devDependency.** The projection imports it, but it was reached only as a transitive dependency of Vite (`vite@5.4.21 → esbuild@0.21.5`). A Vite major upgrade or a stricter installer would have dropped it from the resolution path — and a projection load failure is a hard build error by design, so the build would have broken rather than degraded. | #141 |
 | A-03 | **Dangling references removed** — 6 of the 7 documents the reference pointed at did not exist. Now split into what is in the repo versus what the sprint specs cite but nobody has written. | #141 |
 
+### Book relationships to activities and resources
+
+| ID | Item | Evidence |
+|----|------|----------|
+| V-01 | **`activities.data.ts` split out** — `activities.ts` imported `useLanguage`, which pulls in React and react-router-dom, so Node could not load it and `relatedActivityIds` could not be validated. Split browser-free exactly like the catalog, and `loadActivities()` added to the projection. | #150 |
+| V-02 | **B-02 written in** — all 20 books carry 3 `relatedActivityIds`, from the owner-approved affinity map (theme → activity category, ×3) plus age-range fit, with any non-overlapping age disqualified outright. | #150 |
+| V-03 | **Validation upgraded from "non-empty string" to real existence**, plus a guard that no book recommends an activity outside its age range. The old check would have shipped a typo as a dead link. | #150 |
+| V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
+
 ### Related-books UI (Sprint 6)
 
 | ID | Item | Evidence |
@@ -116,8 +125,6 @@ nothing reads those fields yet; the moment the UI ships, each becomes user-facin
 
 | ID | Item | Type | Why it gates Sprint 6 |
 |----|------|------|----------------------|
-| **B-02** | **`relatedActivityIds` is empty on all 20 books.** The field and its validation exist; no book links to an activity. | editorial | Any Sprint 6/7 surface that renders book → activity links would render an empty section on every book page. |
-| **B-03** | **`relatedResourceIds` is empty on all 20 books.** The registry and reference validation now exist (R-01, L-05), so pairs can finally be written. | editorial | Same failure mode as B-02: a section that renders on 0 of 20 books. |
 
 ---
 

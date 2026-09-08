@@ -18,6 +18,7 @@ const TAXONOMY = path.join(ROOT, 'src', 'data', 'taxonomy.ts');
 const CONTENT_INDEX = path.join(ROOT, 'src', 'data', 'contentIndex.ts');
 const RESOURCES = path.join(ROOT, 'src', 'data', 'resources.ts');
 const RELATED = path.join(ROOT, 'src', 'data', 'relatedBooks.ts');
+const ACTIVITIES = path.join(ROOT, 'src', 'data', 'activities.data.ts');
 
 /** Compile a browser-free TS module with esbuild and evaluate it in-process. */
 async function loadModule(entry) {
@@ -93,4 +94,11 @@ let relatedCache = null;
 export async function loadRelatedBooks() {
   if (!relatedCache) relatedCache = await loadModule(RELATED);
   return relatedCache;
+}
+
+let activitiesCache = null;
+/** The activities/games registry (browser-free), for relatedActivityIds validation. */
+export async function loadActivities() {
+  if (!activitiesCache) activitiesCache = await loadModule(ACTIVITIES);
+  return activitiesCache;
 }
