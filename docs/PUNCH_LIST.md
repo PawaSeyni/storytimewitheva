@@ -16,7 +16,7 @@ in the code it is cited (`S1-010`, `S3-004`, `S3-005`, `S3-016`).
 **Legend.** `shipped` = merged and verified · `open` = actionable now · `editorial` = needs
 owner copy or a content decision, not code · `deferred` = knowingly parked with a reason.
 
-Last updated 2026-09-08 against `main` @ `a1fa562`.
+Last updated 2026-09-08 against `main` @ `091c8df`.
 
 ---
 
@@ -59,6 +59,14 @@ Last updated 2026-09-08 against `main` @ `a1fa562`.
 | R-02 | **Kind-prefixed IDs** (`article-*` / `download-*`) — the download slug and an article anchor are both `follow-up-activities`, and `relatedResourceIds` is a flat string array, so an unprefixed scheme would resolve a book to the wrong resource. A test asserts the collision still exists so the reason survives copy edits. | #143 |
 | R-03 | **`Resources.tsx` consumes the registry** — `TEACHER_DOWNLOADS`, `RESOURCE_META` and six duplicated localized arrays deleted, along with the index-coupling that silently mislabeled cards when order changed. Copy was **moved, not rewritten**: rendered EN/FR/ES pages were byte-identical apart from the JS bundle hash. | #143 |
 | R-04 | **`loadResources()`** added to the build projection so scripts and tests read the same source as the catalog. | #143 |
+
+### Architecture reference
+
+| ID | Item | Evidence |
+|----|------|----------|
+| A-01 | **`ARCHITECTURE_ALIGNMENT.md` + `ADR-001` (cookie-free)** merged after a full re-verification pass against the codebase. | #141 |
+| A-02 | **`esbuild` declared as a devDependency.** The projection imports it, but it was reached only as a transitive dependency of Vite (`vite@5.4.21 → esbuild@0.21.5`). A Vite major upgrade or a stricter installer would have dropped it from the resolution path — and a projection load failure is a hard build error by design, so the build would have broken rather than degraded. | #141 |
+| A-03 | **Dangling references removed** — 6 of the 7 documents the reference pointed at did not exist. Now split into what is in the repo versus what the sprint specs cite but nobody has written. | #141 |
 
 ### Related-books UI (Sprint 6)
 
@@ -137,7 +145,6 @@ nothing reads those fields yet; the moment the UI ships, each becomes user-facin
 | D-01 | **`Activities.tsx` still uses the legacy overlap age filter** with its own `Ages 9+` bucket and `age3to5`/`age6to8`/`age9plus` keys, which `/books` retired in T-04. The two pages now disagree about what an age filter means. | open | Small, mechanical, and the last place the retired age model survives. |
 | D-02 | **`react-router` moderate advisory** — the only offered fix is a breaking v7 major. Deliberately deferred rather than force-upgraded mid-programme. | deferred | Re-evaluate when a v6 patch exists or at a natural upgrade window. |
 | D-03 | **11 lint warnings**, all `react-refresh/only-export-components`, 0 errors. Pre-existing and stable. | deferred | Cosmetic; touching them churns component files for no runtime benefit. |
-| D-04 | **PR #141 open** — `ARCHITECTURE_ALIGNMENT.md` + `ADR-001` (cookie-free architecture). Documentation only. | open | Merge or close; it has been open since 2026-09-08. |
 | D-05 | **Sprint 3–7 specifications are not in the repo.** Roughly 90 spec items remain unimplemented and are tracked only in the source documents. | open | Consider committing the specs so this punch list can be keyed to real IDs. |
 
 ---
