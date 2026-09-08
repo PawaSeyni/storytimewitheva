@@ -5,7 +5,9 @@ import BookRecommendations from '../components/BookRecommendations';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
+import { Link } from '../components/LocalizedLink';
 import { THEMES, THEME_IDS, supportsAge, type ThemeId } from '../data/taxonomy';
+import { collectionEligibleThemeIds } from '../data/contentIndex';
 import { AMAZON_AUTHOR_URL } from '../lib/amazon';
 import { useTranslation, useLanguage, localizePath } from '../lib/language';
 
@@ -21,6 +23,7 @@ const TRANSLATIONS = {
     searchPlaceholder: 'Search books by title or theme...',
     ageAll: 'All',
       themeAll: 'All themes',
+      browseByTheme: 'Browse by theme',
       ageLabel: 'Age',
       themeLabel: 'Theme',
     showingBook: 'book',
@@ -46,6 +49,7 @@ const TRANSLATIONS = {
     searchPlaceholder: 'Buscar libros por título o tema...',
     ageAll: 'Todos',
       themeAll: 'Todos los temas',
+      browseByTheme: 'Explora por tema',
       ageLabel: 'Edad',
       themeLabel: 'Tema',
     showingBook: 'libro',
@@ -71,6 +75,7 @@ const TRANSLATIONS = {
     searchPlaceholder: 'Rechercher un livre par titre ou thème...',
     ageAll: 'Tous',
       themeAll: 'Tous les thèmes',
+      browseByTheme: 'Explorer par thème',
       ageLabel: 'Âge',
       themeLabel: 'Thème',
     showingBook: 'livre',
@@ -201,6 +206,26 @@ export default function Books() {
               </button>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Internal inbound links to the public theme collections. Without these the
+          collection routes would be orphans (indexable but unreachable by crawl). */}
+      <section className="px-4 pb-8">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-sm font-semibold text-gray-500 mb-3">{t.browseByTheme}</h2>
+          <ul className="flex flex-wrap gap-2">
+            {collectionEligibleThemeIds.map((id) => (
+              <li key={id}>
+                <Link
+                  to={`/collections/${id}`}
+                  className="inline-block px-3 py-1.5 rounded-full bg-purple-50 border border-purple-100 text-sm text-purple-700 hover:border-purple-300"
+                >
+                  {THEMES[id].labels[language]}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

@@ -14,7 +14,7 @@
 // interactive routes (the activity games) work exactly as before.
 
 import http from 'node:http';
-import { bookIds } from './lib/catalog.mjs';
+import { bookIds, loadContentIndex } from './lib/catalog.mjs';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync, statSync, readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -147,6 +147,27 @@ const LANG_PREFIXES = ['', '/es', '/fr'];
     process.exit(1);
   }
   console.log(`Book-page guard OK: ${catalogIds.length} books all in the sitemap.`);
+}
+
+// Collection guard (taxonomy v1 §9): the sitemap must advertise EXACTLY the
+// collection-eligible themes — no missing route (unreachable collection) and no extra
+// route (a thin page for a theme below the two-book minimum, e.g. honesty/heritage).
+{
+  const { collectionEligibleThemeIds } = await loadContentIndex();
+  const routeSet = new Set(sitemapRoutes.map(r => r.replace(/\/$/, '')));
+  const missing = collectionEligibleThemeIds.filter(id => !routeSet.has(`/collections/${id}`));
+  const advertised = [...routeSet].filter(r => r.startsWith('/collections/')).map(r => r.split('/')[2]);
+  const extra = advertised.filter(id => !collectionEligibleThemeIds.includes(id));
+  if (missing.length || extra.length) {
+    console.error(
+      `\nPrerender aborted: collection/sitemap parity failed.` +
+      (missing.length ? `\n  missing (eligible but no route): ${missing.join(', ')}` : '') +
+      (extra.length ? `\n  extra (route for an INELIGIBLE theme — thin page): ${extra.join(', ')}` : '') +
+      `\nRun \`npm run gen:sitemap\`.\n`,
+    );
+    process.exit(1);
+  }
+  console.log(`Collection guard OK: ${collectionEligibleThemeIds.length} eligible collections, no thin pages.`);
 }
 
 const extraRoutes = [...NOINDEX_SPA_ROUTES, ...LANDING_SLUGS.map(s => `/free/${s}`)].flatMap(p =>
