@@ -11,6 +11,7 @@ import { books, useBook, useBooks, isComingSoon } from '../data/books';
 import BookCard from '../components/BookCard';
 import { relatedBooksFor } from '../data/relatedBooks';
 import ResourceStrip from '../components/ResourceStrip';
+import RelatedActivities from '../components/RelatedActivities';
 import { BOOK_RATINGS } from '../data/ratings';
 import { LANGUAGE_LABELS, SUPPORTED_LANGUAGES, localizePath, useLanguage, useTranslation } from '../lib/language';
 import type { Language } from '../lib/language';
@@ -48,6 +49,12 @@ export default function BookDetail() {
     const byId = new Map(allBooks.map((b) => [b.id, b]));
     return relatedBooksFor(bookId).map((r) => byId.get(r.id)).filter((b) => b !== undefined);
   }, [bookId, allBooks]);
+
+  // B-02 pairs live on the raw catalog record, not the localized projection.
+  const activitySlugs = useMemo(
+    () => books.find((b) => b.id === bookId)?.relatedActivityIds ?? [],
+    [bookId],
+  );
 
   const cover = book?.coverImage ?? '';
   const amazon = isAmazonCover(cover);
@@ -271,6 +278,8 @@ export default function BookDetail() {
           </div>
         </section>
       )}
+
+      <RelatedActivities slugs={activitySlugs} />
 
       <ResourceStrip />
     </main>

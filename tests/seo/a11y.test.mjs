@@ -10,13 +10,14 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadCatalog, loadContentIndex, loadRelatedBooks } from '../../scripts/lib/catalog.mjs';
+import { loadCatalog, loadContentIndex, loadRelatedBooks, loadActivities } from '../../scripts/lib/catalog.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const DIST = path.join(ROOT, 'dist');
 const { collectionEligibleThemeIds } = await loadContentIndex();
 const { books } = await loadCatalog();
 const { relatedBooksFor } = await loadRelatedBooks();
+const { activities } = await loadActivities();
 const LOCALES = { en: '', fr: '/fr', es: '/es' };
 
 /** English-only UI strings that must never appear on a localized collection page. */
@@ -112,4 +113,35 @@ test('a11y — no book page recommends itself in the rendered output', () => {
     const ids = relatedBooksFor(b.id).map((r) => r.id);
     assert.ok(!ids.includes(b.id), `${b.id}: self-recommendation reached the ranking`);
   }
+});
+
+test('a11y — every book page renders its paired activities (B-02)', () => {
+  // The pairs were data-only until this section shipped. If the section silently stops
+  // rendering, the pairing work becomes invisible again — so assert the real HTML.
+  for (const b of books) {
+    const slugs = b.relatedActivityIds ?? [];
+    if (slugs.length === 0) continue;
+    for (const prefix of Object.values(LOCALES)) {
+      const h = read(`${prefix}/books/${b.id}`);
+      assert.ok(h, `${prefix}/books/${b.id}: not prerendered`);
+      for (const slug of slugs) {
+        const game = activities.find((a) => a.slug === slug)?.game;
+        // Games are standalone static HTML and are deliberately NOT language-prefixed.
+        const href = game ? `/games/${slug}.html` : `${prefix}/activities/${slug}`;
+        assert.ok(
+          h.includes(`href="${href}"`),
+          `${prefix}/books/${b.id}: missing activity link ${href}`,
+        );
+      }
+    }
+  }
+});
+
+test('a11y — activity card titles are h3 under the section h2, not another h2', () => {
+  // Activities.tsx uses h2 for its card titles; reusing that level here would put a card
+  // title at the same rank as the section heading it belongs to.
+  const sample = read('/books/cloud-collector');
+  assert.ok(sample, 'book page not prerendered');
+  assert.ok(/<h2[^>]*>Try an activity<\/h2>/.test(sample), 'missing the "Try an activity" h2');
+  assert.ok(/<h3[^>]*>[^<]*<\/h3>/.test(sample), 'expected h3 card titles on the book page');
 });
