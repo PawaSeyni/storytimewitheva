@@ -16,7 +16,7 @@ in the code it is cited (`S1-010`, `S3-004`, `S3-005`, `S3-016`).
 **Legend.** `shipped` = merged and verified · `open` = actionable now · `editorial` = needs
 owner copy or a content decision, not code · `deferred` = knowingly parked with a reason.
 
-Last updated 2026-09-08 against `main` @ `091c8df`.
+Last updated 2026-09-08 against `main` @ `eae1747`.
 
 ---
 
@@ -76,6 +76,8 @@ Last updated 2026-09-08 against `main` @ `091c8df`.
 | U-02 | **`src/data/relatedBooks.ts`** — browser-free, pure, deterministic ranking, loaded by the UI and by CI through the same projection, so an asserted rule is a rendered rule. | #147 |
 | U-03 | **"You might also like" section** on all 20 book pages × 3 languages, prerendered, using the existing `BookCard`. Localized heading is an `h2` above the h3 card titles. | #147 |
 | U-04 | **Locked by tests** — 5 ranking tests (tier order, no self-reference, theme-only top-up, non-empty, deterministic) and 2 a11y tests over the prerendered book pages. | #147 |
+| U-06 | **B-01 closed by two editorial swaps, limit kept at 3.** `sparrow-saved-forest`: `crooked-little-apple-tree` → `butterfly-effect` (kindness). `emperors-true-treasure`: `little-boats-big-wish` → `fig-trees-secret` (gratitude). Both like-for-like on shared theme; each displaced the best-covered entry so the change costs the least discovery. Every book now has an incoming link, and a test keeps it that way. | #149 |
+| U-07 | **`RELATED_BOOKS_LIMIT` stays 3 — decided, not open.** Raising it was measured, not assumed: limit 4 fixes only one of the two orphans (72 links, 14 mechanical), limit 5 fixes both (86 links, 28 mechanical). Inflating every row across 20 books × 3 languages to patch two books is a bad trade, and 3 fills the `lg:grid-cols-3` row exactly while keeping every card a signed-off pick. | #149 |
 | U-05 | **The top-up adds nothing today, by arithmetic** — 58 editorial slots, **0 theme top-ups**. The only two short lists (`leo-and-the-wolf`, `fig-trees-secret`) are short *because* their editorial pairs already exhausted their entire theme pool. The rule is a live safety net for future catalog edits, not a fix for the current data. Raising `RELATED_BOOKS_LIMIT` above 3 is what would make the theme tier visible. | #147 |
 
 ### Relationships
@@ -114,7 +116,6 @@ nothing reads those fields yet; the moment the UI ships, each becomes user-facin
 
 | ID | Item | Type | Why it gates Sprint 6 |
 |----|------|------|----------------------|
-| **B-01** | **Two books have no incoming link.** `butterfly-effect` and `fig-trees-secret` appear in no other book's `relatedBookIds`, because every book they point at already had three stronger matches. | editorial | Once "You might also like" ships, these two are reachable only from search, `/books` and their collections. Fixing it means displacing an existing approved pair, which is an owner call. Check current state any time via `contentIndex.incomingRelatedBookIds`. |
 | **B-02** | **`relatedActivityIds` is empty on all 20 books.** The field and its validation exist; no book links to an activity. | editorial | Any Sprint 6/7 surface that renders book → activity links would render an empty section on every book page. |
 | **B-03** | **`relatedResourceIds` is empty on all 20 books.** The registry and reference validation now exist (R-01, L-05), so pairs can finally be written. | editorial | Same failure mode as B-02: a section that renders on 0 of 20 books. |
 
@@ -124,7 +125,6 @@ nothing reads those fields yet; the moment the UI ships, each becomes user-facin
 
 | ID | Item | Type | Notes |
 |----|------|------|-------|
-| C6-03 | **`RELATED_BOOKS_LIMIT` is 3.** At 3 the theme tier never fires (U-05). At 4 it would surface a genuine second-tier recommendation on most books. | decision | Owner call: more discovery vs a tighter, fully-editorial row. |
 | C6-02 | **Richer collection intros** — collection pages currently carry a short localized intro only. | open | Queued, not specified. |
 
 ---

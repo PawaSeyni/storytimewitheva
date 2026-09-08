@@ -142,3 +142,15 @@ test('discussionQuestions — well-formed and complete in EN, FR and ES where pr
     assert.equal(new Set(seen).size, seen.length, `${b.id}: duplicate discussion prompt`);
   }
 });
+
+test('relationships — no book is left without an INCOMING link (B-01)', () => {
+  // A book nothing links TO is reachable only from search, /books and its collections.
+  // That gap was invisible until someone looked for it, so it is a guard now: adding a
+  // book, or re-cutting the pairs, fails loudly instead of silently orphaning a title.
+  for (const b of books) {
+    assert.ok(
+      (idx.incomingRelatedBookIds[b.id] ?? []).length > 0,
+      `${b.id}: no other book links to it — add it to one book's relatedBookIds`,
+    );
+  }
+});

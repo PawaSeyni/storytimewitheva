@@ -18,13 +18,13 @@ person, not code) · `blocked`.
 
 ## Sprint 6 gate — resolve BEFORE the related-books UI ships
 
-B-04 is decided and shipped. The remaining three are content gaps that the now-live
+B-01 and B-04 are resolved. The remaining two are content gaps that the now-live
 "You might also like" section makes user-facing, so they are gates, not nice-to-haves.
 Full context in [`PUNCH_LIST.md` §B](PUNCH_LIST.md).
 
 | ID | Item | Pri | Status | Notes |
 |----|------|-----|--------|-------|
-| B-01 | **Two books have no incoming link** — `butterfly-effect` and `fig-trees-secret` appear in no other book's `relatedBookIds`, because every book they point at already had three stronger matches. | P1 | `decision` | Once the UI ships they are reachable only from search, `/books` and their collections. Fixing it displaces an already-approved pair, so it is an owner call. Current state is checkable any time from `contentIndex.incomingRelatedBookIds`. |
+| B-01 | ✅ **RESOLVED** — two editorial swaps gave `butterfly-effect` and `fig-trees-secret` an incoming link (`sparrow-saved-forest` and `emperors-true-treasure` each gave up their best-covered pick, like-for-like on theme). `RELATED_BOOKS_LIMIT` stays 3; raising it would have needed 5 slots and 28 mechanical cards to fix a two-book gap. A test now fails the build if any book is left without an incoming link. | P1 | — | `PUNCH_LIST.md` U-06/U-07. |
 | B-02 | **`relatedActivityIds` empty on all 20 books** — field and validation exist, no book links to an activity. | P1 | `human` | A book → activity section would render empty on 20 of 20 books. |
 | B-03 | **`relatedResourceIds` empty on all 20 books** — the resource registry and reference validation landed in #143, so pairs can now be written. | P1 | `human` | Same failure mode as B-02. |
 | B-04 | ✅ **DECIDED + SHIPPED** — top up from the theme tier. Editorial picks first and never reordered; theme matches fill only empty seats; no age-band third tier. | P1 | — | Note: at `RELATED_BOOKS_LIMIT = 3` the top-up currently adds **0** entries, because the two short lists already exhausted their theme pools. Raising the limit to 4 is the open follow-up (`PUNCH_LIST.md` C6-03). |
