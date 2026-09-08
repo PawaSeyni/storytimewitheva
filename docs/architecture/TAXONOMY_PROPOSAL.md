@@ -61,11 +61,27 @@ truth; if they disagree with this document, the code wins and this file is stale
   editorial, and CI enforces EN/FR/ES parity, known stages and no duplicates the
   moment any are added.
 
+## Editorial decisions taken
+- **`relatedBookIds` pairs — approved 2026-09-08.** Ranked candidates (shared themes
+  ×3 + same primary age band) were generated and signed off, then written into
+  `books.data.ts`. Sign-off is what makes them editorial rather than computed; a
+  future regeneration must go back through approval rather than overwrite the field.
+- **Age-band-only matches rejected.** Every stored pair shares at least one theme.
+  A book with no thematic match simply carries fewer related books.
+- **Singleton themes kept.** `leo-and-the-wolf` (`honesty`) and `fig-trees-secret`
+  (`heritage`) keep their singleton themes rather than being re-themed to widen the
+  candidate pool, so they carry two related books each instead of three. Both themes
+  stay below the two-book collection minimum, so neither gets a public collection
+  page — that is the intended behaviour, not a gap.
+
 ## Still awaiting an editorial decision
-- **`relatedBookIds` pairs.** Ranked candidates have been generated (shared themes ×3
-  + same primary age band). Deliberately not auto-applied: Sprint 6 ranks "editorial
-  relation" and "matched theme" as separate tiers, so deriving one from the other
-  would collapse them and fake curation.
+- **Two books have no INCOMING link.** `butterfly-effect` and `fig-trees-secret` appear
+  in no other book's `relatedBookIds`, because every book they point at already had
+  three stronger matches. Nothing is broken today (nothing renders the field yet), but
+  once Sprint 6 ships "You might also like" those two are reachable only from search,
+  `/books` and their collections. Fixing it means displacing one existing pair
+  somewhere, which is an editorial call. The derived `incomingRelatedBookIds` index
+  makes the state checkable at any time.
 - **Discussion prompt copy** per book, in all three languages.
 
 
