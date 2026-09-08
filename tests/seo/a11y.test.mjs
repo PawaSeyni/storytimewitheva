@@ -10,11 +10,13 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadContentIndex } from '../../scripts/lib/catalog.mjs';
+import { loadCatalog, loadContentIndex, loadRelatedBooks } from '../../scripts/lib/catalog.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const DIST = path.join(ROOT, 'dist');
 const { collectionEligibleThemeIds } = await loadContentIndex();
+const { books } = await loadCatalog();
+const { relatedBooksFor } = await loadRelatedBooks();
 const LOCALES = { en: '', fr: '/fr', es: '/es' };
 
 /** English-only UI strings that must never appear on a localized collection page. */
@@ -23,6 +25,7 @@ const EN_ONLY = ['Browse other themes', 'in this collection', 'Books in this col
 const pages = [];
 for (const [loc, prefix] of Object.entries(LOCALES)) {
   for (const id of collectionEligibleThemeIds) pages.push({ route: `${prefix}/collections/${id}`, loc });
+  for (const b of books) pages.push({ route: `${prefix}/books/${b.id}`, loc });
   pages.push({ route: `${prefix}/books`, loc });
   pages.push({ route: prefix || '/', loc });
 }
@@ -82,5 +85,31 @@ test('i18n — no English UI copy leaks onto FR/ES collection pages', () => {
     for (const s of EN_ONLY) {
       assert.ok(!h.includes(s), `${route} (${loc}): untranslated English string "${s}"`);
     }
+  }
+});
+
+test('a11y — the related-books section carries an h2 above the h3 card titles', () => {
+  // Same defect class the collection grid shipped with: BookCard titles are h3, so a
+  // section that renders cards under the page h1 with no h2 skips a heading rank.
+  for (const b of books) {
+    const expected = relatedBooksFor(b.id).length;
+    for (const prefix of Object.values(LOCALES)) {
+      const route = `${prefix}/books/${b.id}`;
+      const h = read(route);
+      assert.ok(h, `${route}: not prerendered`);
+      const h2s = [...h.matchAll(/<h2[^>]*>(.*?)<\/h2>/gs)];
+      assert.ok(h2s.length >= 1, `${route}: related-books section has no <h2>`);
+      // Every card the ranking promised is actually on the page.
+      const links = new Set([...h.matchAll(/href="[^"]*\/books\/([a-z0-9-]+)\/?"/g)].map((m) => m[1]));
+      links.delete(b.id);
+      assert.ok(links.size >= expected, `${route}: expected >= ${expected} related links, found ${links.size}`);
+    }
+  }
+});
+
+test('a11y — no book page recommends itself in the rendered output', () => {
+  for (const b of books) {
+    const ids = relatedBooksFor(b.id).map((r) => r.id);
+    assert.ok(!ids.includes(b.id), `${b.id}: self-recommendation reached the ranking`);
   }
 });

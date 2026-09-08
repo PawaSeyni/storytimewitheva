@@ -17,6 +17,7 @@ const ENTRY = path.join(ROOT, 'src', 'data', 'books.data.ts');
 const TAXONOMY = path.join(ROOT, 'src', 'data', 'taxonomy.ts');
 const CONTENT_INDEX = path.join(ROOT, 'src', 'data', 'contentIndex.ts');
 const RESOURCES = path.join(ROOT, 'src', 'data', 'resources.ts');
+const RELATED = path.join(ROOT, 'src', 'data', 'relatedBooks.ts');
 
 /** Compile a browser-free TS module with esbuild and evaluate it in-process. */
 async function loadModule(entry) {
@@ -85,4 +86,11 @@ let resourcesCache = null;
 export async function loadResources() {
   if (!resourcesCache) resourcesCache = await loadModule(RESOURCES);
   return resourcesCache;
+}
+
+let relatedCache = null;
+/** The "You might also like" ranking the UI renders (editorial tier + theme top-up). */
+export async function loadRelatedBooks() {
+  if (!relatedCache) relatedCache = await loadModule(RELATED);
+  return relatedCache;
 }

@@ -18,8 +18,8 @@ person, not code) · `blocked`.
 
 ## Sprint 6 gate — resolve BEFORE the related-books UI ships
 
-These four are invisible today *because* nothing renders relationship data yet. Sprint 6's
-"You might also like" is what makes each of them user-facing, so they are gates, not nice-to-haves.
+B-04 is decided and shipped. The remaining three are content gaps that the now-live
+"You might also like" section makes user-facing, so they are gates, not nice-to-haves.
 Full context in [`PUNCH_LIST.md` §B](PUNCH_LIST.md).
 
 | ID | Item | Pri | Status | Notes |
@@ -27,7 +27,7 @@ Full context in [`PUNCH_LIST.md` §B](PUNCH_LIST.md).
 | B-01 | **Two books have no incoming link** — `butterfly-effect` and `fig-trees-secret` appear in no other book's `relatedBookIds`, because every book they point at already had three stronger matches. | P1 | `decision` | Once the UI ships they are reachable only from search, `/books` and their collections. Fixing it displaces an already-approved pair, so it is an owner call. Current state is checkable any time from `contentIndex.incomingRelatedBookIds`. |
 | B-02 | **`relatedActivityIds` empty on all 20 books** — field and validation exist, no book links to an activity. | P1 | `human` | A book → activity section would render empty on 20 of 20 books. |
 | B-03 | **`relatedResourceIds` empty on all 20 books** — the resource registry and reference validation landed in #143, so pairs can now be written. | P1 | `human` | Same failure mode as B-02. |
-| B-04 | **Fallback rule for short related-books lists** — max 3 editorial pairs, two books hold only 2. Show a short row, or top up from shared themes? | P1 | `decision` | Sprint 6 ranks "editorial relation" and "matched theme" as separate tiers, so topping up is legitimate. Decide tier order and whether the tiers are visually distinguished **before** the component is written. |
+| B-04 | ✅ **DECIDED + SHIPPED** — top up from the theme tier. Editorial picks first and never reordered; theme matches fill only empty seats; no age-band third tier. | P1 | — | Note: at `RELATED_BOOKS_LIMIT = 3` the top-up currently adds **0** entries, because the two short lists already exhausted their theme pools. Raising the limit to 4 is the open follow-up (`PUNCH_LIST.md` C6-03). |
 
 ---
 
