@@ -75,6 +75,7 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-01 | **`activities.data.ts` split out** — `activities.ts` imported `useLanguage`, which pulls in React and react-router-dom, so Node could not load it and `relatedActivityIds` could not be validated. Split browser-free exactly like the catalog, and `loadActivities()` added to the projection. | #150 |
 | V-02 | **B-02 written in** — all 20 books carry 3 `relatedActivityIds`, from the owner-approved affinity map (theme → activity category, ×3) plus age-range fit, with any non-overlapping age disqualified outright. | #150 |
 | V-03 | **Validation upgraded from "non-empty string" to real existence**, plus a guard that no book recommends an activity outside its age range. The old check would have shipped a typo as a dead link. | #150 |
+| V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
 ### Related-books UI (Sprint 6)
@@ -132,6 +133,7 @@ nothing reads those fields yet; the moment the UI ships, each becomes user-facin
 
 | ID | Item | Type | Notes |
 |----|------|------|-------|
+| C6-04 | **Games are English-only.** `/games/<slug>.html` is one static file per game with no language variant, so a French or Spanish reader following "Try an activity" lands on English. Pre-existing (`Activities.tsx` has always linked this way), now more visible because book pages surface games too. | open | Not introduced by #151; logged because the new section widens its reach. |
 | C6-02 | **Richer collection intros** — collection pages currently carry a short localized intro only. | open | Queued, not specified. |
 
 ---
