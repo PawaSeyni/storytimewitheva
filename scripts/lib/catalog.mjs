@@ -14,6 +14,28 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const ENTRY = path.join(ROOT, 'src', 'data', 'books.data.ts');
+const TAXONOMY = path.join(ROOT, 'src', 'data', 'taxonomy.ts');
+
+/** Compile a browser-free TS module with esbuild and evaluate it in-process. */
+async function loadModule(entry) {
+  const result = await build({
+    entryPoints: [entry],
+    bundle: true,
+    format: 'esm',
+    platform: 'neutral',
+    write: false,
+    logLevel: 'silent',
+  });
+  const code = result.outputFiles[0].text;
+  return import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
+}
+
+let taxonomyCache = null;
+/** The taxonomy registries (themes, age bands, derivation helpers). */
+export async function loadTaxonomy() {
+  if (!taxonomyCache) taxonomyCache = await loadModule(TAXONOMY);
+  return taxonomyCache;
+}
 
 let cached = null;
 
