@@ -10,6 +10,7 @@ import BookStatusButton from '../components/BookStatusButton';
 import { books, useBook, useBooks, isComingSoon } from '../data/books';
 import BookCard from '../components/BookCard';
 import { relatedBooksFor } from '../data/relatedBooks';
+import ResourceStrip from '../components/ResourceStrip';
 import { BOOK_RATINGS } from '../data/ratings';
 import { LANGUAGE_LABELS, SUPPORTED_LANGUAGES, localizePath, useLanguage, useTranslation } from '../lib/language';
 import type { Language } from '../lib/language';
@@ -270,6 +271,8 @@ export default function BookDetail() {
           </div>
         </section>
       )}
+
+      <ResourceStrip />
     </main>
   );
 }

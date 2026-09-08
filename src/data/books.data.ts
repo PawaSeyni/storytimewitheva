@@ -113,6 +113,7 @@ export const books: Book[] = [
     ageRange: '4-7',
     themeIds: ['curiosity', 'creativity'],
     relatedBookIds: ['little-mapmaker', 'heidis-journey-to-mastery', 'cloud-collector'],
+    relatedActivityIds: ['bookmark-designer', 'build-a-scene', 'coloring'],
     editions: {
       en: { asin: '1997027038', cover: '/covers/colors-mixed-up-en.webp' },
       es: { asin: 'B0HHXNZ2YK', cover: '/covers/colors-mixed-up-es.webp' },
@@ -145,6 +146,7 @@ export const books: Book[] = [
     ageRange: '3-6',
     themeIds: ['diversity', 'creativity'],
     relatedBookIds: ['mayas-shadow', 'colors-mixed-up', 'crooked-little-apple-tree'],
+    relatedActivityIds: ['bilingual-flashcards', 'build-a-scene', 'coloring'],
     editions: {
       en: { asin: '1997027003', cover: '/covers/rainbow-symphony-en.webp' },
       es: { asin: 'B0HHVDPBLD', cover: '/covers/rainbow-symphony-es.webp' },
@@ -177,6 +179,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['humility-listening'],
     relatedBookIds: ['emperors-true-treasure', 'russet-the-fox', 'cloud-collector'],
+    relatedActivityIds: ['adventure-journal', 'bingo', 'reading-tracker'],
     editions: {
       en: { asin: '1996972995', cover: '/covers/tower-touched-sky-en.webp' },
       es: { asin: 'B0HHW37V6W', cover: '/covers/tower-touched-sky-es.webp' },
@@ -210,6 +213,7 @@ export const books: Book[] = [
     ageRange: '3-7',
     themeIds: ['wonder', 'creativity'],
     relatedBookIds: ['little-mapmaker', 'rainbow-symphony', 'little-boats-big-wish'],
+    relatedActivityIds: ['coloring', 'bookmark-designer', 'build-a-scene'],
     editions: {
       en: { asin: '1996972812', cover: '/covers/mayas-shadow-en.webp' },
       es: { asin: 'B0HHWPG3FS', cover: '/covers/mayas-shadow-es.webp' },
@@ -242,6 +246,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['kindness', 'courage'],
     relatedBookIds: ['diegos-brave-leap', 'butterfly-effect', 'true-beauty-meadowbrook'],
+    relatedActivityIds: ['adventure-journal', 'bingo', 'character-workshop'],
     editions: {
       en: { asin: '1996972685', cover: '/covers/sparrow-saved-forest-en.webp' },
       es: { asin: 'B0HHTJ3NYP', cover: '/covers/sparrow-saved-forest-es.webp' },
@@ -273,6 +278,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['courage', 'emotions'],
     relatedBookIds: ['sparrow-saved-forest', 'leo-and-the-wolf', 'pawa-rainbow-cloud'],
+    relatedActivityIds: ['character-workshop', 'emotion-wheel', 'finish-the-story'],
     editions: {
       en: { asin: '1996972863', cover: '/covers/diegos-brave-leap-en.webp' },
       es: { cover: '/covers/diegos-brave-leap-es.webp' },
@@ -304,6 +310,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['kindness'],
     relatedBookIds: ['sparrow-saved-forest', 'crooked-little-apple-tree', 'true-beauty-meadowbrook'],
+    relatedActivityIds: ['adventure-journal', 'bingo', 'emotion-wheel'],
     editions: {
       en: { asin: '1996972774', cover: '/covers/butterfly-effect-en.webp' },
       es: { asin: 'B0HH8KM4SX', cover: '/covers/butterfly-effect-es.webp' },
@@ -335,6 +342,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['gratitude', 'humility-listening'],
     relatedBookIds: ['tower-touched-sky', 'russet-the-fox', 'fig-trees-secret'],
+    relatedActivityIds: ['adventure-journal', 'bingo', 'reading-tracker'],
     editions: {
       en: { asin: '199697274X', cover: '/covers/emperors-true-treasure-en.webp' },
       es: { asin: 'B0HHV9S5B5', cover: '/covers/emperors-true-treasure-es.webp' },
@@ -366,6 +374,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['self-worth', 'diversity', 'kindness'],
     relatedBookIds: ['true-beauty-meadowbrook', 'sparrow-saved-forest', 'rainbow-symphony'],
+    relatedActivityIds: ['emotion-wheel', 'adventure-journal', 'bilingual-flashcards'],
     editions: {
       en: { asin: '1996972715', cover: '/covers/crooked-little-apple-tree-en.webp' },
       es: { asin: 'B0HHT9PY5B', cover: '/covers/crooked-little-apple-tree-es.webp' },
@@ -397,6 +406,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['self-worth', 'kindness', 'diversity'],
     relatedBookIds: ['crooked-little-apple-tree', 'sparrow-saved-forest', 'rainbow-symphony'],
+    relatedActivityIds: ['emotion-wheel', 'adventure-journal', 'bilingual-flashcards'],
     editions: {
       en: { asin: '1996972650', cover: '/covers/true-beauty-meadowbrook-en.webp' },
       es: { asin: 'B0HHW3BG4K', cover: '/covers/true-beauty-meadowbrook-es.webp' },
@@ -428,6 +438,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['patience-mastery'],
     relatedBookIds: ['heidis-journey-to-mastery', 'miras-thousand-cubes', 'russet-the-fox'],
+    relatedActivityIds: ['bookmark-designer', 'craft-corner', 'puzzles'],
     editions: {
       en: { asin: '1996972898', cover: '/covers/sanding-block-en.webp' },
       es: { cover: '/covers/sanding-block-es.webp' },
@@ -461,6 +472,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['honesty', 'courage'],
     relatedBookIds: ['sparrow-saved-forest', 'diegos-brave-leap'],
+    relatedActivityIds: ['character-workshop', 'finish-the-story', 'story-builder'],
     editions: {
       en: { asin: '1997027054', cover: '/covers/leo-and-the-wolf-en.webp' },
       es: { asin: 'B0H6N6ZBRL', cover: '/covers/leo-and-the-wolf-es.webp' },
@@ -492,6 +504,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['humility-listening', 'patience-mastery'],
     relatedBookIds: ['cloud-collector', 'tower-touched-sky', 'emperors-true-treasure'],
+    relatedActivityIds: ['adventure-journal', 'bingo', 'bookmark-designer'],
     editions: {
       en: { asin: '1997027046', cover: '/covers/russet-the-fox-en.webp' },
       es: { asin: 'B0H67H9F2W', cover: '/covers/russet-the-fox-es.webp' },
@@ -523,6 +536,7 @@ export const books: Book[] = [
     ageRange: '3-7',
     themeIds: ['gratitude', 'wonder'],
     relatedBookIds: ['mayas-shadow', 'pawa-rainbow-cloud', 'emperors-true-treasure'],
+    relatedActivityIds: ['coloring', 'reading-tracker', 'rhyme-singalong'],
     editions: {
       en: { asin: '1997027070', cover: 'https://m.media-amazon.com/images/I/71Zjj22p5sL.jpg' },
     },
@@ -552,6 +566,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['patience-mastery', 'curiosity', 'creativity'],
     relatedBookIds: ['miras-thousand-cubes', 'colors-mixed-up', 'little-mapmaker'],
+    relatedActivityIds: ['bookmark-designer', 'craft-corner', 'build-a-scene'],
     editions: {
       en: { asin: 'B0H35ZJKCR', cover: '/covers/heidis-journey-to-mastery-en.webp' },
       es: { cover: '/covers/heidis-journey-to-mastery-es.webp' },
@@ -583,6 +598,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['curiosity', 'wonder', 'humility-listening'],
     relatedBookIds: ['little-mapmaker', 'colors-mixed-up', 'russet-the-fox'],
+    relatedActivityIds: ['rhyme-singalong', 'story-map', 'world-geography'],
     editions: {
       en: { asin: 'B0H1DXZ1KH', cover: '/covers/cloud-collector-en.webp' },
       es: { asin: 'B0GX32FKCB', cover: '/covers/cloud-collector-es.webp' },
@@ -614,6 +630,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['creativity', 'curiosity', 'wonder'],
     relatedBookIds: ['colors-mixed-up', 'cloud-collector', 'mayas-shadow'],
+    relatedActivityIds: ['coloring', 'story-map', 'world-geography'],
     editions: {
       en: { asin: 'B0GZJPZS74', cover: '/covers/little-mapmaker-en.webp' },
       es: { asin: 'B0HHVQ44J8', cover: '/covers/little-mapmaker-es.webp' },
@@ -645,6 +662,7 @@ export const books: Book[] = [
     ageRange: '3-7',
     themeIds: ['emotions', 'self-worth', 'wonder'],
     relatedBookIds: ['mayas-shadow', 'little-boats-big-wish', 'diegos-brave-leap'],
+    relatedActivityIds: ['coloring', 'emotion-wheel', 'rhyme-singalong'],
     editions: {
       en: { asin: '1996972936', cover: '/covers/pawa-rainbow-cloud-en.webp' },
       es: { asin: 'B0HH8F8XLQ', cover: '/covers/pawa-rainbow-cloud-es.webp' },
@@ -676,6 +694,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['patience-mastery', 'creativity'],
     relatedBookIds: ['heidis-journey-to-mastery', 'sanding-block', 'colors-mixed-up'],
+    relatedActivityIds: ['bookmark-designer', 'craft-corner', 'build-a-scene'],
     editions: {
       en: { asin: '1996972839', cover: '/covers/miras-thousand-cubes-en.webp' },
       es: { asin: 'B0HH8KWPD8', cover: '/covers/miras-thousand-cubes-es.webp' },
@@ -707,6 +726,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['heritage', 'gratitude'],
     relatedBookIds: ['emperors-true-treasure', 'little-boats-big-wish'],
+    relatedActivityIds: ['adventure-journal', 'bilingual-flashcards', 'bingo'],
     editions: {
       en: { asin: 'B0H36V1P89', cover: '/covers/fig-trees-secret-en.webp' },
       es: { asin: 'B0HHVVK17N', cover: '/covers/fig-trees-secret-es.webp' },

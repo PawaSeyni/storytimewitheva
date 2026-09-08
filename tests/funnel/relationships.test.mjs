@@ -5,11 +5,13 @@
 // also assert the derivation matches the forward source of truth.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { loadCatalog, loadContentIndex, loadResources } from '../../scripts/lib/catalog.mjs';
+import { loadCatalog, loadContentIndex, loadResources, loadActivities } from '../../scripts/lib/catalog.mjs';
 
 const { books } = await loadCatalog();
 const idx = await loadContentIndex();
 const { resources } = await loadResources();
+const { activities } = await loadActivities();
+const activitySlugs = new Set(activities.map((a) => a.slug));
 const resourceIds = new Set(resources.map((r) => r.id));
 // Language CODES. Note books.data's ALL_LANGUAGES holds display FLAGS, not codes.
 const LANGS = ['en', 'es', 'fr'];
@@ -26,12 +28,29 @@ test('relationships — relatedBookIds resolve, are unique, and never self-refer
   }
 });
 
-test('relationships — relatedActivityIds are unique (ids, not route slugs)', () => {
+test('relationships — every relatedActivityId resolves to a real activity', () => {
+  // Was a "non-empty string" check, which would have happily shipped a typo as a dead
+  // link. Activities are loadable now (activities.data.ts), so references are checked.
   for (const b of books) {
     const rel = b.relatedActivityIds ?? [];
     assert.equal(new Set(rel).size, rel.length, `${b.id}: duplicate id in relatedActivityIds`);
-    for (const a of rel) {
-      assert.ok(typeof a === 'string' && a.length > 0, `${b.id}: empty relatedActivityId`);
+    for (const slug of rel) {
+      assert.ok(activitySlugs.has(slug), `${b.id}: relatedActivityIds -> unknown activity "${slug}"`);
+    }
+  }
+});
+
+test('relationships — no book recommends an activity outside its age range', () => {
+  // An activity for ages 7-9 on a 3-5 book is not a recommendation, it is a mismatch.
+  const parse = (r) => r.split('-').map(Number);
+  for (const b of books) {
+    const [bMin, bMax] = parse(b.ageRange);
+    for (const slug of b.relatedActivityIds ?? []) {
+      const [aMin, aMax] = parse(activities.find((a) => a.slug === slug).ages);
+      assert.ok(
+        Math.min(aMax, bMax) - Math.max(aMin, bMin) >= 0,
+        `${b.id} (${b.ageRange}): activity "${slug}" (${aMin}-${aMax}) does not overlap`,
+      );
     }
   }
 });
