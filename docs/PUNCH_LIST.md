@@ -1,0 +1,151 @@
+# Content Architecture Punch List
+
+Tracks the content-architecture programme (catalog → taxonomy → collections → resources →
+relationships → related-books UI): what has shipped, what is open, and what has been
+deliberately decided against.
+
+**Scope.** This covers the data/content architecture stream only. Operational, marketing,
+security and funnel items live in [`backlog.md`](backlog.md) and are not repeated here.
+Cross-cutting gate items appear in both, keyed by the same ID.
+
+**Provenance caveat.** The Sprint 1 PRD and the Sprint 3–7 technical specifications were
+supplied as attachments and are **not stored in this repository**. Items below are therefore
+keyed to shipped deliverables and PR numbers rather than to spec IDs. Where a spec ID survives
+in the code it is cited (`S1-010`, `S3-004`, `S3-005`, `S3-016`).
+
+**Legend.** `shipped` = merged and verified · `open` = actionable now · `editorial` = needs
+owner copy or a content decision, not code · `deferred` = knowingly parked with a reason.
+
+Last updated 2026-09-08 against `main` @ `eb96cf6`.
+
+---
+
+## A. Shipped
+
+### Catalog and data architecture
+
+| ID | Item | Evidence |
+|----|------|----------|
+| C-01 | **Per-book `editions` field** — one source of truth for per-language cover art and Amazon ASIN, replacing parallel cover/link maps that drifted. `localize()` resolves per language and falls back to English. | #135 |
+| C-02 | **Trilingual editions live** — all 20 books show three language flags; ES/FR covers and Buy links wired where the edition exists. | #134, #136 |
+| C-03 | **Catalog split into a browser-free module** — `src/data/books.data.ts` imports only a type-only `Language`, so Node and esbuild can load the real catalog. `src/data/books.ts` keeps the React surface. | #142 |
+| C-04 | **Build-safe catalog projection** (`S3-004`) — `scripts/lib/catalog.mjs` compiles the data module with esbuild and evaluates it in-process. **Every regex source-parse was removed from the build path.** Load failure is a hard error, never a silent fallback. Faithfulness proven by byte-identical sitemap output. | #142 |
+| C-05 | **Fig Tree's Secret added** to the catalog (20 books) with A+ content. | #130 |
+
+### Taxonomy v1 (owner-approved 2026-09-08)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| T-01 | **Theme + age-band registries** — 13 stable theme IDs and 3 age bands with EN/FR/ES labels, in a browser-free `src/data/taxonomy.ts`. | #142 |
+| T-02 | **`themeIds` on every book** — 20-book matrix populated; counts verified against the signed-off table. Localized `theme` copy retained as display text and never parsed to infer an ID. | #142 |
+| T-03 | **Exact-age containment vs deterministic primary fit** — the two age models are separate by design. Simple band overlap was rejected during sign-off because it placed all 20 books in both the 3–5 and 6–7 groups. | #142 |
+| T-04 | **ID-based filters on `/books`** — theme `<select>` filters on IDs, not text; age chips are exact ages 3–9. The legacy `9+` bucket and the `age3to5`/`age6to8`/`age9plus` keys are gone. | #142 |
+| T-05 | **Derived reverse indexes** — `src/data/contentIndex.ts` computes `booksByThemeId`, `booksByPrimaryAgeBand`, `incomingRelatedBookIds`, `booksByActivityId`, `themeCounts`. **Nothing reverse is persisted in source**, so it cannot drift. | #142 |
+
+### Collections
+
+| ID | Item | Evidence |
+|----|------|----------|
+| K-01 | **`/collections/:themeId`** in all three languages — 11 eligible themes × 3 languages, localized H1 and intro, breadcrumbs, CollectionPage + ItemList + BreadcrumbList JSON-LD. | #142 |
+| K-02 | **Thin-page gate enforced in three independent places** — page-level 404, sitemap derivation, and the prerender guard. `honesty` and `heritage` (1 book each) cannot ship. Live-verified: `/collections/honesty` returns 404. | #142 |
+| K-03 | **Bidirectional sitemap/prerender parity** (`S3-005`) — the build fails on both missing *and* extra routes, not just missing ones. | #142 |
+| K-04 | **Heading-order fix** — collection grids had an h1 → h3 skip across all 33 pages (BookCard titles are h3). A localized sr-only h2 was added and locked by `tests/seo/a11y.test.mjs`. | #142 |
+
+### Resources
+
+| ID | Item | Evidence |
+|----|------|----------|
+| R-01 | **Resources modeled as data** — `src/data/resources.ts` holds the 4 printables and 6 articles with stable IDs, localized titles/descriptions and card metadata. | #143 |
+| R-02 | **Kind-prefixed IDs** (`article-*` / `download-*`) — the download slug and an article anchor are both `follow-up-activities`, and `relatedResourceIds` is a flat string array, so an unprefixed scheme would resolve a book to the wrong resource. A test asserts the collision still exists so the reason survives copy edits. | #143 |
+| R-03 | **`Resources.tsx` consumes the registry** — `TEACHER_DOWNLOADS`, `RESOURCE_META` and six duplicated localized arrays deleted, along with the index-coupling that silently mislabeled cards when order changed. Copy was **moved, not rewritten**: rendered EN/FR/ES pages were byte-identical apart from the JS bundle hash. | #143 |
+| R-04 | **`loadResources()`** added to the build projection so scripts and tests read the same source as the catalog. | #143 |
+
+### Relationships
+
+| ID | Item | Evidence |
+|----|------|----------|
+| L-01 | **Canonical forward relationship fields** — `relatedBookIds`, `relatedActivityIds`, `relatedResourceIds` use canonical IDs, never route slugs. (Owner correction during sign-off: `relatedActivitySlugs` → `relatedActivityIds`, because a route slug is a URL concern and identity is a content concern.) | #142 |
+| L-02 | **`discussionQuestions` contract** — `stage` (`before`/`during`/`after`) plus a localized `prompt`, with CI enforcing known stages, EN/FR/ES parity and no duplicates. Population is intentionally empty; see E-02. | #143 |
+| L-03 | **`relatedBookIds` populated from owner-approved pairs** — 58 forward links across 20 books (min 2, max 3). Age-band-only matches rejected as filler catalog-wide: every stored pair shares at least one theme. | #145 |
+| L-04 | **Singleton themes kept** — `leo-and-the-wolf` (`honesty`) and `fig-trees-secret` (`heritage`) keep their themes rather than being re-themed to widen the candidate pool, so they carry two related books each. Both stay below the two-book collection minimum by design. | #145 |
+| L-05 | **`relatedResourceIds` validation flipped** from "must stay empty" to "must resolve to a real resource". | #143 |
+
+### Sprint 1 — homepage and conversion
+
+| ID | Item | Evidence |
+|----|------|----------|
+| S1-a | Homepage value proposition, CTA hierarchy, IA reorder and analytics instrumentation. | #137 |
+| S1-b | Navigation: Profile → **My Reading**; redundant Home item dropped. | #139 |
+| S1-c | Testimonial section (`S1-010`) and free-bundle supporting CTA. | #140 |
+| S1-d | Catalog content inventory + multilingual QA checklist. | #138 |
+
+### Testing and build guards
+
+| ID | Item | Evidence |
+|----|------|----------|
+| Q-01 | **10 funnel suites / 56 tests** and **2 SEO suites / 170 tests** green on `main`. | #142, #143, #145 |
+| Q-02 | Guards that fail the build loudly: landing-page magnets, book pages in the sitemap, collection eligibility, bidirectional route parity, prerender readiness. | #142 |
+| Q-03 | `tests/seo/a11y.test.mjs` locks collection heading order permanently. | #142 |
+
+---
+
+## B. Open — resolve BEFORE Sprint 6
+
+Sprint 6 renders relationship data. These items are invisible today precisely because
+nothing reads those fields yet; the moment the UI ships, each becomes user-facing.
+
+| ID | Item | Type | Why it gates Sprint 6 |
+|----|------|------|----------------------|
+| **B-01** | **Two books have no incoming link.** `butterfly-effect` and `fig-trees-secret` appear in no other book's `relatedBookIds`, because every book they point at already had three stronger matches. | editorial | Once "You might also like" ships, these two are reachable only from search, `/books` and their collections. Fixing it means displacing an existing approved pair, which is an owner call. Check current state any time via `contentIndex.incomingRelatedBookIds`. |
+| **B-02** | **`relatedActivityIds` is empty on all 20 books.** The field and its validation exist; no book links to an activity. | editorial | Any Sprint 6/7 surface that renders book → activity links would render an empty section on every book page. |
+| **B-03** | **`relatedResourceIds` is empty on all 20 books.** The registry and reference validation now exist (R-01, L-05), so pairs can finally be written. | editorial | Same failure mode as B-02: a section that renders on 0 of 20 books. |
+| **B-04** | **Decide the fallback rule for a short related-books list.** With a max of 3 editorial pairs and two books holding only 2, the UI must either show a short row or top up from shared themes. | decision | Sprint 6 ranks "editorial relation" and "matched theme" as separate tiers, so topping up is legitimate — but the tier order and whether the two are visually distinguished must be decided before the component is written, not after. |
+
+---
+
+## C. Open — Sprint 6 itself
+
+| ID | Item | Type | Notes |
+|----|------|------|-------|
+| C6-01 | **"You might also like" on book pages** — render `relatedBookIds` (editorial tier first), localized in EN/FR/ES, prerendered. | open | Blocked on B-04 for the fallback rule; B-01 determines whether two books get orphaned in the process. Build was started and stopped pending this punch list. |
+| C6-02 | **Richer collection intros** — collection pages currently carry a short localized intro only. | open | Queued, not specified. |
+
+---
+
+## D. Open — editorial (owner copy required)
+
+| ID | Item | Notes |
+|----|------|-------|
+| E-01 | **Discussion prompt copy** for each book in EN/FR/ES. The model and CI validation ship; only the words are missing. An absent array stays valid, so this can land book by book. |
+| E-02 | **Reciprocal-link decision** for B-01 (same item, listed here because the fix is a content choice). |
+
+---
+
+## E. Open — technical debt and deferred
+
+| ID | Item | Type | Notes |
+|----|------|------|-------|
+| D-01 | **`Activities.tsx` still uses the legacy overlap age filter** with its own `Ages 9+` bucket and `age3to5`/`age6to8`/`age9plus` keys, which `/books` retired in T-04. The two pages now disagree about what an age filter means. | open | Small, mechanical, and the last place the retired age model survives. |
+| D-02 | **`react-router` moderate advisory** — the only offered fix is a breaking v7 major. Deliberately deferred rather than force-upgraded mid-programme. | deferred | Re-evaluate when a v6 patch exists or at a natural upgrade window. |
+| D-03 | **11 lint warnings**, all `react-refresh/only-export-components`, 0 errors. Pre-existing and stable. | deferred | Cosmetic; touching them churns component files for no runtime benefit. |
+| D-04 | **PR #141 open** — `ARCHITECTURE_ALIGNMENT.md` + `ADR-001` (cookie-free architecture). Documentation only. | open | Merge or close; it has been open since 2026-09-08. |
+| D-05 | **Sprint 3–7 specifications are not in the repo.** Roughly 90 spec items remain unimplemented and are tracked only in the source documents. | open | Consider committing the specs so this punch list can be keyed to real IDs. |
+
+---
+
+## F. Decided — not doing
+
+Recorded so they do not get quietly re-opened.
+
+- **Do not auto-derive `relatedBookIds` from shared themes.** Sprint 6 ranks "editorial
+  relation" and "matched theme" as separate tiers; deriving one from the other collapses them
+  and fakes curation. The 2026-09-08 pairs are editorial *because* they were signed off, not
+  because they were ranked. A future regeneration goes back through approval.
+- **Do not pad related-books lists with age-band-only matches.** A book with no thematic match
+  carries a shorter list.
+- **Do not re-theme `honesty` or `heritage`** to widen candidate pools or unlock collection
+  pages. Both stay below the two-book minimum by design.
+- **Do not persist reverse indexes** in source. They are derived at build time; persisting them
+  guarantees drift.
+- **Do not fall back to source parsing** if the catalog projection fails. A hard build error is
+  the point.
