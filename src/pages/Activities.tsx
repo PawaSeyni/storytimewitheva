@@ -5,7 +5,7 @@ import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import { useActivities } from '../data/activities';
 import { isActivityCompleted, loadProgress, type Progress } from '../lib/progress';
-import { matchesAgeFilter } from '../lib/ages';
+import { supportsAge } from '../data/taxonomy';
 import { useTranslation, useLanguage } from '../lib/language';
 import { gameUrl } from '../lib/gameUrl';
 
@@ -21,9 +21,6 @@ const TRANSLATIONS = {
     tryNow: 'Try Now →',
     openAgain: 'Open Again →',
     ageAll: 'All ages',
-    age3to5: 'Ages 3-5',
-    age6to8: 'Ages 6-8',
-    age9plus: 'Ages 9+',
     emptyAge: 'No activities in this age range yet. Try another.',
   },
   es: {
@@ -37,9 +34,6 @@ const TRANSLATIONS = {
     tryNow: 'Probar ahora →',
     openAgain: 'Abrir otra vez →',
     ageAll: 'Todas las edades',
-    age3to5: '3-5 años',
-    age6to8: '6-8 años',
-    age9plus: '9+ años',
     emptyAge: 'Aún no hay actividades en este rango de edad — prueba otro.',
   },
   fr: {
@@ -53,9 +47,6 @@ const TRANSLATIONS = {
     tryNow: 'Essayer →',
     openAgain: 'Rouvrir →',
     ageAll: 'Tous les âges',
-    age3to5: '3-5 ans',
-    age6to8: '6-8 ans',
-    age9plus: '9+ ans',
     emptyAge: 'Pas encore d\'activités dans cette tranche d\'âge — essayez-en une autre.',
   },
 };
@@ -67,13 +58,16 @@ export default function Activities() {
   const { language } = useLanguage();
   const activities = useActivities();
 
-  const ageFilters = [
+  // Exact ages 3-9 (language-invariant), the same model /books uses. The old
+  // 3-5 / 6-8 / "9+" bands matched by OVERLAP, so picking "3-5" surfaced a 5-9
+  // activity, and "9+" implied content beyond age 9 that does not exist.
+  const ageFilters: { key: string; label: string }[] = [
     { key: 'All', label: t.ageAll },
-    { key: '3-5', label: t.age3to5 },
-    { key: '6-8', label: t.age6to8 },
-    { key: '9+', label: t.age9plus },
+    ...['3', '4', '5', '6', '7', '8', '9'].map((a) => ({ key: a, label: a })),
   ];
-  const filtered = activities.filter((a) => matchesAgeFilter(a.ages, ageFilter));
+  const filtered = activities.filter(
+    (a) => ageFilter === 'All' || supportsAge(a.ages, Number(ageFilter)),
+  );
 
   useEffect(() => {
     const sync = () => setProgress(loadProgress());
