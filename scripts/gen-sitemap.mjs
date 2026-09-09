@@ -54,8 +54,10 @@ const bookPages = bookIds.map(id => [`/books/${id}`, 'monthly', '0.8']);
 // a thin page. Eligibility is derived in src/data/contentIndex.ts, so the sitemap can
 // never advertise a collection the app would 404.
 // Theme AND age-band collections (S7-001/S7-002), from the one list the page also reads.
-const { collectionRouteIds, journeyRouteIds } = await loadContentIndex();
-const collectionPages = collectionRouteIds.map(id => [`/collections/${id}`, 'monthly', '0.7']);
+const { indexableCollectionIds, journeyRouteIds } = await loadContentIndex();
+// Seasonal collections (S7-012) are advertised only while their window is open at build
+// time; a closed one keeps its route (empty state, noindex) but is not in the sitemap.
+const collectionPages = indexableCollectionIds(new Date()).map(id => [`/collections/${id}`, 'monthly', '0.7']);
 // Reading journeys (S7-003): the index plus every PUBLISHED, VALID journey.
 const journeyPages = [['/journeys', 'monthly', '0.6'], ...journeyRouteIds.map(id => [`/journeys/${id}`, 'monthly', '0.6'])];
 

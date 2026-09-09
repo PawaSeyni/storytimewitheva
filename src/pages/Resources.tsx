@@ -7,7 +7,7 @@ import { useLanguage, useTranslation } from '../lib/language';
 import { amazonDp } from '../lib/amazon';
 import { resources as RESOURCES, type Resource } from '../data/resources';
 import SaveResourceButton from '../components/SaveResourceButton';
-import { publishedEditorialCollectionIds, collectionRecordById, publishedLearningPacks, packResources } from '../data/contentIndex';
+import { educatorCollectionIds, collectionRecordById, publishedLearningPacks, packResources } from '../data/contentIndex';
 import { THEMES, AGE_BANDS, type ThemeId, type AgeBandId } from '../data/taxonomy';
 import type { Language } from '../lib/language';
 
@@ -1057,11 +1057,11 @@ export default function Resources() {
               );
             })}
           </div>
-          {publishedEditorialCollectionIds.length > 0 && (
+          {educatorCollectionIds.length > 0 && (
             <div className="max-w-3xl mx-auto mb-8">
               <h3 className="font-bold text-gray-800 mb-3">{t.teachers.classroomHeading}</h3>
               <ul className="flex flex-wrap gap-2">
-                {publishedEditorialCollectionIds.map((id) => (
+                {educatorCollectionIds.map((id) => (
                   <li key={id}>
                     <Link to={`/collections/${id}`} className="inline-block px-4 py-2 rounded-full bg-emerald-50 border border-emerald-100 text-sm text-emerald-900 font-semibold hover:border-emerald-300">
                       {collectionRecordById[id]?.title?.[language] ?? id} →

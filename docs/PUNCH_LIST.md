@@ -78,6 +78,16 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 7 — seasonal collections (S7-012)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| SC-01 | **Three seasonal collections**: *Back to school* (Aug 15 to Sep 30), *A season of gratitude* (Nov 1 to Dec 31), *A summer of wonder* (Jun 15 to Aug 31). Existing books only, explicit ordered membership, facets, featured activities and resources, EN/FR/ES copy. | #173 |
+| SC-02 | **Time-bounded by a recurring window**, not a one-off date, so a season does not die next year. Inclusive MM-DD bounds; wraps the year end. Pure date math with an injectable clock, tested at every boundary and across the wrap. | #173 |
+| SC-03 | **Publish-window behaviour**: the route exists all year. Open: books, seasonal badge with the closing date, indexable, in the sitemap, spotlighted on `/books`, offered as "browse others". Closed: localized empty state with the next opening date, `noindex`, out of the sitemap, not offered elsewhere. Sitemap and prerender guard agree on the indexable set. | #173 |
+| SC-04 | **Known limit, documented in the record type**: a boundary applies to visitors immediately (client clock) and to crawlers at the next deploy (the prerender snapshot and sitemap are build-time). The build logs every window's state. A deploy is due at each boundary; the sitemap parity test fails loudly if one is missed. | open, process |
+| SC-05 | **Copy to review**: three titles and descriptions in EN/FR/ES, the badge and empty-state strings. | open |
+
 ### Sprint 7 — learning packs (S7-008)
 
 | ID | Item | Evidence |

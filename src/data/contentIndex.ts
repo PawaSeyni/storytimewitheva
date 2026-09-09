@@ -95,7 +95,52 @@ export const isAgeCollectionEligible = (b: AgeBandId): boolean =>
 // Collection RECORDS (S7-001) — the editorial layer. See src/data/collections.ts.
 // ---------------------------------------------------------------------------------
 
-/** Derived membership for a theme or age collection id, in catalog order. */
+// ---- Seasonal windows (S7-012): pure date math with an injectable "now" so it is testable ----
+
+/** 'MM-DD' -> comparable number (MMDD); NaN when malformed. */
+export function monthDay(s: string): number {
+  const m = /^(\d{2})-(\d{2})$/.exec(s);
+  if (!m) return NaN;
+  const month = Number(m[1]);
+  const day = Number(m[2]);
+  if (month < 1 || month > 12 || day < 1 || day > 31) return NaN;
+  return month * 100 + day;
+}
+const mdOf = (d: Date) => (d.getMonth() + 1) * 100 + d.getDate();
+const dateOf = (year: number, md: number) => new Date(year, Math.floor(md / 100) - 1, md % 100);
+
+/** Inclusive, recurring yearly window; wraps the year end when from > to. */
+export function isWindowOpen(w: { from: string; to: string }, date: Date): boolean {
+  const from = monthDay(w.from);
+  const to = monthDay(w.to);
+  const md = mdOf(date);
+  if (Number.isNaN(from) || Number.isNaN(to)) return false;
+  return from <= to ? md >= from && md <= to : md >= from || md <= to;
+}
+
+export interface SeasonalState {
+  open: boolean;
+  /** Start of the current window if open, else the next opening. */
+  opens: Date;
+  /** End (inclusive) of the current window if open, else of the next one. */
+  closes: Date;
+}
+
+/** Window state for a window at `date`. */
+export function windowState(w: { from: string; to: string }, date: Date): SeasonalState {
+  const from = monthDay(w.from);
+  const to = monthDay(w.to);
+  const open = isWindowOpen(w, date);
+  const y = date.getFullYear();
+  const md = mdOf(date);
+  let opens: Date;
+  if (open) opens = dateOf(from > to && md <= to ? y - 1 : y, from);
+  else opens = dateOf(md < from ? y : y + 1, from);
+  const closes = dateOf(from <= to ? opens.getFullYear() : opens.getFullYear() + 1, to);
+  return { open, opens, closes };
+}
+
+
 export function derivedCollectionMembers(id: string): BookId[] {
   if ((THEME_IDS as readonly string[]).includes(id)) return booksByThemeId[id as ThemeId];
   if ((AGE_BAND_IDS as readonly string[]).includes(id)) return booksByPrimaryAgeBand[id as AgeBandId];
@@ -138,6 +183,15 @@ export function collectionProblems(c: CollectionRecord): string[] {
   }
   for (const t of c.themeIds ?? []) if (!THEME_IDS.includes(t)) out.push(`${c.id}: unknown theme "${t}"`);
   for (const a of c.ageBandIds ?? []) if (!AGE_BAND_IDS.includes(a)) out.push(`${c.id}: unknown age band "${a}"`);
+  // Seasonal (S7-012): a recurring window is REQUIRED and must be well-formed; nothing
+  // else may carry one (a theme page that disappears in March would be a broken link).
+  if (c.kind === 'seasonal') {
+    if (!c.window) out.push(`${c.id}: seasonal collections need a publish window`);
+    else {
+      for (const k of ['from', 'to'] as const) if (Number.isNaN(monthDay(c.window[k]))) out.push(`${c.id}: window.${k} "${c.window[k]}" is not MM-DD`);
+      if (c.window.from === c.window.to) out.push(`${c.id}: window.from equals window.to`);
+    }
+  } else if (c.window) out.push(`${c.id}: only seasonal collections carry a window`);
   void memberSet;
   return out;
 }
@@ -170,6 +224,28 @@ export function collectionMembers(id: string): BookId[] {
  * the prerender guard and the page all read this one list.
  */
 export const collectionRouteIds: string[] = [...collectionEligibleThemeIds, ...ageCollectionEligibleBandIds, ...publishedEditorialCollectionIds];
+
+/** Published editorial ids by kind (S7-007 educator, S7-012 seasonal). */
+export const educatorCollectionIds: string[] = publishedEditorialCollectionIds.filter((id) => collectionRecordById[id]?.kind === 'educator');
+export const seasonalCollectionIds: string[] = publishedEditorialCollectionIds.filter((id) => collectionRecordById[id]?.kind === 'seasonal');
+
+/** Window state of a seasonal collection at `date`; null for any other collection. */
+export function seasonalState(id: string, date: Date = new Date()): SeasonalState | null {
+  const rec = collectionRecordById[id];
+  if (!rec || rec.kind !== 'seasonal' || !rec.window) return null;
+  return windowState(rec.window, date);
+}
+
+/** Seasonal collections open at `date`. */
+export const openSeasonalIds = (date: Date = new Date()): string[] => seasonalCollectionIds.filter((id) => seasonalState(id, date)?.open);
+
+/**
+ * The collection routes that may be INDEXED at `date`: everything routable except a
+ * closed seasonal collection (its route stays, rendering an empty state with noindex).
+ * The sitemap and the prerender guard read this; the prerender renders collectionRouteIds.
+ */
+export const indexableCollectionIds = (date: Date = new Date()): string[] =>
+  collectionRouteIds.filter((id) => seasonalState(id, date)?.open !== false);
 
 // ---------------------------------------------------------------------------------
 // Reading journeys (S7-003 / S7-009 / S7-013 / S7-014)

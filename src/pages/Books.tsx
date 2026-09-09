@@ -7,7 +7,7 @@ import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
 import { Link } from '../components/LocalizedLink';
 import { THEMES, THEME_IDS, AGE_BANDS, supportsAge, type ThemeId } from '../data/taxonomy';
-import { collectionEligibleThemeIds, ageCollectionEligibleBandIds } from '../data/contentIndex';
+import { collectionEligibleThemeIds, ageCollectionEligibleBandIds, openSeasonalIds, collectionRecordById } from '../data/contentIndex';
 import { AMAZON_AUTHOR_URL } from '../lib/amazon';
 import { useTranslation, useLanguage, localizePath } from '../lib/language';
 
@@ -26,6 +26,7 @@ const TRANSLATIONS = {
       browseByTheme: 'Browse by theme',
       browseByAge: 'Browse by age',
       browseJourneys: 'Reading journeys →',
+      inSeason: 'In season now',
       ageLabel: 'Age',
       themeLabel: 'Theme',
     showingBook: 'book',
@@ -54,6 +55,7 @@ const TRANSLATIONS = {
       browseByTheme: 'Explora por tema',
       browseByAge: 'Explora por edad',
       browseJourneys: 'Recorridos de lectura →',
+      inSeason: 'De temporada',
       ageLabel: 'Edad',
       themeLabel: 'Tema',
     showingBook: 'libro',
@@ -82,6 +84,7 @@ const TRANSLATIONS = {
       browseByTheme: 'Explorer par thème',
       browseByAge: 'Explorer par âge',
       browseJourneys: 'Parcours de lecture →',
+      inSeason: 'En ce moment',
       ageLabel: 'Âge',
       themeLabel: 'Thème',
     showingBook: 'livre',
@@ -107,6 +110,7 @@ export default function Books() {
   const [themeFilter, setThemeFilter] = useState<'All' | ThemeId>('All');
   const t = useTranslation(TRANSLATIONS);
   const { language } = useLanguage();
+  const openSeasonal = useMemo(() => openSeasonalIds(new Date()), []);
   const books = useBooks();
 
   // ItemList of Book schema for the full catalog — each entry links to its
@@ -232,6 +236,21 @@ export default function Books() {
               </li>
             ))}
           </ul>
+          {/* Seasonal collections (S7-012): only the ones whose window is open right now. */}
+          {openSeasonal.length > 0 && (
+            <ul className="flex flex-wrap gap-2 mb-6" aria-label={t.inSeason}>
+              {openSeasonal.map((id) => (
+                <li key={id}>
+                  <Link
+                    to={`/collections/${id}`}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-sm font-semibold text-amber-900 hover:border-amber-400"
+                  >
+                    <span aria-hidden>🍂</span> {t.inSeason}: {collectionRecordById[id]?.title?.[language] ?? id} →
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
           {/* Age-band collections (S7-002): primary-fit placement, one page per band. */}
           <h2 className="text-sm font-semibold text-gray-500 mt-6 mb-3">{t.browseByAge}</h2>
           <ul className="flex flex-wrap gap-2">

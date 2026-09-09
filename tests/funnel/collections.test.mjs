@@ -23,9 +23,10 @@ test('collections — sitemap advertises exactly the eligible collections (no mi
   // Theme AND age-band collections share the /collections/ namespace (S7-002). The
   // sitemap must advertise exactly their union, from the one list the page also reads.
   const unique = [...new Set(advertised)].sort();
+  // S7-012: closed seasonal collections keep their route but leave the sitemap.
   assert.deepEqual(
     unique,
-    [...idx.collectionRouteIds].sort(),
+    [...idx.indexableCollectionIds(new Date())].sort(),
     'sitemap collections diverged from eligibility — run `npm run gen:sitemap`',
   );
 });

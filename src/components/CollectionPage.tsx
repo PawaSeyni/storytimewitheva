@@ -25,6 +25,8 @@ const TRANSLATIONS = {
     resourcesHeading: 'For the grown-up',
     forEducators: 'For teachers and educators',
     packHeading: 'Printables for this collection',
+    seasonal: 'Seasonal collection',
+    seasonalUntil: 'Available until',
     packInside: 'Inside the pack:',
     getPack: 'Get the pack',
   },
@@ -36,6 +38,8 @@ const TRANSLATIONS = {
     resourcesHeading: 'Para el adulto',
     forEducators: 'Para docentes y educadores',
     packHeading: 'Imprimibles para esta colección',
+    seasonal: 'Colección de temporada',
+    seasonalUntil: 'Disponible hasta el',
     packInside: 'El paquete incluye:',
     getPack: 'Quiero el paquete',
   },
@@ -47,6 +51,8 @@ const TRANSLATIONS = {
     resourcesHeading: 'Pour l’adulte',
     forEducators: 'Pour les enseignants et éducateurs',
     packHeading: 'Fiches à imprimer pour cette collection',
+    seasonal: 'Collection de saison',
+    seasonalUntil: 'Disponible jusqu’au',
     packInside: 'Le pack contient :',
     getPack: 'Recevoir le pack',
   },
@@ -68,9 +74,13 @@ export interface CollectionPageProps {
   audience?: 'educator';
   /** Published learning packs that accompany this collection (S7-008). */
   packIds?: string[];
+  /** Seasonal (S7-012): window state text. `emptyState` replaces the book grid when closed. */
+  season?: { closesLabel: string };
+  emptyState?: string;
+  noindex?: boolean;
 }
 
-export default function CollectionPage({ id, title, intro, seoTitle, books, browseOthersHeading, others, activityIds = [], resourceIds = [], audience, packIds = [] }: CollectionPageProps) {
+export default function CollectionPage({ id, title, intro, seoTitle, books, browseOthersHeading, others, activityIds = [], resourceIds = [], audience, packIds = [], season, emptyState, noindex = false }: CollectionPageProps) {
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
   const allActivities = useActivities();
@@ -109,8 +119,8 @@ export default function CollectionPage({ id, title, intro, seoTitle, books, brow
 
   return (
     <main>
-      <Seo title={seoTitle} description={intro} path={path} />
-      <JsonLd id={`collection-${id}`} data={schema} />
+      <Seo title={seoTitle} description={intro} path={path} noindex={noindex} />
+      {books.length > 0 && <JsonLd id={`collection-${id}`} data={schema} />}
 
       <section className="bg-gradient-to-b from-purple-50 to-white py-12 px-4">
         <div className="max-w-6xl mx-auto">
@@ -120,11 +130,22 @@ export default function CollectionPage({ id, title, intro, seoTitle, books, brow
               {t.forEducators}
             </p>
           )}
+          {season && (
+            <p className="inline-block text-xs font-semibold uppercase tracking-wide text-amber-900 bg-amber-50 border border-amber-100 rounded-full px-3 py-1 mb-3">
+              {t.seasonal}{books.length > 0 ? ` · ${t.seasonalUntil} ${season.closesLabel}` : ''}
+            </p>
+          )}
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">{title}</h1>
           <p className="text-lg text-gray-600 max-w-3xl leading-relaxed">{intro}</p>
-          <p className="mt-4 text-sm text-gray-500">
-            {books.length} {books.length === 1 ? t.book : t.booksPlural} {t.inThisCollection}
-          </p>
+          {books.length === 0 && emptyState ? (
+            <p className="mt-6 max-w-3xl rounded-2xl bg-white border border-amber-100 p-5 text-gray-700" role="status" data-testid="seasonal-empty">
+              {emptyState}
+            </p>
+          ) : (
+            <p className="mt-4 text-sm text-gray-500">
+              {books.length} {books.length === 1 ? t.book : t.booksPlural} {t.inThisCollection}
+            </p>
+          )}
         </div>
       </section>
 
