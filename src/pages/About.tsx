@@ -211,7 +211,7 @@ export default function About() {
         </div>
       </section>
 
-      <EmailSignup />
+      <EmailSignup placement="about" />
     </main>
   );
 }

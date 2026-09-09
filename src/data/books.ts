@@ -29,6 +29,8 @@ export interface LocalizedBook {
   themeIds: ThemeId[];
   languages: string[];
   amazonUrl: string;
+  /** Language of the Amazon edition the Buy link points at ('en' when the site language has no own edition). S5-003. */
+  editionLang: Language;
   featured?: boolean;
   status?: 'published' | 'coming-soon';
   title: string;
@@ -53,6 +55,7 @@ function localize(book: Book, lang: Language): LocalizedBook {
     themeIds: book.themeIds,
     languages: ALL_LANGUAGES,
     amazonUrl: asin ? dp(asin) : AMAZON_AUTHOR_URL,
+    editionLang: book.editions[lang]?.asin ? lang : 'en',
     featured: book.featured,
     status: book.status,
     title: book.title[lang] ?? book.title.en,

@@ -53,7 +53,14 @@ export type FunnelEvent =
   // never the query text (it could be a child's name).
   | 'Search'
   // S8-012: a client error, as error CLASS and ROUTE PATTERN only (src/lib/errorRedact.ts).
-  | 'Client Error';
+  | 'Client Error'
+  // Sprint 5 commerce and growth (S5-002/003/020). Impressions fire once per page when the
+  // control is viewable; clicks carry the stable book id, the edition language and the
+  // placement. Share carries the target kind only.
+  | 'Purchase CTA View'
+  | 'Share'
+  // Sprint 5 experiments (S5-008): one exposure per assignment, only when viewable.
+  | 'Experiment Exposure';
 
 // The ONLY property keys allowed on any event. Aggregate dimensions only — never
 // anything that identifies a person.
@@ -78,6 +85,11 @@ const ALLOWED_PROP_KEYS = [
   // S8-012 error reports: error class name and route pattern (/books/:id), never a message.
   'kind',
   'route',
+  // Sprint 5: edition language behind a Buy link, share target kind, experiment id + variant.
+  'edition',
+  'target',
+  'experiment',
+  'variant',
 ] as const;
 type PropKey = (typeof ALLOWED_PROP_KEYS)[number];
 

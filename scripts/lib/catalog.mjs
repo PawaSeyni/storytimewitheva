@@ -156,3 +156,15 @@ export async function loadLocales() {
   if (!localesCache) localesCache = await loadModule(path.join(ROOT, 'src', 'lib', 'locales.ts'));
   return localesCache;
 }
+
+let eventsCache = null, funnelsCache = null;
+/** Event dictionary (S5-021), browser-free. */
+export async function loadEvents() {
+  if (!eventsCache) eventsCache = await loadModule(path.join(ROOT, 'src', 'analytics', 'events.ts'));
+  return eventsCache;
+}
+/** Funnel definitions (S5-001 / S5-012), browser-free. */
+export async function loadFunnels() {
+  if (!funnelsCache) funnelsCache = await loadModule(path.join(ROOT, 'src', 'analytics', 'funnels.ts'));
+  return funnelsCache;
+}

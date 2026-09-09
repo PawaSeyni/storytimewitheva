@@ -78,6 +78,17 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 5 — measurement foundation (S5-001…007, 012…014, 017, 020…022)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| GM-01 | **Event dictionary is the contract**: every runtime event defined with alias, kind, required and optional properties, allowed values, owner, privacy; docs generated from it; call sites checked for required keys. `Edition Selected` is reserved with the reason (no selector exists). | #191 |
+| GM-02 | **Purchase intent instrumented**: impression once when viewable, click with edition and placement. Buy group labelled and separated from read/listen/save. | #191 |
+| GM-03 | **Newsletter by placement** with contextual copy; success continues into books (loop). | #191 |
+| GM-04 | **Report tool** runs on Plausible or a fixture; refuses to invent numbers without data. | #191 |
+| GM-05 | **Owner action, blocks the numeric baseline and both experiments**: create a Plausible Stats API key (set `PLAUSIBLE_API_KEY` where the report runs) and enable the custom properties listed in the dictionary in the Plausible dashboard. Then run the 28-day baseline and approve it. | open |
+| GM-06 | **Copy to review**: contextual signup lines (4 placements × 3 languages), share labels, "Keep going" heading, Buy group label. | open |
+
 ### Sprint 8 — locales, governance, readiness (S8-019/020/022/024)
 
 | ID | Item | Evidence |
