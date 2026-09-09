@@ -51,7 +51,7 @@ function AffiliateLink({ href, children }: { href: string; children: React.React
       className="text-amber-700 hover:text-amber-900 underline decoration-amber-300 hover:decoration-amber-700 underline-offset-2 font-medium"
     >
       {children}
-      <span className="ml-1 text-xs text-amber-600/70">{badge}</span>
+      <span className="ml-1 text-xs text-amber-800">{badge}</span>
     </a>
   );
 }

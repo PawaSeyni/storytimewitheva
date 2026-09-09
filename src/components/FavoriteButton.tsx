@@ -28,8 +28,12 @@ export default function FavoriteButton({ bookId, compact = false }: { bookId: st
       type="button"
       onClick={(e) => {
         e.stopPropagation();
+        // No optimistic flip here. toggleFavorite() dispatches `librarychange`
+        // synchronously and the listener above already sets `fav` from storage; a
+        // local `setFav(v => !v)` batched after it inverted the state back — the heart
+        // showed "not favorited" while storage said favorited, and the next click
+        // inverted it the other way. Caught by tests/e2e/cookie-free.spec.ts.
         toggleFavorite(bookId);
-        setFav((v) => !v);
         track('Favorite', { book: bookId, status: fav ? 'removed' : 'added' });
       }}
       aria-pressed={fav}
