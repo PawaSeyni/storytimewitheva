@@ -84,7 +84,7 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 |----|------|----------|
 | RA-01 | **Audit run against production and recorded** in `docs/testing/SPRINT_7_RELEASE_AUDIT.md`: routes, canonicals, hreflang, noindex placement, every sitemap URL, headers, downloads and pack aliases, content validation, smoke and the client-side suites live. All green. | #177 |
 | RA-02 | **`npm run test:prod-audit`** runs the accessibility, cookie-free, seasonal, search, print and landing suites against production; only specs with in-page stubs are included so nothing is written to MailerLite or Plausible. | #177 |
-| RA-03 | **Owner acceptance of the Sprint 7 release**: sign the inventory at the end of the audit. | open |
+| RA-03 | **Owner acceptance of the Sprint 7 release**: approved 2026-09-09. | #179 |
 
 ### Sprint 7 — quality gates (S7-017 · S7-018 · S7-019)
 

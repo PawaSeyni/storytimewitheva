@@ -2,7 +2,7 @@
 
 **Target:** production, `https://storytimewitheva.com`, at `main` @ `bcdfc6c` (Sprint 7 complete: #164 to #176)
 **Run:** 2026-09-09 16:54 UTC
-**Status:** release inventory signed below; owner acceptance pending
+**Status:** release accepted by the owner 2026-09-09 (see sign-off at the end)
 
 Every result here was produced by running something against production or against the
 committed content, not by reading code. The commands are recorded so the audit is repeatable:
@@ -153,4 +153,4 @@ Check-tool defects, recorded: the first production sweep of the Spanish back-to-
 | Discussion prompts | 60 (20 books × 3) | book pages, journeys |
 | Analytics events (all aggregate, no query text, no PII) | Journey Start / Step / Complete / Saved, Magnet Download, Continue Journey, Search | typed default-deny allowlist |
 
-**Signed:** release inventory prepared by Claude (Fable 5.1) on 2026-09-09 16:54 UTC, against `main` @ `bcdfc6c`. Owner acceptance: ________ (PawaSeyni), date ________.
+**Signed:** release inventory prepared by Claude (Fable 5.1) on 2026-09-09 16:54 UTC, against `main` @ `bcdfc6c`. Owner acceptance: **approved** by PawaSeyni on 2026-09-09.
