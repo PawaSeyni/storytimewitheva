@@ -41,6 +41,10 @@
 
 /download/bilingual-bundle  /free/bilingual-bundle  301
 /download/bilingual-bundle/  /free/bilingual-bundle  301
+/download/classroom-pack  /free/classroom-pack  301
+/download/classroom-pack/  /free/classroom-pack  301
+/download/home-reading-pack  /free/home-reading-pack  301
+/download/home-reading-pack/  /free/home-reading-pack  301
 
 # Legacy safety net: pre-2026-08-04 raw filenames (no hash) that old pins/ads
 # may still point at. Sends to the GATED offer page, not the PDF directly —

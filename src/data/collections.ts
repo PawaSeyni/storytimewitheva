@@ -9,7 +9,7 @@
 //
 // Editorial kinds ('educator', 'seasonal') have no derived membership, so they carry an
 // explicit, validated `bookIds` and are routed through the same eligibility gate
-// (contentIndex.collectionProblems). None exist yet; the model is ready for S7-007/S7-012.
+// (contentIndex.collectionProblems). Educator records shipped in S7-007; seasonal awaits S7-012.
 //
 // The activityIds below were generated from relationship frequency and committed as data
 // so an editor can change them; the validator keeps them honest.

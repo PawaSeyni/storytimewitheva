@@ -104,6 +104,8 @@ a data-fetching library, a routing rewrite, an i18n library, or any cookie-based
   Membership stays DERIVED for theme/age kinds (a record may only reorder, feature activities,
   attach resources or override the intro); editorial kinds carry explicit, validated `bookIds`.
   `contentIndex.collectionProblems()` gates publication; `collectionMembers()` owns display order.
+- `src/data/learningPacks.ts` — learning packs (S7-008), browser-free: curated groups of existing download
+  resources that are also generated lead magnets (`/free/<id>`); validated by `contentIndex.learningPackProblems`.
 - `src/data/journeys.ts` — reading journeys (S7-003), browser-free: ordered steps over stable
   ids (book, discussion, activity, resource, next-book). `contentIndex.journeyProblems()` gates
   publication at build time; the reverse index `journeysByBookId` is derived, never persisted.

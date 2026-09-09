@@ -7,10 +7,10 @@
 // a WCAG 1.3.1 failure.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadCatalog, loadContentIndex, loadRelatedBooks, loadActivities, loadCollections } from '../../scripts/lib/catalog.mjs';
+import { loadCatalog, loadContentIndex, loadRelatedBooks, loadActivities, loadCollections, loadLearningPacks } from '../../scripts/lib/catalog.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const DIST = path.join(ROOT, 'dist');
@@ -19,6 +19,7 @@ const { books } = await loadCatalog();
 const { relatedBooksFor } = await loadRelatedBooks();
 const { activities } = await loadActivities();
 const { collections } = await loadCollections();
+const { learningPacks } = await loadLearningPacks();
 const LOCALES = { en: '', fr: '/fr', es: '/es' };
 
 /** English-only UI strings that must never appear on a localized collection page. */
@@ -307,4 +308,40 @@ test('educator collections — labeled for their audience in every language, and
     const res = read(`${prefix}/resources`);
     for (const c of edu) assert.ok(res.includes(`href="${prefix}/collections/${c.id}"`), `${prefix}/resources: teachers section must link ${c.id}`);
   }
+});
+
+test('learning packs — gated landing page prerendered per locale with the pack offer and every item (S7-008)', () => {
+  const packs = learningPacks.filter((p) => p.publishState === 'published');
+  assert.ok(packs.length >= 2);
+  for (const [loc, prefix] of Object.entries(LOCALES)) {
+    for (const p of packs) {
+      const h = read(`${prefix}/free/${p.id}`);
+      assert.ok(h, `${prefix}/free/${p.id}: not prerendered`);
+      const decoded = h.replace(/&#39;/g, "'").replace(/&amp;/g, '&').replace(/&quot;/g, '"');
+      assert.ok(decoded.includes(p.title[loc]), `${prefix}/free/${p.id}: ${loc} title missing`);
+      assert.ok(/name="lead_magnet" value="[a-z0-9-]+"/.test(h) && h.includes(`value="${p.id}"`), `${prefix}/free/${p.id}: form must tag the pack`);
+      assert.ok(h.includes('<meta name="robots" content="noindex'), `${prefix}/free/${p.id}: landing pages are noindex`);
+    }
+    const res = read(`${prefix}/resources`);
+    assert.ok(res.includes('id="packs"'), `${prefix}/resources: packs section missing`);
+    for (const p of packs) {
+      assert.ok(res.includes(`href="${prefix}/free/${p.id}"`), `${prefix}/resources: must link ${p.id}`);
+      const decoded = res.replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+      assert.ok(decoded.includes(p.title[loc]), `${prefix}/resources: ${p.id} ${loc} title`);
+    }
+    for (const c of ['classroom-feelings', 'ages-3-5']) {
+      const h = read(`${prefix}/collections/${c}`);
+      assert.ok(/href="[^"]*\/free\/[a-z0-9-]+-pack"/.test(h), `${prefix}/collections/${c}: should link its pack`);
+    }
+  }
+});
+
+test('print — the shipped stylesheet removes site chrome and clipping when printed (S7-008)', () => {
+  const cssDir = path.join(DIST, 'assets');
+  const css = readdirSync(cssDir).filter((f) => f.endsWith('.css')).map((f) => readFileSync(path.join(cssDir, f), 'utf8')).join('\n');
+  const printBlock = css.match(/@media print\{[^}]*\}(?:[^@]|@(?!media))*/)?.[0] ?? '';
+  assert.ok(printBlock, 'no @media print block in the built CSS');
+  assert.match(printBlock, /\[data-print="?chrome"?\],#email-signup[^{]*\{display:none!important/, 'print must hide the site chrome and the signup');
+  assert.doesNotMatch(printBlock, /(^|[,{])nav[,{]/, 'print must NOT hide every <nav>: breadcrumbs stay');
+  assert.match(printBlock, /overflow:visible!important/, 'print must unclip scroll boxes');
 });

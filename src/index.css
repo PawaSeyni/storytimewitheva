@@ -55,3 +55,20 @@
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
 }
+
+/* Print (Sprint 7 §10, S7-008): a printed page is the content, not the chrome.
+   Navigation, footer, the feedback widget, the signup block and decorative
+   shadows go; text is black on white; nothing is clipped by a scroll box. */
+@media print {
+  /* Site chrome carries data-print="chrome" (Navbar, Footer). Breadcrumbs are a nav
+     too, and they STAY: on paper they are the page's context, not chrome. */
+  [data-print="chrome"], #email-signup, [role="dialog"], .star-float { display: none !important; }
+  html { scroll-behavior: auto; }
+  body { background: #fff !important; color: #000 !important; }
+  *, *::before, *::after { box-shadow: none !important; text-shadow: none !important; }
+  main, section, article, div { overflow: visible !important; }
+  h1, h2, h3, h4 { break-after: avoid; }
+  li, img, figure { break-inside: avoid; }
+  img { max-width: 100% !important; }
+  a { color: #000 !important; text-decoration: underline; }
+}

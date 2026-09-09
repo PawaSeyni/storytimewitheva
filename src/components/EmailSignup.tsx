@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLanguage, useTranslation, type Language } from '../lib/language';
 import { track } from '../lib/analytics';
+import { publishedLearningPacks, packResources } from '../data/contentIndex';
+import { packItemHref } from '../data/learningPacks';
 
 // MailerLite embedded form action — group "storytimewitheva-signups", form
 // "Bilingual Starter Kit — site signup". Custom fields `language` and
@@ -141,7 +143,42 @@ const BUNDLE_COPY: Record<Language, MagnetCopy> = {
   },
 };
 
+/**
+ * Learning packs (S7-008) are lead magnets GENERATED from src/data/learningPacks.ts:
+ * one offer per published pack, delivering every printable in the pack as a named
+ * link (the same bundle path the bilingual bundle uses). Links are the stable
+ * /download/<slug>[?lang=] URLs, so a rebuilt PDF never rots a pack. Pack slugs are
+ * deliberately NOT literal keys below: the registry parsers (prerender guard, tests)
+ * read the literal block, and packs reach them through scripts/lib/catalog.mjs.
+ */
+const PACK_UI: Record<Language, { count: (n: number) => string; langsAll: string; langsSome: string; keep: string; cta: string }> = {
+  en: { count: (n) => `✓ ${n} printables in one download`, langsAll: '✓ English, Spanish and French editions', langsSome: '✓ English, with Spanish and French editions where one exists', keep: '✓ Free, yours to keep, print as often as you like', cta: 'Send me the pack' },
+  es: { count: (n) => `✓ ${n} imprimibles en una sola descarga`, langsAll: '✓ Ediciones en inglés, español y francés', langsSome: '✓ Inglés, con ediciones en español y francés cuando existen', keep: '✓ Gratis, para siempre, imprímelo las veces que quieras', cta: 'Envíame el paquete' },
+  fr: { count: (n) => `✓ ${n} documents à imprimer en un seul téléchargement`, langsAll: '✓ Éditions en anglais, espagnol et français', langsSome: '✓ Anglais, avec des éditions en espagnol et français quand elles existent', keep: '✓ Gratuit, à garder, à imprimer autant de fois que vous voulez', cta: 'Envoyez-moi le pack' },
+};
+const PACK_MAGNETS: Record<string, Magnet> = Object.fromEntries(
+  publishedLearningPacks.map((pack) => {
+    const items = packResources(pack.id);
+    const allLocalized = items.every((r) => r.localizedFile);
+    const href = (lang: Language) => packItemHref(items[0], lang);
+    const copy = Object.fromEntries(
+      (['en', 'es', 'fr'] as Language[]).map((lang) => [lang, {
+        title: pack.title[lang],
+        blurb: pack.description[lang],
+        bullets: [PACK_UI[lang].count(items.length), allLocalized ? PACK_UI[lang].langsAll : PACK_UI[lang].langsSome, PACK_UI[lang].keep],
+        cta: PACK_UI[lang].cta,
+      }]),
+    ) as Record<Language, MagnetCopy>;
+    const bundle: BundleItem[] = items.map((r) => ({
+      label: r.title,
+      href: { en: packItemHref(r, 'en'), es: packItemHref(r, 'es'), fr: packItemHref(r, 'fr') },
+    }));
+    return [pack.id, { tag: pack.id, copy, bundle, pdf: { en: href('en'), es: href('es'), fr: href('fr') } } satisfies Magnet];
+  }),
+);
+
 const LEAD_MAGNETS: Record<string, Magnet> = {
+  ...PACK_MAGNETS,
   'bedtime-routine': {
     tag: 'bedtime-routine',
     preview: '/previews/bedtime-routine.webp',

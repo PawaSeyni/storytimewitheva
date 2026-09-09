@@ -78,6 +78,20 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 7 — learning packs (S7-008)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| LP-01 | **Decision (spec §14)**: a learning pack is a *curated group of existing downloads*, not a new file and not a zip. Rationale: the spec says "bundle existing printables"; a zip fails the mobile parent (the bilingual bundle already made that call); a generated PDF would duplicate content that exists. Records in `src/data/learningPacks.ts`. | #172 |
+| LP-02 | **Two packs live**: *Classroom printables pack* (educators; guide + follow-up sheets + flashcards; accompanies the three classroom collections) and *Home reading routine pack* (families; routine chart + guide + follow-up sheets; accompanies the 3-5 and 6-7 age collections). | #172 |
+| LP-03 | **A pack is a lead magnet, generated, not hand-copied**: `EmailSignup` builds one offer per published pack; `/free/<pack>` is the gated page; the success screen lists every file as a named link. Item links are the stable `/download/<slug>?lang=` URLs, so a rebuilt PDF cannot rot a pack. `/download/<pack>` 301s to the gated page like the bilingual bundle. | #172 |
+| LP-04 | **Clear metadata**: audience label, age bands, "what is inside" list and the collections it goes with, on `/resources#packs` and on each accompanying collection page. Validator rejects non-download items, unknown ids, fewer than two items, duplicate items, colliding ids (magnets, download slugs, collections) and missing locales. | #172 |
+| LP-05 | **Print behaviour (spec §10)**: first `@media print` stylesheet: site chrome (`data-print="chrome"`), signup and dialogs removed, shadows off, scroll boxes unclipped, black links. Breadcrumbs deliberately stay. Locked by a built-CSS test and a Playwright print-emulation test. | #172 |
+| LP-06 | **No product shot for the pack landing pages.** LP-001 requires a preview per magnet; packs ship with none because there is no art. Needs a design pass (a composite of the included printables would do). | open |
+| LP-07 | **Copy contradiction found, not fixed**: the teachers section of `/resources` says "Download, print, and share, no sign-up needed" while every download card and pack goes through the email gate. One of the two must change. | open |
+| LP-08 | **Registry gap**: `bilingual-starter-kit` (20-page trilingual kit) is a real printable served by the bundle but absent from `resources.ts`, so no pack can include it. Add it as `download-bilingual-starter-kit` if a third pack should carry it. | open |
+| LP-09 | **Copy to review**: two pack titles and descriptions in EN/FR/ES, and the pack bullets and CTAs in `EmailSignup.tsx`. | open |
+
 ### Sprint 7 — educator collections (S7-007)
 
 | ID | Item | Evidence |
@@ -85,7 +99,7 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | EC-01 | **Three classroom collections live** as `educator` records: *Feelings in the classroom* (SEL), *Bilingual read-alouds*, *STEM stories for curious classrooms*. Explicit ordered `bookIds`, own trilingual copy, featured activities validated to relate to a member book, and the existing printables as resources. Routed through the same `/collections/` gate. | #171 |
 | EC-02 | **Audience labeling**: an "For teachers and educators" eyebrow above the title in EN/FR/ES, a classroom SEO suffix, and links from the "For Teachers" section of `/resources`, so no educator collection is an orphan. Locked by the prerender suite. | #171 |
 | EC-03 | **A structural rule added to the tests**: every member book must carry at least one of the collection's claimed theme facets, so a classroom set cannot drift into unrelated titles. | #171 |
-| EC-04 | **S7-008 is not this.** "Learning packs" as downloadable bundles would mean new files; these records reference the printables that exist. Whether packs should be static files, generated, or exactly this kind of curated group is Sprint 7's own open decision (§14). | open |
+| EC-04 | **S7-008 decided and shipped** as curated groups of existing downloads, see LP-01 below. | #172 |
 | EC-05 | **Copy to review**: three titles and descriptions, EN/FR/ES, in `collections.ts`. | open |
 
 ### Sprint 7 — collections as records (S7-001 · S7-013)
