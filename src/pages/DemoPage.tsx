@@ -5,6 +5,7 @@ import ActivityStatusButton from '../components/ActivityStatusButton';
 import Seo from '../components/Seo';
 import { useActivity } from '../data/activities';
 import { useTranslation } from '../lib/language';
+import ContinueJourney from '../components/ContinueJourney';
 
 const TRANSLATIONS = {
   en: {
@@ -53,6 +54,9 @@ export default function DemoPage({ children }: DemoPageProps) {
         </div>
         {activity && <h1 className="sr-only">{activity.title}</h1>}
         {children}
+        {/* S4-011: no activity dead-ends. The books that reference this activity are the
+            derived reverse relation; the first one is the next step. */}
+        {activity && <ContinueJourney sourceType="activity" sourceId={activity.slug} placement="activity" />}
       </div>
     </main>
   );

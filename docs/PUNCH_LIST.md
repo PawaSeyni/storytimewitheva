@@ -78,6 +78,16 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 4 — continue the journey (S4-010 · S4-011)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| CJ-01 | **`src/lib/journey.ts`** — browser-free, pure, deterministic. Resolves the first valid next step in the spec's fixed priority (related activity → related book → related resource → browse all), checking every candidate against the live registries so it can never emit a broken link, and returning `null` when nothing resolves so the component renders nothing. | #166 |
+| CJ-02 | **S4-011: no activity dead-ends.** Activity pages carried only "← Back to Activities". They now continue to the first book that references them (the derived reverse relation, `booksByActivityId`), or to the catalog when none does. | #166 |
+| CJ-03 | **Deliberately not placed on book pages.** They already carry three continuation sections (related books, activities, resources); a fourth CTA would be noise. The component is reusable and the resolver covers all three source types. | #166 |
+| CJ-04 | **Not covered: the 12 standalone games.** They are static HTML outside the SPA and still end at "Back to Activities". Adding a book continuation means extending `scripts/patch-games.mjs`; logged, not done here. | open |
+| CJ-05 | Analytics: one event, `Continue Journey`, on the typed allowlist with placement, destination type, reason tier and the target id. The contract test covers the new call site. | #166 |
+
 ### Sprint 7 — age-band collections (S7-002) and shared breadcrumbs (S3-007)
 
 | ID | Item | Evidence |
