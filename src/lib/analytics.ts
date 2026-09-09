@@ -38,7 +38,10 @@ export type FunnelEvent =
   | 'Resource Saved'
   | 'Personalized View'
   | 'Recommendation Click'
-  | 'Local Data Cleared';
+  | 'Local Data Cleared'
+  // Sprint 4 S4-010: the single next-step CTA. Dimensions: placement, destination type,
+  // reason tier, and the stable id of the target.
+  | 'Continue Journey';
 
 // The ONLY property keys allowed on any event. Aggregate dimensions only — never
 // anything that identifies a person.
