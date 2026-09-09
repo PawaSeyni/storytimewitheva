@@ -185,7 +185,7 @@ export default function Journey() {
                 )}
                 {step.type === 'discussion' && raw && (
                   <div className="-mx-5 sm:-mx-6 -mb-5 sm:-mb-6 mt-2">
-                    <DiscussionPrompts questions={raw.discussionQuestions} />
+                    <DiscussionPrompts questions={raw.discussionQuestions} headingLevel="h3" />
                   </div>
                 )}
                 {activity && (

@@ -39,7 +39,18 @@ const TRANSLATIONS = {
   },
 };
 
-export default function DiscussionPrompts({ questions }: { questions?: DiscussionQuestion[] }) {
+/**
+ * `headingLevel` lets a host that already owns an h2 for this block (a journey step)
+ * render the inner heading one level down, so the outline nests instead of repeating.
+ */
+export default function DiscussionPrompts({
+  questions,
+  headingLevel = 'h2',
+}: {
+  questions?: DiscussionQuestion[];
+  headingLevel?: 'h2' | 'h3';
+}) {
+  const Heading = headingLevel;
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
   if (!questions || questions.length === 0) return null;
@@ -51,7 +62,7 @@ export default function DiscussionPrompts({ questions }: { questions?: Discussio
   return (
     <section className="max-w-6xl mx-auto px-4 pb-14">
       <div className="bg-amber-50/70 border border-amber-100 rounded-2xl p-6 sm:p-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-1">{t.heading}</h2>
+        <Heading className="text-2xl font-bold text-gray-800 mb-1">{t.heading}</Heading>
         <p className="text-gray-500 text-sm mb-6">{t.sub}</p>
         <ol className="space-y-4">
           {ordered.map((q) => (
