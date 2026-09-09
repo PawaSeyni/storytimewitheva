@@ -17,7 +17,7 @@ test:smoke`, `npm run test:prod-audit` (now including the commerce and experimen
 | … carrying the Associates tag `storytimewi20-20` | ✅ 294/294 |
 | … opening in a new tab with `rel="noopener"` | ✅ 294/294 |
 | Affiliate disclosure beside the Buy group, in the page language | ✅ 60/60 |
-| Footer disclosure, per language | footer: ; /fr footer: ; /es footer: |
+| Footer disclosure, per language | ❌ on the first run the element was EMPTY in all three languages (defect GA-03, the strings had never been written); fixed in #195 and re-verified on production at `01ee73f`: EN "As an Amazon Associate…", FR "En tant que Partenaire Amazon…", ES "Como Asociado de Amazon…" ✅ |
 | Buy link uses the language edition where one exists, else English | ✅ 60/60 (17 FR editions, 0 ES editions, English fallback everywhere else) |
 | Coming-soon CTA state | no coming-soon title in the catalog today; the state is locked by `tests/seo/monetization.test.mjs` |
 
@@ -62,6 +62,7 @@ experiments wait on the owner: Plausible Stats API key + custom properties (GM-0
 | CI | `npm test` glob referenced an empty `tests/experiments/` directory (git does not track empty dirs) | fixed in #191 |
 | monetization test | a related-book card links its cover and title to the same page, which the first assertion read as a duplicate | assertion rewritten to compare sets with the policy |
 | production probe | ~1 minute of 500/502 after deploy `6aa1dfa3` published (GX-03) | recorded; not reproduced |
+| this audit, §1 | footer affiliate disclosure rendered an empty element in EN/FR/ES (GA-03) | fixed in #195; test now fails on an empty or untranslated footer disclosure |
 
 ## 7. Open items carried
 
