@@ -4,6 +4,11 @@ import { track } from '../lib/analytics';
 import { publishedLearningPacks, packResources } from '../data/contentIndex';
 import { packItemHref } from '../data/learningPacks';
 import { LANGUAGES } from '../lib/locales';
+import { Link } from './LocalizedLink';
+import { books as CATALOG } from '../data/books.data';
+
+// Three featured titles (catalog order) offered after signup; ids only, titles localized at render.
+const CONTINUE_BOOKS = CATALOG.filter((b) => b.featured && b.status !== 'coming-soon').slice(0, 3);
 
 // MailerLite embedded form action — group "storytimewitheva-signups", form
 // "Bilingual Starter Kit — site signup". Custom fields `language` and
@@ -497,7 +502,25 @@ const PREVIEW_DIMS: Record<string, { w: number; h: number }> = {
   '/previews/leo-and-the-wolf.webp': { w: 720, h: 720 },
 };
 
-export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } = {}) {
+export type SignupPlacement = 'home' | 'landing' | 'books' | 'activities' | 'resources' | 'about';
+
+/** S5-006: one contextual line per placement, above the offer, in the site language. */
+const CONTEXT_LINE: Record<SignupPlacement, Record<Language, string>> = {
+  home: { en: '', es: '', fr: '' },
+  landing: { en: '', es: '', fr: '' },
+  books: { en: 'Found a story you like? The printables below go with every book in the collection.', es: '¿Encontraste una historia que te gusta? Los imprimibles de abajo acompañan a todos los libros de la colección.', fr: 'Vous avez trouvé une histoire qui vous plaît ? Les fiches ci-dessous accompagnent chaque livre de la collection.' },
+  activities: { en: 'Liked the activities? The printable pack keeps the fun going away from the screen.', es: '¿Te gustaron las actividades? El paquete imprimible sigue la diversión lejos de la pantalla.', fr: 'Les activités vous ont plu ? Le pack à imprimer prolonge le plaisir loin de l’écran.' },
+  resources: { en: 'Reading the guides? Take the printables that pair with them.', es: '¿Leyendo las guías? Llévate los imprimibles que las acompañan.', fr: 'Vous lisez les guides ? Emportez les fiches qui vont avec.' },
+  about: { en: 'Want to read with Eva at home? Start with the free printables.', es: '¿Quieres leer con Eva en casa? Empieza con los imprimibles gratis.', fr: 'Envie de lire avec Eva à la maison ? Commencez par les fiches gratuites.' },
+};
+
+const CONTINUE_COPY: Record<Language, { heading: string; all: string }> = {
+  en: { heading: 'Keep going: stories to read with your printables', all: 'Browse all books' },
+  es: { heading: 'Sigue: historias para leer con tus imprimibles', all: 'Ver todos los libros' },
+  fr: { heading: 'Et maintenant : des histoires à lire avec vos fiches', all: 'Voir tous les livres' },
+};
+
+export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: { magnet?: string; placement?: SignupPlacement } = {}) {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'submitted' | 'error'>('idle');
@@ -523,7 +546,7 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
         // would never trigger for a section taller than the viewport (mobile).
         if (entries[0].isIntersecting && !firedView.current) {
           firedView.current = true;
-          track('Form View', { language, lead_magnet: magnet.tag });
+          track('Form View', { language, lead_magnet: magnet.tag, placement });
           io.disconnect();
         }
       },
@@ -531,7 +554,7 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [language, magnet.tag]);
+  }, [language, magnet.tag, placement]);
 
   const onFormStart = () => {
     if (firedStart.current) return;
@@ -543,10 +566,10 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
     // keeps "exactly once" intact.
     if (!firedView.current) {
       firedView.current = true;
-      track('Form View', { language, lead_magnet: magnet.tag });
+      track('Form View', { language, lead_magnet: magnet.tag, placement });
     }
     firedStart.current = true;
-    track('Form Start', { language, lead_magnet: magnet.tag });
+    track('Form Start', { language, lead_magnet: magnet.tag, placement });
   };
 
   // Move focus to the success message so screen-reader users learn the signup
@@ -578,7 +601,7 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
     if (!email || status === 'submitting') return;
 
     setStatus('submitting');
-    track('Form Submit', { language, lead_magnet: magnet.tag });
+    track('Form Submit', { language, lead_magnet: magnet.tag, placement });
 
     const trimmedName = firstName.trim();
 
@@ -593,7 +616,7 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
         setStatus('submitted');
         // Backend confirmed a MailerLite subscriber — the aggregate conversion
         // event. Fired only on real success, never on submit/view.
-        track('Lead Created', { language, lead_magnet: magnet.tag });
+        track('Lead Created', { language, lead_magnet: magnet.tag, placement });
         setEmail('');
         setFirstName('');
       } else {
@@ -610,6 +633,9 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
   return (
     <section ref={sectionRef} id="email-signup" className="scroll-mt-24 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 py-16 px-4">
       <div className="max-w-2xl mx-auto text-center">
+        {CONTEXT_LINE[placement][language] && (
+          <p className="text-purple-100 text-sm font-semibold mb-3" data-signup-context={placement}>{CONTEXT_LINE[placement][language]}</p>
+        )}
         <div className="text-5xl mb-4">🎁</div>
         {/* Headline/blurb/bullets/CTA all come from the resolved magnet's copy
             (`offer`). On a `?lm=` deep link that's the requested magnet; with no
@@ -658,7 +684,7 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
                       download
                       target="_blank"
                       rel="noopener"
-                      onClick={() => track('Magnet Download', { language, lead_magnet: magnet.tag, asset: item.href[language] })}
+                      onClick={() => track('Magnet Download', { language, lead_magnet: magnet.tag, asset: item.href[language], placement })}
                       className="flex items-center gap-3 px-4 py-3 bg-white/15 hover:bg-white/25 rounded-xl font-semibold transition-colors duration-200"
                     >
                       <span aria-hidden="true">📥</span>
@@ -673,12 +699,30 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
                 download
                 target="_blank"
                 rel="noopener"
-                onClick={() => track('Magnet Download', { language, lead_magnet: magnet.tag, asset: magnet.pdf[language] })}
+                onClick={() => track('Magnet Download', { language, lead_magnet: magnet.tag, asset: magnet.pdf[language], placement })}
                 className="inline-block px-6 py-3 bg-orange-700 hover:bg-orange-800 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all duration-200"
               >
                 {t.download}
               </a>
             )}
+            {/* S5-007: the loop continues into reading. Stable ids, tracked as a continuation. */}
+            <div className="mt-6 text-left" data-signup-continue>
+              <p className="font-semibold text-sm mb-2">{CONTINUE_COPY[language].heading}</p>
+              <ul className="flex flex-wrap gap-2">
+                {CONTINUE_BOOKS.map((b) => (
+                  <li key={b.id}>
+                    <Link to={`/books/${b.id}`} onClick={() => track('Continue Journey', { placement: 'signup-success', destination: 'book', book: b.id })} className="inline-block px-3 py-1.5 rounded-full bg-white/15 hover:bg-white/25 text-sm font-semibold">
+                      {b.title[language]}
+                    </Link>
+                  </li>
+                ))}
+                <li>
+                  <Link to="/books" onClick={() => track('Continue Journey', { placement: 'signup-success', destination: 'books' })} className="inline-block px-3 py-1.5 rounded-full bg-white/15 hover:bg-white/25 text-sm font-semibold">
+                    {CONTINUE_COPY[language].all} →
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
         ) : (
           <form

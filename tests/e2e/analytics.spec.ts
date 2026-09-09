@@ -104,8 +104,9 @@ test('4.2/4.3 events carry UTMs + lead_magnet and NEVER carry PII', async ({ pag
   // including any PII-shaped key — must have been stripped by sanitizeProps.
   const ALLOWED = new Set([
     'language', 'lead_magnet', 'landing_page', 'asset', 'book', 'destination', 'activity',
-    'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
-  ]);
+    'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'placement', 'edition', 'target', 'experiment', 'variant', 'kind', 'route', 'filter', 'results', 'status', 'reason', 'resource', 'journey',
+  // Sprint 5+ dimensions (see src/lib/analytics.ts ALLOWED_PROP_KEYS)
+]);
   for (const e of events) {
     for (const k of Object.keys(e.props)) {
       expect(ALLOWED.has(k), `unexpected analytics prop key "${k}" on "${e.e}"`).toBe(true);

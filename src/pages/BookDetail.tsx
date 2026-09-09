@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from '../components/LocalizedLink';
 import Seo from '../components/Seo';
@@ -15,6 +15,7 @@ import { relatedBooksFor } from '../data/relatedBooks';
 import { journeysByBookId, publishedJourneys } from '../data/contentIndex';
 import ResourceStrip from '../components/ResourceStrip';
 import RelatedActivities from '../components/RelatedActivities';
+import ShareButton from '../components/ShareButton';
 import DiscussionPrompts from '../components/DiscussionPrompts';
 import Breadcrumbs, { breadcrumbSchema } from '../components/Breadcrumbs';
 import { BOOK_RATINGS } from '../data/ratings';
@@ -27,9 +28,9 @@ const SITE_URL = 'https://storytimewitheva.com';
 const FLAG_TO_LANG: Record<string, string> = { '🇺🇸': 'en', '🇪🇸': 'es', '🇫🇷': 'fr' };
 
 const TRANSLATIONS = {
-  en: { back: '← Back to all books', theme: 'Theme', paperback: 'Paperback', ebook: 'eBook', priceNote: 'See current price on Amazon', buy: '🛒 Buy on Amazon', comingSoon: '🔜 Coming soon', comingSoonNote: 'This title is on its way. Check back soon!', coverAlt: 'book cover', ages: 'Ages', agesSuffix: '', bookLangs: 'Available in English · Spanish and French coming soon', bookLangsEnFr: 'Available in English and French', bookLangsAll: 'Available in English, Spanish, and French', pageAudioNote: 'Page and audio available in Spanish, English, and French', bilingualShow: '🌐 Show description in other languages', bilingualHide: '🌐 Hide other languages', tapShow: '🔤 Tap words to translate', tapHide: '🔤 Stop translating', ratedOn: 'on Amazon', ratingsWord: 'ratings', relatedHeading: 'You might also like', partOfJourney: 'Part of a reading journey', homeCrumb: 'Home', booksCrumb: 'Books' },
-  es: { back: '← Volver a todos los libros', theme: 'Tema', paperback: 'Tapa blanda', ebook: 'eBook', priceNote: 'Consulta el precio actual en Amazon', buy: '🛒 Comprar en Amazon', comingSoon: '🔜 Próximamente', comingSoonNote: 'Este título está en camino. ¡Vuelve pronto!', coverAlt: 'portada del libro', ages: 'Edades', agesSuffix: 'años', bookLangs: 'Disponible en inglés · Español y francés próximamente', bookLangsEnFr: 'Disponible en inglés y francés', bookLangsAll: 'Disponible en inglés, español y francés', pageAudioNote: 'Página y audio disponibles en español, inglés y francés', bilingualShow: '🌐 Mostrar la descripción en otros idiomas', bilingualHide: '🌐 Ocultar otros idiomas', tapShow: '🔤 Toca para traducir', tapHide: '🔤 Dejar de traducir', ratedOn: 'en Amazon', ratingsWord: 'valoraciones', relatedHeading: 'También te puede gustar', partOfJourney: 'Parte de un recorrido de lectura', homeCrumb: 'Inicio', booksCrumb: 'Libros' },
-  fr: { back: '← Retour à tous les livres', theme: 'Thème', paperback: 'Livre broché', ebook: 'Livre numérique', priceNote: 'Voir le prix actuel sur Amazon', buy: '🛒 Acheter sur Amazon', comingSoon: '🔜 Bientôt disponible', comingSoonNote: 'Ce titre arrive bientôt. Revenez vite !', coverAlt: 'couverture du livre', ages: 'Âges', agesSuffix: 'ans', bookLangs: 'Disponible en anglais · Espagnol et français bientôt disponibles', bookLangsEnFr: 'Disponible en anglais et français', bookLangsAll: 'Disponible en anglais, espagnol et français', pageAudioNote: 'Page et audio disponibles en espagnol, anglais et français', bilingualShow: '🌐 Afficher la description dans d\'autres langues', bilingualHide: '🌐 Masquer les autres langues', tapShow: '🔤 Touche pour traduire', tapHide: '🔤 Arrêter la traduction', ratedOn: 'sur Amazon', ratingsWord: 'évaluations', relatedHeading: 'Vous aimerez aussi', partOfJourney: 'Fait partie d’un parcours de lecture', homeCrumb: 'Accueil', booksCrumb: 'Livres' },
+  en: { back: '← Back to all books', theme: 'Theme', paperback: 'Paperback', ebook: 'eBook', priceNote: 'See current price on Amazon', buy: '🛒 Buy on Amazon', comingSoon: '🔜 Coming soon', comingSoonNote: 'This title is on its way. Check back soon!', coverAlt: 'book cover', ages: 'Ages', agesSuffix: '', bookLangs: 'Available in English · Spanish and French coming soon', bookLangsEnFr: 'Available in English and French', bookLangsAll: 'Available in English, Spanish, and French', pageAudioNote: 'Page and audio available in Spanish, English, and French', bilingualShow: '🌐 Show description in other languages', bilingualHide: '🌐 Hide other languages', tapShow: '🔤 Tap words to translate', tapHide: '🔤 Stop translating', ratedOn: 'on Amazon', ratingsWord: 'ratings', relatedHeading: 'You might also like', partOfJourney: 'Part of a reading journey', homeCrumb: 'Home', booksCrumb: 'Books', buyGroup: 'Buy this book' },
+  es: { back: '← Volver a todos los libros', theme: 'Tema', paperback: 'Tapa blanda', ebook: 'eBook', priceNote: 'Consulta el precio actual en Amazon', buy: '🛒 Comprar en Amazon', comingSoon: '🔜 Próximamente', comingSoonNote: 'Este título está en camino. ¡Vuelve pronto!', coverAlt: 'portada del libro', ages: 'Edades', agesSuffix: 'años', bookLangs: 'Disponible en inglés · Español y francés próximamente', bookLangsEnFr: 'Disponible en inglés y francés', bookLangsAll: 'Disponible en inglés, español y francés', pageAudioNote: 'Página y audio disponibles en español, inglés y francés', bilingualShow: '🌐 Mostrar la descripción en otros idiomas', bilingualHide: '🌐 Ocultar otros idiomas', tapShow: '🔤 Toca para traducir', tapHide: '🔤 Dejar de traducir', ratedOn: 'en Amazon', ratingsWord: 'valoraciones', relatedHeading: 'También te puede gustar', partOfJourney: 'Parte de un recorrido de lectura', homeCrumb: 'Inicio', booksCrumb: 'Libros', buyGroup: 'Comprar este libro' },
+  fr: { back: '← Retour à tous les livres', theme: 'Thème', paperback: 'Livre broché', ebook: 'Livre numérique', priceNote: 'Voir le prix actuel sur Amazon', buy: '🛒 Acheter sur Amazon', comingSoon: '🔜 Bientôt disponible', comingSoonNote: 'Ce titre arrive bientôt. Revenez vite !', coverAlt: 'couverture du livre', ages: 'Âges', agesSuffix: 'ans', bookLangs: 'Disponible en anglais · Espagnol et français bientôt disponibles', bookLangsEnFr: 'Disponible en anglais et français', bookLangsAll: 'Disponible en anglais, espagnol et français', pageAudioNote: 'Page et audio disponibles en espagnol, anglais et français', bilingualShow: '🌐 Afficher la description dans d\'autres langues', bilingualHide: '🌐 Masquer les autres langues', tapShow: '🔤 Touche pour traduire', tapHide: '🔤 Arrêter la traduction', ratedOn: 'sur Amazon', ratingsWord: 'évaluations', relatedHeading: 'Vous aimerez aussi', partOfJourney: 'Fait partie d’un parcours de lecture', homeCrumb: 'Accueil', booksCrumb: 'Livres', buyGroup: 'Acheter ce livre' },
 };
 
 export default function BookDetail() {
@@ -37,6 +38,7 @@ export default function BookDetail() {
   const book = useBook(slug);
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
+  const buyRef = useRef<HTMLDivElement>(null);
   const [bilingual, setBilingual] = useState(false);
   const [tapMode, setTapMode] = useState(false);
 
@@ -47,6 +49,23 @@ export default function BookDetail() {
     track('Book View', { book: bookId });
     // S6-004. Local, bounded, deduplicated; nothing leaves the device.
     recordExplored(bookId);
+  }, [bookId]);
+
+  // S5-002: one "Purchase CTA View" per book page, when the Buy group is actually viewable.
+  useEffect(() => {
+    const el = buyRef.current;
+    if (!el || !book) return;
+    let fired = false;
+    const io = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !fired) {
+        fired = true;
+        track('Purchase CTA View', { book: book.id, placement: 'detail', edition: book.editionLang });
+        io.disconnect();
+      }
+    }, { threshold: 0 });
+    io.observe(el);
+    return () => io.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookId]);
 
   // Sprint 6 recommendations: editorial pairs first, topped up from the theme tier.
@@ -224,6 +243,7 @@ export default function BookDetail() {
             <div className="mb-4 flex flex-wrap items-center gap-2">
               <BookStatusButton bookId={book.id} />
               <FavoriteButton bookId={book.id} />
+              <ShareButton bookId={book.id} title={book.title} />
             </div>
 
             {isComingSoon(book) ? (
@@ -244,6 +264,9 @@ export default function BookDetail() {
                     </span>
                   </p>
                 )}
+                {/* S5-002: the Buy group is labelled and separate from the read/listen/save controls
+                    above it; S5-003: the click carries the edition language behind the link. */}
+                <div role="group" aria-label={t.buyGroup} ref={buyRef} data-cta="buy">
                 <p className="text-sm text-gray-500 mb-3">
                   📖 {t.paperback} · 📱 {t.ebook} · {t.priceNote}
                 </p>
@@ -251,11 +274,12 @@ export default function BookDetail() {
                   href={book.amazonUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => track('Purchase Click', { book: book.id, destination: 'amazon' })}
+                  onClick={() => track('Purchase Click', { book: book.id, destination: 'amazon', placement: 'detail', edition: book.editionLang })}
                   className="inline-block w-full sm:w-auto text-center py-3 px-8 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-lg"
                 >
                   {t.buy}
                 </a>
+                </div>
               </>
             )}
           </div>

@@ -77,7 +77,7 @@ export default function LandingPage() {
         {/* key remounts the signup (fresh magnet + a new Form View) if the
             :magnet param ever changes client-side — landing pages are normally
             full-load ad entries, but this keeps it correct either way. */}
-        <EmailSignup key={magnet} magnet={magnet} />
+        <EmailSignup key={magnet} magnet={magnet} placement="landing" />
       </main>
 
       {/* Credibility + the post-conversion path, kept below the offer. */}

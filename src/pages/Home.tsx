@@ -208,7 +208,7 @@ export default function Home() {
       <JsonLd id="org" data={ORG_SCHEMA} />
 
       {/* Deep-link traffic: the offer they clicked for, before anything else. */}
-      {offerFirst && <EmailSignup />}
+      {offerFirst && <EmailSignup placement="home" />}
 
       {/* SECTION 1 — Hero. One dominant CTA (Explore the Books); Explore Activities
           is the subordinate secondary; the free bundle lives in its own section
@@ -416,7 +416,7 @@ export default function Home() {
           SECTION 8 (Loved by Families / testimonials) is intentionally not
           rendered yet: no approved testimonials exist and we never fabricate
           them. It ships as its own component in a later task (S1-010). */}
-      {!offerFirst && <EmailSignup />}
+      {!offerFirst && <EmailSignup placement="home" />}
 
       {/* SECTION 8 — Loved by Families. Renders only when approved testimonials
           exist (src/data/testimonials.ts); never a fabricated placeholder. */}

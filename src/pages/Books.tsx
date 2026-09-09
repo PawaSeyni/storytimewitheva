@@ -333,7 +333,7 @@ export default function Books() {
         </div>
       </section>
 
-      <EmailSignup />
+      <EmailSignup placement="books" />
     </main>
   );
 }

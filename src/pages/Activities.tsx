@@ -174,7 +174,7 @@ export default function Activities() {
         </div>
       </section>
 
-      <EmailSignup />
+      <EmailSignup placement="activities" />
     </main>
   );
 }
