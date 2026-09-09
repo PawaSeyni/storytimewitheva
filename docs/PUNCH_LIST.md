@@ -78,6 +78,15 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 8 — decisions, budgets, media (S8-002/003/005/006/007/008/021)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| PD-01 | **Four ADRs** (catalog, content management, search, accounts) each with three options scored on the spec's criteria, a decision, and the thresholds that reopen it. Owner acceptance is collected in the Platform Readiness Assessment, not per ADR. | #181 |
+| PD-02 | **Budgets enforced in CI** from `budgets.json`; first run: 0 failures. Raising a `fail` value needs the owner. | #181 |
+| PD-03 | **Prerender is deterministic**: bingo and puzzles rendered a random first state at build time (6 files changed on every deploy); they now render a fixed state under the prerender flag only. Visitors still get a random card. | #181 |
+| PD-04 | **`/books` Lighthouse mobile 71**, the one page under the 80 warning. Twenty covers on one grid; first three are eager, the rest lazy with srcSet. Candidate: fewer eager covers above the fold or an intersection-based reveal. Not changed in this sprint without a measurement plan. | open |
+
 ### Sprint 8 — baseline and bottleneck register (S8-001)
 
 | ID | Item | Evidence |

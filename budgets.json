@@ -1,0 +1,66 @@
+{
+  "_doc": "Performance and artifact budgets (S8-021). Enforced by scripts/check-budgets.mjs after the build in CI. 'fail' blocks; 'warn' reports. Sizes in KB (gzip where stated). Rationale and review cadence: docs/platform/PERFORMANCE_BUDGET_POLICY.md",
+  "js": {
+    "entryGzipKB": {
+      "warn": 125,
+      "fail": 140
+    },
+    "pageChunkGzipKB": {
+      "warn": 35,
+      "fail": 50
+    },
+    "totalGzipKB": {
+      "warn": 300,
+      "fail": 350
+    }
+  },
+  "css": {
+    "totalGzipKB": {
+      "warn": 40,
+      "fail": 60
+    }
+  },
+  "html": {
+    "perRouteKB": {
+      "warn": 130,
+      "fail": 200
+    }
+  },
+  "images": {
+    "pageAssetKB": {
+      "warn": 320,
+      "fail": 600
+    },
+    "pageAssetsTotalMB": {
+      "warn": 8,
+      "fail": 12
+    },
+    "campaignAssetMB": {
+      "warn": 3,
+      "fail": 5
+    }
+  },
+  "pdf": {
+    "perFileMB": {
+      "warn": 8,
+      "fail": 12
+    }
+  },
+  "routes": {
+    "min": 150
+  },
+  "lighthouseMobile": {
+    "_doc": "Measured by the Netlify Lighthouse plugin per deploy, not in CI",
+    "performanceWarn": 80,
+    "performanceFail": 60,
+    "lcpSeconds": 2.5,
+    "cls": 0.1,
+    "inpMs": 200
+  },
+  "build": {
+    "_doc": "Measured by scripts/bench-build.mjs; Netlify deploy_time is the operational number",
+    "netlifyDeploySecondsWarn": 180,
+    "netlifyDeploySecondsFail": 300,
+    "localPrerenderSecondsWarn": 300
+  }
+}

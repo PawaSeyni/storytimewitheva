@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import { isPrerendering } from '../lib/prerender';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { CheckCircle2, XCircle, Lightbulb, Eye, ChevronRight } from 'lucide-react';
@@ -453,7 +454,7 @@ export default function PuzzleAdventuresDemo() {
 
   // Pick a random starting puzzle index on mount (run once; pools are same length across langs)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const initialLogicIndex = useMemo(() => Math.floor(Math.random() * logicPuzzles.length), []);
+  const initialLogicIndex = useMemo(() => (isPrerendering() ? 0 : Math.floor(Math.random() * logicPuzzles.length)), []);
   const [logicIndex, setLogicIndex] = useState(initialLogicIndex);
   const logic = logicPuzzles[logicIndex];
 
