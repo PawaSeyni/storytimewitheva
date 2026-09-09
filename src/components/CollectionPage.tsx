@@ -5,6 +5,9 @@ import Seo from './Seo';
 import JsonLd from './JsonLd';
 import Breadcrumbs, { breadcrumbSchema } from './Breadcrumbs';
 import { useTranslation, useLanguage } from '../lib/language';
+import { useActivities } from '../data/activities';
+import { resources as RESOURCES } from '../data/resources';
+import { gameUrl } from '../lib/gameUrl';
 
 // Presentation for ANY collection — theme or age band (S7-001 / S7-002). The route
 // component resolves the id and hands over localized title, intro, the books, and the
@@ -17,16 +20,22 @@ const TRANSLATIONS = {
     home: 'Home', books: 'Books',
     book: 'book', booksPlural: 'books', inThisCollection: 'in this collection',
     booksHeading: 'Books in this collection',
+    activitiesHeading: 'Activities that go with these books',
+    resourcesHeading: 'For the grown-up',
   },
   es: {
     home: 'Inicio', books: 'Libros',
     book: 'libro', booksPlural: 'libros', inThisCollection: 'en esta colección',
     booksHeading: 'Libros de esta colección',
+    activitiesHeading: 'Actividades que acompañan a estos libros',
+    resourcesHeading: 'Para el adulto',
   },
   fr: {
     home: 'Accueil', books: 'Livres',
     book: 'livre', booksPlural: 'livres', inThisCollection: 'dans cette collection',
     booksHeading: 'Livres de cette collection',
+    activitiesHeading: 'Des activités qui accompagnent ces livres',
+    resourcesHeading: 'Pour l’adulte',
   },
 };
 
@@ -39,11 +48,17 @@ export interface CollectionPageProps {
   /** Heading for the sibling-collections block, localized by the caller. */
   browseOthersHeading: string;
   others: { id: string; label: string }[];
+  /** From the collection record (S7-001): featured activity slugs and resource ids. */
+  activityIds?: string[];
+  resourceIds?: string[];
 }
 
-export default function CollectionPage({ id, title, intro, seoTitle, books, browseOthersHeading, others }: CollectionPageProps) {
+export default function CollectionPage({ id, title, intro, seoTitle, books, browseOthersHeading, others, activityIds = [], resourceIds = [] }: CollectionPageProps) {
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
+  const allActivities = useActivities();
+  const featured = activityIds.map((slug) => allActivities.find((a) => a.slug === slug)).filter((a) => a !== undefined);
+  const featuredResources = resourceIds.map((rid) => RESOURCES.find((r) => r.id === rid)).filter((r) => r !== undefined);
   const path = `/collections/${id}`;
 
   const crumbs = [
@@ -101,6 +116,48 @@ export default function CollectionPage({ id, title, intro, seoTitle, books, brow
           ))}
         </div>
       </section>
+
+      {featured.length > 0 && (
+        <section className="py-10 px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">{t.activitiesHeading}</h2>
+            <ul className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {featured.map((a) => {
+                const inner = (
+                  <>
+                    <span className="text-3xl block mb-2" aria-hidden>{a.emoji}</span>
+                    <span className="block font-bold text-gray-800 leading-snug">{a.title}</span>
+                    <span className="block text-xs text-gray-500 mt-1 line-clamp-2">{a.desc}</span>
+                  </>
+                );
+                const cls = 'block h-full bg-white rounded-2xl shadow-sm hover:shadow-md border border-gray-50 p-5 transition-all';
+                return (
+                  <li key={a.slug}>
+                    {a.game ? <a href={gameUrl(a.slug, language)} className={cls}>{inner}</a> : <Link to={`/activities/${a.slug}`} className={cls}>{inner}</Link>}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {featuredResources.length > 0 && (
+        <section className="pb-10 px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">{t.resourcesHeading}</h2>
+            <ul className="flex flex-wrap gap-2">
+              {featuredResources.map((r) => (
+                <li key={r.id}>
+                  <Link to={r.kind === 'article' ? `/resources#${r.slug}` : `/free/${r.slug}`} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-purple-100 text-sm text-purple-700 hover:border-purple-300">
+                    <span aria-hidden>{r.emoji ?? '📄'}</span> {r.title[language]}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {/* Internal linking keeps every collection reachable (orphan-route guard). */}
       <section className="py-12 px-4 bg-purple-50">

@@ -78,6 +78,16 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 7 — collections as records (S7-001 · S7-013)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| CR-01 | **Records hold only what cannot be derived.** For theme/age kinds membership stays derived from the taxonomy and the validator *rejects* a record that carries `bookIds`; a record may reorder (`bookOrder`, validated subset), feature activities, attach resources, or override the intro. Storing membership twice was rejected on purpose — the spec forbids duplicated relationship arrays and a copy would drift. | #169 |
+| CR-02 | **Fourteen records live** (11 themes + 3 age bands), each featuring the activities its member books reference most. Generated from relationship frequency and committed as data an editor can change; the validator requires every featured activity to be related to at least one member book, so the choice is editorial *within a meaningful set*. | #169 |
+| CR-03 | **Editorial kinds are modeled and routed** (`educator`, `seasonal`): explicit validated `bookIds`, own title/description in three languages, the two-book minimum, and an id that cannot collide with a taxonomy id. None exist yet; S7-007 and S7-012 become "add records". | #169 |
+| CR-04 | **Collection pages gain "Activities that go with these books"** (and a resources block when a record has any), localized, with the game-vs-demo link form the rest of the site uses. Locked by the prerender suite in three languages. | #169 |
+| CR-05 | **Not done, stated:** no record overrides the taxonomy intro yet, so C6-02 (richer intros) now has a home but no copy; no `bookOrder` is set, so display order remains catalog order pending editorial choice. | open |
+
 ### Sprint 7 — reading journeys (S7-003 · S7-010 · S7-011)
 
 | ID | Item | Evidence |

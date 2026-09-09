@@ -10,7 +10,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadCatalog, loadContentIndex, loadRelatedBooks, loadActivities } from '../../scripts/lib/catalog.mjs';
+import { loadCatalog, loadContentIndex, loadRelatedBooks, loadActivities, loadCollections } from '../../scripts/lib/catalog.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const DIST = path.join(ROOT, 'dist');
@@ -18,6 +18,7 @@ const { collectionEligibleThemeIds, ageCollectionEligibleBandIds, collectionRout
 const { books } = await loadCatalog();
 const { relatedBooksFor } = await loadRelatedBooks();
 const { activities } = await loadActivities();
+const { collections } = await loadCollections();
 const LOCALES = { en: '', fr: '/fr', es: '/es' };
 
 /** English-only UI strings that must never appear on a localized collection page. */
@@ -270,5 +271,22 @@ test('journeys — every journey page states progress in text, has pressed-state
     }
     const idx = read(`${prefix}/journeys`);
     assert.ok(idx && journeyRouteIds.every((id) => idx.includes(`/journeys/${id}"`)), `${prefix}/journeys: index must link every published journey`);
+  }
+});
+
+test('collections — a record\'s featured activities render on the page, localized, with the right link form (S7-001)', () => {
+  const heading = { en: 'Activities that go with these books', fr: 'Des activités qui accompagnent ces livres', es: 'Actividades que acompañan a estos libros' };
+  for (const c of collections.filter((x) => (x.activityIds ?? []).length > 0)) {
+    for (const [loc, prefix] of Object.entries(LOCALES)) {
+      const h = read(`${prefix}/collections/${c.id}`);
+      assert.ok(h, `${prefix}/collections/${c.id}: not prerendered`);
+      assert.ok(h.includes(heading[loc]), `${prefix}/collections/${c.id}: missing the ${loc} activities heading`);
+      for (const slug of c.activityIds) {
+        const game = activities.find((a) => a.slug === slug)?.game;
+        const lang = prefix.replace('/', '');
+        const href = game ? `/games/${slug}.html${lang ? `?lang=${lang}` : ''}` : `${prefix}/activities/${slug}`;
+        assert.ok(h.includes(`href="${href}"`), `${prefix}/collections/${c.id}: missing featured activity link ${href}`);
+      }
+    }
   }
 });
