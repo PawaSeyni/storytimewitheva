@@ -142,3 +142,10 @@ export async function loadSearchIndex() {
   if (!searchCache) searchCache = await loadModule(SEARCH);
   return searchCache;
 }
+
+let redactCache = null;
+/** Error-report redaction (S8-012), browser-free. */
+export async function loadErrorRedact() {
+  if (!redactCache) redactCache = await loadModule(path.join(ROOT, 'src', 'lib', 'errorRedact.ts'));
+  return redactCache;
+}

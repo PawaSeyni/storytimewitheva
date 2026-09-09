@@ -51,7 +51,9 @@ export type FunnelEvent =
   | 'Journey Complete'
   // S7-015: a search was run; only the content-type filter and the result count travel,
   // never the query text (it could be a child's name).
-  | 'Search';
+  | 'Search'
+  // S8-012: a client error, as error CLASS and ROUTE PATTERN only (src/lib/errorRedact.ts).
+  | 'Client Error';
 
 // The ONLY property keys allowed on any event. Aggregate dimensions only — never
 // anything that identifies a person.
@@ -73,6 +75,9 @@ const ALLOWED_PROP_KEYS = [
   // S7-015 search: the active content-type filter ('all' | type) and a result count.
   'filter',
   'results',
+  // S8-012 error reports: error class name and route pattern (/books/:id), never a message.
+  'kind',
+  'route',
 ] as const;
 type PropKey = (typeof ALLOWED_PROP_KEYS)[number];
 

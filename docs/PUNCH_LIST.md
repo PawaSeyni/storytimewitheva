@@ -78,6 +78,18 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 8 — operations (S8-011 to S8-018, S8-023)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| PO-01 | **Post-deploy automation**: every push to main waits for production to serve the commit, verifies the deploy chain and runs the smoke suite; every 6 h the smoke suite; daily the full client-side audit against production. Artifacts kept 90 days. GitHub emails the owner on failure. | #182 |
+| PO-02 | **Client error beacon** through the cookie-free allowlist: error class + route pattern only, at most three per page load, unit-tested redaction. | #182 |
+| PO-03 | **Gates added to CI**: `check:audit` (allowlist with review dates), `check:secrets` (dist scan). Dependabot configured, no auto-merge. | #182 |
+| PO-04 | **Recovery drill run and timed**: recreate from source 183 s; content damage detected by the gate and restored from git; revert 1 s. | #182 |
+| PO-05 | **Owner action: enable branch protection on `main`** (required status `test`, one review). Without it every gate is by practice, not by GitHub. Security review R-01. | open |
+| PO-06 | **Owner action: scope `MAILERLITE_GROUP` for the `deploy-preview` context** to a test group so preview signups stop creating real subscribers. Security review R-03. | open |
+| PO-07 | **Owner action: exercise a Netlify republish** of the previous deploy once (two minutes, replaces the live site during the drill). Last known good recorded in the runbook. | open |
+
 ### Sprint 8 — decisions, budgets, media (S8-002/003/005/006/007/008/021)
 
 | ID | Item | Evidence |
