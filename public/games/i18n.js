@@ -29,6 +29,9 @@
 (function () {
   var COMMON = {
     en: {
+      continueEyebrow: 'Continue the journey',
+      readNext: 'Read next',
+      browseBooks: 'Browse all books',
       backToActivities: '← Back to Activities',
       markCompleted: '✓ Mark Completed',
       completed: '✅ Completed!',
@@ -40,6 +43,9 @@
       rights: 'All rights reserved.',
     },
     es: {
+      continueEyebrow: 'Continúa la aventura',
+      readNext: 'Sigue leyendo',
+      browseBooks: 'Explora todos los libros',
       backToActivities: '← Volver a actividades',
       markCompleted: '✓ Marcar como completado',
       completed: '✅ ¡Completado!',
@@ -51,6 +57,9 @@
       rights: 'Todos los derechos reservados.',
     },
     fr: {
+      continueEyebrow: 'Continuez l’aventure',
+      readNext: 'À lire ensuite',
+      browseBooks: 'Voir tous les livres',
       backToActivities: '← Retour aux activités',
       markCompleted: '✓ Marquer comme terminé',
       completed: '✅ Terminé !',
@@ -105,9 +114,12 @@
       if (href.indexOf('/es/') === 0 || href.indexOf('/fr/') === 0) continue; // already prefixed
       var label = NAV[href];
       a.setAttribute('href', href === '/' ? '/' + L : '/' + L + href);
-      // Nav labels are plain text in the game HTML. Localize them too, unless the element
-      // already declares a data-i18n key (which apply() has just set).
-      if (label && label[L] && !a.getAttribute('data-i18n')) a.textContent = label[L];
+      // Nav labels are plain text in the game HTML. Localize them too — but only when the
+      // link's text IS the English nav label. Keying on the href alone relabelled the
+      // continue-the-journey fallback ("Browse all books", href /books) to "Libros".
+      if (label && label[L] && !a.getAttribute('data-i18n') && a.textContent.trim() === label.en) {
+        a.textContent = label[L];
+      }
     }
   }
 

@@ -576,7 +576,25 @@
     }
   </script>
 
-  <footer class="bg-gray-800 text-white py-10 mt-10">
+  
+<!-- STE_CONTINUE: injected by scripts/patch-games.mjs (resolved by src/lib/journey.ts) -->
+<section id="ste-continue" class="max-w-7xl mx-auto px-4 mt-10 mb-2" aria-labelledby="ste-continue-eyebrow">
+  <p id="ste-continue-eyebrow" data-i18n="continueEyebrow" class="text-xs font-semibold uppercase tracking-wide text-purple-600 mb-2">Continue the journey</p>
+  <a href="/books/diegos-brave-leap" data-ste-continue='{"kind":"book","titles":{"en":"Diego&#39;s Brave Leap","es":"El salto valiente de Diego","fr":"Le saut courageux de Diego"}}' class="inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold px-5 py-3 shadow-md hover:shadow-lg transition-all">Read next <span aria-hidden="true">→</span></a>
+</section>
+<script>
+(function () {
+  var a = document.querySelector('#ste-continue a[data-ste-continue]');
+  if (!a || typeof window.t !== 'function') return;
+  var d; try { d = JSON.parse(a.getAttribute('data-ste-continue')); } catch (e) { return; }
+  var L = window.GAME_LANG || 'en';
+  var label = d.kind === 'book'
+    ? window.t('readNext') + ': ' + ((d.titles && (d.titles[L] || d.titles.en)) || '')
+    : window.t('browseBooks');
+  a.firstChild.nodeValue = label + ' ';
+})();
+</script>
+<footer class="bg-gray-800 text-white py-10 mt-10">
     <div class="max-w-7xl mx-auto px-4 text-center">
       <p class="font-extrabold text-lg mb-1">🐾 Story Time with Eva</p>
       <p data-i18n="footerTagline" class="text-gray-400 text-sm mb-4">Where stories come to life! Magical books and activities for curious minds, ages 3–9.</p>
@@ -589,9 +607,6 @@
       <p class="text-gray-500 text-xs mt-4">© 2026 Story Time with Eva. <span data-i18n="rights">All rights reserved.</span></p>
     </div>
   </footer>
-
-
-
 <!-- STE_PROGRESS_SYNC: injected by scripts/patch-games.mjs -->
 <script>
 (function () {
