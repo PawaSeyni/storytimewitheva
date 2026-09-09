@@ -203,7 +203,14 @@ test.describe('sprint 7 ecosystem — cookie-free and storage-free', () => {
   test('a journey can be completed in memory with storage denied and announces completion', async ({ page, context }) => {
     await blockStorage(context);
     await page.goto('/journeys/kindness-that-shines', { waitUntil: 'domcontentloaded' });
-    const n = await page.getByRole('button', { name: 'Mark step done' }).count();
+    // The app client-renders over the prerendered HTML (createRoot, not hydrateRoot), so
+    // there is a brief window where the step list is a Suspense fallback. Wait for the
+    // rendered progress line and take the step count from it, never from an eager count().
+    const progressLine = page.getByText(/^0 of \d+ steps done\./).first();
+    await expect(progressLine).toBeVisible();
+    const n = Number(/of (\d+) steps/.exec(await progressLine.innerText())?.[1]);
+    expect(n).toBeGreaterThan(1);
+    await expect(page.getByRole('button', { name: 'Mark step done' })).toHaveCount(n);
     for (let i = 0; i < n; i++) {
       await page.getByRole('button', { name: 'Mark step done' }).first().click();
       // Serialize on the rendered state so a re-render never swallows a click under load.
