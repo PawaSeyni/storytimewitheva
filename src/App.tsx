@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from './lib/language';
+import { LANG_PREFIXES, splitLangFromPath } from './lib/locales';
 
 /**
  * Scroll to a #hash target after navigation. React Router doesn't do this for
@@ -143,7 +144,7 @@ const routeDefs = [
   { path: '/free/:magnet', element: <LandingPage /> },
 ];
 
-const LANG_PREFIXES = ['', '/es', '/fr'];
+// Every locale prefix from the registry (S8-019): one route table, mounted once per prefix.
 
 const SKIP_LINK = {
   en: { skip: 'Skip to content' },
@@ -158,7 +159,7 @@ export default function App() {
   // Dedicated paid-traffic landing pages (/free/…, /es/free/…, /fr/free/…) render
   // WITHOUT the site chrome — no navbar, footer, feedback widget or skip link —
   // so the whole viewport is the offer. Everything else gets the full shell.
-  const isLanding = /^\/(?:es\/|fr\/)?free\//.test(pathname);
+  const isLanding = /^\/free\//.test(splitLangFromPath(pathname).rest);
 
   // Signal to the build-time prerender crawler that the first render + all
   // child effects (Seo/JsonLd inject the head here) have completed. Child

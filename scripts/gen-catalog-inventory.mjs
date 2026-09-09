@@ -6,12 +6,12 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadCatalog } from './lib/catalog.mjs';
+import { loadCatalog, loadLocales } from './lib/catalog.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const { books: catalogBooks } = await loadCatalog();
 const actSrc = readFileSync(path.join(ROOT, 'src/data/activities.ts'), 'utf8');
-const LANGS = ['en', 'es', 'fr'];
+const { LANGUAGES: LANGS } = await loadLocales();
 
 // Per-book, per-language presence of an own Amazon edition (asin) and a cover.
 const books = catalogBooks.map((b) => ({

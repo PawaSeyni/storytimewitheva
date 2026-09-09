@@ -11,6 +11,7 @@
 // caller passes the date so this stays pure and testable.
 
 import type { Language } from './language';
+import { LANGUAGES } from './locales';
 import { books } from '../data/books.data';
 import { activities } from '../data/activities.data';
 import { resources } from '../data/resources';
@@ -42,7 +43,7 @@ export interface SearchRecord {
   emoji?: string;
 }
 
-const LANGS: Language[] = ['en', 'fr', 'es'];
+const LANGS: Language[] = LANGUAGES;
 const join = (parts: (string | undefined)[]) => parts.filter(Boolean).join(' ');
 const themeTerms = (ids: ThemeId[], lang: Language) => ids.map((t) => THEMES[t]?.labels[lang]).filter(Boolean).join(' ');
 const ageTerms = (ids: AgeBandId[], lang: Language) => ids.map((b) => AGE_BANDS[b]?.labels[lang]).filter(Boolean).join(' ');

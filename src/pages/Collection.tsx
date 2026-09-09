@@ -17,6 +17,7 @@ import { collectionEligibleThemeIds, ageCollectionEligibleBandIds, publishedEdit
 import CollectionPage from '../components/CollectionPage';
 import NotFound from './NotFound';
 import { useTranslation, useLanguage } from '../lib/language';
+import { intlLocale } from '../lib/locales';
 
 const TRANSLATIONS = {
   en: { browseThemes: 'Browse other themes', browseAges: 'Browse by age', seoTheme: 'Picture books about', seoAge: 'Picture books for', seoEducator: 'A classroom collection', seoSeasonal: 'A seasonal collection', returns: 'This seasonal collection is resting. It returns on', closedIntro: 'Browse the collections below in the meantime.' },
@@ -52,7 +53,7 @@ export default function Collection() {
   // Evaluated with the visitor's clock, so a boundary applies immediately; the
   // prerendered snapshot (and the sitemap) catch up at the next deploy.
   const season = seasonalState(collectionId, now);
-  const fmt = new Intl.DateTimeFormat({ en: 'en-US', es: 'es-ES', fr: 'fr-FR' }[language], { month: 'long', day: 'numeric' });
+  const fmt = new Intl.DateTimeFormat(intlLocale(language), { month: 'long', day: 'numeric' });
 
   const extras = { activityIds: record?.activityIds, resourceIds: record?.resourceIds, packIds: packsByCollectionId[collectionId] };
   const others = [

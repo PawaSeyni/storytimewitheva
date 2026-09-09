@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import { LANGUAGES } from '../lib/locales';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, XCircle, RotateCcw } from 'lucide-react';
 import { useLanguage, useTranslation, type Language } from '../lib/language';
@@ -403,7 +404,7 @@ export default function WordExplorerDemo() {
             ) : (
               <div className="flex flex-col items-center gap-3 text-center">
                 <span className="text-5xl">{currentCard.emoji}</span>
-                {(['en', 'es', 'fr'] as Language[])
+                {LANGUAGES
                   .filter((l) => l !== language)
                   .map((l) => (
                     <div key={l} className="flex flex-col items-center">

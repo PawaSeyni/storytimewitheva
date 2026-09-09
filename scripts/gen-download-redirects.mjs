@@ -23,7 +23,7 @@
 import { readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadLearningPacks, loadContentIndex } from './lib/catalog.mjs';
+import { loadLearningPacks, loadContentIndex, loadLocales } from './lib/catalog.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -111,12 +111,13 @@ lines.push(
   '# a visitor landing here has not opted in yet.',
   ''
 );
-const langPrefix = { en: '', es: '/es', fr: '/fr' };
+const { LOCALES, LANGUAGES: ALL_LANGS, DEFAULT_LANGUAGE } = await loadLocales();
+const langPrefix = Object.fromEntries(LOCALES.map((l) => [l.code, l.prefix]));
 for (const magnet of [...byMagnet.keys()].sort()) {
   const langs = byMagnet.get(magnet);
-  for (const lang of ['en', 'es', 'fr']) {
+  for (const lang of ALL_LANGS) {
     if (!langs[lang]) continue;
-    const suffix = lang === 'en' ? '' : `-${lang}`;
+    const suffix = lang === DEFAULT_LANGUAGE ? '' : `-${lang}`;
     const legacyPath = `/${magnet}${suffix}.pdf`;
     const target = `${langPrefix[lang]}/?lm=${magnet}#email-signup`;
     lines.push(`${legacyPath}  ${target}  301`);
@@ -141,7 +142,7 @@ if (Object.keys(RETIRED).length) {
   );
   for (const [retired, repl] of Object.entries(RETIRED)) {
     // Landing pages (both slash forms so the rule wins before Netlify's slash 301).
-    for (const lang of ['en', 'es', 'fr']) {
+    for (const lang of ALL_LANGS) {
       const p = langPrefix[lang];
       for (const base of [`${p}/free/${retired}`, `${p}/free/${retired}/`]) {
         lines.push(`${base}  ${p}/free/${repl}  301`);
@@ -152,8 +153,8 @@ if (Object.keys(RETIRED).length) {
       lines.push(`${base}  /free/${repl}  301`);
     }
     // Old raw hashed-less pdf filenames -> the replacement's gated offer.
-    for (const lang of ['en', 'es', 'fr']) {
-      const suffix = lang === 'en' ? '' : `-${lang}`;
+    for (const lang of ALL_LANGS) {
+      const suffix = lang === DEFAULT_LANGUAGE ? '' : `-${lang}`;
       lines.push(`/${retired}${suffix}.pdf  ${langPrefix[lang]}/?lm=${repl}#email-signup  301`);
     }
   }

@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import { SUPPORTED_LANGUAGES, localizePath, useLanguage } from '../lib/language';
+import { localizePath, useLanguage } from '../lib/language';
+import { hreflangFor, ogLocale } from '../lib/locales';
 import { useHead } from '../lib/head';
 
 const SITE_URL = 'https://storytimewitheva.com';
@@ -8,11 +9,6 @@ const SITE_NAME = 'Story Time with Eva';
 // could rotate or hot-link-block the asset. 1200x900 brand image in /public.
 const DEFAULT_IMAGE = `${SITE_URL}/og-image.jpg`;
 
-const OG_LOCALE: Record<'en' | 'es' | 'fr', string> = {
-  en: 'en_US',
-  es: 'es_ES',
-  fr: 'fr_FR',
-};
 
 interface SeoProps {
   /** Page-specific title. Will be rendered as `${title} | Story Time with Eva` unless `bare` is true. */
@@ -58,10 +54,7 @@ export default function Seo({ title, description, image = DEFAULT_IMAGE, imageWi
   const url = canonical(localizePath(enPath, language));
   const alternates = useMemo(() => {
     if (noindex) return [];
-    return [
-      ...SUPPORTED_LANGUAGES.map(l => ({ hreflang: l, href: canonical(localizePath(enPath, l)) })),
-      { hreflang: 'x-default', href: canonical(localizePath(enPath, 'en')) },
-    ];
+    return hreflangFor(enPath, canonical);
   }, [enPath, noindex]);
 
   useHead({
@@ -71,7 +64,7 @@ export default function Seo({ title, description, image = DEFAULT_IMAGE, imageWi
     imageWidth: resolvedWidth,
     imageHeight: resolvedHeight,
     url,
-    locale: OG_LOCALE[language],
+    locale: ogLocale(language),
     alternates,
     noindex,
   });

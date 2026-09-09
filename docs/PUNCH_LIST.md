@@ -78,6 +78,15 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 8 — locales, governance, readiness (S8-019/020/022/024)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| PR-01 | **One locale registry** drives routes, head metadata, formatting, speech, search, content validation and every build script; generated sitemap and redirects are byte-identical after the refactor. A temporary `pt` locale is proved in tests without any component change. | #183 |
+| PR-02 | **Accessibility governance** written; the first full manual screen-reader pass (S4-05) is due at the readiness sign-off. | #183 |
+| PR-03 | **Platform Readiness Assessment** drafted with go/no-go statements, eight risks and an approvals table. **Owner: sign it**, and decide R-01 (branch protection), R-03 (preview secrets), R-05 (move the clone out of iCloud sync), R-07 (pins in the repo). | open |
+| PR-04 | **iCloud sync duplicated files inside the repo twice this sprint** (`scripts/bench-search 2.mjs`, `.git/index 2`, 300 `dist` copies). Removed; nothing was committed. Risk R-05. | #183 |
+
 ### Sprint 8 — operations (S8-011 to S8-018, S8-023)
 
 | ID | Item | Evidence |

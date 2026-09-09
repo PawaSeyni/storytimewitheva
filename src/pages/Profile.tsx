@@ -16,6 +16,7 @@ import {
 import Seo from '../components/Seo';
 import Pixel from '../components/Pixel';
 import { useTranslation, useLanguage } from '../lib/language';
+import { intlLocale } from '../lib/locales';
 import { gameUrl } from '../lib/gameUrl';
 import LocalDataPanel from '../components/LocalDataPanel';
 import {
@@ -264,7 +265,7 @@ export default function Profile() {
     };
   }, []);
 
-  const dateLocale = ({ en: 'en-US', es: 'es-ES', fr: 'fr-FR' } as const)[language] ?? 'en-US';
+  const dateLocale = intlLocale(language);
   const fmtDate = (value: string): string => {
     if (!value) return '';
     // Date-only strings ("YYYY-MM-DD", from the journal) parse as UTC midnight,

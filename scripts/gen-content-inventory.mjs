@@ -12,12 +12,11 @@ import { readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  loadCatalog, loadActivities, loadResources, loadContentIndex, loadCollections, loadJourneys, loadLearningPacks, loadRelatedBooks,
-} from './lib/catalog.mjs';
+  loadCatalog, loadActivities, loadResources, loadContentIndex, loadCollections, loadJourneys, loadLearningPacks, loadRelatedBooks, loadLocales } from './lib/catalog.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CHECK = process.argv.includes('--check');
-const LANGS = ['en', 'fr', 'es'];
+const { LANGUAGES: LANGS } = await loadLocales();
 
 const { books } = await loadCatalog();
 const { activities } = await loadActivities();
