@@ -12,6 +12,7 @@
 // summary metadata so nothing is duplicated.
 
 import type { Language } from '../lib/language';
+import type { ThemeId } from './taxonomy';
 
 type LocalizedString = Record<Language, string>;
 
@@ -36,6 +37,13 @@ export interface Resource {
   /** Articles only — shows the "Popular" badge. */
   popular?: boolean;
   emoji?: string;
+  /**
+   * Articles only (S7-006): the themes this guide speaks to. Books and collections are
+   * DERIVED from them at render time (contentIndex.booksByThemeId), never listed here.
+   */
+  relatedThemeIds?: ThemeId[];
+  /** Articles only (S7-006): printables that pair with this guide. Validated ids. */
+  relatedResourceIds?: string[];
 }
 
 export type ResourceCategoryKey = 'readingTips' | 'activityIdeas' | 'childDev' | 'engagement';
@@ -98,6 +106,7 @@ export const resources: Resource[] = [
   // ---- articles (long-form guidance rendered on /resources#<slug>) ----
   {
     id: 'article-making-reading-magical', kind: 'article', slug: 'making-reading-magical', minutes: 5, emoji: '✨',
+    relatedThemeIds: ['wonder', 'creativity'], relatedResourceIds: ['download-bedtime-routine'],
     categoryKey: 'readingTips', categoryColor: 'bg-blue-100 text-blue-700', popular: true,
     title: {
       en: '10 Ways to Make Reading Time Magical',
@@ -112,6 +121,7 @@ export const resources: Resource[] = [
   },
   {
     id: 'article-age-appropriate-reading', kind: 'article', slug: 'age-appropriate-reading', minutes: 8, emoji: '📊',
+    relatedThemeIds: ['patience-mastery', 'curiosity'], relatedResourceIds: ['download-parents-guide'],
     categoryKey: 'childDev', categoryColor: 'bg-green-100 text-green-700', popular: true,
     title: {
       en: 'Age-Appropriate Reading Milestones',
@@ -126,6 +136,7 @@ export const resources: Resource[] = [
   },
   {
     id: 'article-follow-up-activities', kind: 'article', slug: 'follow-up-activities', minutes: 6, emoji: '🎨',
+    relatedThemeIds: ['creativity', 'curiosity'], relatedResourceIds: ['download-follow-up-activities'],
     categoryKey: 'activityIdeas', categoryColor: 'bg-orange-100 text-orange-700', popular: false,
     title: {
       en: '5 Creative Follow-Up Activities After Reading',
@@ -140,6 +151,7 @@ export const resources: Resource[] = [
   },
   {
     id: 'article-reluctant-readers', kind: 'article', slug: 'reluctant-readers', minutes: 7, emoji: '💪',
+    relatedThemeIds: ['courage', 'self-worth'], relatedResourceIds: ['download-bedtime-routine', 'download-follow-up-activities'],
     categoryKey: 'engagement', categoryColor: 'bg-pink-100 text-pink-700', popular: false,
     title: {
       en: 'Building a Love for Reading in Reluctant Readers',
@@ -154,6 +166,7 @@ export const resources: Resource[] = [
   },
   {
     id: 'article-perfect-reading-environment', kind: 'article', slug: 'perfect-reading-environment', minutes: 4, emoji: '🏠',
+    relatedThemeIds: ['emotions', 'wonder'], relatedResourceIds: ['download-bedtime-routine'],
     categoryKey: 'readingTips', categoryColor: 'bg-blue-100 text-blue-700', popular: false,
     title: {
       en: 'Creating the Perfect Reading Environment',
@@ -168,6 +181,7 @@ export const resources: Resource[] = [
   },
   {
     id: 'article-bilingual-reading', kind: 'article', slug: 'bilingual-reading', minutes: 6, emoji: '🧠',
+    relatedThemeIds: ['diversity', 'heritage'], relatedResourceIds: ['download-bilingual-flashcards', 'download-parents-guide'],
     categoryKey: 'childDev', categoryColor: 'bg-green-100 text-green-700', popular: false,
     title: {
       en: 'Why Bilingual Reading Matters',

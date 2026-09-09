@@ -7,6 +7,7 @@ import { useLanguage, useTranslation } from '../lib/language';
 import { amazonDp } from '../lib/amazon';
 import { resources as RESOURCES, type Resource } from '../data/resources';
 import SaveResourceButton from '../components/SaveResourceButton';
+import GuideLinks from '../components/GuideLinks';
 import { educatorCollectionIds, collectionRecordById, publishedLearningPacks, packResources } from '../data/contentIndex';
 import { THEMES, AGE_BANDS, type ThemeId, type AgeBandId } from '../data/taxonomy';
 import type { Language } from '../lib/language';
@@ -756,6 +757,7 @@ function ArticleSimple({ id, t }: { id: string; t: { eyebrow: string; title: str
           </section>
         ))}
       </div>
+      <GuideLinks slug={id} />
     </article>
   );
 }
@@ -805,6 +807,7 @@ function ArticlePerfectReadingEnvironment({ t }: { t: Article2T }) {
           </ul>
         </section>
       </div>
+      <GuideLinks slug="perfect-reading-environment" />
     </article>
   );
 }

@@ -78,6 +78,15 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 7 — guides, bundles, inventory (S7-004 · S7-006 · S7-014)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| GI-01 | **S7-004 recorded as shipped by the existing model**: book-to-activity bundles are `relatedActivityIds` plus the derived reverse index, never a copied record. | #174 |
+| GI-02 | **Parent guides link inward (S7-006)**: each of the six guides ends with the stories it speaks to (derived from `relatedThemeIds`), the public theme collections, and the printables that pair with it, in three languages. | #174 |
+| GI-03 | **Ecosystem inventory + CI gate (S7-014)**: `docs/content-inventory.md` generated, deterministic, committed; `check:content` runs before the build in CI and fails on invalid, missing, duplicate or draft references and on download files missing from disk. | #174 |
+| GI-04 | **Copy to review**: the guide-to-theme pairings are editorial; three strings in `GuideLinks.tsx`. | open |
+
 ### Sprint 7 — seasonal collections (S7-012)
 
 | ID | Item | Evidence |

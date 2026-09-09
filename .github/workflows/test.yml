@@ -19,6 +19,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
+      - run: npm run check:content        # S7-014: ecosystem references, validators, downloads on disk
       - run: npm test                       # Layer 0 + 2.5 + 7 (headless, no browser)
       - run: npm run build                  # proves the prerender abort guard + builds dist/
       - run: npm run test:seo               # per-route SEO assertions against prerendered dist/
