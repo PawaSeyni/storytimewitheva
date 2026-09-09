@@ -5,6 +5,7 @@ import { publishedLearningPacks, packResources } from '../data/contentIndex';
 import { packItemHref } from '../data/learningPacks';
 import { LANGUAGES } from '../lib/locales';
 import { Link } from './LocalizedLink';
+import { useExperiment } from '../lib/experiments';
 import { books as CATALOG } from '../data/books.data';
 
 // Three featured titles (catalog order) offered after signup; ids only, titles localized at render.
@@ -534,6 +535,9 @@ export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: 
   const hpRef = useRef<HTMLInputElement>(null); // honeypot; real users never fill it
   const firedView = useRef(false);
   const firedStart = useRef(false);
+  // EXP-002 (draft until the baseline is approved): 'plain' hides the contextual line.
+  const ctaExperiment = useExperiment('newsletter-contextual-cta-v1');
+  const showContext = ctaExperiment.variant !== 'plain';
 
   // Funnel: fire "Form View" once the signup section scrolls into view, and
   // "Form Start" on the first interaction with the form. Aggregate, no PII.
@@ -547,6 +551,7 @@ export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: 
         if (entries[0].isIntersecting && !firedView.current) {
           firedView.current = true;
           track('Form View', { language, lead_magnet: magnet.tag, placement });
+          ctaExperiment.expose(placement);
           io.disconnect();
         }
       },
@@ -554,6 +559,7 @@ export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: 
     );
     io.observe(el);
     return () => io.disconnect();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [language, magnet.tag, placement]);
 
   const onFormStart = () => {
@@ -616,7 +622,7 @@ export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: 
         setStatus('submitted');
         // Backend confirmed a MailerLite subscriber — the aggregate conversion
         // event. Fired only on real success, never on submit/view.
-        track('Lead Created', { language, lead_magnet: magnet.tag, placement });
+        track('Lead Created', { language, lead_magnet: magnet.tag, placement, ...ctaExperiment.conversionProps() });
         setEmail('');
         setFirstName('');
       } else {
@@ -633,7 +639,7 @@ export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: 
   return (
     <section ref={sectionRef} id="email-signup" className="scroll-mt-24 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 py-16 px-4">
       <div className="max-w-2xl mx-auto text-center">
-        {CONTEXT_LINE[placement][language] && (
+        {showContext && CONTEXT_LINE[placement][language] && (
           <p className="text-purple-100 text-sm font-semibold mb-3" data-signup-context={placement}>{CONTEXT_LINE[placement][language]}</p>
         )}
         <div className="text-5xl mb-4">🎁</div>

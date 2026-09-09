@@ -78,6 +78,14 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 5 — experiments (S5-008…011)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| GX-01 | **Governed experiment framework**: registry + engine + React binding; deterministic assignment per anonymous unit through the storage adapter (memory when denied); exposure once per assignment when the surface is viewable; conversions carry experiment/variant only after an exposure; status is the kill switch; bots and ineligible locales/routes get control. CI rejects incomplete non-draft experiments. | #192 |
+| GX-02 | **Two experiments wired and documented, in draft**: EXP-001 book CTA hierarchy, EXP-002 contextual newsletter CTA. Nobody is assigned until the owner sets `startAt`, flips `status` to `active` and initials the document, after the baseline is approved (GM-05). | open |
+| GX-03 | **Transient production incident 2026-09-09 ~22:40 UTC**: about one minute of 500/502 on all routes right after deploy `6aa1dfa3` published; five probes at 200 within two minutes; previous deploy permalinks and the function unaffected; Netlify status operational. Recorded, not explained. The post-deploy workflow passed because it ran after the window. | noted |
+
 ### Sprint 5 — measurement foundation (S5-001…007, 012…014, 017, 020…022)
 
 | ID | Item | Evidence |
