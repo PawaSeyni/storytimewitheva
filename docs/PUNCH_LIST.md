@@ -78,6 +78,17 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Storage adapter (S6-012)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| ST-01 | **N-01 closed: `src/lib/storage.ts` exists and is load-bearing.** Availability probing, `try/catch` parsing, shape validation via caller-supplied type guards, versioned envelopes, namespaced keys, in-memory fallback, and writes that report failure instead of throwing at a click handler. | #157 |
+| ST-02 | **Two tiers, because "namespace all keys" would have broken production.** All 12 standalone games write `readingProgress` directly (injected by `scripts/patch-games.mjs`), and `public/games/i18n.js` reads `preferredLanguage`. Namespacing either would not fail loudly — the games would keep writing the old key while the SPA read the new one, silently orphaning every "Mark Completed". SHARED keys stay raw and unversioned by design; the SPA's own future state uses the namespaced tier. | #157 |
+| ST-03 | **`progress.ts` routed through the adapter** — zero raw `localStorage` calls left in it, including the two read-only legacy stores (reading tracker, adventure journal), which now go through an explicit typed `LegacyKey` union so a typo is a compile error rather than a silent no-op. | #157 |
+| ST-04 | **The cross-boundary contract is now tested.** A suite compares the key the SPA reads against the key each of the 12 games writes, and against the injector in `scripts/patch-games.mjs`. A rename fails CI instead of orphaning progress. | #157 |
+| ST-05 | **S6-016 failure modes covered for real** — denied access, quota exhaustion, malformed JSON, wrong shape, wrong version, missing `window`, non-serializable values. The adapter is compiled and driven against a fake `localStorage` rather than asserted about in prose. `clearNamespace` is proven not to touch shared or unrelated origin data. | #157 |
+| ST-06 | **`npm test` now globs `tests/storage/` too.** It only globbed `tests/funnel/`, so a new suite there would have been written, passed locally, and never run in CI. | #157 |
+
 ### Discussion prompts
 
 | ID | Item | Evidence |
@@ -176,7 +187,6 @@ The decision record lives in `backlog.md`; the shipped work is in §A above.
 
 | ID | Item | Type | Notes |
 |----|------|------|-------|
-| N-01 | **S6-012: there is no `src/lib/storage.ts`.** Sprint 6 makes a single storage adapter non-negotiable — availability checks, `try/catch` parsing, shape validation, schema versioning, migration, best-effort writes that never throw at the UI — and Sprint 7 specifies journey progress running through it. `src/lib/progress.ts` still calls `localStorage` directly. | open | A **prerequisite**, not an improvement: further personalization work is blocked on it. The architecture reference has described it as "to be added" since #141. |
 | N-02 | **S6-007 implements 2 of 5 ranking reasons.** `relatedBooks.ts` covers `editorial` and `theme`; `related`, `age` and `preference` need the preferences model that does not exist yet. | open | Deliberate: the missing reasons depend on N-01. |
 | N-03 | **S3-007 breadcrumbs are not generalized.** `BreadcrumbList` markup is inline on two pages; the spec asks for a shared component with localized labels and stable URL segments. | open | Small, and it removes duplicated JSON-LD. |
 | N-04 | **S3-018/019/020 have no baseline artifacts.** No Search Console baseline, route/metadata inventory or post-deploy crawl record exists, and Sprint 3's definition of done requires them. | open | Owner/data task more than a code task. |
