@@ -66,3 +66,23 @@ test('records — route ids are the union of theme, age and published editorial 
   assert.deepEqual(idx.collectionRouteIds, expected);
   assert.equal(new Set(idx.collectionRouteIds).size, idx.collectionRouteIds.length);
 });
+
+test('educator collections — three published, explicit membership, own copy, classroom facets (S7-007)', () => {
+  const edu = collections.filter((c) => c.kind === 'educator');
+  assert.equal(edu.length, 3);
+  for (const c of edu) {
+    assert.equal(c.publishState, 'published');
+    assert.ok(c.bookIds.length >= 2 && c.title && c.description, `${c.id}: incomplete`);
+    assert.ok((c.activityIds ?? []).length >= 2, `${c.id}: a classroom collection should feature activities`);
+    assert.ok((c.resourceIds ?? []).length >= 1, `${c.id}: a classroom collection should point at printables`);
+    assert.ok(c.themeIds.length && c.ageBandIds.length, `${c.id}: facets missing`);
+    assert.deepEqual(idx.collectionMembers(c.id), c.bookIds, `${c.id}: editorial order must be the record order`);
+    assert.ok(idx.publishedEditorialCollectionIds.includes(c.id));
+    assert.ok(idx.collectionRouteIds.includes(c.id), `${c.id}: must be routed`);
+  }
+  // every member book belongs to at least one facet theme the collection claims
+  for (const c of edu) for (const id of c.bookIds) {
+    const b = books.find((x) => x.id === id);
+    assert.ok(b.themeIds.some((t) => c.themeIds.includes(t)), `${c.id}: ${id} matches none of the collection's themes`);
+  }
+});

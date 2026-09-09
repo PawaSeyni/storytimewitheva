@@ -7,6 +7,7 @@ import { useLanguage, useTranslation } from '../lib/language';
 import { amazonDp } from '../lib/amazon';
 import { resources as RESOURCES, type Resource } from '../data/resources';
 import SaveResourceButton from '../components/SaveResourceButton';
+import { publishedEditorialCollectionIds, collectionRecordById } from '../data/contentIndex';
 
 // Resource identity, ordering, card metadata and localized title/description all
 // live in src/data/resources.ts — the single source of truth that gives every
@@ -98,6 +99,7 @@ const TRANSLATIONS = {
       intro: 'Eva’s printables are free to use at home or in the classroom. Download, print, and share – no sign-up needed.',
       downloadCta: 'Download PDF',
       tipsHeading: 'Using Eva’s books in the classroom',
+      classroomHeading: 'Classroom collections',
       tips: [
         'Read aloud as a group – tap 🔊 Listen to model pronunciation in English, Spanish, or French.',
         'Pause for predictions and discussion; each story carries a gentle theme like kindness, courage, or patience.',
@@ -303,6 +305,7 @@ const TRANSLATIONS = {
       intro: 'Los materiales de Eva son gratuitos para usar en casa o en el aula. Descarga, imprime y comparte – sin registro.',
       downloadCta: 'Descargar PDF',
       tipsHeading: 'Usar los libros de Eva en el aula',
+      classroomHeading: 'Colecciones para el aula',
       tips: [
         'Lean en voz alta en grupo – pulsa 🔊 Escuchar para modelar la pronunciaci\xf3n en ingl\xe9s, espa\xf1ol o franc\xe9s.',
         'Hagan pausas para predecir y conversar; cada historia tiene un valor como la bondad, la valent\xeda o la paciencia.',
@@ -508,6 +511,7 @@ const TRANSLATIONS = {
       intro: 'Les supports d’Eva sont gratuits \xe0 utiliser \xe0 la maison ou en classe. T\xe9l\xe9chargez, imprimez et partagez – sans inscription.',
       downloadCta: 'T\xe9l\xe9charger le PDF',
       tipsHeading: 'Utiliser les livres d’Eva en classe',
+      classroomHeading: 'Collections pour la classe',
       tips: [
         'Lisez \xe0 voix haute en groupe – appuyez sur 🔊 \xc9couter pour mod\xe9liser la prononciation en anglais, espagnol ou fran\xe7ais.',
         'Faites des pauses pour les pr\xe9dictions et la discussion\xa0; chaque histoire porte une valeur comme la gentillesse, le courage ou la patience.',
@@ -963,6 +967,20 @@ export default function Resources() {
               );
             })}
           </div>
+          {publishedEditorialCollectionIds.length > 0 && (
+            <div className="max-w-3xl mx-auto mb-8">
+              <h3 className="font-bold text-gray-800 mb-3">{t.teachers.classroomHeading}</h3>
+              <ul className="flex flex-wrap gap-2">
+                {publishedEditorialCollectionIds.map((id) => (
+                  <li key={id}>
+                    <Link to={`/collections/${id}`} className="inline-block px-4 py-2 rounded-full bg-emerald-50 border border-emerald-100 text-sm text-emerald-900 font-semibold hover:border-emerald-300">
+                      {collectionRecordById[id]?.title?.[language] ?? id} →
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-50 p-6">
             <h3 className="font-bold text-gray-800 mb-3">{t.teachers.tipsHeading}</h3>
             <ul className="space-y-2 text-gray-600 text-sm leading-relaxed list-disc pl-5">

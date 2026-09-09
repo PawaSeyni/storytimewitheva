@@ -22,6 +22,7 @@ const TRANSLATIONS = {
     booksHeading: 'Books in this collection',
     activitiesHeading: 'Activities that go with these books',
     resourcesHeading: 'For the grown-up',
+    forEducators: 'For teachers and educators',
   },
   es: {
     home: 'Inicio', books: 'Libros',
@@ -29,6 +30,7 @@ const TRANSLATIONS = {
     booksHeading: 'Libros de esta colección',
     activitiesHeading: 'Actividades que acompañan a estos libros',
     resourcesHeading: 'Para el adulto',
+    forEducators: 'Para docentes y educadores',
   },
   fr: {
     home: 'Accueil', books: 'Livres',
@@ -36,6 +38,7 @@ const TRANSLATIONS = {
     booksHeading: 'Livres de cette collection',
     activitiesHeading: 'Des activités qui accompagnent ces livres',
     resourcesHeading: 'Pour l’adulte',
+    forEducators: 'Pour les enseignants et éducateurs',
   },
 };
 
@@ -51,9 +54,11 @@ export interface CollectionPageProps {
   /** From the collection record (S7-001): featured activity slugs and resource ids. */
   activityIds?: string[];
   resourceIds?: string[];
+  /** Audience label (S7-007). Educator collections say so above the title. */
+  audience?: 'educator';
 }
 
-export default function CollectionPage({ id, title, intro, seoTitle, books, browseOthersHeading, others, activityIds = [], resourceIds = [] }: CollectionPageProps) {
+export default function CollectionPage({ id, title, intro, seoTitle, books, browseOthersHeading, others, activityIds = [], resourceIds = [], audience }: CollectionPageProps) {
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
   const allActivities = useActivities();
@@ -97,6 +102,11 @@ export default function CollectionPage({ id, title, intro, seoTitle, books, brow
       <section className="bg-gradient-to-b from-purple-50 to-white py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <Breadcrumbs crumbs={crumbs} className="mb-6" />
+          {audience === 'educator' && (
+            <p className="inline-block text-xs font-semibold uppercase tracking-wide text-emerald-800 bg-emerald-50 border border-emerald-100 rounded-full px-3 py-1 mb-3">
+              {t.forEducators}
+            </p>
+          )}
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">{title}</h1>
           <p className="text-lg text-gray-600 max-w-3xl leading-relaxed">{intro}</p>
           <p className="mt-4 text-sm text-gray-500">

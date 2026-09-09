@@ -78,6 +78,16 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 7 — educator collections (S7-007)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| EC-01 | **Three classroom collections live** as `educator` records: *Feelings in the classroom* (SEL), *Bilingual read-alouds*, *STEM stories for curious classrooms*. Explicit ordered `bookIds`, own trilingual copy, featured activities validated to relate to a member book, and the existing printables as resources. Routed through the same `/collections/` gate. | #171 |
+| EC-02 | **Audience labeling**: an "For teachers and educators" eyebrow above the title in EN/FR/ES, a classroom SEO suffix, and links from the "For Teachers" section of `/resources`, so no educator collection is an orphan. Locked by the prerender suite. | #171 |
+| EC-03 | **A structural rule added to the tests**: every member book must carry at least one of the collection's claimed theme facets, so a classroom set cannot drift into unrelated titles. | #171 |
+| EC-04 | **S7-008 is not this.** "Learning packs" as downloadable bundles would mean new files; these records reference the printables that exist. Whether packs should be static files, generated, or exactly this kind of curated group is Sprint 7's own open decision (§14). | open |
+| EC-05 | **Copy to review**: three titles and descriptions, EN/FR/ES, in `collections.ts`. | open |
+
 ### Sprint 7 — collections as records (S7-001 · S7-013)
 
 | ID | Item | Evidence |
