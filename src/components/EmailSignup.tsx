@@ -497,6 +497,16 @@ export default function EmailSignup({ magnet: magnetSlug }: { magnet?: string } 
 
   const onFormStart = () => {
     if (firedStart.current) return;
+    // Ordering guarantee: a form interaction implies the form was seen, so "Form View"
+    // must precede "Form Start" even when the IntersectionObserver has not delivered
+    // its first (asynchronous) callback yet. Without this, a keyboard user tabbing in,
+    // browser autofill, or a fast tap on an above-the-fold form recorded Start before
+    // View and broke the funnel's own ordering assumption. The observer's flag check
+    // keeps "exactly once" intact.
+    if (!firedView.current) {
+      firedView.current = true;
+      track('Form View', { language, lead_magnet: magnet.tag });
+    }
     firedStart.current = true;
     track('Form Start', { language, lead_magnet: magnet.tag });
   };

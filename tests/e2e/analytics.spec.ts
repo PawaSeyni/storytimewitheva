@@ -51,6 +51,34 @@ test('4.1 the full happy path fires the funnel events in order', async ({ page }
   for (const n of order) expect(names.filter((x) => x === n).length, `${n} once`).toBe(1);
 });
 
+// TEST 4.5 — the ordering guarantee under the worst case. IntersectionObserver is stubbed
+// to NEVER fire, which is the extreme of the real race (a user focusing the field before
+// the observer's first asynchronous callback). Form View must still precede Form Start,
+// each exactly once. This is the deterministic form of the flake 4.1 used to show ~1 in 3.
+test('4.5 Form View precedes Form Start even when the observer never fires', async ({ page }) => {
+  await installPlausibleStub(page, { realUser: true });
+  await page.addInitScript(() => {
+    class NeverObserver {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+      takeRecords() { return []; }
+    }
+    // @ts-expect-error test shim
+    window.IntersectionObserver = NeverObserver;
+  });
+  await page.goto('/free/bedtime-routine');
+  await page.focus('#email-signup input[name="name"]');
+  const names = (await readEvents(page)).map((x) => x.e);
+  const view = names.indexOf('Form View');
+  const start = names.indexOf('Form Start');
+  expect(view, 'Form View fired').toBeGreaterThanOrEqual(0);
+  expect(start, 'Form Start fired').toBeGreaterThanOrEqual(0);
+  expect(view, 'Form View before Form Start').toBeLessThan(start);
+  expect(names.filter((n) => n === 'Form View').length, 'Form View once').toBe(1);
+  expect(names.filter((n) => n === 'Form Start').length, 'Form Start once').toBe(1);
+});
+
 test('4.2/4.3 events carry UTMs + lead_magnet and NEVER carry PII', async ({ page }) => {
   await installPlausibleStub(page, { realUser: true });
   await page.route(SUBSCRIBE, (r) =>

@@ -97,9 +97,9 @@ still owed and is the one item here that needs a person.
 - games still open and localize from `?lang=` alone
 - a malformed envelope and a wrong-shaped legacy key are ignored without errors
 
-Result: **✅ 7/7.** Full `local` project: **40 of 41** — the one failure is the pre-existing
-`analytics.spec.ts` 4.1 ordering flake (fails ~1 in 3 in isolation on unchanged code;
-logged as S4-07), not a Sprint 6 suite.
+Result: **✅ 7/7.** Full `local` project at the time of this audit: **40 of 41** — the one
+failure was `analytics.spec.ts` 4.1, logged as S4-07 and fixed in the follow-up (#163): it
+was a product race (Form Start could precede Form View), not test noise.
 
 **And a real product bug this suite caught on its first green attempt (S4-06):**
 `FavoriteButton` and `SaveResourceButton` inverted their displayed state on every click
