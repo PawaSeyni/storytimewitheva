@@ -78,6 +78,14 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 7 — release audit (S7-020)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| RA-01 | **Audit run against production and recorded** in `docs/testing/SPRINT_7_RELEASE_AUDIT.md`: routes, canonicals, hreflang, noindex placement, every sitemap URL, headers, downloads and pack aliases, content validation, smoke and the client-side suites live. All green. | #177 |
+| RA-02 | **`npm run test:prod-audit`** runs the accessibility, cookie-free, seasonal, search, print and landing suites against production; only specs with in-page stubs are included so nothing is written to MailerLite or Plausible. | #177 |
+| RA-03 | **Owner acceptance of the Sprint 7 release**: sign the inventory at the end of the audit. | open |
+
 ### Sprint 7 — quality gates (S7-017 · S7-018 · S7-019)
 
 | ID | Item | Evidence |
