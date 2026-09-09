@@ -7,6 +7,8 @@ import NotFound from './NotFound';
 import ReadAlong from '../components/ReadAlong';
 import TapToTranslate from '../components/TapToTranslate';
 import BookStatusButton from '../components/BookStatusButton';
+import FavoriteButton from '../components/FavoriteButton';
+import { recordExplored } from '../lib/personalLibrary';
 import { books, useBook, useBooks, isComingSoon } from '../data/books';
 import BookCard from '../components/BookCard';
 import { relatedBooksFor } from '../data/relatedBooks';
@@ -39,7 +41,10 @@ export default function BookDetail() {
   // Fire one "Book View" per book (guarded against the prerender crawler in track()).
   const bookId = book?.id;
   useEffect(() => {
-    if (bookId) track('Book View', { book: bookId });
+    if (!bookId) return;
+    track('Book View', { book: bookId });
+    // S6-004. Local, bounded, deduplicated; nothing leaves the device.
+    recordExplored(bookId);
   }, [bookId]);
 
   // Sprint 6 recommendations: editorial pairs first, topped up from the theme tier.
@@ -227,8 +232,9 @@ export default function BookDetail() {
               <span className="text-sm text-purple-700 font-medium">{t.theme}: {book.theme}</span>
             </div>
 
-            <div className="mb-4">
+            <div className="mb-4 flex flex-wrap items-center gap-2">
               <BookStatusButton bookId={book.id} />
+              <FavoriteButton bookId={book.id} />
             </div>
 
             {isComingSoon(book) ? (
