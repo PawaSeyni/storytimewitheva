@@ -92,6 +92,9 @@ export default function Journey() {
     setProgress(next);
     setAnnounce(next.completedStepIds.length === total ? t.complete : t.progressAnnounce(next.completedStepIds.length, total));
     track('Journey Step', { journey: journey.id, activity: String(index + 1), status: nowDone ? 'done' : 'undone' });
+    // S7-016: starts and completions are derived from the transition, not stored.
+    if (nowDone && progress.completedStepIds.length === 0) track('Journey Start', { journey: journey.id });
+    if (nowDone && next.completedStepIds.length === total) track('Journey Complete', { journey: journey.id });
   };
   const onSave = () => {
     toggleSavedJourney(journey.id);

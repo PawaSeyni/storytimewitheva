@@ -44,7 +44,14 @@ export type FunnelEvent =
   | 'Continue Journey'
   // Sprint 7 S7-016: journey progress and saves, by stable journey id and step index.
   | 'Journey Step'
-  | 'Journey Saved';
+  | 'Journey Saved'
+  // First step done and all steps done, by stable journey id. Derived from the toggle, never
+  // stored separately.
+  | 'Journey Start'
+  | 'Journey Complete'
+  // S7-015: a search was run; only the content-type filter and the result count travel,
+  // never the query text (it could be a child's name).
+  | 'Search';
 
 // The ONLY property keys allowed on any event. Aggregate dimensions only — never
 // anything that identifies a person.
@@ -63,6 +70,9 @@ const ALLOWED_PROP_KEYS = [
   'reason',
   'resource',
   'journey',
+  // S7-015 search: the active content-type filter ('all' | type) and a result count.
+  'filter',
+  'results',
 ] as const;
 type PropKey = (typeof ALLOWED_PROP_KEYS)[number];
 

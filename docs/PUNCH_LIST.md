@@ -78,6 +78,15 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 7 — search and analytics (S7-015 · S7-016)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| SA-01 | **Search covers the ecosystem**: books, activities, public collections, published journeys, resources, from one browser-free index; runs within the active locale; diacritics fold; every word must match; title matches rank first; closed seasons are hidden at query time. | #175 |
+| SA-02 | **Filters and announcements**: content-type filter buttons carry `aria-pressed`, work by keyboard, and live in the URL; the result count is a polite live region; the empty query shows a prompt, a no-match query says so. | #175 |
+| SA-03 | **Events**: `Journey Start` and `Journey Complete` derived from the toggle transition; `Search` carries only the filter and the result count. The query text never leaves the browser. | #175 |
+| SA-04 | **Not done, by design**: no fuzzy matching or stemming. A typo returns nothing rather than a wrong guess. Revisit if search analytics show many zero-result queries. | open |
+
 ### Sprint 7 — guides, bundles, inventory (S7-004 · S7-006 · S7-014)
 
 | ID | Item | Evidence |

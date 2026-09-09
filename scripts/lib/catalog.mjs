@@ -23,6 +23,7 @@ const JOURNEY = path.join(ROOT, 'src', 'lib', 'journey.ts');
 const JOURNEYS = path.join(ROOT, 'src', 'data', 'journeys.ts');
 const COLLECTIONS = path.join(ROOT, 'src', 'data', 'collections.ts');
 const LEARNING_PACKS = path.join(ROOT, 'src', 'data', 'learningPacks.ts');
+const SEARCH = path.join(ROOT, 'src', 'lib', 'searchIndex.ts');
 
 /** Compile a browser-free TS module with esbuild and evaluate it in-process. */
 async function loadModule(entry) {
@@ -133,4 +134,11 @@ let packsCache = null;
 export async function loadLearningPacks() {
   if (!packsCache) packsCache = await loadModule(LEARNING_PACKS);
   return packsCache;
+}
+
+let searchCache = null;
+/** Site search index (S7-015), browser-free. */
+export async function loadSearchIndex() {
+  if (!searchCache) searchCache = await loadModule(SEARCH);
+  return searchCache;
 }
