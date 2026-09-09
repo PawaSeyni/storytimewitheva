@@ -66,7 +66,10 @@ exist from earlier sessions but have not been traced to their IDs.
 | S5-008 … S5-011 | ⬜ not started | no `src/lib/experiments.ts`, experiment registry or governance docs |
 | S6-012 | ✅ shipped | `src/lib/storage.ts` — availability, validation, versioned envelopes, namespaced/shared/legacy tiers; every `src/` caller routed through it and enforced by test (#157, #158). Previously not started |
 | S7-002 | ✅ shipped | `/collections/ages-3-5`, `ages-6-7`, `ages-8-9` × 3 languages on the shared `CollectionPage`, primary-fit placement, same eligibility gate and localized-intro requirement as themes (#164) |
-| S8-* | ⬜ not started | Sprint 8 is a decision sprint: no ADRs, baselines or Platform Readiness Assessment exist beyond ADR-001 |
+| S8-001 | ✅ shipped | `docs/platform/BASELINE_2026-09.md` (measured: content counts, build/prerender/deploy timings, output weight, search latency at 1×/10×/50×, editorial throughput, error visibility, dependencies, coverage) and `docs/platform/BOTTLENECK_REGISTER.md` (11 rows with evidence, verdict, owner). Repeatable via `scripts/bench-build.mjs`, `scripts/bench-search.mjs` (#180) |
+| S8-006 | 🟡 baseline | Build benchmark repeatable; prerender is 98% of build, CPU-bound (a 4/8-page pool measured 151/137 s vs 154 s, not kept); 6 routes non-deterministic (bingo, puzzles). Optimisation and determinism fix follow in the budgets PR (#180) |
+| S8-014 | 🟡 started | Non-breaking `npm audit fix` applied: 13 → 4 advisories; remaining need Vite 8 / Router 7 majors. Policy, Dependabot and CI audit gate follow (#180) |
+| S8-* (other) | ⬜ not started | ADRs, media policy, monitoring, security review, recovery drill, environment matrix, gates, i18n refactor, accessibility governance, data-flow inventory, readiness assessment |
 
 ## What this changes about the tracking
 `docs/PUNCH_LIST.md` remains the record of what shipped and what was decided against.
