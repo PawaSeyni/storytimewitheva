@@ -43,7 +43,7 @@ jobs:
         run: npm run test:prod-audit
       - name: Retain results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: post-deploy-${{ github.run_id }}
           path: |
