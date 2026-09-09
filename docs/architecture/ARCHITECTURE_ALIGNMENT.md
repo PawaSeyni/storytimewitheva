@@ -101,6 +101,8 @@ a data-fetching library, a routing rewrite, an i18n library, or any cookie-based
 - `src/data/relatedBooks.ts` — the "You might also like" ranking: editorial tier first, topped
   up from the shared-theme tier, never padded with age-band-only matches.
 - `src/data/collections.ts` — collection RECORDS (S7-001): the editorial layer over collections.
+  Seasonal records (S7-012) carry a recurring `window`; `contentIndex.seasonalState` / `indexableCollectionIds` decide
+  what a route shows and whether it is advertised.
   Membership stays DERIVED for theme/age kinds (a record may only reorder, feature activities,
   attach resources or override the intro); editorial kinds carry explicit, validated `bookIds`.
   `contentIndex.collectionProblems()` gates publication; `collectionMembers()` owns display order.

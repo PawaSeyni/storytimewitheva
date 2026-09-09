@@ -13,15 +13,15 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useBooks } from '../data/books';
 import { THEMES, AGE_BANDS, type ThemeId, type AgeBandId } from '../data/taxonomy';
-import { collectionEligibleThemeIds, ageCollectionEligibleBandIds, publishedEditorialCollectionIds, collectionRecordById, collectionMembers, packsByCollectionId } from '../data/contentIndex';
+import { collectionEligibleThemeIds, ageCollectionEligibleBandIds, publishedEditorialCollectionIds, collectionRecordById, collectionMembers, packsByCollectionId, seasonalState } from '../data/contentIndex';
 import CollectionPage from '../components/CollectionPage';
 import NotFound from './NotFound';
 import { useTranslation, useLanguage } from '../lib/language';
 
 const TRANSLATIONS = {
-  en: { browseThemes: 'Browse other themes', browseAges: 'Browse by age', seoTheme: 'Picture books about', seoAge: 'Picture books for', seoEducator: 'A classroom collection' },
-  es: { browseThemes: 'Explora otros temas', browseAges: 'Explora por edad', seoTheme: 'Libros ilustrados sobre', seoAge: 'Libros ilustrados para', seoEducator: 'Una colección para el aula' },
-  fr: { browseThemes: 'Explorer d’autres thèmes', browseAges: 'Explorer par âge', seoTheme: 'Albums illustrés sur', seoAge: 'Albums illustrés pour', seoEducator: 'Une collection pour la classe' },
+  en: { browseThemes: 'Browse other themes', browseAges: 'Browse by age', seoTheme: 'Picture books about', seoAge: 'Picture books for', seoEducator: 'A classroom collection', seoSeasonal: 'A seasonal collection', returns: 'This seasonal collection is resting. It returns on', closedIntro: 'Browse the collections below in the meantime.' },
+  es: { browseThemes: 'Explora otros temas', browseAges: 'Explora por edad', seoTheme: 'Libros ilustrados sobre', seoAge: 'Libros ilustrados para', seoEducator: 'Una colección para el aula', seoSeasonal: 'Una colección de temporada', returns: 'Esta colección de temporada está en pausa. Vuelve el', closedIntro: 'Mientras tanto, explora las colecciones de abajo.' },
+  fr: { browseThemes: 'Explorer d’autres thèmes', browseAges: 'Explorer par âge', seoTheme: 'Albums illustrés sur', seoAge: 'Albums illustrés pour', seoEducator: 'Une collection pour la classe', seoSeasonal: 'Une collection de saison', returns: 'Cette collection de saison est en pause. Elle revient le', closedIntro: 'En attendant, parcourez les collections ci-dessous.' },
 };
 
 export default function Collection() {
@@ -29,6 +29,7 @@ export default function Collection() {
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
   const books = useBooks();
+  const now = useMemo(() => new Date(), []);
 
   const isTheme = (collectionEligibleThemeIds as string[]).includes(collectionId);
   const isBand = (ageCollectionEligibleBandIds as string[]).includes(collectionId);
@@ -47,15 +48,40 @@ export default function Collection() {
 
   if (!isTheme && !isBand && !isEditorial) return <NotFound />;
 
+  // Seasonal (S7-012): the route exists all year; the window decides what it shows.
+  // Evaluated with the visitor's clock, so a boundary applies immediately; the
+  // prerendered snapshot (and the sitemap) catch up at the next deploy.
+  const season = seasonalState(collectionId, now);
+  const fmt = new Intl.DateTimeFormat({ en: 'en-US', es: 'es-ES', fr: 'fr-FR' }[language], { month: 'long', day: 'numeric' });
+
   const extras = { activityIds: record?.activityIds, resourceIds: record?.resourceIds, packIds: packsByCollectionId[collectionId] };
   const others = [
     ...(collectionEligibleThemeIds as ThemeId[]).filter((x) => x !== collectionId).map((x) => ({ id: x, label: THEMES[x].labels[language] })),
     ...ageCollectionEligibleBandIds.filter((x) => x !== collectionId).map((b) => ({ id: b, label: AGE_BANDS[b].labels[language] })),
-    ...publishedEditorialCollectionIds.filter((x) => x !== collectionId).map((x) => ({ id: x, label: collectionRecordById[x]?.title?.[language] ?? x })),
+    // Closed seasonal collections are not offered as "others": that would link to an empty state.
+    ...publishedEditorialCollectionIds.filter((x) => x !== collectionId && seasonalState(x, now)?.open !== false).map((x) => ({ id: x, label: collectionRecordById[x]?.title?.[language] ?? x })),
   ];
 
   if (isEditorial && record?.title && record?.description) {
     const title = record.title[language];
+    if (season) {
+      const books = season.open ? inCollection : [];
+      return (
+        <CollectionPage
+          id={collectionId}
+          title={title}
+          intro={record.description[language]}
+          seoTitle={`${title}: ${t.seoSeasonal}`}
+          books={books}
+          browseOthersHeading={t.browseThemes}
+          others={others}
+          season={{ closesLabel: fmt.format(season.closes) }}
+          emptyState={season.open ? undefined : `${t.returns} ${fmt.format(season.opens)}. ${t.closedIntro}`}
+          noindex={!season.open}
+          {...(season.open ? extras : { packIds: extras.packIds })}
+        />
+      );
+    }
     return (
       <CollectionPage id={collectionId} title={title} intro={record.description[language]} seoTitle={`${title}: ${t.seoEducator}`} books={inCollection} browseOthersHeading={t.browseThemes} others={others} audience={record.kind === 'educator' ? 'educator' : undefined} {...extras} />
     );

@@ -40,6 +40,14 @@ export interface CollectionRecord {
   /** Editorial kinds: the taxonomy facets they belong to, for filtering and validation. */
   themeIds?: ThemeId[];
   ageBandIds?: AgeBandId[];
+  /**
+   * Seasonal kind only (S7-012): a RECURRING yearly publish window as 'MM-DD' bounds,
+   * inclusive, wrapping the year end when from > to (e.g. 11-15 to 01-06). Outside the
+   * window the route still exists but renders an empty state, noindex, and is left out
+   * of the sitemap. A boundary takes effect for visitors immediately and for crawlers at
+   * the next deploy (the prerender snapshot is taken at build time).
+   */
+  window?: { from: string; to: string };
 }
 
 export const collections: CollectionRecord[] = [
@@ -218,6 +226,59 @@ export const collections: CollectionRecord[] = [
     },
     bookIds: ['cloud-collector', 'colors-mixed-up', 'little-mapmaker', 'heidis-journey-to-mastery'],
     activityIds: ['story-map', 'world-geography', 'build-a-scene'],
+    resourceIds: ['article-follow-up-activities', 'download-follow-up-activities'],
+  },
+
+  // ---- Seasonal collections (S7-012): time-bounded, recurring yearly, existing content only ----
+  {
+    id: 'back-to-school',
+    kind: 'seasonal',
+    publishState: 'published',
+    window: { from: '08-15', to: '09-30' },
+    themeIds: ['courage', 'emotions', 'kindness', 'self-worth'],
+    ageBandIds: ['ages-3-5', 'ages-6-7'],
+    title: { en: 'Back to school', fr: 'La rentrée', es: 'Vuelta al cole' },
+    description: {
+      en: 'New classroom, new faces, big feelings. Five stories for the first weeks of school: being brave when everyone is watching, naming a worry, making one kind choice, and finding that you fit exactly as you are.',
+      fr: 'Nouvelle classe, nouveaux visages, grandes émotions. Cinq histoires pour les premières semaines d’école : être courageux sous les regards, nommer une inquiétude, faire un geste gentil, et découvrir qu’on a sa place tel qu’on est.',
+      es: 'Aula nueva, caras nuevas, emociones grandes. Cinco historias para las primeras semanas de clase: ser valiente cuando todos miran, poner nombre a una preocupación, elegir un gesto amable y descubrir que encajas tal como eres.',
+    },
+    bookIds: ['diegos-brave-leap', 'pawa-rainbow-cloud', 'crooked-little-apple-tree', 'butterfly-effect', 'sparrow-saved-forest'],
+    activityIds: ['emotion-wheel', 'adventure-journal'],
+    resourceIds: ['download-bedtime-routine', 'download-parents-guide'],
+  },
+  {
+    id: 'season-of-gratitude',
+    kind: 'seasonal',
+    publishState: 'published',
+    window: { from: '11-01', to: '12-31' },
+    themeIds: ['gratitude', 'kindness', 'heritage'],
+    ageBandIds: ['ages-3-5', 'ages-6-7', 'ages-8-9'],
+    title: { en: 'A season of gratitude', fr: 'La saison de la gratitude', es: 'Temporada de gratitud' },
+    description: {
+      en: 'Stories for the giving months: a treasure that was never gold, a little boat with a big wish, a fig tree that remembers where a family came from, and one small kindness that keeps travelling.',
+      fr: 'Des histoires pour les mois du partage : un trésor qui n’a jamais été en or, un petit bateau au grand souhait, un figuier qui se souvient d’où vient une famille, et une petite gentillesse qui continue de voyager.',
+      es: 'Historias para los meses de compartir: un tesoro que nunca fue de oro, un barquito con un gran deseo, una higuera que recuerda de dónde viene una familia y una pequeña bondad que sigue viajando.',
+    },
+    bookIds: ['emperors-true-treasure', 'little-boats-big-wish', 'fig-trees-secret', 'butterfly-effect'],
+    activityIds: ['adventure-journal'],
+    resourceIds: ['download-parents-guide', 'article-follow-up-activities'],
+  },
+  {
+    id: 'summer-of-wonder',
+    kind: 'seasonal',
+    publishState: 'published',
+    window: { from: '06-15', to: '08-31' },
+    themeIds: ['wonder', 'curiosity', 'creativity'],
+    ageBandIds: ['ages-6-7', 'ages-8-9'],
+    title: { en: 'A summer of wonder', fr: 'Un été d’émerveillement', es: 'Un verano de asombro' },
+    description: {
+      en: 'Long days, open skies and questions worth chasing. Five stories for summer: collecting clouds, mapping a neighbourhood, mixing every colour, following a shadow, and wishing on a very small boat.',
+      fr: 'Longues journées, grand ciel et questions qui valent le détour. Cinq histoires pour l’été : collectionner les nuages, cartographier un quartier, mélanger toutes les couleurs, suivre une ombre et faire un vœu sur un tout petit bateau.',
+      es: 'Días largos, cielos abiertos y preguntas que merecen perseguirse. Cinco historias para el verano: coleccionar nubes, dibujar el mapa del barrio, mezclar todos los colores, seguir una sombra y pedir un deseo en un barquito.',
+    },
+    bookIds: ['cloud-collector', 'little-mapmaker', 'colors-mixed-up', 'mayas-shadow', 'little-boats-big-wish'],
+    activityIds: ['story-map', 'build-a-scene'],
     resourceIds: ['article-follow-up-activities', 'download-follow-up-activities'],
   },
 ];

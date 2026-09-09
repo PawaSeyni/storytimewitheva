@@ -1513,6 +1513,33 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://storytimewitheva.com/collections/back-to-school/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/collections/back-to-school/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/collections/back-to-school/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/collections/back-to-school/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/collections/back-to-school/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/collections/back-to-school/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/collections/back-to-school/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/collections/back-to-school/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/collections/back-to-school/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/collections/back-to-school/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/collections/back-to-school/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/collections/back-to-school/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/collections/back-to-school/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/collections/back-to-school/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/collections/back-to-school/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://storytimewitheva.com/journeys/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/journeys/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/journeys/"/>

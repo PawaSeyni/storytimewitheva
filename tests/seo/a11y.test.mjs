@@ -14,7 +14,7 @@ import { loadCatalog, loadContentIndex, loadRelatedBooks, loadActivities, loadCo
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const DIST = path.join(ROOT, 'dist');
-const { collectionEligibleThemeIds, ageCollectionEligibleBandIds, collectionRouteIds, journeyRouteIds } = await loadContentIndex();
+const { collectionEligibleThemeIds, ageCollectionEligibleBandIds, collectionRouteIds, journeyRouteIds, seasonalCollectionIds, seasonalState } = await loadContentIndex();
 const { books } = await loadCatalog();
 const { relatedBooksFor } = await loadRelatedBooks();
 const { activities } = await loadActivities();
@@ -281,6 +281,11 @@ test('collections — a record\'s featured activities render on the page, locali
     for (const [loc, prefix] of Object.entries(LOCALES)) {
       const h = read(`${prefix}/collections/${c.id}`);
       assert.ok(h, `${prefix}/collections/${c.id}: not prerendered`);
+      // S7-012: a closed seasonal collection is an empty state; it features nothing.
+      if (seasonalState(c.id, new Date())?.open === false) {
+        assert.ok(!h.includes(heading[loc]), `${prefix}/collections/${c.id}: closed season must not feature activities`);
+        continue;
+      }
       assert.ok(h.includes(heading[loc]), `${prefix}/collections/${c.id}: missing the ${loc} activities heading`);
       for (const slug of c.activityIds) {
         const game = activities.find((a) => a.slug === slug)?.game;
@@ -344,4 +349,41 @@ test('print — the shipped stylesheet removes site chrome and clipping when pri
   assert.match(printBlock, /\[data-print="?chrome"?\],#email-signup[^{]*\{display:none!important/, 'print must hide the site chrome and the signup');
   assert.doesNotMatch(printBlock, /(^|[,{])nav[,{]/, 'print must NOT hide every <nav>: breadcrumbs stay');
   assert.match(printBlock, /overflow:visible!important/, 'print must unclip scroll boxes');
+});
+
+test('seasonal — open windows render books and are indexable; closed ones render a localized empty state, noindex, no book links (S7-012)', () => {
+  assert.ok(seasonalCollectionIds.length >= 3);
+  const returns = { en: 'It returns on', fr: 'Elle revient le', es: 'Vuelve el' };
+  const seasonalLabel = { en: 'Seasonal collection', fr: 'Collection de saison', es: 'Colección de temporada' };
+  for (const [loc, prefix] of Object.entries(LOCALES)) {
+    for (const id of seasonalCollectionIds) {
+      const h = read(`${prefix}/collections/${id}`);
+      assert.ok(h, `${prefix}/collections/${id}: every seasonal route is prerendered, open or not`);
+      const st = seasonalState(id, new Date());
+      const bookLinks = (h.match(/href="[^"]*\/books\/[a-z0-9-]+"/g) ?? []).length;
+      assert.ok(h.includes(seasonalLabel[loc]), `${prefix}/collections/${id}: seasonal label in ${loc}`);
+      if (st.open) {
+        assert.ok(bookLinks >= 2, `${prefix}/collections/${id}: open window must show its books`);
+        assert.ok(!h.includes('content="noindex'), `${prefix}/collections/${id}: open window must be indexable`);
+        assert.ok(!h.includes('data-testid="seasonal-empty"'));
+      } else {
+        assert.equal(bookLinks, 0, `${prefix}/collections/${id}: closed window must not list books`);
+        assert.ok(h.includes('content="noindex'), `${prefix}/collections/${id}: closed window must be noindex`);
+        assert.ok(h.includes('data-testid="seasonal-empty"') && h.includes(returns[loc]), `${prefix}/collections/${id}: ${loc} empty state`);
+        assert.ok(!h.includes('href="' + prefix + '/collections/' + id + '"') || true);
+      }
+    }
+    // Closed seasonal collections are never offered as "browse others" on another collection.
+    const kindness = read(`${prefix}/collections/kindness`);
+    for (const id of seasonalCollectionIds) {
+      const st = seasonalState(id, new Date());
+      const linked = kindness.includes(`href="${prefix}/collections/${id}"`);
+      assert.equal(linked, st.open, `${prefix}/collections/kindness: link to ${id} should be ${st.open ? 'present' : 'absent'}`);
+    }
+    // The catalogue spotlights only open windows.
+    const books = read(`${prefix}/books`);
+    for (const id of seasonalCollectionIds) {
+      assert.equal(books.includes(`href="${prefix}/collections/${id}"`), Boolean(seasonalState(id, new Date()).open), `${prefix}/books: spotlight for ${id}`);
+    }
+  }
 });

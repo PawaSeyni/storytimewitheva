@@ -108,6 +108,8 @@ const LANG_PREFIXES = ['', '/es', '/fr'];
 // Learning packs (S7-008) are generated lead magnets; their /free/<id> pages come from
 // the data module through the same projection the other guards use.
 const { learningPackIds: PACK_LANDING_SLUGS } = await loadContentIndex();
+// Closed seasonal collections (S7-012): prerendered (empty state, noindex) but not in the sitemap.
+const closedSeasonalRoutes = [];
 
 // Guard against drift: parse the magnet registry and fail the build if any
 // registered slug has no prerendered landing page. Without this the mismatch is
@@ -161,11 +163,20 @@ const { learningPackIds: PACK_LANDING_SLUGS } = await loadContentIndex();
 // collection-eligible themes — no missing route (unreachable collection) and no extra
 // route (a thin page for a theme below the two-book minimum, e.g. honesty/heritage).
 {
-  const { collectionRouteIds, journeyRouteIds } = await loadContentIndex();
+  const { collectionRouteIds, indexableCollectionIds, seasonalCollectionIds, seasonalState, journeyRouteIds } = await loadContentIndex();
   const routeSet = new Set(sitemapRoutes.map(r => r.replace(/\/$/, '')));
-  const missing = collectionRouteIds.filter(id => !routeSet.has(`/collections/${id}`));
+  // Seasonal (S7-012): the sitemap advertises exactly the INDEXABLE set (open windows);
+  // every route, closed seasonal included, is still prerendered (see extraRoutes).
+  const indexable = indexableCollectionIds(new Date());
+  const missing = indexable.filter(id => !routeSet.has(`/collections/${id}`));
   const advertised = [...routeSet].filter(r => r.startsWith('/collections/')).map(r => r.split('/')[2]);
-  const extra = advertised.filter(id => !collectionRouteIds.includes(id));
+  const extra = advertised.filter(id => !indexable.includes(id));
+  for (const id of seasonalCollectionIds) {
+    const st = seasonalState(id, new Date());
+    const d = x => `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`; // local date, not UTC
+    console.log(`Seasonal ${id}: ${st.open ? `OPEN, closes ${d(st.closes)}` : `closed, opens ${d(st.opens)}`} (crawlers see this state until the next deploy)`);
+  }
+  closedSeasonalRoutes.push(...collectionRouteIds.filter(id => !indexable.includes(id)).map(id => `/collections/${id}`));
   if (missing.length || extra.length) {
     console.error(
       `\nPrerender aborted: collection/sitemap parity failed.` +
@@ -175,7 +186,7 @@ const { learningPackIds: PACK_LANDING_SLUGS } = await loadContentIndex();
     );
     process.exit(1);
   }
-  console.log(`Collection guard OK: ${collectionRouteIds.length} eligible collections (theme + age), no thin pages.`);
+  console.log(`Collection guard OK: ${indexable.length} indexable collections in the sitemap, ${collectionRouteIds.length - indexable.length} closed seasonal prerendered noindex.`);
   // Journey guard (S7-003): same bidirectional parity for /journeys/*.
   const jMissing = journeyRouteIds.filter(id => !routeSet.has(`/journeys/${id}`));
   const jAdvertised = [...routeSet].filter(r => /^\/journeys\/[^/]+$/.test(r)).map(r => r.split('/')[2]);
@@ -186,7 +197,7 @@ const { learningPackIds: PACK_LANDING_SLUGS } = await loadContentIndex();
   console.log(`Journey guard OK: ${journeyRouteIds.length} published journeys + index.`);
 }
 
-const extraRoutes = [...NOINDEX_SPA_ROUTES, ...[...LANDING_SLUGS, ...PACK_LANDING_SLUGS].map(s => `/free/${s}`)].flatMap(p =>
+const extraRoutes = [...NOINDEX_SPA_ROUTES, ...closedSeasonalRoutes, ...[...LANDING_SLUGS, ...PACK_LANDING_SLUGS].map(s => `/free/${s}`)].flatMap(p =>
   LANG_PREFIXES.map(pre => `${pre}${p}`),
 );
 
