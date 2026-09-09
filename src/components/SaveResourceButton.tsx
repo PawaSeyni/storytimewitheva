@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Bookmark } from 'lucide-react';
 import { loadLibrary, isResourceSaved, toggleSavedResource, onLibraryChange } from '../lib/personalLibrary';
 import { useTranslation } from '../lib/language';
+import { track } from '../lib/analytics';
 
 // S6-009. Stores the resource ID only; the shelf resolves it against the registry at
 // read time, so a retired resource disappears instead of leaving a dead card.
@@ -29,6 +30,7 @@ export default function SaveResourceButton({ resourceId }: { resourceId: string 
         e.stopPropagation();
         toggleSavedResource(resourceId);
         setSaved((v) => !v);
+        track('Resource Saved', { resource: resourceId, status: saved ? 'removed' : 'added' });
       }}
       aria-pressed={saved}
       aria-label={saved ? t.remove : t.save}

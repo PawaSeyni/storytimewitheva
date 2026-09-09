@@ -12,6 +12,7 @@ import {
 import { recommend, hasEnoughContext, type RecommendationReason } from '../lib/recommendations';
 import { THEME_IDS, AGE_BAND_IDS, type AgeBandId, type ThemeId } from '../data/taxonomy';
 import { useTranslation } from '../lib/language';
+import { track } from '../lib/analytics';
 
 // S6-006 + S6-007. Renders ONLY with enough local context (two signals, so one stray page
 // view does not replace the default homepage with a thinner personalized one).
@@ -97,6 +98,12 @@ export default function PickedForYou() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // One view event per render of a non-empty section. Sent AFTER items exist so a page
+  // that shows nothing personalized does not count as a personalized view.
+  useEffect(() => {
+    if (items.length > 0) track('Personalized View', { placement: 'home' });
+  }, [items.length]);
+
   if (items.length === 0) return null;
   const byId = new Map(books.map((b) => [b.id, b]));
 
@@ -113,7 +120,10 @@ export default function PickedForYou() {
               <p className="text-xs font-semibold uppercase tracking-wide text-purple-600 mb-2">
                 {t[reason]}
               </p>
-              <BookCard book={book} />
+              <BookCard
+                book={book}
+                onSelect={() => track('Recommendation Click', { book: id, placement: 'home', reason })}
+              />
             </div>
           );
         })}

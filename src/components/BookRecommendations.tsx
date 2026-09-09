@@ -1,103 +1,73 @@
-// Client-side "Recommended for You" widget.
-// Scores unread books by theme overlap with books the user has read or
-// wants to read, then surfaces the top 3. Re-renders on the
-// 'progresschange' custom event so it stays in sync with BookStatusButton.
+// "Recommended for You" on the catalog page.
+//
+// Rebuilt on src/lib/recommendations.ts (S6-007) with the personal library as its
+// seeds. The previous version was a THIRD ranker that scored books by splitting the
+// English `theme` phrase into word tokens — exactly the text-parsing the taxonomy
+// decision record forbids ("the localized theme phrase is display copy and is NEVER
+// parsed to infer an id"). It also read book status from the legacy `readingProgress`
+// arrays, which nothing has written since the library moved in #159.
 
 import { useEffect, useState } from 'react';
-import { books as rawBooks, useBooks } from '../data/books';
-import type { LocalizedBook } from '../data/books';
-import { loadProgress, type Progress } from '../lib/progress';
+import { useBooks } from '../data/books';
+import {
+  loadLibrary,
+  booksWithStatus,
+  favoriteBookIds,
+  onLibraryChange,
+} from '../lib/personalLibrary';
+import { recommend } from '../lib/recommendations';
 import BookCard from './BookCard';
 import { useTranslation } from '../lib/language';
+import { track } from '../lib/analytics';
 
 const TRANSLATIONS = {
   en: {
     heading: 'Recommended for You',
-    subheading: "Based on what you've been reading",
+    subheading: 'Based on the books saved on this device',
     allOnList: "You're on a great path! Keep exploring.",
   },
   es: {
     heading: 'Recomendado para ti',
-    subheading: 'Según lo que has leído',
+    subheading: 'Según los libros guardados en este dispositivo',
     allOnList: '¡Vas por buen camino! Sigue explorando.',
   },
   fr: {
     heading: 'Recommandé pour vous',
-    subheading: "D'après vos lectures",
+    subheading: 'D’après les livres enregistrés sur cet appareil',
     allOnList: 'Vous êtes sur la bonne voie ! Continuez à explorer.',
   },
 };
 
-/** Extract a set of normalised theme tokens from a raw English theme string. */
-function themeTokens(themeEn: string): Set<string> {
-  return new Set(
-    themeEn
-      .toLowerCase()
-      .split(/[\s,]+/)
-      .filter(Boolean),
-  );
-}
-
-function computeRecommendations(
-  localizedBooks: LocalizedBook[],
-  progress: Progress,
-): LocalizedBook[] {
-  const { booksRead, booksWantToRead } = progress;
-  const engaged = new Set([...booksRead, ...booksWantToRead]);
-
-  if (engaged.size === 0) return [];
-
-  // Build a union of theme tokens from all engaged books (using raw English themes).
-  const engagedThemes = new Set<string>();
-  for (const raw of rawBooks) {
-    if (engaged.has(raw.id)) {
-      for (const tok of themeTokens(raw.theme.en)) {
-        engagedThemes.add(tok);
-      }
-    }
-  }
-
-  // Score candidate books (not yet engaged).
-  const scored: Array<{ book: LocalizedBook; score: number }> = [];
-  for (const raw of rawBooks) {
-    if (engaged.has(raw.id)) continue;
-    const localized = localizedBooks.find(b => b.id === raw.id);
-    if (!localized) continue;
-    let score = 0;
-    for (const tok of themeTokens(raw.theme.en)) {
-      if (engagedThemes.has(tok)) score++;
-    }
-    scored.push({ book: localized, score });
-  }
-
-  if (scored.length === 0) return [];
-
-  scored.sort((a, b) => b.score - a.score);
-  return scored.slice(0, 3).map(s => s.book);
-}
-
 export default function BookRecommendations() {
   const t = useTranslation(TRANSLATIONS);
-  const localizedBooks = useBooks();
-  const [progress, setProgress] = useState<Progress>(() => loadProgress());
+  const books = useBooks();
+  const [state, setState] = useState(() => loadLibrary());
 
   useEffect(() => {
-    const sync = () => setProgress(loadProgress());
-    window.addEventListener('progresschange', sync);
-    return () => window.removeEventListener('progresschange', sync);
+    const sync = () => setState(loadLibrary());
+    sync();
+    return onLibraryChange(sync);
   }, []);
 
-  const { booksRead, booksWantToRead } = progress;
-  const hasEngaged = booksRead.length > 0 || booksWantToRead.length > 0;
+  const known = new Set(books.map((b) => b.id));
+  const read = booksWithStatus(state, 'read').filter((id) => known.has(id));
+  const reading = booksWithStatus(state, 'reading').filter((id) => known.has(id));
+  const want = booksWithStatus(state, 'want-to-read').filter((id) => known.has(id));
+  const favorites = favoriteBookIds(state).filter((id) => known.has(id));
+  const engaged = new Set([...read, ...reading, ...want, ...favorites]);
 
-  // Nothing to show if the user has not interacted with any book yet.
-  if (!hasEngaged) return null;
+  // Nothing to show until the reader has saved at least one book.
+  if (engaged.size === 0) return null;
 
-  const recommendations = computeRecommendations(localizedBooks, progress);
-
-  // Number of books the user has not yet engaged with.
-  const totalCandidates =
-    localizedBooks.length - new Set([...booksRead, ...booksWantToRead]).size;
+  const picks = recommend({
+    sourceBookIds: [...reading, ...read, ...want],
+    favoriteBookIds: favorites,
+    excludeIds: [...engaged],
+    limit: 3,
+  });
+  const byId = new Map(books.map((b) => [b.id, b]));
+  const recommendations = picks.map((p) => byId.get(p.bookId)).filter((b) => b !== undefined);
+  const totalCandidates = books.length - engaged.size;
 
   return (
     <section className="py-10 px-4 bg-purple-50 border-b border-purple-100">
@@ -108,13 +78,21 @@ export default function BookRecommendations() {
         </div>
 
         {recommendations.length === 0 || totalCandidates === 0 ? (
-          <p className="text-purple-700 font-medium">{t.allOnList}</p>
+          <p className="text-gray-600 text-center py-6">{t.allOnList}</p>
         ) : (
-          <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible md:pb-0">
-            {recommendations.map(book => (
-              <div key={book.id} className="min-w-[260px] md:min-w-0">
-                <BookCard book={book} priority={false} />
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {recommendations.map((book, i) => (
+              <BookCard
+                key={book.id}
+                book={book}
+                onSelect={() =>
+                  track('Recommendation Click', {
+                    book: book.id,
+                    placement: 'books',
+                    reason: picks[i]?.reasons[0] ?? 'theme',
+                  })
+                }
+              />
             ))}
           </div>
         )}

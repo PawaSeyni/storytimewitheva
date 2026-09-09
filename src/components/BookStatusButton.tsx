@@ -8,6 +8,7 @@ import {
   type LibraryStatus,
 } from '../lib/personalLibrary';
 import { useTranslation } from '../lib/language';
+import { track } from '../lib/analytics';
 
 // Three states (Sprint 6 S6-001), up from the previous two. Reading status now lives in
 // the versioned personalization envelope rather than the legacy `readingProgress` key;
@@ -60,6 +61,7 @@ export default function BookStatusButton({ bookId, compact = false }: BookStatus
     const resolved = status === next ? null : next;
     persistStatus(bookId, resolved);
     setLocal(resolved);
+    track('Library Status', { book: bookId, status: resolved ?? 'cleared' });
   };
 
   const base = compact

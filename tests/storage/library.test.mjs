@@ -243,3 +243,40 @@ test('preferences — a partial update never clears the other field', async () =
   assert.deepEqual(p.themeIds, ['wonder']);
   assert.deepEqual(p.ageBandIds, ['ages-3-5'], 'omitted field must be preserved');
 });
+
+test('clearLibrary — empties the envelope, notifies listeners, leaves shared keys alone', async () => {
+  // S6-013. "Clear everything on this device" must actually remove the data (the UI
+  // resetting is not enough), and must not reach into the games' shared key as a side
+  // effect — that key is cleared by progress.clearProgress(), which the panel calls too.
+  const { mod, store, events } = await load({
+    seed: { readingProgress: JSON.stringify({ activitiesCompleted: ['matching'] }) },
+  });
+  mod.setStatus('a', 'read');
+  mod.toggleFavorite('b');
+  mod.toggleSavedResource('download-parents-guide');
+  mod.setPreferences({ themeIds: ['kindness'], ageBandIds: [] });
+  assert.ok(store.has('ste:personalization'));
+
+  const before = events.length;
+  assert.equal(mod.clearLibrary(), true);
+  assert.equal(store.has('ste:personalization'), false, 'envelope really removed');
+  assert.ok(events.length > before, 'listeners were notified so controls reset');
+
+  const s = mod.loadLibrary();
+  assert.deepEqual(s.library, {});
+  assert.deepEqual(s.savedResourceIds, []);
+  assert.equal(mod.hasPreferences(s), false);
+  assert.deepEqual(JSON.parse(store.get('readingProgress')).activitiesCompleted, ['matching'], 'shared key untouched');
+});
+
+test('clearLibrary — after clearing, the legacy key is NOT re-imported on the next read', async () => {
+  // The migration guard. Clearing must not resurrect statuses from the games' key.
+  const { mod, store } = await load({
+    seed: { readingProgress: JSON.stringify({ booksRead: ['a'], booksWantToRead: [], activitiesCompleted: [] }) },
+  });
+  assert.equal(mod.getStatus(mod.loadLibrary(), 'a'), 'read', 'migrated once');
+  mod.clearLibrary();
+  // Simulate the panel: legacy is cleared alongside, so nothing is there to re-import.
+  store.set('readingProgress', JSON.stringify({ booksRead: [], booksWantToRead: [], activitiesCompleted: [] }));
+  assert.equal(mod.getStatus(mod.loadLibrary(), 'a'), null, 'stayed cleared');
+});

@@ -212,3 +212,32 @@ test('discussion prompts — stage labels are localized, not English everywhere'
   assert.ok(!fr.includes('Before reading'), 'FR page still shows an English stage label');
   assert.ok(!es.includes('Before reading'), 'ES page still shows an English stage label');
 });
+
+test('dashboard — /profile renders the Sprint 6 sections and transparency panel in every language', () => {
+  // S6-010 / S6-013. The adult page must carry the new library sections, the "what this
+  // device remembers" panel, and a polite live region for the clear announcement — in all
+  // three languages, from the prerendered HTML, so a missing translation is a failed build
+  // rather than an English heading on the French page.
+  const expect = {
+    en: ['Reading Now', 'Favorites', 'What this device remembers', 'What should we suggest?'],
+    fr: ['En cours de lecture', 'Favoris', 'Ce que cet appareil retient', 'Que devons-nous suggérer ?'],
+    es: ['Leyendo ahora', 'Favoritos', 'Lo que recuerda este dispositivo', '¿Qué te sugerimos?'],
+  };
+  for (const [loc, prefix] of Object.entries(LOCALES)) {
+    const h = read(`${prefix}/profile`);
+    assert.ok(h, `${prefix}/profile: not prerendered`);
+    for (const text of expect[loc]) {
+      assert.ok(h.includes(text), `${prefix}/profile: missing "${text}"`);
+    }
+    assert.ok(/role="status"[^>]*aria-live="polite"/.test(h), `${prefix}/profile: no polite live region`);
+    // the old single-purpose control is gone
+    for (const stale of ['Clear all progress', 'Borrar todo el progreso', 'Tout effacer<']) {
+      assert.ok(!h.includes(stale), `${prefix}/profile: stale control "${stale}" still rendered`);
+    }
+  }
+  // and no English leaked onto the localized pages
+  for (const loc of ['fr', 'es']) {
+    const h = read(`${LOCALES[loc]}/profile`);
+    assert.ok(!h.includes('What this device remembers'), `${loc}: English panel heading leaked`);
+  }
+});
