@@ -1,4 +1,5 @@
 import { useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { setLegacy, type LegacyKey } from '../lib/storage';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,6 +8,8 @@ import { useLanguage, useTranslation, type Language } from '../lib/language';
 import { useToast } from '../lib/toast';
 
 type Item = { emoji: string; name: string };
+
+const DESIGN_KEY: LegacyKey = 'bookmarkDesign';
 
 const ANIMALS_BY_LANG: Record<Language, Item[]> = {
   en: [
@@ -469,13 +472,11 @@ export default function BookmarkCraftsDemo() {
       selectedPatternKey,
       bookmarkText,
     };
-    // Only confirm success if the write actually went through (Safari private
-    // mode throws on any setItem); never claim "saved" when it didn't.
-    try {
-      localStorage.setItem('bookmarkDesign', JSON.stringify(design));
+    // Only confirm success if the write actually went through (Safari private mode
+    // rejects every write); never claim "saved" when it wasn't. setLegacy reports that
+    // instead of throwing.
+    if (setLegacy(DESIGN_KEY, design)) {
       toast.success(t.saved);
-    } catch {
-      /* storage unavailable */
     }
   };
 

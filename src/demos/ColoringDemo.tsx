@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { getLegacy, setLegacy, type LegacyKey } from '../lib/storage';
 import type { MouseEvent as ReactMouseEvent, TouchEvent as ReactTouchEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { RefreshCw, Download, Eraser, Palette, Save, Trash2 } from 'lucide-react';
@@ -520,7 +521,7 @@ const THEME_META: { key: ThemeKey; emoji: string; draw: DrawFn }[] = [
   { key: 'rocket', emoji: '🚀', draw: drawRocket },
 ];
 
-const GALLERY_KEY = 'coloringGallery';
+const GALLERY_KEY: LegacyKey = 'coloringGallery';
 const GALLERY_MAX = 12;
 
 interface GalleryItem {
@@ -529,31 +530,26 @@ interface GalleryItem {
   savedAt: string;
 }
 
+function isGalleryArray(v: unknown): v is unknown[] {
+  return Array.isArray(v);
+}
+
 function readGallery(): GalleryItem[] {
-  try {
-    const raw = localStorage.getItem(GALLERY_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-    return parsed.filter(
-      (it): it is GalleryItem =>
-        !!it && typeof it.dataUrl === 'string' && typeof it.template === 'string' && typeof it.savedAt === 'string',
-    );
-  } catch {
-    return [];
-  }
+  const parsed = getLegacy(GALLERY_KEY, isGalleryArray);
+  if (!parsed) return [];
+  return parsed.filter(
+    (it): it is GalleryItem =>
+      !!it && typeof (it as GalleryItem).dataUrl === 'string' &&
+      typeof (it as GalleryItem).template === 'string' &&
+      typeof (it as GalleryItem).savedAt === 'string',
+  );
 }
 
 function writeGallery(items: GalleryItem[]): boolean {
-  // Gallery entries are full-canvas base64 PNGs; a dozen can exceed the ~5MB
-  // localStorage quota (and Safari private mode throws on any write). Never let
-  // that surface as an uncaught exception out of a click handler.
-  try {
-    localStorage.setItem(GALLERY_KEY, JSON.stringify(items));
-    return true;
-  } catch {
-    return false;
-  }
+  // Gallery entries are full-canvas base64 PNGs; a dozen can exceed the ~5MB quota, and
+  // Safari private mode rejects every write. setLegacy reports that instead of throwing,
+  // so the UI can tell the child their drawing was not saved.
+  return setLegacy(GALLERY_KEY, items);
 }
 
 const TRANSLATIONS = {

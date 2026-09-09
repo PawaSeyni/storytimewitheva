@@ -6,6 +6,7 @@
 // close to source.
 
 import { createContext, useCallback, useContext, useEffect, useMemo } from 'react';
+import { SHARED_KEYS, setSharedString } from './storage';
 import type { ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -41,8 +42,6 @@ export const LANGUAGE_LABELS: Record<Language, { name: string; flag: string }> =
   fr: { name: 'Français', flag: '🇫🇷' },
 };
 
-const STORAGE_KEY = 'preferredLanguage';
-
 interface LanguageContextValue {
   language: Language;
   setLanguage: (lang: Language) => void;
@@ -69,11 +68,9 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     (next: Language) => {
       const { rest } = splitLangFromPath(window.location.pathname);
       navigate(localizePath(rest, next) + window.location.search + window.location.hash);
-      try {
-        localStorage.setItem(STORAGE_KEY, next);
-      } catch {
-        /* ignore */
-      }
+      // Through the adapter (S6-012), which never throws. The key stays raw and
+      // unversioned in the SHARED tier because public/games/i18n.js reads it directly.
+      setSharedString(SHARED_KEYS.language, next);
     },
     [navigate],
   );
