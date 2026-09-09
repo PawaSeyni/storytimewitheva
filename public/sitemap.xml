@@ -1432,6 +1432,114 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://storytimewitheva.com/journeys/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/journeys/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/journeys/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/journeys/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/journeys/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/journeys/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/journeys/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/journeys/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/journeys/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/journeys/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/journeys/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/journeys/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/journeys/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/journeys/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/journeys/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/journeys/kindness-that-shines/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/journeys/kindness-that-shines/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/journeys/kindness-that-shines/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/journeys/kindness-that-shines/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/journeys/kindness-that-shines/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/journeys/kindness-that-shines/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/journeys/kindness-that-shines/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/journeys/kindness-that-shines/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/journeys/kindness-that-shines/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/journeys/kindness-that-shines/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/journeys/kindness-that-shines/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/journeys/kindness-that-shines/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/journeys/kindness-that-shines/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/journeys/kindness-that-shines/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/journeys/kindness-that-shines/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/journeys/the-slow-road-to-mastery/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/journeys/the-slow-road-to-mastery/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/journeys/the-slow-road-to-mastery/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/journeys/the-slow-road-to-mastery/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/journeys/the-slow-road-to-mastery/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/journeys/the-slow-road-to-mastery/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/journeys/the-slow-road-to-mastery/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/journeys/the-slow-road-to-mastery/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/journeys/the-slow-road-to-mastery/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/journeys/the-slow-road-to-mastery/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/journeys/the-slow-road-to-mastery/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/journeys/the-slow-road-to-mastery/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/journeys/the-slow-road-to-mastery/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/journeys/the-slow-road-to-mastery/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/journeys/the-slow-road-to-mastery/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/journeys/curious-about-the-sky/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/journeys/curious-about-the-sky/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/journeys/curious-about-the-sky/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/journeys/curious-about-the-sky/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/journeys/curious-about-the-sky/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/journeys/curious-about-the-sky/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/journeys/curious-about-the-sky/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/journeys/curious-about-the-sky/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/journeys/curious-about-the-sky/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/journeys/curious-about-the-sky/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/journeys/curious-about-the-sky/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/journeys/curious-about-the-sky/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/journeys/curious-about-the-sky/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/journeys/curious-about-the-sky/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/journeys/curious-about-the-sky/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://storytimewitheva.com/games/bilingual-flashcards.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

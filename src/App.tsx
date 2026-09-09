@@ -79,6 +79,8 @@ import Home from './pages/Home';
 const Books               = lazy(() => import('./pages/Books'));
 const BookDetail          = lazy(() => import('./pages/BookDetail'));
 const Collection = lazy(() => import('./pages/Collection'));
+const Journeys = lazy(() => import('./pages/Journeys'));
+const Journey = lazy(() => import('./pages/Journey'));
 const Activities          = lazy(() => import('./pages/Activities'));
 const Resources           = lazy(() => import('./pages/Resources'));
 const About               = lazy(() => import('./pages/About'));
@@ -115,6 +117,8 @@ const routeDefs = [
   { path: '/books', element: <Books /> },
   { path: '/books/:slug', element: <BookDetail /> },
   { path: '/collections/:collectionId', element: <Collection /> },
+  { path: '/journeys', element: <Journeys /> },
+  { path: '/journeys/:journeyId', element: <Journey /> },
   { path: '/activities', element: <Activities /> },
   { path: '/activities/story-builder', element: <DemoPage><StoryBuilderDemo /></DemoPage> },
   { path: '/activities/character-workshop', element: <DemoPage><CharacterWorkshopDemo /></DemoPage> },

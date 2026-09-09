@@ -21,7 +21,7 @@ const TRANSLATIONS = {
     notPersisting: 'Storage is unavailable in this browser, so nothing will be remembered after you leave the page.',
     items: {
       read: 'Books marked read', reading: 'Books being read now', wantToRead: 'Books on the reading list',
-      favorites: 'Favorites', recentlyExplored: 'Recently viewed books', savedResources: 'Saved resources',
+      favorites: 'Favorites', recentlyExplored: 'Recently viewed books', savedResources: 'Saved resources', savedJourneys: 'Saved reading journeys',
       preferences: 'Suggestion preferences', activities: 'Completed activities',
       journal: 'Journal entries', tracker: 'Reading tracker sessions',
     },
@@ -37,7 +37,7 @@ const TRANSLATIONS = {
     notPersisting: 'El almacenamiento no está disponible en este navegador, así que nada se recordará al salir de la página.',
     items: {
       read: 'Libros marcados como leídos', reading: 'Libros que se están leyendo', wantToRead: 'Libros en la lista',
-      favorites: 'Favoritos', recentlyExplored: 'Libros vistos hace poco', savedResources: 'Recursos guardados',
+      favorites: 'Favoritos', recentlyExplored: 'Libros vistos hace poco', savedResources: 'Recursos guardados', savedJourneys: 'Recorridos de lectura guardados',
       preferences: 'Preferencias de sugerencias', activities: 'Actividades completadas',
       journal: 'Entradas del diario', tracker: 'Sesiones del registro de lectura',
     },
@@ -53,7 +53,7 @@ const TRANSLATIONS = {
     notPersisting: 'Le stockage n’est pas disponible dans ce navigateur : rien ne sera retenu après avoir quitté la page.',
     items: {
       read: 'Livres marqués lus', reading: 'Livres en cours de lecture', wantToRead: 'Livres sur la liste',
-      favorites: 'Favoris', recentlyExplored: 'Livres consultés récemment', savedResources: 'Ressources enregistrées',
+      favorites: 'Favoris', recentlyExplored: 'Livres consultés récemment', savedResources: 'Ressources enregistrées', savedJourneys: 'Parcours de lecture enregistrés',
       preferences: 'Préférences de suggestions', activities: 'Activités terminées',
       journal: 'Entrées du journal', tracker: 'Séances du suivi de lecture',
     },

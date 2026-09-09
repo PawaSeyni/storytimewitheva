@@ -9,6 +9,9 @@
 // CI validation through the projection in scripts/lib/catalog.mjs.
 
 import { books } from './books.data';
+import { activities } from './activities.data';
+import { resources } from './resources';
+import { journeys, type ReadingJourney } from './journeys';
 import {
   THEME_IDS,
   AGE_BAND_IDS,
@@ -87,3 +90,68 @@ export const isAgeCollectionEligible = (b: AgeBandId): boolean =>
  * the prerender guard and the page all read this one list, so they cannot disagree.
  */
 export const collectionRouteIds: string[] = [...collectionEligibleThemeIds, ...ageCollectionEligibleBandIds];
+
+// ---------------------------------------------------------------------------------
+// Reading journeys (S7-003 / S7-009 / S7-013 / S7-014)
+// ---------------------------------------------------------------------------------
+
+const LANGS = ['en', 'fr', 'es'] as const;
+
+/**
+ * Every reason a journey may NOT publish. Empty array = valid. Run at build time and in
+ * CI (tests/funnel/journeys.test.mjs); a published journey with any problem fails the
+ * build rather than shipping a broken step. Draft journeys are validated too, but do not
+ * block — they only block if they would be published.
+ */
+export function journeyProblems(j: ReadingJourney): string[] {
+  const out: string[] = [];
+  const bookIds = new Set(books.map((b) => b.id));
+  const slugs = new Set(activities.map((a) => a.slug));
+  const resIds = new Set(resources.map((r) => r.id));
+  if (!/^[a-z0-9-]+$/.test(j.id)) out.push(`id "${j.id}" is not a bare route token`);
+  for (const l of LANGS) {
+    if (!j.title[l]?.trim()) out.push(`missing ${l} title`);
+    if (!j.description[l]?.trim()) out.push(`missing ${l} description`);
+  }
+  for (const t of j.themeIds) if (!THEME_IDS.includes(t)) out.push(`unknown theme "${t}"`);
+  for (const a of j.ageBandIds) if (!AGE_BAND_IDS.includes(a)) out.push(`unknown age band "${a}"`);
+  if (j.steps.length < 2) out.push('fewer than two steps');
+  const ids = j.steps.map((s) => s.id);
+  if (new Set(ids).size !== ids.length) out.push('duplicate step id');
+  for (const s of j.steps) {
+    if (!s.id.startsWith(`${j.id}-`)) out.push(`step "${s.id}" is not namespaced under the journey`);
+    const ok =
+      s.type === 'activity' ? slugs.has(s.contentId)
+      : s.type === 'resource' ? resIds.has(s.contentId)
+      : bookIds.has(s.contentId); // book, discussion, next-book all name a book
+    if (!ok) out.push(`step "${s.id}" (${s.type}) references missing "${s.contentId}"`);
+    if (s.type === 'discussion') {
+      const b = books.find((x) => x.id === s.contentId);
+      if (b && !(b.discussionQuestions?.length)) out.push(`step "${s.id}" asks to discuss "${s.contentId}", which has no prompts`);
+    }
+  }
+  if (!j.steps.some((s) => s.type === 'book')) out.push('no book step');
+  if (!j.steps.some((s) => s.type === 'next-book' || s.type === 'activity')) out.push('no meaningful continuation step');
+  if (j.steps[0]?.type !== 'book') out.push('first step must be a book');
+  return out;
+}
+
+/** Journeys that may have a public route: published AND valid. */
+export const publishedJourneys: ReadingJourney[] = journeys.filter(
+  (j) => j.publishState === 'published' && journeyProblems(j).length === 0,
+);
+
+export const journeyRouteIds: string[] = publishedJourneys.map((j) => j.id);
+
+/** DERIVED reverse relation: which published journeys include a given book. */
+export const journeysByBookId: Record<BookId, string[]> = (() => {
+  const idx: Record<BookId, string[]> = Object.fromEntries(books.map((b) => [b.id, [] as string[]]));
+  for (const j of publishedJourneys) {
+    for (const s of j.steps) {
+      if (s.type !== 'activity' && s.type !== 'resource' && idx[s.contentId] && !idx[s.contentId].includes(j.id)) {
+        idx[s.contentId].push(j.id);
+      }
+    }
+  }
+  return idx;
+})();

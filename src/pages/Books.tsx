@@ -25,6 +25,7 @@ const TRANSLATIONS = {
       themeAll: 'All themes',
       browseByTheme: 'Browse by theme',
       browseByAge: 'Browse by age',
+      browseJourneys: 'Reading journeys →',
       ageLabel: 'Age',
       themeLabel: 'Theme',
     showingBook: 'book',
@@ -52,6 +53,7 @@ const TRANSLATIONS = {
       themeAll: 'Todos los temas',
       browseByTheme: 'Explora por tema',
       browseByAge: 'Explora por edad',
+      browseJourneys: 'Recorridos de lectura →',
       ageLabel: 'Edad',
       themeLabel: 'Tema',
     showingBook: 'libro',
@@ -79,6 +81,7 @@ const TRANSLATIONS = {
       themeAll: 'Tous les thèmes',
       browseByTheme: 'Explorer par thème',
       browseByAge: 'Explorer par âge',
+      browseJourneys: 'Parcours de lecture →',
       ageLabel: 'Âge',
       themeLabel: 'Thème',
     showingBook: 'livre',
@@ -243,6 +246,9 @@ export default function Books() {
               </li>
             ))}
           </ul>
+          <p className="mt-6">
+            <Link to="/journeys" className="inline-block text-sm font-semibold text-purple-700 hover:text-purple-900">{t.browseJourneys}</Link>
+          </p>
         </div>
       </section>
 

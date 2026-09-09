@@ -14,7 +14,7 @@ import { loadCatalog, loadContentIndex, loadRelatedBooks, loadActivities } from 
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const DIST = path.join(ROOT, 'dist');
-const { collectionEligibleThemeIds, ageCollectionEligibleBandIds, collectionRouteIds } = await loadContentIndex();
+const { collectionEligibleThemeIds, ageCollectionEligibleBandIds, collectionRouteIds, journeyRouteIds } = await loadContentIndex();
 const { books } = await loadCatalog();
 const { relatedBooksFor } = await loadRelatedBooks();
 const { activities } = await loadActivities();
@@ -26,6 +26,8 @@ const EN_ONLY = ['Browse other themes', 'in this collection', 'Books in this col
 const pages = [];
 for (const [loc, prefix] of Object.entries(LOCALES)) {
   for (const id of collectionRouteIds) pages.push({ route: `${prefix}/collections/${id}`, loc });
+  pages.push({ route: `${prefix}/journeys`, loc });
+  for (const id of journeyRouteIds) pages.push({ route: `${prefix}/journeys/${id}`, loc });
   for (const b of books) pages.push({ route: `${prefix}/books/${b.id}`, loc });
   pages.push({ route: `${prefix}/books`, loc });
   pages.push({ route: prefix || '/', loc });
@@ -251,5 +253,22 @@ test('dashboard — /profile renders the Sprint 6 sections and transparency pane
   for (const loc of ['fr', 'es']) {
     const h = read(`${LOCALES[loc]}/profile`);
     assert.ok(!h.includes('What this device remembers'), `${loc}: English panel heading leaked`);
+  }
+});
+
+test('journeys — every journey page states progress in text, has pressed-state step controls and a live region (S7-003 / S7-010)', () => {
+  const labels = { en: ['Step 1 of', 'Mark step done', 'Talk about it', 'Read next'], fr: ['Étape 1 sur', 'Marquer l’étape comme faite', 'Parlez-en ensemble', 'À lire ensuite'], es: ['Paso 1 de', 'Marcar paso hecho', 'Hablen juntos', 'Sigue leyendo'] };
+  for (const [loc, prefix] of Object.entries(LOCALES)) {
+    for (const id of journeyRouteIds) {
+      const h = read(`${prefix}/journeys/${id}`);
+      assert.ok(h, `${prefix}/journeys/${id}: not prerendered`);
+      const text = h.replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+      for (const l of labels[loc]) assert.ok(text.includes(l), `${prefix}/journeys/${id}: missing "${l}"`);
+      assert.ok((h.match(/aria-pressed="false"/g) || []).length >= 5, `${prefix}/journeys/${id}: expected a pressed-state control per step`);
+      assert.ok(/role="status"[^>]*aria-live="polite"/.test(h), `${prefix}/journeys/${id}: no polite live region`);
+      if (loc !== 'en') assert.ok(!text.includes('Mark step done'), `${prefix}/journeys/${id}: English control label leaked`);
+    }
+    const idx = read(`${prefix}/journeys`);
+    assert.ok(idx && journeyRouteIds.every((id) => idx.includes(`/journeys/${id}"`)), `${prefix}/journeys: index must link every published journey`);
   }
 });

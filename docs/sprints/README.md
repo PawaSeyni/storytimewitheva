@@ -46,6 +46,7 @@ exist from earlier sessions but have not been traced to their IDs.
 | S7-001 | ✅ shipped | `src/pages/ThemeCollection.tsx`, 11 eligible themes × 3 languages (#142) |
 | S7-005 | ✅ shipped | `discussionQuestions` modeled (#143), 60 prompts written in (#154), rendered (#155) |
 | S6-001 … S6-006 · S6-009 · S6-010 · S6-013 … S6-018 | ✅ shipped | Sprint 6 slices 1–4 (#159, #160, #161, #162); S6-011 is ADR-002, proposed and awaiting signature |
+| S7-003 · S7-010 · S7-011 | ✅ shipped | `/journeys` + `/journeys/<id>` on `src/data/journeys.ts` (3 published journeys, EN/FR/ES), build-time validation, local progress through the storage adapter with read-time pruning, saved journeys in the personalization envelope (#168) |
 | S7-009 | ✅ shipped | `src/data/contentIndex.ts` derives every reverse relationship; nothing reverse is persisted (#142) |
 | S7-013 | 🟨 partial | EN/FR/ES parity is CI-enforced for books, resources and prompts, but collections and journeys as *content records* do not exist yet |
 | S3-018 · S3-019 · S3-020 | ⬜ not started | no Search Console baseline artifact, route/metadata inventory or post-deploy crawl record in the repo |
