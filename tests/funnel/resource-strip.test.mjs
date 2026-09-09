@@ -41,3 +41,21 @@ test('resource strip — relatedResourceIds stays empty while the strip is share
     );
   }
 });
+
+test('resource save controls — `article-${slug}` is guaranteed to resolve', () => {
+  // The Resources page builds save ids as `article-${anchor}`, and the anchor comes from
+  // the registry's own slug. That is only safe while every article id is exactly its slug
+  // prefixed with its kind, so THAT is the invariant worth locking — not a grep for
+  // hardcoded anchors, which stopped existing when the page started reading the registry.
+  for (const r of resources) {
+    assert.equal(r.id, `${r.kind}-${r.slug}`, `${r.id} is not "${r.kind}-${r.slug}"`);
+    assert.ok(ids.has(`${r.kind}-${r.slug}`));
+  }
+  // and the page really does derive it rather than hardcoding a literal
+  const src = readFileSync('src/pages/Resources.tsx', 'utf8');
+  assert.ok(src.includes('`article-${r.anchor}`'), 'Resources.tsx no longer derives the id from the registry');
+  assert.ok(
+    !/resourceId="article-[a-z-]+"/.test(src),
+    'a hardcoded article id appeared; derive it from the registry instead',
+  );
+});
