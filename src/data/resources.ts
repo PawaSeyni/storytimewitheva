@@ -69,7 +69,7 @@ export const resources: Resource[] = [
     },
   },
   {
-    id: 'download-follow-up-activities', kind: 'download', slug: 'follow-up-activities', localizedFile: false, emoji: '✏️',
+    id: 'download-follow-up-activities', kind: 'download', slug: 'follow-up-activities', localizedFile: true, emoji: '✏️',
     title: {
       en: 'Follow-Up Activities',
       es: 'Actividades complementarias',

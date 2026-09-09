@@ -3,7 +3,7 @@
 // resources, colliding ids, missing locales, and a pack with no stable /download rule.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './_manifest.mjs';
 import { loadLearningPacks, loadContentIndex, loadResources, loadTaxonomy } from '../../scripts/lib/catalog.mjs';
@@ -90,4 +90,16 @@ test('packs — reverse relation packsByCollectionId matches the forward collect
 test('packs — bundle EXISTING printables only: no pack references a file outside the registry', () => {
   const known = new Set(resources.filter((r) => r.kind === 'download').map((r) => r.id));
   for (const p of learningPacks) for (const id of p.resourceIds) assert.ok(known.has(id), `${p.id}: ${id}`);
+});
+
+// Found by the pack delivery test: follow-up-activities had -es/-fr files on disk but
+// `localizedFile: false` in the registry, so a French pack would have served the English
+// sheet. The flag must mirror the files that actually exist.
+test('registry — localizedFile mirrors the -es/-fr files on disk for every download', () => {
+  const pdfs = readdirSync(path.join(ROOT, 'public')).filter((f) => f.endsWith('.pdf'));
+  for (const r of resources.filter((x) => x.kind === 'download')) {
+    const has = (lang) => pdfs.some((f) => new RegExp(`^${r.slug}-${lang}\\.[0-9a-f]{6,}\\.pdf$`).test(f));
+    const onDisk = has('es') && has('fr');
+    assert.equal(Boolean(r.localizedFile), onDisk, `${r.id}: localizedFile=${r.localizedFile} but es/fr files on disk=${onDisk}`);
+  }
 });

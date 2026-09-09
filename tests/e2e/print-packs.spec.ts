@@ -41,3 +41,24 @@ test('print media hides nav, footer and signup and keeps the content (S7 §10)',
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(page.locator('a[href="/books/pawa-rainbow-cloud"]').first()).toBeVisible();
 });
+
+// The delivery itself: after signup (endpoint stubbed, nothing real is written) the pack
+// success screen lists EVERY file as a named link, in the visitor's language where an
+// edition exists, via the stable /download URLs.
+test('pack success screen lists every file with language-correct stable links', async ({ page }) => {
+  await page.route(/plausible\.io/, (r) => r.abort());
+  await page.route('**/.netlify/functions/subscribe', (r) =>
+    r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true }) }),
+  );
+  await page.goto('/fr/free/classroom-pack');
+  await page.fill('#email-signup input[name="email"]', 'e2e@example.com');
+  await page.click('#email-signup button[type="submit"]');
+  const status = page.locator('[role="status"]');
+  await expect(status).toBeVisible();
+  const links = status.locator('a[download]');
+  await expect(links).toHaveCount(3);
+  await expect(links.nth(0)).toHaveAttribute('href', '/download/parents-guide?lang=fr');
+  await expect(links.nth(0)).toContainText('Guide parents');
+  await expect(links.nth(1)).toHaveAttribute('href', '/download/follow-up-activities?lang=fr');
+  await expect(links.nth(2)).toHaveAttribute('href', '/download/bilingual-flashcards');
+});
