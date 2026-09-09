@@ -1,6 +1,7 @@
 import { Link } from './LocalizedLink';
 import { useLanguage, useTranslation } from '../lib/language';
 import { gameUrl } from '../lib/gameUrl';
+import { track } from '../lib/analytics';
 import { useActivities } from '../data/activities';
 
 /**
@@ -59,10 +60,12 @@ export default function RelatedActivities({ slugs }: { slugs: string[] }) {
           );
           const cls =
             'group bg-white rounded-2xl shadow-md hover:shadow-xl border border-gray-50 p-5 flex flex-col h-full transition-all';
+          // S5-015: the Book → Activity half of the loop, tracked as a continuation.
+          const onClick = () => track('Continue Journey', { placement: 'detail', destination: 'activity', activity: a.slug, reason: 'related' });
           return a.game ? (
-            <a key={a.slug} href={gameUrl(a.slug, language)} className={cls}>{inner}</a>
+            <a key={a.slug} href={gameUrl(a.slug, language)} onClick={onClick} className={cls}>{inner}</a>
           ) : (
-            <Link key={a.slug} to={`/activities/${a.slug}`} className={cls}>{inner}</Link>
+            <Link key={a.slug} to={`/activities/${a.slug}`} onClick={onClick} className={cls}>{inner}</Link>
           );
         })}
       </div>

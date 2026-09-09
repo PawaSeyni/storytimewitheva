@@ -143,6 +143,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-gray-400">
           <p>{t.rights.replace('{year}', String(new Date().getFullYear()))}</p>
+          <p className="text-xs text-gray-400 mt-1" data-affiliate-disclosure="footer">{t.affiliate}</p>
           <div className="flex gap-4">
             <Link to="/privacy" className="text-gray-400 hover:text-white transition-colors">{t.privacy}</Link>
             <Link to="/terms" className="text-gray-400 hover:text-white transition-colors">{t.terms}</Link>

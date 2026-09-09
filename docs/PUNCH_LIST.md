@@ -78,6 +78,16 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 5 — loops, merchandising, audit (S5-015/016/018/019/023)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| GL-01 | **Loop instrumented**: related-activity clicks on book pages and related-book clicks (with their ranking tier) now fire; the activity → book half already did. Funnel `loop-book-activity-book` can be read once data access exists. | #193 |
+| GL-02 | **Affiliate disclosure beside the Buy group** in three languages (was only on Terms and Privacy). Amazon Associates asks for disclosure where the links are. | #193 |
+| GL-03 | **Merchandising controls documented**; nothing ranks by hidden score. | #193 |
+| GL-04 | **Owner action**: apply the newsletter link standard in MailerLite (stable download links, localized routes, UTMs). Dashboard-only. | open |
+| GL-05 | **Copy to review**: the affiliate note (EN/FR/ES). | open |
+
 ### Sprint 5 — experiments (S5-008…011)
 
 | ID | Item | Evidence |
