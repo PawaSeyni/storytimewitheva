@@ -220,3 +220,26 @@ test('saved resources — toggle, dedupe, and prune missing on read', async () =
   s = mod.loadLibrary();
   assert.equal(mod.isResourceSaved(s, 'download-parents-guide'), false, 'toggles off');
 });
+
+test('preferences — two toggles in the same tick both persist', async () => {
+  // The stale-closure bug found in the browser: a component that computed the next value
+  // from its own state lost the first of two rapid clicks. setPreferences must be driven
+  // from the PERSISTED value, which is what these sequential calls simulate.
+  const { mod } = await load();
+  const a = mod.getPreferences(mod.loadLibrary(), () => true, () => true);
+  mod.setPreferences({ ...a, themeIds: ['kindness'] });
+  const b = mod.getPreferences(mod.loadLibrary(), () => true, () => true);
+  mod.setPreferences({ ...b, ageBandIds: ['ages-6-7'] });
+  const final = mod.getPreferences(mod.loadLibrary(), () => true, () => true);
+  assert.deepEqual(final.themeIds, ['kindness'], 'the first selection survived');
+  assert.deepEqual(final.ageBandIds, ['ages-6-7'], 'and so did the second');
+});
+
+test('preferences — a partial update never clears the other field', async () => {
+  const { mod } = await load();
+  mod.setPreferences({ themeIds: ['kindness'], ageBandIds: ['ages-3-5'] });
+  mod.setPreferences({ themeIds: ['wonder'] }); // ageBandIds omitted entirely
+  const p = mod.getPreferences(mod.loadLibrary(), () => true, () => true);
+  assert.deepEqual(p.themeIds, ['wonder']);
+  assert.deepEqual(p.ageBandIds, ['ages-3-5'], 'omitted field must be preserved');
+});

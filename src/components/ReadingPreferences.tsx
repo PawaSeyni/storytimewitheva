@@ -59,10 +59,15 @@ export default function ReadingPreferences() {
   }, []);
 
   const toggle = (kind: 'themeIds' | 'ageBandIds', id: string) => {
-    const current = prefs[kind];
+    // Read the PERSISTED state, not component state. Two chips clicked in the same tick
+    // would both start from the same stale closure value, and the second write would
+    // silently discard the first.
+    const stored = getPreferences(loadLibrary(), isTheme, isBand);
+    const current = stored[kind];
     const next = current.includes(id) ? current.filter((x) => x !== id) : [...current, id];
-    setPreferences({ ...prefs, [kind]: next });
-    setPrefs({ ...prefs, [kind]: next });
+    const updated = { ...stored, [kind]: next };
+    setPreferences(updated);
+    setPrefs(updated);
   };
 
   const chip = (active: boolean) =>
