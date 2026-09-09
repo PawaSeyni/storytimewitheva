@@ -2,7 +2,7 @@
 
 **Target:** production, `https://storytimewitheva.com`, at `main` @ `e2deb46` (Sprint 5: #191, #192, #193)
 **Run:** 2026-09-10
-**Status:** signed below; owner acceptance pending
+**Status:** release accepted by the owner 2026-09-10 (see sign-off at the end)
 
 Every result was produced by running something against production or the committed content.
 Commands: the retailer-link sweep (inline node script, recorded in this file's PR), `npm run
@@ -72,4 +72,4 @@ entry chunk at 123 KB gzip against a 125 KB warning.
 
 ## 8. Signature
 
-Prepared by Claude (Fable 5.1) on 2026-09-10, against `main` @ `e2deb46`. Owner acceptance: ________ (PawaSeyni), date ________.
+Prepared by Claude (Fable 5.1) on 2026-09-10, against `main` @ `e2deb46`. Owner acceptance: **approved** by PawaSeyni on 2026-09-10.
