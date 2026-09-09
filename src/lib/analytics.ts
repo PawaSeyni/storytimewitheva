@@ -30,7 +30,15 @@ export type FunnelEvent =
   | 'Homepage CTA'
   | 'Language Switch'
   | 'Read Aloud'
-  | 'Activity Complete';
+  | 'Activity Complete'
+  // Sprint 6 personalization (S6-014). Aggregate feature use only: a stable content id
+  // and a state, never the library, the preferences bundle, or anything identifying.
+  | 'Library Status'
+  | 'Favorite'
+  | 'Resource Saved'
+  | 'Personalized View'
+  | 'Recommendation Click'
+  | 'Local Data Cleared';
 
 // The ONLY property keys allowed on any event. Aggregate dimensions only — never
 // anything that identifies a person.
@@ -42,6 +50,12 @@ const ALLOWED_PROP_KEYS = [
   'book',
   'destination',
   'activity',
+  // Sprint 6 (S6-014): status ('read' | 'reading' | ...), placement (which surface),
+  // recommendation reason, and a stable resource id. Still aggregate dimensions only.
+  'status',
+  'placement',
+  'reason',
+  'resource',
 ] as const;
 type PropKey = (typeof ALLOWED_PROP_KEYS)[number];
 

@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react';
 import ReadingPreferences from '../components/ReadingPreferences';
 import SavedResources from '../components/SavedResources';
 import { Link } from '../components/LocalizedLink';
-import { BookOpen, BookMarked, CheckCircle2, Star, User, Trash2, NotebookPen, BarChart3 } from 'lucide-react';
+import { BookOpen, BookMarked, CheckCircle2, Star, User, Heart, NotebookPen, BarChart3 } from 'lucide-react';
 import { useBooks, books as rawBooks } from '../data/books';
 import { useActivities } from '../data/activities';
 import {
   loadProgress,
-  clearProgress,
   loadReadingJournal,
   loadReadingTracker,
   type Progress,
@@ -18,6 +17,15 @@ import Seo from '../components/Seo';
 import Pixel from '../components/Pixel';
 import { useTranslation, useLanguage } from '../lib/language';
 import { gameUrl } from '../lib/gameUrl';
+import LocalDataPanel from '../components/LocalDataPanel';
+import {
+  loadLibrary,
+  booksWithStatus,
+  favoriteBookIds,
+  onLibraryChange,
+  type PersonalizationStateV1,
+} from '../lib/personalLibrary';
+import { THEMES } from '../data/taxonomy';
 
 const TRANSLATIONS = {
   en: {
@@ -37,11 +45,12 @@ const TRANSLATIONS = {
     browseCollection: 'Browse the collection',
     tryActivity: 'Try an activity',
     booksReadSection: 'Books Read',
+    readingSection: 'Reading Now',
+    favoritesSection: 'Favorites',
+    emptyReading: 'Nothing in progress. Mark a book "Reading now" to pick it up again from the homepage.',
+    emptyFavorites: 'No favorites yet. Tap the heart on any book to keep it here.',
     wantToReadSection: 'Want to Read',
     activitiesSection: 'Completed Activities',
-    clearProgress: 'Clear all progress',
-    clearConfirm: 'Clear all your reading progress? This cannot be undone.',
-    deviceNote: 'Tip: progress is saved to this browser only. Clearing your browser data or using a different device will reset it.',
     statsHeading: 'Your Reading Stats',
     statBooksRead: 'Books Read',
     statActivitiesDone: 'Activities Done',
@@ -80,11 +89,12 @@ const TRANSLATIONS = {
     browseCollection: 'Ver la colección',
     tryActivity: 'Probar una actividad',
     booksReadSection: 'Libros leídos',
+    readingSection: 'Leyendo ahora',
+    favoritesSection: 'Favoritos',
+    emptyReading: 'Nada en curso. Marca un libro como «Leyendo ahora» para retomarlo desde la portada.',
+    emptyFavorites: 'Aún no hay favoritos. Toca el corazón en cualquier libro para guardarlo aquí.',
     wantToReadSection: 'Por leer',
     activitiesSection: 'Actividades completadas',
-    clearProgress: 'Borrar todo el progreso',
-    clearConfirm: '¿Borrar todo tu progreso de lectura? No se puede deshacer.',
-    deviceNote: 'Consejo: el progreso se guarda solo en este navegador. Borrar los datos del navegador o usar otro dispositivo lo reiniciará.',
     statsHeading: 'Tus estadísticas de lectura',
     statBooksRead: 'Libros leídos',
     statActivitiesDone: 'Actividades hechas',
@@ -123,11 +133,12 @@ const TRANSLATIONS = {
     browseCollection: 'Voir la collection',
     tryActivity: 'Essayer une activité',
     booksReadSection: 'Livres lus',
+    readingSection: 'En cours de lecture',
+    favoritesSection: 'Favoris',
+    emptyReading: 'Rien en cours. Marquez un livre « Je lis maintenant » pour le reprendre depuis l’accueil.',
+    emptyFavorites: 'Pas encore de favoris. Touchez le cœur sur un livre pour le garder ici.',
     wantToReadSection: 'À lire',
     activitiesSection: 'Activités terminées',
-    clearProgress: 'Tout effacer',
-    clearConfirm: 'Effacer toute votre progression de lecture ? Cette action est définitive.',
-    deviceNote: 'Astuce : la progression est sauvegardée uniquement dans ce navigateur. Vider les données du navigateur ou utiliser un autre appareil la réinitialise.',
     statsHeading: 'Vos statistiques de lecture',
     statBooksRead: 'Livres lus',
     statActivitiesDone: 'Activités faites',
@@ -226,6 +237,9 @@ export default function Profile() {
   const [progress, setProgress] = useState<Progress>(() => loadProgress());
   const [journal, setJournal] = useState<JournalEntry[]>(() => loadReadingJournal());
   const [tracker, setTracker] = useState<ReadingTracker | null>(() => loadReadingTracker());
+  // Book status, favorites, recent, saved resources and preferences (Sprint 6). Reading
+  // status no longer lives in `progress` — see personalLibrary.ts for why.
+  const [lib, setLib] = useState<PersonalizationStateV1>(() => loadLibrary());
   const t = useTranslation(TRANSLATIONS);
   const { language } = useLanguage();
   const activities = useActivities();
@@ -237,11 +251,16 @@ export default function Profile() {
       setJournal(loadReadingJournal());
       setTracker(loadReadingTracker());
     };
+    const syncLib = () => setLib(loadLibrary());
     window.addEventListener('progresschange', sync);
     window.addEventListener('storage', sync);
+    window.addEventListener('storage', syncLib);
+    const offLib = onLibraryChange(syncLib);
     return () => {
       window.removeEventListener('progresschange', sync);
       window.removeEventListener('storage', sync);
+      window.removeEventListener('storage', syncLib);
+      offLib();
     };
   }, []);
 
@@ -265,15 +284,17 @@ export default function Profile() {
 
   const trackerSessions = tracker?.log ?? [];
 
-  const booksRead: ProgressItem[] = progress.booksRead
-    .map((id) => books.find((b) => b.id === id))
-    .filter((b): b is (typeof books)[number] => Boolean(b))
-    .map((b) => ({ id: b.id, thumb: b.coverImage, thumbType: 'image', title: b.title }));
+  const toItems = (ids: string[]): ProgressItem[] =>
+    ids
+      .map((id) => books.find((b) => b.id === id))
+      .filter((b): b is (typeof books)[number] => Boolean(b))
+      .map((b) => ({ id: b.id, thumb: b.coverImage, thumbType: 'image', title: b.title }));
 
-  const booksWantToRead: ProgressItem[] = progress.booksWantToRead
-    .map((id) => books.find((b) => b.id === id))
-    .filter((b): b is (typeof books)[number] => Boolean(b))
-    .map((b) => ({ id: b.id, thumb: b.coverImage, thumbType: 'image', title: b.title }));
+  const readIds = booksWithStatus(lib, 'read');
+  const booksRead = toItems(readIds);
+  const booksWantToRead = toItems(booksWithStatus(lib, 'want-to-read'));
+  const booksReading = toItems(booksWithStatus(lib, 'reading'));
+  const booksFavorite = toItems(favoriteBookIds(lib));
 
   const activitiesDone: ProgressItem[] = progress.activitiesCompleted
     .map((slug) => activities.find((a) => a.slug === slug))
@@ -283,35 +304,26 @@ export default function Profile() {
   const totalAchievements = booksRead.length + activitiesDone.length;
 
   // Compute the most-read theme across books the user has marked as read.
+  // Tallied on stable theme ids and rendered through the taxonomy labels — never by
+  // parsing the localized display phrase.
   const topTheme: string = (() => {
-    if (progress.booksRead.length === 0) return '';
+    if (readIds.length === 0) return '';
     const tally: Record<string, number> = {};
-    for (const id of progress.booksRead) {
+    for (const id of readIds) {
       const raw = rawBooks.find((b) => b.id === id);
       if (!raw) continue;
-      const theme = raw.theme[language] ?? raw.theme.en;
-      tally[theme] = (tally[theme] ?? 0) + 1;
+      for (const themeId of raw.themeIds) tally[themeId] = (tally[themeId] ?? 0) + 1;
     }
     const entries = Object.entries(tally);
     if (entries.length === 0) return '';
-    return entries.reduce((a, b) => (b[1] > a[1] ? b : a))[0];
+    const [winner] = entries.reduce((a, b) => (b[1] > a[1] ? b : a));
+    return THEMES[winner as keyof typeof THEMES]?.labels[language] ?? '';
   })();
 
-  const hasAnyProgress =
-    progress.booksRead.length +
-      progress.booksWantToRead.length +
-      progress.activitiesCompleted.length +
-      journal.length +
-      trackerSessions.length >
-    0;
-
-  const handleClear = () => {
-    if (window.confirm(t.clearConfirm)) {
-      clearProgress();
-      setProgress(loadProgress());
-      setJournal(loadReadingJournal());
-      setTracker(loadReadingTracker());
-    }
+  const refreshLegacy = () => {
+    setProgress(loadProgress());
+    setJournal(loadReadingJournal());
+    setTracker(loadReadingTracker());
   };
 
   return (
@@ -342,7 +354,7 @@ export default function Profile() {
               <div className="bg-white rounded-xl p-4 text-center shadow-sm">
                 <div className="text-3xl mb-1">📚</div>
                 <div className="text-2xl font-bold text-purple-700">
-                  {progress.booksRead.length} / {rawBooks.length}
+                  {booksRead.length} / {rawBooks.length}
                 </div>
                 <div className="text-xs text-gray-500 mt-1 font-medium">{t.statBooksRead}</div>
               </div>
@@ -357,7 +369,7 @@ export default function Profile() {
 
               <div className="bg-white rounded-xl p-4 text-center shadow-sm">
                 <div className="text-3xl mb-1">🔖</div>
-                <div className="text-2xl font-bold text-blue-700">{progress.booksWantToRead.length}</div>
+                <div className="text-2xl font-bold text-blue-700">{booksWantToRead.length}</div>
                 <div className="text-xs text-gray-500 mt-1 font-medium">{t.statWantToRead}</div>
               </div>
 
@@ -420,6 +432,28 @@ export default function Profile() {
               <ItemList
                 items={booksWantToRead}
                 emptyMsg={t.emptyWantToRead}
+                emptyCta={{ label: t.browseCollection, to: '/books' }}
+              />
+            </div>
+
+            <div className="bg-white rounded-2xl shadow p-6">
+              <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-amber-500" /> {t.readingSection}
+              </h2>
+              <ItemList
+                items={booksReading}
+                emptyMsg={t.emptyReading}
+                emptyCta={{ label: t.browseCollection, to: '/books' }}
+              />
+            </div>
+
+            <div className="bg-white rounded-2xl shadow p-6">
+              <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <Heart className="w-5 h-5 text-rose-500" /> {t.favoritesSection}
+              </h2>
+              <ItemList
+                items={booksFavorite}
+                emptyMsg={t.emptyFavorites}
                 emptyCta={{ label: t.browseCollection, to: '/books' }}
               />
             </div>
@@ -543,24 +577,13 @@ export default function Profile() {
             </div>
           </div>
 
-          {hasAnyProgress && (
-            <div className="mt-8 text-center">
-              <button
-                type="button"
-                onClick={handleClear}
-                className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-red-600 transition-colors"
-              >
-                <Trash2 className="w-4 h-4" />
-                {t.clearProgress}
-              </button>
-            </div>
-          )}
-
-          <p className="mt-8 text-center text-xs text-gray-500">{t.deviceNote}</p>
         </div>
         <div className="max-w-5xl mx-auto mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
           <ReadingPreferences />
           <SavedResources />
+          <div className="lg:col-span-2">
+            <LocalDataPanel onCleared={refreshLegacy} />
+          </div>
         </div>
       </section>
     </main>

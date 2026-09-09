@@ -25,6 +25,7 @@ import {
   get,
   set,
   getShared,
+  clearNamespace,
   SHARED_KEYS,
   dedupe,
   capList,
@@ -340,4 +341,23 @@ export function savedResourceIds(
   exists: (id: string) => boolean,
 ): string[] {
   return pruneMissing(dedupe(state.savedResourceIds), exists);
+}
+
+// ---------------------------------------------------------------------------------
+// Clear local data (S6-013)
+// ---------------------------------------------------------------------------------
+
+/**
+ * Remove everything in the personalization envelope. Clears the whole namespaced tier
+ * (this envelope is currently its only occupant) and notifies listeners so every control
+ * on the page resets. Callers that also want the legacy activity/journal stores gone
+ * call progress.clearProgress() alongside; the two are kept separate because they are
+ * owned by different code and one must not silently depend on the other.
+ */
+export function clearLibrary(): boolean {
+  const ok = clearNamespace();
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent(LIBRARY_CHANGE));
+  }
+  return ok;
 }

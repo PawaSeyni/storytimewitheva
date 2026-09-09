@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Heart } from 'lucide-react';
 import { loadLibrary, isFavorite, toggleFavorite, onLibraryChange } from '../lib/personalLibrary';
 import { useTranslation } from '../lib/language';
+import { track } from '../lib/analytics';
 
 // S6-002. A favorite is explicit and separate from reading status: clearing "Read" must
 // not silently un-favorite a book, which is why both live on one library entry rather
@@ -29,6 +30,7 @@ export default function FavoriteButton({ bookId, compact = false }: { bookId: st
         e.stopPropagation();
         toggleFavorite(bookId);
         setFav((v) => !v);
+        track('Favorite', { book: bookId, status: fav ? 'removed' : 'added' });
       }}
       aria-pressed={fav}
       aria-label={fav ? t.remove : t.add}
