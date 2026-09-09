@@ -78,6 +78,16 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 8 — baseline and bottleneck register (S8-001)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| PB-01 | **Baseline measured, not estimated**: `docs/platform/BASELINE_2026-09.md`, every number from a command that is recorded next to it. | #180 |
+| PB-02 | **Bottleneck register** with 11 rows, each with evidence, a verdict and an owner. Two threshold breaches: no production error visibility (BR-08) and non-deterministic prerender on the bingo and puzzles routes (BR-02). | #180 |
+| PB-03 | **Prerender pool measured and rejected**: 4 pages 151 s, 8 pages 137 s against 154 s sequential; rendering is CPU-bound, so the pool is not worth its complexity. Recorded so nobody re-tries it without new evidence. | #180 |
+| PB-04 | **Dependencies**: non-breaking audit fix applied (13 → 4 advisories). The remaining four require the Vite 8 and React Router 7 majors, planned under the dependency policy. | #180 |
+| PB-05 | **Artifact weight is campaign assets**: 49 MB of Pinterest pin PNGs and 21 MB of PDFs make up 71% of the deploy and none of any page. Owner decision pending on whether pins stay in the repo. | open |
+
 ### Sprint 7 — release audit (S7-020)
 
 | ID | Item | Evidence |
