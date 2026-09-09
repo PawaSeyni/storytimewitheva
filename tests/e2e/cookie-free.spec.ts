@@ -209,7 +209,10 @@ test.describe('sprint 7 ecosystem — cookie-free and storage-free', () => {
       // Serialize on the rendered state so a re-render never swallows a click under load.
       await expect(page.getByRole('button', { name: 'Mark step not done' })).toHaveCount(i + 1);
     }
-    await expect(page.getByText('Journey complete. Well done!')).toBeVisible();
+    // Completion is state (5 of 5) and an announcement; assert both with the live text so a
+    // failure reports what was announced instead of "not found".
+    await expect(page.getByText(/^\d+ of \d+ steps done\./).first()).toHaveText(`${n} of ${n} steps done.`);
+    await expect(page.locator('p[role="status"][aria-live="polite"]')).toHaveText('Journey complete. Well done!');
   });
 
   test('a pack delivers every file with storage denied (endpoint stubbed, nothing real written)', async ({ page, context }) => {
