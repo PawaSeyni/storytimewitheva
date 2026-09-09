@@ -131,6 +131,15 @@ test.describe('storage-free — every flow survives localStorage throwing', () =
     await expect(page.locator('#ste-continue-eyebrow')).toHaveText('Continuez l’aventure');
     expect(errors).toEqual([]);
   });
+
+  test('a game with no referencing book falls back to the catalog, in the reader\'s language', async ({ page }) => {
+    // matching is one of the four drills no book references. Its href is exactly /books,
+    // which the nav localizer used to relabel to the nav word; the label must survive.
+    await page.goto('/games/matching.html?lang=es', { waitUntil: 'domcontentloaded' });
+    const link = page.locator('#ste-continue a[data-ste-continue]');
+    await expect(link).toHaveAttribute('href', '/es/books');
+    await expect(link).toContainText('Explora todos los libros');
+  });
 });
 
 test.describe('corrupt state — a malformed envelope never breaks a page', () => {

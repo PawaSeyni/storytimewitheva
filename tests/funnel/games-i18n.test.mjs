@@ -11,10 +11,10 @@ import vm from 'node:vm';
 const SRC = readFileSync(new URL('../../public/games/i18n.js', import.meta.url), 'utf8');
 
 /** Minimal DOM: only what i18n.js touches. */
-function run({ search = '', stored = null, links = [], i18nNodes = [], storageThrows = false } = {}) {
+function run({ search = '', stored = null, links = [], texts = [], i18nNodes = [], storageThrows = false } = {}) {
   const nodes = i18nNodes.map((key) => ({ getAttribute: (a) => (a === 'data-i18n' ? key : null), textContent: '' }));
-  const anchors = links.map((href) => {
-    const attrs = { href };
+  const anchors = links.map((href, i) => {
+    const attrs = { href, text: texts[i] ?? '' };
     return {
       getAttribute: (a) => (a in attrs ? attrs[a] : null),
       setAttribute: (a, v) => { attrs[a] = v; },
@@ -72,9 +72,17 @@ test('games i18n — site links return the reader to their own language', () => 
 });
 
 test('games i18n — nav labels localize with their hrefs', () => {
-  const { anchors } = run({ search: '?lang=es', links: ['/books', '/about'] });
+  const { anchors } = run({ search: '?lang=es', links: ['/books', '/about'], texts: ['Books', 'About'] });
   assert.equal(anchors[0].textContent, 'Libros');
   assert.equal(anchors[1].textContent, 'Sobre Eva');
+});
+
+test('games i18n — a non-nav link to /books keeps its own label (the continue fallback)', () => {
+  // Found on the preview: the fallback "Browse all books" link, href /books, was being
+  // relabelled to the nav word "Libros" because the localizer keyed on href alone.
+  const { anchors } = run({ search: '?lang=es', links: ['/books'], texts: ['Explora todos los libros'] });
+  assert.equal(anchors[0].href, '/es/books', 'href still localized');
+  assert.equal(anchors[0].textContent, 'Explora todos los libros', 'label must not be replaced');
 });
 
 test('games i18n — English leaves every link untouched', () => {
