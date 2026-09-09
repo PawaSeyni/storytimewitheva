@@ -12,7 +12,7 @@ up. That gap was tracked as D-05 and is closed by their being here.
 | [5](SPRINT_5_TECHNICAL_IMPLEMENTATION.md) | Monetization, growth, product intelligence | S5-001 … S5-024 |
 | [6](SPRINT_6_TECHNICAL_IMPLEMENTATION.md) | Personalization and family reading experience | S6-001 … S6-018 |
 | [7](SPRINT_7_TECHNICAL_IMPLEMENTATION.md) | Content and learning ecosystem | S7-001 … S7-020 |
-| [8](SPRINT_8_TECHNICAL_IMPLEMENTATION.md) | Platform, infrastructure, scale (decision sprint) | S8-001 … S8-024 — complete, readiness assessment awaiting owner approval |
+| [8](SPRINT_8_TECHNICAL_IMPLEMENTATION.md) | Platform, infrastructure, scale (decision sprint) | S8-001 … S8-024 — complete, readiness assessment approved by the owner 2026-09-10 |
 
 **126 distinct IDs.** Committed verbatim as received; no edits, so they remain the
 authoritative brief rather than a paraphrase of it.
@@ -81,7 +81,7 @@ exist from earlier sessions but have not been traced to their IDs.
 | S8-019 | ✅ shipped | `src/lib/locales.ts` is the one locale registry (codes, prefixes, labels, Intl/OG locales, parametric path helpers); App, Seo, speech, Intl formatting, search, contentIndex and every build script derive from it; `tests/funnel/locales.test.mjs` proves a temporary `pt` locale needs only an entry and scans pages/components/demos for literals; `docs/platform/ADDING_A_LANGUAGE.md` (#183) |
 | S8-020 | ✅ shipped | `docs/platform/ACCESSIBILITY_GOVERNANCE.md`: owner, regression tests per PR, manual cadence, release checklist entry; S4-05 manual pass scheduled for the sign-off (#183) |
 | S8-022 | ✅ permanent | cookie-free, storage-denied and third-party-blocked suites run on every PR and daily against production (#176, #182) |
-| S8-024 | ✅ drafted | `docs/platform/PLATFORM_READINESS_ASSESSMENT.md`: go/no-go statements, decisions, risks R-01 to R-08, capacity thresholds, roadmap, approvals table awaiting the owner (#183) |
+| S8-024 | ✅ approved | `docs/platform/PLATFORM_READINESS_ASSESSMENT.md`: go/no-go statements, decisions, risks R-01 to R-08, capacity thresholds, roadmap; approved by the owner 2026-09-10 (#190) |
 | S8-004 · S8-009 · S8-010 | ⬜ not applicable | No migration, no accounts approved (ADR-003, ADR-006), so no migration plan, account migration or auth security review is required |
 
 ## What this changes about the tracking

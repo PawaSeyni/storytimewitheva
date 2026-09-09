@@ -1,6 +1,6 @@
 # ADR-006: Optional adult accounts — not justified; no account code
 
-**Status:** Accepted (engineering recommendation; owner acceptance in the Platform Readiness Assessment)
+**Status:** Accepted, approved by the owner 2026-09-10 (Platform Readiness Assessment)
 **Date:** 2026-09-09
 **Sprint:** 8 (S8-008, S8-009, S8-010). **Builds on:** ADR-001, ADR-002.
 
