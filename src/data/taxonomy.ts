@@ -171,10 +171,40 @@ export const isThemeId = (v: string): v is ThemeId => (THEME_IDS as readonly str
 export const AGE_BAND_IDS = ['ages-3-5', 'ages-6-7', 'ages-8-9'] as const;
 export type AgeBandId = (typeof AGE_BAND_IDS)[number];
 
-export const AGE_BANDS: Record<AgeBandId, { id: AgeBandId; labels: Loc }> = {
-  'ages-3-5': { id: 'ages-3-5', labels: { en: 'Ages 3-5', fr: '3-5 ans', es: 'Edades 3-5' } },
-  'ages-6-7': { id: 'ages-6-7', labels: { en: 'Ages 6-7', fr: '6-7 ans', es: 'Edades 6-7' } },
-  'ages-8-9': { id: 'ages-8-9', labels: { en: 'Ages 8-9', fr: '8-9 ans', es: 'Edades 8-9' } },
+/**
+ * Age bands carry a localized introduction as well as a label because an age collection
+ * page (S7-002) is held to the same gate as a theme collection: a unique EN/FR/ES intro,
+ * or no route. The intro describes the READING stage, not the child, so it stays true
+ * across the whole band.
+ */
+export const AGE_BANDS: Record<AgeBandId, { id: AgeBandId; labels: Loc; descriptions: Loc }> = {
+  'ages-3-5': {
+    id: 'ages-3-5',
+    labels: { en: 'Ages 3-5', fr: '3-5 ans', es: 'Edades 3-5' },
+    descriptions: {
+      en: 'First read-alouds: short, gentle stories with a single big feeling, made to be read again tomorrow. Best fit for the youngest listeners, and still loved by their older siblings.',
+      fr: 'Premières lectures à voix haute : des histoires courtes et douces, une seule grande émotion, faites pour être relues demain. Idéales pour les plus petits, et toujours aimées de leurs aînés.',
+      es: 'Primeras lecturas en voz alta: historias cortas y suaves, con una sola gran emoción, hechas para releerse mañana. Ideales para los más pequeños, y queridas también por sus hermanos mayores.',
+    },
+  },
+  'ages-6-7': {
+    id: 'ages-6-7',
+    labels: { en: 'Ages 6-7', fr: '6-7 ans', es: 'Edades 6-7' },
+    descriptions: {
+      en: 'Stories with a real question inside them: kindness, courage, being seen. Long enough for a proper bedtime, short enough to finish. This is where most of the collection lives.',
+      fr: 'Des histoires qui portent une vraie question : la bonté, le courage, être vu. Assez longues pour un vrai moment du soir, assez courtes pour être terminées. C’est ici que vit la plus grande partie de la collection.',
+      es: 'Historias con una pregunta de verdad dentro: la bondad, el valor, ser visto. Lo bastante largas para una buena hora de dormir, lo bastante cortas para terminarlas. Aquí vive la mayor parte de la colección.',
+    },
+  },
+  'ages-8-9': {
+    id: 'ages-8-9',
+    labels: { en: 'Ages 8-9', fr: '8-9 ans', es: 'Edades 8-9' },
+    descriptions: {
+      en: 'For readers who can sit with a harder idea: patience, humility, what we owe each other. Richer language, longer arcs, and endings worth talking about.',
+      fr: 'Pour les lecteurs capables de rester avec une idée plus difficile : la patience, l’humilité, ce que nous nous devons les uns aux autres. Une langue plus riche, des arcs plus longs, des fins qui méritent une conversation.',
+      es: 'Para lectores que pueden quedarse con una idea más difícil: la paciencia, la humildad, lo que nos debemos unos a otros. Un lenguaje más rico, arcos más largos y finales que merecen una conversación.',
+    },
+  },
 };
 
 /**

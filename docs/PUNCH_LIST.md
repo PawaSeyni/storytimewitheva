@@ -78,6 +78,16 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 7 — age-band collections (S7-002) and shared breadcrumbs (S3-007)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| AC-01 | **Three age collections live** — `/collections/ages-3-5`, `ages-6-7`, `ages-8-9` in EN/FR/ES, placed by primary fit so the three pages partition the catalog (4 / 10 / 6, no overlap, no gap — asserted). | #164 |
+| AC-02 | **Same gate as themes.** Minimum-book count and a unique localized intro per band, enforced in the page, the sitemap and the prerender guard from ONE list (`collectionRouteIds`), so the three cannot disagree. Band ids (`ages-N-M`) cannot collide with theme ids. | #164 |
+| AC-03 | **One `CollectionPage`, one route.** `/collections/:collectionId` resolves theme or band; `ThemeCollection.tsx` is deleted rather than duplicated. The theme pages' rendered HTML was captured before the refactor and compared after. | #164 |
+| AC-04 | **Age-band intros are new product copy** (`taxonomy.ts`), describing the reading stage rather than the child. Flagged for editorial review; easy to change in one place. | #164 |
+| AC-05 | **`docs/sprints/README.md` corrected** — it still claimed `storage.ts` did not exist and S6-007 had 2 of 5 reasons; both shipped days ago. | #164 |
+
 ### Sprint 6 — decision record, permanent suites, audit (S6-011 · S6-015 · S6-016 · S6-017 · S6-018)
 
 | ID | Item | Evidence |
@@ -241,7 +251,7 @@ The decision record lives in `backlog.md`; the shipped work is in §A above.
 | ID | Item | Type | Notes |
 |----|------|------|-------|
 | N-05 | **`RECENTLY_EXPLORED_CAP` is 12, and Sprint 6 §14 leaves the cap and retention period as an open decision.** Twelve is a working default (a browse session, not a history log) with no time-based expiry. Needs sign-off or a different number. | decision | Flagged rather than presented as settled. |
-| N-03 | **S3-007 breadcrumbs are not generalized.** `BreadcrumbList` markup is inline on two pages; the spec asks for a shared component with localized labels and stable URL segments. | open | Small, and it removes duplicated JSON-LD. |
+| N-03 | ✅ **RESOLVED** — `Breadcrumbs.tsx` + `breadcrumbSchema()`; the two inline copies had drifted (one localized schema URLs, one did not; different separators) and are gone. | shipped | #164 |
 | N-04 | **S3-018/019/020 have no baseline artifacts.** No Search Console baseline, route/metadata inventory or post-deploy crawl record exists, and Sprint 3's definition of done requires them. | open | Owner/data task more than a code task. |
 
 ---

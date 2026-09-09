@@ -14,7 +14,7 @@ import { loadCatalog, loadContentIndex, loadRelatedBooks, loadActivities } from 
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const DIST = path.join(ROOT, 'dist');
-const { collectionEligibleThemeIds } = await loadContentIndex();
+const { collectionEligibleThemeIds, ageCollectionEligibleBandIds, collectionRouteIds } = await loadContentIndex();
 const { books } = await loadCatalog();
 const { relatedBooksFor } = await loadRelatedBooks();
 const { activities } = await loadActivities();
@@ -25,7 +25,7 @@ const EN_ONLY = ['Browse other themes', 'in this collection', 'Books in this col
 
 const pages = [];
 for (const [loc, prefix] of Object.entries(LOCALES)) {
-  for (const id of collectionEligibleThemeIds) pages.push({ route: `${prefix}/collections/${id}`, loc });
+  for (const id of collectionRouteIds) pages.push({ route: `${prefix}/collections/${id}`, loc });
   for (const b of books) pages.push({ route: `${prefix}/books/${b.id}`, loc });
   pages.push({ route: `${prefix}/books`, loc });
   pages.push({ route: prefix || '/', loc });
@@ -156,13 +156,25 @@ test('age filters — /books and /activities use the same exact-age model (D-01)
   // leaving /activities contradicting it: its "3-5" band surfaced 5-9 activities, so a
   // parent filtering for a 3-year-old was shown a spelling bee. Both pages now agree,
   // and the retired vocabulary must not creep back into either.
-  const RETIRED = ['Ages 3-5', 'Ages 6-8', 'Ages 9+', '3-5 años', '6-8 años', '9+ años', '3-5 ans', '6-8 ans', '9+ ans'];
+  // The retired vocabulary was the OVERLAP-FILTER bands: 3-5 / 6-8 / 9+. The 6-8 and 9+
+  // strings exist nowhere in the taxonomy and must not appear at all. "Ages 3-5" is
+  // different: it is also the approved label of the ages-3-5 COLLECTION (S7-002), which
+  // /books now links to. So the 3-5 strings are forbidden only as a filter BUTTON
+  // (aria-pressed) — the retired chip — never as a collection link.
+  const GONE_ENTIRELY = ['Ages 6-8', 'Ages 9+', '6-8 años', '9+ años', '6-8 ans', '9+ ans'];
+  const NOT_AS_FILTER = ['Ages 3-5', '3-5 años', '3-5 ans'];
   for (const prefix of Object.values(LOCALES)) {
     for (const page of ['/books', '/activities']) {
       const h = read(`${prefix}${page}`);
       assert.ok(h, `${prefix}${page}: not prerendered`);
-      for (const label of RETIRED) {
+      for (const label of GONE_ENTIRELY) {
         assert.ok(!h.includes(`>${label}<`), `${prefix}${page}: retired age band "${label}" is back`);
+      }
+      for (const label of NOT_AS_FILTER) {
+        assert.ok(
+          !new RegExp(`<button[^>]*aria-pressed=[^>]*>${label}</button>`).test(h),
+          `${prefix}${page}: "${label}" rendered as a filter button (the retired overlap band), not a collection link`,
+        );
       }
       for (const age of ['3', '5', '9']) {
         assert.ok(

@@ -53,8 +53,9 @@ const bookPages = bookIds.map(id => [`/books/${id}`, 'monthly', '0.8']);
 // route: a theme below the two-book minimum stays a valid tag but must not generate
 // a thin page. Eligibility is derived in src/data/contentIndex.ts, so the sitemap can
 // never advertise a collection the app would 404.
-const { collectionEligibleThemeIds } = await loadContentIndex();
-const collectionPages = collectionEligibleThemeIds.map(id => [`/collections/${id}`, 'monthly', '0.7']);
+// Theme AND age-band collections (S7-001/S7-002), from the one list the page also reads.
+const { collectionRouteIds } = await loadContentIndex();
+const collectionPages = collectionRouteIds.map(id => [`/collections/${id}`, 'monthly', '0.7']);
 
 const pages = [...staticPages, ...bookPages, ...collectionPages];
 
