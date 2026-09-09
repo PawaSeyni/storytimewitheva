@@ -73,3 +73,27 @@ test('a11y — the dashboard with saved state: toggles expose pressed state and 
   const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
   expect(results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical')).toEqual([]);
 });
+
+// Sprint 7 S7-018: journey completion controls by keyboard alone, with programmatic state
+// and a polite announcement; a closed seasonal collection exposes its empty state as status.
+test('a11y — journey steps toggle with Space/Enter, expose aria-pressed, and announce progress', async ({ page }) => {
+  await page.goto('/journeys/kindness-that-shines', { waitUntil: 'domcontentloaded' });
+  const first = page.getByRole('button', { name: 'Mark step done' }).first();
+  await first.focus();
+  await page.keyboard.press('Space');
+  const undone = page.getByRole('button', { name: 'Mark step not done' }).first();
+  await expect(undone).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('[aria-live="polite"]')).toContainText(/1 of \d+ steps done/);
+  await undone.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('button', { name: 'Mark step done' }).first()).toHaveAttribute('aria-pressed', 'false');
+  await expect(page.locator('[aria-live="polite"]')).toContainText(/0 of \d+ steps done/);
+});
+
+test('a11y — a closed seasonal collection exposes its empty state as a status and keeps the page outline', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2027-03-01T12:00:00'));
+  await page.goto('/collections/summer-of-wonder', { waitUntil: 'domcontentloaded' });
+  await expect(page.getByRole('status')).toContainText(/returns on June 15/);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('A summer of wonder');
+  await expect(page.getByRole('heading', { level: 2 }).first()).toBeVisible();
+});

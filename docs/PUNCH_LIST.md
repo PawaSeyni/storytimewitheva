@@ -78,6 +78,16 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 7 — quality gates (S7-017 · S7-018 · S7-019)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| QG-01 | **Cookie-free + storage-denied suite covers the ecosystem**: search with filters, educator and seasonal collections (open and closed), journeys to completion with the completion announcement, pack delivery with the endpoint stubbed, print media, activity-to-book continuation. Zero cookies asserted after the whole flow. | #176 |
+| QG-02 | **Accessibility gate extended**: axe over search results, journeys, educator/seasonal collections, pack landing in EN and FR; keyboard tests for journey steps and search filters; closed season exposes its empty state as a status. Two real contrast defects were found by this extension and fixed in #175. | #176 |
+| QG-03 | **Internal linking and thin-page gates** on the prerendered dist: no indexable route without an inbound link from another page in its language; no indexable route under 60 words unless it is a collection (two book links) or an interactive tool; collections and journeys carry BreadcrumbList and an ItemList whose URLs are real prerendered routes. | #176 |
+| QG-04 | **Found by QG-03, decided**: `/links` (the link-in-bio page) was in the sitemap with no inbound link and no `<main>` landmark. It is reached from social profiles, not from the site or search, so it is now `noindex`, out of the sitemap, still prerendered, and wrapped in `<main>`. Reverse if the owner wants it indexed; then it needs a footer link. | #176 |
+| QG-05 | **Found by QG-03, kept as is**: Word Explorer is 44 words of text and twelve controls. The rule exempts interactive tools; the page is not thin, it is a tool. | #176 |
+
 ### Sprint 7 — search and analytics (S7-015 · S7-016)
 
 | ID | Item | Evidence |
