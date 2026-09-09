@@ -53,6 +53,11 @@ export interface PersonalizationStateV1 {
   savedResourceIds: string[];
   savedJourneyIds: string[];
   preferences?: {
+    /**
+     * Declared by Sprint 6 §5 but deliberately NEVER WRITTEN. Language already persists
+     * in the shared `preferredLanguage` key because public/games/i18n.js reads it; a
+     * second copy here would be two sources of truth for one setting.
+     */
     locale?: 'en' | 'es' | 'fr';
     ageBandIds?: string[];
     themeIds?: string[];
@@ -256,6 +261,8 @@ export function libraryCounts(state: PersonalizationStateV1): {
   wantToRead: number;
   favorites: number;
   recentlyExplored: number;
+  savedResources: number;
+  preferences: number;
 } {
   return {
     read: booksWithStatus(state, 'read').length,
@@ -263,5 +270,74 @@ export function libraryCounts(state: PersonalizationStateV1): {
     wantToRead: booksWithStatus(state, 'want-to-read').length,
     favorites: favoriteBookIds(state).length,
     recentlyExplored: state.recentlyExplored.length,
+    savedResources: state.savedResourceIds.length,
+    preferences:
+      (state.preferences?.themeIds?.length ?? 0) + (state.preferences?.ageBandIds?.length ?? 0),
   };
+}
+
+// ---------------------------------------------------------------------------------
+// Adult preferences (S6-005)
+//
+// Optional and explicit: nothing is inferred from behavior. Unknown IDs are dropped on
+// read rather than trusted, so a retired theme cannot poison a recommendation forever.
+// ---------------------------------------------------------------------------------
+
+export interface Preferences {
+  ageBandIds: string[];
+  themeIds: string[];
+}
+
+export function getPreferences(
+  state: PersonalizationStateV1,
+  validTheme: (id: string) => boolean,
+  validBand: (id: string) => boolean,
+): Preferences {
+  const p = state.preferences ?? {};
+  return {
+    themeIds: pruneMissing(dedupe(p.themeIds ?? []), validTheme),
+    ageBandIds: pruneMissing(dedupe(p.ageBandIds ?? []), validBand),
+  };
+}
+
+/** Replace preferences wholesale. Passing empty arrays is how "skip" and "clear" work. */
+export function setPreferences(next: Partial<Preferences>): PersonalizationStateV1 {
+  const state = loadLibrary();
+  state.preferences = {
+    ...state.preferences,
+    themeIds: dedupe(next.themeIds ?? state.preferences?.themeIds ?? []),
+    ageBandIds: dedupe(next.ageBandIds ?? state.preferences?.ageBandIds ?? []),
+  };
+  save(state);
+  return state;
+}
+
+export function hasPreferences(state: PersonalizationStateV1): boolean {
+  const p = state.preferences;
+  return Boolean((p?.themeIds?.length ?? 0) + (p?.ageBandIds?.length ?? 0));
+}
+
+// ---------------------------------------------------------------------------------
+// Saved resources (S6-009) — IDs only, resolved against the registry at read time
+// ---------------------------------------------------------------------------------
+
+export function isResourceSaved(state: PersonalizationStateV1, resourceId: string): boolean {
+  return state.savedResourceIds.includes(resourceId);
+}
+
+export function toggleSavedResource(resourceId: string): PersonalizationStateV1 {
+  const state = loadLibrary();
+  state.savedResourceIds = state.savedResourceIds.includes(resourceId)
+    ? state.savedResourceIds.filter((id) => id !== resourceId)
+    : capList(dedupe([resourceId, ...state.savedResourceIds]), MAX_LIBRARY_ENTRIES);
+  save(state);
+  return state;
+}
+
+/** Saved resource IDs, with anything the registry no longer contains dropped on read. */
+export function savedResourceIds(
+  state: PersonalizationStateV1,
+  exists: (id: string) => boolean,
+): string[] {
+  return pruneMissing(dedupe(state.savedResourceIds), exists);
 }

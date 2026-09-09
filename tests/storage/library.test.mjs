@@ -172,7 +172,51 @@ test('library — counts summarize what the device holds, for the privacy screen
   mod.setStatus('c', 'want-to-read');
   mod.toggleFavorite('a');
   mod.recordExplored('z');
+  mod.toggleSavedResource('download-parents-guide');
+  mod.setPreferences({ themeIds: ['kindness'], ageBandIds: [] });
   assert.deepEqual(mod.libraryCounts(mod.loadLibrary()), {
     read: 1, reading: 1, wantToRead: 1, favorites: 1, recentlyExplored: 1,
+    savedResources: 1, preferences: 1,
   });
+});
+
+test('preferences — optional, explicit, and skippable', async () => {
+  const { mod } = await load();
+  assert.equal(mod.hasPreferences(mod.loadLibrary()), false, 'nothing inferred from behavior');
+  mod.setPreferences({ themeIds: ['kindness', 'kindness'], ageBandIds: ['ages-3-5'] });
+  const p = mod.getPreferences(mod.loadLibrary(), () => true, () => true);
+  assert.deepEqual(p.themeIds, ['kindness'], 'deduplicated');
+  assert.deepEqual(p.ageBandIds, ['ages-3-5']);
+  mod.setPreferences({ themeIds: [], ageBandIds: [] });
+  assert.equal(mod.hasPreferences(mod.loadLibrary()), false, 'clearing works');
+});
+
+test('preferences — unknown ids are dropped on READ, not trusted', async () => {
+  // A retired theme must not poison recommendations forever.
+  const { mod } = await load();
+  mod.setPreferences({ themeIds: ['kindness', 'retired-theme'], ageBandIds: ['ages-3-5', 'ages-99'] });
+  const p = mod.getPreferences(
+    mod.loadLibrary(),
+    (id) => id === 'kindness',
+    (id) => id === 'ages-3-5',
+  );
+  assert.deepEqual(p.themeIds, ['kindness']);
+  assert.deepEqual(p.ageBandIds, ['ages-3-5']);
+});
+
+test('saved resources — toggle, dedupe, and prune missing on read', async () => {
+  const { mod } = await load();
+  mod.toggleSavedResource('article-bilingual-reading');
+  mod.toggleSavedResource('download-parents-guide');
+  mod.toggleSavedResource('gone-from-registry');
+  let s = mod.loadLibrary();
+  assert.equal(mod.isResourceSaved(s, 'download-parents-guide'), true);
+  assert.deepEqual(
+    mod.savedResourceIds(s, (id) => id !== 'gone-from-registry'),
+    ['download-parents-guide', 'article-bilingual-reading'],
+    'newest first, unknown id pruned',
+  );
+  mod.toggleSavedResource('download-parents-guide');
+  s = mod.loadLibrary();
+  assert.equal(mod.isResourceSaved(s, 'download-parents-guide'), false, 'toggles off');
 });

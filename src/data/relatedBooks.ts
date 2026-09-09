@@ -15,6 +15,7 @@
 // a padded one. See docs/PUNCH_LIST.md §E.
 
 import { books } from './books.data';
+import { recommend } from '../lib/recommendations';
 
 export const RELATED_BOOKS_LIMIT = 3;
 
@@ -25,44 +26,34 @@ export interface RelatedBook {
   tier: RelatedTier;
 }
 
-const catalogOrder = new Map(books.map((b, i) => [b.id, i]));
-
 /**
  * Ordered recommendations for one book: editorial picks first, then theme matches to
  * top up to `limit`. Returns fewer than `limit` when there are not enough real matches.
- * Pure and deterministic — theme ties break on catalog (editorial) order, never on
- * iteration order.
+ *
+ * Ranking is delegated to src/lib/recommendations.ts so there is ONE scoring engine; this
+ * function is the book-page POLICY over it. The policy is the owner-approved decision and
+ * is deliberately narrower than the engine: only the editorial and theme tiers are
+ * allowed, so age-band-only filler can never appear here even though the engine can
+ * produce it for other surfaces.
  */
 export function relatedBooksFor(bookId: string, limit: number = RELATED_BOOKS_LIMIT): RelatedBook[] {
   const source = books.find((b) => b.id === bookId);
   if (!source) return [];
 
-  const taken = new Set<string>([bookId]);
-  const out: RelatedBook[] = [];
+  const editorialIds = (source.relatedBookIds ?? [])
+    .filter((id) => id !== bookId && books.some((b) => b.id === id))
+    .slice(0, limit);
 
-  // Tier 1 — editorial, in signed-off order. Unknown ids are skipped rather than
-  // rendered as dead cards; tests/funnel/relationships.test.mjs fails the build on them.
-  for (const id of source.relatedBookIds ?? []) {
-    if (out.length >= limit) break;
-    if (taken.has(id) || !catalogOrder.has(id)) continue;
-    taken.add(id);
-    out.push({ id, tier: 'editorial' });
-  }
+  const out: RelatedBook[] = editorialIds.map((id) => ({ id, tier: 'editorial' }));
+  if (out.length >= limit) return out;
 
-  // Tier 2 — top up from shared themes only.
-  if (out.length < limit) {
-    const candidates = books
-      .filter((b) => !taken.has(b.id))
-      .map((b) => ({ id: b.id, shared: b.themeIds.filter((t) => source.themeIds.includes(t)).length }))
-      .filter((c) => c.shared > 0)
-      .sort((a, z) => z.shared - a.shared || catalogOrder.get(a.id)! - catalogOrder.get(z.id)!);
-
-    for (const c of candidates) {
-      if (out.length >= limit) break;
-      taken.add(c.id);
-      out.push({ id: c.id, tier: 'theme' });
-    }
-  }
-
+  // Top up from the theme tier only. `allowReasons` is what enforces "no age filler".
+  const topUp = recommend({
+    sourceBookIds: [bookId],
+    excludeIds: [bookId, ...editorialIds],
+    allowReasons: ['theme'],
+    limit: limit - out.length,
+  });
+  for (const r of topUp) out.push({ id: r.bookId, tier: 'theme' });
   return out;
 }

@@ -1,6 +1,7 @@
 import { Link } from './LocalizedLink';
 import { useLanguage, useTranslation } from '../lib/language';
 import { resources } from '../data/resources';
+import SaveResourceButton from './SaveResourceButton';
 
 /**
  * A SHARED set of reading resources, identical on every book page.
@@ -47,10 +48,10 @@ export default function ResourceStrip() {
         <p className="text-gray-500 text-sm mb-5">{t.sub}</p>
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {items.map((r) => (
-            <li key={r.id}>
+            <li key={r.id} className="flex items-start gap-2">
               <Link
                 to={r.kind === 'article' ? `/resources#${r.slug}` : `/free/${r.slug}`}
-                className="flex gap-3 items-start bg-white rounded-xl p-4 border border-purple-100 hover:border-purple-300 hover:shadow-md transition-all h-full"
+                className="flex-1 flex gap-3 items-start bg-white rounded-xl p-4 border border-purple-100 hover:border-purple-300 hover:shadow-md transition-all h-full"
               >
                 <span className="text-2xl leading-none shrink-0" aria-hidden>{r.emoji ?? '📄'}</span>
                 <span>
@@ -58,6 +59,7 @@ export default function ResourceStrip() {
                   <span className="block text-gray-500 text-xs leading-relaxed mt-0.5">{r.description[language]}</span>
                 </span>
               </Link>
+              <SaveResourceButton resourceId={r.id} />
             </li>
           ))}
         </ul>

@@ -78,6 +78,19 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 6 — recommendations, preferences, saved resources (S6-005 · S6-007 · S6-009)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| RC-01 | **N-02 closed: S6-007 implements all five ranking reasons** — `editorial`, `related`, `theme`, `age`, `preference`, weighted so a stronger tier always outranks a weaker stack, with ties broken on catalog order then ID. `related` is the REVERSE relation (books linking *to* the seed), the only other relation the catalog actually has. | #160 |
+| RC-02 | **Engine and policy are separate.** `src/lib/recommendations.ts` answers "how do these relate, and why"; `relatedBooks.ts` is now a thin **policy** over it that allows only the editorial and theme tiers. That is what stops a signed-off editorial decision being quietly widened by a change made for another screen. | #160 |
+| RC-03 | **The refactor is proven behaviour-preserving.** The book-page output was captured as a golden fixture before the change and is byte-identical after for all 20 books: 58 editorial slots, 0 theme top-ups. | #160 |
+| RC-04 | **S6-005 preferences** — optional, explicit, adult-facing, reusing existing theme and age-band IDs. Nothing inferred from browsing; skipping and clearing are first-class. Unknown IDs are dropped on READ so a retired theme cannot poison suggestions forever. | #160 |
+| RC-05 | **`preferences.locale` is declared but never written.** Sprint 6 §5 includes it, but language already persists in the shared `preferredLanguage` key because the games read it; a second copy would be two sources of truth for one setting. | #160 |
+| RC-06 | **S6-009 saved-resource shelf** — IDs only, resolved against the registry at read time. Save controls sit on the resource cards; the shelf renders nothing when empty rather than nagging. | #160 |
+| RC-07 | **Every suggestion shows its reason** ("Same themes as your books", "Matches your preferences"). Personalization a parent can question rather than one they must trust. | #160 |
+| RC-08 | **Personalized sections need TWO signals** (`hasEnoughContext`), so a single stray page view cannot replace the default homepage with a thinner personalized one. Verified: zero personalized headings in the prerendered EN/FR/ES homepages and profile. | #160 |
+
 ### Sprint 6 — personal library (S6-001 … S6-004)
 
 | ID | Item | Evidence |
@@ -204,7 +217,6 @@ The decision record lives in `backlog.md`; the shipped work is in §A above.
 | ID | Item | Type | Notes |
 |----|------|------|-------|
 | N-05 | **`RECENTLY_EXPLORED_CAP` is 12, and Sprint 6 §14 leaves the cap and retention period as an open decision.** Twelve is a working default (a browse session, not a history log) with no time-based expiry. Needs sign-off or a different number. | decision | Flagged rather than presented as settled. |
-| N-02 | **S6-007 implements 2 of 5 ranking reasons.** `relatedBooks.ts` covers `editorial` and `theme`; `related`, `age` and `preference` need the preferences model that does not exist yet. | open | Deliberate: the missing reasons depend on N-01. |
 | N-03 | **S3-007 breadcrumbs are not generalized.** `BreadcrumbList` markup is inline on two pages; the spec asks for a shared component with localized labels and stable URL segments. | open | Small, and it removes duplicated JSON-LD. |
 | N-04 | **S3-018/019/020 have no baseline artifacts.** No Search Console baseline, route/metadata inventory or post-deploy crawl record exists, and Sprint 3's definition of done requires them. | open | Owner/data task more than a code task. |
 
