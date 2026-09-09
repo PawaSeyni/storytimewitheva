@@ -2,7 +2,7 @@
 
 **Scope:** storytimewitheva.com after Sprints 1 to 8. **Date:** 2026-09-09.
 **Evidence:** `BASELINE_2026-09.md`, `BOTTLENECK_REGISTER.md`, ADR-001 to ADR-006, the
-Sprint 7 release audit, and the gates in `.github/workflows/`. **Decision owner:** PawaSeyni.
+Sprint 7 release audit, and the gates in `.github/workflows/`. **Decision owner:** PawaSeyni. **Status:** approved by the owner 2026-09-10.
 
 ## Go / no-go statements
 
@@ -59,11 +59,11 @@ environment matrix; external data-flow inventory; accessibility governance; loca
 
 | Item | Decision | Signed |
 |---|---|---|
-| ADR-003 Catalog scalability | accept | ________ |
-| ADR-004 Content management | accept | ________ |
-| ADR-005 Search architecture | accept | ________ |
-| ADR-006 Optional adult accounts | accept (no account code) | ________ |
-| Budgets, media, dependency, monitoring, security, recovery, environment, data-flow, accessibility, locale artifacts | accept | ________ |
-| Platform readiness: proceed on the current architecture | go | ________ |
+| ADR-003 Catalog scalability | accept | PawaSeyni, 2026-09-10 |
+| ADR-004 Content management | accept | PawaSeyni, 2026-09-10 |
+| ADR-005 Search architecture | accept | PawaSeyni, 2026-09-10 |
+| ADR-006 Optional adult accounts | accept (no account code) | PawaSeyni, 2026-09-10 |
+| Budgets, media, dependency, monitoring, security, recovery, environment, data-flow, accessibility, locale artifacts | accept | PawaSeyni, 2026-09-10 |
+| Platform readiness: proceed on the current architecture | go | PawaSeyni, 2026-09-10 |
 
-Prepared by Claude (Fable 5.1) on 2026-09-09. Owner acceptance: ________ (PawaSeyni), date ________.
+Prepared by Claude (Fable 5.1) on 2026-09-09. Owner acceptance: **approved** by PawaSeyni on 2026-09-10.

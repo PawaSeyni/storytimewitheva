@@ -1,6 +1,6 @@
 # ADR-005: Search architecture — client-side index, decided from measured scale
 
-**Status:** Accepted (engineering recommendation; owner acceptance in the Platform Readiness Assessment)
+**Status:** Accepted, approved by the owner 2026-09-10 (Platform Readiness Assessment)
 **Date:** 2026-09-09
 **Sprint:** 8 (S8-007). **Builds on:** Sprint 7 S7-015. **Evidence:** `node scripts/bench-search.mjs`, register BR-05.
 

@@ -84,7 +84,7 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 |----|------|----------|
 | PR-01 | **One locale registry** drives routes, head metadata, formatting, speech, search, content validation and every build script; generated sitemap and redirects are byte-identical after the refactor. A temporary `pt` locale is proved in tests without any component change. | #183 |
 | PR-02 | **Accessibility governance** written; the first full manual screen-reader pass (S4-05) is due at the readiness sign-off. | #183 |
-| PR-03 | **Platform Readiness Assessment** drafted with go/no-go statements, eight risks and an approvals table. **Owner: sign it**, and decide R-01 (branch protection), R-03 (preview secrets), R-05 (move the clone out of iCloud sync), R-07 (pins in the repo). | open |
+| PR-03 | **Platform Readiness Assessment approved** by the owner 2026-09-10 (ADR-003 to ADR-006 and the go decision). Still to decide: R-01 (branch protection), R-03 (preview secrets), R-05 (move the clone out of iCloud sync), R-07 (pins in the repo). | #190 |
 | PR-04 | **iCloud sync duplicated files inside the repo twice this sprint** (`scripts/bench-search 2.mjs`, `.git/index 2`, 300 `dist` copies). Removed; nothing was committed. Risk R-05. | #183 |
 
 ### Sprint 8 — operations (S8-011 to S8-018, S8-023)

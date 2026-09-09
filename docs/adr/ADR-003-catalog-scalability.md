@@ -1,6 +1,6 @@
 # ADR-003: Catalog scalability — the static catalog stays the source of truth
 
-**Status:** Accepted (engineering recommendation; owner acceptance recorded in the Platform Readiness Assessment)
+**Status:** Accepted, approved by the owner 2026-09-10 (Platform Readiness Assessment)
 **Date:** 2026-09-09
 **Sprint:** 8 (S8-002). **Builds on:** ADR-001, ADR-002. **Evidence:** `docs/platform/BASELINE_2026-09.md`, `docs/platform/BOTTLENECK_REGISTER.md`.
 
