@@ -2,7 +2,7 @@
 
 **Target:** production, `https://storytimewitheva.com`, at `main` @ `3764c49` (slices 1–3 live)
 **Run:** 2026-09-09, 01:20–01:35 UTC
-**Status:** results recorded below; **owner signature pending** (see end)
+**Status:** release accepted by the owner 2026-09-09 (see sign-off at the end)
 
 Every result here was produced by running something — a script, a browser, a test
 suite — not by reading code. Where a check was done with a tool I wrote in the moment,
@@ -133,4 +133,4 @@ against an object, an email and a non-primitive. Passing.
 
 | Role | Name | Decision | Date |
 |---|---|---|---|
-| Owner | | ☐ Release accepted · ☐ Changes requested | |
+| Owner | PawaSeyni | ☑ Release accepted · ☐ Changes requested | 2026-09-09 (approval given in the working session) |

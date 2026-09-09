@@ -1,6 +1,6 @@
 # ADR-002: Personalization storage model — local-only, optional accounts deferred
 
-**Status:** Proposed — awaiting owner signature
+**Status:** Accepted — option 1 (local-only), approved by the owner 2026-09-09
 **Date:** 2026-09-09
 **Sprint:** 6 (S6-011). Feeds Sprint 8 S8-008.
 **Supersedes:** nothing. **Builds on:** ADR-001 (cookie-free architecture).
@@ -72,7 +72,7 @@ by an account. Conflicts resolve toward local.
 - **The privacy posture is a stated brand promise** (ADR-001, the Privacy page). An
   account system, even optional, changes what the site can truthfully say.
 
-## Decision (proposed)
+## Decision
 
 **Adopt option 1, local-only, as the model for Sprint 6 and Sprint 7.** Do not build
 accounts or sync. Revisit at Sprint 8 (S8-008) against evidence, with a threshold the
@@ -103,4 +103,4 @@ system as if it were not one.
 
 | Role | Name | Decision | Date |
 |---|---|---|---|
-| Owner | | ☐ Approve option 1 · ☐ Request changes | |
+| Owner | PawaSeyni | ☑ Approve option 1 (local-only) · ☐ Request changes | 2026-09-09 (approval given in the working session) |
