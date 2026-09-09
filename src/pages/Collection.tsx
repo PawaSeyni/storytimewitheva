@@ -19,9 +19,9 @@ import NotFound from './NotFound';
 import { useTranslation, useLanguage } from '../lib/language';
 
 const TRANSLATIONS = {
-  en: { browseThemes: 'Browse other themes', browseAges: 'Browse by age', seoTheme: 'Picture books about', seoAge: 'Picture books for' },
-  es: { browseThemes: 'Explora otros temas', browseAges: 'Explora por edad', seoTheme: 'Libros ilustrados sobre', seoAge: 'Libros ilustrados para' },
-  fr: { browseThemes: 'Explorer d’autres thèmes', browseAges: 'Explorer par âge', seoTheme: 'Albums illustrés sur', seoAge: 'Albums illustrés pour' },
+  en: { browseThemes: 'Browse other themes', browseAges: 'Browse by age', seoTheme: 'Picture books about', seoAge: 'Picture books for', seoEducator: 'A classroom collection' },
+  es: { browseThemes: 'Explora otros temas', browseAges: 'Explora por edad', seoTheme: 'Libros ilustrados sobre', seoAge: 'Libros ilustrados para', seoEducator: 'Una colección para el aula' },
+  fr: { browseThemes: 'Explorer d’autres thèmes', browseAges: 'Explorer par âge', seoTheme: 'Albums illustrés sur', seoAge: 'Albums illustrés pour', seoEducator: 'Une collection pour la classe' },
 };
 
 export default function Collection() {
@@ -57,7 +57,7 @@ export default function Collection() {
   if (isEditorial && record?.title && record?.description) {
     const title = record.title[language];
     return (
-      <CollectionPage id={collectionId} title={title} intro={record.description[language]} seoTitle={title} books={inCollection} browseOthersHeading={t.browseThemes} others={others} {...extras} />
+      <CollectionPage id={collectionId} title={title} intro={record.description[language]} seoTitle={`${title}: ${t.seoEducator}`} books={inCollection} browseOthersHeading={t.browseThemes} others={others} audience={record.kind === 'educator' ? 'educator' : undefined} {...extras} />
     );
   }
 

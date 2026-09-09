@@ -290,3 +290,21 @@ test('collections — a record\'s featured activities render on the page, locali
     }
   }
 });
+
+test('educator collections — labeled for their audience in every language, and linked from the teachers section (S7-007)', () => {
+  const badge = { en: 'For teachers and educators', fr: 'Pour les enseignants et éducateurs', es: 'Para docentes y educadores' };
+  const edu = collections.filter((c) => c.kind === 'educator' && c.publishState === 'published');
+  assert.ok(edu.length >= 3);
+  for (const [loc, prefix] of Object.entries(LOCALES)) {
+    for (const c of edu) {
+      const h = read(`${prefix}/collections/${c.id}`);
+      assert.ok(h, `${prefix}/collections/${c.id}: not prerendered`);
+      assert.ok(h.includes(badge[loc]), `${prefix}/collections/${c.id}: missing the ${loc} audience label`);
+      const decoded = h.replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+      assert.ok(decoded.includes(c.title[loc]), `${prefix}/collections/${c.id}: title not rendered in ${loc}`);
+      if (loc !== 'en') assert.ok(!h.includes('For teachers and educators'), `${prefix}/collections/${c.id}: English badge leaked`);
+    }
+    const res = read(`${prefix}/resources`);
+    for (const c of edu) assert.ok(res.includes(`href="${prefix}/collections/${c.id}"`), `${prefix}/resources: teachers section must link ${c.id}`);
+  }
+});
