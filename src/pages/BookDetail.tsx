@@ -30,9 +30,9 @@ const SITE_URL = 'https://storytimewitheva.com';
 const FLAG_TO_LANG: Record<string, string> = { '🇺🇸': 'en', '🇪🇸': 'es', '🇫🇷': 'fr' };
 
 const TRANSLATIONS = {
-  en: { back: '← Back to all books', theme: 'Theme', paperback: 'Paperback', ebook: 'eBook', priceNote: 'See current price on Amazon', buy: '🛒 Buy on Amazon', comingSoon: '🔜 Coming soon', comingSoonNote: 'This title is on its way. Check back soon!', coverAlt: 'book cover', ages: 'Ages', agesSuffix: '', bookLangs: 'Available in English · Spanish and French coming soon', bookLangsEnFr: 'Available in English and French', bookLangsAll: 'Available in English, Spanish, and French', pageAudioNote: 'Page and audio available in Spanish, English, and French', bilingualShow: '🌐 Show description in other languages', bilingualHide: '🌐 Hide other languages', tapShow: '🔤 Tap words to translate', tapHide: '🔤 Stop translating', ratedOn: 'on Amazon', ratingsWord: 'ratings', relatedHeading: 'You might also like', partOfJourney: 'Part of a reading journey', homeCrumb: 'Home', booksCrumb: 'Books', buyGroup: 'Buy this book' },
-  es: { back: '← Volver a todos los libros', theme: 'Tema', paperback: 'Tapa blanda', ebook: 'eBook', priceNote: 'Consulta el precio actual en Amazon', buy: '🛒 Comprar en Amazon', comingSoon: '🔜 Próximamente', comingSoonNote: 'Este título está en camino. ¡Vuelve pronto!', coverAlt: 'portada del libro', ages: 'Edades', agesSuffix: 'años', bookLangs: 'Disponible en inglés · Español y francés próximamente', bookLangsEnFr: 'Disponible en inglés y francés', bookLangsAll: 'Disponible en inglés, español y francés', pageAudioNote: 'Página y audio disponibles en español, inglés y francés', bilingualShow: '🌐 Mostrar la descripción en otros idiomas', bilingualHide: '🌐 Ocultar otros idiomas', tapShow: '🔤 Toca para traducir', tapHide: '🔤 Dejar de traducir', ratedOn: 'en Amazon', ratingsWord: 'valoraciones', relatedHeading: 'También te puede gustar', partOfJourney: 'Parte de un recorrido de lectura', homeCrumb: 'Inicio', booksCrumb: 'Libros', buyGroup: 'Comprar este libro' },
-  fr: { back: '← Retour à tous les livres', theme: 'Thème', paperback: 'Livre broché', ebook: 'Livre numérique', priceNote: 'Voir le prix actuel sur Amazon', buy: '🛒 Acheter sur Amazon', comingSoon: '🔜 Bientôt disponible', comingSoonNote: 'Ce titre arrive bientôt. Revenez vite !', coverAlt: 'couverture du livre', ages: 'Âges', agesSuffix: 'ans', bookLangs: 'Disponible en anglais · Espagnol et français bientôt disponibles', bookLangsEnFr: 'Disponible en anglais et français', bookLangsAll: 'Disponible en anglais, espagnol et français', pageAudioNote: 'Page et audio disponibles en espagnol, anglais et français', bilingualShow: '🌐 Afficher la description dans d\'autres langues', bilingualHide: '🌐 Masquer les autres langues', tapShow: '🔤 Touche pour traduire', tapHide: '🔤 Arrêter la traduction', ratedOn: 'sur Amazon', ratingsWord: 'évaluations', relatedHeading: 'Vous aimerez aussi', partOfJourney: 'Fait partie d’un parcours de lecture', homeCrumb: 'Accueil', booksCrumb: 'Livres', buyGroup: 'Acheter ce livre' },
+  en: { back: '← Back to all books', theme: 'Theme', paperback: 'Paperback', ebook: 'eBook', priceNote: 'See current price on Amazon', buy: '🛒 Buy on Amazon', comingSoon: '🔜 Coming soon', comingSoonNote: 'This title is on its way. Check back soon!', coverAlt: 'book cover', ages: 'Ages', agesSuffix: '', bookLangs: 'Available in English · Spanish and French coming soon', bookLangsEnFr: 'Available in English and French', bookLangsAll: 'Available in English, Spanish, and French', pageAudioNote: 'Page and audio available in Spanish, English, and French', bilingualShow: '🌐 Show description in other languages', bilingualHide: '🌐 Hide other languages', tapShow: '🔤 Tap words to translate', tapHide: '🔤 Stop translating', ratedOn: 'on Amazon', ratingsWord: 'ratings', relatedHeading: 'You might also like', partOfJourney: 'Part of a reading journey', homeCrumb: 'Home', booksCrumb: 'Books', buyGroup: 'Buy this book', affiliateNote: 'As an Amazon Associate, Pawa Press earns from qualifying purchases.' },
+  es: { back: '← Volver a todos los libros', theme: 'Tema', paperback: 'Tapa blanda', ebook: 'eBook', priceNote: 'Consulta el precio actual en Amazon', buy: '🛒 Comprar en Amazon', comingSoon: '🔜 Próximamente', comingSoonNote: 'Este título está en camino. ¡Vuelve pronto!', coverAlt: 'portada del libro', ages: 'Edades', agesSuffix: 'años', bookLangs: 'Disponible en inglés · Español y francés próximamente', bookLangsEnFr: 'Disponible en inglés y francés', bookLangsAll: 'Disponible en inglés, español y francés', pageAudioNote: 'Página y audio disponibles en español, inglés y francés', bilingualShow: '🌐 Mostrar la descripción en otros idiomas', bilingualHide: '🌐 Ocultar otros idiomas', tapShow: '🔤 Toca para traducir', tapHide: '🔤 Dejar de traducir', ratedOn: 'en Amazon', ratingsWord: 'valoraciones', relatedHeading: 'También te puede gustar', partOfJourney: 'Parte de un recorrido de lectura', homeCrumb: 'Inicio', booksCrumb: 'Libros', buyGroup: 'Comprar este libro', affiliateNote: 'Como Asociado de Amazon, Pawa Press recibe ingresos por las compras que cumplen los requisitos.' },
+  fr: { back: '← Retour à tous les livres', theme: 'Thème', paperback: 'Livre broché', ebook: 'Livre numérique', priceNote: 'Voir le prix actuel sur Amazon', buy: '🛒 Acheter sur Amazon', comingSoon: '🔜 Bientôt disponible', comingSoonNote: 'Ce titre arrive bientôt. Revenez vite !', coverAlt: 'couverture du livre', ages: 'Âges', agesSuffix: 'ans', bookLangs: 'Disponible en anglais · Espagnol et français bientôt disponibles', bookLangsEnFr: 'Disponible en anglais et français', bookLangsAll: 'Disponible en anglais, espagnol et français', pageAudioNote: 'Page et audio disponibles en espagnol, anglais et français', bilingualShow: '🌐 Afficher la description dans d\'autres langues', bilingualHide: '🌐 Masquer les autres langues', tapShow: '🔤 Touche pour traduire', tapHide: '🔤 Arrêter la traduction', ratedOn: 'sur Amazon', ratingsWord: 'évaluations', relatedHeading: 'Vous aimerez aussi', partOfJourney: 'Fait partie d’un parcours de lecture', homeCrumb: 'Accueil', booksCrumb: 'Livres', buyGroup: 'Acheter ce livre', affiliateNote: 'En tant que Partenaire Amazon, Pawa Press réalise un bénéfice sur les achats remplissant les conditions requises.' },
 };
 
 export default function BookDetail() {
@@ -79,7 +79,7 @@ export default function BookDetail() {
   const related = useMemo(() => {
     if (!bookId) return [];
     const byId = new Map(allBooks.map((b) => [b.id, b]));
-    return relatedBooksFor(bookId).map((r) => byId.get(r.id)).filter((b) => b !== undefined);
+    return relatedBooksFor(bookId).map((r) => { const b = byId.get(r.id); return b ? { book: b, tier: r.tier } : null; }).filter((x) => x !== null);
   }, [bookId, allBooks]);
 
   // B-02 pairs live on the raw catalog record, not the localized projection.
@@ -289,6 +289,7 @@ export default function BookDetail() {
                 >
                   {t.buy}
                 </a>
+                <p className="mt-2 text-xs text-gray-500" data-affiliate-disclosure>{t.affiliateNote}</p>
                 </div>
               </>
             )}
@@ -322,8 +323,9 @@ export default function BookDetail() {
               heading rank. tests/seo/a11y.test.mjs locks this. */}
           <h2 className="text-2xl font-bold text-gray-800 mb-5">{t.relatedHeading}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {related.map((b) => (
-              <BookCard key={b.id} book={b} />
+            {related.map(({ book: b, tier }) => (
+              // S5-015 / S5-016: a related-book click carries the tier that ranked it.
+              <BookCard key={b.id} book={b} onSelect={() => track('Recommendation Click', { book: b.id, placement: 'related', reason: tier })} />
             ))}
           </div>
         </section>
