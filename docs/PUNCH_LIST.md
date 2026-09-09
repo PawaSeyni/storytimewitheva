@@ -83,7 +83,7 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | ID | Item | Evidence |
 |----|------|----------|
 | GA-01 | **Audit run against production**: retailer links, disclosures, edition mapping on all 60 book pages; provider validation; smoke 44; client-side suites 75 (commerce and experiments now in `test:prod-audit`). | #194 |
-| GA-02 | **Owner: sign the Sprint 5 audit**, then unblock GM-05 so the numeric baseline and the two experiments can start. | open |
+| GA-02 | **Sprint 5 audit approved** by the owner 2026-09-10. GM-05 (Plausible key + properties) still gates the numeric baseline and the experiments. | #197 |
 | GA-03 | **Found by the audit, fixed**: the footer affiliate disclosure was an empty element in all three languages because the strings were never written; the audit recorded the empty result, #195 fixed it and locked the text per language. | #195 |
 
 ### Sprint 5 — loops, merchandising, audit (S5-015/016/018/019/023)
