@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { LANGUAGES } from '../lib/locales';
 import ContinueReading from '../components/ContinueReading';
 import PickedForYou from '../components/PickedForYou';
 import { Link } from '../components/LocalizedLink';
@@ -42,7 +43,7 @@ const ORG_SCHEMA = [
     '@type': 'WebSite',
     name: 'Story Time with Eva',
     url: SITE_URL,
-    inLanguage: ['en', 'es', 'fr'],
+    inLanguage: LANGUAGES,
     potentialAction: {
       '@type': 'SearchAction',
       target: {

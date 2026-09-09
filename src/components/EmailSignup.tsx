@@ -3,6 +3,7 @@ import { useLanguage, useTranslation, type Language } from '../lib/language';
 import { track } from '../lib/analytics';
 import { publishedLearningPacks, packResources } from '../data/contentIndex';
 import { packItemHref } from '../data/learningPacks';
+import { LANGUAGES } from '../lib/locales';
 
 // MailerLite embedded form action — group "storytimewitheva-signups", form
 // "Bilingual Starter Kit — site signup". Custom fields `language` and
@@ -162,7 +163,7 @@ const PACK_MAGNETS: Record<string, Magnet> = Object.fromEntries(
     const allLocalized = items.every((r) => r.localizedFile);
     const href = (lang: Language) => packItemHref(items[0], lang);
     const copy = Object.fromEntries(
-      (['en', 'es', 'fr'] as Language[]).map((lang) => [lang, {
+      LANGUAGES.map((lang) => [lang, {
         title: pack.title[lang],
         blurb: pack.description[lang],
         bullets: [PACK_UI[lang].count(items.length), allLocalized ? PACK_UI[lang].langsAll : PACK_UI[lang].langsSome, PACK_UI[lang].keep],

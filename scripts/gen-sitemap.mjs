@@ -4,16 +4,15 @@
 // the sitemap can't drift from the catalog. Run: npm run gen:sitemap
 
 import { readFile, writeFile, readdir } from 'node:fs/promises';
-import { bookIds as loadBookIds, loadContentIndex } from './lib/catalog.mjs';
+import { bookIds as loadBookIds, loadContentIndex, loadLocales } from './lib/catalog.mjs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const SITE = 'https://storytimewitheva.com';
-const LANGS = ['en', 'es', 'fr'];
-
-const loc = (p, l) => (l === 'en' ? p : p === '/' ? `/${l}` : `/${l}${p}`);
+// Locales from the registry (S8-019): languages, prefixes and the path helper.
+const { LANGUAGES: LANGS, DEFAULT_LANGUAGE, localizePath: loc } = await loadLocales();
 // Netlify serves prerendered pages at a trailing slash (301s the slashless form
 // to it), so the sitemap uses the slashed form to match the canonical exactly.
 const slash = (s) => (s.endsWith('/') ? s : `${s}/`);
@@ -71,7 +70,7 @@ for (const [p, cf, pr] of pages) {
   for (const l of LANGS) {
     out += `  <url>\n    <loc>${url(p, l)}</loc>\n`;
     for (const a of LANGS) out += `    <xhtml:link rel="alternate" hreflang="${a}" href="${url(p, a)}"/>\n`;
-    out += `    <xhtml:link rel="alternate" hreflang="x-default" href="${url(p, 'en')}"/>\n`;
+    out += `    <xhtml:link rel="alternate" hreflang="x-default" href="${url(p, DEFAULT_LANGUAGE)}"/>\n`;
     out += `    <changefreq>${cf}</changefreq>\n    <priority>${pr}</priority>\n  </url>\n`;
   }
 }

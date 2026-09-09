@@ -14,7 +14,7 @@
 // interactive routes (the activity games) work exactly as before.
 
 import http from 'node:http';
-import { bookIds, loadContentIndex } from './lib/catalog.mjs';
+import { bookIds, loadContentIndex, loadLocales } from './lib/catalog.mjs';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync, statSync, readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -104,7 +104,7 @@ const NOINDEX_SPA_ROUTES = ['/profile', '/search', '/links'];
 // via `?lm=`), so /free/bilingual-starter-kit is the URL a human is most likely to
 // construct by analogy. It 404'd in all three languages until 2026-08-10.
 const LANDING_SLUGS = ['bedtime-routine', 'bilingual-bundle', 'bilingual-starter-kit', 'bilingual-flashcards', 'parents-guide', 'follow-up-activities', 'leo-and-the-wolf'];
-const LANG_PREFIXES = ['', '/es', '/fr'];
+const { LANG_PREFIXES } = await loadLocales(); // registry (S8-019)
 // Learning packs (S7-008) are generated lead magnets; their /free/<id> pages come from
 // the data module through the same projection the other guards use.
 const { learningPackIds: PACK_LANDING_SLUGS } = await loadContentIndex();

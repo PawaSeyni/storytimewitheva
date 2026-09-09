@@ -149,3 +149,10 @@ export async function loadErrorRedact() {
   if (!redactCache) redactCache = await loadModule(path.join(ROOT, 'src', 'lib', 'errorRedact.ts'));
   return redactCache;
 }
+
+let localesCache = null;
+/** The locale registry (S8-019): codes, prefixes, labels, Intl/OG locales, path helpers. */
+export async function loadLocales() {
+  if (!localesCache) localesCache = await loadModule(path.join(ROOT, 'src', 'lib', 'locales.ts'));
+  return localesCache;
+}

@@ -10,37 +10,12 @@ import { SHARED_KEYS, setSharedString } from './storage';
 import type { ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-export type Language = 'en' | 'es' | 'fr';
-
-export const SUPPORTED_LANGUAGES: Language[] = ['en', 'es', 'fr'];
-
-// URL scheme: English lives at the root (/books); Spanish and French use a
-// path prefix (/es/books, /fr/books). These two helpers are the single source
-// of truth for translating between an English "canonical" app path and the
-// language-prefixed URL actually shown in the address bar.
-
-/** Split a real pathname into its language and the English-canonical remainder. */
-export function splitLangFromPath(pathname: string): { lang: Language; rest: string } {
-  const seg = pathname.split('/')[1];
-  if (seg === 'es' || seg === 'fr') {
-    const rest = pathname.slice(seg.length + 1);
-    return { lang: seg, rest: rest === '' ? '/' : rest };
-  }
-  return { lang: 'en', rest: pathname || '/' };
-}
-
-/** Build the language-prefixed URL for an English-canonical app path. */
-export function localizePath(path: string, lang: Language): string {
-  if (lang === 'en') return path;
-  if (path === '/') return `/${lang}`;
-  return `/${lang}${path}`;
-}
-
-export const LANGUAGE_LABELS: Record<Language, { name: string; flag: string }> = {
-  en: { name: 'English', flag: '🇺🇸' },
-  es: { name: 'Español', flag: '🇪🇸' },
-  fr: { name: 'Français', flag: '🇫🇷' },
-};
+// The registry (S8-019) owns the language list, prefixes and labels; this module keeps its
+// public names so every existing import still works.
+import { LOCALES, LANGUAGES, LANGUAGE_LABELS, splitLangFromPath, localizePath, type Language } from './locales';
+export type { Language };
+export { LANGUAGE_LABELS, splitLangFromPath, localizePath, LOCALES };
+export const SUPPORTED_LANGUAGES: Language[] = LANGUAGES;
 
 interface LanguageContextValue {
   language: Language;

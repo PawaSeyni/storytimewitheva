@@ -1,11 +1,11 @@
 // S8-007 search benchmark: index size and query latency at current and projected scale.
 // Repeatable: node scripts/bench-search.mjs [--json]
-import { loadSearchIndex } from './lib/catalog.mjs';
+import { loadSearchIndex, loadLocales } from './lib/catalog.mjs';
 
 const { buildSearchIndex, searchRecords } = await loadSearchIndex();
 const index = buildSearchIndex();
 const QUERIES = ['kindness', 'bonté', 'valentía', 'cloud', 'a', 'story map', 'gratitude', 'zzz', 'emo', 'read aloud'];
-const LANGS = ['en', 'fr', 'es'];
+const { LANGUAGES: LANGS } = await loadLocales();
 
 function bench(records, rounds) {
   let n = 0;

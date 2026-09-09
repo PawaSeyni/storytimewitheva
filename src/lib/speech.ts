@@ -9,12 +9,7 @@
 // import-safe under SSR/prerender.
 
 import type { Language } from './language';
-
-const LANG_TO_BCP47: Record<Language, string> = {
-  en: 'en-US',
-  es: 'es-ES',
-  fr: 'fr-FR',
-};
+import { intlLocale } from './locales';
 
 export function isSpeechSupported(): boolean {
   return typeof window !== 'undefined' && 'speechSynthesis' in window;
@@ -68,7 +63,7 @@ export function play(id: string, text: string, lang: Language, opts?: PlayOption
   const synth = window.speechSynthesis;
   synth.cancel(); // stop anything already playing
   const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = LANG_TO_BCP47[lang] ?? 'en-US';
+  utterance.lang = intlLocale(lang);
   const voice = pickVoice(utterance.lang);
   if (voice) utterance.voice = voice;
   utterance.rate = 0.95; // a touch slower for young listeners and learners

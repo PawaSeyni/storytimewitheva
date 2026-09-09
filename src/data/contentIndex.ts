@@ -8,6 +8,7 @@
 // Used by runtime UI (collections, "more like this", counts) and by build scripts /
 // CI validation through the projection in scripts/lib/catalog.mjs.
 
+import { LANGUAGES } from '../lib/locales';
 import { books } from './books.data';
 import { activities } from './activities.data';
 import { resources } from './resources';
@@ -153,7 +154,7 @@ export function collectionProblems(c: CollectionRecord): string[] {
   const bookIds = new Set(books.map((b) => b.id));
   const slugs = new Set(activities.map((a) => a.slug));
   const resIds = new Set(resources.map((r) => r.id));
-  const langs = ['en', 'fr', 'es'] as const;
+  const langs = LANGUAGES;
   if (!/^[a-z0-9-]+$/.test(c.id)) out.push(`id "${c.id}" is not a bare route token`);
   const derivedKind = c.kind === 'theme' || c.kind === 'age';
   if (c.kind === 'theme' && !(THEME_IDS as readonly string[]).includes(c.id)) out.push(`theme record "${c.id}" is not a theme id`);
@@ -251,7 +252,7 @@ export const indexableCollectionIds = (date: Date = new Date()): string[] =>
 // Reading journeys (S7-003 / S7-009 / S7-013 / S7-014)
 // ---------------------------------------------------------------------------------
 
-const LANGS = ['en', 'fr', 'es'] as const;
+const LANGS = LANGUAGES;
 
 /**
  * Every reason a journey may NOT publish. Empty array = valid. Run at build time and in
