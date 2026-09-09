@@ -16,7 +16,7 @@ export default defineConfig({
   projects: [
     {
       name: 'prod-audit',
-      testMatch: /(a11y|cookie-free|seasonal|search|print-packs|landing)\.spec\.ts/,
+      testMatch: /(a11y|cookie-free|seasonal|search|print-packs|landing|commerce|experiments)\.spec\.ts/,
       use: { baseURL: PROD, ...devices['Desktop Chrome'] },
     },
   ],

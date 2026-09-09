@@ -78,6 +78,13 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 5 — release audit (S5-024)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| GA-01 | **Audit run against production**: retailer links, disclosures, edition mapping on all 60 book pages; provider validation; smoke 44; client-side suites 75 (commerce and experiments now in `test:prod-audit`). | #194 |
+| GA-02 | **Owner: sign the Sprint 5 audit**, then unblock GM-05 so the numeric baseline and the two experiments can start. | open |
+
 ### Sprint 5 — loops, merchandising, audit (S5-015/016/018/019/023)
 
 | ID | Item | Evidence |
