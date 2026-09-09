@@ -39,7 +39,7 @@ const enPathOf = (loc) => {
   return p;
 };
 const OG_LOCALE = { en: 'en_US', es: 'es_ES', fr: 'fr_FR' };
-const JSONLD_PATHS = (p) => p === '/' || p === '/books' || p.startsWith('/books/') || p === '/faq' || p === '/about';
+const JSONLD_PATHS = (p) => p === '/' || p === '/books' || p.startsWith('/books/') || p === '/faq' || p === '/about' || p.startsWith('/collections/') || p.startsWith('/journeys/');
 
 // --- tiny HTML head extractors (dist is machine-generated, but stay tolerant) ---
 const titleOf = (h) => (h.match(/<title>([\s\S]*?)<\/title>/)?.[1] ?? '').trim();

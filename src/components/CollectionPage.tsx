@@ -120,7 +120,8 @@ export default function CollectionPage({ id, title, intro, seoTitle, books, brow
   return (
     <main>
       <Seo title={seoTitle} description={intro} path={path} noindex={noindex} />
-      {books.length > 0 && <JsonLd id={`collection-${id}`} data={schema} />}
+      {/* A closed seasonal collection keeps its BreadcrumbList but not an empty ItemList. */}
+      <JsonLd id={`collection-${id}`} data={books.length > 0 ? schema : [breadcrumbSchema(crumbs, language)]} />
 
       <section className="bg-gradient-to-b from-purple-50 to-white py-12 px-4">
         <div className="max-w-6xl mx-auto">

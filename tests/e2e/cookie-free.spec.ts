@@ -14,7 +14,7 @@
 // it is exercised for real rather than described.
 import { test, expect, type Page, type BrowserContext } from '@playwright/test';
 
-const ROUTES = ['/', '/books', '/books/mayas-shadow', '/collections/kindness', '/activities', '/resources', '/profile', '/journeys', '/journeys/kindness-that-shines'];
+const ROUTES = ['/', '/books', '/books/mayas-shadow', '/collections/kindness', '/collections/classroom-feelings', '/collections/back-to-school', '/collections/summer-of-wonder', '/activities', '/resources', '/profile', '/journeys', '/journeys/kindness-that-shines', '/search?q=kindness', '/free/classroom-pack'];
 const LOCALES = ['', '/fr', '/es'];
 
 /** Collect uncaught page errors for the life of the page. */
@@ -170,5 +170,81 @@ test.describe('corrupt state — a malformed envelope never breaks a page', () =
     await page.goto('/profile', { waitUntil: 'domcontentloaded' });
     await expect(page.locator('h1')).toBeVisible();
     expect(errors).toEqual([]);
+  });
+});
+
+// ---------------------------------------------------------------------------------
+// Sprint 7 S7-017: the ecosystem flows — browse, open, progress, save, print/download,
+// search, continuation — with cookies never set and with storage denied.
+// ---------------------------------------------------------------------------------
+test.describe('sprint 7 ecosystem — cookie-free and storage-free', () => {
+  test('search, a collection, a journey, a pack and a guide set zero cookies', async ({ page, context }) => {
+    await page.goto('/search?q=kindness');
+    await page.getByRole('button', { name: /^Books/ }).click();
+    await page.goto('/collections/classroom-feelings');
+    await page.goto('/journeys/kindness-that-shines');
+    await page.getByRole('button', { name: 'Mark step done' }).first().click();
+    await page.goto('/free/classroom-pack');
+    await page.goto('/resources');
+    expect(await context.cookies(), 'cookies set by the site').toEqual([]);
+    expect(await page.evaluate(() => document.cookie)).toBe('');
+  });
+
+  test('search works with storage denied', async ({ page, context }) => {
+    await blockStorage(context);
+    const errors = watchErrors(page);
+    await page.goto('/search?q=kindness', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('[data-search-group="collection"] a[href="/collections/kindness"]')).toBeVisible();
+    await page.getByRole('button', { name: /^Journeys|^Reading journeys/ }).click();
+    await expect(page.locator('[data-search-group="journey"]')).toBeVisible();
+    expect(errors).toEqual([]);
+  });
+
+  test('a journey can be completed in memory with storage denied and announces completion', async ({ page, context }) => {
+    await blockStorage(context);
+    await page.goto('/journeys/kindness-that-shines', { waitUntil: 'domcontentloaded' });
+    const n = await page.getByRole('button', { name: 'Mark step done' }).count();
+    for (let i = 0; i < n; i++) {
+      await page.getByRole('button', { name: 'Mark step done' }).first().click();
+      // Serialize on the rendered state so a re-render never swallows a click under load.
+      await expect(page.getByRole('button', { name: 'Mark step not done' })).toHaveCount(i + 1);
+    }
+    // Completion is state (5 of 5) and an announcement; assert both with the live text so a
+    // failure reports what was announced instead of "not found".
+    await expect(page.getByText(/^\d+ of \d+ steps done\./).first()).toHaveText(`${n} of ${n} steps done.`);
+    await expect(page.locator('p[role="status"][aria-live="polite"]')).toHaveText('Journey complete. Well done!');
+  });
+
+  test('a pack delivers every file with storage denied (endpoint stubbed, nothing real written)', async ({ page, context }) => {
+    await blockStorage(context);
+    await page.route(/plausible\.io/, (r) => r.abort());
+    await page.route('**/.netlify/functions/subscribe', (r) =>
+      r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true }) }),
+    );
+    await page.goto('/es/free/home-reading-pack', { waitUntil: 'domcontentloaded' });
+    await page.fill('#email-signup input[name="email"]', 'e2e@example.com');
+    await page.click('#email-signup button[type="submit"]');
+    const links = page.locator('[role="status"] a[download]');
+    await expect(links).toHaveCount(3);
+    await expect(links.nth(0)).toHaveAttribute('href', '/download/bedtime-routine?lang=es');
+  });
+
+  test('print media on a journey page keeps the steps and drops the chrome, with storage denied', async ({ page, context }) => {
+    await blockStorage(context);
+    await page.goto('/journeys/kindness-that-shines', { waitUntil: 'domcontentloaded' });
+    await page.emulateMedia({ media: 'print' });
+    await expect(page.locator('[data-print="chrome"]').first()).toBeHidden();
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Mark step done' }).first()).toBeVisible();
+  });
+
+  test('continuation from an activity to a book works with storage denied', async ({ page, context }) => {
+    await blockStorage(context);
+    await page.goto('/activities/adventure-journal', { waitUntil: 'domcontentloaded' });
+    const next = page.locator('a[href^="/books/"]').first();
+    await expect(next).toBeVisible();
+    await next.click();
+    await expect(page).toHaveURL(/\/books\/[a-z0-9-]+/);
+    await expect(page.locator('h1')).toBeVisible();
   });
 });

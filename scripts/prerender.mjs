@@ -91,7 +91,7 @@ const sitemapRoutes = routesFromSitemap(await readFile(path.join(DIST, 'sitemap.
 // one, the Netlify SPA fallback serves the HOME page's HTML for them, so a
 // crawler or a pre-hydration paint shows the homepage instead of the real page.
 // Mounted at every language prefix, exactly like App.tsx routeDefs × LANG_PREFIXES.
-const NOINDEX_SPA_ROUTES = ['/profile', '/search'];
+const NOINDEX_SPA_ROUTES = ['/profile', '/search', '/links'];
 // Dedicated lead-magnet landing pages (/free/<slug>) — noindex and kept out of
 // the sitemap, but prerendered so paid traffic gets an instant first paint
 // (matters for ad conversion + Quality Score). Slugs come from LEAD_MAGNETS in
