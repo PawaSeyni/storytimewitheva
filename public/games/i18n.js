@@ -29,6 +29,9 @@
 (function () {
   var COMMON = {
     en: {
+      continueEyebrow: 'Continue the journey',
+      readNext: 'Read next',
+      browseBooks: 'Browse all books',
       backToActivities: '← Back to Activities',
       markCompleted: '✓ Mark Completed',
       completed: '✅ Completed!',
@@ -40,6 +43,9 @@
       rights: 'All rights reserved.',
     },
     es: {
+      continueEyebrow: 'Continúa la aventura',
+      readNext: 'Sigue leyendo',
+      browseBooks: 'Explora todos los libros',
       backToActivities: '← Volver a actividades',
       markCompleted: '✓ Marcar como completado',
       completed: '✅ ¡Completado!',
@@ -51,6 +57,9 @@
       rights: 'Todos los derechos reservados.',
     },
     fr: {
+      continueEyebrow: 'Continuez l’aventure',
+      readNext: 'À lire ensuite',
+      browseBooks: 'Voir tous les livres',
       backToActivities: '← Retour aux activités',
       markCompleted: '✓ Marquer comme terminé',
       completed: '✅ Terminé !',

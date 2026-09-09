@@ -118,6 +118,19 @@ test.describe('storage-free — every flow survives localStorage throwing', () =
     expect(await page.evaluate(() => (window as unknown as { GAME_LANG?: string }).GAME_LANG)).toBe('fr');
     expect(errors).toEqual([]);
   });
+
+  test('a game continues to a book, labelled and prefixed in the reader\'s language (CJ-04)', async ({ page }) => {
+    // story-map is referenced by a book; the baked block must localize its label AND
+    // its href in French, under blocked storage, from ?lang= alone.
+    const errors = watchErrors(page);
+    await page.goto('/games/story-map.html?lang=fr', { waitUntil: 'domcontentloaded' });
+    const link = page.locator('#ste-continue a[data-ste-continue]');
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute('href', /^\/fr\/books\/[a-z0-9-]+$/);
+    await expect(link).toContainText('À lire ensuite:');
+    await expect(page.locator('#ste-continue-eyebrow')).toHaveText('Continuez l’aventure');
+    expect(errors).toEqual([]);
+  });
 });
 
 test.describe('corrupt state — a malformed envelope never breaks a page', () => {

@@ -19,6 +19,7 @@ const CONTENT_INDEX = path.join(ROOT, 'src', 'data', 'contentIndex.ts');
 const RESOURCES = path.join(ROOT, 'src', 'data', 'resources.ts');
 const RELATED = path.join(ROOT, 'src', 'data', 'relatedBooks.ts');
 const ACTIVITIES = path.join(ROOT, 'src', 'data', 'activities.data.ts');
+const JOURNEY = path.join(ROOT, 'src', 'lib', 'journey.ts');
 
 /** Compile a browser-free TS module with esbuild and evaluate it in-process. */
 async function loadModule(entry) {
@@ -101,4 +102,11 @@ let activitiesCache = null;
 export async function loadActivities() {
   if (!activitiesCache) activitiesCache = await loadModule(ACTIVITIES);
   return activitiesCache;
+}
+
+let journeyCache = null;
+/** The continue-the-journey resolver (S4-010), so build scripts use the SAME rule the app does. */
+export async function loadJourney() {
+  if (!journeyCache) journeyCache = await loadModule(JOURNEY);
+  return journeyCache;
 }
