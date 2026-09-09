@@ -41,7 +41,10 @@ export type FunnelEvent =
   | 'Local Data Cleared'
   // Sprint 4 S4-010: the single next-step CTA. Dimensions: placement, destination type,
   // reason tier, and the stable id of the target.
-  | 'Continue Journey';
+  | 'Continue Journey'
+  // Sprint 7 S7-016: journey progress and saves, by stable journey id and step index.
+  | 'Journey Step'
+  | 'Journey Saved';
 
 // The ONLY property keys allowed on any event. Aggregate dimensions only — never
 // anything that identifies a person.
@@ -59,6 +62,7 @@ const ALLOWED_PROP_KEYS = [
   'placement',
   'reason',
   'resource',
+  'journey',
 ] as const;
 type PropKey = (typeof ALLOWED_PROP_KEYS)[number];
 

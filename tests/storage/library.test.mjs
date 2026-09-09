@@ -173,10 +173,11 @@ test('library — counts summarize what the device holds, for the privacy screen
   mod.toggleFavorite('a');
   mod.recordExplored('z');
   mod.toggleSavedResource('download-parents-guide');
+  mod.toggleSavedJourney('kindness-that-shines');
   mod.setPreferences({ themeIds: ['kindness'], ageBandIds: [] });
   assert.deepEqual(mod.libraryCounts(mod.loadLibrary()), {
     read: 1, reading: 1, wantToRead: 1, favorites: 1, recentlyExplored: 1,
-    savedResources: 1, preferences: 1,
+    savedResources: 1, savedJourneys: 1, preferences: 1,
   });
 });
 
@@ -279,4 +280,15 @@ test('clearLibrary — after clearing, the legacy key is NOT re-imported on the 
   // Simulate the panel: legacy is cleared alongside, so nothing is there to re-import.
   store.set('readingProgress', JSON.stringify({ booksRead: [], booksWantToRead: [], activitiesCompleted: [] }));
   assert.equal(mod.getStatus(mod.loadLibrary(), 'a'), null, 'stayed cleared');
+});
+
+test('saved journeys — toggle, dedupe, prune on read (S7-011)', async () => {
+  const { mod } = await load();
+  mod.toggleSavedJourney('kindness-that-shines');
+  mod.toggleSavedJourney('retired-journey');
+  let st = mod.loadLibrary();
+  assert.equal(mod.isJourneySaved(st, 'kindness-that-shines'), true);
+  assert.deepEqual(mod.savedJourneyIds(st, (id) => id !== 'retired-journey'), ['kindness-that-shines'], 'unpublished id pruned on read');
+  mod.toggleSavedJourney('kindness-that-shines');
+  assert.equal(mod.isJourneySaved(mod.loadLibrary(), 'kindness-that-shines'), false, 'toggles off');
 });

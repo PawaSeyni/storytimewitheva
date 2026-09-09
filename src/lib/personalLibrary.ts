@@ -263,6 +263,7 @@ export function libraryCounts(state: PersonalizationStateV1): {
   favorites: number;
   recentlyExplored: number;
   savedResources: number;
+  savedJourneys: number;
   preferences: number;
 } {
   return {
@@ -272,6 +273,7 @@ export function libraryCounts(state: PersonalizationStateV1): {
     favorites: favoriteBookIds(state).length,
     recentlyExplored: state.recentlyExplored.length,
     savedResources: state.savedResourceIds.length,
+    savedJourneys: state.savedJourneyIds.length,
     preferences:
       (state.preferences?.themeIds?.length ?? 0) + (state.preferences?.ageBandIds?.length ?? 0),
   };
@@ -360,4 +362,26 @@ export function clearLibrary(): boolean {
     window.dispatchEvent(new CustomEvent(LIBRARY_CHANGE));
   }
   return ok;
+}
+
+// ---------------------------------------------------------------------------------
+// Saved journeys (S7-011) — ids only, never journey content
+// ---------------------------------------------------------------------------------
+
+export function isJourneySaved(state: PersonalizationStateV1, journeyId: string): boolean {
+  return state.savedJourneyIds.includes(journeyId);
+}
+
+export function toggleSavedJourney(journeyId: string): PersonalizationStateV1 {
+  const state = loadLibrary();
+  state.savedJourneyIds = state.savedJourneyIds.includes(journeyId)
+    ? state.savedJourneyIds.filter((id) => id !== journeyId)
+    : capList(dedupe([journeyId, ...state.savedJourneyIds]), MAX_LIBRARY_ENTRIES);
+  save(state);
+  return state;
+}
+
+/** Saved journey ids, with anything no longer published dropped on read. */
+export function savedJourneyIds(state: PersonalizationStateV1, exists: (id: string) => boolean): string[] {
+  return pruneMissing(dedupe(state.savedJourneyIds), exists);
 }

@@ -37,7 +37,7 @@ a data-fetching library, a routing rewrite, an i18n library, or any cookie-based
    un-prerendered route returns a real HTTP 404. The prerender step is required — a build
    that fails it keeps the last good deploy live. Any new route MUST be prerenderable.
 2. **English route vocabulary is fixed.** Routes are `/`, `/books`, `/books/<id>`,
-   `/collections/<themeId>`, `/activities`, `/activities/<slug>`, `/resources`, `/about`,
+   `/collections/<themeId|ageBandId>`, `/journeys`, `/journeys/<journeyId>`, `/activities`, `/activities/<slug>`, `/resources`, `/about`,
    `/contact`, `/faq`, `/profile`, `/search`, `/privacy`, `/terms`, `/links`, `/free/<magnet>`.
    Language is a **path prefix** (`/es/…`, `/fr/…`), never a translated slug. Do not localize
    route names — there is no `/fr/livres`. The route table is defined once in `src/App.tsx`
@@ -100,6 +100,9 @@ a data-fetching library, a routing rewrite, an i18n library, or any cookie-based
   is a flat string array, so a bare slug would resolve to the wrong resource.
 - `src/data/relatedBooks.ts` — the "You might also like" ranking: editorial tier first, topped
   up from the shared-theme tier, never padded with age-band-only matches.
+- `src/data/journeys.ts` — reading journeys (S7-003), browser-free: ordered steps over stable
+  ids (book, discussion, activity, resource, next-book). `contentIndex.journeyProblems()` gates
+  publication at build time; the reverse index `journeysByBookId` is derived, never persisted.
 - `src/data/activities.ts` — `Activity { slug, emoji, ages, title, desc, category, game? }`,
   all localized; `useActivities()/useActivity()` hooks.
 - `src/data/testimonials.ts` — empty by design; the homepage section renders nothing until

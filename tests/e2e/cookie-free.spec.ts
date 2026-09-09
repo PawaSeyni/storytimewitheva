@@ -14,7 +14,7 @@
 // it is exercised for real rather than described.
 import { test, expect, type Page, type BrowserContext } from '@playwright/test';
 
-const ROUTES = ['/', '/books', '/books/mayas-shadow', '/collections/kindness', '/activities', '/resources', '/profile'];
+const ROUTES = ['/', '/books', '/books/mayas-shadow', '/collections/kindness', '/activities', '/resources', '/profile', '/journeys', '/journeys/kindness-that-shines'];
 const LOCALES = ['', '/fr', '/es'];
 
 /** Collect uncaught page errors for the life of the page. */
@@ -98,6 +98,17 @@ test.describe('storage-free — every flow survives localStorage throwing', () =
   test('status and favorite controls work in memory for the session', async ({ page }) => {
     const errors = watchErrors(page);
     await exerciseBookControls(page);
+    expect(errors).toEqual([]);
+  });
+
+  test('a journey step can be completed in memory with storage denied (S7-010)', async ({ page }) => {
+    const errors = watchErrors(page);
+    await page.goto('/journeys/kindness-that-shines', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('h1')).toBeVisible();
+    const first = page.locator('button[aria-pressed]').filter({ hasText: 'Done' }).first();
+    await first.click();
+    await expect(first).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('[role="status"][aria-live="polite"]')).toContainText('1 of 5 steps done');
     expect(errors).toEqual([]);
   });
 

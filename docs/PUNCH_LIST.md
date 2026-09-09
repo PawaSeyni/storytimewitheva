@@ -78,6 +78,17 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 7 — reading journeys (S7-003 · S7-010 · S7-011)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| RJ-01 | **Three published journeys** in `src/data/journeys.ts`: kindness pair, patience trio, sky/curiosity cluster. Each: book → its own discussion prompts → a related activity → a resource for the grown-up (optional) → the next book. Every step is a reference to a stable id; no catalog content is duplicated. | #168 |
+| RJ-02 | **Publication is gated at build time.** `journeyProblems()` checks ids, EN/FR/ES parity, theme/age membership, reference existence, step namespacing, duplicate steps, "book first", "a continuation exists", and that a discussion step names a book that actually has prompts. A published journey with any problem fails the build. The validator is itself tested against broken records. | #168 |
+| RJ-03 | **S7-010 progress**: one namespaced, versioned envelope per journey through the storage adapter; step ids removed from a journey are dropped on read; works in memory under blocked storage (browser-tested). **S7-011**: saved journeys are ids in the personalization envelope, counted on the transparency panel. | #168 |
+| RJ-04 | **Accessibility (§10)**: progress stated in text ("Step 2 of 5", "1 of 5 steps done"), completion controls are real buttons with `aria-pressed` and per-step accessible names, changes announced through a polite live region. Locked by the prerender suite in all three languages. | #168 |
+| RJ-05 | **Routes, sitemap and prerender guard** extended with the same bidirectional parity as collections; `/journeys` is linked from `/books`, and book pages show "Part of a reading journey" from the derived reverse index, so no journey is an orphan. Route vocabulary recorded in the alignment document. | #168 |
+| RJ-06 | **Copy to review**: the three journeys' titles and descriptions are new editorial content, drafted from the strongest existing relationships. One file to change. | open |
+
 ### Sprint 4 — continue the journey (S4-010 · S4-011)
 
 | ID | Item | Evidence |

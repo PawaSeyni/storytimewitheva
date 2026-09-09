@@ -153,7 +153,7 @@ const LANG_PREFIXES = ['', '/es', '/fr'];
 // collection-eligible themes — no missing route (unreachable collection) and no extra
 // route (a thin page for a theme below the two-book minimum, e.g. honesty/heritage).
 {
-  const { collectionRouteIds } = await loadContentIndex();
+  const { collectionRouteIds, journeyRouteIds } = await loadContentIndex();
   const routeSet = new Set(sitemapRoutes.map(r => r.replace(/\/$/, '')));
   const missing = collectionRouteIds.filter(id => !routeSet.has(`/collections/${id}`));
   const advertised = [...routeSet].filter(r => r.startsWith('/collections/')).map(r => r.split('/')[2]);
@@ -168,6 +168,14 @@ const LANG_PREFIXES = ['', '/es', '/fr'];
     process.exit(1);
   }
   console.log(`Collection guard OK: ${collectionRouteIds.length} eligible collections (theme + age), no thin pages.`);
+  // Journey guard (S7-003): same bidirectional parity for /journeys/*.
+  const jMissing = journeyRouteIds.filter(id => !routeSet.has(`/journeys/${id}`));
+  const jAdvertised = [...routeSet].filter(r => /^\/journeys\/[^/]+$/.test(r)).map(r => r.split('/')[2]);
+  const jExtra = jAdvertised.filter(id => !journeyRouteIds.includes(id));
+  if (jMissing.length || jExtra.length || !routeSet.has('/journeys')) {
+    throw new Error(`\nPrerender aborted: journey/sitemap parity failed. missing=${jMissing.join(',')} extra=${jExtra.join(',')} index=${routeSet.has('/journeys')}`);
+  }
+  console.log(`Journey guard OK: ${journeyRouteIds.length} published journeys + index.`);
 }
 
 const extraRoutes = [...NOINDEX_SPA_ROUTES, ...LANDING_SLUGS.map(s => `/free/${s}`)].flatMap(p =>

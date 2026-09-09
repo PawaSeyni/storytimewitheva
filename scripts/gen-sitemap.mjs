@@ -54,10 +54,12 @@ const bookPages = bookIds.map(id => [`/books/${id}`, 'monthly', '0.8']);
 // a thin page. Eligibility is derived in src/data/contentIndex.ts, so the sitemap can
 // never advertise a collection the app would 404.
 // Theme AND age-band collections (S7-001/S7-002), from the one list the page also reads.
-const { collectionRouteIds } = await loadContentIndex();
+const { collectionRouteIds, journeyRouteIds } = await loadContentIndex();
 const collectionPages = collectionRouteIds.map(id => [`/collections/${id}`, 'monthly', '0.7']);
+// Reading journeys (S7-003): the index plus every PUBLISHED, VALID journey.
+const journeyPages = [['/journeys', 'monthly', '0.6'], ...journeyRouteIds.map(id => [`/journeys/${id}`, 'monthly', '0.6'])];
 
-const pages = [...staticPages, ...bookPages, ...collectionPages];
+const pages = [...staticPages, ...bookPages, ...collectionPages, ...journeyPages];
 
 // Standalone games: single static URL each (self-contained pages with their
 // own internal EN/ES/FR toggles), so no per-language hreflang.
@@ -78,4 +80,4 @@ for (const file of gameFiles) {
 out += '</urlset>\n';
 
 await writeFile(path.join(ROOT, 'public/sitemap.xml'), out);
-console.log(`sitemap.xml: ${pages.length * LANGS.length} localized URLs + ${gameFiles.length} game URLs (${bookIds.length} book pages, ${collectionPages.length} collections)`);
+console.log(`sitemap.xml: ${pages.length * LANGS.length} localized URLs + ${gameFiles.length} game URLs (${bookIds.length} book pages, ${collectionPages.length} collections, ${journeyRouteIds.length} journeys)`);
