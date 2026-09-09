@@ -13,7 +13,7 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useBooks } from '../data/books';
 import { THEMES, AGE_BANDS, type ThemeId, type AgeBandId } from '../data/taxonomy';
-import { collectionEligibleThemeIds, ageCollectionEligibleBandIds, publishedEditorialCollectionIds, collectionRecordById, collectionMembers } from '../data/contentIndex';
+import { collectionEligibleThemeIds, ageCollectionEligibleBandIds, publishedEditorialCollectionIds, collectionRecordById, collectionMembers, packsByCollectionId } from '../data/contentIndex';
 import CollectionPage from '../components/CollectionPage';
 import NotFound from './NotFound';
 import { useTranslation, useLanguage } from '../lib/language';
@@ -47,7 +47,7 @@ export default function Collection() {
 
   if (!isTheme && !isBand && !isEditorial) return <NotFound />;
 
-  const extras = { activityIds: record?.activityIds, resourceIds: record?.resourceIds };
+  const extras = { activityIds: record?.activityIds, resourceIds: record?.resourceIds, packIds: packsByCollectionId[collectionId] };
   const others = [
     ...(collectionEligibleThemeIds as ThemeId[]).filter((x) => x !== collectionId).map((x) => ({ id: x, label: THEMES[x].labels[language] })),
     ...ageCollectionEligibleBandIds.filter((x) => x !== collectionId).map((b) => ({ id: b, label: AGE_BANDS[b].labels[language] })),

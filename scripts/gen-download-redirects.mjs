@@ -23,6 +23,7 @@
 import { readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadLearningPacks, loadContentIndex } from './lib/catalog.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -84,7 +85,11 @@ for (const magnet of [...byMagnet.keys()].sort()) {
 // in-code "clearer alias for new links") would hard-404. A bundle can't be handed
 // over as one 302'd file, so its stable /download link 301s to the GATED offer page
 // (/free/<slug>) instead. Keep in sync with the bundle magnets in EmailSignup.tsx.
-const BUNDLE_ALIASES = ['bilingual-bundle'];
+// Learning packs (S7-008) are multi-file gated bundles too: their ids come from the
+// data module, never from a hand-kept list here.
+await loadLearningPacks();
+const { learningPackIds } = await loadContentIndex();
+const BUNDLE_ALIASES = ['bilingual-bundle', ...learningPackIds];
 const missingBundles = BUNDLE_ALIASES.filter((s) => !byMagnet.has(s));
 if (missingBundles.length) {
   lines.push(

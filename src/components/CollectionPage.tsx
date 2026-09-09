@@ -7,6 +7,7 @@ import Breadcrumbs, { breadcrumbSchema } from './Breadcrumbs';
 import { useTranslation, useLanguage } from '../lib/language';
 import { useActivities } from '../data/activities';
 import { resources as RESOURCES } from '../data/resources';
+import { learningPackById, packResources } from '../data/contentIndex';
 import { gameUrl } from '../lib/gameUrl';
 
 // Presentation for ANY collection — theme or age band (S7-001 / S7-002). The route
@@ -23,6 +24,9 @@ const TRANSLATIONS = {
     activitiesHeading: 'Activities that go with these books',
     resourcesHeading: 'For the grown-up',
     forEducators: 'For teachers and educators',
+    packHeading: 'Printables for this collection',
+    packInside: 'Inside the pack:',
+    getPack: 'Get the pack',
   },
   es: {
     home: 'Inicio', books: 'Libros',
@@ -31,6 +35,9 @@ const TRANSLATIONS = {
     activitiesHeading: 'Actividades que acompañan a estos libros',
     resourcesHeading: 'Para el adulto',
     forEducators: 'Para docentes y educadores',
+    packHeading: 'Imprimibles para esta colección',
+    packInside: 'El paquete incluye:',
+    getPack: 'Quiero el paquete',
   },
   fr: {
     home: 'Accueil', books: 'Livres',
@@ -39,6 +46,9 @@ const TRANSLATIONS = {
     activitiesHeading: 'Des activités qui accompagnent ces livres',
     resourcesHeading: 'Pour l’adulte',
     forEducators: 'Pour les enseignants et éducateurs',
+    packHeading: 'Fiches à imprimer pour cette collection',
+    packInside: 'Le pack contient :',
+    getPack: 'Recevoir le pack',
   },
 };
 
@@ -56,14 +66,17 @@ export interface CollectionPageProps {
   resourceIds?: string[];
   /** Audience label (S7-007). Educator collections say so above the title. */
   audience?: 'educator';
+  /** Published learning packs that accompany this collection (S7-008). */
+  packIds?: string[];
 }
 
-export default function CollectionPage({ id, title, intro, seoTitle, books, browseOthersHeading, others, activityIds = [], resourceIds = [], audience }: CollectionPageProps) {
+export default function CollectionPage({ id, title, intro, seoTitle, books, browseOthersHeading, others, activityIds = [], resourceIds = [], audience, packIds = [] }: CollectionPageProps) {
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
   const allActivities = useActivities();
   const featured = activityIds.map((slug) => allActivities.find((a) => a.slug === slug)).filter((a) => a !== undefined);
   const featuredResources = resourceIds.map((rid) => RESOURCES.find((r) => r.id === rid)).filter((r) => r !== undefined);
+  const packs = packIds.map((pid) => learningPackById[pid]).filter((p) => p !== undefined);
   const path = `/collections/${id}`;
 
   const crumbs = [
@@ -161,6 +174,32 @@ export default function CollectionPage({ id, title, intro, seoTitle, books, brow
                 <li key={r.id}>
                   <Link to={r.kind === 'article' ? `/resources#${r.slug}` : `/free/${r.slug}`} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-purple-100 text-sm text-purple-700 hover:border-purple-300">
                     <span aria-hidden>{r.emoji ?? '📄'}</span> {r.title[language]}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {packs.length > 0 && (
+        <section className="pb-10 px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">{t.packHeading}</h2>
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {packs.map((p) => (
+                <li key={p.id} className="bg-white rounded-2xl border border-purple-100 p-5 flex flex-col">
+                  <h3 className="font-bold text-gray-800 mb-1">
+                    {p.emoji && <span aria-hidden>{p.emoji} </span>}
+                    {p.title[language]}
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-3">{p.description[language]}</p>
+                  <p className="text-xs font-semibold text-gray-700 mb-1">{t.packInside}</p>
+                  <ul className="list-disc pl-5 text-sm text-gray-600 mb-4 space-y-0.5">
+                    {packResources(p.id).map((r) => <li key={r.id}>{r.title[language]}</li>)}
+                  </ul>
+                  <Link to={`/free/${p.id}`} className="mt-auto inline-flex justify-center px-5 py-2 rounded-full bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold transition-colors">
+                    {t.getPack} →
                   </Link>
                 </li>
               ))}

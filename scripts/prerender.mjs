@@ -105,6 +105,9 @@ const NOINDEX_SPA_ROUTES = ['/profile', '/search'];
 // construct by analogy. It 404'd in all three languages until 2026-08-10.
 const LANDING_SLUGS = ['bedtime-routine', 'bilingual-bundle', 'bilingual-starter-kit', 'bilingual-flashcards', 'parents-guide', 'follow-up-activities', 'leo-and-the-wolf'];
 const LANG_PREFIXES = ['', '/es', '/fr'];
+// Learning packs (S7-008) are generated lead magnets; their /free/<id> pages come from
+// the data module through the same projection the other guards use.
+const { learningPackIds: PACK_LANDING_SLUGS } = await loadContentIndex();
 
 // Guard against drift: parse the magnet registry and fail the build if any
 // registered slug has no prerendered landing page. Without this the mismatch is
@@ -126,7 +129,12 @@ const LANG_PREFIXES = ['', '/es', '/fr'];
     );
     process.exit(1);
   }
-  console.log(`Landing-page guard OK: ${registered.length} magnet slugs all prerendered.`);
+  const packClash = PACK_LANDING_SLUGS.filter(slug => registered.includes(slug) || LANDING_SLUGS.includes(slug));
+  if (packClash.length) {
+    console.error(`\nPrerender aborted: learning pack ids collide with registered magnets: ${packClash.join(', ')}\n`);
+    process.exit(1);
+  }
+  console.log(`Landing-page guard OK: ${registered.length} magnet slugs + ${PACK_LANDING_SLUGS.length} learning packs all prerendered.`);
 }
 
 // Book-page guard (Sprint 3 S3-005 — catalog/sitemap/prerender parity): every book
@@ -178,7 +186,7 @@ const LANG_PREFIXES = ['', '/es', '/fr'];
   console.log(`Journey guard OK: ${journeyRouteIds.length} published journeys + index.`);
 }
 
-const extraRoutes = [...NOINDEX_SPA_ROUTES, ...LANDING_SLUGS.map(s => `/free/${s}`)].flatMap(p =>
+const extraRoutes = [...NOINDEX_SPA_ROUTES, ...[...LANDING_SLUGS, ...PACK_LANDING_SLUGS].map(s => `/free/${s}`)].flatMap(p =>
   LANG_PREFIXES.map(pre => `${pre}${p}`),
 );
 

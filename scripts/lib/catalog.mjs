@@ -22,6 +22,7 @@ const ACTIVITIES = path.join(ROOT, 'src', 'data', 'activities.data.ts');
 const JOURNEY = path.join(ROOT, 'src', 'lib', 'journey.ts');
 const JOURNEYS = path.join(ROOT, 'src', 'data', 'journeys.ts');
 const COLLECTIONS = path.join(ROOT, 'src', 'data', 'collections.ts');
+const LEARNING_PACKS = path.join(ROOT, 'src', 'data', 'learningPacks.ts');
 
 /** Compile a browser-free TS module with esbuild and evaluate it in-process. */
 async function loadModule(entry) {
@@ -125,4 +126,11 @@ let collectionsCache = null;
 export async function loadCollections() {
   if (!collectionsCache) collectionsCache = await loadModule(COLLECTIONS);
   return collectionsCache;
+}
+
+let packsCache = null;
+/** Learning pack records (S7-008), browser-free. */
+export async function loadLearningPacks() {
+  if (!packsCache) packsCache = await loadModule(LEARNING_PACKS);
+  return packsCache;
 }

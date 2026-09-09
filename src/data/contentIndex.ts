@@ -13,6 +13,7 @@ import { activities } from './activities.data';
 import { resources } from './resources';
 import { journeys, type ReadingJourney } from './journeys';
 import { collections, type CollectionRecord } from './collections';
+import { learningPacks, type LearningPack } from './learningPacks';
 import {
   THEME_IDS,
   AGE_BAND_IDS,
@@ -232,5 +233,58 @@ export const journeysByBookId: Record<BookId, string[]> = (() => {
       }
     }
   }
+  return idx;
+})();
+
+// ---------------------------------------------------------------------------
+// Learning packs (S7-008): curated groups of existing downloads that are also lead magnets.
+// ---------------------------------------------------------------------------
+
+const RESERVED_PACK_SLUGS = ['bedtime-routine', 'bilingual-bundle', 'bilingual-starter-kit', 'bilingual-flashcards', 'parents-guide', 'follow-up-activities', 'leo-and-the-wolf'];
+
+/** Every reason a pack record is invalid. Empty means publishable. */
+export function learningPackProblems(p: LearningPack): string[] {
+  const problems: string[] = [];
+  if (!/^[a-z0-9-]+$/.test(p.id)) problems.push(`id "${p.id}" is not a bare route token`);
+  if (RESERVED_PACK_SLUGS.includes(p.id)) problems.push(`id "${p.id}" collides with a registered lead magnet`);
+  if (resources.some((r) => r.slug === p.id)) problems.push(`id "${p.id}" collides with a download slug`);
+  if (collectionRouteIds.includes(p.id)) problems.push(`id "${p.id}" collides with a collection id`);
+  if (learningPacks.filter((x) => x.id === p.id).length > 1) problems.push(`duplicate pack id "${p.id}"`);
+  if (!['parent', 'educator', 'both'].includes(p.audience)) problems.push(`unknown audience "${p.audience}"`);
+  if (p.ageBandIds.length === 0) problems.push('a pack needs at least one age band');
+  for (const b of p.ageBandIds) if (!(AGE_BAND_IDS as string[]).includes(b)) problems.push(`unknown age band "${b}"`);
+  for (const t of p.themeIds ?? []) if (!(THEME_IDS as string[]).includes(t)) problems.push(`unknown theme "${t}"`);
+  if (p.resourceIds.length < 2) problems.push('a pack bundles at least two printables');
+  if (new Set(p.resourceIds).size !== p.resourceIds.length) problems.push('duplicate resource in pack');
+  for (const id of p.resourceIds) {
+    const r = resources.find((x) => x.id === id);
+    if (!r) problems.push(`resource "${id}" does not exist`);
+    else if (r.kind !== 'download') problems.push(`resource "${id}" is not a download`);
+  }
+  for (const c of p.collectionIds ?? []) if (!collectionRouteIds.includes(c)) problems.push(`collection "${c}" is not a public collection`);
+  for (const lang of LANGS) {
+    if (!p.title?.[lang]?.trim()) problems.push(`missing ${lang} title`);
+    if (!p.description?.[lang]?.trim() || p.description[lang].trim().length < 40) problems.push(`missing or thin ${lang} description`);
+  }
+  return problems;
+}
+
+export const publishedLearningPacks: LearningPack[] = learningPacks.filter(
+  (p) => p.publishState === 'published' && learningPackProblems(p).length === 0,
+);
+export const learningPackIds: string[] = publishedLearningPacks.map((p) => p.id);
+export const learningPackById: Record<string, LearningPack> = Object.fromEntries(publishedLearningPacks.map((p) => [p.id, p]));
+
+/** The download resources of a pack, in pack order (published packs only resolve). */
+export function packResources(id: string) {
+  const p = learningPackById[id];
+  if (!p) return [];
+  return p.resourceIds.map((rid) => resources.find((r) => r.id === rid)).filter((r) => r !== undefined);
+}
+
+/** Derived reverse relation: which published packs accompany each collection. */
+export const packsByCollectionId: Record<string, string[]> = (() => {
+  const idx: Record<string, string[]> = {};
+  for (const p of publishedLearningPacks) for (const c of p.collectionIds ?? []) (idx[c] ??= []).push(p.id);
   return idx;
 })();

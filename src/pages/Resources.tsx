@@ -7,7 +7,9 @@ import { useLanguage, useTranslation } from '../lib/language';
 import { amazonDp } from '../lib/amazon';
 import { resources as RESOURCES, type Resource } from '../data/resources';
 import SaveResourceButton from '../components/SaveResourceButton';
-import { publishedEditorialCollectionIds, collectionRecordById } from '../data/contentIndex';
+import { publishedEditorialCollectionIds, collectionRecordById, publishedLearningPacks, packResources } from '../data/contentIndex';
+import { THEMES, AGE_BANDS, type ThemeId, type AgeBandId } from '../data/taxonomy';
+import type { Language } from '../lib/language';
 
 // Resource identity, ordering, card metadata and localized title/description all
 // live in src/data/resources.ts — the single source of truth that gives every
@@ -15,6 +17,13 @@ import { publishedEditorialCollectionIds, collectionRecordById } from '../data/c
 // This page owns presentation and the long-form article bodies only.
 const ARTICLES: Resource[] = RESOURCES.filter((r) => r.kind === 'article');
 const DOWNLOADS: Resource[] = RESOURCES.filter((r) => r.kind === 'download');
+
+// Label for any public collection id (theme, age band or editorial record).
+function collectionLabel(id: string, language: Language): string {
+  if (id in THEMES) return THEMES[id as ThemeId].labels[language];
+  if (id in AGE_BANDS) return AGE_BANDS[id as AgeBandId].labels[language];
+  return collectionRecordById[id]?.title?.[language] ?? id;
+}
 
 // ---------------------------------------------------------------------------
 // Affiliate URLs -- single source of truth. Keep in sync with
@@ -93,6 +102,14 @@ const TRANSLATIONS = {
       heading: 'A note on affiliate links',
       body: 'This page contains affiliate links. If you purchase through these links I may earn a small commission at no extra cost to you. I only recommend products I genuinely use and trust.',
       amazon: 'As an Amazon Associate I earn from qualifying purchases.',
+    },
+    packs: {
+      heading: 'Learning packs',
+      intro: 'The printables above, bundled for a purpose. One sign-up delivers every file in the pack, in your language where an edition exists.',
+      inside: 'What is inside',
+      goesWith: 'Goes with:',
+      getPack: 'Get the pack',
+      audience: { parent: 'For families', educator: 'For teachers and educators', both: 'For families and teachers' },
     },
     teachers: {
       heading: 'For Teachers & Educators',
@@ -300,6 +317,14 @@ const TRANSLATIONS = {
       body: 'Esta p\xe1gina contiene enlaces de afiliados. Si compras a trav\xe9s de ellos, podemos ganar una peque\xf1a comisi\xf3n sin coste adicional para ti. Solo recomendamos productos que de verdad usamos y nos gustan.',
       amazon: 'Como afiliados de Amazon, ganamos con compras que cumplen los requisitos.',
     },
+    packs: {
+      heading: 'Paquetes de aprendizaje',
+      intro: 'Los imprimibles de arriba, agrupados con un propósito. Un solo registro entrega todos los archivos del paquete, en tu idioma cuando existe la edición.',
+      inside: 'Qué incluye',
+      goesWith: 'Acompaña a:',
+      getPack: 'Quiero el paquete',
+      audience: { parent: 'Para familias', educator: 'Para docentes y educadores', both: 'Para familias y docentes' },
+    },
     teachers: {
       heading: 'Para docentes y educadores',
       intro: 'Los materiales de Eva son gratuitos para usar en casa o en el aula. Descarga, imprime y comparte – sin registro.',
@@ -505,6 +530,14 @@ const TRANSLATIONS = {
       heading: '\xc0 propos des liens affili\xe9s',
       body: 'Cette page contient des liens affili\xe9s. Si vous achetez via ces liens, nous pouvons gagner une petite commission sans co\xfbt suppl\xe9mentaire pour vous. Nous ne recommandons que des produits que nous utilisons r\xe9ellement.',
       amazon: 'En tant qu’affili\xe9 Amazon, nous percevons une commission sur les achats \xe9ligibles.',
+    },
+    packs: {
+      heading: 'Packs d’apprentissage',
+      intro: 'Les fiches ci-dessus, regroupées selon un objectif. Une seule inscription livre tous les fichiers du pack, dans votre langue quand l’édition existe.',
+      inside: 'Ce que contient le pack',
+      goesWith: 'Accompagne :',
+      getPack: 'Recevoir le pack',
+      audience: { parent: 'Pour les familles', educator: 'Pour les enseignants et éducateurs', both: 'Pour les familles et les enseignants' },
     },
     teachers: {
       heading: 'Pour les enseignants et \xe9ducateurs',
@@ -932,6 +965,63 @@ export default function Resources() {
       <ArticleReluctantReaders t={t.article5} />
       <ArticlePerfectReadingEnvironment t={t.article2} />
       <ArticleBilingualReading t={t.article6} />
+
+      {/* Learning packs (S7-008): curated groups of the printables above. Each pack is a
+          gated lead magnet at /free/<pack id> that delivers every file as a named link. */}
+      {publishedLearningPacks.length > 0 && (
+        <section id="packs" className="scroll-mt-24 py-12 px-4 border-t border-gray-100">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-8">
+              <div className="text-4xl mb-3" aria-hidden>🎒</div>
+              <h2 className="text-3xl font-bold text-gray-800 mb-2">{t.packs.heading}</h2>
+              <p className="text-gray-500 max-w-2xl mx-auto">{t.packs.intro}</p>
+            </div>
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {publishedLearningPacks.map((pack) => {
+                const items = packResources(pack.id);
+                return (
+                  <li key={pack.id} className="bg-white rounded-2xl shadow-md border border-gray-50 p-6 flex flex-col">
+                    <div className="flex flex-wrap gap-2 mb-3 text-xs font-semibold">
+                      <span className="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-100">{t.packs.audience[pack.audience]}</span>
+                      {pack.ageBandIds.map((b) => (
+                        <span key={b} className="px-2.5 py-1 rounded-full bg-purple-50 text-purple-800 border border-purple-100">{AGE_BANDS[b].labels[language]}</span>
+                      ))}
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">
+                      {pack.emoji && <span aria-hidden>{pack.emoji} </span>}
+                      {pack.title[language]}
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed mb-4">{pack.description[language]}</p>
+                    <h4 className="text-sm font-semibold text-gray-700 mb-1">{t.packs.inside} ({items.length})</h4>
+                    <ul className="list-disc pl-5 text-sm text-gray-600 mb-4 space-y-1">
+                      {items.map((r) => (
+                        <li key={r.id}>{r.title[language]}</li>
+                      ))}
+                    </ul>
+                    {pack.collectionIds && pack.collectionIds.length > 0 && (
+                      <p className="text-xs text-gray-500 mb-4">
+                        {t.packs.goesWith}{' '}
+                        {pack.collectionIds.map((c, i) => (
+                          <span key={c}>
+                            {i > 0 ? ', ' : ''}
+                            <Link to={`/collections/${c}`} className="underline hover:text-purple-700">{collectionLabel(c, language)}</Link>
+                          </span>
+                        ))}
+                      </p>
+                    )}
+                    <Link
+                      to={`/free/${pack.id}`}
+                      className="mt-auto inline-flex justify-center items-center px-5 py-2.5 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm transition-colors"
+                    >
+                      {t.packs.getPack} →
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {/* For Teachers & Educators -- free, classroom-friendly printables (PDFs in /public). */}
       <section id="teachers" className="scroll-mt-24 py-12 px-4 bg-gradient-to-b from-white to-purple-50 border-t border-gray-100">
