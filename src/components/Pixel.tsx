@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { SHARED_KEYS, getSharedString, setSharedString } from '../lib/storage';
 import { useTranslation } from '../lib/language';
 import helloUrl from '../assets/pixel/hello.svg';
 import readingUrl from '../assets/pixel/reading.svg';
@@ -60,17 +61,15 @@ const ALT_TRANSLATIONS: Record<'en' | 'es' | 'fr', Record<PixelMood, string>> = 
 
 function readEnabled(): boolean {
   if (typeof window === 'undefined') return true;
-  try {
-    const params = new URLSearchParams(window.location.search);
-    if (params.has('pixel')) {
-      const on = params.get('pixel') !== '0';
-      window.localStorage.setItem('pixelMascot', on ? 'on' : 'off');
-      return on;
-    }
-    return window.localStorage.getItem('pixelMascot') !== 'off';
-  } catch {
-    return true;
+  // Storage goes through src/lib/storage.ts, which never throws: a mascot preference
+  // must not be able to break the page it renders on. Default ON when nothing is stored.
+  const params = new URLSearchParams(window.location.search);
+  if (params.has('pixel')) {
+    const on = params.get('pixel') !== '0';
+    setSharedString(SHARED_KEYS.pixel, on ? 'on' : 'off');
+    return on;
   }
+  return getSharedString(SHARED_KEYS.pixel) !== 'off';
 }
 
 export function usePixelEnabled(): boolean {

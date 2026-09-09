@@ -228,20 +228,27 @@ export function removeShared(key: SharedKey): boolean {
 }
 
 // ---------------------------------------------------------------------------------
-// LEGACY tier — raw keys owned by the standalone games and the activity demos.
+// LEGACY tier — raw, unversioned keys that predate this adapter.
 //
-// Distinct from SHARED: these are not part of the SPA's own state model, they are other
-// programs' storage that the SPA reads (to surface on the Profile page) or clears (for
-// "clear all progress"). They are raw by contract, and listed explicitly rather than
-// accepted as an arbitrary string so a typo cannot quietly read nothing forever.
+// Two different reasons a key lives here, and neither is "we forgot":
+//
+//   1. Owned by another program. `eva_reading_tracker_v1` is written by
+//      public/games/reading-tracker.html. The SPA only reads it.
+//   2. Holds existing USER-CREATED CONTENT. The three demo keys store saved artwork,
+//      journal entries and a bookmark design. No game touches them, so they COULD be
+//      namespaced — but renaming a key orphans whatever is already in it, and losing a
+//      child's saved drawing is a worse outcome than an inconsistent key name. If these
+//      are ever migrated it must be a copy-then-verify, not a rename.
+//
+// Listed explicitly rather than accepted as an arbitrary string, so a typo is a compile
+// error instead of a read that quietly returns nothing forever.
 // ---------------------------------------------------------------------------------
 
 export const LEGACY_KEYS = [
-  'eva_reading_tracker_v1', // public/games/reading-tracker.html
-  'readingJournal',         // src/demos/AdventureJournalDemo.tsx (and its game)
-  'adventureJournal',       // src/demos/AdventureJournalDemo.tsx
-  'coloringGallery',        // src/demos/ColoringDemo.tsx
-  'bookmarkDesign',         // src/demos/BookmarkCraftsDemo.tsx
+  'eva_reading_tracker_v1', // public/games/reading-tracker.html (SPA reads only)
+  'adventureJournal',       // src/demos/AdventureJournalDemo.tsx — user entries
+  'coloringGallery',        // src/demos/ColoringDemo.tsx — saved artwork (large base64)
+  'bookmarkDesign',         // src/demos/BookmarkCraftsDemo.tsx — saved design
 ] as const;
 
 export type LegacyKey = (typeof LEGACY_KEYS)[number];
@@ -255,6 +262,19 @@ export function getLegacy<T>(key: LegacyKey, validate: (value: unknown) => value
     return validate(parsed) ? parsed : null;
   } catch {
     return null;
+  }
+}
+
+/**
+ * Write another program's / a demo's raw key. Returns whether it actually persisted, so a
+ * caller can tell the user when a save failed — the coloring gallery holds full-canvas
+ * base64 PNGs and a dozen of them can exhaust the ~5MB quota.
+ */
+export function setLegacy<T>(key: LegacyKey, value: T): boolean {
+  try {
+    return writeRaw(key, JSON.stringify(value));
+  } catch {
+    return false;
   }
 }
 

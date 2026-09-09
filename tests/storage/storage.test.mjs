@@ -6,6 +6,7 @@
 import { test, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
 
 const bundle = await build({
   entryPoints: ['src/lib/storage.ts'],
@@ -157,7 +158,6 @@ test('storage — the SPA and the standalone games agree on the shared key name'
   // into all 12 games that writes this key directly. If the SPA ever renames it, every
   // "Mark Completed" tap would be silently orphaned rather than failing loudly, so the
   // two sides are compared here instead of trusted to stay in step.
-  const { readFileSync, readdirSync } = await import('node:fs');
   const { mod } = await load();
   const expected = mod.SHARED_KEYS.progress;
 
@@ -184,4 +184,48 @@ test('storage — the games and the SPA agree on the language key too', async ()
     i18n.includes(`'${mod.SHARED_KEYS.language}'`),
     `public/games/i18n.js does not read ${mod.SHARED_KEYS.language}`,
   );
+});
+
+test('storage — src/ has no raw browser-storage calls outside the adapter', () => {
+  // The point of S6-012 is that ONE module owns availability, parsing, validation and
+  // failure handling. Centralization that is not enforced decays on the next feature, so
+  // it is a test rather than a convention.
+  const walk = (dir) => readdirSync(dir).flatMap((f) => {
+    const p = `${dir}/${f}`;
+    return statSync(p).isDirectory() ? walk(p) : [p];
+  });
+  const offenders = walk('src')
+    .filter((f) => /\.tsx?$/.test(f) && f !== 'src/lib/storage.ts')
+    .map((f) => {
+      const lines = readFileSync(f, 'utf8').split('\n');
+      const hits = lines
+        .map((l, i) => ({ l, n: i + 1 }))
+        // ignore comments: prose mentioning localStorage is fine, calling it is not
+        .filter(({ l }) => /\b(localStorage|sessionStorage|indexedDB)\s*\./.test(l))
+        .filter(({ l }) => !/^\s*(\/\/|\*|\/\*)/.test(l));
+      return hits.length ? `${f}: ${hits.map((h) => h.n).join(', ')}` : null;
+    })
+    .filter(Boolean);
+  assert.deepEqual(offenders, [], `raw storage access outside src/lib/storage.ts:\n${offenders.join('\n')}`);
+});
+
+test('storage — every declared LEGACY key is actually used', () => {
+  // A key nobody reads or writes is dead configuration that reads as intent. One was
+  // invented in #157 ("readingJournal") and removed here after this check was written.
+  const walk = (dir) => readdirSync(dir).flatMap((f) => {
+    const p = `${dir}/${f}`;
+    return statSync(p).isDirectory() ? walk(p) : [p];
+  });
+  const sources = [...walk('src'), ...walk('public/games').filter((f) => f.endsWith('.html'))]
+    .filter((f) => !f.endsWith('storage.ts'))
+    .map((f) => readFileSync(f, 'utf8'))
+    .join('\n');
+  const declared = /export const LEGACY_KEYS = \[([\s\S]*?)\] as const;/.exec(
+    readFileSync('src/lib/storage.ts', 'utf8'),
+  )[1];
+  const keys = [...declared.matchAll(/'([^']+)'/g)].map((m) => m[1]);
+  assert.ok(keys.length > 0, 'no LEGACY_KEYS parsed');
+  for (const k of keys) {
+    assert.ok(sources.includes(`'${k}'`) || sources.includes(k), `LEGACY key "${k}" is unused`);
+  }
 });

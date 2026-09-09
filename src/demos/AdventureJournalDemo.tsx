@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { BookOpen, Calendar, Star, Trash2, Download } from 'lucide-react';
 import { useTranslation } from '../lib/language';
+import { getLegacy, setLegacy, type LegacyKey } from '../lib/storage';
 
 type Entry = {
   id: number;
@@ -16,6 +17,10 @@ type Entry = {
   thoughts: string;
   emoji: string;
 };
+
+const JOURNAL_KEY: LegacyKey = 'adventureJournal';
+
+const isArray = (v: unknown): v is unknown[] => Array.isArray(v);
 
 const BOOK_EMOJIS = ['📖', '📚', '📕', '📗', '📘', '📙', '📔', '📓', '🎭', '🧙', '🐉', '🏰', '🌟', '✨', '🦄', '🧚'];
 
@@ -153,26 +158,16 @@ export default function AdventureJournalDemo() {
   const t = useTranslation(TRANSLATIONS);
 
   useEffect(() => {
-    const saved = localStorage.getItem('adventureJournal');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) setEntries(parsed);
-      } catch {
-        /* ignore */
-      }
-    }
+    // Storage goes through src/lib/storage.ts, which validates and never throws.
+    const saved = getLegacy(JOURNAL_KEY, isArray);
+    if (saved) setEntries(saved as Entry[]);
   }, []);
 
   const persist = (next: Entry[]) => {
+    // In-memory state stays authoritative: a storage failure (private mode, quota) must
+    // not lose the entry the child just wrote in this session.
     setEntries(next);
-    // Keep the in-memory state authoritative; a storage failure (Safari private
-    // mode, quota) shouldn't throw out of the handler.
-    try {
-      localStorage.setItem('adventureJournal', JSON.stringify(next));
-    } catch {
-      /* storage unavailable */
-    }
+    setLegacy(JOURNAL_KEY, next);
   };
 
   const saveEntry = () => {
