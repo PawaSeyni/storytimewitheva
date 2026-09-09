@@ -35,6 +35,16 @@ test('disclosure — the affiliate note sits with the Buy group on every book pa
   }
 });
 
+test('disclosure — the footer carries the affiliate note with TEXT in every language (an empty element is a defect)', () => {
+  const note = { en: 'As an Amazon Associate', fr: 'Partenaire Amazon', es: 'Asociado de Amazon' };
+  for (const [loc, prefix] of Object.entries(LOCALES)) {
+    const h = read(prefix || '/');
+    const m = /data-affiliate-disclosure="footer">([^<]*)</.exec(h);
+    assert.ok(m && m[1].trim().length > 20, `${prefix || '/'}: footer disclosure element empty or missing`);
+    assert.ok(m[1].includes(note[loc]), `${prefix || '/'}: footer disclosure not in ${loc}`);
+  }
+});
+
 test('edition mapping — the Buy link points at the language edition when one exists, else the English one', () => {
   for (const [loc, prefix] of Object.entries(LOCALES)) for (const b of books) {
     const h = read(`${prefix}/books/${b.id}`);
