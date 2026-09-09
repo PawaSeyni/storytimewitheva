@@ -78,6 +78,18 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Sprint 6 — personal library (S6-001 … S6-004)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| PL-01 | **S6-001: three reading states** (`want-to-read` / `reading` / `read`) on stable IDs, in one versioned envelope in the namespaced tier. | #159 |
+| PL-02 | **S6-002: explicit favorites** on the same library entry, not a parallel store — so clearing a status cannot silently un-favorite a book, and un-favoriting a book with no status forgets it entirely rather than leaving an empty entry. | #159 |
+| PL-03 | **S6-003 Continue Reading + S6-004 recently explored** — deduplicated, newest-first, capped at 12, with missing catalog IDs pruned at READ time so a retired book cannot leave a dangling entry. | #159 |
+| PL-04 | **Book status moved, activity completion did NOT.** Inspecting the games' injected sync block shows they only ever mutate `activitiesCompleted` and merely echo the book arrays. So book status is SPA-owned and moved into the envelope; activity completion stays in the shared key. **No dual-write**: a game echoing a stale copy would eventually overwrite newer values, which is silent data loss. | #159 |
+| PL-05 | **Legacy state migrated once**, per Sprint 6 §8: reads the old arrays without modifying them, maps valid IDs, persists immediately, and never re-imports — so clearing a status later is not resurrected on the next load. A book in both legacy arrays becomes `read`, the stronger claim. | #159 |
+| PL-06 | **The new-visitor homepage is unchanged.** `ContinueReading` renders nothing without local state, verified against the prerendered HTML in all three languages, so there is no empty personalized shell. | #159 |
+| PL-07 | **15 tests** covering migration, the once-only guarantee, all three states, favorite/status independence, caps, dedup, read-time pruning, corrupt envelopes, denied storage, and an assertion that the envelope holds **no catalog content** (no title, cover, description or URL). | #159 |
+
 ### Storage adapter (S6-012)
 
 | ID | Item | Evidence |
@@ -191,6 +203,7 @@ The decision record lives in `backlog.md`; the shipped work is in §A above.
 
 | ID | Item | Type | Notes |
 |----|------|------|-------|
+| N-05 | **`RECENTLY_EXPLORED_CAP` is 12, and Sprint 6 §14 leaves the cap and retention period as an open decision.** Twelve is a working default (a browse session, not a history log) with no time-based expiry. Needs sign-off or a different number. | decision | Flagged rather than presented as settled. |
 | N-02 | **S6-007 implements 2 of 5 ranking reasons.** `relatedBooks.ts` covers `editorial` and `theme`; `related`, `age` and `preference` need the preferences model that does not exist yet. | open | Deliberate: the missing reasons depend on N-01. |
 | N-03 | **S3-007 breadcrumbs are not generalized.** `BreadcrumbList` markup is inline on two pages; the spec asks for a shared component with localized labels and stable URL segments. | open | Small, and it removes duplicated JSON-LD. |
 | N-04 | **S3-018/019/020 have no baseline artifacts.** No Search Console baseline, route/metadata inventory or post-deploy crawl record exists, and Sprint 3's definition of done requires them. | open | Owner/data task more than a code task. |
