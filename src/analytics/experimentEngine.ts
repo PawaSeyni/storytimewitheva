@@ -2,7 +2,6 @@
 // validated in CI through scripts/lib/catalog.mjs. The React binding is src/lib/experiments.ts.
 import type { ExperimentDefinition } from './experiments';
 import type { Language } from '../lib/locales';
-import { EVENT_BY_NAME } from './events';
 
 export const CONTROL = 'control';
 
@@ -16,7 +15,7 @@ export function experimentProblems(e: ExperimentDefinition): string[] {
   const total = e.variants.reduce((n, v) => n + v.weight, 0);
   if (total !== 100) out.push(`${e.id}: variant weights total ${total}, not 100`);
   if (e.variants.some((v) => v.weight < 0 || !Number.isInteger(v.weight))) out.push(`${e.id}: weights must be non-negative integers`);
-  if (!EVENT_BY_NAME[e.primaryMetric] || EVENT_BY_NAME[e.primaryMetric].reserved) out.push(`${e.id}: primaryMetric "${e.primaryMetric}" is not a dictionary event`);
+  if (!e.primaryMetric || e.primaryMetric.trim().length < 3) out.push(`${e.id}: primaryMetric required`); // dictionary membership is asserted in CI (registry test), not shipped to the browser
   for (const l of e.eligibility.locales ?? []) if (!['en', 'es', 'fr'].includes(l)) out.push(`${e.id}: unknown locale ${l}`);
   if (e.startAt && Number.isNaN(Date.parse(e.startAt))) out.push(`${e.id}: startAt is not a date`);
   if (e.endAt && Number.isNaN(Date.parse(e.endAt))) out.push(`${e.id}: endAt is not a date`);
