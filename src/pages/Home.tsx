@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import ContinueReading from '../components/ContinueReading';
+import PickedForYou from '../components/PickedForYou';
 import { Link } from '../components/LocalizedLink';
 import { useBooks } from '../data/books';
 import BookCard from '../components/BookCard';
@@ -273,6 +274,7 @@ export default function Home() {
           visitor, so the page below is complete on its own rather than showing an empty
           personalized shell. Placed after the hero so the value proposition still leads. */}
       <ContinueReading />
+      <PickedForYou />
 
       {/* SECTION 2 — One Magical World. Three Languages. (multilingual differentiation) */}
       <section className="py-16 px-4 bg-white border-b border-gray-100">

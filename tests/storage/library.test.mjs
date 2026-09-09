@@ -172,7 +172,74 @@ test('library — counts summarize what the device holds, for the privacy screen
   mod.setStatus('c', 'want-to-read');
   mod.toggleFavorite('a');
   mod.recordExplored('z');
+  mod.toggleSavedResource('download-parents-guide');
+  mod.setPreferences({ themeIds: ['kindness'], ageBandIds: [] });
   assert.deepEqual(mod.libraryCounts(mod.loadLibrary()), {
     read: 1, reading: 1, wantToRead: 1, favorites: 1, recentlyExplored: 1,
+    savedResources: 1, preferences: 1,
   });
+});
+
+test('preferences — optional, explicit, and skippable', async () => {
+  const { mod } = await load();
+  assert.equal(mod.hasPreferences(mod.loadLibrary()), false, 'nothing inferred from behavior');
+  mod.setPreferences({ themeIds: ['kindness', 'kindness'], ageBandIds: ['ages-3-5'] });
+  const p = mod.getPreferences(mod.loadLibrary(), () => true, () => true);
+  assert.deepEqual(p.themeIds, ['kindness'], 'deduplicated');
+  assert.deepEqual(p.ageBandIds, ['ages-3-5']);
+  mod.setPreferences({ themeIds: [], ageBandIds: [] });
+  assert.equal(mod.hasPreferences(mod.loadLibrary()), false, 'clearing works');
+});
+
+test('preferences — unknown ids are dropped on READ, not trusted', async () => {
+  // A retired theme must not poison recommendations forever.
+  const { mod } = await load();
+  mod.setPreferences({ themeIds: ['kindness', 'retired-theme'], ageBandIds: ['ages-3-5', 'ages-99'] });
+  const p = mod.getPreferences(
+    mod.loadLibrary(),
+    (id) => id === 'kindness',
+    (id) => id === 'ages-3-5',
+  );
+  assert.deepEqual(p.themeIds, ['kindness']);
+  assert.deepEqual(p.ageBandIds, ['ages-3-5']);
+});
+
+test('saved resources — toggle, dedupe, and prune missing on read', async () => {
+  const { mod } = await load();
+  mod.toggleSavedResource('article-bilingual-reading');
+  mod.toggleSavedResource('download-parents-guide');
+  mod.toggleSavedResource('gone-from-registry');
+  let s = mod.loadLibrary();
+  assert.equal(mod.isResourceSaved(s, 'download-parents-guide'), true);
+  assert.deepEqual(
+    mod.savedResourceIds(s, (id) => id !== 'gone-from-registry'),
+    ['download-parents-guide', 'article-bilingual-reading'],
+    'newest first, unknown id pruned',
+  );
+  mod.toggleSavedResource('download-parents-guide');
+  s = mod.loadLibrary();
+  assert.equal(mod.isResourceSaved(s, 'download-parents-guide'), false, 'toggles off');
+});
+
+test('preferences — two toggles in the same tick both persist', async () => {
+  // The stale-closure bug found in the browser: a component that computed the next value
+  // from its own state lost the first of two rapid clicks. setPreferences must be driven
+  // from the PERSISTED value, which is what these sequential calls simulate.
+  const { mod } = await load();
+  const a = mod.getPreferences(mod.loadLibrary(), () => true, () => true);
+  mod.setPreferences({ ...a, themeIds: ['kindness'] });
+  const b = mod.getPreferences(mod.loadLibrary(), () => true, () => true);
+  mod.setPreferences({ ...b, ageBandIds: ['ages-6-7'] });
+  const final = mod.getPreferences(mod.loadLibrary(), () => true, () => true);
+  assert.deepEqual(final.themeIds, ['kindness'], 'the first selection survived');
+  assert.deepEqual(final.ageBandIds, ['ages-6-7'], 'and so did the second');
+});
+
+test('preferences — a partial update never clears the other field', async () => {
+  const { mod } = await load();
+  mod.setPreferences({ themeIds: ['kindness'], ageBandIds: ['ages-3-5'] });
+  mod.setPreferences({ themeIds: ['wonder'] }); // ageBandIds omitted entirely
+  const p = mod.getPreferences(mod.loadLibrary(), () => true, () => true);
+  assert.deepEqual(p.themeIds, ['wonder']);
+  assert.deepEqual(p.ageBandIds, ['ages-3-5'], 'omitted field must be preserved');
 });

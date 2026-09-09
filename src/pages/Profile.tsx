@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import ReadingPreferences from '../components/ReadingPreferences';
+import SavedResources from '../components/SavedResources';
 import { Link } from '../components/LocalizedLink';
 import { BookOpen, BookMarked, CheckCircle2, Star, User, Trash2, NotebookPen, BarChart3 } from 'lucide-react';
 import { useBooks, books as rawBooks } from '../data/books';
@@ -555,6 +557,10 @@ export default function Profile() {
           )}
 
           <p className="mt-8 text-center text-xs text-gray-500">{t.deviceNote}</p>
+        </div>
+        <div className="max-w-5xl mx-auto mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+          <ReadingPreferences />
+          <SavedResources />
         </div>
       </section>
     </main>

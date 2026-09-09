@@ -6,6 +6,7 @@ import ReadAloudButton from '../components/ReadAloudButton';
 import { useLanguage, useTranslation } from '../lib/language';
 import { amazonDp } from '../lib/amazon';
 import { resources as RESOURCES, type Resource } from '../data/resources';
+import SaveResourceButton from '../components/SaveResourceButton';
 
 // Resource identity, ordering, card metadata and localized title/description all
 // live in src/data/resources.ts — the single source of truth that gives every
@@ -894,10 +895,18 @@ export default function Resources() {
                 </div>
               );
 
+              // The save control is a sibling of the link, never nested inside it: a
+              // <button> inside an <a> is invalid markup and breaks keyboard and
+              // screen-reader behaviour.
               return 'anchor' in r && r.anchor ? (
-                <a key={i} href={`#${r.anchor}`} className="block">
-                  {card}
-                </a>
+                <div key={i} className="relative">
+                  <a href={`#${r.anchor}`} className="block">
+                    {card}
+                  </a>
+                  <span className="absolute top-4 right-4 z-10">
+                    <SaveResourceButton resourceId={`article-${r.anchor}`} />
+                  </span>
+                </div>
               ) : (
                 <div key={i}>{card}</div>
               );
@@ -937,16 +946,20 @@ export default function Resources() {
               // signup; LocalizedLink adds the /es,/fr prefix to keep the language.
               const to = `/free/${d.slug}`;
               return (
+                <div key={i} className="relative flex">
+                <span className="absolute top-3 right-3 z-10">
+                  <SaveResourceButton resourceId={d.id} />
+                </span>
                 <Link
-                  key={i}
                   to={to}
-                  className="bg-white rounded-2xl shadow-md hover:shadow-xl border border-gray-50 p-5 flex flex-col transition-all"
+                  className="flex-1 bg-white rounded-2xl shadow-md hover:shadow-xl border border-gray-50 p-5 flex flex-col transition-all"
                 >
                   <span className="text-3xl mb-2" aria-hidden>{d.emoji}</span>
                   <h3 className="font-bold text-gray-800 mb-1 leading-snug">{d.title[language]}</h3>
                   <p className="text-gray-500 text-sm leading-relaxed flex-1">{d.description[language]}</p>
                   <span className="mt-3 text-sm font-semibold text-purple-600">⬇ {t.teachers.downloadCta}</span>
                 </Link>
+                </div>
               );
             })}
           </div>
