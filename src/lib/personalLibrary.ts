@@ -69,9 +69,9 @@ const KEY = 'personalization';
 const LIBRARY_CHANGE = 'librarychange';
 
 /**
- * Cap for recently-viewed. Sprint 6 §14 leaves the approved cap and retention period as
- * an open decision; 12 is a working default (a browse session, not a history log) with no
- * time-based expiry. Flagged for sign-off rather than presented as settled.
+ * Cap for recently-viewed: 12 entries, no time-based expiry. A browse session, not a
+ * history log. Sprint 6 §14 left the cap and retention period as an owner decision;
+ * approved as-is 2026-09-09 (punch list N-05). Change here, and the tests follow.
  */
 export const RECENTLY_EXPLORED_CAP = 12;
 

@@ -37,7 +37,7 @@ const TRANSLATIONS = {
       {
         heading: 'Reading progress stays on your device',
         body: [
-          'The "My Reading Profile" page (books read, want-to-read, completed activities) is saved only in your browser using local storage. It never leaves your device and is never sent to us. Clearing your browser data or switching devices resets it.',
+          'The "My Reading" page (books marked read, reading now or want-to-read, favorites, recently viewed books, saved resources, suggestion preferences, completed activities, journal entries and reading-tracker sessions) is saved only in your browser using local storage. It never leaves your device and is never sent to us. Clearing your browser data or switching devices resets it.',
         ],
       },
       {
@@ -105,7 +105,7 @@ const TRANSLATIONS = {
       {
         heading: 'El progreso de lectura se queda en tu dispositivo',
         body: [
-          'La página "Mi perfil de lectura" (libros leídos, por leer, actividades completadas) se guarda solo en tu navegador mediante el almacenamiento local. Nunca sale de tu dispositivo ni se nos envía. Borrar los datos del navegador o cambiar de dispositivo lo reinicia.',
+          'La página "Mi lectura" (libros marcados como leídos, leyendo ahora o por leer, favoritos, libros vistos hace poco, recursos guardados, preferencias de sugerencias, actividades completadas, entradas del diario y sesiones del registro de lectura) se guarda solo en tu navegador mediante el almacenamiento local. Nunca sale de tu dispositivo ni se nos envía. Borrar los datos del navegador o cambiar de dispositivo lo reinicia.',
         ],
       },
       {
@@ -173,7 +173,7 @@ const TRANSLATIONS = {
       {
         heading: 'La progression de lecture reste sur votre appareil',
         body: [
-          'La page « Mon profil de lecture » (livres lus, à lire, activités terminées) est enregistrée uniquement dans votre navigateur via le stockage local. Elle ne quitte jamais votre appareil et ne nous est jamais envoyée. Effacer les données du navigateur ou changer d\'appareil la réinitialise.',
+          'La page « Ma lecture » (livres marqués lus, en cours ou à lire, favoris, livres consultés récemment, ressources enregistrées, préférences de suggestions, activités terminées, entrées du journal et séances du suivi de lecture) est enregistrée uniquement dans votre navigateur via le stockage local. Elle ne quitte jamais votre appareil et ne nous est jamais envoyée. Effacer les données du navigateur ou changer d\'appareil la réinitialise.',
         ],
       },
       {
