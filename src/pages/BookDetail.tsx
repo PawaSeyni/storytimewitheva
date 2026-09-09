@@ -16,6 +16,8 @@ import { journeysByBookId, publishedJourneys } from '../data/contentIndex';
 import ResourceStrip from '../components/ResourceStrip';
 import RelatedActivities from '../components/RelatedActivities';
 import ShareButton from '../components/ShareButton';
+import ReadAloudButton from '../components/ReadAloudButton';
+import { useExperiment } from '../lib/experiments';
 import DiscussionPrompts from '../components/DiscussionPrompts';
 import Breadcrumbs, { breadcrumbSchema } from '../components/Breadcrumbs';
 import { BOOK_RATINGS } from '../data/ratings';
@@ -39,6 +41,8 @@ export default function BookDetail() {
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
   const buyRef = useRef<HTMLDivElement>(null);
+  // EXP-001 (draft until the baseline is approved): assignment happens here, before render.
+  const ctaExperiment = useExperiment('book-cta-hierarchy-v1');
   const [bilingual, setBilingual] = useState(false);
   const [tapMode, setTapMode] = useState(false);
 
@@ -60,6 +64,7 @@ export default function BookDetail() {
       if (entries[0].isIntersecting && !fired) {
         fired = true;
         track('Purchase CTA View', { book: book.id, placement: 'detail', edition: book.editionLang });
+        ctaExperiment.expose('detail'); // once per assignment, only now that the surface is viewable
         io.disconnect();
       }
     }, { threshold: 0 });
@@ -266,6 +271,11 @@ export default function BookDetail() {
                 )}
                 {/* S5-002: the Buy group is labelled and separate from the read/listen/save controls
                     above it; S5-003: the click carries the edition language behind the link. */}
+                {ctaExperiment.variant === 'listen-first' && (
+                  <div className="mb-4" data-experiment="book-cta-hierarchy-v1" data-variant="listen-first">
+                    <ReadAloudButton text={[book.title, book.subtitle, book.description].filter(Boolean).join('. ')} />
+                  </div>
+                )}
                 <div role="group" aria-label={t.buyGroup} ref={buyRef} data-cta="buy">
                 <p className="text-sm text-gray-500 mb-3">
                   📖 {t.paperback} · 📱 {t.ebook} · {t.priceNote}
@@ -274,7 +284,7 @@ export default function BookDetail() {
                   href={book.amazonUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => track('Purchase Click', { book: book.id, destination: 'amazon', placement: 'detail', edition: book.editionLang })}
+                  onClick={() => track('Purchase Click', { book: book.id, destination: 'amazon', placement: 'detail', edition: book.editionLang, ...ctaExperiment.conversionProps() })}
                   className="inline-block w-full sm:w-auto text-center py-3 px-8 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-lg"
                 >
                   {t.buy}

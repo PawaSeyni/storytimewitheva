@@ -168,3 +168,10 @@ export async function loadFunnels() {
   if (!funnelsCache) funnelsCache = await loadModule(path.join(ROOT, 'src', 'analytics', 'funnels.ts'));
   return funnelsCache;
 }
+
+let expCache = null;
+/** Experiment registry + engine (S5-008), browser-free parts. */
+export async function loadExperiments() {
+  if (!expCache) expCache = await loadModule(path.join(ROOT, 'src', 'analytics', 'experimentEngine.ts')).then(async (m) => ({ ...m, ...(await loadModule(path.join(ROOT, 'src', 'analytics', 'experiments.ts'))) }));
+  return expCache;
+}

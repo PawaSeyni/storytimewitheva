@@ -22,7 +22,7 @@
     "bench:search": "node scripts/bench-search.mjs",
     "gen:version": "node scripts/gen-version.mjs",
     "verify:deploy": "node scripts/verify-deploy.mjs",
-    "test": "node --test tests/funnel/*.test.mjs tests/storage/*.test.mjs tests/analytics/*.test.mjs",
+    "test": "node --test tests/funnel/*.test.mjs tests/storage/*.test.mjs tests/analytics/*.test.mjs tests/experiments/*.test.mjs",
     "test:seo": "node --test tests/seo/*.test.mjs",
     "test:e2e": "playwright test",
     "test:prod-audit": "playwright test --config playwright.prod.config.ts",
