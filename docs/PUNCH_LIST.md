@@ -97,7 +97,7 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | RJ-03 | **S7-010 progress**: one namespaced, versioned envelope per journey through the storage adapter; step ids removed from a journey are dropped on read; works in memory under blocked storage (browser-tested). **S7-011**: saved journeys are ids in the personalization envelope, counted on the transparency panel. | #168 |
 | RJ-04 | **Accessibility (§10)**: progress stated in text ("Step 2 of 5", "1 of 5 steps done"), completion controls are real buttons with `aria-pressed` and per-step accessible names, changes announced through a polite live region. Locked by the prerender suite in all three languages. | #168 |
 | RJ-05 | **Routes, sitemap and prerender guard** extended with the same bidirectional parity as collections; `/journeys` is linked from `/books`, and book pages show "Part of a reading journey" from the derived reverse index, so no journey is an orphan. Route vocabulary recorded in the alignment document. | #168 |
-| RJ-06 | **Copy to review**: the three journeys' titles and descriptions are new editorial content, drafted from the strongest existing relationships. One file to change. | open |
+| RJ-06 | ✅ **APPROVED 2026-09-09** — the three journeys' titles and descriptions (EN/FR/ES) approved as-is. Recorded on the content file. | #170 |
 
 ### Sprint 4 — continue the journey (S4-010 · S4-011)
 

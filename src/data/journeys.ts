@@ -7,9 +7,10 @@
 // journeyProblems) so a published journey can never point at a missing or draft item.
 //
 // EDITORIAL: the three journeys below are drafted from the strongest existing
-// relationships (the kindness pair, the patience trio, the sky/curiosity cluster) and are
-// flagged for review. Step order is editorial and deterministic; `optional` marks a step
-// the reader may skip without the journey feeling incomplete.
+// relationships (the kindness pair, the patience trio, the sky/curiosity cluster). Their
+// titles and descriptions were APPROVED by the owner on 2026-09-09 (punch list RJ-06);
+// change them here and re-run the suites. Step order is editorial and deterministic;
+// `optional` marks a step the reader may skip without the journey feeling incomplete.
 
 import type { Language } from '../lib/language';
 import type { ThemeId, AgeBandId } from './taxonomy';
