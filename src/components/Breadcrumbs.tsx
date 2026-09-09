@@ -57,7 +57,12 @@ export function breadcrumbSchema(crumbs: Crumb[], language: Language) {
       '@type': 'ListItem',
       position: i + 1,
       name: c.label,
-      item: `${SITE_URL}${localizePath(c.to ?? '/', language)}${c.to && c.to !== '/' ? '/' : ''}`,
+      // Always the trailing-slash form Netlify serves and the canonicals use, including a
+      // localized root: `/fr` -> `/fr/`. (The first version dropped the slash there.)
+      item: (() => {
+        const lp = localizePath(c.to ?? '/', language);
+        return `${SITE_URL}${lp}${lp.endsWith('/') ? '' : '/'}`;
+      })(),
     })),
   };
 }
