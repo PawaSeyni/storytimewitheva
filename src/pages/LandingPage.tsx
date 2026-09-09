@@ -81,7 +81,7 @@ export default function LandingPage() {
       </main>
 
       {/* Credibility + the post-conversion path, kept below the offer. */}
-      <footer className="py-6 px-4 text-center text-xs text-gray-400 space-y-2">
+      <footer className="py-6 px-4 text-center text-xs text-gray-600 space-y-2">
         <p>
           {t.imprint} · © {year} Pawa Press Inc.
         </p>

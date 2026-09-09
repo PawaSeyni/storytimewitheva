@@ -15,6 +15,14 @@ const ROUTES = [
   { path: '/activities', name: 'activities' },
   { path: '/resources', name: 'resources' },
   { path: '/profile', name: 'dashboard' },
+  // Sprint 7 surfaces (S7-018)
+  { path: '/search?q=kindness', name: 'search results' },
+  { path: '/journeys', name: 'journeys index' },
+  { path: '/journeys/kindness-that-shines', name: 'journey' },
+  { path: '/collections/classroom-feelings', name: 'educator collection' },
+  { path: '/collections/back-to-school', name: 'seasonal collection (open)' },
+  { path: '/collections/summer-of-wonder', name: 'seasonal collection (closed)' },
+  { path: '/free/classroom-pack', name: 'pack landing' },
 ];
 
 for (const prefix of ['', '/fr']) {
