@@ -43,12 +43,12 @@ exist from earlier sessions but have not been traced to their IDs.
 | S4-012 | ✅ shipped | `src/components/RelatedActivities.tsx` renders book → activity from stable IDs (#151) |
 | S6-007 | ✅ shipped | `src/lib/recommendations.ts` implements all five ranking reasons (`editorial`, `related`, `theme`, `age`, `preference`); `relatedBooks.ts` is a policy over it (#160). Previously partial: 2 of 5 |
 | S6-008 | ✅ shipped | activities recommended from structured book relationships (#150, #151) |
-| S7-001 | ✅ shipped | `src/pages/ThemeCollection.tsx`, 11 eligible themes × 3 languages (#142) |
+| S7-001 | ✅ shipped | `src/data/collections.ts` — collection RECORDS as the editorial layer (order, featured activities, resources, overrides, editorial kinds) over derived membership; `collectionProblems()` gates publication; 14 records live (#169). Earlier row credited the derived theme pages only |
 | S7-005 | ✅ shipped | `discussionQuestions` modeled (#143), 60 prompts written in (#154), rendered (#155) |
 | S6-001 … S6-006 · S6-009 · S6-010 · S6-013 … S6-018 | ✅ shipped | Sprint 6 slices 1–4 (#159, #160, #161, #162); S6-011 is ADR-002, proposed and awaiting signature |
 | S7-003 · S7-010 · S7-011 | ✅ shipped | `/journeys` + `/journeys/<id>` on `src/data/journeys.ts` (3 published journeys, EN/FR/ES), build-time validation, local progress through the storage adapter with read-time pruning, saved journeys in the personalization envelope (#168) |
 | S7-009 | ✅ shipped | `src/data/contentIndex.ts` derives every reverse relationship; nothing reverse is persisted (#142) |
-| S7-013 | 🟨 partial | EN/FR/ES parity is CI-enforced for books, resources and prompts, but collections and journeys as *content records* do not exist yet |
+| S7-013 | ✅ shipped | EN/FR/ES parity is CI-enforced for books, resources, prompts, journeys (#168) and collection records (#169) — every published ecosystem content type now exists as a validated record |
 | S3-018 · S3-019 · S3-020 | ⬜ not started | no Search Console baseline artifact, route/metadata inventory or post-deploy crawl record in the repo |
 | S4-010 · S4-011 | ⬜ not started | no `ContinueJourney` component or `src/lib/journey.ts` |
 | S5-008 … S5-011 | ⬜ not started | no `src/lib/experiments.ts`, experiment registry or governance docs |

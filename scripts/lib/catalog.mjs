@@ -21,6 +21,7 @@ const RELATED = path.join(ROOT, 'src', 'data', 'relatedBooks.ts');
 const ACTIVITIES = path.join(ROOT, 'src', 'data', 'activities.data.ts');
 const JOURNEY = path.join(ROOT, 'src', 'lib', 'journey.ts');
 const JOURNEYS = path.join(ROOT, 'src', 'data', 'journeys.ts');
+const COLLECTIONS = path.join(ROOT, 'src', 'data', 'collections.ts');
 
 /** Compile a browser-free TS module with esbuild and evaluate it in-process. */
 async function loadModule(entry) {
@@ -117,4 +118,11 @@ let journeysCache = null;
 export async function loadJourneys() {
   if (!journeysCache) journeysCache = await loadModule(JOURNEYS);
   return journeysCache;
+}
+
+let collectionsCache = null;
+/** Collection records (S7-001), browser-free. */
+export async function loadCollections() {
+  if (!collectionsCache) collectionsCache = await loadModule(COLLECTIONS);
+  return collectionsCache;
 }

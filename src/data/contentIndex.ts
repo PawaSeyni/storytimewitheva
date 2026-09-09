@@ -12,6 +12,7 @@ import { books } from './books.data';
 import { activities } from './activities.data';
 import { resources } from './resources';
 import { journeys, type ReadingJourney } from './journeys';
+import { collections, type CollectionRecord } from './collections';
 import {
   THEME_IDS,
   AGE_BAND_IDS,
@@ -89,7 +90,85 @@ export const isAgeCollectionEligible = (b: AgeBandId): boolean =>
  * route namespace and cannot collide: themes are words, bands are `ages-N-M`. The sitemap,
  * the prerender guard and the page all read this one list, so they cannot disagree.
  */
-export const collectionRouteIds: string[] = [...collectionEligibleThemeIds, ...ageCollectionEligibleBandIds];
+// ---------------------------------------------------------------------------------
+// Collection RECORDS (S7-001) — the editorial layer. See src/data/collections.ts.
+// ---------------------------------------------------------------------------------
+
+/** Derived membership for a theme or age collection id, in catalog order. */
+export function derivedCollectionMembers(id: string): BookId[] {
+  if ((THEME_IDS as readonly string[]).includes(id)) return booksByThemeId[id as ThemeId];
+  if ((AGE_BAND_IDS as readonly string[]).includes(id)) return booksByPrimaryAgeBand[id as AgeBandId];
+  return [];
+}
+
+/** Every reason a collection record may not publish. Empty = valid. */
+export function collectionProblems(c: CollectionRecord): string[] {
+  const out: string[] = [];
+  const bookIds = new Set(books.map((b) => b.id));
+  const slugs = new Set(activities.map((a) => a.slug));
+  const resIds = new Set(resources.map((r) => r.id));
+  const langs = ['en', 'fr', 'es'] as const;
+  if (!/^[a-z0-9-]+$/.test(c.id)) out.push(`id "${c.id}" is not a bare route token`);
+  const derivedKind = c.kind === 'theme' || c.kind === 'age';
+  if (c.kind === 'theme' && !(THEME_IDS as readonly string[]).includes(c.id)) out.push(`theme record "${c.id}" is not a theme id`);
+  if (c.kind === 'age' && !(AGE_BAND_IDS as readonly string[]).includes(c.id)) out.push(`age record "${c.id}" is not an age-band id`);
+  if (derivedKind && c.bookIds) out.push(`${c.id}: theme/age records must not carry bookIds (membership is derived)`);
+  if (!derivedKind && (THEME_IDS as readonly string[]).concat(AGE_BAND_IDS).includes(c.id)) out.push(`${c.id}: editorial record id collides with a taxonomy id`);
+  const members = derivedKind ? derivedCollectionMembers(c.id) : (c.bookIds ?? []);
+  if (!derivedKind) {
+    if (members.length < THEME_COLLECTION_MINIMUM) out.push(`${c.id}: fewer than ${THEME_COLLECTION_MINIMUM} books`);
+    for (const id of members) if (!bookIds.has(id)) out.push(`${c.id}: bookIds references missing "${id}"`);
+    if (new Set(members).size !== members.length) out.push(`${c.id}: duplicate book in bookIds`);
+    if (!c.title || !c.description) out.push(`${c.id}: editorial collections need their own title and description`);
+  }
+  for (const id of c.bookOrder ?? []) if (!members.includes(id)) out.push(`${c.id}: bookOrder contains "${id}", not a member`);
+  if (c.bookOrder && new Set(c.bookOrder).size !== c.bookOrder.length) out.push(`${c.id}: duplicate in bookOrder`);
+  const memberSet = new Set(members);
+  const relatedActivities = new Set(members.flatMap((id) => books.find((b) => b.id === id)?.relatedActivityIds ?? []));
+  for (const a of c.activityIds ?? []) {
+    if (!slugs.has(a)) out.push(`${c.id}: activityIds references missing "${a}"`);
+    else if (!relatedActivities.has(a)) out.push(`${c.id}: featured activity "${a}" is not related to any member book`);
+  }
+  if (c.activityIds && new Set(c.activityIds).size !== c.activityIds.length) out.push(`${c.id}: duplicate in activityIds`);
+  for (const r of c.resourceIds ?? []) if (!resIds.has(r)) out.push(`${c.id}: resourceIds references missing "${r}"`);
+  for (const key of ['title', 'description'] as const) {
+    const v = c[key];
+    if (v) for (const l of langs) if (!v[l]?.trim()) out.push(`${c.id}: ${key} override missing ${l}`);
+  }
+  for (const t of c.themeIds ?? []) if (!THEME_IDS.includes(t)) out.push(`${c.id}: unknown theme "${t}"`);
+  for (const a of c.ageBandIds ?? []) if (!AGE_BAND_IDS.includes(a)) out.push(`${c.id}: unknown age band "${a}"`);
+  void memberSet;
+  return out;
+}
+
+/** Records by id — only published AND valid ones are consulted at render time. */
+export const collectionRecordById: Record<string, CollectionRecord> = Object.fromEntries(
+  collections.filter((c) => c.publishState === 'published' && collectionProblems(c).length === 0).map((c) => [c.id, c]),
+);
+
+/** Editorial collections (educator/seasonal) that may have a public route. */
+export const publishedEditorialCollectionIds: string[] = collections
+  .filter((c) => (c.kind === 'educator' || c.kind === 'seasonal') && c.publishState === 'published' && collectionProblems(c).length === 0)
+  .map((c) => c.id);
+
+/**
+ * Members of any collection id in DISPLAY order: the record's bookOrder first (if any),
+ * then the remaining derived members in catalog order. Editorial kinds use their bookIds.
+ */
+export function collectionMembers(id: string): BookId[] {
+  const rec = collectionRecordById[id];
+  if (rec && (rec.kind === 'educator' || rec.kind === 'seasonal')) return [...(rec.bookIds ?? [])];
+  const derived = derivedCollectionMembers(id);
+  const head = (rec?.bookOrder ?? []).filter((b) => derived.includes(b));
+  return [...head, ...derived.filter((b) => !head.includes(b))];
+}
+
+/**
+ * Every id that MAY appear under /collections/. Theme ids, age-band ids and published
+ * editorial records share the namespace; the validator rejects a collision. The sitemap,
+ * the prerender guard and the page all read this one list.
+ */
+export const collectionRouteIds: string[] = [...collectionEligibleThemeIds, ...ageCollectionEligibleBandIds, ...publishedEditorialCollectionIds];
 
 // ---------------------------------------------------------------------------------
 // Reading journeys (S7-003 / S7-009 / S7-013 / S7-014)
