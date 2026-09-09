@@ -28,8 +28,9 @@ export default function SaveResourceButton({ resourceId }: { resourceId: string 
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
+        // Same rule as FavoriteButton: the `librarychange` listener is the single
+        // source of the displayed state. A local flip on top of it inverts the result.
         toggleSavedResource(resourceId);
-        setSaved((v) => !v);
         track('Resource Saved', { resource: resourceId, status: saved ? 'removed' : 'added' });
       }}
       aria-pressed={saved}

@@ -50,3 +50,7 @@ maintenance-report.html
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Playwright run artifacts
+test-results/
+playwright-report/
