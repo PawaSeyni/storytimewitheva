@@ -68,3 +68,22 @@ export const collectionEligibleThemeIds: ThemeId[] = THEME_IDS.filter(
 );
 
 export const isCollectionEligible = (t: ThemeId): boolean => collectionEligibleThemeIds.includes(t);
+
+/**
+ * Age-band collections (S7-002) are held to the SAME minimum as theme collections. Today
+ * every band clears it (4 / 10 / 6), but the gate exists so a future catalog change that
+ * empties a band retires its route instead of shipping a thin page.
+ */
+export const ageCollectionEligibleBandIds: AgeBandId[] = AGE_BAND_IDS.filter(
+  (b) => booksByPrimaryAgeBand[b].length >= THEME_COLLECTION_MINIMUM,
+);
+
+export const isAgeCollectionEligible = (b: AgeBandId): boolean =>
+  ageCollectionEligibleBandIds.includes(b);
+
+/**
+ * Every id that MAY appear under /collections/. Theme ids and age-band ids share the
+ * route namespace and cannot collide: themes are words, bands are `ages-N-M`. The sitemap,
+ * the prerender guard and the page all read this one list, so they cannot disagree.
+ */
+export const collectionRouteIds: string[] = [...collectionEligibleThemeIds, ...ageCollectionEligibleBandIds];

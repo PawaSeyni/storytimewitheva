@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Link } from '../components/LocalizedLink';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
 import NotFound from './NotFound';
@@ -15,6 +14,7 @@ import { relatedBooksFor } from '../data/relatedBooks';
 import ResourceStrip from '../components/ResourceStrip';
 import RelatedActivities from '../components/RelatedActivities';
 import DiscussionPrompts from '../components/DiscussionPrompts';
+import Breadcrumbs, { breadcrumbSchema } from '../components/Breadcrumbs';
 import { BOOK_RATINGS } from '../data/ratings';
 import { LANGUAGE_LABELS, SUPPORTED_LANGUAGES, localizePath, useLanguage, useTranslation } from '../lib/language';
 import type { Language } from '../lib/language';
@@ -110,26 +110,21 @@ export default function BookDetail() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug, language, ogImage]);
 
-  // Home › Books › Title trail. URLs use the trailing-slash form Netlify serves
-  // (same as Seo.tsx canonicals), and the visible <nav> below mirrors it so the
-  // markup matches on-page content.
-  const crumbUrl = (p: string) => {
-    const lp = localizePath(p, language);
-    return lp === '/' ? `${SITE_URL}/` : `${SITE_URL}${lp}/`;
-  };
-  const breadcrumbSchema = useMemo(() => {
-    if (!book) return null;
-    return {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: t.homeCrumb, item: crumbUrl('/') },
-        { '@type': 'ListItem', position: 2, name: t.booksCrumb, item: crumbUrl('/books') },
-        { '@type': 'ListItem', position: 3, name: book.title, item: crumbUrl(`/books/${book.id}`) },
-      ],
-    };
+  // Home › Books › Title trail — shared component + schema helper (S3-007). The helper
+  // localizes the schema URLs to this language's canonical, trailing-slash form, so the
+  // JSON-LD names the same URLs the visible links go to.
+  const crumbs = book
+    ? [
+        { label: t.homeCrumb, to: '/' },
+        { label: t.booksCrumb, to: '/books' },
+        { label: book.title, to: `/books/${book.id}` },
+      ]
+    : null;
+  const breadcrumbLd = useMemo(
+    () => (crumbs ? breadcrumbSchema(crumbs, language) : null),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug, language, t.homeCrumb, t.booksCrumb]);
+    [book?.id, book?.title, language, t.homeCrumb, t.booksCrumb],
+  );
 
   // Unknown id → real (noindex) 404 rather than a blank page.
   if (!book) return <NotFound />;
@@ -142,18 +137,10 @@ export default function BookDetail() {
     <main className="py-8 px-4">
       <Seo title={book.title} description={book.subtitle || book.description} path={`/books/${book.id}`} image={ogImage} />
       <JsonLd id="book" data={bookSchema} />
-      {breadcrumbSchema && <JsonLd id="breadcrumb" data={breadcrumbSchema} />}
+      {breadcrumbLd && <JsonLd id="breadcrumb" data={breadcrumbLd} />}
 
       <div className="max-w-4xl mx-auto">
-        <nav aria-label="Breadcrumb" className="text-sm">
-          <ol className="flex flex-wrap items-center gap-1.5 text-gray-500">
-            <li><Link to="/" className="font-semibold text-purple-600 hover:text-purple-800 transition-colors">{t.homeCrumb}</Link></li>
-            <li aria-hidden className="text-gray-400">›</li>
-            <li><Link to="/books" className="font-semibold text-purple-600 hover:text-purple-800 transition-colors">{t.booksCrumb}</Link></li>
-            <li aria-hidden className="text-gray-400">›</li>
-            <li className="font-medium text-gray-700 truncate max-w-[16rem]" aria-current="page">{book.title}</li>
-          </ol>
-        </nav>
+        {crumbs && <Breadcrumbs crumbs={crumbs} />}
 
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           <div className="rounded-3xl overflow-hidden shadow-xl bg-gray-100 aspect-square">

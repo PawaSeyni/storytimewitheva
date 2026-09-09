@@ -8,21 +8,24 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './_manifest.mjs';
-import { loadTaxonomy, loadContentIndex } from '../../scripts/lib/catalog.mjs';
+import { loadTaxonomy, loadContentIndex, loadCatalog } from '../../scripts/lib/catalog.mjs';
 
 const tax = await loadTaxonomy();
 const idx = await loadContentIndex();
+const { books } = await loadCatalog();
 const sitemap = readFileSync(path.join(ROOT, 'public', 'sitemap.xml'), 'utf8');
 const LOCALES = ['en', 'fr', 'es'];
 
 const advertised = [...sitemap.matchAll(/<loc>https:\/\/storytimewitheva\.com\/collections\/([^/<]+)\/<\/loc>/g)]
   .map((m) => m[1]);
 
-test('collections — sitemap advertises exactly the eligible themes (no missing, no extra)', () => {
+test('collections — sitemap advertises exactly the eligible collections (no missing, no extra)', () => {
+  // Theme AND age-band collections share the /collections/ namespace (S7-002). The
+  // sitemap must advertise exactly their union, from the one list the page also reads.
   const unique = [...new Set(advertised)].sort();
   assert.deepEqual(
     unique,
-    [...idx.collectionEligibleThemeIds].sort(),
+    [...idx.collectionRouteIds].sort(),
     'sitemap collections diverged from eligibility — run `npm run gen:sitemap`',
   );
 });
@@ -56,4 +59,40 @@ test('collections — every eligible collection has at least two books', () => {
       `collection ${id}: only ${idx.booksByThemeId[id].length} book(s)`,
     );
   }
+});
+
+test('age collections — every band clears the minimum and partitions the catalog (S7-002)', async () => {
+  // Primary-fit placement puts each book in exactly ONE band, so the three age pages
+  // together cover the catalog with no overlap and no gap.
+  const seen = new Map();
+  for (const b of idx.ageCollectionEligibleBandIds) {
+    const ids = idx.booksByPrimaryAgeBand[b];
+    assert.ok(ids.length >= tax.THEME_COLLECTION_MINIMUM, `${b}: below the collection minimum`);
+    for (const id of ids) {
+      assert.ok(!seen.has(id), `${id} is in both ${seen.get(id)} and ${b}`);
+      seen.set(id, b);
+    }
+  }
+  assert.equal(seen.size, books.length, 'every book sits in exactly one age collection');
+  assert.deepEqual([...idx.ageCollectionEligibleBandIds].sort(), [...tax.AGE_BAND_IDS].sort(), 'all three bands eligible today');
+});
+
+test('age collections — each band has a unique localized intro in EN, FR and ES', async () => {
+  // The same gate as themes: a collection without its own intro is a thin page.
+  const seen = { en: new Set(), fr: new Set(), es: new Set() };
+  for (const b of tax.AGE_BAND_IDS) {
+    for (const lang of ['en', 'fr', 'es']) {
+      const d = tax.AGE_BANDS[b].descriptions?.[lang]?.trim();
+      assert.ok(d && d.length > 40, `${b}: missing or too-short ${lang} intro`);
+      assert.ok(!seen[lang].has(d), `${b}: ${lang} intro duplicates another band`);
+      seen[lang].add(d);
+    }
+  }
+});
+
+test('collections — theme ids and age-band ids never collide in the route namespace', async () => {
+  const themes = new Set(idx.collectionEligibleThemeIds);
+  for (const b of idx.ageCollectionEligibleBandIds) assert.ok(!themes.has(b), `${b} is both a theme and a band`);
+  assert.equal(new Set(idx.collectionRouteIds).size, idx.collectionRouteIds.length, 'duplicate collection route id');
+  for (const id of idx.collectionRouteIds) assert.match(id, /^[a-z0-9-]+$/, `${id}: not a bare route token`);
 });

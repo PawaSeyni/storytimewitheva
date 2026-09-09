@@ -1,0 +1,125 @@
+import { Link } from './LocalizedLink';
+import type { LocalizedBook } from '../data/books';
+import BookCard from './BookCard';
+import Seo from './Seo';
+import JsonLd from './JsonLd';
+import Breadcrumbs, { breadcrumbSchema } from './Breadcrumbs';
+import { useTranslation, useLanguage } from '../lib/language';
+
+// Presentation for ANY collection — theme or age band (S7-001 / S7-002). The route
+// component resolves the id and hands over localized title, intro, the books, and the
+// sibling collections to link to; nothing here knows which kind it is rendering.
+
+const SITE_URL = 'https://storytimewitheva.com';
+
+const TRANSLATIONS = {
+  en: {
+    home: 'Home', books: 'Books',
+    book: 'book', booksPlural: 'books', inThisCollection: 'in this collection',
+    booksHeading: 'Books in this collection',
+  },
+  es: {
+    home: 'Inicio', books: 'Libros',
+    book: 'libro', booksPlural: 'libros', inThisCollection: 'en esta colección',
+    booksHeading: 'Libros de esta colección',
+  },
+  fr: {
+    home: 'Accueil', books: 'Livres',
+    book: 'livre', booksPlural: 'livres', inThisCollection: 'dans cette collection',
+    booksHeading: 'Livres de cette collection',
+  },
+};
+
+export interface CollectionPageProps {
+  id: string;
+  title: string;
+  intro: string;
+  seoTitle: string;
+  books: LocalizedBook[];
+  /** Heading for the sibling-collections block, localized by the caller. */
+  browseOthersHeading: string;
+  others: { id: string; label: string }[];
+}
+
+export default function CollectionPage({ id, title, intro, seoTitle, books, browseOthersHeading, others }: CollectionPageProps) {
+  const { language } = useLanguage();
+  const t = useTranslation(TRANSLATIONS);
+  const path = `/collections/${id}`;
+
+  const crumbs = [
+    { label: t.home, to: '/' },
+    { label: t.books, to: '/books' },
+    { label: title, to: path },
+  ];
+
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: title,
+      description: intro,
+      url: `${SITE_URL}${path}`,
+      inLanguage: language,
+      mainEntity: {
+        '@type': 'ItemList',
+        numberOfItems: books.length,
+        itemListElement: books.map((b, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          url: `${SITE_URL}/books/${b.id}`,
+          name: b.title,
+        })),
+      },
+    },
+    breadcrumbSchema(crumbs, language),
+  ];
+
+  return (
+    <main>
+      <Seo title={seoTitle} description={intro} path={path} />
+      <JsonLd id={`collection-${id}`} data={schema} />
+
+      <section className="bg-gradient-to-b from-purple-50 to-white py-12 px-4">
+        <div className="max-w-6xl mx-auto">
+          <Breadcrumbs crumbs={crumbs} className="mb-6" />
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">{title}</h1>
+          <p className="text-lg text-gray-600 max-w-3xl leading-relaxed">{intro}</p>
+          <p className="mt-4 text-sm text-gray-500">
+            {books.length} {books.length === 1 ? t.book : t.booksPlural} {t.inThisCollection}
+          </p>
+        </div>
+      </section>
+
+      <section className="py-12 px-4">
+        <div className="max-w-7xl mx-auto">
+          {/* Named heading keeps the outline h1 -> h2 -> h3 (BookCard titles are h3). */}
+          <h2 className="sr-only">{t.booksHeading}</h2>
+        </div>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {books.map((book, i) => (
+            <BookCard key={book.id} book={book} priority={i < 3} />
+          ))}
+        </div>
+      </section>
+
+      {/* Internal linking keeps every collection reachable (orphan-route guard). */}
+      <section className="py-12 px-4 bg-purple-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">{browseOthersHeading}</h2>
+          <ul className="flex flex-wrap gap-2">
+            {others.map((o) => (
+              <li key={o.id}>
+                <Link
+                  to={`/collections/${o.id}`}
+                  className="inline-block px-4 py-2 rounded-full bg-white border border-purple-100 text-sm text-purple-700 hover:border-purple-300"
+                >
+                  {o.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    </main>
+  );
+}

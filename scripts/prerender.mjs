@@ -153,11 +153,11 @@ const LANG_PREFIXES = ['', '/es', '/fr'];
 // collection-eligible themes — no missing route (unreachable collection) and no extra
 // route (a thin page for a theme below the two-book minimum, e.g. honesty/heritage).
 {
-  const { collectionEligibleThemeIds } = await loadContentIndex();
+  const { collectionRouteIds } = await loadContentIndex();
   const routeSet = new Set(sitemapRoutes.map(r => r.replace(/\/$/, '')));
-  const missing = collectionEligibleThemeIds.filter(id => !routeSet.has(`/collections/${id}`));
+  const missing = collectionRouteIds.filter(id => !routeSet.has(`/collections/${id}`));
   const advertised = [...routeSet].filter(r => r.startsWith('/collections/')).map(r => r.split('/')[2]);
-  const extra = advertised.filter(id => !collectionEligibleThemeIds.includes(id));
+  const extra = advertised.filter(id => !collectionRouteIds.includes(id));
   if (missing.length || extra.length) {
     console.error(
       `\nPrerender aborted: collection/sitemap parity failed.` +
@@ -167,7 +167,7 @@ const LANG_PREFIXES = ['', '/es', '/fr'];
     );
     process.exit(1);
   }
-  console.log(`Collection guard OK: ${collectionEligibleThemeIds.length} eligible collections, no thin pages.`);
+  console.log(`Collection guard OK: ${collectionRouteIds.length} eligible collections (theme + age), no thin pages.`);
 }
 
 const extraRoutes = [...NOINDEX_SPA_ROUTES, ...LANDING_SLUGS.map(s => `/free/${s}`)].flatMap(p =>

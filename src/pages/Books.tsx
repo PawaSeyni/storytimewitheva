@@ -6,8 +6,8 @@ import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
 import { Link } from '../components/LocalizedLink';
-import { THEMES, THEME_IDS, supportsAge, type ThemeId } from '../data/taxonomy';
-import { collectionEligibleThemeIds } from '../data/contentIndex';
+import { THEMES, THEME_IDS, AGE_BANDS, supportsAge, type ThemeId } from '../data/taxonomy';
+import { collectionEligibleThemeIds, ageCollectionEligibleBandIds } from '../data/contentIndex';
 import { AMAZON_AUTHOR_URL } from '../lib/amazon';
 import { useTranslation, useLanguage, localizePath } from '../lib/language';
 
@@ -24,6 +24,7 @@ const TRANSLATIONS = {
     ageAll: 'All',
       themeAll: 'All themes',
       browseByTheme: 'Browse by theme',
+      browseByAge: 'Browse by age',
       ageLabel: 'Age',
       themeLabel: 'Theme',
     showingBook: 'book',
@@ -50,6 +51,7 @@ const TRANSLATIONS = {
     ageAll: 'Todos',
       themeAll: 'Todos los temas',
       browseByTheme: 'Explora por tema',
+      browseByAge: 'Explora por edad',
       ageLabel: 'Edad',
       themeLabel: 'Tema',
     showingBook: 'libro',
@@ -76,6 +78,7 @@ const TRANSLATIONS = {
     ageAll: 'Tous',
       themeAll: 'Tous les thèmes',
       browseByTheme: 'Explorer par thème',
+      browseByAge: 'Explorer par âge',
       ageLabel: 'Âge',
       themeLabel: 'Thème',
     showingBook: 'livre',
@@ -222,6 +225,20 @@ export default function Books() {
                   className="inline-block px-3 py-1.5 rounded-full bg-purple-50 border border-purple-100 text-sm text-purple-700 hover:border-purple-300"
                 >
                   {THEMES[id].labels[language]}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          {/* Age-band collections (S7-002): primary-fit placement, one page per band. */}
+          <h2 className="text-sm font-semibold text-gray-500 mt-6 mb-3">{t.browseByAge}</h2>
+          <ul className="flex flex-wrap gap-2">
+            {ageCollectionEligibleBandIds.map((id) => (
+              <li key={id}>
+                <Link
+                  to={`/collections/${id}`}
+                  className="inline-block px-3 py-1.5 rounded-full bg-amber-50 border border-amber-100 text-sm text-amber-800 hover:border-amber-300"
+                >
+                  {AGE_BANDS[id].labels[language]}
                 </Link>
               </li>
             ))}
