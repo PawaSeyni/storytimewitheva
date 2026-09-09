@@ -14,6 +14,8 @@
     "gen:content": "node scripts/gen-content-inventory.mjs",
     "check:content": "node scripts/gen-content-inventory.mjs --check",
     "check:budgets": "node scripts/check-budgets.mjs",
+    "check:audit": "node scripts/check-audit.mjs",
+    "check:secrets": "node scripts/check-bundle-secrets.mjs",
     "bench:build": "node scripts/bench-build.mjs",
     "bench:search": "node scripts/bench-search.mjs",
     "gen:version": "node scripts/gen-version.mjs",

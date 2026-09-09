@@ -1,0 +1,53 @@
+# S8-011 / S8-018: automated post-deploy and scheduled production checks.
+#
+# - On every push to main: wait until production reports the pushed commit in
+#   /version.json (Netlify builds in ~1 min), then run the deploy verification and the
+#   production smoke suite. A failure here is the "rollback" signal (see the DR runbook).
+# - Every 6 hours: the same checks as uptime/route monitoring.
+# - Daily: the full client-side audit against production (a11y, cookie-free, seasonal,
+#   search, print, landing). Results are uploaded as artifacts and retained 90 days.
+# Alerts: GitHub emails the repository owner on a failed run (default notification).
+name: post-deploy
+on:
+  push: { branches: [main] }
+  schedule:
+    - cron: '17 */6 * * *'   # every 6 h
+    - cron: '43 5 * * *'     # daily full audit
+  workflow_dispatch:
+jobs:
+  production-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - name: Wait for production to serve this commit (push only)
+        if: github.event_name == 'push'
+        run: |
+          for i in $(seq 1 40); do
+            live=$(curl -s https://storytimewitheva.com/version.json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>console.log(JSON.parse(s).commit||''))")
+            [ "$live" = "$GITHUB_SHA" ] && echo "live: $live" && exit 0
+            sleep 15
+          done
+          echo "production never reported $GITHUB_SHA"; exit 1
+      - name: Verify deploy chain
+        run: npm run verify:deploy -- ${{ github.sha }}
+        if: github.event_name == 'push'
+      - run: npx playwright install --with-deps chromium
+      - name: Production smoke (routes, delivery, ad destinations)
+        run: npm run test:smoke
+      - name: Full client-side audit against production (daily / manual)
+        if: github.event_name == 'workflow_dispatch' || github.event.schedule == '43 5 * * *'
+        run: npm run test:prod-audit
+      - name: Retain results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: post-deploy-${{ github.run_id }}
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 90
+          if-no-files-found: ignore
