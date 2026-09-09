@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { isPrerendering } from '../lib/prerender';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RefreshCw, Trophy, Award } from 'lucide-react';
@@ -305,7 +306,8 @@ export default function BingoDemo() {
 
   const generateCard = useCallback(() => {
     const theme = themes[currentTheme];
-    const shuffled = [...theme.items].sort(() => Math.random() - 0.5);
+    // Fixed order under the build-time prerender (deterministic snapshot); shuffled for visitors.
+    const shuffled = isPrerendering() ? [...theme.items] : [...theme.items].sort(() => Math.random() - 0.5);
     const newCard = shuffled.slice(0, 24);
     newCard.splice(12, 0, freeSpace);
     setCurrentCard(newCard);

@@ -266,6 +266,9 @@ const failures = [];
 
 for (const route of routes) {
   const page = await browser.newPage();
+  // S8-006: tell the app it is being snapshotted, so random-first-render pages (bingo,
+  // puzzles) render a fixed state and the output is deterministic build to build.
+  await page.evaluateOnNewDocument(() => { window.__PRERENDERING__ = true; });
   try {
     await page.goto(ORIGIN + route, { waitUntil: 'load', timeout: 30000 });
     await waitUntilReady(page);
