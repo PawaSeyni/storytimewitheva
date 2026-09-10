@@ -3,6 +3,11 @@
 // storage denied. (Assignment, weights, eligibility and the kill switch are unit-tested.)
 import { test, expect, type Page } from '@playwright/test';
 
+/** Wait for the client app to have mounted over the prerendered HTML. Since PD-04 the first
+ *  render waits for the route chunk, so a locator resolved straight after goto() can point at
+ *  a prerendered node that React is about to replace. */
+const appReady = (page: Page) => page.waitForFunction(() => (window as unknown as { __PRERENDER_READY__?: boolean }).__PRERENDER_READY__ === true);
+
 async function stub(page: Page) {
   await page.addInitScript(() => {
     // @ts-expect-error test shim
@@ -18,10 +23,12 @@ const events = (page: Page) => page.evaluate(() => (window as unknown as { __ev:
 test('draft experiments: control everywhere, no exposure, conversions carry no experiment props', async ({ page }) => {
   await stub(page);
   await page.goto('/books/mayas-shadow');
+  await appReady(page);
   await page.getByRole('group', { name: 'Buy this book' }).scrollIntoViewIfNeeded();
   await expect.poll(async () => (await events(page)).some((x) => x.e === 'Purchase CTA View')).toBe(true);
   await expect(page.locator('[data-experiment="book-cta-hierarchy-v1"]')).toHaveCount(0);
   await page.goto('/resources');
+  await appReady(page);
   await page.locator('#email-signup').scrollIntoViewIfNeeded();
   await expect(page.locator('[data-signup-context="resources"]')).toBeVisible(); // 'contextual' is the shipped default
   await expect.poll(async () => (await events(page)).some((x) => x.e === 'Form View')).toBe(true);
@@ -38,8 +45,10 @@ test('with storage denied the experiment surfaces still render and nothing throw
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/fr/books/leo-and-the-wolf', { waitUntil: 'domcontentloaded' });
+  await appReady(page);
   await expect(page.getByRole('group', { name: 'Acheter ce livre' })).toBeVisible();
   await page.goto('/activities', { waitUntil: 'domcontentloaded' });
+  await appReady(page);
   await expect(page.locator('[data-signup-context="activities"]')).toBeVisible();
   expect(errors).toEqual([]);
 });

@@ -1,7 +1,9 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
+import { chunk } from './lib/chunk';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from './lib/language';
 import { LANG_PREFIXES, splitLangFromPath } from './lib/locales';
+import * as L from './routeLoaders';
 
 /**
  * Scroll to a #hash target after navigation. React Router doesn't do this for
@@ -76,39 +78,41 @@ import FeedbackWidget from './components/FeedbackWidget';
 import Home from './pages/Home';
 
 // All non-home pages are code-split so the initial bundle only contains what
-// the homepage actually needs. The <Suspense> boundary below handles loading.
-const Books               = lazy(() => import('./pages/Books'));
-const BookDetail          = lazy(() => import('./pages/BookDetail'));
-const Collection = lazy(() => import('./pages/Collection'));
-const Journeys = lazy(() => import('./pages/Journeys'));
-const Journey = lazy(() => import('./pages/Journey'));
-const Activities          = lazy(() => import('./pages/Activities'));
-const Resources           = lazy(() => import('./pages/Resources'));
-const About               = lazy(() => import('./pages/About'));
-const Contact             = lazy(() => import('./pages/Contact'));
-const Profile             = lazy(() => import('./pages/Profile'));
-const Privacy             = lazy(() => import('./pages/Privacy'));
-const Terms               = lazy(() => import('./pages/Terms'));
-const FAQ                 = lazy(() => import('./pages/FAQ'));
-const Search              = lazy(() => import('./pages/Search'));
-const NotFound            = lazy(() => import('./pages/NotFound'));
-const Links               = lazy(() => import('./pages/Links'));
-const DemoPage            = lazy(() => import('./pages/DemoPage'));
-const LandingPage         = lazy(() => import('./pages/LandingPage'));
+// the homepage actually needs. The <Suspense> boundary below handles loading. The
+// loaders live in routeLoaders.ts so main.tsx can preload the current route's chunk
+// before the first render (PD-04: no fallback flash over the prerendered HTML).
+const Books = chunk(L.loadBooks);
+const BookDetail = chunk(L.loadBookDetail);
+const Collection = chunk(L.loadCollection);
+const Journeys = chunk(L.loadJourneys);
+const Journey = chunk(L.loadJourney);
+const Activities = chunk(L.loadActivities);
+const Resources = chunk(L.loadResources);
+const About = chunk(L.loadAbout);
+const Contact = chunk(L.loadContact);
+const Profile = chunk(L.loadProfile);
+const Privacy = chunk(L.loadPrivacy);
+const Terms = chunk(L.loadTerms);
+const FAQ = chunk(L.loadFAQ);
+const Search = chunk(L.loadSearch);
+const NotFound = chunk(L.loadNotFound);
+const Links = chunk(L.loadLinks);
+const DemoPage = chunk(L.loadDemoPage);
+const LandingPage = chunk(L.loadLandingPage);
 
 // The 8 interactive demos are also code-split.
 // A Suspense boundary (below) renders a fallback while a demo chunk loads; the
 // fallback carries data-prerender-loading so the build-time prerender waits for
 // the real demo to mount before snapshotting.
-const StoryBuilderDemo = lazy(() => import('./demos/StoryBuilderDemo'));
-const CharacterWorkshopDemo = lazy(() => import('./demos/CharacterWorkshopDemo'));
-const AdventureJournalDemo = lazy(() => import('./demos/AdventureJournalDemo'));
-const BingoDemo = lazy(() => import('./demos/BingoDemo'));
-const BookmarkCraftsDemo = lazy(() => import('./demos/BookmarkCraftsDemo'));
-const CraftCornerDemo = lazy(() => import('./demos/CraftCornerDemo'));
-const ColoringDemo = lazy(() => import('./demos/ColoringDemo'));
-const PuzzleAdventuresDemo = lazy(() => import('./demos/PuzzleAdventuresDemo'));
-const WordExplorerDemo = lazy(() => import('./demos/WordExplorerDemo'));
+const StoryBuilderDemo = chunk(L.loadStoryBuilderDemo);
+const CharacterWorkshopDemo = chunk(L.loadCharacterWorkshopDemo);
+const AdventureJournalDemo = chunk(L.loadAdventureJournalDemo);
+const BingoDemo = chunk(L.loadBingoDemo);
+const BookmarkCraftsDemo = chunk(L.loadBookmarkCraftsDemo);
+const CraftCornerDemo = chunk(L.loadCraftCornerDemo);
+const ColoringDemo = chunk(L.loadColoringDemo);
+const PuzzleAdventuresDemo = chunk(L.loadPuzzleAdventuresDemo);
+const WordExplorerDemo = chunk(L.loadWordExplorerDemo);
 
 // Canonical (English) route table. Mounted once per language prefix below so
 // every page exists at /path, /es/path, and /fr/path. The active language is
