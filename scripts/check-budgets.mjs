@@ -32,8 +32,12 @@ for (const f of js) if (f !== entry) check(`chunk ${rel(f)} (gzip)`, jsGz[rel(f)
 check('total JavaScript (gzip)', Object.values(jsGz).reduce((a, b) => a + b, 0), B.js.totalGzipKB, 'KB');
 
 // CSS
-const css = files.filter((f) => f.endsWith('.css'));
-check('total CSS (gzip)', css.reduce((n, f) => n + gzKB(f), 0), B.css.totalGzipKB, 'KB');
+// App CSS (Vite output) and the static games' stylesheet are separate budgets: a visitor
+// never loads both on one page.
+const css = files.filter((f) => f.endsWith('.css') && !/\/games\//.test(f));
+check('total app CSS (gzip)', css.reduce((n, f) => n + gzKB(f), 0), B.css.totalGzipKB, 'KB');
+const gamesCss = files.filter((f) => f.endsWith('.css') && /\/games\//.test(f));
+check('games stylesheet (gzip)', gamesCss.reduce((n, f) => n + gzKB(f), 0), B.css.gamesGzipKB, 'KB');
 
 // HTML per route
 const html = files.filter((f) => f.endsWith('index.html'));

@@ -18,6 +18,10 @@
     "totalGzipKB": {
       "warn": 40,
       "fail": 60
+    },
+    "gamesGzipKB": {
+      "warn": 30,
+      "fail": 40
     }
   },
   "html": {
