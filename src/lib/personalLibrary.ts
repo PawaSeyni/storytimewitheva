@@ -162,7 +162,8 @@ export function onLibraryChange(fn: () => void): () => void {
 
 export function getStatus(state: PersonalizationStateV1, bookId: string): LibraryStatus | null {
   const entry = state.library[bookId];
-  return entry && STATUSES.includes(entry.status) ? entry.status : null;
+  const status = entry?.status;
+  return status && STATUSES.includes(status) ? status : null;
 }
 
 /** Set or clear a book's status. Passing the current status clears it (toggle). */

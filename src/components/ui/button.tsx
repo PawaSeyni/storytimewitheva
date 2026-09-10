@@ -1,7 +1,9 @@
 import { forwardRef } from 'react';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
-type Variant = 'default' | 'outline-solid' | 'ghost' | 'destructive' | 'secondary' | 'link';
+// 'outline' is a variant NAME, not a Tailwind class: the Tailwind 4 upgrade tool rewrote it to
+// 'outline-solid' inside this union (#202) and the build's type check did not run, see TS7-02.
+type Variant = 'default' | 'outline' | 'ghost' | 'destructive' | 'secondary' | 'link';
 type Size = 'default' | 'sm' | 'lg' | 'icon';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
