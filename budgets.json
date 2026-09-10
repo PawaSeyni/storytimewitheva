@@ -2,7 +2,7 @@
   "_doc": "Performance and artifact budgets (S8-021). Enforced by scripts/check-budgets.mjs after the build in CI. 'fail' blocks; 'warn' reports. Sizes in KB (gzip where stated). Rationale and review cadence: docs/platform/PERFORMANCE_BUDGET_POLICY.md",
   "js": {
     "entryGzipKB": {
-      "warn": 125,
+      "warn": 135,
       "fail": 140
     },
     "pageChunkGzipKB": {

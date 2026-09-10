@@ -3,14 +3,17 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { ROOT } from '../funnel/_manifest.mjs';
-import { loadExperiments } from '../../scripts/lib/catalog.mjs';
+import { loadExperiments, loadEvents } from '../../scripts/lib/catalog.mjs';
 
 const { EXPERIMENTS, experimentProblems, assign, hashBucket, routeMatches, CONTROL } = await loadExperiments();
+const { EVENT_BY_NAME } = await loadEvents();
 const active = { ...EXPERIMENTS[0], status: 'active', startAt: '2026-10-01' };
 
 test('registry — every experiment validates; every non-draft experiment has complete governance', () => {
   assert.ok(EXPERIMENTS.length >= 2);
   for (const e of EXPERIMENTS) assert.deepEqual(experimentProblems(e), []);
+  // The primary metric must be a live dictionary event (kept out of the browser bundle on purpose).
+  for (const e of EXPERIMENTS) assert.ok(EVENT_BY_NAME[e.primaryMetric] && !EVENT_BY_NAME[e.primaryMetric].reserved, `${e.id}: primaryMetric not a dictionary event`);
   for (const e of EXPERIMENTS) assert.ok(readFileSync(`${ROOT}/${e.doc}`, 'utf8').includes(e.id), `${e.id}: doc must reference the id`);
 });
 
@@ -25,7 +28,7 @@ test('governance — an active experiment without hypothesis, owner, rules, samp
   assert.ok(has({ ...active, startAt: undefined }, 'needs startAt'));
   assert.ok(has({ ...active, variants: [{ id: 'a', weight: 60 }, { id: 'b', weight: 50 }] }, 'total 110'));
   assert.ok(has({ ...active, variants: [{ id: 'a', weight: 100 }] }, 'at least two'));
-  assert.ok(has({ ...active, primaryMetric: 'Edition Selected' }, 'not a dictionary event'));
+  assert.ok(has({ ...active, primaryMetric: '' }, 'primaryMetric required'));
   assert.ok(has({ ...active, endAt: '2026-09-01' }, 'endAt before startAt'));
   assert.deepEqual(experimentProblems({ ...active, status: 'draft', hypothesis: '' }), [], 'drafts may be incomplete');
 });
