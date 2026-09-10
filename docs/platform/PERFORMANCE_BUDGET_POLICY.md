@@ -24,9 +24,9 @@ Measured outside CI and reviewed at each release audit:
 
 | Budget | Warn | Fail | Source |
 |---|---|---|---|
-| Lighthouse mobile Performance | < 80 | < 60 | Netlify Lighthouse plugin, five paths per deploy (2026-09: 96 / 71 / 86 / 86 / 80; `/books` is the open item) |
+| Lighthouse mobile Performance | < 80 | < 60 | Netlify Lighthouse plugin, five paths per deploy (2026-09: 96 / 71 / 86 / 86 / 80; `/books` closed by PD-04 on 2026-09-10, deploy preview 93-99) |
 | LCP | 2.5 s | | same |
-| CLS | 0.1 | | same |
+| CLS | 0.1 | | same; plus `tests/e2e/no-fallback-flash.spec.ts` in CI, which fails above 0.01 on load for six routes (the prerendered page must never be swapped for the Suspense fallback, PD-04) |
 | INP | 200 ms | | same |
 | Netlify `deploy_time` | 180 s | 300 s | deploy record (2026-09: 52 s) |
 | Local prerender | 300 s | | `npm run bench:build` (2026-09: 149 to 165 s) |
