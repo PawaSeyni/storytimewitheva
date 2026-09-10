@@ -10,7 +10,7 @@ this file's history. Values were set from the September 2026 baseline with rough
 |---|---|---|---|
 | Entry JavaScript chunk, gzip | 135 KB | 140 KB | 118 KB at baseline; 128 KB after Sprint 5 instrumentation (+5) and React Router 7 (+5), warn raised 2026-09-10 for that reason; Vite 8 (Rolldown) then brought the entry down to 81 KB, so the warn returns to 125 |
 | Any lazy page chunk, gzip | 35 KB | 50 KB | 23 KB (Resources) |
-| Total JavaScript, gzip | 300 KB | 350 KB | 275 KB |
+| Total JavaScript, gzip | 320 KB | 350 KB | 275 KB at baseline; 302 KB after React 19 (+22 KB in the entry), warn raised 2026-09-10 for that reason; entry itself 103 KB |
 | Total CSS, gzip | 40 KB | 60 KB | 35 KB |
 | Prerendered HTML per route | 130 KB | 200 KB | 27 to 60 KB; the catalog page is 123 to 127 KB (20 cards with srcSets), which set the warn level |
 | Page image asset, each | 320 KB | 600 KB | covers ≤ 190 KB; the hero photo and the OG image are 310 KB (900 px, already optimized) and set the warn level |
