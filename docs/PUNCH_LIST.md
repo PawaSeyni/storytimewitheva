@@ -78,6 +78,12 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Tooling — React Compiler readiness (from the ESLint 10 major)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| RC-01 | **23 React Compiler readiness findings** reported by eslint-plugin-react-hooks 7, kept as warnings: 9 `set-state-in-effect` (storage-sync effects in EmailSignup, Navbar, Pixel, ReadAlong, four demos), 7 `static-components` (CharacterWorkshopDemo defines components during render: real state-reset and perf cost), 3 `immutability` (toast.tsx), 2 `use-memo`, 1 `refs` (ReadAlong), 1 `purity` (PuzzleAdventures `Math.random` in render). Work through them before enabling the React Compiler; `static-components` first. | open |
+
 ### Sprint 5 — release audit (S5-024)
 
 | ID | Item | Evidence |
