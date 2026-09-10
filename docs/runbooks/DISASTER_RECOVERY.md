@@ -24,7 +24,10 @@
 4. **Recreate from version-controlled sources** (Netlify site lost): clone, `npm ci`,
    set the four env vars, `npm run build`, deploy (or connect the repo to a new Netlify
    site: build settings are read from `netlify.toml`), re-add DNS, re-enable Forms
-   notifications and the Lighthouse plugin (in `netlify.toml` already).
+   notifications and the Lighthouse plugin (in `netlify.toml` already), and turn OFF
+   *Pretty URLs* under Build & deploy → Post processing (site setting, not in the repo;
+   set 2026-09-10 for PD-05 so `/books` and `/books/` both serve 200 with no redirect:
+   `netlify api updateSite --data '{"site_id":"<id>","body":{"processing_settings":{"html":{"pretty_urls":false}}}}'`).
 5. **Build skipped for credits** (Netlify: "Skipped due to account credit usage exceeded"):
    production keeps the last good deploy; the post-deploy job fails with "production never
    reported <sha>". Restore credits in the Netlify billing page, then retry the skipped deploy
