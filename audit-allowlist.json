@@ -1,17 +1,4 @@
 {
   "_doc": "S8-014: advisories that do not block CI. Each needs the reason it does not apply, an owner and a review date within 90 days. Reviewed at every release audit.",
-  "allow": [
-    {
-      "package": "vite",
-      "reason": "Dev-server-only path traversal / optimized-deps .map handling; production is static files with no dev server. Cleared by the planned Vite 8 major.",
-      "owner": "engineering",
-      "review": "2026-12-01"
-    },
-    {
-      "package": "esbuild",
-      "reason": "Dev-server request exposure; the build output is static. Cleared with the Vite 8 major.",
-      "owner": "engineering",
-      "review": "2026-12-01"
-    }
-  ]
+  "allow": []
 }

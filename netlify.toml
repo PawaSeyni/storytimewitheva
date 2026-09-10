@@ -6,7 +6,7 @@
   directory = "netlify/functions"
 
 [build.environment]
-  NODE_VERSION = "20"
+  NODE_VERSION = "22"
   # The prerender step uses puppeteer-core + @sparticuz/chromium on CI (scripts/
   # prerender.mjs), never the full `puppeteer` package — which would otherwise
   # download ~150 MB of Chrome-for-Testing on every deploy (Netlify doesn't cache
