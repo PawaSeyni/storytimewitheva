@@ -4,7 +4,7 @@
 // CRITICAL violation. Moderate/minor findings are reported, not blocking, so the gate
 // stays honest about what it enforces. This is the automated half of S6-017; the manual
 // keyboard and screen-reader pass is recorded in docs/testing/SPRINT_6_RELEASE_AUDIT.md.
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_app';
 import AxeBuilder from '@axe-core/playwright';
 
 const ROUTES = [

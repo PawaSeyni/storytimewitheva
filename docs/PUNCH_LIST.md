@@ -103,6 +103,19 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | TW-03 | **Accepted visual change**: where a responsive text size meets `leading-*` (home hero h1 and lead, About quote, two Resources headings), Tailwind 3 let the size's default line-height override the utility at md+; Tailwind 4 honours the utility, so those five blocks are a few pixels taller. Before/after crops sent to the owner 2026-09-10. Reverse per element with `md:leading-none` if wanted. | accepted |
 | TW-04 | **Games stylesheet regenerated with Tailwind 4 and screenshot-checked**: 12 games × desktop/mobile (plus one French page) with `Math.random` seeded, 26/26 identical after two fixes: v4 ignores the legacy regex safelist, so the dynamically built color and grid classes are now declared with `@source inline` (locked by `tests/funnel/games-css.test.mjs`); Sentence Builder's Check button carried `flex-2`, a no-op in v3 that became `flex: 2` in v4 and changed the button widths, removed. Games CSS 24 → 25 KB gzip; app CSS 35 → 17 KB. | #203 |
 
+### External audit response (2026-09-11)
+
+An external black-box audit of production against Sprint PRDs 2-7 (snapshot 2026-09-09 12:00 UTC, before the rest of Sprint 7 and Sprints 5 and 8 shipped) reported 7 Sprint 7 fails and 5 P1 corrections. The owner tabled the remediation packet and requested a fresh audit; only the findings that were real defects on 2026-09-11 were fixed here.
+
+| ID | Item | Evidence |
+|----|------|----------|
+| XA-01 | **Activity pages now carry breadcrumbs** (Home › Activities › title) with `BreadcrumbList` JSON-LD, the same component and schema helper as book and collection pages (S3-007). The "Back to Activities" link they replace is the second crumb. | PR |
+| XA-02 | **Game pages declare hreflang**: `en` and `x-default`, both on the canonical. The 12 `/games/*.html` documents are single-URL English pages with a runtime language switch (`?lang=`); the switched states are not separate canonical documents, so no `fr`/`es` alternates are declared (they would conflict with the canonical). Locked by `tests/seo/seo.test.mjs`. | PR |
+| XA-03 | **Unsourced claim softened**: the Resources page said comprehension rises "by roughly 30%" after a prediction prompt, with no citation, in EN/ES/FR. Now a qualitative sentence in all three languages. | PR |
+| XA-04 | **Not changed, already decided**: age collections partition by primary fit (T-03, AC-01, owner-approved 2026-09-08; overlap was rejected because it put all 20 books in two bands); S7-004 bundles are the related-activities relation (GI-01); S6-005 language/content-type preferences, S6-013 granular clear controls and S6-010 recently-read section were scoped down in Sprint 6 (RC-04, DB-02, DB-03); S2-015's single "Continue the Adventure" block is covered by related books, activities, resources and guide links. | recorded |
+| XA-05 | **Already shipped after the snapshot**: journeys, progress and saved journeys (S7-003/010/011), seasonal collections (S7-012), journey analytics and the cookie-free journey test (S7-016/017), ecosystem search (S7-015), activity-to-book continuation (S4-011), share (S5-020), `/links` landmark (QG-04). | #17x-#207 |
+| XA-06 | **e2e harness**: every spec now imports `test` from `tests/e2e/_app.ts`, whose `page.goto()` waits for the app mount before returning. Since PD-04 the first render lands after the load event, and three specs raced it (a click, a focus and a fill on prerendered nodes). | PR |
+
 ### Tooling — React Compiler readiness (2026-09-10)
 
 | ID | Item | Evidence |

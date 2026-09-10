@@ -1,5 +1,5 @@
 // Sprint 7 S7-008: learning packs are gated bundles; printed pages drop the chrome.
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_app';
 
 const signup = '#email-signup';
 

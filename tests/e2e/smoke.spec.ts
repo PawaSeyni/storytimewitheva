@@ -2,7 +2,7 @@
 // production because these are Netlify-runtime behaviours. This is the automated
 // version of the destination pre-flight that would have caught the 2026-08-03
 // raw-PDF flight (~CA$35, zero pageviews).
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_app';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

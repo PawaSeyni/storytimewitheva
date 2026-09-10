@@ -1,23 +1,27 @@
 import type { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Link } from '../components/LocalizedLink';
 import ActivityStatusButton from '../components/ActivityStatusButton';
 import Seo from '../components/Seo';
+import JsonLd from '../components/JsonLd';
+import Breadcrumbs, { breadcrumbSchema } from '../components/Breadcrumbs';
 import { useActivity } from '../data/activities';
-import { useTranslation } from '../lib/language';
+import { useLanguage, useTranslation } from '../lib/language';
 import ContinueJourney from '../components/ContinueJourney';
 
 const TRANSLATIONS = {
   en: {
-    back: '← Back to Activities',
+    homeCrumb: 'Home',
+    activitiesCrumb: 'Activities',
     seoSuffix: 'Free interactive activity for ages',
   },
   es: {
-    back: '← Volver a actividades',
+    homeCrumb: 'Inicio',
+    activitiesCrumb: 'Actividades',
     seoSuffix: 'Actividad interactiva gratuita para edades',
   },
   fr: {
-    back: '← Retour aux activités',
+    homeCrumb: 'Accueil',
+    activitiesCrumb: 'Activités',
     seoSuffix: 'Activité interactive gratuite pour les',
   },
 };
@@ -32,6 +36,16 @@ export default function DemoPage({ children }: DemoPageProps) {
   const slug = pathname.split('/').filter(Boolean).pop() ?? '';
   const activity = useActivity(slug);
   const t = useTranslation(TRANSLATIONS);
+  const { language } = useLanguage();
+  // Same breadcrumb component and BreadcrumbList schema as book and collection pages
+  // (S3-007); activity pages were the one detail type without them.
+  const crumbs = activity
+    ? [
+        { label: t.homeCrumb, to: '/' },
+        { label: t.activitiesCrumb, to: '/activities' },
+        { label: activity.title, to: `/activities/${activity.slug}` },
+      ]
+    : null;
 
   return (
     <main className="py-8 px-4">
@@ -42,14 +56,10 @@ export default function DemoPage({ children }: DemoPageProps) {
           path={`/activities/${activity.slug}`}
         />
       )}
+      {crumbs && <JsonLd id="breadcrumb" data={breadcrumbSchema(crumbs, language)} />}
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-          <Link
-            to="/activities"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-purple-600 hover:text-purple-800 transition-colors"
-          >
-            {t.back}
-          </Link>
+          {crumbs && <Breadcrumbs crumbs={crumbs} />}
           {activity && <ActivityStatusButton slug={activity.slug} />}
         </div>
         {activity && <h1 className="sr-only">{activity.title}</h1>}

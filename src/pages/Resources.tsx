@@ -156,7 +156,7 @@ const TRANSLATIONS = {
           'Even if you’re not fluent, swap a single word per page. “Look at the perro.” Then “The perro is sleeping.” Children absorb the second language as part of the story, not as a lesson.',
         ] },
         { title: '8. Pause for predictions', body: [
-          'Halfway through, ask: “What do you think will happen?” Then go back to reading. Comprehension goes up by roughly 30% on the next read-through when kids have already guessed once.',
+          'Halfway through, ask: “What do you think will happen?” Then go back to reading. Kids who have already made a guess follow the story more closely on the next read-through.',
         ] },
         { title: '9. Build the nook', body: [
           'A reading nook is a vote of confidence – a small space that says “this matters here.” Start with a ',
@@ -370,7 +370,7 @@ const TRANSLATIONS = {
           'Aunque no domines el idioma, cambia una sola palabra por p\xe1gina. “Look at the perro.” Luego “The perro is sleeping.” Los ni\xf1os absorben el segundo idioma como parte de la historia, no como una lecci\xf3n.',
         ] },
         { title: '8. Pausa para predecir', body: [
-          'A mitad del cuento, pregunta: “\xbfQu\xe9 crees que pasar\xe1?” Luego sigue leyendo. La comprensi\xf3n sube alrededor de un 30% en la siguiente lectura cuando los ni\xf1os ya han hecho una conjetura.',
+          'A mitad del cuento, pregunta: “\xbfQu\xe9 crees que pasar\xe1?” Luego sigue leyendo. Los ni\xf1os que ya han hecho una conjetura siguen la historia con m\xe1s atenci\xf3n en la siguiente lectura.',
         ] },
         { title: '9. Construye el rinc\xf3n', body: [
           'Un rinc\xf3n de lectura es un voto de confianza – un peque\xf1o espacio que dice “esto importa aqu\xed.” Empieza con un ',
@@ -584,7 +584,7 @@ const TRANSLATIONS = {
           'M\xeame si vous ne parlez pas couramment, remplacez un mot par page. \xab\xa0Look at the perro.\xa0\xbb Puis \xab\xa0The perro is sleeping.\xa0\xbb Les enfants int\xe8grent la deuxi\xe8me langue comme une partie de l’histoire, pas comme une le\xe7on.',
         ] },
         { title: '8. Faites une pause pour pr\xe9dire', body: [
-          '\xc0 mi-parcours, demandez\xa0: \xab\xa0\xc0 ton avis, qu’est-ce qui va se passer\xa0?\xa0\xbb Puis reprenez la lecture. La compr\xe9hension grimpe d’environ 30\xa0% \xe0 la relecture quand les enfants ont d\xe9j\xe0 fait une hypoth\xe8se.',
+          '\xc0 mi-parcours, demandez\xa0: \xab\xa0\xc0 ton avis, qu’est-ce qui va se passer\xa0?\xa0\xbb Puis reprenez la lecture. Les enfants qui ont d\xe9j\xe0 fait une hypoth\xe8se suivent l’histoire de plus pr\xe8s \xe0 la relecture.',
         ] },
         { title: '9. Am\xe9nagez le coin lecture', body: [
           'Un coin lecture est un vote de confiance – un petit espace qui dit \xab\xa0\xe7a compte ici\xa0\xbb. Commencez avec un ',

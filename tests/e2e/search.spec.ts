@@ -1,5 +1,5 @@
 // S7-015: site search across content types, keyboard-operable filters, locale, empty query.
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_app';
 
 test('a query finds books, collections, journeys and resources, grouped with type labels', async ({ page }) => {
   await page.goto('/search?q=kindness');
