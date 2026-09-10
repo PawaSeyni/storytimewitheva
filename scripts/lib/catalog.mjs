@@ -175,3 +175,10 @@ export async function loadExperiments() {
   if (!expCache) expCache = await loadModule(path.join(ROOT, 'src', 'analytics', 'experimentEngine.ts')).then(async (m) => ({ ...m, ...(await loadModule(path.join(ROOT, 'src', 'analytics', 'experiments.ts'))) }));
   return expCache;
 }
+
+let preloadableCache = null;
+/** The route-chunk preload helper (src/lib/preloadable.ts), browser-free. */
+export async function loadPreloadable() {
+  if (!preloadableCache) preloadableCache = await loadModule(path.join(ROOT, 'src', 'lib', 'preloadable.ts'));
+  return preloadableCache;
+}

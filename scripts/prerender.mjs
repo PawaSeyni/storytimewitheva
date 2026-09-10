@@ -293,6 +293,12 @@ for (const route of routes) {
     const outDir = route === '/' ? DIST : path.join(DIST, route);
     await mkdir(outDir, { recursive: true });
     await writeFile(path.join(outDir, 'index.html'), html);
+    // Twin file so the unslashed URL (/books, the form every internal link and shared link
+    // uses) is served directly. With only <route>/index.html, Netlify's pretty URLs answer
+    // /books with a 301 to /books/, a ~0.3-0.9 s hop on mobile before anything paints (PD-04).
+    // Same bytes as index.html, so Netlify's content-addressed upload sends it once.
+    const twin = route.replace(/\/+$/, '');
+    if (twin) await writeFile(path.join(DIST, `${twin}.html`), html);
     ok++;
   } catch (e) {
     failures.push(`${route} — ${e.message}`);
