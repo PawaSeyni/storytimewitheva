@@ -40,6 +40,10 @@ test('security — external hosts on pages are exactly the inventoried ones', ()
   assert.deepEqual(extra, [], 'new external host: add it to docs/platform/EXTERNAL_DATA_FLOWS.md and the CSP first');
 });
 
+test('security — no page names the build origin (localhost) anywhere, including preload links', () => {
+  for (const f of pages) assert.ok(!/localhost/.test(readFileSync(f, 'utf8')), `${rel(f)}: references the prerender origin`);
+});
+
 test('security — headers block: CSP, HSTS-compatible, no-sniff, frame denial, referrer and permissions policies', () => {
   const toml = readFileSync(path.join(ROOT, 'netlify.toml'), 'utf8');
   for (const h of ['Content-Security-Policy', 'X-Content-Type-Options = "nosniff"', 'X-Frame-Options = "DENY"', 'Referrer-Policy', 'Permissions-Policy']) assert.ok(toml.includes(h), `${h} missing`);

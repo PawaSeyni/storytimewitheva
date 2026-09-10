@@ -8,7 +8,7 @@ this file's history. Values were set from the September 2026 baseline with rough
 
 | Budget | Warn | Fail | Baseline (2026-09) |
 |---|---|---|---|
-| Entry JavaScript chunk, gzip | 135 KB | 140 KB | 118 KB at baseline; 128 KB after Sprint 5 instrumentation (+5) and React Router 7 (+5), warn raised 2026-09-10 for that reason; next reduction candidate: move the experiment engine and dictionary out of the entry |
+| Entry JavaScript chunk, gzip | 135 KB | 140 KB | 118 KB at baseline; 128 KB after Sprint 5 instrumentation (+5) and React Router 7 (+5), warn raised 2026-09-10 for that reason; Vite 8 (Rolldown) then brought the entry down to 81 KB, so the warn returns to 125 |
 | Any lazy page chunk, gzip | 35 KB | 50 KB | 23 KB (Resources) |
 | Total JavaScript, gzip | 300 KB | 350 KB | 275 KB |
 | Total CSS, gzip | 40 KB | 60 KB | 35 KB |

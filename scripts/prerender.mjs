@@ -273,6 +273,11 @@ for (const route of routes) {
     await page.goto(ORIGIN + route, { waitUntil: 'load', timeout: 30000 });
     await waitUntilReady(page);
     let html = await page.content();
+    // Vite 8's runtime preload helper injects <link rel="modulepreload"> tags with an
+    // ABSOLUTE href on the prerender origin (http://localhost:<port>/assets/…). Snapshotted
+    // as-is they would ship to production pointing at localhost. Rewrite every reference
+    // to the build origin to a root-relative path; nothing on a page may name the origin.
+    html = html.split(ORIGIN + '/').join('/');
     // LCP hint: preload the hero image with its REAL hashed URL, taken from this
     // page's own rendered HTML — so it can never drift out of date (Vite re-hashes
     // the asset whenever it changes). Injected only on routes that actually render
@@ -303,7 +308,7 @@ try {
   const page = await browser.newPage();
   await page.goto(ORIGIN + '/__prerender_not_found__', { waitUntil: 'load', timeout: 30000 });
   await waitUntilReady(page);
-  await writeFile(path.join(DIST, '404.html'), await page.content());
+  await writeFile(path.join(DIST, '404.html'), (await page.content()).split(ORIGIN + '/').join('/')); // same origin rewrite as every route
   await page.close();
   console.log('Wrote dist/404.html (NotFound snapshot, noindex).');
 } catch (e) {
