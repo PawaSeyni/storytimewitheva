@@ -648,14 +648,14 @@ export default function CraftCornerDemo() {
   const meta = selectedCraft ? CRAFT_META[selectedCraft] : null;
 
   return (
-    <div className="bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 rounded-2xl p-6 md:p-8">
+    <div className="bg-linear-to-br from-pink-100 via-purple-100 to-blue-100 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
         <h2 className="text-3xl font-bold mb-2 text-purple-700">{t.heading}</h2>
         <p className="text-gray-700 mb-4">{t.subheading}</p>
         <div className="text-5xl mb-4">✂️🎨</div>
       </div>
 
-      <div className="bg-gradient-to-r from-pink-400 to-purple-400 text-white rounded-2xl p-6 mb-6">
+      <div className="bg-linear-to-r from-pink-400 to-purple-400 text-white rounded-2xl p-6 mb-6">
         <h3 className="text-2xl font-bold mb-3 text-center">{t.howToPlay}</h3>
         <ol className="list-decimal list-inside space-y-2 text-lg">
           {t.howToPlaySteps.map((step, idx) => (
@@ -666,7 +666,7 @@ export default function CraftCornerDemo() {
 
       <div className="bg-red-100 border-l-4 border-red-500 p-4 rounded-lg mb-6">
         <div className="flex items-start gap-3">
-          <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-1" />
+          <AlertTriangle className="w-6 h-6 text-red-600 shrink-0 mt-1" />
           <div>
             <strong className="text-red-800 block mb-1">{t.safetyFirst}</strong>
             <p className="text-red-700">{t.safetyBody}</p>
@@ -686,7 +686,7 @@ export default function CraftCornerDemo() {
               aria-label={c.title}
               onClick={() => setSelectedCraft(key)}
               onKeyDown={onActivate(() => setSelectedCraft(key))}
-              className="bg-gradient-to-br from-yellow-100 to-orange-100 border-4 border-orange-300 p-6 cursor-pointer hover:shadow-xl hover:-translate-y-2 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+              className="bg-linear-to-br from-yellow-100 to-orange-100 border-4 border-orange-300 p-6 cursor-pointer hover:shadow-xl hover:-translate-y-2 transition-all duration-300 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-purple-500"
             >
               <div className="text-6xl mb-4 text-center">{m.emoji}</div>
               <h3 className="text-xl font-bold text-gray-800 mb-2 text-center">{c.title}</h3>
@@ -703,7 +703,7 @@ export default function CraftCornerDemo() {
 
       {craft && meta && (
         <div className="bg-white rounded-2xl shadow-2xl border-4 border-purple-300 overflow-hidden">
-          <div className="relative bg-gradient-to-br from-purple-500 to-pink-500 text-white p-8">
+          <div className="relative bg-linear-to-br from-purple-500 to-pink-500 text-white p-8">
             <Button
               variant="ghost"
               size="icon"
@@ -717,11 +717,11 @@ export default function CraftCornerDemo() {
           </div>
 
           <div className="p-6 space-y-6">
-            <div className="bg-gradient-to-br from-blue-400 to-cyan-400 text-white rounded-2xl p-6">
+            <div className="bg-linear-to-br from-blue-400 to-cyan-400 text-white rounded-2xl p-6">
               <h3 className="text-2xl font-bold mb-4">{t.materialsNeeded}</h3>
               <div className="grid md:grid-cols-2 gap-3">
                 {craft.materials.map((item, idx) => (
-                  <div key={idx} className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
+                  <div key={idx} className="bg-white/20 backdrop-blur-xs rounded-lg p-3">
                     ✓ {item}
                   </div>
                 ))}
@@ -734,7 +734,7 @@ export default function CraftCornerDemo() {
                 {craft.steps.map((step, idx) => (
                   <div key={idx} className="bg-gray-50 border-l-4 border-purple-400 rounded-r-xl p-6">
                     <div className="flex items-start gap-4">
-                      <div className="bg-gradient-to-br from-pink-500 to-purple-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">
+                      <div className="bg-linear-to-br from-pink-500 to-purple-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl shrink-0">
                         {idx + 1}
                       </div>
                       <div>
@@ -749,7 +749,7 @@ export default function CraftCornerDemo() {
 
             <div className="bg-yellow-100 border-l-4 border-yellow-500 rounded-r-xl p-6">
               <div className="flex items-start gap-3">
-                <Lightbulb className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
+                <Lightbulb className="w-6 h-6 text-yellow-600 shrink-0 mt-1" />
                 <div>
                   <h3 className="font-bold text-lg text-gray-800 mb-3">{t.proTips}</h3>
                   <ul className="space-y-2">
@@ -764,7 +764,7 @@ export default function CraftCornerDemo() {
             </div>
 
             {meta.ideas.length > 0 && (
-              <div className="bg-gradient-to-br from-purple-400 to-indigo-400 text-white rounded-2xl p-6">
+              <div className="bg-linear-to-br from-purple-400 to-indigo-400 text-white rounded-2xl p-6">
                 <h3 className="text-2xl font-bold mb-4 text-center">{t.ideas}</h3>
                 <div className="grid grid-cols-6 gap-4">
                   {meta.ideas.map((emoji, idx) => (
@@ -782,7 +782,7 @@ export default function CraftCornerDemo() {
             {craft.safetyRules && (
               <div className="bg-red-100 border-l-4 border-red-500 p-6 rounded-lg">
                 <div className="flex items-start gap-3">
-                  <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-1" />
+                  <AlertTriangle className="w-6 h-6 text-red-600 shrink-0 mt-1" />
                   <div>
                     <h3 className="font-bold text-lg text-red-800 mb-3">{t.safetyRules}</h3>
                     <ul className="space-y-2">

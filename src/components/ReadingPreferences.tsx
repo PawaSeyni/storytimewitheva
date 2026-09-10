@@ -73,14 +73,14 @@ export default function ReadingPreferences() {
   const chip = (active: boolean) =>
     `px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
       active
-        ? 'bg-purple-600 border-purple-600 text-white shadow-sm'
+        ? 'bg-purple-600 border-purple-600 text-white shadow-xs'
         : 'bg-white border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-600'
     }`;
 
   const empty = prefs.themeIds.length === 0 && prefs.ageBandIds.length === 0;
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-50 p-6">
+    <div className="bg-white rounded-2xl shadow-xs border border-gray-50 p-6">
       <h2 className="font-bold text-gray-800 mb-1">{t.heading}</h2>
       <p className="text-gray-500 text-sm mb-5">{t.sub}</p>
 

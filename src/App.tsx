@@ -203,12 +203,12 @@ export default function App() {
       <ScrollToHash />
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-3 focus:left-3 focus:bg-white focus:text-purple-700 focus:font-semibold focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-100 focus:top-3 focus:left-3 focus:bg-white focus:text-purple-700 focus:font-semibold focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg"
       >
         {t.skip}
       </a>
       <Navbar />
-      <div className="flex-1 outline-none" id="main-content" tabIndex={-1}>
+      <div className="flex-1 outline-hidden" id="main-content" tabIndex={-1}>
         {routes}
       </div>
       <Footer />

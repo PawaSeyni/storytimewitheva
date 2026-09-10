@@ -50,7 +50,7 @@ export default function BookCard({ book, priority = false, onSelect }: BookCardP
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
         {book.featured && (
-          <span className="absolute top-3 right-3 z-10 bg-gradient-to-r from-yellow-400 to-orange-400 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1">
+          <span className="absolute top-3 right-3 z-10 bg-linear-to-r from-yellow-400 to-orange-400 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1">
             <span className="text-sm leading-none">⭐</span>
             {t.featured}
           </span>

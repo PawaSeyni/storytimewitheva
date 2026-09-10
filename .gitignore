@@ -54,3 +54,6 @@ maintenance-report.html
 # Playwright run artifacts
 test-results/
 playwright-report/
+
+# visual-regression baselines are generated locally (playwright.visual.config.ts), never committed
+tests/visual/__snapshots__/

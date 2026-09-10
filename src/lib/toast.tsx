@@ -84,7 +84,7 @@ function ToastViewport({
   return (
     <div
       // Fixed positioning. Bottom-center on mobile, bottom-right on sm+.
-      className="pointer-events-none fixed inset-x-0 bottom-4 z-[100] flex flex-col items-center gap-2 px-4 sm:inset-x-auto sm:right-4 sm:items-end"
+      className="pointer-events-none fixed inset-x-0 bottom-4 z-100 flex flex-col items-center gap-2 px-4 sm:inset-x-auto sm:right-4 sm:items-end"
       aria-live="polite"
       role="status"
     >
@@ -106,10 +106,10 @@ function ToastItemView({ item, onDismiss }: { item: ToastItem; onDismiss: () => 
 
   const variantClass =
     item.variant === 'success'
-      ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white'
+      ? 'bg-linear-to-r from-green-500 to-emerald-500 text-white'
       : item.variant === 'error'
-        ? 'bg-gradient-to-r from-red-500 to-rose-500 text-white'
-        : 'bg-gradient-to-r from-purple-600 to-pink-500 text-white';
+        ? 'bg-linear-to-r from-red-500 to-rose-500 text-white'
+        : 'bg-linear-to-r from-purple-600 to-pink-500 text-white';
 
   const icon = item.variant === 'success' ? '✓' : item.variant === 'error' ? '✕' : 'ℹ';
 

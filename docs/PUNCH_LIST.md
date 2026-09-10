@@ -78,6 +78,15 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Tooling — Tailwind 4 migration
+
+| ID | Item | Evidence |
+|----|------|----------|
+| TW-01 | **Migrated with the official tool, then verified with a 44-screenshot pixel comparison** (22 pages × desktop/mobile, `playwright.visual.config.ts` + `tests/visual/pages.spec.ts`; baselines are generated locally, never committed). 40 pages identical; the rest are one intended change (TW-03). | #202 |
+| TW-02 | **Two defects caught and fixed before merge**: the tool rewrote the word "shadow" to "shadow-sm" inside story copy in `books.data.ts` (reverted; every other rename checked to be a class); Tailwind 4's preflight removes the white background from form controls, so the signup inputs went transparent on the purple gradient (`bg-white` added). | #202 |
+| TW-03 | **Accepted visual change**: where a responsive text size meets `leading-*` (home hero h1 and lead, About quote, two Resources headings), Tailwind 3 let the size's default line-height override the utility at md+; Tailwind 4 honours the utility, so those five blocks are a few pixels taller. Before/after crops sent to the owner 2026-09-10. Reverse per element with `md:leading-none` if wanted. | accepted |
+| TW-04 | **Static games CSS not regenerated**: `public/games/games.css` stays as built with Tailwind 3; `build:games-css` now uses the v4 CLI with `@config`. Regenerate only with a game-page screenshot comparison. | open |
+
 ### Tooling — React Compiler readiness (from the ESLint 10 major)
 
 | ID | Item | Evidence |

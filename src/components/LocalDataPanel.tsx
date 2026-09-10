@@ -108,7 +108,7 @@ export default function LocalDataPanel({ onCleared }: { onCleared?: () => void }
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-50 p-6">
+    <div className="bg-white rounded-2xl shadow-xs border border-gray-50 p-6">
       <h2 className="font-bold text-gray-800 mb-1">{t.heading}</h2>
       <p className="text-gray-500 text-sm mb-4">{t.where}</p>
       {!available() && (

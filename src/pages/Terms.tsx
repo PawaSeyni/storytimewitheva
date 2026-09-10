@@ -217,7 +217,7 @@ export default function Terms() {
     <main>
       <Seo title={t.seoTitle} description={t.seoDesc} path="/terms" />
 
-      <section className="bg-gradient-to-b from-purple-50 to-white py-14 px-4">
+      <section className="bg-linear-to-b from-purple-50 to-white py-14 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <div className="text-5xl mb-4">📜</div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-3">{t.title}</h1>

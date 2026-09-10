@@ -584,14 +584,14 @@ export default function PuzzleAdventuresDemo() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl p-6 md:p-8">
+    <div className="bg-linear-to-br from-indigo-100 to-purple-100 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
         <h2 className="text-3xl font-bold mb-2 text-purple-700">{t.heading}</h2>
         <p className="text-gray-700 mb-4">{t.subheading}</p>
         <div className="text-5xl mb-4">🧩🧠</div>
       </div>
 
-      <div className="bg-gradient-to-r from-indigo-400 to-purple-400 text-white rounded-2xl p-6 mb-6">
+      <div className="bg-linear-to-r from-indigo-400 to-purple-400 text-white rounded-2xl p-6 mb-6">
         <h3 className="text-2xl font-bold mb-3 text-center">{t.howToPlay}</h3>
         <ol className="list-decimal list-inside space-y-2 text-lg">
           {t.howToPlaySteps.map((step, idx) => (
@@ -600,18 +600,18 @@ export default function PuzzleAdventuresDemo() {
         </ol>
       </div>
 
-      <div className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-2xl p-6 text-center text-xl font-bold mb-6">
+      <div className="bg-linear-to-r from-purple-500 to-indigo-500 text-white rounded-2xl p-6 text-center text-xl font-bold mb-6">
         ⭐ {t.completed} {score} / {totalPuzzles}
       </div>
 
       {/* Scrambled Words */}
-      <div className="bg-gradient-to-r from-blue-200 to-cyan-200 rounded-2xl p-6 mb-6 border-4 border-cyan-300">
+      <div className="bg-linear-to-r from-blue-200 to-cyan-200 rounded-2xl p-6 mb-6 border-4 border-cyan-300">
         <h3 className="text-2xl font-bold text-gray-800 mb-4">{t.scrambleHeading}</h3>
         <p className="text-center mb-4">{t.scrambleBlurb}</p>
 
         {scrambledWords.map((word, i) => (
           <div key={i} className="mb-6">
-            <div className="bg-gradient-to-r from-blue-400 to-cyan-400 text-white p-4 rounded-xl text-center text-2xl font-bold tracking-wider mb-3">
+            <div className="bg-linear-to-r from-blue-400 to-cyan-400 text-white p-4 rounded-xl text-center text-2xl font-bold tracking-wider mb-3">
               {word.emoji} {word.scrambled}
             </div>
 
@@ -631,7 +631,7 @@ export default function PuzzleAdventuresDemo() {
                 <div className="flex gap-2 mb-3">
                   <Button
                     onClick={() => checkScramble(i)}
-                    className="flex-1 bg-gradient-to-r from-green-400 to-cyan-500 hover:from-green-500 hover:to-cyan-600 text-white"
+                    className="flex-1 bg-linear-to-r from-green-400 to-cyan-500 hover:from-green-500 hover:to-cyan-600 text-white"
                   >
                     {t.checkAnswer}
                   </Button>
@@ -655,7 +655,7 @@ export default function PuzzleAdventuresDemo() {
             {scrambleAttempts[i] >= 3 && scrambleFeedback[i] !== 'correct' && scrambleFeedback[i] !== 'revealed' && (
               <Button
                 onClick={() => revealScramble(i)}
-                className="w-full bg-gradient-to-r from-orange-400 to-red-400 hover:from-orange-500 hover:to-red-500 text-white mb-3"
+                className="w-full bg-linear-to-r from-orange-400 to-red-400 hover:from-orange-500 hover:to-red-500 text-white mb-3"
               >
                 <Eye className="w-4 h-4 mr-2" />
                 {t.showSolution}
@@ -665,7 +665,7 @@ export default function PuzzleAdventuresDemo() {
             {scrambleHints[i] && (
               <div className="bg-yellow-100 border-2 border-yellow-400 rounded-lg p-3 mb-3">
                 <div className="flex items-start gap-2">
-                  <Lightbulb className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                  <Lightbulb className="w-5 h-5 text-yellow-600 shrink-0 mt-0.5" />
                   <p className="text-sm text-gray-700">{scrambleHints[i]}</p>
                 </div>
               </div>
@@ -703,18 +703,18 @@ export default function PuzzleAdventuresDemo() {
       </div>
 
       {/* Riddles */}
-      <div className="bg-gradient-to-r from-pink-200 to-rose-200 rounded-2xl p-6 mb-6 border-4 border-rose-300">
+      <div className="bg-linear-to-r from-pink-200 to-rose-200 rounded-2xl p-6 mb-6 border-4 border-rose-300">
         <h3 className="text-2xl font-bold text-gray-800 mb-4">{t.riddleHeading}</h3>
         <p className="text-center mb-4">{t.riddleBlurb}</p>
 
         {riddles.map((r, idx) => (
-          <div key={idx} className="mb-6 bg-white rounded-xl p-5 shadow-sm">
+          <div key={idx} className="mb-6 bg-white rounded-xl p-5 shadow-xs">
             <p className="text-gray-800 mb-4 italic">"{r.q}"</p>
 
             {riddleHints.has(idx) && (
               <div className="bg-yellow-100 border-2 border-yellow-400 rounded-lg p-3 mb-3">
                 <div className="flex items-start gap-2">
-                  <Lightbulb className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                  <Lightbulb className="w-5 h-5 text-yellow-600 shrink-0 mt-0.5" />
                   <p className="text-sm text-gray-700">{r.hint}</p>
                 </div>
               </div>
@@ -724,7 +724,7 @@ export default function PuzzleAdventuresDemo() {
               <div className="flex gap-2">
                 <Button
                   onClick={() => revealRiddle(idx)}
-                  className="flex-1 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white"
+                  className="flex-1 bg-linear-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white"
                 >
                   <Eye className="w-4 h-4 mr-2" />
                   {t.showAnswer}
@@ -737,7 +737,7 @@ export default function PuzzleAdventuresDemo() {
                 )}
               </div>
             ) : (
-              <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-lg text-center font-bold text-lg">
+              <div className="bg-linear-to-r from-purple-500 to-pink-500 text-white p-4 rounded-lg text-center font-bold text-lg">
                 {r.a}
               </div>
             )}
@@ -746,7 +746,7 @@ export default function PuzzleAdventuresDemo() {
       </div>
 
       {/* Matching */}
-      <div className="bg-gradient-to-r from-green-200 to-emerald-200 rounded-2xl p-6 mb-6 border-4 border-emerald-300">
+      <div className="bg-linear-to-r from-green-200 to-emerald-200 rounded-2xl p-6 mb-6 border-4 border-emerald-300">
         <h3 className="text-2xl font-bold text-gray-800 mb-4">{t.matchingHeading}</h3>
         <p className="text-center mb-4">{t.matchingBlurb}</p>
 
@@ -762,7 +762,7 @@ export default function PuzzleAdventuresDemo() {
                   matchedPairs.has(c.id)
                     ? 'bg-green-500 text-white'
                     : selectedChar === c.id
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+                    ? 'bg-linear-to-r from-purple-500 to-pink-500 text-white'
                     : 'bg-white text-gray-800 hover:bg-gray-100'
                 }`}
               >
@@ -790,7 +790,7 @@ export default function PuzzleAdventuresDemo() {
         {matchHint && (
           <div className="mt-4 bg-yellow-100 border-2 border-yellow-400 rounded-lg p-3">
             <div className="flex items-start gap-2">
-              <Lightbulb className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+              <Lightbulb className="w-5 h-5 text-yellow-600 shrink-0 mt-0.5" />
               <p className="text-sm text-gray-700">{matchHint}</p>
             </div>
           </div>
@@ -826,14 +826,14 @@ export default function PuzzleAdventuresDemo() {
         )}
 
         {matchedPairs.size === characters.length && (
-          <div className="mt-4 p-4 rounded-lg text-center font-bold bg-gradient-to-r from-green-400 to-emerald-500 text-white text-lg">
+          <div className="mt-4 p-4 rounded-lg text-center font-bold bg-linear-to-r from-green-400 to-emerald-500 text-white text-lg">
             {t.allMatched}
           </div>
         )}
       </div>
 
       {/* Logic */}
-      <div className="bg-gradient-to-r from-yellow-200 to-orange-200 rounded-2xl p-6 mb-6 border-4 border-orange-300">
+      <div className="bg-linear-to-r from-yellow-200 to-orange-200 rounded-2xl p-6 mb-6 border-4 border-orange-300">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-2xl font-bold text-gray-800">{t.logicHeading}</h3>
           <span className="text-sm text-gray-500">
@@ -856,7 +856,7 @@ export default function PuzzleAdventuresDemo() {
         {logicHint && (
           <div className="bg-yellow-100 border-2 border-yellow-400 rounded-lg p-3 mb-3">
             <div className="flex items-start gap-2">
-              <Lightbulb className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+              <Lightbulb className="w-5 h-5 text-yellow-600 shrink-0 mt-0.5" />
               <p className="text-sm text-gray-700">{logicHint}</p>
             </div>
           </div>
@@ -874,7 +874,7 @@ export default function PuzzleAdventuresDemo() {
             <div className="flex gap-2">
               <Button
                 onClick={checkLogic}
-                className="flex-1 bg-gradient-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white"
+                className="flex-1 bg-linear-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white"
               >
                 {t.checkAnswer}
               </Button>
@@ -926,7 +926,7 @@ export default function PuzzleAdventuresDemo() {
       </div>
 
       {score >= totalPuzzles && (
-        <div className="bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-500 text-white rounded-2xl p-8 mb-6 text-center shadow-2xl">
+        <div className="bg-linear-to-r from-yellow-400 via-orange-400 to-pink-500 text-white rounded-2xl p-8 mb-6 text-center shadow-2xl">
           <div className="text-6xl mb-4">🏆🎉🏆</div>
           <h2 className="text-3xl font-bold mb-2">{t.masterHeading}</h2>
           <p>{t.masterBlurb}</p>

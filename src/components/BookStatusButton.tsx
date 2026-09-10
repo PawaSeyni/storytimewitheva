@@ -82,19 +82,19 @@ export default function BookStatusButton({ bookId, compact = false }: BookStatus
     {
       value: 'read', Icon: CheckCircle2, on: t.read, off: t.markRead,
       ariaOn: t.ariaMarkAsNotRead, ariaOff: t.ariaMarkAsRead,
-      active: 'bg-green-500 border-green-500 text-white shadow-sm',
+      active: 'bg-green-500 border-green-500 text-white shadow-xs',
       idle: 'bg-white border-green-300 text-green-700 hover:bg-green-50',
     },
     {
       value: 'reading', Icon: BookOpen, on: t.reading, off: t.markReading,
       ariaOn: t.ariaMarkAsNotReading, ariaOff: t.ariaMarkAsReading,
-      active: 'bg-amber-500 border-amber-500 text-white shadow-sm',
+      active: 'bg-amber-500 border-amber-500 text-white shadow-xs',
       idle: 'bg-white border-amber-300 text-amber-700 hover:bg-amber-50',
     },
     {
       value: 'want-to-read', Icon: BookMarked, on: t.onList, off: t.wantToRead,
       ariaOn: t.ariaRemoveFromWant, ariaOff: t.ariaAddToWant,
-      active: 'bg-blue-500 border-blue-500 text-white shadow-sm',
+      active: 'bg-blue-500 border-blue-500 text-white shadow-xs',
       idle: 'bg-white border-blue-300 text-blue-700 hover:bg-blue-50',
     },
   ];

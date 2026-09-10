@@ -854,7 +854,7 @@ export default function Resources() {
     <main>
       <Seo title={t.seoTitle} description={t.seoDesc} path="/resources" />
 
-      <section className="bg-gradient-to-b from-blue-50 to-white py-14 px-4">
+      <section className="bg-linear-to-b from-blue-50 to-white py-14 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <div className="text-5xl mb-4">📚</div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">{t.heading}</h1>
@@ -881,7 +881,7 @@ export default function Resources() {
               onChange={e => setSearch(e.target.value)}
               placeholder={t.searchPlaceholder}
               aria-label={t.searchPlaceholder}
-              className="w-full pl-10 pr-4 py-2.5 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-300 text-sm"
+              className="w-full pl-10 pr-4 py-2.5 rounded-full border border-gray-200 focus:outline-hidden focus:ring-2 focus:ring-purple-300 text-sm"
             />
           </div>
           <div className="flex flex-wrap gap-2 justify-center">
@@ -1027,7 +1027,7 @@ export default function Resources() {
       )}
 
       {/* For Teachers & Educators -- free, classroom-friendly printables (PDFs in /public). */}
-      <section id="teachers" className="scroll-mt-24 py-12 px-4 bg-gradient-to-b from-white to-purple-50 border-t border-gray-100">
+      <section id="teachers" className="scroll-mt-24 py-12 px-4 bg-linear-to-b from-white to-purple-50 border-t border-gray-100">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-8">
             <div className="text-4xl mb-3" aria-hidden>🍎</div>
@@ -1074,7 +1074,7 @@ export default function Resources() {
               </ul>
             </div>
           )}
-          <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-50 p-6">
+          <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xs border border-gray-50 p-6">
             <h3 className="font-bold text-gray-800 mb-3">{t.teachers.tipsHeading}</h3>
             <ul className="space-y-2 text-gray-600 text-sm leading-relaxed list-disc pl-5">
               {t.teachers.tips.map((tip, i) => (

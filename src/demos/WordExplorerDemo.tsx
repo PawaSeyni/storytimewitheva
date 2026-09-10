@@ -320,7 +320,7 @@ export default function WordExplorerDemo() {
   ];
 
   return (
-    <div className="bg-gradient-to-br from-emerald-50 to-teal-100 rounded-2xl p-6 md:p-8 min-h-[500px]">
+    <div className="bg-linear-to-br from-emerald-50 to-teal-100 rounded-2xl p-6 md:p-8 min-h-[500px]">
       {/* Header */}
       <div className="text-center mb-6">
         <div className="text-5xl mb-2">🔤</div>
@@ -363,7 +363,7 @@ export default function WordExplorerDemo() {
               aria-pressed={selectedCategory === cat}
               className={`rounded-full px-4 py-1 text-sm font-medium border transition-all ${
                 selectedCategory === cat
-                  ? 'bg-teal-500 text-white border-teal-500 shadow'
+                  ? 'bg-teal-500 text-white border-teal-500 shadow-sm'
                   : 'bg-white text-teal-700 border-teal-300 hover:bg-teal-50'
               }`}
             >

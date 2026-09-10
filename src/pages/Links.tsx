@@ -153,7 +153,7 @@ export default function Links() {
     <>
       {/* Link-in-bio page for social profiles: reached from those profiles, not from the site or search. noindex, out of the sitemap (S7-019 orphan rule). */}
       <Seo title={t.seoTitle} description={t.seoDesc} path="/links" noindex />
-      <main className="min-h-screen bg-gradient-to-b from-[#FBF6EC] via-[#F2D08A]/40 to-[#FBF6EC] py-10 px-4">
+      <main className="min-h-screen bg-linear-to-b from-[#FBF6EC] via-[#F2D08A]/40 to-[#FBF6EC] py-10 px-4">
         <div className="max-w-md mx-auto">
           {/* Header */}
           <div className="text-center mb-8">

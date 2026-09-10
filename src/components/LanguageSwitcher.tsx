@@ -36,7 +36,7 @@ export default function LanguageSwitcher({ vertical = false }: LanguageSwitcherP
         const activeCls = active
           ? vertical
             ? 'bg-purple-100 text-purple-700'
-            : 'bg-purple-600 text-white shadow-sm scale-105'
+            : 'bg-purple-600 text-white shadow-xs scale-105'
           : vertical
             ? 'text-gray-600 hover:bg-purple-50 hover:text-purple-600'
             : 'text-gray-600 hover:bg-white';

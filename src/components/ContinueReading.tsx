@@ -74,7 +74,7 @@ export default function ContinueReading({ excludeBookId }: { excludeBookId?: str
                     width={300}
                     height={300}
                     loading="lazy"
-                    className="w-full aspect-square rounded-xl object-cover shadow-sm group-hover:shadow-md transition-shadow"
+                    className="w-full aspect-square rounded-xl object-cover shadow-xs group-hover:shadow-md transition-shadow"
                   />
                   <span className="block text-xs font-semibold text-gray-700 mt-2 leading-snug line-clamp-2">
                     {b.title}

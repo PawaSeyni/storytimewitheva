@@ -225,7 +225,7 @@ export default function TapToTranslate({ text, language, className = '' }: TapTo
                   id={`ttt-pop-${i}`}
                   role="dialog"
                   aria-label={tok.raw}
-                  className={`absolute top-full z-20 mt-1 block min-w-[10rem] rounded-xl border border-purple-100 bg-white p-3 text-left shadow-lg ${
+                  className={`absolute top-full z-20 mt-1 block min-w-40 rounded-xl border border-purple-100 bg-white p-3 text-left shadow-lg ${
                     alignRight ? 'right-0' : 'left-0'
                   }`}
                 >

@@ -204,7 +204,7 @@ export default function FeedbackWidget() {
             onChange={(e) => setComment(e.target.value)}
             placeholder={t.commentPh}
             rows={3}
-            className="w-full text-sm rounded-xl border border-gray-200 p-2 focus:outline-none focus:ring-2 focus:ring-purple-300 resize-none"
+            className="w-full text-sm rounded-xl border border-gray-200 p-2 focus:outline-hidden focus:ring-2 focus:ring-purple-300 resize-none"
           />
 
           <input

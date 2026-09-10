@@ -23,7 +23,7 @@ export default function TestimonialSection() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">{t.title}</h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-purple-400 to-pink-400 mx-auto mt-6 rounded-full" />
+          <div className="w-20 h-1 bg-linear-to-r from-purple-400 to-pink-400 mx-auto mt-6 rounded-full" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {items.map((it, i) => (

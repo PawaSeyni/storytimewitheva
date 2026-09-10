@@ -119,7 +119,7 @@ export default function Journey() {
       <Seo title={`${title} — ${t.seoPrefix}`} description={intro} path={path} />
       <JsonLd id={`journey-${journey.id}`} data={schema} />
 
-      <section className="bg-gradient-to-b from-amber-50 to-white py-12 px-4">
+      <section className="bg-linear-to-b from-amber-50 to-white py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <Breadcrumbs crumbs={crumbs} className="mb-6" />
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-3">{title}</h1>
@@ -158,7 +158,7 @@ export default function Journey() {
             const resource = step.type === 'resource' ? resources.find((r) => r.id === step.contentId) : undefined;
             const raw = step.type === 'discussion' ? rawBookOf(step.contentId) : undefined;
             return (
-              <li key={step.id} id={step.id} className={`rounded-2xl border p-5 sm:p-6 bg-white shadow-sm ${isResume ? 'border-purple-300 ring-2 ring-purple-100' : 'border-gray-100'}`}>
+              <li key={step.id} id={step.id} className={`rounded-2xl border p-5 sm:p-6 bg-white shadow-xs ${isResume ? 'border-purple-300 ring-2 ring-purple-100' : 'border-gray-100'}`}>
                 <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-wide text-purple-600">

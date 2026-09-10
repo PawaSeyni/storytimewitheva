@@ -481,7 +481,7 @@ export default function BookmarkCraftsDemo() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl p-4 sm:p-6 md:p-8">
+    <div className="bg-linear-to-br from-indigo-100 to-purple-100 rounded-2xl p-4 sm:p-6 md:p-8">
       <div className="text-center mb-6">
         <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-purple-700">{t.heading}</h2>
         <p className="text-gray-700 mb-4 text-sm sm:text-base">{t.subheading}</p>
@@ -489,7 +489,7 @@ export default function BookmarkCraftsDemo() {
       </div>
 
       {/* Quick-start templates */}
-      <div className="bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl p-4 sm:p-6 mb-6">
+      <div className="bg-linear-to-r from-purple-500 to-indigo-500 rounded-2xl p-4 sm:p-6 mb-6">
         <h3 className="text-xl sm:text-2xl font-bold text-white text-center mb-4">{t.quickStart}</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {TEMPLATE_META.map((template) => (
@@ -500,7 +500,7 @@ export default function BookmarkCraftsDemo() {
               onClick={() => loadTemplate(template.id)}
               onKeyDown={onActivate(() => loadTemplate(template.id))}
               aria-label={t.templates[template.id].name}
-              className="bg-white p-3 sm:p-4 text-center cursor-pointer hover:scale-105 transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+              className="bg-white p-3 sm:p-4 text-center cursor-pointer hover:scale-105 transition-transform focus:outline-hidden focus-visible:ring-2 focus-visible:ring-purple-500"
             >
               <div className="text-3xl sm:text-4xl mb-2">{template.icon}</div>
               <div className="font-bold text-purple-700 text-sm sm:text-base">{t.templates[template.id].name}</div>
@@ -518,7 +518,7 @@ export default function BookmarkCraftsDemo() {
         {/* ── Controls (right side on lg, bottom on mobile) ─────────────── */}
         <div className="space-y-4 sm:space-y-6">
           {/* Animal picker */}
-          <div className="bg-gradient-to-r from-yellow-200 to-orange-200 rounded-2xl p-4 sm:p-6 border-4 border-orange-300">
+          <div className="bg-linear-to-r from-yellow-200 to-orange-200 rounded-2xl p-4 sm:p-6 border-4 border-orange-300">
             <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3">{t.chooseAnimal}</h3>
             <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 sm:gap-3">
               {animals.map((animal) => (
@@ -530,9 +530,9 @@ export default function BookmarkCraftsDemo() {
                   aria-label={animal.name}
                   onClick={() => setSelectedAnimal(animal)}
                   onKeyDown={onActivate(() => setSelectedAnimal(animal))}
-                  className={`p-2 sm:p-3 text-center cursor-pointer transition-all hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
+                  className={`p-2 sm:p-3 text-center cursor-pointer transition-all hover:scale-105 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-purple-500 ${
                     currentAnimal.emoji === animal.emoji
-                      ? 'bg-gradient-to-br from-pink-400 to-red-400 text-white ring-4 ring-pink-300'
+                      ? 'bg-linear-to-br from-pink-400 to-red-400 text-white ring-4 ring-pink-300'
                       : 'bg-white'
                   }`}
                 >
@@ -544,7 +544,7 @@ export default function BookmarkCraftsDemo() {
           </div>
 
           {/* Country picker */}
-          <div className="bg-gradient-to-r from-blue-200 to-cyan-200 rounded-2xl p-4 sm:p-6 border-4 border-cyan-300">
+          <div className="bg-linear-to-r from-blue-200 to-cyan-200 rounded-2xl p-4 sm:p-6 border-4 border-cyan-300">
             <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3">{t.chooseCountry}</h3>
             <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 sm:gap-3">
               {countries.map((country) => (
@@ -556,9 +556,9 @@ export default function BookmarkCraftsDemo() {
                   aria-label={country.name}
                   onClick={() => setSelectedCountry(country)}
                   onKeyDown={onActivate(() => setSelectedCountry(country))}
-                  className={`p-2 sm:p-3 text-center cursor-pointer transition-all hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
+                  className={`p-2 sm:p-3 text-center cursor-pointer transition-all hover:scale-105 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-purple-500 ${
                     currentCountry.emoji === country.emoji
-                      ? 'bg-gradient-to-br from-blue-400 to-cyan-400 text-white ring-4 ring-blue-300'
+                      ? 'bg-linear-to-br from-blue-400 to-cyan-400 text-white ring-4 ring-blue-300'
                       : 'bg-white'
                   }`}
                 >
@@ -570,7 +570,7 @@ export default function BookmarkCraftsDemo() {
           </div>
 
           {/* Color picker */}
-          <div className="bg-gradient-to-r from-green-200 to-teal-200 rounded-2xl p-4 sm:p-6 border-4 border-teal-300">
+          <div className="bg-linear-to-r from-green-200 to-teal-200 rounded-2xl p-4 sm:p-6 border-4 border-teal-300">
             <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3">{t.chooseColor}</h3>
             <div className="grid grid-cols-5 gap-3">
               {COLORS.map((color, idx) => (
@@ -580,7 +580,7 @@ export default function BookmarkCraftsDemo() {
                   aria-label={`${t.chooseColor} ${idx + 1}`}
                   aria-pressed={selectedColor === color}
                   onClick={() => setSelectedColor(color)}
-                  className={`w-full aspect-square rounded-full cursor-pointer transition-all hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 ${
+                  className={`w-full aspect-square rounded-full cursor-pointer transition-all hover:scale-110 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-purple-600 ${
                     selectedColor === color ? 'ring-4 ring-gray-800 scale-110' : 'ring-2 ring-white'
                   }`}
                   style={{ background: color }}
@@ -590,7 +590,7 @@ export default function BookmarkCraftsDemo() {
           </div>
 
           {/* Text input */}
-          <div className="bg-gradient-to-r from-pink-200 to-rose-200 rounded-2xl p-4 sm:p-6 border-4 border-rose-300">
+          <div className="bg-linear-to-r from-pink-200 to-rose-200 rounded-2xl p-4 sm:p-6 border-4 border-rose-300">
             <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3">{t.addText}</h3>
             <Input
               value={bookmarkText}
@@ -603,7 +603,7 @@ export default function BookmarkCraftsDemo() {
           </div>
 
           {/* Pattern picker */}
-          <div className="bg-gradient-to-r from-purple-200 to-pink-200 rounded-2xl p-4 sm:p-6 border-4 border-pink-300">
+          <div className="bg-linear-to-r from-purple-200 to-pink-200 rounded-2xl p-4 sm:p-6 border-4 border-pink-300">
             <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3">{t.choosePattern}</h3>
             <div className="grid grid-cols-4 gap-2 sm:gap-3">
               {PATTERN_KEYS.map((key) => (
@@ -615,9 +615,9 @@ export default function BookmarkCraftsDemo() {
                   aria-label={t.patterns[key]}
                   onClick={() => setSelectedPatternKey(key)}
                   onKeyDown={onActivate(() => setSelectedPatternKey(key))}
-                  className={`p-3 sm:p-4 text-center cursor-pointer transition-all hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
+                  className={`p-3 sm:p-4 text-center cursor-pointer transition-all hover:scale-105 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-purple-500 ${
                     selectedPatternKey === key
-                      ? 'bg-gradient-to-br from-purple-400 to-pink-400 text-white ring-4 ring-purple-300'
+                      ? 'bg-linear-to-br from-purple-400 to-pink-400 text-white ring-4 ring-purple-300'
                       : 'bg-white'
                   }`}
                 >
@@ -634,7 +634,7 @@ export default function BookmarkCraftsDemo() {
             <h3 className="text-xl sm:text-2xl font-bold text-purple-700 mb-4">{t.previewHeading}</h3>
             {/* Bookmark preview — scales down on smaller screens */}
             <div
-              className="w-44 h-64 sm:w-56 sm:h-80 md:w-64 md:h-[24rem] lg:w-72 lg:h-[32rem] mx-auto rounded-2xl shadow-2xl overflow-hidden relative"
+              className="w-44 h-64 sm:w-56 sm:h-80 md:w-64 md:h-96 lg:w-72 lg:h-128 mx-auto rounded-2xl shadow-2xl overflow-hidden relative"
               style={{ background: selectedColor }}
             >
               {selectedPatternKey !== 'none' && (
@@ -658,21 +658,21 @@ export default function BookmarkCraftsDemo() {
           <div className="flex flex-col gap-3">
             <Button
               onClick={handleDownload}
-              className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold py-5 sm:py-6 text-base sm:text-lg"
+              className="w-full bg-linear-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold py-5 sm:py-6 text-base sm:text-lg"
             >
               <Download className="w-5 h-5 mr-2" />
               {t.download}
             </Button>
             <Button
               onClick={handleSave}
-              className="w-full bg-gradient-to-r from-green-400 to-cyan-500 hover:from-green-500 hover:to-cyan-600 text-white font-bold py-5 sm:py-6 text-base sm:text-lg"
+              className="w-full bg-linear-to-r from-green-400 to-cyan-500 hover:from-green-500 hover:to-cyan-600 text-white font-bold py-5 sm:py-6 text-base sm:text-lg"
             >
               <Save className="w-5 h-5 mr-2" />
               {t.save}
             </Button>
             <Button
               onClick={randomizeDesign}
-              className="w-full bg-gradient-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white font-bold py-5 sm:py-6 text-base sm:text-lg"
+              className="w-full bg-linear-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white font-bold py-5 sm:py-6 text-base sm:text-lg"
             >
               <Shuffle className="w-5 h-5 mr-2" />
               {t.surprise}
