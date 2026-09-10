@@ -318,11 +318,15 @@ export default function BingoDemo() {
     setFullCardAwarded(false);
   }, [currentTheme, themes, freeSpace]);
 
-  // Rebuild card whenever language changes so labels match the active locale
-  useEffect(() => {
+  // The board follows the theme and the language (labels must match the active locale). It
+  // is rebuilt during render when either changes, and on the first render: React's pattern
+  // for state that follows a prop, instead of an effect that sets state.
+  const boardKey = `${currentTheme}:${language}`;
+  const [seenBoardKey, setSeenBoardKey] = useState<string | null>(null);
+  if (seenBoardKey !== boardKey) {
+    setSeenBoardKey(boardKey);
     generateCard();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTheme, language]);
+  }
 
   useEffect(() => {
     BADGE_DEFS.forEach((badge) => {

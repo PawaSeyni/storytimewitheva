@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { Link } from './LocalizedLink';
@@ -42,18 +42,17 @@ const TRANSLATIONS = {
 };
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  // The mobile menu is open only on the path it was opened on: any navigation, including a
+  // language switch (new prefix), closes it without an effect.
+  const [openAtPath, setOpenAtPath] = useState<string | null>(null);
   const location = useLocation();
   const t = useTranslation(TRANSLATIONS);
   // Active state must ignore the /es | /fr language prefix, otherwise no nav
   // item ever highlights for Spanish/French visitors.
   const currentPath = splitLangFromPath(location.pathname).rest;
 
-  // Close the mobile menu on any navigation, including a language switch (which
-  // changes the path prefix) — the in-menu language switcher doesn't close it itself.
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [location.pathname]);
+  const menuOpen = openAtPath === location.pathname;
+  const setMenuOpen = (open: boolean) => setOpenAtPath(open ? location.pathname : null);
 
   const navLinks = [
     { to: '/books', label: t.books },

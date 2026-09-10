@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SHARED_KEYS, getSharedString, setSharedString } from '../lib/storage';
 import { useTranslation } from '../lib/language';
 import helloUrl from '../assets/pixel/hello.svg';
@@ -73,10 +73,9 @@ function readEnabled(): boolean {
 }
 
 export function usePixelEnabled(): boolean {
-  const [enabled, setEnabled] = useState(false);
-  useEffect(() => {
-    setEnabled(readEnabled());
-  }, []);
+  // Read once at first render (the storage adapter never throws), so the mascot no longer
+  // pops in after an effect. The prerender snapshot keeps the mascot, as before.
+  const [enabled] = useState(readEnabled);
   return enabled;
 }
 

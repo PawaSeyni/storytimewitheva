@@ -40,12 +40,12 @@ export default function ReadAlong({ text, className = '' }: ReadAlongProps) {
     return out;
   }, [text]);
   const tokensRef = useRef(tokens);
-  tokensRef.current = tokens;
-
-  // Reset the highlight whenever this block isn't the active speaker.
   useEffect(() => {
-    if (!speaking) setActiveWord(-1);
-  }, [speaking]);
+    tokensRef.current = tokens;
+  }, [tokens]);
+
+  // The highlight only exists while this block is the active speaker: derived, not synced.
+  const shownWord = speaking ? activeWord : -1;
 
   // Stop narration if this block unmounts while it's the one speaking.
   useEffect(() => () => {
@@ -98,7 +98,7 @@ export default function ReadAlong({ text, className = '' }: ReadAlongProps) {
           <span key={i}>
             <span
               className={
-                i === activeWord
+                i === shownWord
                   ? 'bg-yellow-200 rounded-sm px-0.5 -mx-0.5 transition-colors'
                   : undefined
               }

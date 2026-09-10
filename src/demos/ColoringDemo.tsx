@@ -702,12 +702,9 @@ export default function ColoringDemo() {
   const [isEraser, setIsEraser] = useState(false);
   const [isDrawing, setIsDrawing] = useState(false);
   const [selectedThemeIdx, setSelectedThemeIdx] = useState(0);
-  // Load the gallery in an effect (not at render) so this demo is safe under
-  // the static prerender / any non-browser render path.
-  const [gallery, setGallery] = useState<GalleryItem[]>([]);
-  useEffect(() => {
-    setGallery(readGallery());
-  }, []);
+  // The gallery seeds the state directly; readGallery goes through the storage adapter,
+  // which is safe under the static prerender and any non-browser render path.
+  const [gallery, setGallery] = useState<GalleryItem[]>(() => (typeof window === 'undefined' ? [] : readGallery()));
 
   const generateColoringPage = useCallback(() => {
     const canvas = canvasRef.current;

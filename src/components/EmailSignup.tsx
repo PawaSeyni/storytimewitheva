@@ -524,7 +524,13 @@ const CONTINUE_COPY: Record<Language, { heading: string; all: string }> = {
 export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: { magnet?: string; placement?: SignupPlacement } = {}) {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'submitted' | 'error'>('idle');
+  // A pre-hydration native submit posts to the function, which 303-redirects back with
+  // ?signup=<result>; start in that state so those visitors see the success screen (or an
+  // error) rather than a bare reload.
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'submitted' | 'error'>(() => {
+    const r = (readParam('signup') || '').toLowerCase();
+    return r === 'ok' ? 'submitted' : r === 'invalid' || r === 'error' ? 'error' : 'idle';
+  });
   const { language, setLanguage } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
   const [{ magnet, focused }] = useState(() => resolveMagnet(magnetSlug));
@@ -591,15 +597,6 @@ export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: 
     const lang = (readParam('lang') || '').toLowerCase();
     if (lang === 'en' || lang === 'es' || lang === 'fr') setLanguage(lang);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // A pre-hydration native submit posts to the function, which 303-redirects
-  // back with ?signup=<result>. Reflect that so those visitors still see the
-  // success screen (or an error) rather than a bare reload.
-  useEffect(() => {
-    const r = (readParam('signup') || '').toLowerCase();
-    if (r === 'ok') setStatus('submitted');
-    else if (r === 'invalid' || r === 'error') setStatus('error');
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
