@@ -1,7 +1,8 @@
 // Layer 3 — form → MailerLite. The part that was silently broken before
 // 2026-07-20 (mode:'no-cors' showed success while dropping every email). The
 // subscribe endpoint is stubbed with page.route; nothing real is written.
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect } from './_app';
+import { type Page } from '@playwright/test';
 
 const SUBSCRIBE = '**/.netlify/functions/subscribe';
 

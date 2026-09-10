@@ -2,7 +2,7 @@
 // page is CAPABLE of converting (it does not prove the offer does convert).
 // Selectors are scoped to #email-signup so they don't collide with the hidden
 // Netlify Forms detection form that also carries name/email inputs.
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_app';
 
 const signup = '#email-signup';
 

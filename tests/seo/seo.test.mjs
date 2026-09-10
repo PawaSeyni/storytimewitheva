@@ -120,4 +120,16 @@ for (const loc of games) {
     assert.ok(existsSync(file), `game file missing: ${file}`);
     assert.ok(titleOf(readFileSync(file, 'utf8')).length > 0, 'empty <title>');
   });
+  // The games are single-URL English documents with a runtime language switch (?lang=);
+  // the switched states are not separate canonical documents, so each page declares
+  // itself as the English and default version and nothing else.
+  test(`SEO (game) ${loc} declares hreflang en + x-default on its canonical`, () => {
+    const html = readFileSync(distFileFor(loc), 'utf8');
+    const canonical = html.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
+    assert.equal(canonical, loc, 'canonical must equal the sitemap URL');
+    for (const lang of ['en', 'x-default']) {
+      assert.ok(html.includes(`<link rel="alternate" hreflang="${lang}" href="${loc}" />`), `missing hreflang ${lang}`);
+    }
+    assert.equal((html.match(/hreflang="/g) || []).length, 2, 'only en and x-default: ?lang= states are not canonical documents');
+  });
 }

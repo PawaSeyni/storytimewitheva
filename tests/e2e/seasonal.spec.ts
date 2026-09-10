@@ -1,6 +1,6 @@
 // Sprint 7 S7-012: the publish window is evaluated with the visitor's clock, so the
 // same route shows books inside the window and a localized empty state outside it.
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_app';
 
 test('inside the window: books, seasonal badge with the closing date, no empty state', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-12-05T12:00:00'));

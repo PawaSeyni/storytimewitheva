@@ -12,7 +12,8 @@
 //
 // Storage failure is injected with an init script that replaces the storage getters, so
 // it is exercised for real rather than described.
-import { test, expect, type Page, type BrowserContext } from '@playwright/test';
+import { test, expect } from './_app';
+import { type Page, type BrowserContext } from '@playwright/test';
 
 const ROUTES = ['/', '/books', '/books/mayas-shadow', '/collections/kindness', '/collections/classroom-feelings', '/collections/back-to-school', '/collections/summer-of-wonder', '/activities', '/resources', '/profile', '/journeys', '/journeys/kindness-that-shines', '/search?q=kindness', '/free/classroom-pack'];
 const LOCALES = ['', '/fr', '/es'];

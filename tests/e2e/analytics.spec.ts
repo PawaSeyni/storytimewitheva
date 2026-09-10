@@ -3,7 +3,8 @@
 // user; to test that they DON'T fire on the prerender crawler we leave
 // webdriver true. Either way we stub window.plausible and assert on the stub,
 // never on real network — do not "fix" the webdriver check to make this pass.
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect } from './_app';
+import { type Page } from '@playwright/test';
 
 const SUBSCRIBE = '**/.netlify/functions/subscribe';
 

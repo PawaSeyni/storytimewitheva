@@ -5,7 +5,7 @@
 // Lighthouse mobile 71). main.tsx now preloads the current route's chunk and the route
 // components read it with use(), so the first commit is the full page. Measured with the
 // CPU throttled so the window between the shell script and the page chunk is real.
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_app';
 
 const ROUTES = ['/books', '/activities/bingo', '/es/resources', '/fr/books/mayas-shadow', '/profile', '/no-such-page'];
 
