@@ -3,6 +3,17 @@
 @config "./games.tailwind.config.cjs";
 
 /*
+  Classes the games build DYNAMICALLY (a content scan cannot see them): data-driven colors
+  (emotion-wheel `${em.bg}` / `${em.border}`, status badges, scene backgrounds) and grid column
+  counts. Tailwind 3 covered these with the regex safelist in the config; v4 ignores that
+  safelist, so the same patterns are declared here with @source inline (brace expansion).
+  Verified by tests/funnel/games-css.test.mjs: every dynamic class the games can produce
+  exists in the built stylesheet.
+*/
+@source inline("{bg,text,border,ring,from,to,via}-{slate,gray,zinc,neutral,stone,red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose}-{50,{1,2,3,4,5,6,7,8,9}00,950}");
+@source inline("grid-cols-{1,2,3,4,5,6,7,8,9,10,11,12}");
+
+/*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
   looks the same as it did with Tailwind CSS v3.
