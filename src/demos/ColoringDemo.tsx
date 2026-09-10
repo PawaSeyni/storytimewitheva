@@ -812,14 +812,14 @@ export default function ColoringDemo() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-6 md:p-8">
+    <div className="bg-linear-to-br from-yellow-50 to-orange-50 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
         <h2 className="text-3xl font-bold text-purple-700 mb-2">{t.heading}</h2>
         <p className="text-gray-600">{t.subheading}</p>
         <div className="text-5xl my-4 animate-bounce">🎨</div>
       </div>
 
-      <div className="bg-gradient-to-r from-blue-400 to-cyan-400 text-white rounded-2xl p-6 mb-6 relative overflow-hidden">
+      <div className="bg-linear-to-r from-blue-400 to-cyan-400 text-white rounded-2xl p-6 mb-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10" />
         <div className="relative z-10">
           <h3 className="text-2xl font-bold mb-3 flex items-center gap-2 drop-shadow-md">{t.howToPlay}</h3>
@@ -839,9 +839,9 @@ export default function ColoringDemo() {
               key={theme.key}
               onClick={() => setSelectedThemeIdx(index)}
               aria-pressed={selectedThemeIdx === index}
-              variant={selectedThemeIdx === index ? 'default' : 'outline'}
+              variant={selectedThemeIdx === index ? 'default' : 'outline-solid'}
               className={`text-xs md:text-sm flex flex-col items-center gap-1 h-auto py-3 ${
-                selectedThemeIdx === index ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' : ''
+                selectedThemeIdx === index ? 'bg-linear-to-r from-purple-500 to-pink-500 text-white' : ''
               }`}
             >
               <span className="text-2xl">{theme.emoji}</span>
@@ -854,7 +854,7 @@ export default function ColoringDemo() {
       <div className="flex justify-center mb-6">
         <Button
           onClick={generateColoringPage}
-          className="w-full max-w-md bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold px-8 py-6 rounded-full text-lg shadow-lg min-h-[56px]"
+          className="w-full max-w-md bg-linear-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold px-8 py-6 rounded-full text-lg shadow-lg min-h-[56px]"
         >
           <RefreshCw className="w-5 h-5 mr-2" />
           {t.newDrawing}
@@ -876,7 +876,7 @@ export default function ColoringDemo() {
                 }}
                 aria-label={t.colors[key]}
                 aria-pressed={selectedColor === value && !isEraser}
-                className={`w-full aspect-square rounded-xl transition-all hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 ${
+                className={`w-full aspect-square rounded-xl transition-all hover:scale-110 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-purple-600 ${
                   selectedColor === value && !isEraser ? 'ring-4 ring-purple-500 scale-110' : 'ring-2 ring-gray-300'
                 }`}
                 style={{ backgroundColor: value }}
@@ -890,8 +890,8 @@ export default function ColoringDemo() {
       <div className="flex flex-wrap gap-3 mb-4">
         <Button
           onClick={() => setIsEraser(!isEraser)}
-          variant={isEraser ? 'default' : 'outline'}
-          className={isEraser ? 'bg-gradient-to-r from-gray-400 to-gray-600 text-white' : ''}
+          variant={isEraser ? 'default' : 'outline-solid'}
+          className={isEraser ? 'bg-linear-to-r from-gray-400 to-gray-600 text-white' : ''}
         >
           <Eraser className="w-4 h-4 mr-2" />
           {t.eraser}
@@ -902,14 +902,14 @@ export default function ColoringDemo() {
         </Button>
         <Button
           onClick={downloadImage}
-          className="bg-gradient-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white"
+          className="bg-linear-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white"
         >
           <Download className="w-4 h-4 mr-2" />
           {t.saveArt}
         </Button>
         <Button
           onClick={saveToGallery}
-          className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white"
+          className="bg-linear-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white"
         >
           <Save className="w-4 h-4 mr-2" />
           {t.saveToGallery}

@@ -411,14 +411,14 @@ export default function BingoDemo() {
   const badgeNames = BADGE_NAMES[language] ?? BADGE_NAMES.en;
 
   return (
-    <div className="bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 rounded-2xl p-6 md:p-8">
+    <div className="bg-linear-to-br from-purple-100 via-pink-100 to-blue-100 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
         <h2 className="text-3xl font-bold mb-2 text-purple-700">{t.title}</h2>
         <p className="text-gray-700 mb-4">{t.subtitle}</p>
         <div className="text-5xl mb-4">📚🎯</div>
       </div>
 
-      <Card className="bg-gradient-to-r from-yellow-100 to-orange-100 p-6 mb-6 border-4 border-orange-300">
+      <Card className="bg-linear-to-r from-yellow-100 to-orange-100 p-6 mb-6 border-4 border-orange-300">
         <h3 className="font-bold text-lg mb-3 text-orange-700">{t.howToPlay}</h3>
         <ol className="list-decimal list-inside space-y-2 text-gray-700">
           {t.howToList.map((line, i) => <li key={i}>{line}</li>)}
@@ -438,7 +438,7 @@ export default function BingoDemo() {
               aria-pressed={currentTheme === themeKey}
               className={`rounded-full ${
                 currentTheme === themeKey
-                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+                  ? 'bg-linear-to-r from-purple-500 to-pink-500 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -448,18 +448,18 @@ export default function BingoDemo() {
         </div>
 
         <div className="flex gap-4 justify-center">
-          <div className="bg-gradient-to-br from-blue-100 to-purple-100 px-6 py-4 rounded-xl text-center">
+          <div className="bg-linear-to-br from-blue-100 to-purple-100 px-6 py-4 rounded-xl text-center">
             <div className="text-3xl font-bold text-purple-600">{completedSquares.size}</div>
             <div className="text-sm text-gray-600">{t.marked}</div>
           </div>
-          <div className="bg-gradient-to-br from-pink-100 to-orange-100 px-6 py-4 rounded-xl text-center">
+          <div className="bg-linear-to-br from-pink-100 to-orange-100 px-6 py-4 rounded-xl text-center">
             <div className="text-3xl font-bold text-orange-600">{unlockedBadges.size}</div>
             <div className="text-sm text-gray-600">{t.badges}</div>
           </div>
         </div>
       </div>
 
-      <div className="bg-gradient-to-br from-indigo-400 to-purple-500 rounded-2xl p-3 sm:p-6 mb-6 shadow-2xl">
+      <div className="bg-linear-to-br from-indigo-400 to-purple-500 rounded-2xl p-3 sm:p-6 mb-6 shadow-2xl">
         <h2 className="text-2xl font-bold text-center text-white mb-4">{themes[currentTheme].title}</h2>
         <div className="grid grid-cols-5 gap-1 sm:gap-2 max-w-2xl mx-auto">
           {currentCard.map((item, index) => (
@@ -470,18 +470,18 @@ export default function BingoDemo() {
               disabled={item.free}
               aria-label={item.text}
               aria-pressed={item.free ? undefined : completedSquares.has(index)}
-              className={`aspect-square p-1 sm:p-2 flex flex-col items-center justify-center text-center text-[9px] sm:text-xs cursor-pointer rounded-lg sm:rounded-xl transition-all shadow-md overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
+              className={`aspect-square p-1 sm:p-2 flex flex-col items-center justify-center text-center text-[9px] sm:text-xs cursor-pointer rounded-lg sm:rounded-xl transition-all shadow-md overflow-hidden focus:outline-hidden focus-visible:ring-2 focus-visible:ring-purple-500 ${
                 item.free
-                  ? 'bg-gradient-to-br from-pink-400 to-red-400 text-white font-bold cursor-default'
+                  ? 'bg-linear-to-br from-pink-400 to-red-400 text-white font-bold cursor-default'
                   : completedSquares.has(index)
                   ? isInBingoLine(index)
-                    ? 'bg-gradient-to-br from-green-400 to-emerald-500 text-white scale-105 ring-2 sm:ring-4 ring-yellow-400'
-                    : 'bg-gradient-to-br from-green-300 to-teal-300 text-white scale-105'
+                    ? 'bg-linear-to-br from-green-400 to-emerald-500 text-white scale-105 ring-2 sm:ring-4 ring-yellow-400'
+                    : 'bg-linear-to-br from-green-300 to-teal-300 text-white scale-105'
                   : 'bg-white hover:bg-blue-50 hover:scale-105'
               }`}
             >
               <span aria-hidden="true" className="text-lg sm:text-2xl mb-0.5 sm:mb-1 leading-none">{item.emoji}</span>
-              <span className="leading-tight break-words w-full">{item.text}</span>
+              <span className="leading-tight wrap-break-word w-full">{item.text}</span>
             </button>
           ))}
         </div>
@@ -491,7 +491,7 @@ export default function BingoDemo() {
         <div className="text-center text-sm font-semibold text-gray-700 mb-2">{t.progress}: {completedSquares.size}/25</div>
         <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden">
           <div
-            className="bg-gradient-to-r from-purple-500 to-pink-500 h-6 transition-all duration-500 flex items-center justify-center text-white text-sm font-bold"
+            className="bg-linear-to-r from-purple-500 to-pink-500 h-6 transition-all duration-500 flex items-center justify-center text-white text-sm font-bold"
             style={{ width: `${progress}%` }}
           >
             {progress}%
@@ -502,35 +502,35 @@ export default function BingoDemo() {
       <div className="flex flex-wrap gap-3 justify-center mb-6">
         <Button
           onClick={handleCheckBingo}
-          className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold px-8 py-6 rounded-full shadow-lg"
+          className="bg-linear-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold px-8 py-6 rounded-full shadow-lg"
         >
           <Trophy className="w-5 h-5 mr-2" />
           {t.checkBingo}
         </Button>
         <Button
           onClick={generateCard}
-          className="bg-gradient-to-r from-green-400 to-teal-500 hover:from-green-500 hover:to-teal-600 text-white font-bold px-8 py-6 rounded-full shadow-lg"
+          className="bg-linear-to-r from-green-400 to-teal-500 hover:from-green-500 hover:to-teal-600 text-white font-bold px-8 py-6 rounded-full shadow-lg"
         >
           <RefreshCw className="w-5 h-5 mr-2" />
           {t.newCard}
         </Button>
         <Button
           onClick={clearMarks}
-          className="bg-gradient-to-r from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600 text-white font-bold px-8 py-6 rounded-full shadow-lg"
+          className="bg-linear-to-r from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600 text-white font-bold px-8 py-6 rounded-full shadow-lg"
         >
           {t.clearAll}
         </Button>
       </div>
 
       {hasBingo && (
-        <div className="bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-500 text-white rounded-2xl p-8 mb-6 text-center animate-pulse shadow-2xl">
+        <div className="bg-linear-to-r from-yellow-400 via-orange-400 to-pink-500 text-white rounded-2xl p-8 mb-6 text-center animate-pulse shadow-2xl">
           <Trophy className="w-16 h-16 mx-auto mb-4" />
           <h2 className="text-4xl font-bold mb-2">{t.winHeading}</h2>
           <div className="text-6xl mb-4">🎉🏆🎊</div>
         </div>
       )}
 
-      <div className="bg-gradient-to-br from-blue-400 to-cyan-500 rounded-2xl p-6 shadow-2xl">
+      <div className="bg-linear-to-br from-blue-400 to-cyan-500 rounded-2xl p-6 shadow-2xl">
         <h2 className="text-2xl font-bold text-center text-white mb-4">
           <Award className="inline w-6 h-6 mr-2" />
           {t.badgeCollection}

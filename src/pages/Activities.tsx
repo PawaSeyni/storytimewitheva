@@ -83,11 +83,11 @@ export default function Activities() {
     <main>
       <Seo title={t.seoTitle} description={t.seoDesc} path="/activities" />
 
-      <section className="bg-gradient-to-b from-green-50 to-white py-16 px-4">
+      <section className="bg-linear-to-b from-green-50 to-white py-16 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">{t.heading}</h1>
           <p className="text-gray-500 text-lg">{t.subheading}</p>
-          <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 mx-auto mt-6 mb-8 rounded-full" />
+          <div className="w-20 h-1 bg-linear-to-r from-cyan-400 via-blue-400 to-purple-400 mx-auto mt-6 mb-8 rounded-full" />
           <div className="flex flex-wrap gap-2 justify-center">
             {ageFilters.map((f) => (
               <button
@@ -131,7 +131,7 @@ export default function Activities() {
                       t.liveBadge
                     )}
                   </span>
-                  <div className="h-2 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400" />
+                  <div className="h-2 bg-linear-to-r from-cyan-400 via-blue-400 to-purple-400" />
                   <div className="p-6 flex-1 flex flex-col">
                     <span className="text-5xl block mb-4">{act.emoji}</span>
                     <span className="text-xs text-purple-600 font-medium bg-purple-50 px-2 py-1 rounded-full mb-3 inline-block self-start">
@@ -147,14 +147,14 @@ export default function Activities() {
                         // Standalone HTML game — full-page static file in /public/games.
                         <a
                           href={gameUrl(act.slug, language)}
-                          className="text-sm font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 px-4 py-1.5 rounded-full shadow-sm transition-all"
+                          className="text-sm font-semibold text-white bg-linear-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 px-4 py-1.5 rounded-full shadow-xs transition-all"
                         >
                           {done ? t.openAgain : t.tryNow}
                         </a>
                       ) : (
                         <Link
                           to={`/activities/${act.slug}`}
-                          className="text-sm font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 px-4 py-1.5 rounded-full shadow-sm transition-all"
+                          className="text-sm font-semibold text-white bg-linear-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 px-4 py-1.5 rounded-full shadow-xs transition-all"
                         >
                           {done ? t.openAgain : t.tryNow}
                         </Link>

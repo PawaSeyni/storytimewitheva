@@ -173,7 +173,7 @@ interface StatCardProps {
 
 function StatCard({ icon: Icon, count, label, color, bgColor }: StatCardProps) {
   return (
-    <div className={`${bgColor} rounded-2xl p-6 flex flex-col items-center text-center shadow-sm`}>
+    <div className={`${bgColor} rounded-2xl p-6 flex flex-col items-center text-center shadow-xs`}>
       <Icon className={`w-10 h-10 ${color} mb-3`} />
       <div className={`text-4xl font-bold ${color} mb-1`}>{count}</div>
       <div className="text-gray-600 font-medium text-sm">{label}</div>
@@ -213,17 +213,17 @@ function ItemList({ items, emptyMsg, emptyCta }: ItemListProps) {
       {items.map((item) => (
         <li
           key={item.id}
-          className="flex items-center gap-3 p-3 bg-white rounded-xl shadow-sm border border-gray-100"
+          className="flex items-center gap-3 p-3 bg-white rounded-xl shadow-xs border border-gray-100"
         >
           {item.thumbType === 'image' ? (
             <img
               src={item.thumb}
               alt=""
-              className="w-10 h-10 rounded-md object-cover flex-shrink-0"
+              className="w-10 h-10 rounded-md object-cover shrink-0"
               loading="lazy"
             />
           ) : (
-            <span className="text-2xl flex-shrink-0" aria-hidden>
+            <span className="text-2xl shrink-0" aria-hidden>
               {item.thumb}
             </span>
           )}
@@ -330,10 +330,10 @@ export default function Profile() {
   return (
     <main>
       <Seo title={t.seoTitle} description={t.seoDesc} path="/profile" noindex />
-      <section className="bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 py-12 px-4">
+      <section className="bg-linear-to-br from-purple-50 via-pink-50 to-orange-50 py-12 px-4">
         <div className="max-w-3xl mx-auto">
           <div className="bg-white rounded-3xl shadow-lg p-6 md:p-8 mb-8 flex items-center gap-6">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white flex-shrink-0">
+            <div className="w-20 h-20 rounded-full bg-linear-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white shrink-0">
               <User className="w-10 h-10" />
             </div>
             <div className="flex-1">
@@ -349,10 +349,10 @@ export default function Profile() {
           </div>
 
           {/* ---- Reading Stats summary ---- */}
-          <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-2xl p-6 mb-8">
+          <div className="bg-linear-to-r from-purple-50 to-indigo-50 rounded-2xl p-6 mb-8">
             <h2 className="text-lg font-bold text-gray-800 mb-4">{t.statsHeading}</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+              <div className="bg-white rounded-xl p-4 text-center shadow-xs">
                 <div className="text-3xl mb-1">📚</div>
                 <div className="text-2xl font-bold text-purple-700">
                   {booksRead.length} / {rawBooks.length}
@@ -360,7 +360,7 @@ export default function Profile() {
                 <div className="text-xs text-gray-500 mt-1 font-medium">{t.statBooksRead}</div>
               </div>
 
-              <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+              <div className="bg-white rounded-xl p-4 text-center shadow-xs">
                 <div className="text-3xl mb-1">🎯</div>
                 <div className="text-2xl font-bold text-indigo-700">
                   {progress.activitiesCompleted.length} / {activities.length}
@@ -368,13 +368,13 @@ export default function Profile() {
                 <div className="text-xs text-gray-500 mt-1 font-medium">{t.statActivitiesDone}</div>
               </div>
 
-              <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+              <div className="bg-white rounded-xl p-4 text-center shadow-xs">
                 <div className="text-3xl mb-1">🔖</div>
                 <div className="text-2xl font-bold text-blue-700">{booksWantToRead.length}</div>
                 <div className="text-xs text-gray-500 mt-1 font-medium">{t.statWantToRead}</div>
               </div>
 
-              <div className="bg-white rounded-xl p-4 text-center shadow-sm sm:col-span-2">
+              <div className="bg-white rounded-xl p-4 text-center shadow-xs sm:col-span-2">
                 <div className="text-3xl mb-1">🌟</div>
                 <div className="text-base font-bold text-pink-700 leading-snug">
                   {topTheme || t.statTopThemeNone}
@@ -382,7 +382,7 @@ export default function Profile() {
                 <div className="text-xs text-gray-500 mt-1 font-medium">{t.statTopTheme}</div>
               </div>
 
-              <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+              <div className="bg-white rounded-xl p-4 text-center shadow-xs">
                 <div className="text-3xl mb-1">🔥</div>
                 <div className="text-base font-bold text-orange-700 leading-snug">{t.statStreak}</div>
                 <div className="text-xs text-gray-500 mt-1 font-medium">{t.statStreakLabel}</div>
@@ -415,7 +415,7 @@ export default function Profile() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-2xl shadow p-6">
+            <div className="bg-white rounded-2xl shadow-sm p-6">
               <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5 text-green-500" /> {t.booksReadSection}
               </h2>
@@ -426,7 +426,7 @@ export default function Profile() {
               />
             </div>
 
-            <div className="bg-white rounded-2xl shadow p-6">
+            <div className="bg-white rounded-2xl shadow-sm p-6">
               <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
                 <BookMarked className="w-5 h-5 text-blue-500" /> {t.wantToReadSection}
               </h2>
@@ -437,7 +437,7 @@ export default function Profile() {
               />
             </div>
 
-            <div className="bg-white rounded-2xl shadow p-6">
+            <div className="bg-white rounded-2xl shadow-sm p-6">
               <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
                 <BookOpen className="w-5 h-5 text-amber-500" /> {t.readingSection}
               </h2>
@@ -448,7 +448,7 @@ export default function Profile() {
               />
             </div>
 
-            <div className="bg-white rounded-2xl shadow p-6">
+            <div className="bg-white rounded-2xl shadow-sm p-6">
               <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
                 <Heart className="w-5 h-5 text-rose-500" /> {t.favoritesSection}
               </h2>
@@ -459,7 +459,7 @@ export default function Profile() {
               />
             </div>
 
-            <div className="bg-white rounded-2xl shadow p-6 md:col-span-2">
+            <div className="bg-white rounded-2xl shadow-sm p-6 md:col-span-2">
               <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
                 <Star className="w-5 h-5 text-orange-500" /> {t.activitiesSection}
               </h2>
@@ -471,7 +471,7 @@ export default function Profile() {
             </div>
 
             {/* ---- Reading Tracker sessions ---- */}
-            <div className="bg-white rounded-2xl shadow p-6 md:col-span-2">
+            <div className="bg-white rounded-2xl shadow-sm p-6 md:col-span-2">
               <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
                 <BarChart3 className="w-5 h-5 text-amber-500" /> {t.trackerSection}
               </h2>
@@ -506,11 +506,11 @@ export default function Profile() {
                     {trackerSessions.slice(0, 20).map((s, i) => (
                       <li
                         key={`${s.date}-${i}`}
-                        className="p-3 bg-white rounded-xl shadow-sm border border-gray-100"
+                        className="p-3 bg-white rounded-xl shadow-xs border border-gray-100"
                       >
                         <div className="flex items-center justify-between gap-2">
                           <span className="text-gray-800 font-semibold text-sm">{s.book}</span>
-                          <span className="text-yellow-500 text-sm flex-shrink-0" aria-label={`${s.stars} / 5`}>
+                          <span className="text-yellow-500 text-sm shrink-0" aria-label={`${s.stars} / 5`}>
                             {starRating(s.stars)}
                           </span>
                         </div>
@@ -526,7 +526,7 @@ export default function Profile() {
             </div>
 
             {/* ---- Reading Journal entries ---- */}
-            <div className="bg-white rounded-2xl shadow p-6 md:col-span-2">
+            <div className="bg-white rounded-2xl shadow-sm p-6 md:col-span-2">
               <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
                 <NotebookPen className="w-5 h-5 text-orange-500" /> {t.journalSection}
               </h2>
@@ -546,7 +546,7 @@ export default function Profile() {
                   {[...journal].reverse().map((entry) => (
                     <li
                       key={entry.id}
-                      className="p-3 bg-white rounded-xl shadow-sm border border-gray-100"
+                      className="p-3 bg-white rounded-xl shadow-xs border border-gray-100"
                     >
                       <div className="flex items-center justify-between gap-2">
                         <span className="text-gray-800 font-semibold text-sm flex items-center gap-2">
@@ -555,7 +555,7 @@ export default function Profile() {
                           </span>
                           {entry.bookTitle}
                         </span>
-                        <span className="text-yellow-500 text-sm flex-shrink-0" aria-label={`${entry.rating} / 5`}>
+                        <span className="text-yellow-500 text-sm shrink-0" aria-label={`${entry.rating} / 5`}>
                           {starRating(entry.rating)}
                         </span>
                       </div>

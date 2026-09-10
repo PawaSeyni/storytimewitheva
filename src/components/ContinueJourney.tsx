@@ -52,7 +52,7 @@ export default function ContinueJourney({
     });
 
   const cls =
-    'inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold px-5 py-3 shadow-md hover:shadow-lg hover:from-purple-700 hover:to-pink-600 transition-all';
+    'inline-flex items-center gap-3 rounded-2xl bg-linear-to-r from-purple-600 to-pink-500 text-white font-semibold px-5 py-3 shadow-md hover:shadow-lg hover:from-purple-700 hover:to-pink-600 transition-all';
 
   return (
     <div className="max-w-5xl mx-auto mt-10 mb-4">

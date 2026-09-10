@@ -166,11 +166,11 @@ export default function Books() {
       <Seo title={t.seoTitle} description={t.seoDesc.replace('{n}', String(books.length))} path="/books" />
       <JsonLd id="books" data={booksSchema} />
 
-      <section className="bg-gradient-to-b from-purple-50 to-white py-16 px-4">
+      <section className="bg-linear-to-b from-purple-50 to-white py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">{t.heading}</h1>
           <p className="text-gray-500 text-lg">{t.subheading}</p>
-          <div className="w-20 h-1 bg-gradient-to-r from-orange-400 to-pink-400 mx-auto mt-6 mb-8 rounded-full" />
+          <div className="w-20 h-1 bg-linear-to-r from-orange-400 to-pink-400 mx-auto mt-6 mb-8 rounded-full" />
 
           <div className="relative max-w-md mx-auto mb-6">
             <span aria-hidden="true" className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
@@ -180,7 +180,7 @@ export default function Books() {
               onChange={e => setSearch(e.target.value)}
               placeholder={t.searchPlaceholder}
               aria-label={t.searchPlaceholder}
-              className="w-full pl-10 pr-4 py-3 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-300 shadow-sm"
+              className="w-full pl-10 pr-4 py-3 rounded-full border border-gray-200 focus:outline-hidden focus:ring-2 focus:ring-purple-300 shadow-xs"
             />
           </div>
 
@@ -190,7 +190,7 @@ export default function Books() {
               <select
                 value={themeFilter}
                 onChange={(e) => setThemeFilter(e.target.value as 'All' | ThemeId)}
-                className="rounded-full border border-gray-200 px-4 py-2 text-sm text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-purple-300"
+                className="rounded-full border border-gray-200 px-4 py-2 text-sm text-gray-700 bg-white focus:outline-hidden focus:ring-2 focus:ring-purple-300"
               >
                 <option value="All">{t.themeAll}</option>
                 {THEME_IDS.map((id) => (
@@ -307,7 +307,7 @@ export default function Books() {
               <p className="font-semibold text-gray-800">{t.ebookLabel}</p>
               <p className="text-sm font-semibold text-purple-600 mt-1">{t.seePrice}</p>
             </div>
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow-md border border-purple-100 p-6">
+            <div className="bg-linear-to-br from-purple-50 to-pink-50 rounded-2xl shadow-md border border-purple-100 p-6">
               <div className="text-3xl mb-2" aria-hidden>🎁</div>
               <p className="font-semibold text-purple-700">{t.freeLabel}</p>
               <p className="text-sm text-gray-600 mt-1">{t.freeItems}</p>
@@ -317,7 +317,7 @@ export default function Books() {
         </div>
       </section>
 
-      <section className="py-12 px-4 bg-gradient-to-r from-orange-50 to-yellow-50 border-y border-orange-100">
+      <section className="py-12 px-4 bg-linear-to-r from-orange-50 to-yellow-50 border-y border-orange-100">
         <div className="max-w-3xl mx-auto text-center">
           <div className="text-5xl mb-4">📦</div>
           <h2 className="text-2xl font-bold text-gray-800 mb-3">{t.amazonHeading}</h2>
@@ -326,7 +326,7 @@ export default function Books() {
             href={AMAZON_AUTHOR_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 text-lg"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-linear-to-r from-orange-400 to-orange-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 text-lg"
           >
             {t.amazonCta}
           </a>

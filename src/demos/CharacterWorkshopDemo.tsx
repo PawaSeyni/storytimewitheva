@@ -244,14 +244,14 @@ export default function CharacterWorkshopDemo() {
   );
 
   return (
-    <div className="bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 rounded-2xl p-6 md:p-8">
+    <div className="bg-linear-to-br from-purple-100 via-pink-100 to-orange-100 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
         <h2 className="text-3xl font-bold mb-2 text-purple-700">{t.title}</h2>
         <p className="text-gray-700 mb-4">{t.subtitle}</p>
         <div className="text-5xl mb-4">🎨✨</div>
       </div>
 
-      <div className="bg-gradient-to-r from-purple-400 to-pink-400 text-white rounded-2xl p-6 mb-6 text-center">
+      <div className="bg-linear-to-r from-purple-400 to-pink-400 text-white rounded-2xl p-6 mb-6 text-center">
         <h3 className="text-2xl font-bold mb-3">{t.howToPlay}</h3>
         <ol className="list-decimal list-inside space-y-2 text-lg text-left max-w-2xl mx-auto">
           {t.howToList.map((line, i) => <li key={i}>{line}</li>)}
@@ -259,7 +259,7 @@ export default function CharacterWorkshopDemo() {
       </div>
 
       {/* Step 1: Character Type */}
-      <div className="bg-gradient-to-r from-yellow-200 to-orange-200 rounded-2xl p-6 mb-6 border-4 border-orange-300">
+      <div className="bg-linear-to-r from-yellow-200 to-orange-200 rounded-2xl p-6 mb-6 border-4 border-orange-300">
         <StepHeader n={1} title={t.step1} />
         <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
           {t.types.map((typeName, i) => (
@@ -271,9 +271,9 @@ export default function CharacterWorkshopDemo() {
               aria-label={typeName}
               onClick={() => setSelectedType(typeName)}
               onKeyDown={onActivate(() => setSelectedType(typeName))}
-              className={`p-4 text-center cursor-pointer transition-all hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
+              className={`p-4 text-center cursor-pointer transition-all hover:scale-105 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-purple-500 ${
                 selectedType === typeName
-                  ? 'bg-gradient-to-br from-pink-400 to-red-400 text-white ring-4 ring-pink-300'
+                  ? 'bg-linear-to-br from-pink-400 to-red-400 text-white ring-4 ring-pink-300'
                   : 'bg-white hover:bg-pink-50'
               }`}
             >
@@ -285,7 +285,7 @@ export default function CharacterWorkshopDemo() {
       </div>
 
       {/* Step 2: Name */}
-      <div className="bg-gradient-to-r from-blue-200 to-purple-200 rounded-2xl p-6 mb-6 border-4 border-purple-300">
+      <div className="bg-linear-to-r from-blue-200 to-purple-200 rounded-2xl p-6 mb-6 border-4 border-purple-300">
         <StepHeader n={2} title={t.step2} />
         <Input
           value={charName}
@@ -297,7 +297,7 @@ export default function CharacterWorkshopDemo() {
       </div>
 
       {/* Step 3: Appearance */}
-      <div className="bg-gradient-to-r from-green-200 to-cyan-200 rounded-2xl p-6 mb-6 border-4 border-cyan-300">
+      <div className="bg-linear-to-r from-green-200 to-cyan-200 rounded-2xl p-6 mb-6 border-4 border-cyan-300">
         <StepHeader n={3} title={t.step3} />
         <div className="space-y-3">
           <div>
@@ -323,7 +323,7 @@ export default function CharacterWorkshopDemo() {
       </div>
 
       {/* Step 4: Personality */}
-      <div className="bg-gradient-to-r from-pink-200 to-rose-200 rounded-2xl p-6 mb-6 border-4 border-rose-300">
+      <div className="bg-linear-to-r from-pink-200 to-rose-200 rounded-2xl p-6 mb-6 border-4 border-rose-300">
         <StepHeader n={4} title={t.step4} />
         <p className="text-gray-700 mb-3">{t.pickTraits}</p>
         <div className="grid grid-cols-4 md:grid-cols-8 gap-2 mb-3">
@@ -336,9 +336,9 @@ export default function CharacterWorkshopDemo() {
               aria-label={traitName}
               onClick={() => toggleTrait(traitName)}
               onKeyDown={onActivate(() => toggleTrait(traitName))}
-              className={`p-3 text-center cursor-pointer transition-all hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
+              className={`p-3 text-center cursor-pointer transition-all hover:scale-105 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-purple-500 ${
                 selectedTraits.includes(traitName)
-                  ? 'bg-gradient-to-br from-purple-400 to-pink-400 text-white ring-4 ring-purple-300'
+                  ? 'bg-linear-to-br from-purple-400 to-pink-400 text-white ring-4 ring-purple-300'
                   : 'bg-white hover:bg-purple-50'
               }`}
             >
@@ -351,7 +351,7 @@ export default function CharacterWorkshopDemo() {
       </div>
 
       {/* Step 5: Powers */}
-      <div className="bg-gradient-to-r from-indigo-200 to-blue-200 rounded-2xl p-6 mb-6 border-4 border-blue-300">
+      <div className="bg-linear-to-r from-indigo-200 to-blue-200 rounded-2xl p-6 mb-6 border-4 border-blue-300">
         <StepHeader n={5} title={t.step5} />
         <Textarea
           value={powers}
@@ -364,7 +364,7 @@ export default function CharacterWorkshopDemo() {
       </div>
 
       {/* Step 6: Story */}
-      <div className="bg-gradient-to-r from-purple-200 to-pink-200 rounded-2xl p-6 mb-6 border-4 border-pink-300">
+      <div className="bg-linear-to-r from-purple-200 to-pink-200 rounded-2xl p-6 mb-6 border-4 border-pink-300">
         <StepHeader n={6} title={t.step6} />
         <div className="space-y-3">
           <div>
@@ -387,7 +387,7 @@ export default function CharacterWorkshopDemo() {
       </div>
 
       {/* Step 7: Draw */}
-      <div className="bg-gradient-to-r from-yellow-200 to-lime-200 rounded-2xl p-6 mb-6 border-4 border-lime-300">
+      <div className="bg-linear-to-r from-yellow-200 to-lime-200 rounded-2xl p-6 mb-6 border-4 border-lime-300">
         <StepHeader n={7} title={t.step7} />
         <div className="bg-white rounded-xl p-8 text-center border-4 border-dashed border-purple-400">
           <Pencil className="w-16 h-16 mx-auto mb-4 text-purple-500" />
@@ -398,7 +398,7 @@ export default function CharacterWorkshopDemo() {
       <div className="text-center">
         <Button
           onClick={handleShowSummary}
-          className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold text-lg px-8 py-6 rounded-full shadow-lg"
+          className="bg-linear-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold text-lg px-8 py-6 rounded-full shadow-lg"
         >
           <Sparkles className="w-5 h-5 mr-2" />
           {t.seeSummary}
@@ -406,7 +406,7 @@ export default function CharacterWorkshopDemo() {
       </div>
 
       {showSummary && (
-        <div id="summary-section" className="mt-8 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl p-8">
+        <div id="summary-section" className="mt-8 bg-linear-to-r from-purple-500 to-pink-500 text-white rounded-2xl p-8">
           <h2 className="text-3xl font-bold text-center mb-6">{t.summaryHeading}</h2>
           <div className="space-y-3 text-lg">
             <p><strong>📛 {t.name}:</strong> {charName || t.defaultCharName}</p>

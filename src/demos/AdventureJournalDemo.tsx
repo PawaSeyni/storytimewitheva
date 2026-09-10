@@ -204,14 +204,14 @@ ${'='.repeat(50)}
   };
 
   return (
-    <div className="bg-gradient-to-br from-amber-100 via-orange-100 to-pink-100 rounded-2xl p-6 md:p-8">
+    <div className="bg-linear-to-br from-amber-100 via-orange-100 to-pink-100 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
         <h2 className="text-3xl font-bold mb-2 text-orange-700">{t.title}</h2>
         <p className="text-gray-700 mb-4">{t.subtitle}</p>
         <div className="text-5xl mb-4">📝✨</div>
       </div>
 
-      <div className="bg-gradient-to-r from-orange-400 to-pink-400 text-white rounded-2xl p-6 mb-6">
+      <div className="bg-linear-to-r from-orange-400 to-pink-400 text-white rounded-2xl p-6 mb-6">
         <h3 className="text-2xl font-bold mb-3 text-center">{t.howToPlay}</h3>
         <ol className="list-decimal list-inside space-y-2 text-lg">
           {t.howToList.map((line, i) => <li key={i}>{line}</li>)}
@@ -259,7 +259,7 @@ ${'='.repeat(50)}
                       onClick={() => setCurrentEntry({ ...currentEntry, rating: star })}
                       aria-label={`${star} / 5`}
                       aria-pressed={star <= currentEntry.rating}
-                      className="text-3xl transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded"
+                      className="text-3xl transition-transform hover:scale-110 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange-500 rounded-sm"
                     >
                       <span aria-hidden="true">{star <= currentEntry.rating ? '⭐' : '☆'}</span>
                     </button>
@@ -312,7 +312,7 @@ ${'='.repeat(50)}
                     onClick={() => setCurrentEntry({ ...currentEntry, emoji })}
                     aria-label={emoji}
                     aria-pressed={currentEntry.emoji === emoji}
-                    className={`text-3xl p-2 rounded-lg transition-all hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 ${
+                    className={`text-3xl p-2 rounded-lg transition-all hover:scale-110 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange-500 ${
                       currentEntry.emoji === emoji ? 'bg-orange-300 ring-4 ring-orange-500' : 'bg-gray-100'
                     }`}
                   >
@@ -325,7 +325,7 @@ ${'='.repeat(50)}
             <Button
               onClick={saveEntry}
               disabled={!currentEntry.bookTitle}
-              className="w-full bg-gradient-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white font-bold py-6 text-lg"
+              className="w-full bg-linear-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white font-bold py-6 text-lg"
             >
               <Star className="w-5 h-5 mr-2" />
               {t.saveEntry}
@@ -336,7 +336,7 @@ ${'='.repeat(50)}
         <div className="text-center mb-6">
           <Button
             onClick={() => setShowForm(true)}
-            className="bg-gradient-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white font-bold"
+            className="bg-linear-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white font-bold"
           >
             <BookOpen className="w-5 h-5 mr-2" />
             {t.newEntry}
@@ -360,7 +360,7 @@ ${'='.repeat(50)}
         </div>
 
         {entries.length === 0 ? (
-          <Card className="bg-gradient-to-br from-yellow-100 to-orange-100 p-12 text-center border-4 border-dashed border-orange-300">
+          <Card className="bg-linear-to-br from-yellow-100 to-orange-100 p-12 text-center border-4 border-dashed border-orange-300">
             <div className="text-6xl mb-4">📖</div>
             <p className="text-lg text-gray-600">{t.emptyJournal}</p>
           </Card>
@@ -408,7 +408,7 @@ ${'='.repeat(50)}
                 )}
 
                 {entry.thoughts && (
-                  <div className="bg-gradient-to-r from-orange-50 to-pink-50 p-4 rounded-lg">
+                  <div className="bg-linear-to-r from-orange-50 to-pink-50 p-4 rounded-lg">
                     <span className="font-bold text-orange-700 block mb-2">{t.entryThoughts}</span>
                     <p className="text-gray-700 leading-relaxed">{entry.thoughts}</p>
                   </div>

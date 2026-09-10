@@ -346,8 +346,10 @@ test('learning packs — gated landing page prerendered per locale with the pack
 test('print — the shipped stylesheet removes site chrome and clipping when printed (S7-008)', () => {
   const cssDir = path.join(DIST, 'assets');
   const css = readdirSync(cssDir).filter((f) => f.endsWith('.css')).map((f) => readFileSync(path.join(cssDir, f), 'utf8')).join('\n');
-  const printBlock = css.match(/@media print\{[^}]*\}(?:[^@]|@(?!media))*/)?.[0] ?? '';
-  assert.ok(printBlock, 'no @media print block in the built CSS');
+  // Tailwind 4 emits more than one @media print block (its own print: variant plus ours); test the union.
+  const printBlocks = css.match(/@media print\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g) ?? [];
+  assert.ok(printBlocks.length > 0, 'no @media print block in the built CSS');
+  const printBlock = printBlocks.join('\n');
   assert.match(printBlock, /\[data-print="?chrome"?\],#email-signup[^{]*\{display:none!important/, 'print must hide the site chrome and the signup');
   assert.doesNotMatch(printBlock, /(^|[,{])nav[,{]/, 'print must NOT hide every <nav>: breadcrumbs stay');
   assert.match(printBlock, /overflow:visible!important/, 'print must unclip scroll boxes');

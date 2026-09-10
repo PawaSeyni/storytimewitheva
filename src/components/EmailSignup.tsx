@@ -637,7 +637,7 @@ export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: 
   };
 
   return (
-    <section ref={sectionRef} id="email-signup" className="scroll-mt-24 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 py-16 px-4">
+    <section ref={sectionRef} id="email-signup" className="scroll-mt-24 bg-linear-to-r from-purple-600 via-purple-700 to-pink-600 py-16 px-4">
       <div className="max-w-2xl mx-auto text-center">
         {showContext && CONTEXT_LINE[placement][language] && (
           <p className="text-purple-100 text-sm font-semibold mb-3" data-signup-context={placement}>{CONTEXT_LINE[placement][language]}</p>
@@ -676,7 +676,7 @@ export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: 
         {status === 'submitted' ? (
           <div className="bg-white/20 rounded-2xl p-6 text-white" role="status" aria-live="polite">
             <div className="text-4xl mb-2">🎉</div>
-            <p ref={successRef} tabIndex={-1} className="font-bold text-xl outline-none">{t.successHeading}</p>
+            <p ref={successRef} tabIndex={-1} className="font-bold text-xl outline-hidden">{t.successHeading}</p>
             <p className="text-purple-100 text-sm mt-1 mb-4">{t.successDetail}</p>
             {magnet.bundle ? (
               /* Multi-resource magnet: one named link per file. Deliberately not
@@ -779,7 +779,7 @@ export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: 
               aria-label={t.firstNamePlaceholder}
               autoComplete="given-name"
               disabled={status === 'submitting'}
-              className="w-full px-5 py-3 rounded-full text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white shadow-md disabled:opacity-60"
+              className="w-full px-5 py-3 rounded-full bg-white text-gray-800 placeholder-gray-400 focus:outline-hidden focus:ring-2 focus:ring-white shadow-md disabled:opacity-60"
             />
             <div className="flex flex-col sm:flex-row gap-3">
               <input
@@ -792,7 +792,7 @@ export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: 
                 required
                 autoComplete="email"
                 disabled={status === 'submitting'}
-                className="flex-1 px-5 py-3 rounded-full text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white shadow-md disabled:opacity-60"
+                className="flex-1 px-5 py-3 rounded-full bg-white text-gray-800 placeholder-gray-400 focus:outline-hidden focus:ring-2 focus:ring-white shadow-md disabled:opacity-60"
               />
               <button
                 type="submit"

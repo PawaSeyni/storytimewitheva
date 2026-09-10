@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
-type Variant = 'default' | 'outline' | 'ghost' | 'destructive' | 'secondary' | 'link';
+type Variant = 'default' | 'outline-solid' | 'ghost' | 'destructive' | 'secondary' | 'link';
 type Size = 'default' | 'sm' | 'lg' | 'icon';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -12,12 +12,12 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const base =
   'inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium ' +
-  'rounded-md transition-all focus-visible:outline-none focus-visible:ring-2 ' +
+  'rounded-md transition-all focus-visible:outline-hidden focus-visible:ring-2 ' +
   'focus-visible:ring-purple-500 focus-visible:ring-offset-2 ' +
   'disabled:pointer-events-none disabled:opacity-50';
 
 const variants: Record<Variant, string> = {
-  default: 'bg-purple-600 text-white hover:bg-purple-700 shadow',
+  default: 'bg-purple-600 text-white hover:bg-purple-700 shadow-sm',
   outline: 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50',
   ghost: 'text-gray-700 hover:bg-gray-100',
   destructive: 'bg-red-600 text-white hover:bg-red-700',

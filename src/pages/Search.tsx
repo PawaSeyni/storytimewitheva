@@ -104,7 +104,7 @@ export default function Search() {
     <main>
       <Seo title={t.seoTitle} description={t.seoDesc} path="/search" noindex />
 
-      <section className="bg-gradient-to-b from-purple-50 to-white py-12 px-4">
+      <section className="bg-linear-to-b from-purple-50 to-white py-12 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-5">{t.heading}</h1>
           <div className="relative max-w-xl mx-auto">
@@ -116,7 +116,7 @@ export default function Search() {
               onChange={(e) => update({ q: e.target.value })}
               placeholder={t.placeholder}
               aria-label={t.placeholder}
-              className="w-full pl-11 pr-4 py-3 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-300 shadow-sm"
+              className="w-full pl-11 pr-4 py-3 rounded-full border border-gray-200 focus:outline-hidden focus:ring-2 focus:ring-purple-300 shadow-xs"
             />
           </div>
 

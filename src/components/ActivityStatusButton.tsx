@@ -39,7 +39,7 @@ export default function ActivityStatusButton({ slug }: ActivityStatusButtonProps
       aria-pressed={done}
       className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full transition-all border-2 ${
         done
-          ? 'bg-orange-500 border-orange-500 text-white shadow-sm'
+          ? 'bg-orange-500 border-orange-500 text-white shadow-xs'
           : 'bg-white border-orange-300 text-orange-700 hover:bg-orange-50'
       }`}
     >

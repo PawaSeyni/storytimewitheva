@@ -123,7 +123,7 @@ export default function CollectionPage({ id, title, intro, seoTitle, books, brow
       {/* A closed seasonal collection keeps its BreadcrumbList but not an empty ItemList. */}
       <JsonLd id={`collection-${id}`} data={books.length > 0 ? schema : [breadcrumbSchema(crumbs, language)]} />
 
-      <section className="bg-gradient-to-b from-purple-50 to-white py-12 px-4">
+      <section className="bg-linear-to-b from-purple-50 to-white py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <Breadcrumbs crumbs={crumbs} className="mb-6" />
           {audience === 'educator' && (
@@ -175,7 +175,7 @@ export default function CollectionPage({ id, title, intro, seoTitle, books, brow
                     <span className="block text-xs text-gray-500 mt-1 line-clamp-2">{a.desc}</span>
                   </>
                 );
-                const cls = 'block h-full bg-white rounded-2xl shadow-sm hover:shadow-md border border-gray-50 p-5 transition-all';
+                const cls = 'block h-full bg-white rounded-2xl shadow-xs hover:shadow-md border border-gray-50 p-5 transition-all';
                 return (
                   <li key={a.slug}>
                     {a.game ? <a href={gameUrl(a.slug, language)} className={cls}>{inner}</a> : <Link to={`/activities/${a.slug}`} className={cls}>{inner}</Link>}

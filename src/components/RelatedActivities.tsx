@@ -38,7 +38,7 @@ export default function RelatedActivities({ slugs }: { slugs: string[] }) {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {items.map((a) => {
           const cta = (
-            <span className="text-sm font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 group-hover:from-purple-600 group-hover:to-pink-600 px-4 py-1.5 rounded-full shadow-sm transition-all">
+            <span className="text-sm font-semibold text-white bg-linear-to-r from-purple-500 to-pink-500 group-hover:from-purple-600 group-hover:to-pink-600 px-4 py-1.5 rounded-full shadow-xs transition-all">
               {t.tryNow}
             </span>
           );

@@ -99,7 +99,7 @@ export default function ReadAlong({ text, className = '' }: ReadAlongProps) {
             <span
               className={
                 i === activeWord
-                  ? 'bg-yellow-200 rounded px-0.5 -mx-0.5 transition-colors'
+                  ? 'bg-yellow-200 rounded-sm px-0.5 -mx-0.5 transition-colors'
                   : undefined
               }
             >

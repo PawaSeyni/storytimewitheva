@@ -27,7 +27,7 @@ export default function Journeys() {
     <main>
       <Seo title={t.heading} description={t.seo} path="/journeys" />
       <JsonLd id="journeys" data={schema} />
-      <section className="bg-gradient-to-b from-amber-50 to-white py-12 px-4">
+      <section className="bg-linear-to-b from-amber-50 to-white py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <Breadcrumbs crumbs={crumbs} className="mb-6" />
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-3">{t.heading}</h1>
@@ -38,7 +38,7 @@ export default function Journeys() {
         <ul className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
           {publishedJourneys.map((j) => (
             <li key={j.id}>
-              <Link to={`/journeys/${j.id}`} className="block h-full rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md hover:border-purple-200 transition-all">
+              <Link to={`/journeys/${j.id}`} className="block h-full rounded-2xl border border-gray-100 bg-white p-6 shadow-xs hover:shadow-md hover:border-purple-200 transition-all">
                 <p className="text-xs font-semibold text-amber-800 mb-2">{j.ageBandIds.map((a) => AGE_BANDS[a].labels[language]).join(' · ')} · {j.steps.length} {t.steps}</p>
                 <h2 className="text-xl font-bold text-gray-800 mb-2">{j.title[language]}</h2>
                 <p className="text-sm text-gray-600 leading-relaxed">{j.description[language]}</p>

@@ -29,7 +29,7 @@ export default function SavedResources() {
   const items = ids.map((id) => resources.find((r) => r.id === id)).filter((r) => r !== undefined);
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-50 p-6">
+    <div className="bg-white rounded-2xl shadow-xs border border-gray-50 p-6">
       <h2 className="font-bold text-gray-800 mb-4">{t.heading}</h2>
       <ul className="space-y-3">
         {items.map((r) => (

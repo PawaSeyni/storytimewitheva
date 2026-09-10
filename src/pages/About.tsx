@@ -123,7 +123,7 @@ export default function About() {
       <Seo title={t.seoTitle} description={t.seoDesc} path="/about" image={`${SITE_URL}${evaHeadshot}`} imageWidth={800} imageHeight={800} />
       <JsonLd id="author" data={authorSchema} />
 
-      <section className="bg-gradient-to-b from-amber-50 to-white py-14 px-4">
+      <section className="bg-linear-to-b from-amber-50 to-white py-14 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">{t.heading}</h1>
           <p className="text-gray-500 text-lg">{t.subheading}</p>
@@ -147,7 +147,7 @@ export default function About() {
       <section className="py-14 px-4 bg-white">
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-col md:flex-row gap-10 items-center">
-            <div className="flex-shrink-0 w-full md:w-72">
+            <div className="shrink-0 w-full md:w-72">
               <img
                 src={evaHeadshot}
                 alt=""
@@ -181,7 +181,7 @@ export default function About() {
                   href={AMAZON_AUTHOR_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-sm"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-orange-400 to-orange-500 text-white font-bold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-sm"
                 >
                   {t.viewBooks}
                 </a>
@@ -194,13 +194,13 @@ export default function About() {
         </div>
       </section>
 
-      <section className="py-14 px-4 bg-gradient-to-b from-white to-purple-50">
+      <section className="py-14 px-4 bg-linear-to-b from-white to-purple-50">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-800 text-center mb-10">{t.missionHeading}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {t.cards.map((card, i) => (
               <div key={i} className="bg-white rounded-2xl p-6 shadow-md border border-gray-50">
-                <div className={`w-12 h-12 bg-gradient-to-br ${CARD_STYLES[i].color} rounded-xl flex items-center justify-center text-2xl mb-4 shadow-md`}>
+                <div className={`w-12 h-12 bg-linear-to-br ${CARD_STYLES[i].color} rounded-xl flex items-center justify-center text-2xl mb-4 shadow-md`}>
                   {CARD_STYLES[i].emoji}
                 </div>
                 <h3 className="font-bold text-gray-800 text-xl mb-2">{card.title}</h3>

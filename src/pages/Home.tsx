@@ -256,7 +256,7 @@ export default function Home() {
             </div>
             <p className="mt-6 text-sm font-medium text-purple-100/90">{t.heroAges}</p>
           </div>
-          <div className="order-first mb-10 lg:order-none lg:mb-0 lg:mt-0 lg:flex-1">
+          <div className="order-first mb-10 lg:order-0 lg:mb-0 lg:mt-0 lg:flex-1">
             <img
               src={evaReadingWebp}
               alt={t.heroImageAlt}
@@ -295,12 +295,12 @@ export default function Home() {
       </section>
 
       {/* SECTION 3 — Find Your Next Favorite Story (featured books) */}
-      <section className="py-20 px-4 bg-gradient-to-b from-white to-purple-50">
+      <section className="py-20 px-4 bg-linear-to-b from-white to-purple-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">{t.featTitle}</h2>
             <p className="text-gray-500 text-lg max-w-2xl mx-auto">{t.featSupport}</p>
-            <div className="w-20 h-1 bg-gradient-to-r from-orange-400 to-pink-400 mx-auto mt-6 rounded-full" />
+            <div className="w-20 h-1 bg-linear-to-r from-orange-400 to-pink-400 mx-auto mt-6 rounded-full" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
             {featuredBooks.map(book => (
@@ -325,11 +325,11 @@ export default function Home() {
       </section>
 
       {/* SECTION 4 — Why Families Choose Story Time with Eva (benefits) */}
-      <section className="py-20 px-4 bg-gradient-to-b from-purple-50 to-white">
+      <section className="py-20 px-4 bg-linear-to-b from-purple-50 to-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">{t.benTitle}</h2>
-            <div className="w-20 h-1 bg-gradient-to-r from-purple-400 to-pink-400 mx-auto mt-6 rounded-full" />
+            <div className="w-20 h-1 bg-linear-to-r from-purple-400 to-pink-400 mx-auto mt-6 rounded-full" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
             {t.benefits.map((b, i) => (
@@ -344,12 +344,12 @@ export default function Home() {
       </section>
 
       {/* SECTION 5 — The Story Doesn't End on the Last Page (activities) */}
-      <section className="py-20 px-4 bg-gradient-to-br from-yellow-50 to-orange-50">
+      <section className="py-20 px-4 bg-linear-to-br from-yellow-50 to-orange-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">{t.actTitle}</h2>
             <p className="text-gray-500 text-lg max-w-2xl mx-auto">{t.actSupport}</p>
-            <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 mx-auto mt-6 rounded-full" />
+            <div className="w-20 h-1 bg-linear-to-r from-cyan-400 via-blue-400 to-purple-400 mx-auto mt-6 rounded-full" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             {t.activityPreview.map((act, i) => (
@@ -357,7 +357,7 @@ export default function Home() {
                 <span className="absolute top-4 right-4 z-10 text-xs font-bold px-2 py-1 rounded-full bg-green-100 text-green-700">
                   {t.liveBadge}
                 </span>
-                <div className="h-2 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400" />
+                <div className="h-2 bg-linear-to-r from-cyan-400 via-blue-400 to-purple-400" />
                 <div className="p-6">
                   <span className="text-4xl block mb-3">{act.emoji}</span>
                   <h3 className="font-bold text-gray-800 text-lg mb-2">{act.title}</h3>
@@ -394,7 +394,7 @@ export default function Home() {
             height={320}
             loading="lazy"
             decoding="async"
-            className="w-48 h-48 md:w-64 md:h-64 rounded-full object-cover shadow-xl ring-4 ring-purple-100 flex-shrink-0"
+            className="w-48 h-48 md:w-64 md:h-64 rounded-full object-cover shadow-xl ring-4 ring-purple-100 shrink-0"
           />
           <div className="text-center md:text-left">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">{t.evaTitle}</h2>

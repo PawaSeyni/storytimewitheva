@@ -349,14 +349,14 @@ export default function StoryBuilderDemo() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 rounded-2xl p-6 md:p-8">
+    <div className="bg-linear-to-br from-blue-100 via-purple-100 to-pink-100 rounded-2xl p-6 md:p-8">
       <div className="text-center mb-6">
         <h2 className="text-3xl font-bold mb-2 text-purple-700">{t.title}</h2>
         <p className="text-gray-700 mb-4">{t.subtitle}</p>
         <div className="text-5xl mb-4">🎲📖</div>
       </div>
 
-      <div className="bg-gradient-to-r from-blue-400 to-cyan-400 text-white rounded-2xl p-6 mb-6 text-center">
+      <div className="bg-linear-to-r from-blue-400 to-cyan-400 text-white rounded-2xl p-6 mb-6 text-center">
         <h3 className="text-2xl font-bold mb-3">{t.howToPlay}</h3>
         <p className="text-lg leading-relaxed">{t.howToText}</p>
       </div>
@@ -365,7 +365,7 @@ export default function StoryBuilderDemo() {
         {ELEMENTS_LIST.map((element) => (
           <Card
             key={element}
-            className="bg-gradient-to-br from-yellow-100 to-orange-100 border-4 border-orange-300 p-6 hover:-translate-y-1 transition-all"
+            className="bg-linear-to-br from-yellow-100 to-orange-100 border-4 border-orange-300 p-6 hover:-translate-y-1 transition-all"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="text-lg font-bold text-gray-800 flex items-center gap-2">
@@ -405,16 +405,16 @@ export default function StoryBuilderDemo() {
         <Button
           onClick={rollAllDice}
           disabled={rollingElement !== null || isRollingAll}
-          className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold text-xl px-12 py-8 rounded-full shadow-2xl"
+          className="bg-linear-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold text-xl px-12 py-8 rounded-full shadow-2xl"
         >
           {t.rollAll}
         </Button>
       </div>
 
       {showStory && Object.keys(currentStory).length === 6 && (
-        <div className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-2xl p-8 mb-6">
+        <div className="bg-linear-to-r from-purple-500 to-indigo-500 text-white rounded-2xl p-8 mb-6">
           <div className="text-3xl font-bold text-center mb-6">{t.storyHeading}</div>
-          <div className="text-lg leading-relaxed text-center bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-6">
+          <div className="text-lg leading-relaxed text-center bg-white/20 backdrop-blur-xs rounded-xl p-6 mb-6">
             {generateStoryText()}
           </div>
           <div className="flex flex-wrap gap-3 justify-center">

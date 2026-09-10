@@ -43,7 +43,7 @@ export default function FavoriteButton({ bookId, compact = false }: { bookId: st
         compact ? 'px-2 py-1.5 text-xs' : 'px-4 py-2 text-sm font-semibold'
       } ${
         fav
-          ? 'bg-rose-500 border-rose-500 text-white shadow-sm'
+          ? 'bg-rose-500 border-rose-500 text-white shadow-xs'
           : 'bg-white border-rose-300 text-rose-600 hover:bg-rose-50'
       }`}
     >

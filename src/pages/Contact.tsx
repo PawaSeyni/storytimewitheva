@@ -140,7 +140,7 @@ export default function Contact() {
     <main>
       <Seo title={t.seoTitle} description={t.seoDesc} path="/contact" />
 
-      <section className="bg-gradient-to-b from-pink-50 to-white py-14 px-4">
+      <section className="bg-linear-to-b from-pink-50 to-white py-14 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <div className="text-5xl mb-4">📬</div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">{t.heading}</h1>
@@ -199,7 +199,7 @@ export default function Contact() {
                         required
                         value={form.name}
                         onChange={e => setForm({ ...form, name: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-hidden focus:ring-2 focus:ring-purple-300"
                         placeholder={t.namePlaceholder}
                       />
                     </div>
@@ -212,7 +212,7 @@ export default function Contact() {
                         required
                         value={form.email}
                         onChange={e => setForm({ ...form, email: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-hidden focus:ring-2 focus:ring-purple-300"
                         placeholder={t.emailPlaceholder}
                       />
                     </div>
@@ -226,7 +226,7 @@ export default function Contact() {
                       required
                       value={form.subject}
                       onChange={e => setForm({ ...form, subject: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-hidden focus:ring-2 focus:ring-purple-300"
                       placeholder={t.subjectPlaceholder}
                     />
                   </div>
@@ -239,7 +239,7 @@ export default function Contact() {
                       rows={5}
                       value={form.message}
                       onChange={e => setForm({ ...form, message: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-300 resize-none"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-hidden focus:ring-2 focus:ring-purple-300 resize-none"
                       placeholder={t.messagePlaceholder}
                     />
                   </div>
@@ -252,7 +252,7 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={status === 'submitting'}
-                    className="w-full py-3.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-lg disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100"
+                    className="w-full py-3.5 bg-linear-to-r from-purple-500 to-pink-500 text-white font-bold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-lg disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100"
                   >
                     {status === 'submitting' ? t.sending : t.sendButton}
                   </button>
@@ -262,7 +262,7 @@ export default function Contact() {
           </div>
 
           <div className="space-y-4">
-            <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl p-6 text-white text-center shadow-lg">
+            <div className="bg-linear-to-br from-purple-500 to-pink-500 rounded-2xl p-6 text-white text-center shadow-lg">
               <span className="text-4xl">🐾</span>
               <h2 className="font-bold text-xl mt-2 mb-1">{t.sidebarHeading}</h2>
               <p className="text-purple-100 text-sm">{t.sidebarBlurb}</p>
