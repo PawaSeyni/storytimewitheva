@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState } from 'react';
 import { isPrerendering } from '../lib/prerender';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -452,10 +452,8 @@ export default function PuzzleAdventuresDemo() {
   // reflect the real puzzle count instead of a hardcoded 8.
   const totalPuzzles = scrambledWords.length + riddles.length + 2;
 
-  // Pick a random starting puzzle index on mount (run once; pools are same length across langs)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const initialLogicIndex = useMemo(() => (isPrerendering() ? 0 : Math.floor(Math.random() * logicPuzzles.length)), []);
-  const [logicIndex, setLogicIndex] = useState(initialLogicIndex);
+  // Random starting puzzle, chosen once in the state initializer (fixed under the prerender).
+  const [logicIndex, setLogicIndex] = useState(() => (isPrerendering() ? 0 : Math.floor(Math.random() * logicPuzzles.length)));
   const logic = logicPuzzles[logicIndex];
 
   const [score, setScore] = useState(0);
@@ -483,9 +481,12 @@ export default function PuzzleAdventuresDemo() {
   const [logicHint, setLogicHint] = useState('');
   const [logicAttempts, setLogicAttempts] = useState(0);
 
-  // Clear in-progress answers/feedback when the language changes, so the inputs
-  // can't go stale against the now-translated prompts.
-  useEffect(() => {
+  // Clear in-progress answers/feedback when the language changes, so the inputs can't go
+  // stale against the now-translated prompts. Adjusted during render (React's pattern for
+  // state that follows a prop) rather than in an effect.
+  const [seenLanguage, setSeenLanguage] = useState(language);
+  if (seenLanguage !== language) {
+    setSeenLanguage(language);
     setScrambleAnswers(scrambledWords.map(() => ''));
     setScrambleFeedback(scrambledWords.map(() => ''));
     setScrambleAttempts(scrambledWords.map(() => 0));
@@ -500,8 +501,7 @@ export default function PuzzleAdventuresDemo() {
     setLogicFeedback('');
     setLogicHint('');
     setLogicAttempts(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language]);
+  }
 
   const updateScore = (key: string) => {
     if (!completed.has(key)) {

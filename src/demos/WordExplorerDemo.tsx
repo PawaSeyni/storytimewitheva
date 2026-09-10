@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { LANGUAGES } from '../lib/locales';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, XCircle, RotateCcw } from 'lucide-react';
@@ -246,10 +246,12 @@ export default function WordExplorerDemo() {
 
   // A mid-question language switch recomputes the options/correct answer for the
   // new target language; clear any locked answer so the highlight can't go stale.
-  useEffect(() => {
+  const [seenLanguage, setSeenLanguage] = useState(language);
+  if (seenLanguage !== language) {
+    setSeenLanguage(language);
     setQuizAnswered(null);
     setQuizCorrectAnswer(null);
-  }, [language]);
+  }
 
   const handleCategoryChange = (cat: CategoryKey | 'all') => {
     setSelectedCategory(cat);

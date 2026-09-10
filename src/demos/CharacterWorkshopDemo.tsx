@@ -195,6 +195,17 @@ const TRANSLATIONS = {
 const TYPE_ICONS = ['🦸', '🐉', '👑', '🧙', '🤖', '🧚'];
 const TRAIT_ICONS = ['😊', '💪', '🤓', '😂', '🤗', '🎭', '⚡', '🌸'];
 
+// Module scope on purpose: a component created inside render is a new type on every
+// render, which remounts its subtree and resets its state (react-hooks/static-components).
+function StepHeader({ n, title }: { n: number; title: string }) {
+  return (
+    <div className="flex items-center gap-3 mb-4">
+      <div className="bg-red-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl">{n}</div>
+      <h3 className="text-2xl font-bold text-gray-800">{title}</h3>
+    </div>
+  );
+}
+
 export default function CharacterWorkshopDemo() {
   const t = useTranslation(TRANSLATIONS);
   const scrollTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -235,13 +246,6 @@ export default function CharacterWorkshopDemo() {
       document.getElementById('summary-section')?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
   };
-
-  const StepHeader = ({ n, title }: { n: number; title: string }) => (
-    <div className="flex items-center gap-3 mb-4">
-      <div className="bg-red-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl">{n}</div>
-      <h3 className="text-2xl font-bold text-gray-800">{title}</h3>
-    </div>
-  );
 
   return (
     <div className="bg-linear-to-br from-purple-100 via-pink-100 to-orange-100 rounded-2xl p-6 md:p-8">

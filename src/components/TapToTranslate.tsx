@@ -154,7 +154,7 @@ interface Token {
 export default function TapToTranslate({ text, language, className = '' }: TapToTranslateProps) {
   const baseId = useId();
   const t = TRANSLATIONS[language];
-  const index = useMemo(buildIndex, []);
+  const index = useMemo(() => buildIndex(), []);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 

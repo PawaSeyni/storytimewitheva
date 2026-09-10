@@ -8,7 +8,7 @@
 // Toasts auto-dismiss after 3.5s. Multiple toasts stack bottom-right (bottom-center on mobile).
 // role="status" / aria-live="polite" so screen readers announce them.
 
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode, useMemo } from 'react';
 import { useTranslation } from './language';
 
 const DISMISS_LABEL = {
@@ -38,6 +38,14 @@ const TOAST_DURATION_MS = 3500;
 
 let nextId = 0;
 
+function makeToastFn(push: (message: string, kind: ToastVariant) => void): ToastFn {
+  const fn = ((message: string) => push(message, 'info')) as ToastFn;
+  fn.info = (m: string) => push(m, 'info');
+  fn.success = (m: string) => push(m, 'success');
+  fn.error = (m: string) => push(m, 'error');
+  return fn;
+}
+
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
 
@@ -50,13 +58,9 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     }, TOAST_DURATION_MS);
   }, []);
 
-  const toast = useCallback(
-    ((message: string) => push(message, 'info')) as ToastFn,
-    [push],
-  );
-  toast.info = useCallback((m: string) => push(m, 'info'), [push]);
-  toast.success = useCallback((m: string) => push(m, 'success'), [push]);
-  toast.error = useCallback((m: string) => push(m, 'error'), [push]);
+  // One memoized function object, built by a module-scope factory so its variants are set
+  // at creation time: mutating a value inside render is what the immutability rule forbids.
+  const toast = useMemo(() => makeToastFn(push), [push]);
 
   return (
     <ToastContext.Provider value={toast}>

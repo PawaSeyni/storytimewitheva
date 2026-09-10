@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -152,16 +152,12 @@ const blankEntry = (): Omit<Entry, 'id'> => ({
 });
 
 export default function AdventureJournalDemo() {
-  const [entries, setEntries] = useState<Entry[]>([]);
+  // Storage goes through src/lib/storage.ts, which validates and never throws, so the
+  // saved journal can seed the state directly.
+  const [entries, setEntries] = useState<Entry[]>(() => (getLegacy(JOURNAL_KEY, isArray) as Entry[] | null) ?? []);
   const [currentEntry, setCurrentEntry] = useState(blankEntry());
   const [showForm, setShowForm] = useState(true);
   const t = useTranslation(TRANSLATIONS);
-
-  useEffect(() => {
-    // Storage goes through src/lib/storage.ts, which validates and never throws.
-    const saved = getLegacy(JOURNAL_KEY, isArray);
-    if (saved) setEntries(saved as Entry[]);
-  }, []);
 
   const persist = (next: Entry[]) => {
     // In-memory state stays authoritative: a storage failure (private mode, quota) must
