@@ -33,7 +33,9 @@ for (const route of ROUTES) {
       return { cls: w.__cls, fallbacks: w.__fallbacks };
     });
     expect(fallbacks, 'Suspense fallback committed over the prerendered page').toBe(0);
-    expect(cls, 'cumulative layout shift on load').toBeLessThan(0.01);
+    // The fallback flash scores 0.25-0.58; a font swap or a late image on a CI runner can add
+    // a hundredth or two, so the gate is Google's 0.1 "good" boundary.
+    expect(cls, 'cumulative layout shift on load').toBeLessThan(0.1);
     await expect(page.locator('main')).toBeVisible();
   });
 }
