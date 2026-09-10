@@ -25,7 +25,11 @@
    set the four env vars, `npm run build`, deploy (or connect the repo to a new Netlify
    site: build settings are read from `netlify.toml`), re-add DNS, re-enable Forms
    notifications and the Lighthouse plugin (in `netlify.toml` already).
-5. **Optional third party unavailable**: Plausible down → pages unaffected, events buffer
+5. **Build skipped for credits** (Netlify: "Skipped due to account credit usage exceeded"):
+   production keeps the last good deploy; the post-deploy job fails with "production never
+   reported <sha>". Restore credits in the Netlify billing page, then retry the skipped deploy
+   from the dashboard or push a commit. Happened 2026-06-15 and 2026-09-10.
+6. **Optional third party unavailable**: Plausible down → pages unaffected, events buffer
    then drop; MailerLite down → signup shows an error, nothing is written; Amazon image host
    down → alt text, featured covers are local; Pinterest API down → swallowed.
 
