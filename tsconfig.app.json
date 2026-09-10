@@ -22,9 +22,8 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Path alias matching vite.config.ts */
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src"]

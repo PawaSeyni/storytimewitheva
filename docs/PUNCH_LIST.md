@@ -78,12 +78,20 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Tooling — TypeScript 6 and the type-check gate (2026-09-10)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| TS-01 | **The build's type check was a no-op.** `tsc` on the references-only root `tsconfig.json` (`files: []`) checks zero files, so `npm run build`, CI and every "type check passed" claim since project references were introduced verified nothing. Fixed: `npm run typecheck` = `tsc -b` over both projects, in CI right after lint and inside the build. | #205 |
+| TS-02 | **What the real check found on main**: the Tailwind 4 upgrade tool had rewritten the Button variant name `outline` to `outline-solid` in the type union and in two Coloring demo call sites (the theme and eraser buttons lost their outline styling on production since #202); `AdventureJournal` used the now-untyped variant; two `readonly` tuple casts in `contentIndex`; a `useRef` without an initial value (React 19 types); a nullability gap in `getStatus`. All fixed. | #205 |
+| TS-03 | **TypeScript 6.0.3** (bridge release): `baseUrl` removed from `tsconfig.app.json`, `paths` made relative, `@types/node` added for the node project. **TypeScript 7 blocked** by typescript-eslint (no support for 7.0; tracked for 7.1). TS 7's compiler itself passed on this code once the same fixes were in. | #205 |
+
 ### Operations — Netlify build credits (2026-09-10)
 
 | ID | Item | Evidence |
 |----|------|----------|
 | NB-01 | **Production build for `2f9ae86` (#203, games stylesheet) was SKIPPED by Netlify: "account credit usage exceeded".** Production is intact on the previous deploy (`eeb6eae`, Tailwind 4 app); the post-deploy workflow reported the failure correctly (it waited ten minutes for the commit and gave up). Nothing in the code failed. | post-deploy run on 2f9ae86; `netlify api listSiteDeploys` |
-| NB-02 | **Owner action: restore build credits** (Netlify → Team → Billing), then "Retry deploy" on the skipped deploy or push any commit. Until then every production build and deploy preview is skipped, so no merge reaches production and the post-deploy job fails on each push. | open |
+| NB-02 | **Resolved 2026-09-10**: credits restored by the owner; the block lifted about an hour later; production rebuilt from `c6d86a8` (109 s), verified. | done |
 | NB-03 | **Cause**: one day of dependency majors and sprint work produced dozens of builds, each running the 222-route Puppeteer prerender (~1-2 build minutes). Mitigation for the runbook: batch merges when several PRs are ready, and consider `PRERENDER_CONCURRENCY`-style savings only if measured (register BR-01 says rendering is CPU-bound). | recorded |
 
 ### Tooling — Tailwind 4 migration

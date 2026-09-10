@@ -197,7 +197,7 @@ const TRAIT_ICONS = ['😊', '💪', '🤓', '😂', '🤗', '🎭', '⚡', '�
 
 export default function CharacterWorkshopDemo() {
   const t = useTranslation(TRANSLATIONS);
-  const scrollTimer = useRef<ReturnType<typeof setTimeout>>();
+  const scrollTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => () => clearTimeout(scrollTimer.current), []);
   const [selectedType, setSelectedType] = useState('');
   const [selectedTraits, setSelectedTraits] = useState<string[]>([]);

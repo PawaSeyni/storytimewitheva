@@ -329,8 +329,8 @@ export function learningPackProblems(p: LearningPack): string[] {
   if (learningPacks.filter((x) => x.id === p.id).length > 1) problems.push(`duplicate pack id "${p.id}"`);
   if (!['parent', 'educator', 'both'].includes(p.audience)) problems.push(`unknown audience "${p.audience}"`);
   if (p.ageBandIds.length === 0) problems.push('a pack needs at least one age band');
-  for (const b of p.ageBandIds) if (!(AGE_BAND_IDS as string[]).includes(b)) problems.push(`unknown age band "${b}"`);
-  for (const t of p.themeIds ?? []) if (!(THEME_IDS as string[]).includes(t)) problems.push(`unknown theme "${t}"`);
+  for (const b of p.ageBandIds) if (!(AGE_BAND_IDS as readonly string[]).includes(b)) problems.push(`unknown age band "${b}"`);
+  for (const t of p.themeIds ?? []) if (!(THEME_IDS as readonly string[]).includes(t)) problems.push(`unknown theme "${t}"`);
   if (p.resourceIds.length < 2) problems.push('a pack bundles at least two printables');
   if (new Set(p.resourceIds).size !== p.resourceIds.length) problems.push('duplicate resource in pack');
   for (const id of p.resourceIds) {

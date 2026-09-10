@@ -19,6 +19,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
+      - run: npm run typecheck           # tsc -b over both projects; plain tsc on the references-only root checked nothing
       - run: npm run check:content        # S7-014: ecosystem references, validators, downloads on disk
       - run: npm run check:audit          # S8-014: high/critical advisories block unless allowlisted with a live review date
       - run: npm test                       # Layer 0 + 2.5 + 7 (headless, no browser)

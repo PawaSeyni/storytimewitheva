@@ -839,7 +839,7 @@ export default function ColoringDemo() {
               key={theme.key}
               onClick={() => setSelectedThemeIdx(index)}
               aria-pressed={selectedThemeIdx === index}
-              variant={selectedThemeIdx === index ? 'default' : 'outline-solid'}
+              variant={selectedThemeIdx === index ? 'default' : 'outline'}
               className={`text-xs md:text-sm flex flex-col items-center gap-1 h-auto py-3 ${
                 selectedThemeIdx === index ? 'bg-linear-to-r from-purple-500 to-pink-500 text-white' : ''
               }`}
@@ -890,7 +890,7 @@ export default function ColoringDemo() {
       <div className="flex flex-wrap gap-3 mb-4">
         <Button
           onClick={() => setIsEraser(!isEraser)}
-          variant={isEraser ? 'default' : 'outline-solid'}
+          variant={isEraser ? 'default' : 'outline'}
           className={isEraser ? 'bg-linear-to-r from-gray-400 to-gray-600 text-white' : ''}
         >
           <Eraser className="w-4 h-4 mr-2" />
