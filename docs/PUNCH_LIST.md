@@ -78,6 +78,14 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | V-05 | **"Try an activity" section** on all 20 book pages × 3 languages, prerendered, rendering the B-02 pairs. Games link to their standalone static HTML (not language-prefixed, matching `Activities.tsx`); in-app demos use the localizing `Link`. Card titles are `h3` under the section `h2` — `Activities.tsx` uses `h2` for its own card titles, which would have put a card at the same rank as the heading it belongs to. | #151 |
 | V-04 | **B-03 resolved by NOT pairing** — all ten resources were tested for a book-specific hook: zero theme references, zero title references, three generic age mentions. Per-book pairing would manufacture a signal that does not exist, so `relatedResourceIds` stays empty and a **shared strip** renders the same four resources on every book page. A test fails the build if anyone populates the field without revisiting the decision. | #150 |
 
+### Operations — Netlify build credits (2026-09-10)
+
+| ID | Item | Evidence |
+|----|------|----------|
+| NB-01 | **Production build for `2f9ae86` (#203, games stylesheet) was SKIPPED by Netlify: "account credit usage exceeded".** Production is intact on the previous deploy (`eeb6eae`, Tailwind 4 app); the post-deploy workflow reported the failure correctly (it waited ten minutes for the commit and gave up). Nothing in the code failed. | post-deploy run on 2f9ae86; `netlify api listSiteDeploys` |
+| NB-02 | **Owner action: restore build credits** (Netlify → Team → Billing), then "Retry deploy" on the skipped deploy or push any commit. Until then every production build and deploy preview is skipped, so no merge reaches production and the post-deploy job fails on each push. | open |
+| NB-03 | **Cause**: one day of dependency majors and sprint work produced dozens of builds, each running the 222-route Puppeteer prerender (~1-2 build minutes). Mitigation for the runbook: batch merges when several PRs are ready, and consider `PRERENDER_CONCURRENCY`-style savings only if measured (register BR-01 says rendering is CPU-bound). | recorded |
+
 ### Tooling — Tailwind 4 migration
 
 | ID | Item | Evidence |
