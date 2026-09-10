@@ -324,7 +324,9 @@ test('learning packs — gated landing page prerendered per locale with the pack
       assert.ok(h, `${prefix}/free/${p.id}: not prerendered`);
       const decoded = h.replace(/&#39;/g, "'").replace(/&amp;/g, '&').replace(/&quot;/g, '"');
       assert.ok(decoded.includes(p.title[loc]), `${prefix}/free/${p.id}: ${loc} title missing`);
-      assert.ok(/name="lead_magnet" value="[a-z0-9-]+"/.test(h) && h.includes(`value="${p.id}"`), `${prefix}/free/${p.id}: form must tag the pack`);
+      // Attribute order is a renderer detail (React 19 writes value before name); match the tag, not the order.
+      const tagInput = (h.match(/<input\b[^>]*type="hidden"[^>]*>/g) ?? []).find((t) => /name="lead_magnet"/.test(t));
+      assert.ok(tagInput && tagInput.includes(`value="${p.id}"`), `${prefix}/free/${p.id}: form must tag the pack`);
       assert.ok(h.includes('<meta name="robots" content="noindex'), `${prefix}/free/${p.id}: landing pages are noindex`);
     }
     const res = read(`${prefix}/resources`);
