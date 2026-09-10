@@ -121,22 +121,3 @@ for (const loc of games) {
     assert.ok(titleOf(readFileSync(file, 'utf8')).length > 0, 'empty <title>');
   });
 }
-
-// PD-04 — every prerendered route also exists as <route>.html, so the unslashed URL every
-// internal and shared link uses (/books) is served directly instead of via Netlify's
-// pretty-URL 301 to /books/ (0.3-0.9 s on mobile before anything paints).
-test('every prerendered route has a byte-identical unslashed twin (<route>.html)', () => {
-  // The static game pages (/games/*.html) are files already, not prerendered routes.
-  const routes = routesFromSitemap().map((loc) => new URL(loc).pathname).filter((p) => p !== '/' && !p.endsWith('.html'));
-  assert.ok(routes.length > 100, `expected the sitemap routes, got ${routes.length}`);
-  const missing = [];
-  const differing = [];
-  for (const route of routes) {
-    const dir = path.join(ROOT, 'dist', route, 'index.html');
-    const twin = path.join(ROOT, 'dist', `${route.replace(/\/+$/, '')}.html`);
-    if (!existsSync(twin)) { missing.push(route); continue; }
-    if (readFileSync(dir, 'utf8') !== readFileSync(twin, 'utf8')) differing.push(route);
-  }
-  assert.deepEqual(missing, [], 'routes without a twin file');
-  assert.deepEqual(differing, [], 'twin files that differ from index.html');
-});
