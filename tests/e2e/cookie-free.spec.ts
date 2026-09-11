@@ -15,7 +15,7 @@
 import { test, expect } from './_app';
 import { type Page, type BrowserContext } from '@playwright/test';
 
-const ROUTES = ['/', '/books', '/books/mayas-shadow', '/collections/kindness', '/collections/classroom-feelings', '/collections/back-to-school', '/collections/summer-of-wonder', '/activities', '/resources', '/profile', '/journeys', '/journeys/kindness-that-shines', '/search?q=kindness', '/free/classroom-pack'];
+const ROUTES = ['/', '/books', '/books/mayas-shadow', '/collections/kindness', '/collections/classroom-feelings', '/collections/back-to-school', '/collections/summer-of-wonder', '/activities', '/activities/kindness-ripple', '/activities/patient-maker-passport', '/resources', '/profile', '/journeys', '/journeys/kindness-that-shines', '/search?q=kindness', '/free/classroom-pack'];
 const LOCALES = ['', '/fr', '/es'];
 
 /** Collect uncaught page errors for the life of the page. */

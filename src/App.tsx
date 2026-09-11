@@ -113,6 +113,15 @@ const CraftCornerDemo = chunk(L.loadCraftCornerDemo);
 const ColoringDemo = chunk(L.loadColoringDemo);
 const PuzzleAdventuresDemo = chunk(L.loadPuzzleAdventuresDemo);
 const WordExplorerDemo = chunk(L.loadWordExplorerDemo);
+// Activity Studio (2026-09-11)
+const ColorMixLabDemo = chunk(L.loadColorMixLabDemo);
+const FeelingsWeatherDemo = chunk(L.loadFeelingsWeatherDemo);
+const BravePlanDemo = chunk(L.loadBravePlanDemo);
+const CloudDetectiveDemo = chunk(L.loadCloudDetectiveDemo);
+const ShadowTheatreDemo = chunk(L.loadShadowTheatreDemo);
+const KindnessRippleDemo = chunk(L.loadKindnessRippleDemo);
+const StoryQuiltDemo = chunk(L.loadStoryQuiltDemo);
+const MakerPassportDemo = chunk(L.loadMakerPassportDemo);
 
 // Canonical (English) route table. Mounted once per language prefix below so
 // every page exists at /path, /es/path, and /fr/path. The active language is
@@ -134,6 +143,14 @@ const routeDefs = [
   { path: '/activities/coloring', element: <DemoPage><ColoringDemo /></DemoPage> },
   { path: '/activities/puzzles', element: <DemoPage><PuzzleAdventuresDemo /></DemoPage> },
   { path: '/activities/word-explorer', element: <DemoPage><WordExplorerDemo /></DemoPage> },
+  { path: '/activities/color-mix-lab', element: <DemoPage><ColorMixLabDemo /></DemoPage> },
+  { path: '/activities/feelings-weather-report', element: <DemoPage><FeelingsWeatherDemo /></DemoPage> },
+  { path: '/activities/first-day-brave-plan', element: <DemoPage><BravePlanDemo /></DemoPage> },
+  { path: '/activities/cloud-detective-journal', element: <DemoPage><CloudDetectiveDemo /></DemoPage> },
+  { path: '/activities/shadow-theatre', element: <DemoPage><ShadowTheatreDemo /></DemoPage> },
+  { path: '/activities/kindness-ripple', element: <DemoPage><KindnessRippleDemo /></DemoPage> },
+  { path: '/activities/story-quilt', element: <DemoPage><StoryQuiltDemo /></DemoPage> },
+  { path: '/activities/patient-maker-passport', element: <DemoPage><MakerPassportDemo /></DemoPage> },
   { path: '/resources', element: <Resources /> },
   { path: '/about', element: <About /> },
   { path: '/contact', element: <Contact /> },

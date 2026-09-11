@@ -77,6 +77,7 @@ test('search — title matches rank above term and summary matches; every word m
   const hits = searchRecords(index, 'kindness', { language: 'en' });
   assert.equal(hits[0].type, 'collection');
   assert.equal(hits[0].id, 'kindness', 'the collection titled Kindness ranks first');
+  assert.ok(hits.some((r) => r.type === 'activity' && r.id === 'kindness-ripple'), 'the Kindness Ripple Challenge activity is found too, below the exact title');
   assert.deepEqual(searchRecords(index, 'kindness zzzz', { language: 'en' }), [], 'an unmatched word yields nothing');
 });
 
