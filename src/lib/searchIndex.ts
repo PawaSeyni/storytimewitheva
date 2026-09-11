@@ -146,6 +146,9 @@ export function searchRecords(index: SearchRecord[], query: string, opts: Search
       else if (summary.includes(w)) score += 1;
       else { score = 0; break; } // every word must match somewhere
     }
+    // A title that IS the query outranks a title that merely starts with it: "Kindness"
+    // (the collection) above "Kindness Ripple Challenge" (the activity, 2026-09-11).
+    if (score > 0 && title === q) score += 3;
     if (score > 0) scored.push({ r, score });
   }
   const order = (t: SearchType) => SEARCH_TYPES.indexOf(t);

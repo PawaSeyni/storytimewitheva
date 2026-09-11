@@ -113,7 +113,7 @@ export const books: Book[] = [
     ageRange: '4-7',
     themeIds: ['curiosity', 'creativity'],
     relatedBookIds: ['little-mapmaker', 'heidis-journey-to-mastery', 'cloud-collector'],
-    relatedActivityIds: ['bookmark-designer', 'build-a-scene', 'coloring'],
+    relatedActivityIds: ['color-mix-lab', 'bookmark-designer', 'build-a-scene', 'coloring'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "If you could paint the sky any color at all, which one would you choose?",
@@ -264,7 +264,7 @@ export const books: Book[] = [
     ageRange: '3-7',
     themeIds: ['wonder', 'creativity'],
     relatedBookIds: ['little-mapmaker', 'rainbow-symphony', 'little-boats-big-wish'],
-    relatedActivityIds: ['coloring', 'bookmark-designer', 'build-a-scene'],
+    relatedActivityIds: ['shadow-theatre', 'coloring', 'bookmark-designer', 'build-a-scene'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Look at your shadow. Where do you think it goes when you fall asleep?",
@@ -314,7 +314,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['kindness', 'courage'],
     relatedBookIds: ['diegos-brave-leap', 'butterfly-effect', 'true-beauty-meadowbrook'],
-    relatedActivityIds: ['adventure-journal', 'bingo', 'character-workshop'],
+    relatedActivityIds: ['kindness-ripple', 'adventure-journal', 'bingo', 'character-workshop'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "The biggest animals do not notice the forest is in trouble. Who do you think will?",
@@ -363,7 +363,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['courage', 'emotions'],
     relatedBookIds: ['sparrow-saved-forest', 'leo-and-the-wolf', 'pawa-rainbow-cloud'],
-    relatedActivityIds: ['character-workshop', 'emotion-wheel', 'finish-the-story'],
+    relatedActivityIds: ['first-day-brave-plan', 'character-workshop', 'emotion-wheel', 'finish-the-story'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Diego is standing at the edge of a cliff and everyone is watching. How do you think his tummy feels?",
@@ -412,7 +412,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['kindness'],
     relatedBookIds: ['sparrow-saved-forest', 'crooked-little-apple-tree', 'true-beauty-meadowbrook'],
-    relatedActivityIds: ['adventure-journal', 'bingo', 'emotion-wheel'],
+    relatedActivityIds: ['kindness-ripple', 'adventure-journal', 'bingo', 'emotion-wheel'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "What do you think one small kind thing could turn into?",
@@ -608,7 +608,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['patience-mastery'],
     relatedBookIds: ['heidis-journey-to-mastery', 'miras-thousand-cubes', 'russet-the-fox'],
-    relatedActivityIds: ['bookmark-designer', 'craft-corner', 'puzzles'],
+    relatedActivityIds: ['patient-maker-passport', 'bookmark-designer', 'craft-corner', 'puzzles'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "The boy wants to be a great woodworker today, right now. Do you think that can happen?",
@@ -804,7 +804,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['patience-mastery', 'curiosity', 'creativity'],
     relatedBookIds: ['miras-thousand-cubes', 'colors-mixed-up', 'little-mapmaker'],
-    relatedActivityIds: ['bookmark-designer', 'craft-corner', 'build-a-scene'],
+    relatedActivityIds: ['patient-maker-passport', 'bookmark-designer', 'craft-corner', 'build-a-scene'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Heidi dreams of building solar cars and robots. What would you invent first?",
@@ -853,7 +853,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['curiosity', 'wonder', 'humility-listening'],
     relatedBookIds: ['little-mapmaker', 'colors-mixed-up', 'russet-the-fox'],
-    relatedActivityIds: ['rhyme-singalong', 'story-map', 'world-geography'],
+    relatedActivityIds: ['cloud-detective-journal', 'rhyme-singalong', 'story-map', 'world-geography'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Luna wants to catch one cloud of every kind in a jar. Do you think she can?",
@@ -951,7 +951,7 @@ export const books: Book[] = [
     ageRange: '3-7',
     themeIds: ['emotions', 'self-worth', 'wonder'],
     relatedBookIds: ['mayas-shadow', 'little-boats-big-wish', 'diegos-brave-leap'],
-    relatedActivityIds: ['coloring', 'emotion-wheel', 'rhyme-singalong'],
+    relatedActivityIds: ['feelings-weather-report', 'coloring', 'emotion-wheel', 'rhyme-singalong'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Cirro is a little cloud who feels heavy and sad. What do you think might help him?",
@@ -1000,7 +1000,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['patience-mastery', 'creativity'],
     relatedBookIds: ['heidis-journey-to-mastery', 'sanding-block', 'colors-mixed-up'],
-    relatedActivityIds: ['bookmark-designer', 'craft-corner', 'build-a-scene'],
+    relatedActivityIds: ['patient-maker-passport', 'bookmark-designer', 'craft-corner', 'build-a-scene'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Mira wants to carve eagles. Her first task is a thousand plain cubes. How would you feel?",
@@ -1049,7 +1049,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['heritage', 'gratitude'],
     relatedBookIds: ['emperors-true-treasure', 'little-boats-big-wish'],
-    relatedActivityIds: ['adventure-journal', 'bilingual-flashcards', 'bingo'],
+    relatedActivityIds: ['story-quilt', 'adventure-journal', 'bilingual-flashcards', 'bingo'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Sofia wants to cut down an old fig tree. What do you think that tree has seen?",

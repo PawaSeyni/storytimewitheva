@@ -10,7 +10,7 @@
       "fail": 50
     },
     "totalGzipKB": {
-      "warn": 320,
+      "warn": 340,
       "fail": 350
     }
   },

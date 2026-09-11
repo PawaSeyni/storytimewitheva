@@ -33,6 +33,14 @@ export const loadCraftCornerDemo = preloadable(() => import('./demos/CraftCorner
 export const loadColoringDemo = preloadable(() => import('./demos/ColoringDemo'));
 export const loadPuzzleAdventuresDemo = preloadable(() => import('./demos/PuzzleAdventuresDemo'));
 export const loadWordExplorerDemo = preloadable(() => import('./demos/WordExplorerDemo'));
+export const loadColorMixLabDemo = preloadable(() => import('./demos/ColorMixLabDemo'));
+export const loadFeelingsWeatherDemo = preloadable(() => import('./demos/FeelingsWeatherDemo'));
+export const loadBravePlanDemo = preloadable(() => import('./demos/BravePlanDemo'));
+export const loadCloudDetectiveDemo = preloadable(() => import('./demos/CloudDetectiveDemo'));
+export const loadShadowTheatreDemo = preloadable(() => import('./demos/ShadowTheatreDemo'));
+export const loadKindnessRippleDemo = preloadable(() => import('./demos/KindnessRippleDemo'));
+export const loadStoryQuiltDemo = preloadable(() => import('./demos/StoryQuiltDemo'));
+export const loadMakerPassportDemo = preloadable(() => import('./demos/MakerPassportDemo'));
 
 type Loader = () => Promise<unknown>;
 
@@ -55,6 +63,14 @@ export const ROUTE_CHUNKS: ReadonlyArray<{ path: string; loaders: readonly Loade
   { path: '/activities/coloring', loaders: [loadDemoPage, loadColoringDemo] },
   { path: '/activities/puzzles', loaders: [loadDemoPage, loadPuzzleAdventuresDemo] },
   { path: '/activities/word-explorer', loaders: [loadDemoPage, loadWordExplorerDemo] },
+  { path: '/activities/color-mix-lab', loaders: [loadDemoPage, loadColorMixLabDemo] },
+  { path: '/activities/feelings-weather-report', loaders: [loadDemoPage, loadFeelingsWeatherDemo] },
+  { path: '/activities/first-day-brave-plan', loaders: [loadDemoPage, loadBravePlanDemo] },
+  { path: '/activities/cloud-detective-journal', loaders: [loadDemoPage, loadCloudDetectiveDemo] },
+  { path: '/activities/shadow-theatre', loaders: [loadDemoPage, loadShadowTheatreDemo] },
+  { path: '/activities/kindness-ripple', loaders: [loadDemoPage, loadKindnessRippleDemo] },
+  { path: '/activities/story-quilt', loaders: [loadDemoPage, loadStoryQuiltDemo] },
+  { path: '/activities/patient-maker-passport', loaders: [loadDemoPage, loadMakerPassportDemo] },
   { path: '/resources', loaders: [loadResources] },
   { path: '/about', loaders: [loadAbout] },
   { path: '/contact', loaders: [loadContact] },
