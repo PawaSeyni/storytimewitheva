@@ -1021,7 +1021,7 @@ export const books: Book[] = [
     editions: {
       en: { asin: '1996972839', cover: '/covers/miras-thousand-cubes-en.webp' },
       es: { asin: '1996972847', cover: '/covers/miras-thousand-cubes-es.webp' },
-      fr: { asin: '1996972855', cover: '/covers/miras-thousand-cubes-fr.webp' },
+      fr: { asin: 'B0HFV1LKM4', cover: '/covers/miras-thousand-cubes-fr.webp' },
     },
     title: {
       en: "Mira's Thousand Cubes",
