@@ -284,7 +284,7 @@ export const books: Book[] = [
     ],
     editions: {
       en: { asin: '1996972812', cover: '/covers/mayas-shadow-en.webp' },
-      es: { asin: 'B0HHWPG3FS', cover: '/covers/mayas-shadow-es.webp' },
+      es: { asin: '1996972804', cover: '/covers/mayas-shadow-es.webp' },
       fr: { asin: '1996972820', cover: '/covers/mayas-shadow-fr.webp' },
     },
     featured: true,
@@ -334,7 +334,7 @@ export const books: Book[] = [
     ],
     editions: {
       en: { asin: '1996972685', cover: '/covers/sparrow-saved-forest-en.webp' },
-      es: { asin: 'B0HHTJ3NYP', cover: '/covers/sparrow-saved-forest-es.webp' },
+      es: { asin: '1996972693', cover: '/covers/sparrow-saved-forest-es.webp' },
       fr: { asin: '1996972707', cover: '/covers/sparrow-saved-forest-fr.webp' },
     },
     title: {
@@ -383,7 +383,7 @@ export const books: Book[] = [
     ],
     editions: {
       en: { asin: '1996972863', cover: '/covers/diegos-brave-leap-en.webp' },
-      es: { cover: '/covers/diegos-brave-leap-es.webp' },
+      es: { asin: '1996972871', cover: '/covers/diegos-brave-leap-es.webp' },
       fr: { asin: '199697288X', cover: '/covers/diegos-brave-leap-fr.webp' },
     },
     title: {
@@ -432,7 +432,7 @@ export const books: Book[] = [
     ],
     editions: {
       en: { asin: '1996972774', cover: '/covers/butterfly-effect-en.webp' },
-      es: { asin: 'B0HH8KM4SX', cover: '/covers/butterfly-effect-es.webp' },
+      es: { asin: '1996972782', cover: '/covers/butterfly-effect-es.webp' },
       fr: { asin: '1996972790', cover: '/covers/butterfly-effect-fr.webp' },
     },
     title: {
@@ -481,7 +481,7 @@ export const books: Book[] = [
     ],
     editions: {
       en: { asin: '199697274X', cover: '/covers/emperors-true-treasure-en.webp' },
-      es: { asin: 'B0HHV9S5B5', cover: '/covers/emperors-true-treasure-es.webp' },
+      es: { asin: '1996972758', cover: '/covers/emperors-true-treasure-es.webp' },
       fr: { cover: '/covers/emperors-true-treasure-fr.webp' },
     },
     title: {
@@ -530,7 +530,7 @@ export const books: Book[] = [
     ],
     editions: {
       en: { asin: '1996972715', cover: '/covers/crooked-little-apple-tree-en.webp' },
-      es: { asin: 'B0HHT9PY5B', cover: '/covers/crooked-little-apple-tree-es.webp' },
+      es: { asin: '1996972723', cover: '/covers/crooked-little-apple-tree-es.webp' },
       fr: { asin: '1996972731', cover: '/covers/crooked-little-apple-tree-fr.webp' },
     },
     title: {
@@ -579,7 +579,7 @@ export const books: Book[] = [
     ],
     editions: {
       en: { asin: '1996972650', cover: '/covers/true-beauty-meadowbrook-en.webp' },
-      es: { asin: 'B0HHW3BG4K', cover: '/covers/true-beauty-meadowbrook-es.webp' },
+      es: { asin: '1996972669', cover: '/covers/true-beauty-meadowbrook-es.webp' },
       fr: { asin: '1996972677', cover: '/covers/true-beauty-meadowbrook-fr.webp' },
     },
     title: {
@@ -628,7 +628,7 @@ export const books: Book[] = [
     ],
     editions: {
       en: { asin: '1996972898', cover: '/covers/sanding-block-en.webp' },
-      es: { cover: '/covers/sanding-block-es.webp' },
+      es: { asin: '1996972901', cover: '/covers/sanding-block-es.webp' },
       fr: { asin: '199697291X', cover: '/covers/sanding-block-fr.webp' },
     },
     title: {
@@ -823,8 +823,8 @@ export const books: Book[] = [
       } },
     ],
     editions: {
-      en: { asin: 'B0H35ZJKCR', cover: '/covers/heidis-journey-to-mastery-en.webp' },
-      es: { cover: '/covers/heidis-journey-to-mastery-es.webp' },
+      en: { asin: '1997027062', cover: '/covers/heidis-journey-to-mastery-en.webp' },
+      es: { asin: '199702733X', cover: '/covers/heidis-journey-to-mastery-es.webp' },
       fr: { asin: '1997027275', cover: '/covers/heidis-journey-to-mastery-fr.webp' },
     },
     title: {
@@ -872,7 +872,7 @@ export const books: Book[] = [
       } },
     ],
     editions: {
-      en: { asin: 'B0H1DXZ1KH', cover: '/covers/cloud-collector-en.webp' },
+      en: { asin: '1996972979', cover: '/covers/cloud-collector-en.webp' },
       es: { asin: 'B0GX32FKCB', cover: '/covers/cloud-collector-es.webp' },
       fr: { asin: '1996972987', cover: '/covers/cloud-collector-fr.webp' },
     },
@@ -921,8 +921,8 @@ export const books: Book[] = [
       } },
     ],
     editions: {
-      en: { asin: 'B0GZJPZS74', cover: '/covers/little-mapmaker-en.webp' },
-      es: { asin: 'B0HHVQ44J8', cover: '/covers/little-mapmaker-es.webp' },
+      en: { asin: '1997027011', cover: '/covers/little-mapmaker-en.webp' },
+      es: { asin: '1997027399', cover: '/covers/little-mapmaker-es.webp' },
       fr: { asin: 'B0HG3Z4SF8', cover: '/covers/little-mapmaker-fr.webp' },
     },
     title: {
@@ -971,7 +971,7 @@ export const books: Book[] = [
     ],
     editions: {
       en: { asin: '1996972936', cover: '/covers/pawa-rainbow-cloud-en.webp' },
-      es: { asin: 'B0HH8F8XLQ', cover: '/covers/pawa-rainbow-cloud-es.webp' },
+      es: { asin: '1996972944', cover: '/covers/pawa-rainbow-cloud-es.webp' },
       fr: { asin: '1996972952', cover: '/covers/pawa-rainbow-cloud-fr.webp' },
     },
     title: {
@@ -1020,7 +1020,7 @@ export const books: Book[] = [
     ],
     editions: {
       en: { asin: '1996972839', cover: '/covers/miras-thousand-cubes-en.webp' },
-      es: { asin: 'B0HH8KWPD8', cover: '/covers/miras-thousand-cubes-es.webp' },
+      es: { asin: '1996972847', cover: '/covers/miras-thousand-cubes-es.webp' },
       fr: { asin: '1996972855', cover: '/covers/miras-thousand-cubes-fr.webp' },
     },
     title: {
@@ -1068,7 +1068,7 @@ export const books: Book[] = [
       } },
     ],
     editions: {
-      en: { asin: 'B0H36V1P89', cover: '/covers/fig-trees-secret-en.webp' },
+      en: { asin: '199702702X', cover: '/covers/fig-trees-secret-en.webp' },
       es: { asin: 'B0HHVVK17N', cover: '/covers/fig-trees-secret-es.webp' },
       fr: { asin: 'B0HG3GF4ML', cover: '/covers/fig-trees-secret-fr.webp' },
     },

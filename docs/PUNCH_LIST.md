@@ -103,6 +103,16 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | TW-03 | **Accepted visual change**: where a responsive text size meets `leading-*` (home hero h1 and lead, About quote, two Resources headings), Tailwind 3 let the size's default line-height override the utility at md+; Tailwind 4 honours the utility, so those five blocks are a few pixels taller. Before/after crops sent to the owner 2026-09-10. Reverse per element with `md:leading-none` if wanted. | accepted |
 | TW-04 | **Games stylesheet regenerated with Tailwind 4 and screenshot-checked**: 12 games × desktop/mobile (plus one French page) with `Math.random` seeded, 26/26 identical after two fixes: v4 ignores the legacy regex safelist, so the dynamically built color and grid classes are now declared with `@source inline` (locked by `tests/funnel/games-css.test.mjs`); Sentence Builder's Check button carried `flex-2`, a no-op in v3 that became `flex: 2` in v4 and changed the button widths, removed. Games CSS 24 → 25 KB gzip; app CSS 35 → 17 KB. | #203 |
 
+### Catalog editions from Author Central (2026-09-16)
+
+Owner asked to pull the new books from Amazon Author Central (author.amazon.com, signed in as Eva Gallo) into the site. The bookshelf holds 64 listings, all editions of the 20 titles already in the catalog, so there were no new titles to add; the gaps were editions.
+
+| ID | Item | Evidence |
+|----|------|----------|
+| AC-01 | **Three Spanish editions linked** that the site showed without a Buy link (fell back to English): Diego's Brave Leap, The Sanding Block, Heidi's Journey to Mastery. Paperback ISBN-10s 1996972871, 1996972901, 199702733X. | PR |
+| AC-02 | **Paperback ISBNs wherever a paperback now exists** (rule: the book page emits a numeric ASIN as the Book schema `isbn`, so an ISBN-10 beats a Kindle ASIN when both are live): nine Spanish entries and four English entries (Heidi, The Little Mapmaker, The Cloud Collector, The Fig Tree's Secret) moved from the Kindle ASIN to the paperback ISBN. The Amazon page shows both formats either way. Entries whose paperback has a non-numeric ASIN (the Spanish Colors, Cloud Collector, Rainbow Symphony, Russet, Leo, Fig Tree; the French B0HG… paperbacks) keep their current link. | PR |
+| AC-03 | **Not modeled, noted**: three English hardcovers (Mira, Russet, Emperor) have no slot in the one-identifier-per-language model; The Emperor's True Treasure has no French edition on Amazon (the site's FR page falls back to English by design); A Little Boat's Big Wish is English only on Amazon. `_published.json` in Tools for Books (2026-08-29) still says no Spanish edition is published and is stale. | recorded |
+
 ### Activity Studio (2026-09-11)
 
 Eight book-linked, printable activities from the owner's activity table (source: a standalone Manus-built "Activity Studio" app). Ported as first-class `/activities/<slug>` pages rather than embedded as a second app: same DemoPage shell (breadcrumbs, H1, completion button, continuation), same language model (EN/ES/FR routes, fully translated copy), same storage adapter, prerendered, in the sitemap, in search, in the content inventory and the visual harness. The studio's Google Fonts, its own header and footer, and its two 5 MB hero PNGs were not brought over.
