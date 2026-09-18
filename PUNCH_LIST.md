@@ -43,6 +43,11 @@ All items below shipped to `main`, deployed to production (**storytimewitheva.co
 - [x] **Real 404s.** Removed the SPA `/* → /index.html 200` catch-all; unknown URLs + invalid book slugs
   return **HTTP 404** with a noindex NotFound page. **PR #60.**
 - [x] **Google Search Console** verified (DNS Domain + HTML meta tag); sitemap = 123 URLs, status Success. **PR #69.**
+- [x] **Parent guides on their own URLs** (2026-09-18). The six guides were anchors on the single `/resources`
+  page (one URL for six topics). Each now has a prerendered page at `/resources/<slug>` × EN/ES/FR with
+  canonical + hreflang, `Article` + `BreadcrumbList` JSON-LD, the affiliate disclosure only where the body
+  carries affiliate links, related stories/printables and links to the other guides. Old `/resources#<slug>`
+  anchors forward client-side to the page in their language. Sitemap +18 URLs. **PR #214.**
 
 ### Analytics
 - [x] **Analytics = Plausible (current).** History: Plausible → Cloudflare Web Analytics (PR #66/#68, 2026-08-04),
