@@ -220,7 +220,7 @@ An external black-box audit of production against Sprint PRDs 2-7 (snapshot 2026
 | PO-04 | **Recovery drill run and timed**: recreate from source 183 s; content damage detected by the gate and restored from git; revert 1 s. | #182 |
 | PO-05 | **Owner action: enable branch protection on `main`** (required status `test`, one review). Without it every gate is by practice, not by GitHub. Security review R-01. | resolved 2026-09-18: protection on `main` via the GitHub API: required status check `test`, pull requests required (zero approvals, so the merge flow the owner delegates does not stall; add `required_approving_review_count: 1` to require a human review), enforced for admins, linear history, no force pushes, no deletions. Proven: a direct push to `main` is refused with GH006. Docs-only changes now go through a PR too; `[skip netlify]` still skips the build |
 | PO-06 | **Owner action: scope `MAILERLITE_GROUP` for the `deploy-preview` context** to a test group so preview signups stop creating real subscribers. Security review R-03. | open |
-| PO-07 | **Owner action: exercise a Netlify republish** of the previous deploy once (two minutes, replaces the live site during the drill). Last known good recorded in the runbook. | open |
+| PO-07 | **Owner action: exercise a Netlify republish** of the previous deploy once (two minutes, replaces the live site during the drill). Last known good recorded in the runbook. | resolved 2026-09-18: drilled with real API calls, previous deploy live in 4 s, current deploy back in 5 s, 46 smoke tests green afterwards; recorded in the DR runbook |
 
 ### Sprint 8 — decisions, budgets, media (S8-002/003/005/006/007/008/021)
 

@@ -61,3 +61,16 @@
 Continuity with third parties blocked is exercised permanently by the cookie-free and
 storage-denied suites (analytics aborted, subscribe stubbed) on every PR and daily on
 production.
+
+## Exercise, 2026-09-18: rollback by republish (procedure 1, timed, real API calls)
+
+Site `storytimewitheva.com`, production deploys only, no build involved.
+
+| Step | Command | Result | Time |
+|---|---|---|---|
+| Publish the previous deploy | `netlify api restoreSiteDeploy --data '{"site_id":"<id>","deploy_id":"6aad75fb…"}'` (commit 8370129) | API returned `ready`; `/version.json` reported 8370129 | 4 s |
+| Verify the old build serves | `curl -I /`, sitemap count | 200, 240 URLs | immediate |
+| Publish the current deploy again | same call with `6aad79d4…` (commit eab5e54) | `/version.json` back on eab5e54 | 5 s |
+| Production smoke after roll-forward | `npm run test:smoke` | 46 passed | 25 s |
+
+Whole drill: 10 seconds of exposure, no build credits, no DNS change. The dashboard route (Deploys → previous `ready` deploy → *Publish deploy*) does the same thing; the API call is what to use when the dashboard is slow to reach. Follow any real rollback with a `git revert` PR so `main` matches production, otherwise the next merge redeploys the bad commit.
