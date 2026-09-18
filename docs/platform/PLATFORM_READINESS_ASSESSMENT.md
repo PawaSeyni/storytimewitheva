@@ -33,7 +33,7 @@ environment matrix; external data-flow inventory; accessibility governance; loca
 | R-03 | deploy previews use production function secrets; a preview signup is real | medium / low | scope `MAILERLITE_GROUP` for the `deploy-preview` context | owner |
 | R-04 | four allowlisted advisories until Vite 8 / Router 7 | low / low | majors scheduled, review by 2026-12-01 | engineering |
 | R-05 | the working copy lives in an iCloud-synced folder; sync created duplicate "… 2" files inside the repo twice this sprint | medium / medium | move the clone outside iCloud-synced folders or exclude it from sync; `git status` before every commit | owner |
-| R-06 | seasonal windows need a deploy at each boundary for crawlers | certain / low | calendar: 2026-09-30, 2026-11-01; the sitemap parity test fails if missed | engineering |
+| R-06 | seasonal windows need a deploy at each boundary for crawlers | certain / low | automated 2026-09-18: `.github/workflows/seasonal-rebuild.yml` fires a Netlify build hook at 00:30 UTC on every boundary (next: 2026-10-01 for back-to-school closing 09-30, 2026-11-01 for gratitude opening), waits for the build, and checks the live sitemap against the calendar; the cron lines are locked to the windows by a unit test | engineering |
 | R-07 | 49 MB of campaign PNGs in the deploy artifact | certain / low | budget caps them; owner decides whether they leave the repo | owner |
 | R-08 | no paging; failures are emails from GitHub | accepted | proportionate to a static site | owner |
 

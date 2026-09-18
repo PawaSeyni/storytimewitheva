@@ -34,7 +34,14 @@
    production keeps the last good deploy; the post-deploy job fails with "production never
    reported <sha>". Restore credits in the Netlify billing page, then retry the skipped deploy
    from the dashboard or push a commit. Happened 2026-06-15 and 2026-09-10.
-6. **Optional third party unavailable**: Plausible down → pages unaffected, events buffer
+6. **Seasonal boundary missed** (a collection opened or closed but production still shows
+   the old state, or `seasonal-rebuild` failed): run the `seasonal-rebuild` workflow by hand
+   (Actions → seasonal-rebuild → Run workflow). It posts to the Netlify build hook
+   `seasonal-rebuild` (site setting; the URL is the `NETLIFY_BUILD_HOOK` repository secret),
+   waits for the new build, and fails if the live sitemap and the calendar disagree. If the
+   hook was deleted, recreate it in Netlify → Build & deploy → Build hooks (branch `main`)
+   and update the secret with `gh secret set NETLIFY_BUILD_HOOK`.
+7. **Optional third party unavailable**: Plausible down → pages unaffected, events buffer
    then drop; MailerLite down → signup shows an error, nothing is written; Amazon image host
    down → alt text, featured covers are local; Pinterest API down → swallowed.
 
