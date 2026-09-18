@@ -1,0 +1,66 @@
+# R-06: seasonal collections open and close on calendar windows (src/data/collections.ts),
+# but the prerendered HTML and the sitemap bake the state at BUILD time. Without a build at
+# each boundary, crawlers keep seeing yesterday's season. This workflow triggers a Netlify
+# production build at 00:30 UTC on every boundary (the day a window opens, and the day
+# after it closes), waits for the new build to be live, and checks that the live sitemap
+# advertises exactly the collections the code says are open today.
+#
+# The cron lines are locked to the windows by tests/funnel/seasonal-rebuild.test.mjs: change
+# a window and the test tells you which line to change here.
+# Secret: NETLIFY_BUILD_HOOK (Netlify build hook "seasonal-rebuild", branch main).
+name: seasonal-rebuild
+on:
+  schedule:
+    - cron: '30 0 15 6 *'   # summer-of-wonder opens 06-15
+    - cron: '30 0 15 8 *'   # back-to-school opens 08-15
+    - cron: '30 0 1 9 *'    # summer-of-wonder closed 08-31
+    - cron: '30 0 1 10 *'   # back-to-school closed 09-30
+    - cron: '30 0 1 11 *'   # season-of-gratitude opens 11-01
+    - cron: '30 0 1 1 *'    # season-of-gratitude closed 12-31
+  workflow_dispatch:
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - name: Note the build that is live now
+        run: |
+          before=$(curl -s https://storytimewitheva.com/version.json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>console.log(JSON.parse(s).builtAt||''))")
+          echo "BEFORE=$before" >> "$GITHUB_ENV"
+          echo "live build: $before"
+      - name: Trigger a Netlify production build
+        env: { NETLIFY_BUILD_HOOK: '${{ secrets.NETLIFY_BUILD_HOOK }}' }
+        run: |
+          test -n "$NETLIFY_BUILD_HOOK" || { echo "NETLIFY_BUILD_HOOK secret is missing"; exit 1; }
+          curl -fsS -X POST -d '{}' "$NETLIFY_BUILD_HOOK" > /dev/null && echo "build requested"
+      - name: Wait for a newer build to be live
+        run: |
+          for i in $(seq 1 60); do
+            now=$(curl -s https://storytimewitheva.com/version.json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>console.log(JSON.parse(s).builtAt||''))")
+            if [ -n "$now" ] && [ "$now" != "$BEFORE" ]; then echo "new build live: $now"; exit 0; fi
+            sleep 15
+          done
+          echo "production still serves the previous build after 15 minutes"; exit 1
+      - name: Live sitemap matches today's open collections
+        run: |
+          node -e "
+            import('./scripts/lib/catalog.mjs').then(async (m) => {
+              const { indexableCollectionIds, seasonalCollectionIds, seasonalState } = await m.loadContentIndex();
+              const today = new Date();
+              const want = new Set(indexableCollectionIds(today));
+              const xml = await (await fetch('https://storytimewitheva.com/sitemap.xml')).text();
+              const live = new Set([...xml.matchAll(/storytimewitheva\.com\/collections\/([a-z0-9-]+)\//g)].map((x) => x[1]));
+              const missing = [...want].filter((id) => !live.has(id));
+              const extra = [...live].filter((id) => !want.has(id));
+              for (const id of seasonalCollectionIds) console.log(id, seasonalState(id, today)?.open ? 'OPEN' : 'closed', live.has(id) ? 'in sitemap' : 'not in sitemap');
+              if (missing.length || extra.length) { console.error('sitemap drift', { missing, extra }); process.exit(1); }
+              console.log('sitemap matches the calendar:', want.size, 'indexable collections');
+            });
+          "
+      - run: npx playwright install --with-deps chromium
+      - name: Production smoke
+        run: npm run test:smoke
