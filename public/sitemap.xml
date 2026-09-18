@@ -1999,6 +1999,60 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://storytimewitheva.com/resources/bedtime-reading-routine/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/bedtime-reading-routine/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/bedtime-reading-routine/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/bedtime-reading-routine/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/bedtime-reading-routine/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/resources/bedtime-reading-routine/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/bedtime-reading-routine/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/bedtime-reading-routine/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/bedtime-reading-routine/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/bedtime-reading-routine/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/resources/bedtime-reading-routine/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/bedtime-reading-routine/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/bedtime-reading-routine/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/bedtime-reading-routine/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/bedtime-reading-routine/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/resources/bilingual-flashcards/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/bilingual-flashcards/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/bilingual-flashcards/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/bilingual-flashcards/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/bilingual-flashcards/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/resources/bilingual-flashcards/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/bilingual-flashcards/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/bilingual-flashcards/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/bilingual-flashcards/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/bilingual-flashcards/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/resources/bilingual-flashcards/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/bilingual-flashcards/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/bilingual-flashcards/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/bilingual-flashcards/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/bilingual-flashcards/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://storytimewitheva.com/games/bilingual-flashcards.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

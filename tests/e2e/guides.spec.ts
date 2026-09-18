@@ -8,7 +8,8 @@ test('a guide page renders its title, its related stories and the other guides',
   await expect(page.locator('h1')).toContainText('Reluctant');
   await expect(page.locator('[data-guide-links="reluctant-readers"] a[href^="/books/"]:not([href="/books/"])').first()).toBeVisible();
   await expect(page.locator('a[href="/resources/making-reading-magical/"]').first()).toBeVisible();
-  await expect(page.locator('a[href="/resources/reluctant-readers/"]')).toHaveCount(0);
+  // The page never links itself from its body; the footer's guide list (DA-03) is site chrome.
+  await expect(page.locator('main a[href="/resources/reluctant-readers/"]')).toHaveCount(0);
 });
 
 test('an old /resources#<slug> anchor forwards to the guide page, in its language', async ({ page }) => {

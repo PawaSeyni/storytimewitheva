@@ -194,6 +194,36 @@ export const resources: Resource[] = [
       fr: 'La science derrière la lecture en deux langues et pourquoi mélanger les langues est un don.',
     },
   },
+  {
+    id: 'article-bedtime-reading-routine', kind: 'article', slug: 'bedtime-reading-routine', minutes: 6, emoji: '🌙',
+    relatedThemeIds: ['wonder', 'emotions'], relatedResourceIds: ['download-bedtime-routine'],
+    categoryKey: 'readingTips', categoryColor: 'bg-blue-100 text-blue-700', popular: true,
+    title: {
+      en: 'A Bedtime Reading Routine That Actually Sticks',
+      es: 'Una rutina de lectura para dormir que de verdad se mantiene',
+      fr: 'Une routine de lecture du soir qui tient vraiment',
+    },
+    description: {
+      en: 'Ten minutes a night in the same order: how to set up a bedtime reading routine, keep it through the hard weeks, and use the free routine chart.',
+      es: 'Diez minutos cada noche en el mismo orden: cómo crear una rutina de lectura para dormir, sostenerla en las semanas difíciles y usar la tabla gratuita.',
+      fr: 'Dix minutes par soir dans le même ordre : mettre en place une routine de lecture du soir, la tenir dans les semaines difficiles et utiliser le tableau gratuit.',
+    },
+  },
+  {
+    id: 'article-bilingual-flashcards', kind: 'article', slug: 'bilingual-flashcards', minutes: 6, emoji: '🃏',
+    relatedThemeIds: ['diversity', 'curiosity'], relatedResourceIds: ['download-bilingual-flashcards'],
+    categoryKey: 'activityIdeas', categoryColor: 'bg-yellow-100 text-yellow-700', popular: false,
+    title: {
+      en: 'How to Use Bilingual Flashcards With Young Children',
+      es: 'Cómo usar tarjetas bilingües con niños pequeños',
+      fr: 'Utiliser des cartes de vocabulaire bilingues avec les jeunes enfants',
+    },
+    description: {
+      en: 'Flashcards as a game, not a test: five two-minute games, how many cards a week, and how to use the free bilingual set beside the stories.',
+      es: 'Tarjetas como juego, no como examen: cinco juegos de dos minutos, cuántas tarjetas por semana y cómo usar el set bilingüe gratuito junto a los cuentos.',
+      fr: 'Des cartes comme un jeu, pas un contrôle : cinq jeux de deux minutes, combien de cartes par semaine et comment utiliser le jeu bilingue gratuit avec les histoires.',
+    },
+  },
 ];
 
 export const RESOURCE_IDS = resources.map((r) => r.id);

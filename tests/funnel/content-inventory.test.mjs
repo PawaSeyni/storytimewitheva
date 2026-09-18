@@ -20,7 +20,7 @@ test('guides — every parent guide names valid themes and printables, and deriv
   const { resources } = await loadResources();
   const idx = await loadContentIndex();
   const guides = resources.filter((r) => r.kind === 'article');
-  assert.equal(guides.length, 6);
+  assert.equal(guides.length, 8);
   for (const g of guides) {
     assert.ok(g.relatedThemeIds?.length >= 1, `${g.id}: no themes`);
     const books = new Set(g.relatedThemeIds.flatMap((t) => idx.booksByThemeId[t] ?? []));

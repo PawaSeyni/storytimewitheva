@@ -4,6 +4,7 @@
 import { matchPath } from 'react-router-dom';
 import { preloadable } from './lib/preloadable';
 import { splitLangFromPath } from './lib/locales';
+import { guideBodies } from './data/articleBodies';
 
 export const loadBooks = preloadable(() => import('./pages/Books'));
 export const loadBookDetail = preloadable(() => import('./pages/BookDetail'));
@@ -92,6 +93,8 @@ export function preloadRoute(pathname: string): Promise<unknown> {
   const rest = (splitLangFromPath(pathname).rest || '/').replace(/\/+$/, '') || '/';
   if (rest === '/' || rest === '/home') return Promise.resolve();
   const hit = ROUTE_CHUNKS.find((r) => matchPath({ path: r.path, end: true }, rest));
-  const loaders = hit ? hit.loaders : [loadNotFound];
+  const loaders: Loader[] = hit ? [...hit.loaders] : [loadNotFound];
+  // Guide pages also read a per-language JSON asset with use(); load it with the chunk.
+  if (hit?.path === '/resources/:slug') loaders.push(() => guideBodies(splitLangFromPath(pathname).lang));
   return Promise.all(loaders.map((l) => l()));
 }
