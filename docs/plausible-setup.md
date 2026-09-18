@@ -139,3 +139,9 @@ The deeper audit found the same signup counted three times (`Form Submit`, Plaus
 - Plausible's automatic **Form submissions** and **File downloads** tracking is switched off in Site settings → General → Default tracking; Plausible removed the two automatic goals with it. Outbound-link tracking stays on (it covers more than Amazon).
 - `Magnet Download` is the single delivery event. `Purchase Click` (destination `amazon`) is the Amazon-click conversion; the older `Amazon Click` goal in the dashboard has no code behind it.
 - `Landing View` and `Form View` are diagnostics, not conversions.
+
+## 2026-09-18: the primary funnel
+
+Goal **Guide View** (pageview, pattern `/**resources/*/`): a visit to any parent guide in any language. Plausible prefixes page-path patterns with `/`, so the pattern is written without a leading slash; stored, it compiles to `^/.*resources/[^/]*/$`, which matches `/resources/<slug>/`, `/es/resources/<slug>/` and `/fr/resources/<slug>/` but not the `/resources/` index. Trailing slash because that is the canonical form of every internal link (DA-02).
+
+Funnel **Guide → lead → book → Amazon**: Guide View → Lead Created → Book View → Purchase Click, other activity allowed between steps. This is the audit's primary funnel (`Resource view → Lead created → Book view → Amazon click`). The older **Signup funnel** stays as the newsletter diagnostic.
