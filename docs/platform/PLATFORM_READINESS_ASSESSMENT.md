@@ -30,7 +30,7 @@ environment matrix; external data-flow inventory; accessibility governance; loca
 |---|---|---|---|---|
 | R-01 | `main` unprotected; a direct push skips every gate | closed 2026-09-18 | protection on: required status `test`, pull requests required, enforced for admins, linear history, no force pushes or deletions; a direct push is refused (GH006). Reviews are not required so the delegated merge flow does not stall; add one approval when a second engineer joins | done |
 | R-02 | `script-src 'unsafe-inline'` because of the static games | low / medium | accepted; revisit when games move to external scripts | engineering |
-| R-03 | deploy previews use production function secrets; a preview signup is real | medium / low | scope `MAILERLITE_GROUP` for the `deploy-preview` context | owner |
+| R-03 | deploy previews use production function secrets; a preview signup is real | medium / low | scope `MAILERLITE_GROUP` for the `deploy-preview` context | closed 2026-09-18: preview and branch deploys subscribe to the MailerLite test group `storytimewitheva-preview-test`; production unchanged |
 | R-04 | four allowlisted advisories until Vite 8 / Router 7 | low / low | majors scheduled, review by 2026-12-01 | engineering |
 | R-05 | the working copy lives in an iCloud-synced folder; sync created duplicate "… 2" files inside the repo twice this sprint | medium / medium | move the clone outside iCloud-synced folders or exclude it from sync; `git status` before every commit | owner |
 | R-06 | seasonal windows need a deploy at each boundary for crawlers | certain / low | automated 2026-09-18: `.github/workflows/seasonal-rebuild.yml` fires a Netlify build hook at 00:30 UTC on every boundary (next: 2026-10-01 for back-to-school closing 09-30, 2026-11-01 for gratitude opening), waits for the build, and checks the live sitemap against the calendar; the cron lines are locked to the windows by a unit test | engineering |
@@ -50,7 +50,7 @@ environment matrix; external data-flow inventory; accessibility governance; loca
 
 ## Roadmap after Sprint 8
 
-1. Owner actions: R-03, R-05, the S4-05 screen-reader pass, the copy reviews carried from Sprint 7. (R-01 closed and the production republish drill done on 2026-09-18.)
+1. Owner actions: R-05, the S4-05 screen-reader pass, the copy reviews carried from Sprint 7. (R-01 and R-03 closed and the production republish drill done on 2026-09-18.)
 2. Dependency majors in order: React Router 7, Vite 8, React 19, Tailwind 4.
 3. `/books` Lighthouse mobile (71) with a measurement plan (PD-04).
 4. Sprint 5 experiments (S5-008 to S5-011) remain not started; they need the analytics goals configured in Plausible first.
