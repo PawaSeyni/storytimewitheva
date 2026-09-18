@@ -23,6 +23,21 @@
   status = 301
   force = true
 
+# /home and /Home are not pages (Search Console found a stray inbound link to /Home,
+# 2026-09-18). The SPA used to Navigate them to / only after loading, behind a 404
+# status; send crawlers and people straight to the canonical home instead.
+[[redirects]]
+  from = "/home"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/Home"
+  to = "/"
+  status = 301
+  force = true
+
 # No SPA catch-all on purpose. Every real route (incl. /es,/fr variants, all book
 # pages, and the noindex /profile,/search) is prerendered to its own static
 # index.html by scripts/prerender.mjs, so unmatched URLs fall through to Netlify's
