@@ -8,8 +8,8 @@
 // collide, and `relatedResourceIds` is a flat string array, so an unprefixed scheme
 // would silently resolve a Book -> Resource link to the wrong resource.
 //
-// Long-form article BODIES stay in Resources.tsx; this registry owns identity and
-// summary metadata so nothing is duplicated.
+// Long-form article BODIES live in src/data/articleBodies.ts; this registry owns
+// identity and summary metadata so nothing is duplicated.
 
 import type { Language } from '../lib/language';
 import type { ThemeId } from './taxonomy';
@@ -24,7 +24,7 @@ export interface Resource {
   kind: ResourceKind;
   title: LocalizedString;
   description: LocalizedString;
-  /** Article: the /resources anchor. Download: the lead-magnet slug behind /download/. */
+  /** Article: the /resources/<slug> page. Download: the lead-magnet slug behind /download/. */
   slug: string;
   /** Articles only — estimated reading time in minutes. */
   minutes?: number;
@@ -103,7 +103,7 @@ export const resources: Resource[] = [
     },
   },
 
-  // ---- articles (long-form guidance rendered on /resources#<slug>) ----
+  // ---- articles (long-form guidance, each on its own page at /resources/<slug>) ----
   {
     id: 'article-making-reading-magical', kind: 'article', slug: 'making-reading-magical', minutes: 5, emoji: '✨',
     relatedThemeIds: ['wonder', 'creativity'], relatedResourceIds: ['download-bedtime-routine'],
@@ -200,7 +200,11 @@ export const RESOURCE_IDS = resources.map((r) => r.id);
 export const isResourceId = (v: string): boolean => RESOURCE_IDS.includes(v);
 export const resourceById = (id: string): Resource | undefined => resources.find((r) => r.id === id);
 
+/** In-app path for a resource: a guide has its own page; a download routes to its gated landing page. */
+export const resourcePath = (r: Pick<Resource, 'kind' | 'slug'>): string =>
+  r.kind === 'article' ? `/resources/${r.slug}` : `/free/${r.slug}`;
+
 /** Public href for a resource in the given language-prefixed base ('' | '/es' | '/fr'). */
 export function resourceHref(r: Resource, prefix = ''): string {
-  return r.kind === 'article' ? `${prefix}/resources#${r.slug}` : `/download/${r.slug}`;
+  return r.kind === 'article' ? `${prefix}/resources/${r.slug}` : `/download/${r.slug}`;
 }

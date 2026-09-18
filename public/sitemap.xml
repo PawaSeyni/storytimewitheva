@@ -1837,6 +1837,168 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://storytimewitheva.com/resources/making-reading-magical/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/making-reading-magical/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/making-reading-magical/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/making-reading-magical/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/making-reading-magical/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/resources/making-reading-magical/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/making-reading-magical/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/making-reading-magical/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/making-reading-magical/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/making-reading-magical/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/resources/making-reading-magical/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/making-reading-magical/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/making-reading-magical/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/making-reading-magical/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/making-reading-magical/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/resources/age-appropriate-reading/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/age-appropriate-reading/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/age-appropriate-reading/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/age-appropriate-reading/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/age-appropriate-reading/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/resources/age-appropriate-reading/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/age-appropriate-reading/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/age-appropriate-reading/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/age-appropriate-reading/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/age-appropriate-reading/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/resources/age-appropriate-reading/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/age-appropriate-reading/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/age-appropriate-reading/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/age-appropriate-reading/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/age-appropriate-reading/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/resources/follow-up-activities/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/follow-up-activities/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/follow-up-activities/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/follow-up-activities/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/follow-up-activities/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/resources/follow-up-activities/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/follow-up-activities/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/follow-up-activities/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/follow-up-activities/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/follow-up-activities/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/resources/follow-up-activities/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/follow-up-activities/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/follow-up-activities/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/follow-up-activities/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/follow-up-activities/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/resources/reluctant-readers/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/reluctant-readers/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/reluctant-readers/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/reluctant-readers/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/reluctant-readers/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/resources/reluctant-readers/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/reluctant-readers/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/reluctant-readers/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/reluctant-readers/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/reluctant-readers/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/resources/reluctant-readers/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/reluctant-readers/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/reluctant-readers/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/reluctant-readers/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/reluctant-readers/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/resources/perfect-reading-environment/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/perfect-reading-environment/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/perfect-reading-environment/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/perfect-reading-environment/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/perfect-reading-environment/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/resources/perfect-reading-environment/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/perfect-reading-environment/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/perfect-reading-environment/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/perfect-reading-environment/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/perfect-reading-environment/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/resources/perfect-reading-environment/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/perfect-reading-environment/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/perfect-reading-environment/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/perfect-reading-environment/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/perfect-reading-environment/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/resources/bilingual-reading/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/bilingual-reading/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/bilingual-reading/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/bilingual-reading/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/bilingual-reading/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/resources/bilingual-reading/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/bilingual-reading/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/bilingual-reading/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/bilingual-reading/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/bilingual-reading/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/resources/bilingual-reading/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/bilingual-reading/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/bilingual-reading/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/resources/bilingual-reading/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/resources/bilingual-reading/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://storytimewitheva.com/games/bilingual-flashcards.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

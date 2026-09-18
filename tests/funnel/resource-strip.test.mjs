@@ -42,20 +42,21 @@ test('resource strip — relatedResourceIds stays empty while the strip is share
   }
 });
 
-test('resource save controls — `article-${slug}` is guaranteed to resolve', () => {
-  // The Resources page builds save ids as `article-${anchor}`, and the anchor comes from
-  // the registry's own slug. That is only safe while every article id is exactly its slug
-  // prefixed with its kind, so THAT is the invariant worth locking — not a grep for
-  // hardcoded anchors, which stopped existing when the page started reading the registry.
+test('resource save controls — the save id is the registry id, never a hand-built literal', () => {
+  // Every save control (guide cards on /resources, the guide page header, the printables)
+  // passes the registry record's own id. The kind-prefixed id scheme is what keeps the
+  // article `follow-up-activities` and the download `follow-up-activities` apart, so lock
+  // both halves: the scheme itself, and that the pages read it rather than rebuilding it.
   for (const r of resources) {
     assert.equal(r.id, `${r.kind}-${r.slug}`, `${r.id} is not "${r.kind}-${r.slug}"`);
     assert.ok(ids.has(`${r.kind}-${r.slug}`));
   }
-  // and the page really does derive it rather than hardcoding a literal
-  const src = readFileSync('src/pages/Resources.tsx', 'utf8');
-  assert.ok(src.includes('`article-${r.anchor}`'), 'Resources.tsx no longer derives the id from the registry');
-  assert.ok(
-    !/resourceId="article-[a-z-]+"/.test(src),
-    'a hardcoded article id appeared; derive it from the registry instead',
-  );
+  const index = readFileSync('src/pages/Resources.tsx', 'utf8');
+  const article = readFileSync('src/pages/Article.tsx', 'utf8');
+  assert.ok(index.includes('resourceId={r.id}'), 'Resources.tsx must pass the registry id to the save control');
+  assert.ok(article.includes('resourceId={resource.id}'), 'Article.tsx must pass the registry id to the save control');
+  for (const [name, src] of [['Resources.tsx', index], ['Article.tsx', article]]) {
+    assert.ok(!/resourceId="(article|download)-[a-z-]+"/.test(src), `${name}: a hardcoded resource id appeared; use the registry record`);
+    assert.ok(!src.includes('`article-${'), `${name}: rebuilds the id from a slug instead of reading the registry`);
+  }
 });

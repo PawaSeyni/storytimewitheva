@@ -88,6 +88,7 @@ const Journeys = chunk(L.loadJourneys);
 const Journey = chunk(L.loadJourney);
 const Activities = chunk(L.loadActivities);
 const Resources = chunk(L.loadResources);
+const Article = chunk(L.loadArticle);
 const About = chunk(L.loadAbout);
 const Contact = chunk(L.loadContact);
 const Profile = chunk(L.loadProfile);
@@ -152,6 +153,7 @@ const routeDefs = [
   { path: '/activities/story-quilt', element: <DemoPage><StoryQuiltDemo /></DemoPage> },
   { path: '/activities/patient-maker-passport', element: <DemoPage><MakerPassportDemo /></DemoPage> },
   { path: '/resources', element: <Resources /> },
+  { path: '/resources/:slug', element: <Article /> },
   { path: '/about', element: <About /> },
   { path: '/contact', element: <Contact /> },
   { path: '/faq', element: <FAQ /> },

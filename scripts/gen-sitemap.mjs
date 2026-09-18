@@ -4,7 +4,7 @@
 // the sitemap can't drift from the catalog. Run: npm run gen:sitemap
 
 import { readFile, writeFile, readdir } from 'node:fs/promises';
-import { bookIds as loadBookIds, loadContentIndex, loadLocales } from './lib/catalog.mjs';
+import { bookIds as loadBookIds, loadContentIndex, loadLocales, loadResources } from './lib/catalog.mjs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -67,7 +67,11 @@ const collectionPages = indexableCollectionIds(new Date()).map(id => [`/collecti
 // Reading journeys (S7-003): the index plus every PUBLISHED, VALID journey.
 const journeyPages = [['/journeys', 'monthly', '0.6'], ...journeyRouteIds.map(id => [`/journeys/${id}`, 'monthly', '0.6'])];
 
-const pages = [...staticPages, ...bookPages, ...collectionPages, ...journeyPages];
+// Parent guides: one page per article resource (src/data/resources.ts), under /resources/<slug>.
+const { resources } = await loadResources();
+const guidePages = resources.filter(r => r.kind === 'article').map(r => [`/resources/${r.slug}`, 'monthly', '0.7']);
+
+const pages = [...staticPages, ...bookPages, ...collectionPages, ...journeyPages, ...guidePages];
 
 // Standalone games: single static URL each (self-contained pages with their
 // own internal EN/ES/FR toggles), so no per-language hreflang.
