@@ -25,7 +25,7 @@ Property: `https://storytimewitheva.com/` (URL-prefix, verified since June 2026 
 | Page with redirect | 8 | Expected: unslashed or old URLs now 301 to the canonical (DA-02). |
 | Alternate page with proper canonical | 3 | Expected: language variants pointing at their canonical. |
 | Blocked by robots.txt | 2 | `/profile` and `/search` are excluded by design. |
-| Not found (404) | 1 | `https://storytimewitheva.com/Home` (capital H), crawled 6 Sep 2026: a stray inbound link. `/home` lowercase redirects; the capital form is a genuine 404 and can stay one. |
+| Not found (404) | 1 | `https://storytimewitheva.com/Home` (capital H), crawled 6 Sep 2026: a stray inbound link. Fixed the same day (PR #219): Netlify now answers `/home` and `/Home` with a single 301 to `/`, asserted by the smoke suite on every deploy. Google will move it to "Page with redirect" on its next crawl. |
 
 ## What to watch, monthly
 
