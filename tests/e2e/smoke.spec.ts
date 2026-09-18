@@ -56,6 +56,16 @@ test.describe('@smoke Layer 1 — route coverage', () => {
     await page.goto('/free/parents-guide', { waitUntil: 'domcontentloaded' });
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
   });
+
+  // Search Console found a stray inbound link to /Home (2026-09-18). The server, not the
+  // SPA, must answer it: one 301 to the canonical home, whatever the case.
+  for (const path of ['/home', '/Home']) {
+    test(`1.4 ${path} is a single 301 to /`, async ({ request }) => {
+      const hop = await request.get(path, { maxRedirects: 0 });
+      expect(hop.status(), 'redirect status').toBe(301);
+      expect((hop.headers()['location'] || '').replace(/^https?:\/\/[^/]+/, '')).toBe('/');
+    });
+  }
 });
 
 // ---- Layer 5.1: delivery ----
