@@ -41,7 +41,7 @@ then, a fresh Claude can find this with `Read` or `Grep` from the repo.
 - **Live site:** https://storytimewitheva.netlify.app
 - **GitHub repo:** https://github.com/PawaSeyni/storytimewitheva (public, on `main`)
 - **Netlify project:** `storytimewitheva` under the Pawa Data Services team
-- **Local checkout:** `/Users/papasnguer/Desktop/Completed Books/Eva/storytimewitheva/`
+- **Local checkout:** `/Users/papasnguer/Developer/storytimewitheva/`
 - **Sandbox path (Cowork bash):** `/sessions/jolly-kind-hawking/mnt/Eva/storytimewitheva/`
 
 Auto-deploy: every push to `main` triggers Netlify, which runs `npm run build`
@@ -147,7 +147,7 @@ files), then give the user a single command to paste into Terminal on their
 Mac. The Mac shell can delete the locks and uses macOS Keychain for auth.
 
 ```bash
-cd "/Users/papasnguer/Desktop/Completed Books/Eva/storytimewitheva" && \
+cd "/Users/papasnguer/Developer/storytimewitheva" && \
 rm -f .git/index.lock .git/HEAD.lock && \
 git add <specific files> && \
 git commit -m "..." && \
