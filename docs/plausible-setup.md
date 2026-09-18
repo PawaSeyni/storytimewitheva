@@ -130,3 +130,12 @@ can only query events that exist as **goals** (Step 2) and can only break them d
   identity.
 - To add a new magnet's landing page: add its copy/PDF to `LEAD_MAGNETS` and its slug to
   `LANDING_SLUGS` in `scripts/prerender.mjs` (a build-time guard fails the build if you forget).
+
+## 2026-09-18: one event per outcome
+
+The deeper audit found the same signup counted three times (`Form Submit`, Plausible's automatic `Form: Submission`, `Lead Created`) and the same download twice (`Magnet Download`, automatic `File Download`).
+
+- `Form Submit` is removed from the code, the dictionary, the signup funnel and the goals list. `Lead Created` (fired only when the subscribe function returns success) is the single lead conversion; `Form Start` stays as the engagement diagnostic.
+- Plausible's automatic **Form submissions** and **File downloads** tracking is switched off in Site settings → General → Default tracking; Plausible removed the two automatic goals with it. Outbound-link tracking stays on (it covers more than Amazon).
+- `Magnet Download` is the single delivery event. `Purchase Click` (destination `amazon`) is the Amazon-click conversion; the older `Amazon Click` goal in the dashboard has no code behind it.
+- `Landing View` and `Form View` are diagnostics, not conversions.

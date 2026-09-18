@@ -55,7 +55,7 @@ test('contextual signup copy differs by placement and the placement travels on e
   await page.click('#email-signup button[type="submit"]');
   await expect(page.locator('[role="status"]').first()).toBeVisible();
   const ev = await events(page);
-  for (const name of ['Form View', 'Form Start', 'Form Submit', 'Lead Created']) {
+  for (const name of ['Form View', 'Form Start', 'Lead Created']) {
     const e = ev.find((x) => x.e === name);
     expect(e, name).toBeTruthy();
     expect(e!.props.placement, `${name} placement`).toBe('resources');

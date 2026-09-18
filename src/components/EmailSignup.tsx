@@ -604,7 +604,8 @@ export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: 
     if (!email || status === 'submitting') return;
 
     setStatus('submitting');
-    track('Form Submit', { language, lead_magnet: magnet.tag, placement });
+    // No event at submit time (2026-09-18): Lead Created, fired only on backend success, is
+    // the single lead conversion; Form Start already records the engagement.
 
     const trimmedName = firstName.trim();
 
