@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { use, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from '../components/LocalizedLink';
 import Seo from '../components/Seo';
@@ -11,7 +11,7 @@ import SaveResourceButton from '../components/SaveResourceButton';
 import NotFound from './NotFound';
 import { localizePath, useLanguage, useTranslation } from '../lib/language';
 import { resources, resourcePath } from '../data/resources';
-import { articleBody, hasAffiliateLinks, type BodyPart, type Section } from '../data/articleBodies';
+import { guideBodies, hasAffiliateLinks, type ArticleBody, type BodyPart, type Section } from '../data/articleBodies';
 
 // One parent guide per page at /resources/<slug> (and /es/…, /fr/…). Identity, card
 // metadata and the related themes/printables come from the resource registry; the
@@ -102,7 +102,10 @@ export default function Article() {
   const t = useTranslation(TRANSLATIONS);
 
   const resource = ARTICLES.find((r) => r.slug === slug);
-  const body = articleBody(slug, language);
+  // The language's bodies are a hashed JSON asset (see articleBodies.ts); preloaded by
+  // routeLoaders.ts, so on a first load use() reads a settled promise and nothing flashes.
+  const bodies = use<Record<string, ArticleBody>>(guideBodies(language) as Promise<Record<string, ArticleBody>>);
+  const body = bodies[slug];
   const path = `/resources/${slug}`;
 
   // schema.org Article: the same URL the canonical names (localized, trailing slash).

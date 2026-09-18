@@ -182,3 +182,19 @@ export async function loadPreloadable() {
   if (!preloadableCache) preloadableCache = await loadModule(path.join(ROOT, 'src', 'lib', 'preloadable.ts'));
   return preloadableCache;
 }
+
+let bodiesCache = null;
+/** The parent-guide bodies from src/data/guides/<lang>.json: articleBody(slug, lang) (affiliate parts kept as
+ *  {affiliate, text}), ARTICLE_BODY_SLUGS. No esbuild needed: the text is JSON, not code (DA-03). */
+export async function loadArticleBodies() {
+  if (!bodiesCache) {
+    const { readFileSync } = await import('node:fs');
+    const files = Object.fromEntries(['en', 'es', 'fr'].map((l) => [l, JSON.parse(readFileSync(path.join(ROOT, 'src', 'data', 'guides', `${l}.json`), 'utf8'))]));
+    bodiesCache = {
+      ARTICLE_BODY_SLUGS: Object.keys(files.en),
+      articleBody: (slug, lang) => (files[lang] ?? files.en)[slug],
+      files,
+    };
+  }
+  return bodiesCache;
+}

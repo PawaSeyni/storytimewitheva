@@ -6,11 +6,12 @@ import { Link } from '../components/LocalizedLink';
 import { useBooks } from '../data/books';
 import BookCard from '../components/BookCard';
 import EmailSignup, { hasLeadMagnetRequest } from '../components/EmailSignup';
+import { resources, resourcePath } from '../data/resources';
 import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
 import Pixel from '../components/Pixel';
 import TestimonialSection from '../components/TestimonialSection';
-import { useTranslation } from '../lib/language';
+import { useTranslation, useLanguage } from '../lib/language';
 import { track } from '../lib/analytics';
 import evaReadingWebp from '../assets/eva-reading.webp'; // optimized on-page hero (LCP)
 import evaReading from '../assets/eva-reading.jpg'; // kept for the og:image (broad social compatibility)
@@ -105,6 +106,10 @@ const TRANSLATIONS = {
       { emoji: '📓', slug: 'adventure-journal', title: 'Reading Journal', desc: "Record books you've read, favorite characters, and your thoughts. Saves to your device.", ages: '6-9' },
     ],
     // Section 6 — Meet Eva
+    // Section 5b — Parent guides (DA-03)
+    guidesTitle: 'Guides for grown-ups',
+    guidesSupport: 'Short, practical reads on bedtime routines, bilingual reading and turning the last page into the next adventure.',
+    guidesCta: 'All parent guides →',
     evaTitle: 'Meet Eva',
     evaIntro: 'Eva Gallo is a grandmother and retired public-health worker who writes gentle, multicultural picture books for children. Every story is made to be read together, out loud, in the language your family loves.',
     evaImageAlt: 'Portrait of author Eva Gallo',
@@ -145,6 +150,10 @@ const TRANSLATIONS = {
       { emoji: '🎭', slug: 'character-workshop', title: 'Taller de personajes', desc: 'Constructor paso a paso — tipo, nombre, apariencia, personalidad, poderes e historia.', ages: '6-9' },
       { emoji: '📓', slug: 'adventure-journal', title: 'Diario de lectura', desc: 'Registra los libros leídos, personajes favoritos y tus pensamientos. Se guarda en tu dispositivo.', ages: '6-9' },
     ],
+    // Section 5b — Parent guides (DA-03)
+    guidesTitle: 'Guías para adultos',
+    guidesSupport: 'Lecturas breves y prácticas sobre rutinas para dormir, lectura bilingüe y cómo convertir la última página en la siguiente aventura.',
+    guidesCta: 'Todas las guías para padres →',
     evaTitle: 'Conoce a Eva',
     evaIntro: 'Eva Gallo es abuela y trabajadora de salud pública jubilada, y escribe tiernos libros ilustrados multiculturales para niños. Cada historia está pensada para leerse juntos, en voz alta, en el idioma que tu familia prefiera.',
     evaImageAlt: 'Retrato de la autora Eva Gallo',
@@ -185,6 +194,10 @@ const TRANSLATIONS = {
       { emoji: '🎭', slug: 'character-workshop', title: 'Atelier de personnages', desc: 'Constructeur pas à pas — type, nom, apparence, personnalité, pouvoirs et histoire.', ages: '6-9' },
       { emoji: '📓', slug: 'adventure-journal', title: 'Journal de lecture', desc: 'Enregistrez les livres lus, vos personnages préférés et vos pensées. Sauvegardé sur votre appareil.', ages: '6-9' },
     ],
+    // Section 5b — Parent guides (DA-03)
+    guidesTitle: 'Guides pour les adultes',
+    guidesSupport: 'Des lectures courtes et pratiques sur les routines du soir, la lecture bilingue et la façon de faire de la dernière page la prochaine aventure.',
+    guidesCta: 'Tous les guides pour les parents →',
     evaTitle: 'Rencontrez Eva',
     evaIntro: 'Eva Gallo est grand-mère et ancienne professionnelle de la santé publique. Elle écrit de tendres albums illustrés multiculturels pour les enfants. Chaque histoire est faite pour être lue ensemble, à voix haute, dans la langue que votre famille préfère.',
     evaImageAlt: 'Portrait de l\'autrice Eva Gallo',
@@ -194,6 +207,9 @@ const TRANSLATIONS = {
 
 export default function Home() {
   const t = useTranslation(TRANSLATIONS);
+  const { language } = useLanguage();
+  const FEATURED_GUIDES = ['bedtime-reading-routine', 'bilingual-reading', 'making-reading-magical'];
+  const featuredGuides = FEATURED_GUIDES.map((slug) => resources.find((r) => r.kind === 'article' && r.slug === slug)).filter((r) => r !== undefined);
   const books = useBooks();
   const featuredBooks = books.filter(b => b.featured);
 
@@ -380,6 +396,27 @@ export default function Home() {
             >
               {t.exploreAllActivities}
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 5b — Parent guides (DA-03): three featured guides from the indexable
+          resource layer, so search-worthy pages are linked from the homepage. */}
+      <section className="py-16 px-4 bg-white border-t border-gray-100">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-3">{t.guidesTitle}</h2>
+          <p className="text-gray-600 text-lg text-center max-w-2xl mx-auto mb-10">{t.guidesSupport}</p>
+          <div className="grid gap-6 md:grid-cols-3" data-home-guides>
+            {featuredGuides.map((g) => (
+              <Link key={g.id} to={resourcePath(g)} className="card p-6 flex flex-col hover:shadow-lg transition-shadow">
+                <span className="text-4xl mb-3" aria-hidden>{g.emoji}</span>
+                <span className="font-bold text-gray-800 text-lg mb-2">{g.title[language]}</span>
+                <span className="text-gray-600 text-sm leading-relaxed">{g.description[language]}</span>
+              </Link>
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link to="/resources" className="font-semibold text-purple-600 hover:text-purple-800">{t.guidesCta}</Link>
           </div>
         </div>
       </section>

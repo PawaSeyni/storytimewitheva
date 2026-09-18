@@ -1,11 +1,13 @@
 import { Link } from './LocalizedLink';
-import { useTranslation } from '../lib/language';
+import { useLanguage, useTranslation } from '../lib/language';
+import { resources, resourcePath } from '../data/resources';
 import { AMAZON_AUTHOR_URL } from '../lib/amazon';
 
 const TRANSLATIONS = {
   en: {
     tagline: 'Where stories come to life! Magical books and activities for curious minds, ages 3–9.',
     quickLinks: 'Quick Links',
+    guides: 'Parent guides',
     home: 'Home',
     books: 'Books',
     activities: 'Activities',
@@ -24,6 +26,7 @@ const TRANSLATIONS = {
   es: {
     tagline: '¡Donde las historias cobran vida! Libros y actividades mágicos para mentes curiosas de 3 a 9 años.',
     quickLinks: 'Enlaces rápidos',
+    guides: 'Guías para padres',
     home: 'Inicio',
     books: 'Libros',
     activities: 'Actividades',
@@ -42,6 +45,7 @@ const TRANSLATIONS = {
   fr: {
     tagline: 'Où les histoires prennent vie ! Des livres et activités magiques pour les esprits curieux de 3 à 9 ans.',
     quickLinks: 'Liens rapides',
+    guides: 'Guides pour les parents',
     home: 'Accueil',
     books: 'Livres',
     activities: 'Activités',
@@ -61,6 +65,9 @@ const TRANSLATIONS = {
 
 export default function Footer() {
   const t = useTranslation(TRANSLATIONS);
+  const { language } = useLanguage();
+  // Every parent guide, so the indexable resource layer is one click from every page (DA-03).
+  const guides = resources.filter((r) => r.kind === 'article');
 
   const links = [
     { to: '/', label: t.home },
@@ -75,7 +82,7 @@ export default function Footer() {
   return (
     <footer data-print="chrome" className="bg-gray-900 text-gray-300 pt-12 pb-6 mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-3">
@@ -93,6 +100,20 @@ export default function Footer() {
                 <li key={link.to}>
                   <Link to={link.to} className="hover:text-purple-400 transition-colors">
                     {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Parent guides (DA-03): the indexable resource pages, linked site-wide */}
+          <div>
+            <p className="text-white font-semibold mb-4">{t.guides}</p>
+            <ul className="space-y-2 text-sm" data-footer-guides>
+              {guides.map((g) => (
+                <li key={g.id}>
+                  <Link to={resourcePath(g)} className="hover:text-purple-400 transition-colors">
+                    {g.title[language]}
                   </Link>
                 </li>
               ))}

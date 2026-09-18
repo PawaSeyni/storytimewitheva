@@ -9,7 +9,7 @@
 |---|---|---|
 | Books | 20 | 20 with related activities, 20 with related books, 20 with discussion prompts (60 prompts) |
 | Activities | 29 | 12 games, 17 in-app |
-| Resources | 10 | download 4, article 6 |
+| Resources | 12 | download 4, article 8 |
 | Collections | 20 | theme 11, age 3, educator 3, seasonal 3; 20 published; 20 routable |
 | Journeys | 3 | 3 published, 15 steps |
 | Learning packs | 2 | 2 published |
@@ -64,6 +64,8 @@
 | article-reluctant-readers | courage, self-worth | download-bedtime-routine, download-follow-up-activities |
 | article-perfect-reading-environment | emotions, wonder | download-bedtime-routine |
 | article-bilingual-reading | diversity, heritage | download-bilingual-flashcards, download-parents-guide |
+| article-bedtime-reading-routine | wonder, emotions | download-bedtime-routine |
+| article-bilingual-flashcards | diversity, curiosity | download-bilingual-flashcards |
 
 ## Downloads on disk
 
