@@ -38,11 +38,13 @@ message there).
 
 ## Known measurement gaps
 
-1. **No read access to the data.** Plausible has no API key configured for this repository and
-   custom properties must be enabled per property in the dashboard (`docs/plausible-setup.md`,
-   step 1). Until both exist, `npm run report:funnels` prints "No data". Owner action: create a
-   Stats API key, set `PLAUSIBLE_API_KEY` for the report, enable the properties listed in the
-   event dictionary.
+1. **Read access: DONE 2026-09-18.** A Stats API key exists (Plausible → Settings → API keys,
+   "storytimewitheva funnel report (local)"); locally it lives in the git-ignored `.env` as
+   `PLAUSIBLE_API_KEY`, which `npm run report:funnels` loads itself. All 28 dictionary events are
+   now configured as Plausible goals and all queried properties are enabled (24 custom
+   properties on the site), so every query answers 200. First full run: `REPORT_2026-09-18.md`
+   (2026-08-23 → 2026-09-18). Every segment is below the 50-event minimum sample, so no rate in
+   it is a baseline yet; rerun after four more weeks of traffic.
 2. **Purchases are not observable.** Amazon Associates reports are not linked to site events;
    every "conversion" is an outbound click. The open decision in the Sprint 5 spec stands.
 3. **Format intent is not measurable.** One Amazon URL serves paperback and eBook.
