@@ -137,7 +137,7 @@ The deeper audit found the same signup counted three times (`Form Submit`, Plaus
 
 - `Form Submit` is removed from the code, the dictionary, the signup funnel and the goals list. `Lead Created` (fired only when the subscribe function returns success) is the single lead conversion; `Form Start` stays as the engagement diagnostic.
 - Plausible's automatic **Form submissions** and **File downloads** tracking is switched off in Site settings → General → Default tracking; Plausible removed the two automatic goals with it. Outbound-link tracking stays on (it covers more than Amazon).
-- `Magnet Download` is the single delivery event. `Purchase Click` (destination `amazon`) is the Amazon-click conversion; the older `Amazon Click` goal in the dashboard has no code behind it.
+- `Magnet Download` is the single delivery event. `Purchase Click` (destination `amazon`) is the Amazon-click conversion; the older `Amazon Click` goal, which no code fired, was deleted from the dashboard on 2026-09-18.
 - `Landing View` and `Form View` are diagnostics, not conversions.
 
 ## 2026-09-18: the primary funnel
