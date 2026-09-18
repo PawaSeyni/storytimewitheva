@@ -138,7 +138,7 @@ test.describe('storage-free — every flow survives localStorage throwing', () =
     await page.goto('/games/story-map.html?lang=fr', { waitUntil: 'domcontentloaded' });
     const link = page.locator('#ste-continue a[data-ste-continue]');
     await expect(link).toBeVisible();
-    await expect(link).toHaveAttribute('href', /^\/fr\/books\/[a-z0-9-]+$/);
+    await expect(link).toHaveAttribute('href', /^\/fr\/books\/[a-z0-9-]+\/$/);
     await expect(link).toContainText('À lire ensuite:');
     await expect(page.locator('#ste-continue-eyebrow')).toHaveText('Continuez l’aventure');
     expect(errors).toEqual([]);
@@ -149,7 +149,7 @@ test.describe('storage-free — every flow survives localStorage throwing', () =
     // which the nav localizer used to relabel to the nav word; the label must survive.
     await page.goto('/games/matching.html?lang=es', { waitUntil: 'domcontentloaded' });
     const link = page.locator('#ste-continue a[data-ste-continue]');
-    await expect(link).toHaveAttribute('href', '/es/books');
+    await expect(link).toHaveAttribute('href', '/es/books/');
     await expect(link).toContainText('Explora todos los libros');
   });
 });
@@ -195,7 +195,7 @@ test.describe('sprint 7 ecosystem — cookie-free and storage-free', () => {
     await blockStorage(context);
     const errors = watchErrors(page);
     await page.goto('/search?q=kindness', { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('[data-search-group="collection"] a[href="/collections/kindness"]')).toBeVisible();
+    await expect(page.locator('[data-search-group="collection"] a[href="/collections/kindness/"]')).toBeVisible();
     await page.getByRole('button', { name: /^Journeys|^Reading journeys/ }).click();
     await expect(page.locator('[data-search-group="journey"]')).toBeVisible();
     expect(errors).toEqual([]);
@@ -249,7 +249,7 @@ test.describe('sprint 7 ecosystem — cookie-free and storage-free', () => {
   test('continuation from an activity to a book works with storage denied', async ({ page, context }) => {
     await blockStorage(context);
     await page.goto('/activities/adventure-journal', { waitUntil: 'domcontentloaded' });
-    const next = page.locator('a[href^="/books/"]').first();
+    const next = page.locator('a[href^="/books/"]:not([href="/books/"])').first();
     await expect(next).toBeVisible();
     await next.click();
     await expect(page).toHaveURL(/\/books\/[a-z0-9-]+/);

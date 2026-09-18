@@ -20,12 +20,12 @@ for (const [route, books] of Object.entries(PAIRINGS)) {
     page.on('pageerror', (e) => errors.push(e.message));
     await page.goto(route);
     await expect(page.getByRole('heading', { level: 2 }).first()).toBeVisible();
-    for (const id of books) await expect(page.locator(`[data-studio-book="${id}"]`)).toHaveAttribute('href', `/books/${id}`);
+    for (const id of books) await expect(page.locator(`[data-studio-book="${id}"]`)).toHaveAttribute('href', `/books/${id}/`);
     await expect(page.locator('[data-studio-printable]').first()).toBeVisible();
     await expect(page.getByRole('button', { name: /Print or save as PDF/ })).toBeVisible();
     // continuation goes to one of the paired books
-    const next = page.locator('a[data-continue-journey], a[href^="/books/"]').filter({ hasText: /Read next/ }).first();
-    await expect(next).toHaveAttribute('href', new RegExp(`^/books/(${books.join('|')})$`));
+    const next = page.locator('a[data-continue-journey], a[href^="/books/"]:not([href="/books/"])').filter({ hasText: /Read next/ }).first();
+    await expect(next).toHaveAttribute('href', new RegExp(`^/books/(${books.join('|')})/$`));
     expect(errors).toEqual([]);
   });
 }

@@ -22,9 +22,9 @@ test('resources page lists packs with audience, ages and contents, and links the
   await page.goto('/resources');
   const section = page.locator('#packs');
   await expect(section.getByRole('heading', { level: 2 })).toHaveText(/Learning packs/);
-  await expect(section.locator('li a[href="/free/classroom-pack"]')).toBeVisible();
+  await expect(section.locator('li a[href="/free/classroom-pack/"]')).toBeVisible();
   await expect(section.getByText('For teachers and educators').first()).toBeVisible();
-  await expect(section.locator('li:has(a[href="/free/classroom-pack"]) ul li')).toHaveCount(3);
+  await expect(section.locator('li:has(a[href="/free/classroom-pack/"]) ul li')).toHaveCount(3);
 });
 
 test('print media hides nav, footer and signup and keeps the content (S7 §10)', async ({ page }) => {
@@ -39,7 +39,7 @@ test('print media hides nav, footer and signup and keeps the content (S7 §10)',
   await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toBeVisible();
   await expect(page.locator('#email-signup')).toBeHidden();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-  await expect(page.locator('a[href="/books/pawa-rainbow-cloud"]').first()).toBeVisible();
+  await expect(page.locator('a[href="/books/pawa-rainbow-cloud/"]').first()).toBeVisible();
 });
 
 // The delivery itself: after signup (endpoint stubbed, nothing real is written) the pack

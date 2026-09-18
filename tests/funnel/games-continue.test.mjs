@@ -49,7 +49,8 @@ test('games — the baked step matches what journey.ts resolves today', () => {
 test('games — hrefs stay unprefixed site paths, so i18n.js localizes them like the nav', () => {
   for (const f of games) {
     const b = block(readFileSync(`public/games/${f}`, 'utf8'));
-    assert.match(b.href, /^\/books(\/[a-z0-9-]+)?$/, `${f}: unexpected href ${b.href}`);
+    // Trailing slash is the canonical form (DA-02); i18n.js prefixes it like the nav.
+    assert.match(b.href, /^\/books(\/[a-z0-9-]+)?\/$/, `${f}: unexpected href ${b.href}`);
   }
 });
 

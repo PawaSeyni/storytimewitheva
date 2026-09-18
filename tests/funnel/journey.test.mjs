@@ -59,7 +59,7 @@ test('journey — games resolve to /games/ paths and are flagged, demos to /acti
     if (s.type !== 'activity') continue;
     const a = activities.find((x) => x.slug === s.id);
     if (a.game) { assert.equal(s.href, `/games/${s.id}.html`); assert.equal(s.game, true); }
-    else { assert.equal(s.href, `/activities/${s.id}`); assert.ok(!s.game); }
+    else { assert.equal(s.href, `/activities/${s.id}/`); assert.ok(!s.game); }
   }
 });
 
@@ -71,7 +71,7 @@ test('journey — unknown sources return null, never a fabricated link', () => {
 
 test('journey — resources fall back to the catalog honestly (no relationships yet)', () => {
   const s = nextStep('resource', resources[0].id);
-  assert.deepEqual(s, { type: 'catalog', href: '/books', reason: 'fallback' });
+  assert.deepEqual(s, { type: 'catalog', href: '/books/', reason: 'fallback' });
 });
 
 test('journey — deterministic', () => {

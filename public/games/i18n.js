@@ -112,7 +112,7 @@
       var href = a.getAttribute('href');
       if (!href || href.indexOf('/games/') === 0) continue;      // games are shared
       if (href.indexOf('/es/') === 0 || href.indexOf('/fr/') === 0) continue; // already prefixed
-      var label = NAV[href];
+      var label = NAV[href.replace(/\/$/, '') || '/'];
       a.setAttribute('href', href === '/' ? '/' + L : '/' + L + href);
       // Nav labels are plain text in the game HTML. Localize them too — but only when the
       // link's text IS the English nav label. Keying on the href alone relabelled the

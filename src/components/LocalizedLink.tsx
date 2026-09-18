@@ -1,6 +1,7 @@
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import type { ComponentProps } from 'react';
 import { splitLangFromPath, localizePath } from '../lib/language';
+import { withTrailingSlash } from '../lib/locales';
 
 /**
  * Drop-in replacement for react-router-dom's <Link> that keeps the user in
@@ -16,6 +17,6 @@ type LinkProps = ComponentProps<typeof RouterLink>;
 
 export function Link({ to, ...rest }: LinkProps) {
   const { lang } = splitLangFromPath(useLocation().pathname);
-  const target = typeof to === 'string' && to.startsWith('/') ? localizePath(to, lang) : to;
+  const target = typeof to === 'string' && to.startsWith('/') ? withTrailingSlash(localizePath(to, lang)) : to;
   return <RouterLink to={target} {...rest} />;
 }

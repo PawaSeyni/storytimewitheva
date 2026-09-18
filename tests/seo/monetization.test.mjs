@@ -70,7 +70,7 @@ test('related books — links are localized, resolve to prerendered pages, never
     const end = h.indexOf('<footer');
     const section = start >= 0 ? h.slice(start, end > start ? end : undefined) : '';
     // A card links its cover and its title to the same page, so compare SETS with the policy output.
-    const ids = [...new Set([...section.matchAll(new RegExp(`href="${prefix}/books/([a-z0-9-]+)"`, 'g'))].map((m) => m[1]))];
+    const ids = [...new Set([...section.matchAll(new RegExp(`href="${prefix}/books/([a-z0-9-]+)/"`, 'g'))].map((m) => m[1]))];
     assert.ok(!ids.includes(b.id), `${prefix}/books/${b.id}: recommends itself`);
     assert.deepEqual(ids.sort(), relatedBooksFor(b.id).map((r) => r.id).sort(), `${prefix}/books/${b.id}: rendered set differs from the policy`);
     for (const id of ids) assert.ok(existsSync(path.join(DIST, prefix.replace(/^\//, ''), 'books', id, 'index.html')), `${prefix}/books/${b.id}: related link to missing ${id}`);
@@ -82,6 +82,6 @@ test('merchandising — at most four featured titles, all published, determinist
   assert.ok(featured.length >= 1 && featured.length <= 4, `${featured.length} featured`);
   for (const b of featured) assert.notEqual(b.status, 'coming-soon', `${b.id}: featured but not for sale`);
   const home = read('/');
-  const order = featured.map((b) => home.indexOf(`href="/books/${b.id}"`));
+  const order = featured.map((b) => home.indexOf(`href="/books/${b.id}/"`));
   assert.deepEqual(order, [...order].sort((a, c) => a - c), 'featured titles render in catalog order');
 });

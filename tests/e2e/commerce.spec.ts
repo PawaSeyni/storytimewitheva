@@ -72,8 +72,8 @@ test('free-bundle loop: the success screen continues into books and the continua
   await page.click('#email-signup button[type="submit"]');
   const cont = page.locator('[data-signup-continue]');
   await expect(cont).toBeVisible();
-  await expect(cont.locator('a[href^="/books/"]')).toHaveCount(3);
-  await cont.locator('a[href^="/books/"]').first().click();
+  await expect(cont.locator('a[href^="/books/"]:not([href="/books/"])')).toHaveCount(3);
+  await cont.locator('a[href^="/books/"]:not([href="/books/"])').first().click();
   await expect(page).toHaveURL(/\/books\/[a-z0-9-]+/);
   const ev = await events(page);
   const c = ev.find((x) => x.e === 'Continue Journey');

@@ -4,6 +4,7 @@ import { Link } from '../components/LocalizedLink';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import { localizePath, useLanguage, useTranslation } from '../lib/language';
+import { withTrailingSlash } from '../lib/locales';
 import { resources as RESOURCES, resourcePath, type Resource } from '../data/resources';
 import SaveResourceButton from '../components/SaveResourceButton';
 import { educatorCollectionIds, collectionRecordById, publishedLearningPacks, packResources } from '../data/contentIndex';
@@ -165,7 +166,7 @@ export default function Resources() {
   useEffect(() => {
     const slug = decodeURIComponent(hash.slice(1));
     const guide = ARTICLES.find((r) => r.slug === slug);
-    if (guide) navigate(localizePath(resourcePath(guide), language), { replace: true });
+    if (guide) navigate(withTrailingSlash(localizePath(resourcePath(guide), language)), { replace: true });
   }, [hash, language, navigate]);
 
   const categoryButtons: { key: CategoryKey; label: string }[] = [
