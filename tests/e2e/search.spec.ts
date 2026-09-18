@@ -4,9 +4,9 @@ import { test, expect } from './_app';
 test('a query finds books, collections, journeys and resources, grouped with type labels', async ({ page }) => {
   await page.goto('/search?q=kindness');
   await expect(page.getByRole('status')).toContainText(/\d+ results/);
-  await expect(page.locator('[data-search-group="collection"] a[href="/collections/kindness"]')).toBeVisible();
+  await expect(page.locator('[data-search-group="collection"] a[href="/collections/kindness/"]')).toBeVisible();
   await expect(page.locator('[data-search-group="book"]')).toBeVisible();
-  await expect(page.locator('[data-search-group="journey"] a[href="/journeys/kindness-that-shines"]')).toBeVisible();
+  await expect(page.locator('[data-search-group="journey"] a[href="/journeys/kindness-that-shines/"]')).toBeVisible();
 });
 
 test('filters are buttons with aria-pressed, keyboard operable, and update the URL and results', async ({ page }) => {
@@ -27,7 +27,7 @@ test('filters are buttons with aria-pressed, keyboard operable, and update the U
 test('French search runs in French and links stay in the French tree', async ({ page }) => {
   await page.goto('/fr/search?q=bont%C3%A9');
   await expect(page.getByRole('status')).toContainText(/résultat/);
-  await expect(page.locator('[data-search-group="collection"] a[href="/fr/collections/kindness"]')).toBeVisible();
+  await expect(page.locator('[data-search-group="collection"] a[href="/fr/collections/kindness/"]')).toBeVisible();
   await expect(page.getByRole('button', { name: /^Livres/ })).toBeVisible();
 });
 

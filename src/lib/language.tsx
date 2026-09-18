@@ -13,6 +13,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 // The registry (S8-019) owns the language list, prefixes and labels; this module keeps its
 // public names so every existing import still works.
 import { LOCALES, LANGUAGES, LANGUAGE_LABELS, splitLangFromPath, localizePath, type Language } from './locales';
+import { withTrailingSlash } from './locales';
 export type { Language };
 export { LANGUAGE_LABELS, splitLangFromPath, localizePath, LOCALES };
 export const SUPPORTED_LANGUAGES: Language[] = LANGUAGES;
@@ -42,7 +43,7 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
   const setLanguage = useCallback(
     (next: Language) => {
       const { rest } = splitLangFromPath(window.location.pathname);
-      navigate(localizePath(rest, next) + window.location.search + window.location.hash);
+      navigate(withTrailingSlash(localizePath(rest, next)) + window.location.search + window.location.hash);
       // Through the adapter (S6-012), which never throws. The key stays raw and
       // unversioned in the SHARED tier because public/games/i18n.js reads it directly.
       setSharedString(SHARED_KEYS.language, next);

@@ -103,16 +103,16 @@
     path = "/"
 
   [[plugins.inputs.audits]]
-    path = "books"
+    path = "books/"
 
   [[plugins.inputs.audits]]
-    path = "activities"
+    path = "activities/"
 
   [[plugins.inputs.audits]]
-    path = "activities/story-builder"
+    path = "activities/story-builder/"
 
   [[plugins.inputs.audits]]
-    path = "about"
+    path = "about/"
 
 # CORS for hosted pin assets (Pinterest composer automation fetches these)
 [[headers]]

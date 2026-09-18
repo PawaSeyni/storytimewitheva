@@ -64,3 +64,17 @@ test('translation tables fall back to English for a locale that has no strings y
   const src = readFileSync(path.join(ROOT, 'src', 'lib', 'language.tsx'), 'utf8');
   assert.match(src, /translations\[language\] \?\? translations\.en/);
 });
+
+test('withTrailingSlash — page paths get the canonical slash, files and endpoints do not (DA-02)', () => {
+  const f = L.withTrailingSlash;
+  assert.equal(f('/books'), '/books/');
+  assert.equal(f('/es/books/mayas-shadow'), '/es/books/mayas-shadow/');
+  assert.equal(f('/books/'), '/books/');
+  assert.equal(f('/'), '/');
+  assert.equal(f('/search?q=kindness'), '/search/?q=kindness');
+  assert.equal(f('/resources#packs'), '/resources/#packs');
+  assert.equal(f('/download/parents-guide?lang=fr'), '/download/parents-guide?lang=fr');
+  assert.equal(f('/games/matching.html'), '/games/matching.html');
+  assert.equal(f('/sitemap.xml'), '/sitemap.xml');
+  assert.equal(f('#email-signup'), '#email-signup');
+});

@@ -138,7 +138,7 @@ test('a11y — every book page renders its paired activities (B-02)', () => {
           ? `/games/${slug}.html${lang ? `?lang=${lang}` : ''}`
           : `${prefix}/activities/${slug}`;
         assert.ok(
-          h.includes(`href="${href}"`),
+          (h.includes(`href="${href}/"`) || h.includes(`href="${href}"`)),
           `${prefix}/books/${b.id}: missing activity link ${href}`,
         );
       }
@@ -271,7 +271,7 @@ test('journeys — every journey page states progress in text, has pressed-state
       if (loc !== 'en') assert.ok(!text.includes('Mark step done'), `${prefix}/journeys/${id}: English control label leaked`);
     }
     const idx = read(`${prefix}/journeys`);
-    assert.ok(idx && journeyRouteIds.every((id) => idx.includes(`/journeys/${id}"`)), `${prefix}/journeys: index must link every published journey`);
+    assert.ok(idx && journeyRouteIds.every((id) => idx.includes(`/journeys/${id}/"`)), `${prefix}/journeys: index must link every published journey`);
   }
 });
 
@@ -291,7 +291,7 @@ test('collections — a record\'s featured activities render on the page, locali
         const game = activities.find((a) => a.slug === slug)?.game;
         const lang = prefix.replace('/', '');
         const href = game ? `/games/${slug}.html${lang ? `?lang=${lang}` : ''}` : `${prefix}/activities/${slug}`;
-        assert.ok(h.includes(`href="${href}"`), `${prefix}/collections/${c.id}: missing featured activity link ${href}`);
+        assert.ok((h.includes(`href="${href}/"`) || h.includes(`href="${href}"`)), `${prefix}/collections/${c.id}: missing featured activity link ${href}`);
       }
     }
   }
@@ -311,7 +311,7 @@ test('educator collections — labeled for their audience in every language, and
       if (loc !== 'en') assert.ok(!h.includes('For teachers and educators'), `${prefix}/collections/${c.id}: English badge leaked`);
     }
     const res = read(`${prefix}/resources`);
-    for (const c of edu) assert.ok(res.includes(`href="${prefix}/collections/${c.id}"`), `${prefix}/resources: teachers section must link ${c.id}`);
+    for (const c of edu) assert.ok(res.includes(`href="${prefix}/collections/${c.id}/"`), `${prefix}/resources: teachers section must link ${c.id}`);
   }
 });
 
@@ -332,13 +332,13 @@ test('learning packs — gated landing page prerendered per locale with the pack
     const res = read(`${prefix}/resources`);
     assert.ok(res.includes('id="packs"'), `${prefix}/resources: packs section missing`);
     for (const p of packs) {
-      assert.ok(res.includes(`href="${prefix}/free/${p.id}"`), `${prefix}/resources: must link ${p.id}`);
+      assert.ok(res.includes(`href="${prefix}/free/${p.id}/"`), `${prefix}/resources: must link ${p.id}`);
       const decoded = res.replace(/&#39;/g, "'").replace(/&amp;/g, '&');
       assert.ok(decoded.includes(p.title[loc]), `${prefix}/resources: ${p.id} ${loc} title`);
     }
     for (const c of ['classroom-feelings', 'ages-3-5']) {
       const h = read(`${prefix}/collections/${c}`);
-      assert.ok(/href="[^"]*\/free\/[a-z0-9-]+-pack"/.test(h), `${prefix}/collections/${c}: should link its pack`);
+      assert.ok(/href="[^"]*\/free\/[a-z0-9-]+-pack\/"/.test(h), `${prefix}/collections/${c}: should link its pack`);
     }
   }
 });
@@ -364,7 +364,7 @@ test('seasonal — open windows render books and are indexable; closed ones rend
       const h = read(`${prefix}/collections/${id}`);
       assert.ok(h, `${prefix}/collections/${id}: every seasonal route is prerendered, open or not`);
       const st = seasonalState(id, new Date());
-      const bookLinks = (h.match(/href="[^"]*\/books\/[a-z0-9-]+"/g) ?? []).length;
+      const bookLinks = (h.match(/href="[^"]*\/books\/[a-z0-9-]+\/"/g) ?? []).length;
       assert.ok(h.includes(seasonalLabel[loc]), `${prefix}/collections/${id}: seasonal label in ${loc}`);
       if (st.open) {
         assert.ok(bookLinks >= 2, `${prefix}/collections/${id}: open window must show its books`);
@@ -381,13 +381,13 @@ test('seasonal — open windows render books and are indexable; closed ones rend
     const kindness = read(`${prefix}/collections/kindness`);
     for (const id of seasonalCollectionIds) {
       const st = seasonalState(id, new Date());
-      const linked = kindness.includes(`href="${prefix}/collections/${id}"`);
+      const linked = kindness.includes(`href="${prefix}/collections/${id}/"`);
       assert.equal(linked, st.open, `${prefix}/collections/kindness: link to ${id} should be ${st.open ? 'present' : 'absent'}`);
     }
     // The catalogue spotlights only open windows.
     const books = read(`${prefix}/books`);
     for (const id of seasonalCollectionIds) {
-      assert.equal(books.includes(`href="${prefix}/collections/${id}"`), Boolean(seasonalState(id, new Date()).open), `${prefix}/books: spotlight for ${id}`);
+      assert.equal(books.includes(`href="${prefix}/collections/${id}/"`), Boolean(seasonalState(id, new Date()).open), `${prefix}/books: spotlight for ${id}`);
     }
   }
 });
@@ -404,11 +404,11 @@ test('guides — each parent guide page (/resources/<slug>) ends with stories, a
       assert.ok(block.length > 100, `${prefix}/resources/${g.slug}: guide links missing`);
       const section = block.slice(0, block.indexOf('</footer>'));
       assert.ok(section.includes(heading[loc]), `${g.slug}: ${loc} heading`);
-      assert.ok((section.match(new RegExp(`href="${prefix}/books/[a-z0-9-]+"`, 'g')) ?? []).length >= 2, `${g.slug}: at least two story links in ${loc}`);
-      for (const t of g.relatedThemeIds.filter((x) => eligible.includes(x))) assert.ok(section.includes(`href="${prefix}/collections/${t}"`), `${g.slug}: collection link ${t}`);
+      assert.ok((section.match(new RegExp(`href="${prefix}/books/[a-z0-9-]+/"`, 'g')) ?? []).length >= 2, `${g.slug}: at least two story links in ${loc}`);
+      for (const t of g.relatedThemeIds.filter((x) => eligible.includes(x))) assert.ok(section.includes(`href="${prefix}/collections/${t}/"`), `${g.slug}: collection link ${t}`);
       for (const rid of g.relatedResourceIds ?? []) {
         const r = resources.find((x) => x.id === rid);
-        assert.ok(section.includes(`href="${prefix}/free/${r.slug}"`), `${g.slug}: printable link ${rid} in ${loc}`);
+        assert.ok(section.includes(`href="${prefix}/free/${r.slug}/"`), `${g.slug}: printable link ${rid} in ${loc}`);
       }
     }
   }

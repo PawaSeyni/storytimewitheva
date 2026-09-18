@@ -36,11 +36,11 @@ function activityTarget(slug: string, reason: JourneyReason): JourneyTarget | nu
   if (!a) return null;
   return a.game
     ? { type: 'activity', id: slug, href: `/games/${slug}.html`, reason, game: true }
-    : { type: 'activity', id: slug, href: `/activities/${slug}`, reason };
+    : { type: 'activity', id: slug, href: `/activities/${slug}/`, reason };
 }
 
 function bookTarget(id: string, reason: JourneyReason): JourneyTarget | null {
-  return bookById.has(id) ? { type: 'book', id, href: `/books/${id}`, reason } : null;
+  return bookById.has(id) ? { type: 'book', id, href: `/books/${id}/`, reason } : null;
 }
 
 function resourceTarget(id: string, reason: JourneyReason): JourneyTarget | null {
@@ -50,7 +50,7 @@ function resourceTarget(id: string, reason: JourneyReason): JourneyTarget | null
   return { type: 'resource', id, href, reason };
 }
 
-const CATALOG: JourneyTarget = { type: 'catalog', href: '/books', reason: 'fallback' };
+const CATALOG: JourneyTarget = { type: 'catalog', href: '/books/', reason: 'fallback' };
 
 /**
  * The first valid continuation for a piece of content, in spec priority. Deterministic:

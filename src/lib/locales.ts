@@ -81,3 +81,24 @@ export function hreflangFor<L extends LocaleDef>(enPath: string, canonical: (p: 
 
 export const splitLangFromPath = (pathname: string) => splitLangFromPathWith(pathname, LOCALES);
 export const localizePath = (path: string, lang: Language) => localizePathWith(path, lang, LOCALES);
+
+/** Paths that are files or function endpoints, never page routes: no trailing slash. */
+const NO_SLASH_PREFIXES = ['/download/', '/games/', '/.netlify/', '/api/'];
+
+/**
+ * The canonical, trailing-slash form of an internal page path (2026-09-18, DA-02).
+ * Netlify serves prerendered pages at /books/ and 301s /books to it; canonical, hreflang
+ * and the sitemap already use the slashed form. Internal links follow it so a client-side
+ * navigation and a direct load report the same page, and no visitor pays the redirect.
+ * Files, function endpoints and hash-only targets are left alone; a query or hash is kept
+ * after the slash.
+ */
+export function withTrailingSlash(path: string): string {
+  const m = /^([^?#]*)([?#].*)?$/.exec(path);
+  const base = m?.[1] ?? '';
+  const rest = m?.[2] ?? '';
+  if (!base.startsWith('/') || base.endsWith('/')) return path;
+  if (/\.[a-z0-9]+$/i.test(base)) return path;
+  if (NO_SLASH_PREFIXES.some((p) => base.startsWith(p))) return path;
+  return `${base}/${rest}`;
+}
