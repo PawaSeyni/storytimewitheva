@@ -35,5 +35,5 @@ analysis rule; nothing is decided below the minimum sample.
 
 | Id | Status | Doc |
 |---|---|---|
-| book-cta-hierarchy-v1 | draft, pending baseline approval | EXP-001-book-cta-hierarchy.md |
-| newsletter-contextual-cta-v1 | draft, pending baseline approval | EXP-002-newsletter-contextual-cta.md |
+| book-cta-hierarchy-v1 | draft, baseline approved 2026-09-18; needs `startAt` and the owner's go | EXP-001-book-cta-hierarchy.md |
+| newsletter-contextual-cta-v1 | draft, baseline approved 2026-09-18; needs `startAt` and the owner's go | EXP-002-newsletter-contextual-cta.md |

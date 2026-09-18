@@ -1,6 +1,6 @@
 # Growth Funnel Baseline, September 2026 (S5-001)
 
-**Date:** 2026-09-10. **Schema version:** 1. **Status:** instrumentation baseline complete;
+**Date:** 2026-09-10. **Schema version:** 1. **Status:** approved by the owner on 2026-09-18 (numbers below); instrumentation baseline complete;
 **numeric baseline blocked on data access** (see gaps). Every number below is either a
 count of what the site instruments or a measured property of the instrumentation; no
 conversion rate is quoted, because none can be read yet.
@@ -59,3 +59,21 @@ message there).
 Run `PLAUSIBLE_API_KEY=… npm run report:funnels -- --from <release date> --to <+28 days> --out docs/analytics/REPORT_<date>.md`,
 commit the report, and record the numbers here as the approved baseline. Experiments
 (S5-009, S5-010) stay in draft until that baseline is approved (release gate 11.1).
+
+## Approved baseline, 2026-09-18
+
+Owner approval recorded 2026-09-18 for the report `REPORT_2026-09-18.md` (Plausible Stats API v2, 2026-08-23 to 2026-09-18, event schema 1, minimum sample 50 per segment).
+
+| Funnel | Numbers in the window |
+|---|---|
+| Newsletter: view → start → lead | Form View 107, Form Start 8, Lead Created 9 |
+| Landing page entrance → next action | Landing View 96, Form Start 8, Lead Created 9 |
+| Home → free bundle → download | Landing View 96, Lead Created 9, Magnet Download 16, Continue Journey (signup success) 1 |
+| Discovery → detail → purchase intent → retailer click | Book View 13, Purchase CTA View (detail) 6, Purchase Click 0 |
+| Book → activity → completion, and the loop | Book View 13, Continue Journey 0, Activity Complete 0 |
+
+What this approval means and does not mean:
+
+- It is the reference point, not a target. Every step except Form View and Landing View is below the 50-event minimum sample, so no rate in this window is statistically usable; the report marks each one. The baseline is approved as "this is where we started", which is what release gate 11.1 asks for.
+- The two experiments (EXP-001, EXP-002) may now move from `draft` to `active` when the owner sets `startAt` and gives the go. Their `analysisRule` still refuses to report a cell under the minimum sample, so activation is safe but will not produce a verdict at current traffic; the Google-facing content work (DA-03) is what changes that.
+- The newsletter funnel in this report still lists `Form Submit` (9); that event was removed on 2026-09-18 (DA-01) and the funnel is now three steps. The scheduled rerun on 2026-10-16 reports the new shape. The duplicate-counting the deeper audit found (automatic `Form: Submission` and `File Download`) never entered this report, which reads custom events only.
