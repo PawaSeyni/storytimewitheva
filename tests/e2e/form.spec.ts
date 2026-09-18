@@ -99,8 +99,9 @@ test('3.5c network abort shows the error state', async ({ page }) => {
   await expect(page.locator('[role="status"]')).toHaveCount(0);
 });
 
-// TEST 3.5d — no phantom conversion. On failure, 'Form Submit' fires but
-// 'Lead Created' must NOT. (webdriver overridden so events can fire at all.)
+// TEST 3.5d — no phantom conversion. On failure, 'Form Start' has fired (the visitor
+// typed) but 'Lead Created' must NOT. There is no submit-time event any more (2026-09-18):
+// Lead Created, on backend success only, is the single lead conversion.
 test('3.5d a failed signup never fires Lead Created', async ({ page }) => {
   await asRealUserWithPlausible(page);
   await page.route(SUBSCRIBE, (r) => r.fulfill({ status: 500, contentType: 'application/json', body: '{}' }));
@@ -108,6 +109,7 @@ test('3.5d a failed signup never fires Lead Created', async ({ page }) => {
   await fillAndSubmit(page);
   await expect(page.locator('[role="alert"]')).toBeVisible();
   const events = await page.evaluate(() => (window as unknown as { __ev: { e: string }[] }).__ev.map((x) => x.e));
-  expect(events).toContain('Form Submit');
+  expect(events).toContain('Form Start');
   expect(events).not.toContain('Lead Created');
+  expect(events.filter((e) => e === 'Lead Created' || e === 'Form Submit')).toEqual([]);
 });

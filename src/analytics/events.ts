@@ -47,7 +47,6 @@ export const EVENTS: EventDefinition[] = [
   { name: 'Landing View', alias: 'free_bundle_opened (when lead_magnet is a bundle or pack)', kind: 'exposure', required: ['language', 'lead_magnet', 'landing_page'], optional: [], owner: 'growth', privacy: 'magnet slug and route; UTMs from the URL' },
   { name: 'Form View', alias: 'newsletter_cta_impression', kind: 'exposure', required: ['language', 'lead_magnet', 'placement'], optional: [], values: { placement: PLACEMENTS }, owner: 'growth', privacy: 'once per form when viewable' },
   { name: 'Form Start', alias: 'newsletter_signup_started', kind: 'intent', required: ['language', 'lead_magnet', 'placement'], optional: [], owner: 'growth', privacy: 'first interaction only' },
-  { name: 'Form Submit', alias: 'newsletter_signup_submitted', kind: 'intent', required: ['language', 'lead_magnet', 'placement'], optional: [], owner: 'growth', privacy: 'no field values' },
   { name: 'Lead Created', alias: 'newsletter_signup_confirmed (provider evidence: the subscribe function returned success; MailerLite is single opt-in, so this is creation, not a double opt-in confirmation)', kind: 'outcome', required: ['language', 'lead_magnet', 'placement'], optional: [], owner: 'growth', privacy: 'fires only on backend success; never the email' },
   { name: 'Magnet Download', alias: 'free_bundle_download_started', kind: 'outcome', required: ['language', 'lead_magnet', 'asset'], optional: ['placement'], owner: 'growth', privacy: 'asset path only' },
   // ---- sharing (S5-020) ----

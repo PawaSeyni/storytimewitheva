@@ -12,7 +12,7 @@ test('report — every funnel appears with step counts and rates', () => {
   assert.match(md, /Discovery → detail → purchase intent → retailer click \(intent\)/);
   assert.match(md, /\| Purchase CTA View \{"placement":"detail"\} \| 280 \| 67\.5% \|/);
   assert.match(md, /\| Purchase Click \| 50 \| 17\.9% \|/);
-  assert.match(md, /Newsletter: view → start → submit → lead \(outcome\)/);
+  assert.match(md, /Newsletter: view → start → lead \(outcome\)/);
 });
 
 test('report — segments by placement, locale and age band; warns below the minimum sample', () => {

@@ -103,6 +103,14 @@ Last updated 2026-09-09 against `main` @ `3477fd9`.
 | TW-03 | **Accepted visual change**: where a responsive text size meets `leading-*` (home hero h1 and lead, About quote, two Resources headings), Tailwind 3 let the size's default line-height override the utility at md+; Tailwind 4 honours the utility, so those five blocks are a few pixels taller. Before/after crops sent to the owner 2026-09-10. Reverse per element with `md:leading-none` if wanted. | accepted |
 | TW-04 | **Games stylesheet regenerated with Tailwind 4 and screenshot-checked**: 12 games × desktop/mobile (plus one French page) with `Math.random` seeded, 26/26 identical after two fixes: v4 ignores the legacy regex safelist, so the dynamically built color and grid classes are now declared with `@source inline` (locked by `tests/funnel/games-css.test.mjs`); Sentence Builder's Check button carried `flex-2`, a no-op in v3 that became `flex: 2` in v4 and changed the button widths, removed. Games CSS 24 → 25 KB gzip; app CSS 35 → 17 KB. | #203 |
 
+### Deeper audit response (2026-09-18)
+
+Owner's deeper audit: landing pages are noindex by design, non-slash URLs answer 200 next to the slashed canonical, and Plausible counted one signup three times and one download twice. Worked in the audit's order.
+
+| ID | Item | Evidence |
+|----|------|----------|
+| DA-01 | **One event per outcome.** `Form Submit` removed everywhere (code, dictionary, signup funnel, tests, fixture, Plausible goal). `Lead Created` fires only on backend success and is the single lead conversion; `Magnet Download` the single delivery event; `Purchase Click` the Amazon-click conversion. Plausible automatic form-submission and file-download tracking switched off (their two automatic goals went with them). Acceptance: one signup = one `Lead Created`; one download = one `Magnet Download`; a failed form = neither (e2e 3.5d). | PR |
+
 ### Catalog editions from Author Central (2026-09-16)
 
 Owner asked to pull the new books from Amazon Author Central (author.amazon.com, signed in as Eva Gallo) into the site. The bookshelf holds 64 listings, all editions of the 20 titles already in the catalog, so there were no new titles to add; the gaps were editions.

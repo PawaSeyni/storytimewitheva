@@ -22,7 +22,6 @@ export type FunnelEvent =
   | 'Landing View'
   | 'Form View'
   | 'Form Start'
-  | 'Form Submit'
   | 'Lead Created'
   | 'Magnet Download'
   | 'Book View'

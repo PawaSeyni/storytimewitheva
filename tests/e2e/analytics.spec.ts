@@ -44,7 +44,7 @@ test('4.1 the full happy path fires the funnel events in order', async ({ page }
   await page.click('#email-signup a[download]'); // → Magnet Download
 
   const names = (await readEvents(page)).map((x) => x.e);
-  const order = ['Landing View', 'Form View', 'Form Start', 'Form Submit', 'Lead Created', 'Magnet Download'];
+  const order = ['Landing View', 'Form View', 'Form Start', 'Lead Created', 'Magnet Download'];
   const idx = order.map((n) => names.indexOf(n));
   for (const [i, n] of order.entries()) expect(idx[i], `${n} fired`).toBeGreaterThanOrEqual(0);
   for (let i = 1; i < idx.length; i++) expect(idx[i], `${order[i]} after ${order[i - 1]}`).toBeGreaterThan(idx[i - 1]);
@@ -158,7 +158,7 @@ test('4.5 events fired before the analytics script loads are buffered, then flus
     .toBeGreaterThan(0);
 
   const flushed = await page.evaluate(() => (window as unknown as { __ev: string[] }).__ev);
-  for (const n of ['Landing View', 'Form View', 'Form Start', 'Form Submit', 'Lead Created']) {
+  for (const n of ['Landing View', 'Form View', 'Form Start', 'Lead Created']) {
     expect(flushed, `${n} flushed after script load`).toContain(n);
   }
 });
