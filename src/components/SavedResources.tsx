@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from './LocalizedLink';
-import { resources } from '../data/resources';
+import { resources, resourcePath } from '../data/resources';
 import { loadLibrary, savedResourceIds, onLibraryChange } from '../lib/personalLibrary';
 import SaveResourceButton from './SaveResourceButton';
 import { useLanguage, useTranslation } from '../lib/language';
@@ -35,7 +35,7 @@ export default function SavedResources() {
         {items.map((r) => (
           <li key={r.id} className="flex items-start gap-3">
             <Link
-              to={r.kind === 'article' ? `/resources#${r.slug}` : `/free/${r.slug}`}
+              to={resourcePath(r)}
               className="flex-1 min-w-0 group"
             >
               <span className="flex items-center gap-2">

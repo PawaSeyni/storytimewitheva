@@ -32,7 +32,7 @@ test('index — every route exists: sitemap for books/collections/journeys, regi
     if (r.type === 'book' || r.type === 'journey') assert.ok(sitemap.includes(`<loc>https://storytimewitheva.com${r.route}/</loc>`), `${r.type} ${r.id}: route ${r.route} not in sitemap`);
     if (r.type === 'collection') assert.ok(idx.collectionRouteIds.includes(r.id));
     if (r.type === 'activity') assert.match(r.route, /^\/activities\/[a-z0-9-]+$/);
-    if (r.type === 'resource') assert.ok(/^\/resources#[a-z-]+$/.test(r.route) || /^\/free\/[a-z-]+$/.test(r.route), `${r.id}: ${r.route}`);
+    if (r.type === 'resource') assert.ok(/^\/resources\/[a-z-]+$/.test(r.route) || /^\/free\/[a-z-]+$/.test(r.route), `${r.id}: ${r.route}`);
   }
 });
 

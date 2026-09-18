@@ -11,7 +11,7 @@
 
 import { books } from '../data/books.data';
 import { activities } from '../data/activities.data';
-import { resources } from '../data/resources';
+import { resources, resourcePath } from '../data/resources';
 import { booksByActivityId } from '../data/contentIndex';
 
 export type JourneySource = 'book' | 'activity' | 'resource';
@@ -46,7 +46,7 @@ function bookTarget(id: string, reason: JourneyReason): JourneyTarget | null {
 function resourceTarget(id: string, reason: JourneyReason): JourneyTarget | null {
   const r = resourceById.get(id);
   if (!r) return null;
-  const href = r.kind === 'article' ? `/resources#${r.slug}` : `/free/${r.slug}`;
+  const href = resourcePath(r);
   return { type: 'resource', id, href, reason };
 }
 

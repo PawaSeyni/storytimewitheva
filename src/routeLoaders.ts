@@ -12,6 +12,7 @@ export const loadJourneys = preloadable(() => import('./pages/Journeys'));
 export const loadJourney = preloadable(() => import('./pages/Journey'));
 export const loadActivities = preloadable(() => import('./pages/Activities'));
 export const loadResources = preloadable(() => import('./pages/Resources'));
+export const loadArticle = preloadable(() => import('./pages/Article'));
 export const loadAbout = preloadable(() => import('./pages/About'));
 export const loadContact = preloadable(() => import('./pages/Contact'));
 export const loadProfile = preloadable(() => import('./pages/Profile'));
@@ -72,6 +73,7 @@ export const ROUTE_CHUNKS: ReadonlyArray<{ path: string; loaders: readonly Loade
   { path: '/activities/story-quilt', loaders: [loadDemoPage, loadStoryQuiltDemo] },
   { path: '/activities/patient-maker-passport', loaders: [loadDemoPage, loadMakerPassportDemo] },
   { path: '/resources', loaders: [loadResources] },
+  { path: '/resources/:slug', loaders: [loadArticle] },
   { path: '/about', loaders: [loadAbout] },
   { path: '/contact', loaders: [loadContact] },
   { path: '/faq', loaders: [loadFAQ] },

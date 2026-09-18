@@ -14,7 +14,7 @@ import type { Language } from './language';
 import { LANGUAGES } from './locales';
 import { books } from '../data/books.data';
 import { activities } from '../data/activities.data';
-import { resources } from '../data/resources';
+import { resources, resourcePath } from '../data/resources';
 import { THEMES, AGE_BANDS, type ThemeId, type AgeBandId } from '../data/taxonomy';
 import {
   collectionRouteIds, collectionRecordById, collectionEligibleThemeIds, ageCollectionEligibleBandIds, publishedJourneys, seasonalState,
@@ -110,7 +110,7 @@ export function buildSearchIndex(): SearchRecord[] {
   for (const r of resources) {
     out.push({
       id: r.id, type: 'resource', title: r.title, summary: r.description, themeIds: r.relatedThemeIds ?? [], ageBandIds: [],
-      route: r.kind === 'article' ? `/resources#${r.slug}` : `/free/${r.slug}`, emoji: r.emoji,
+      route: resourcePath(r), emoji: r.emoji,
       terms: loc((l) => join([themeTerms(r.relatedThemeIds ?? [], l), TYPE_LABELS.resource[l], r.kind === 'download' ? { en: 'printable download PDF', fr: 'imprimable téléchargement PDF', es: 'imprimible descarga PDF' }[l] : ''])),
     });
   }

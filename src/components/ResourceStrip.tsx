@@ -1,6 +1,6 @@
 import { Link } from './LocalizedLink';
 import { useLanguage, useTranslation } from '../lib/language';
-import { resources } from '../data/resources';
+import { resources, resourcePath } from '../data/resources';
 import SaveResourceButton from './SaveResourceButton';
 
 /**
@@ -50,7 +50,7 @@ export default function ResourceStrip() {
           {items.map((r) => (
             <li key={r.id} className="flex items-start gap-2">
               <Link
-                to={r.kind === 'article' ? `/resources#${r.slug}` : `/free/${r.slug}`}
+                to={resourcePath(r)}
                 className="flex-1 flex gap-3 items-start bg-white rounded-xl p-4 border border-purple-100 hover:border-purple-300 hover:shadow-md transition-all h-full"
               >
                 <span className="text-2xl leading-none shrink-0" aria-hidden>{r.emoji ?? '📄'}</span>

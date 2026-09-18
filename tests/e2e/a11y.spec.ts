@@ -14,6 +14,7 @@ const ROUTES = [
   { path: '/collections/kindness', name: 'collection' },
   { path: '/activities', name: 'activities' },
   { path: '/resources', name: 'resources' },
+  { path: '/resources/making-reading-magical', name: 'parent guide' },
   { path: '/profile', name: 'dashboard' },
   // Sprint 7 surfaces (S7-018)
   { path: '/search?q=kindness', name: 'search results' },

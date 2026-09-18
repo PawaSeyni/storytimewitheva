@@ -1,6 +1,6 @@
 import { Link } from './LocalizedLink';
 import { useBooks } from '../data/books';
-import { resources } from '../data/resources';
+import { resources, resourcePath } from '../data/resources';
 import { THEMES } from '../data/taxonomy';
 import { booksByThemeId, collectionEligibleThemeIds } from '../data/contentIndex';
 import { useLanguage, useTranslation } from '../lib/language';
@@ -61,7 +61,7 @@ export default function GuideLinks({ slug }: { slug: string }) {
           <ul className="flex flex-wrap gap-2">
             {printables.map((r) => (
               <li key={r.id}>
-                <Link to={r.kind === 'article' ? `/resources#${r.slug}` : `/free/${r.slug}`} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-purple-100 text-sm text-purple-700 hover:border-purple-300">
+                <Link to={resourcePath(r)} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-purple-100 text-sm text-purple-700 hover:border-purple-300">
                   <span aria-hidden>{r.emoji ?? '📄'}</span> {r.title[language]}
                 </Link>
               </li>

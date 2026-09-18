@@ -6,7 +6,7 @@ import JsonLd from './JsonLd';
 import Breadcrumbs, { breadcrumbSchema } from './Breadcrumbs';
 import { useTranslation, useLanguage } from '../lib/language';
 import { useActivities } from '../data/activities';
-import { resources as RESOURCES } from '../data/resources';
+import { resources as RESOURCES, resourcePath } from '../data/resources';
 import { learningPackById, packResources } from '../data/contentIndex';
 import { gameUrl } from '../lib/gameUrl';
 
@@ -194,7 +194,7 @@ export default function CollectionPage({ id, title, intro, seoTitle, books, brow
             <ul className="flex flex-wrap gap-2">
               {featuredResources.map((r) => (
                 <li key={r.id}>
-                  <Link to={r.kind === 'article' ? `/resources#${r.slug}` : `/free/${r.slug}`} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-purple-100 text-sm text-purple-700 hover:border-purple-300">
+                  <Link to={resourcePath(r)} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-purple-100 text-sm text-purple-700 hover:border-purple-300">
                     <span aria-hidden>{r.emoji ?? '📄'}</span> {r.title[language]}
                   </Link>
                 </li>

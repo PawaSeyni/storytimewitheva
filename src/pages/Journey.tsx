@@ -15,7 +15,7 @@ import DiscussionPrompts from '../components/DiscussionPrompts';
 import NotFound from './NotFound';
 import { books as rawBooks, useBooks } from '../data/books';
 import { useActivities } from '../data/activities';
-import { resources } from '../data/resources';
+import { resources, resourcePath } from '../data/resources';
 import { publishedJourneys, journeyRouteIds } from '../data/contentIndex';
 import { THEMES, AGE_BANDS } from '../data/taxonomy';
 import { loadProgress, toggleStep, onJourneyChange, nextIncompleteStepId } from '../lib/journeyProgress';
@@ -203,7 +203,7 @@ export default function Journey() {
                   )
                 )}
                 {resource && (
-                  <Link to={resource.kind === 'article' ? `/resources#${resource.slug}` : `/free/${resource.slug}`} className="inline-flex items-center gap-3 text-purple-700 font-semibold hover:text-purple-900">
+                  <Link to={resourcePath(resource)} className="inline-flex items-center gap-3 text-purple-700 font-semibold hover:text-purple-900">
                     <span className="text-2xl" aria-hidden>{resource.emoji ?? '📄'}</span> {resource.title[language]} <span aria-hidden>→</span>
                   </Link>
                 )}

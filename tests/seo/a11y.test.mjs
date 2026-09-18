@@ -392,15 +392,16 @@ test('seasonal — open windows render books and are indexable; closed ones rend
   }
 });
 
-test('guides — each parent guide on /resources ends with stories, a collection link where one exists, and its printables, per locale (S7-006)', async () => {
+test('guides — each parent guide page (/resources/<slug>) ends with stories, a collection link where one exists, and its printables, per locale (S7-006)', async () => {
   const { resources } = await import('../../scripts/lib/catalog.mjs').then((m) => m.loadResources());
   const { collectionEligibleThemeIds: eligible } = await import('../../scripts/lib/catalog.mjs').then((m) => m.loadContentIndex());
   const heading = { en: 'Stories to read with this guide', fr: 'Des histoires à lire avec ce guide', es: 'Historias para leer con esta guía' };
   for (const [loc, prefix] of Object.entries(LOCALES)) {
-    const h = read(`${prefix}/resources`);
     for (const g of resources.filter((r) => r.kind === 'article')) {
+      const h = read(`${prefix}/resources/${g.slug}`);
+      assert.ok(h, `${prefix}/resources/${g.slug}: not prerendered`);
       const block = h.slice(h.indexOf(`data-guide-links="${g.slug}"`));
-      assert.ok(block.length > 100, `${prefix}/resources: guide links missing for ${g.slug}`);
+      assert.ok(block.length > 100, `${prefix}/resources/${g.slug}: guide links missing`);
       const section = block.slice(0, block.indexOf('</footer>'));
       assert.ok(section.includes(heading[loc]), `${g.slug}: ${loc} heading`);
       assert.ok((section.match(new RegExp(`href="${prefix}/books/[a-z0-9-]+"`, 'g')) ?? []).length >= 2, `${g.slug}: at least two story links in ${loc}`);
