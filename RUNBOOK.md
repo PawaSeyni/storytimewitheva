@@ -4,7 +4,7 @@ Single source of truth for operating, monitoring, and troubleshooting every serv
 
 **Site:** https://storytimewitheva.com
 **Repo:** https://github.com/PawaSeyni/storytimewitheva
-**Local path:** `/Users/papasnguer/Desktop/storytimewitheva`
+**Local path:** `/Users/papasnguer/Developer/storytimewitheva` (moved out of iCloud Desktop sync on 2026-09-18; a pointer note remains on the Desktop)
 **Owner:** Eva Gallo (`galloeva2612@gmail.com`)
 **Last updated:** 2026-09-07
 
@@ -63,7 +63,7 @@ Single source of truth for operating, monitoring, and troubleshooting every serv
 ### How to push from this machine
 
 ```bash
-cd "/Users/papasnguer/Desktop/Organized/17_Completed_Books_Archive/Completed Books/Eva/storytimewitheva"
+cd "/Users/papasnguer/Developer/storytimewitheva"
 rm -f .git/index.lock .git/HEAD.lock   # Cowork-sandbox quirk; harmless on Mac
 git add <files>
 git commit -m "feat(scope): one-line summary"
@@ -481,7 +481,7 @@ See PUNCH_LIST long-term backlog → "Social & marketing channels" cluster.
 ### "Need to undo a bad push to main"
 
 ```bash
-cd "/Users/papasnguer/Desktop/Organized/17_Completed_Books_Archive/Completed Books/Eva/storytimewitheva"
+cd "/Users/papasnguer/Developer/storytimewitheva"
 git log --oneline -10                # find the bad commit hash
 git revert <hash>                    # creates a new commit that undoes the bad one
 git push origin main                 # Netlify auto-deploys the revert
