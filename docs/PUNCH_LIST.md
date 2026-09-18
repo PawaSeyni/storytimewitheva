@@ -218,7 +218,7 @@ An external black-box audit of production against Sprint PRDs 2-7 (snapshot 2026
 | PO-02 | **Client error beacon** through the cookie-free allowlist: error class + route pattern only, at most three per page load, unit-tested redaction. | #182 |
 | PO-03 | **Gates added to CI**: `check:audit` (allowlist with review dates), `check:secrets` (dist scan). Dependabot configured, no auto-merge. | #182 |
 | PO-04 | **Recovery drill run and timed**: recreate from source 183 s; content damage detected by the gate and restored from git; revert 1 s. | #182 |
-| PO-05 | **Owner action: enable branch protection on `main`** (required status `test`, one review). Without it every gate is by practice, not by GitHub. Security review R-01. | open |
+| PO-05 | **Owner action: enable branch protection on `main`** (required status `test`, one review). Without it every gate is by practice, not by GitHub. Security review R-01. | resolved 2026-09-18: protection on `main` via the GitHub API: required status check `test`, pull requests required (zero approvals, so the merge flow the owner delegates does not stall; add `required_approving_review_count: 1` to require a human review), enforced for admins, linear history, no force pushes, no deletions. Proven: a direct push to `main` is refused with GH006. Docs-only changes now go through a PR too; `[skip netlify]` still skips the build |
 | PO-06 | **Owner action: scope `MAILERLITE_GROUP` for the `deploy-preview` context** to a test group so preview signups stop creating real subscribers. Security review R-03. | open |
 | PO-07 | **Owner action: exercise a Netlify republish** of the previous deploy once (two minutes, replaces the live site during the drill). Last known good recorded in the runbook. | open |
 
