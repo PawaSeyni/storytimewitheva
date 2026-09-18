@@ -50,7 +50,7 @@ environment matrix; external data-flow inventory; accessibility governance; loca
 
 ## Roadmap after Sprint 8
 
-1. Owner actions: R-01, R-03, R-05, the production republish drill, the S4-05 screen-reader pass, the copy reviews carried from Sprint 7.
+1. Owner actions: R-03, R-05, the S4-05 screen-reader pass, the copy reviews carried from Sprint 7. (R-01 closed and the production republish drill done on 2026-09-18.)
 2. Dependency majors in order: React Router 7, Vite 8, React 19, Tailwind 4.
 3. `/books` Lighthouse mobile (71) with a measurement plan (PD-04).
 4. Sprint 5 experiments (S5-008 to S5-011) remain not started; they need the analytics goals configured in Plausible first.
