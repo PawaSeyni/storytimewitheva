@@ -11,6 +11,10 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { loadFunnels, loadEvents, loadCatalog, loadTaxonomy } from './lib/catalog.mjs';
 
+// Local runs read PLAUSIBLE_API_KEY from the git-ignored .env (see .env.example); CI and
+// Netlify set real environment variables, and an explicit variable always wins.
+try { process.loadEnvFile('.env'); } catch { /* no .env: fall through to process.env */ }
+
 const args = Object.fromEntries(process.argv.slice(2).map((a, i, all) => (a.startsWith('--') ? [a.slice(2), all[i + 1] && !all[i + 1].startsWith('--') ? all[i + 1] : true] : [])).filter((x) => x.length));
 const { FUNNELS, MIN_SAMPLE } = await loadFunnels();
 const { SCHEMA_VERSION, EVENTS } = await loadEvents();

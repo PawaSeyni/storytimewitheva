@@ -115,6 +115,13 @@ no cookies, no visitor-level profiling.
 
 ---
 
+## Stats API key (for `npm run report:funnels`)
+
+Settings → **API keys** → **New API Key** → type **Stats API**. Put it in the git-ignored `.env`
+as `PLAUSIBLE_API_KEY=…` (the report loads `.env` itself; an exported variable wins). The report
+can only query events that exist as **goals** (Step 2) and can only break them down by
+**properties** that are enabled (Step 1); anything else answers HTTP 400.
+
 ## Notes
 
 - **Legacy `?lm=` links still work** (offer-first homepage) and fire the same events, so old pins
