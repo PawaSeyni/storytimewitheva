@@ -36,15 +36,19 @@ jobs:
         env: { NETLIFY_BUILD_HOOK: '${{ secrets.NETLIFY_BUILD_HOOK }}' }
         run: |
           test -n "$NETLIFY_BUILD_HOOK" || { echo "NETLIFY_BUILD_HOOK secret is missing"; exit 1; }
-          curl -fsS -X POST -d '{}' "$NETLIFY_BUILD_HOOK" > /dev/null && echo "build requested"
-      - name: Wait for a newer build to be live
+          echo "REQUESTED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
+          curl -fsS -X POST -d '{}' "$NETLIFY_BUILD_HOOK" > /dev/null && echo "build requested at $(date -u +%H:%M:%SZ)"
+      - name: Wait for the requested build to be live
+        # A build that started before the request (a push landing at the same time) does
+        # not count: builtAt must be later than the hook call, so the live HTML and sitemap
+        # were rendered with today's date.
         run: |
           for i in $(seq 1 60); do
             now=$(curl -s https://storytimewitheva.com/version.json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>console.log(JSON.parse(s).builtAt||''))")
-            if [ -n "$now" ] && [ "$now" != "$BEFORE" ]; then echo "new build live: $now"; exit 0; fi
+            if [ -n "$now" ] && [ "$now" \> "$REQUESTED_AT" ]; then echo "requested build live: $now (requested $REQUESTED_AT)"; exit 0; fi
             sleep 15
           done
-          echo "production still serves the previous build after 15 minutes"; exit 1
+          echo "no build newer than the request ($REQUESTED_AT) after 15 minutes; last seen $now"; exit 1
       - name: Live sitemap matches today's open collections
         run: |
           node -e "
