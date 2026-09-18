@@ -38,18 +38,13 @@ message there).
 
 ## Known measurement gaps
 
-1. **Read access: DONE 2026-09-18, partially.** A Stats API key exists (Plausible → Settings →
-   API keys, "storytimewitheva funnel report (local)"); locally it lives in the git-ignored `.env`
-   as `PLAUSIBLE_API_KEY`, which `npm run report:funnels` now loads itself. The first live run
-   (2026-08-23 → 2026-09-18) returned real rows for the 11 events that are configured as goals.
-   **Still open:** 17 of the 28 dictionary events are not configured as Plausible goals
-   (Homepage CTA, Recommendation Click, Personalized View, Continue Journey, Search, Purchase CTA
-   View, Share, Experiment Exposure, Library Status, Favorite, Resource Saved, Local Data Cleared,
-   Journey Start/Step/Complete/Saved, Client Error), so the Stats API answers HTTP 400 for them;
-   and 12 queried properties are not enabled (placement, reason, filter, edition, target,
-   experiment, variant, status, resource, journey, kind, route). The events themselves ARE being
-   recorded (raw `event:name` breakdown shows them), so this is dashboard configuration, not a
-   site bug. Owner action: add the goals and properties in the dashboard, then rerun the report.
+1. **Read access: DONE 2026-09-18.** A Stats API key exists (Plausible → Settings → API keys,
+   "storytimewitheva funnel report (local)"); locally it lives in the git-ignored `.env` as
+   `PLAUSIBLE_API_KEY`, which `npm run report:funnels` loads itself. All 28 dictionary events are
+   now configured as Plausible goals and all queried properties are enabled (24 custom
+   properties on the site), so every query answers 200. First full run: `REPORT_2026-09-18.md`
+   (2026-08-23 → 2026-09-18). Every segment is below the 50-event minimum sample, so no rate in
+   it is a baseline yet; rerun after four more weeks of traffic.
 2. **Purchases are not observable.** Amazon Associates reports are not linked to site events;
    every "conversion" is an outbound click. The open decision in the Sprint 5 spec stands.
 3. **Format intent is not measurable.** One Amazon URL serves paperback and eBook.
