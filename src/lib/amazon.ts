@@ -1,3 +1,10 @@
+// DO NOT use these helpers to build Amazon Attribution links. Amazon's generated
+// Attribution URL already sets `tag=maas`, the same parameter the Associates ID
+// uses, so passing one through withAffiliateTag() would overwrite Amazon's value
+// and produce the combined link that Associates Program Policies (Commission
+// Income Statement, section 5) prohibits. Campaign links are pasted by hand from
+// the Amazon Ads console. See docs/analytics/NEWSLETTER_ATTRIBUTION.md.
+//
 // Amazon Associates affiliate config — single source of truth for the tracking
 // tag so every user-facing Amazon link earns commission and is easy to rotate.
 // Store: "Eva Gallo" · tracking ID "storytimewi20-20".

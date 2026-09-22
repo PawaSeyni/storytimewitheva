@@ -150,8 +150,9 @@ none of them consumes sprint time.
 
 **Status as of 22 September 2026:** D0-1 done and verified live. D0-2 done and
 recorded in `docs/analytics/REPORT_PRECAMPAIGN.md`. D0-3 passed on existing
-conversion data. D0-4 is the only task still open and it is a hard gate: the
-clock does not start until an email click is observed in the Attribution report.
+conversion data. D0-4 executed: campaign, tag and controlled click
+done 22 September; only confirmation in the Attribution report remains, which
+waits on Amazon's reporting lag of up to 24 hours.
 
 **Strategy freezes when the gate opens.** From Day 1 the work is traffic,
 measurement, correction, traffic. No redesign of the funnel for 30 days unless
@@ -224,18 +225,25 @@ close agreement given deduplication and the window boundary. The server-side pat
 from the subscribe function to Pinterest is confirmed end to end, and no test
 subscriber had to be created to prove it.
 
-**Caveat that changes section 10.** Pinterest's dashboard recommends installing
+**Caveat that shapes section 10.** Pinterest's dashboard recommends installing
 the browser tag alongside the Conversions API "to maximize conversion visibility".
 We decline that by design, for the reasons in section 0.2, and accept lower match
-quality as the cost. More importantly, seven conversions a month is far below the
-volume any ad platform needs to optimise a conversion objective. A conversion
-campaign would never leave the learning phase.
+quality as the cost. Seven conversions a month is also a very small signal to
+optimise against.
 
 **Therefore:** the paid accelerator starts on a traffic or consideration
-objective, not a conversion objective, and switches to conversions only once
-weekly conversion volume supports it. The Conversions API still earns its place,
-because it measures the result correctly even while the campaign optimises for
-something upstream.
+objective rather than a conversion objective. The Conversions API still earns its
+place, because it measures the result correctly even while the campaign optimises
+for something upstream.
+
+**When to switch to a conversion objective is an evidence-based decision, not a
+threshold written here.** Do not hard-code a minimum weekly conversion count.
+Deliberately unspecified: the point at which Pinterest can optimise usefully
+depends on delivery, audience size and the campaign's own diagnostics, not on an
+assumed universal minimum. Run traffic or consideration, collect delivery data,
+read Pinterest's own reporting on whether the conversion signal is usable, and
+decide from that. The Day 15 diagnostic in section 11 is the natural place to
+look at it for the first time.
 
 ### D0-4 Amazon Attribution
 
@@ -248,6 +256,31 @@ Attribution tags, and reports Click-throughs, Detail page views, Purchases,
 **KENP read and estimated KENP royalties**. The KENP columns are a bonus the spec
 did not assume: Kindle page reads become measurable per channel, not just
 purchases. No campaigns or tags exist yet, so every counter reads zero.
+
+**Executed 22 September 2026. Awaiting Amazon's reporting latency.**
+
+| Item | Value |
+|---|---|
+| Campaign | `eva-bilingual-reader-2026`, id `583503747661837255` |
+| Ad group | `email-holiday` |
+| Publisher / Channel | MailerLite (new) / Email |
+| Product | Maya's Shadow, paperback, ASIN `1996972812` |
+| Click-through URL given to Amazon | `https://www.amazon.com/dp/1996972812` (clean, no Associates tag) |
+| Attribution URL Amazon generated | `https://www.amazon.com/dp/1996972812?maas=maas_adg_1C750FE92268C7CC41E10EA1367B17FE_afap_abs&ref_=aa_maas&tag=maas` |
+| Controlled click | performed, landed on the product page with parameters intact |
+| Click recorded in the report | not yet, reporting lag is up to 24 hours |
+
+**The Associates question is closed, by construction rather than by policy alone.**
+Amazon's generated URL sets `tag=maas`. That is the same `tag` parameter the
+Associates ID occupies, so no URL can carry both without overwriting one. There
+was never a version of this that worked. The permanent rule now lives in
+`docs/analytics/NEWSLETTER_ATTRIBUTION.md` and a warning sits in
+`src/lib/amazon.ts` beside the helper that would otherwise cause it.
+
+**Remaining:** confirm the click appears in the Attribution report. Until then the
+gate is not open.
+
+---
 
 **This is a hard blocking gate. The clock does not start until it passes.**
 
@@ -509,9 +542,11 @@ reply status. The count is the deliverable. Collaborations that land are upside.
 **Channel:** Pinterest Ads only, for the reasons in section 0.2.
 **Budget cap:** treat as a test, not a scale. Set a total cap before launch and do
 not raise it mid-sprint.
-**Objective:** conversions, using the existing server-side Conversions API. Not
-traffic, not awareness. If D0-3 did not confirm a test conversion, run clicks
-instead and say so in the readout.
+**Objective:** start on traffic or consideration. The server-side Conversions API
+measures the outcome throughout, so the result stays visible even while the
+campaign optimises upstream. Moving to a conversion objective is a later decision
+made from Pinterest's delivery diagnostics, per section 0.3. Do not set it on a
+fixed conversion count.
 **Targeting:** adults only. Interests in bilingual parenting, homeschooling,
 early literacy, French or Spanish language learning. Exclude anything that targets
 by child age in a way the platform treats as targeting minors.
