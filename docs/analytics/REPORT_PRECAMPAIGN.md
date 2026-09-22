@@ -1,5 +1,17 @@
 # Pre-campaign baseline (Holiday 2026, task D0-2)
 
+> **FROZEN SNAPSHOT. Do not regenerate this file.** It was produced on
+> 22 September 2026 and is the control period the Day 30 readout compares
+> against. Re-running the report command over this window later would overwrite
+> a record whose whole value is that it was taken before any campaign traffic
+> existed. Write new windows to new files, for example `REPORT_D15.md` and
+> `REPORT_D30.md`.
+>
+> This period is unusually quiet, about 2.6 visitors a day across all sources
+> with almost no landing traffic after 19 September. For a campaign this small
+> that is an asset: the first real distribution push should be visible against
+> it almost immediately.
+
 > **Read this before the numbers.** This file is the comparison basis for the Day 30
 > readout of the "Raise a Bilingual Reader" campaign
 > (`docs/campaigns/HOLIDAY_2026_BILINGUAL_READER.md`). The generated report follows

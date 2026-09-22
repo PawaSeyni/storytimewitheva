@@ -39,16 +39,21 @@ commissions from both Associates and another program using the same traffic,
 "for example, by manipulating or combining attribution links", can lead to
 withheld commissions or termination from the Associates program.
 
-**Why it is also impossible.** Verified 22 September 2026 by generating a real
-tag. Amazon's Attribution URL looks like this:
+**What a real generated tag shows.** Verified 22 September 2026 by creating one.
+Amazon's Attribution URL looks like this:
 
 ```
 https://www.amazon.com/dp/<ASIN>?maas=maas_adg_<id>_afap_abs&ref_=aa_maas&tag=maas
 ```
 
-It sets `tag=maas`. That is the same `tag` parameter the Associates ID uses, so
-an Associates tag cannot be added without overwriting Amazon's own value. There
-is no URL that carries both. The question is closed by construction.
+Amazon Attribution occupies the `tag` parameter itself and sets it to `maas`.
+That is the same parameter an Associates ID would use, so in this configuration
+there is no room for one without overwriting Amazon's own value.
+
+Read that as evidence for the rule in the context we actually use, not as a
+general claim about every Amazon linking context. The rule does not depend on the
+mechanism and does not change if the mechanism does: **use Amazon's generated
+Attribution URL verbatim, and never add the Associates tag to it.**
 
 **What it costs.** Nothing in royalty. A campaign click that converts still pays
 the KDP royalty in full. Only the Associates commission is forgone, roughly 4.5%,
