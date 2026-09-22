@@ -23,6 +23,26 @@
   status = 301
   force = true
 
+# evagallo.com is a domain alias of this site and was serving the FULL build with
+# no redirect (found 2026-09-22): every page on it rendered normally while its own
+# canonical tag pointed at storytimewitheva.com, so Google was told to credit a
+# different host than the one serving the page, and any link published to
+# evagallo.com split the brand across two addresses. Same pattern as the
+# netlify.app rule above, and `force = true` for the same reason: the static file
+# at that path would otherwise match first. Holiday 2026 task D0-1
+# (docs/campaigns/HOLIDAY_2026_BILINGUAL_READER.md).
+[[redirects]]
+  from = "https://evagallo.com/*"
+  to = "https://storytimewitheva.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.evagallo.com/*"
+  to = "https://storytimewitheva.com/:splat"
+  status = 301
+  force = true
+
 # /home and /Home are not pages (Search Console found a stray inbound link to /Home,
 # 2026-09-18). The SPA used to Navigate them to / only after loading, behind a 404
 # status; send crawlers and people straight to the canonical home instead.
