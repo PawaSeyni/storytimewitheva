@@ -123,6 +123,10 @@ change to the six parent guides published on 19 September.
 Day 1 does not start until all four tasks pass. None of them is campaign work, so
 none of them consumes sprint time.
 
+**Status as of 22 September 2026:** D0-1 done and verified live, D0-2 done,
+D0-3 passed, D0-4 confirmed available with tag creation outstanding. The gate
+opens once D0-4's tags exist.
+
 ### D0-1 Redirect evagallo.com
 
 `evagallo.com` serves a byte-identical build with canonical tags pointing at
@@ -175,20 +179,53 @@ Day 30 readout compares against this file rather than `REPORT_2026-09-18.md`.
 paid test that optimises for conversions while sending none will spend the budget
 and learn nothing.
 
-**Acceptance:** submit a real test signup on `/free/bilingual-bundle`, then
-confirm the conversion appears in the Pinterest Ads conversion dashboard for tag
-`2613658812609` within 30 minutes. If it does not appear, set the token in Netlify
-environment variables and repeat. Do not proceed to section 10 until a test
-conversion has been seen.
+**PASSED 22 September 2026, with no test signup needed.** `PINTEREST_CONVERSIONS_TOKEN`
+is set in Netlify, scoped to Builds, Functions and Runtime across all four deploy
+contexts. The Pinterest Ads conversions dashboard for ad account `549770651316`
+shows the path already working on real signups:
+
+| Event | Source | Total events | Last received |
+|---|---|---|---|
+| Signup | Api | 7 | 18 Sep 2026, 19:27 UTC |
+
+Seven conversions against nine `Lead Created` events in the same period, which is
+close agreement given deduplication and the window boundary. The server-side path
+from the subscribe function to Pinterest is confirmed end to end, and no test
+subscriber had to be created to prove it.
+
+**Caveat that changes section 10.** Pinterest's dashboard recommends installing
+the browser tag alongside the Conversions API "to maximize conversion visibility".
+We decline that by design, for the reasons in section 0.2, and accept lower match
+quality as the cost. More importantly, seven conversions a month is far below the
+volume any ad platform needs to optimise a conversion objective. A conversion
+campaign would never leave the learning phase.
+
+**Therefore:** the paid accelerator starts on a traffic or consideration
+objective, not a conversion objective, and switches to conversions only once
+weekly conversion volume supports it. The Conversions API still earns its place,
+because it measures the result correctly even while the campaign optimises for
+something upstream.
 
 ### D0-4 Amazon Attribution
 
 Create the tags before any link is published, per the taxonomy in section 4.
 
-**Acceptance:** a test click on one tagged link appears in the Amazon Attribution
-report within 24 hours. If Attribution is not available for this account, record
-that fact and set the "attributed sale" milestone in section 12 to "not
-measurable", rather than quietly dropping it.
+**Availability confirmed 22 September 2026.** Amazon Attribution (Beta) is live on
+the "Sponsored ads - Author" account, entity `ENTITY127Y5DMIWT4MQ`, United States
+marketplace. The console exposes Campaigns, Ad groups, Channels/Publishers and
+Attribution tags, and reports Click-throughs, Detail page views, Purchases,
+**KENP read and estimated KENP royalties**. The KENP columns are a bonus the spec
+did not assume: Kindle page reads become measurable per channel, not just
+purchases. No campaigns or tags exist yet, so every counter reads zero.
+
+**Still to do, and it needs the owner:** create the campaign and tags per the
+taxonomy in section 4. This is left for the owner deliberately. Creating a tag
+requires choosing the products, publisher and channel, and the console displays
+the generated click-through URL at that moment, which settles the open question
+below on sight.
+
+**Acceptance:** a test click on one tagged link appears in the Attribution report
+within 24 hours.
 
 ---
 
