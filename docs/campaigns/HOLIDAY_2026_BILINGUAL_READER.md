@@ -89,20 +89,45 @@ beginning `B0`). Two of the three featured titles, `colors-mixed-up` and
 `rainbow-symphony`, are in that group. For a **gift** message, prefer the nine
 with paperbacks in all three languages. See section 7.
 
-### 0.4 Amazon Attribution goes on email links, not book pages
+### 0.4 Attribution and Associates must never share a link. This is policy, not preference.
 
-`tests/seo/monetization.test.mjs` asserts that every Amazon link on every book
-page, in all three locales, carries the Associates tag `storytimewi20-20`, opens
-in a new tab and has `rel` containing `noopener`. Putting Attribution parameters
-on book-page buy buttons would require changing that test.
+The earlier draft of this spec treated keeping Attribution off book pages as a
+convenience, so that `tests/seo/monetization.test.mjs` would stay green. That
+reasoning was too weak. The real reason is that combining the two is a policy
+violation with account-level consequences.
 
-There is no need. The holiday purchase intent lives in email, not on the book
-page. Apply Attribution to the Amazon links in the holiday email sequence and to
-any direct-to-Amazon link created for this campaign. Leave book pages exactly as
-they are, with the Associates tag.
+Amazon Associates Program Policies, Commission Income Statement, section 5,
+"Commission Income Limitations", verified on the primary source 22 September 2026:
 
-This keeps the test green, keeps the affiliate income path intact, and still
-closes the loop where the campaign actually asks for money.
+> "If we detect that you (and/or a third party acting on your behalf) are
+> attempting to claim commissions from both Amazon Associates and another program
+> using the same traffic (for example, by manipulating or combining attribution
+> links), we may take action, including withholding commissions, and/or
+> terminating your participation in the Associates program."
+
+Amazon Attribution is another program in that sense, and it is explicitly open to
+KDP authors. So the two paths must stay separated by link, not merely by
+convention:
+
+| Surface | Tag | Never |
+|---|---|---|
+| Book pages on the site | Associates `storytimewi20-20` | Attribution parameters |
+| Campaign links in email | Amazon-generated Attribution URL, used verbatim | The Associates tag |
+
+**Never hand-edit an Attribution URL to add a tag, and never append Attribution
+parameters to an Associates URL.** Use whichever URL Amazon generates, unmodified.
+
+**The cost of this is smaller than it looks.** Forgoing the Associates tag on
+campaign clicks does not forgo the book royalty: the KDP royalty on the sale is
+unaffected, and Associates commission is an extra 4.5% or so on top of it. On an
+eight dollar picture book that is roughly thirty-five cents per sale. Knowing
+whether the funnel sells books at all is worth more than that.
+
+**One trap to avoid.** `src/lib/amazon.ts` exposes `amazonDp()` and
+`withAffiliateTag()`, which append the Associates tag to any amazon.com URL.
+Campaign email links are authored by hand in MailerLite, so the helper is not
+involved, and it must stay that way. If campaign links are ever generated from
+site code, they will produce exactly the combination the policy prohibits.
 
 ---
 
@@ -123,9 +148,15 @@ change to the six parent guides published on 19 September.
 Day 1 does not start until all four tasks pass. None of them is campaign work, so
 none of them consumes sprint time.
 
-**Status as of 22 September 2026:** D0-1 done and verified live, D0-2 done,
-D0-3 passed, D0-4 confirmed available with tag creation outstanding. The gate
-opens once D0-4's tags exist.
+**Status as of 22 September 2026:** D0-1 done and verified live. D0-2 done and
+recorded in `docs/analytics/REPORT_PRECAMPAIGN.md`. D0-3 passed on existing
+conversion data. D0-4 is the only task still open and it is a hard gate: the
+clock does not start until an email click is observed in the Attribution report.
+
+**Strategy freezes when the gate opens.** From Day 1 the work is traffic,
+measurement, correction, traffic. No redesign of the funnel for 30 days unless
+measured data exposes an actual failure, and the Day 15 diagnostic in section 11
+is the only scheduled place to act on one.
 
 ### D0-1 Redirect evagallo.com
 
@@ -218,14 +249,27 @@ Attribution tags, and reports Click-throughs, Detail page views, Purchases,
 did not assume: Kindle page reads become measurable per channel, not just
 purchases. No campaigns or tags exist yet, so every counter reads zero.
 
-**Still to do, and it needs the owner:** create the campaign and tags per the
-taxonomy in section 4. This is left for the owner deliberately. Creating a tag
-requires choosing the products, publisher and channel, and the console displays
-the generated click-through URL at that moment, which settles the open question
-below on sight.
+**This is a hard blocking gate. The clock does not start until it passes.**
 
-**Acceptance:** a test click on one tagged link appears in the Attribution report
-within 24 hours.
+Create the campaign and tags per the taxonomy in section 4, then validate the
+whole path before a single campaign link is published:
+
+1. Generate an Attribution tag in the Amazon Ads console for one of the three
+   curated titles in section 7.
+2. Copy the click-through URL Amazon generates. Do not modify it. Do not add the
+   Associates tag. See section 0.4 for why.
+3. Put that URL behind a test email CTA and click it.
+4. Confirm the click appears in the Attribution report within 24 hours.
+
+**Acceptance:** `Email CTA → Amazon-generated Attribution URL → Amazon → click
+recorded in the Attribution report`. Until that chain is observed once, the
+campaign has no way to tell whether it sells books, and Day 1 does not begin.
+
+**The separate question, answered only by observation:** whether the generated URL
+preserves or permits an Associates tag at all. Read the answer off the console
+when the tag is created. If Amazon's URL does not carry the Associates tag, that
+is the end of the question: take clean Attribution for this campaign and accept
+the lost commission. Do not attempt to reconcile the two.
 
 ---
 
@@ -380,10 +424,18 @@ three unrelated books:
 | `true-beauty-meadowbrook` | 4-8 | self-worth, kindness, diversity |
 | `heidis-journey-to-mastery` | 5-9 | patience and mastery, curiosity, creativity |
 
-`mayas-shadow` is already a featured title, so it has the strongest existing art
-and page assets. Do not substitute `colors-mixed-up` or `rainbow-symphony`: both
-are featured but their Spanish and French editions are Kindle only, which does
-not work as a physical gift.
+**The site's featured flags must not decide this set.** Two of the three featured
+titles, `colors-mixed-up` and `rainbow-symphony`, have Spanish and French editions
+that are Kindle only, so they fail as physical gifts in two of the three
+languages. That is exactly the kind of catalogue detail that quietly wrecks an
+otherwise sound campaign. The holiday ladder is curated on one rule, physical
+paperback in English, Spanish and French, and on age coverage. `mayas-shadow`
+earns its place on both counts and happens to be featured; that is a coincidence,
+not the reason.
+
+**The offer, in one line:** choose the story for their age, choose the language
+for their world. That is a better email than a link to a generic books page,
+because it gives the reader two easy decisions instead of one hard one.
 
 **Timing:** first holiday email on Day 24, under `utm_campaign=bilingual-gift-2026`.
 A second on Day 28 if and only if the first produced at least one Amazon click.
