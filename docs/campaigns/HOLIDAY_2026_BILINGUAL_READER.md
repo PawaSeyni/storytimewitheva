@@ -470,6 +470,12 @@ against twenty-nine is not the difference between success and failure. The owner
 review is right about this and it is repeated here so nobody treats the table as a
 scorecard.
 
+**Measured pre-campaign basis (D0-2, run 22 September):** effectively zero.
+One landing view and no leads across 19 to 22 September, against an all-source
+rate of about 2.6 visitors a day. See `docs/analytics/REPORT_PRECAMPAIGN.md`.
+The milestones below are therefore close to a standing start, not a multiple of
+an existing flow. This makes attribution clean and the targets harder.
+
 | Metric | Pre-campaign basis | Directional milestone |
 |---|---|---|
 | Landing views, campaign | from `REPORT_PRECAMPAIGN.md` | about 250 |
