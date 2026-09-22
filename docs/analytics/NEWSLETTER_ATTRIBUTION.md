@@ -64,6 +64,34 @@ URL passed through `amazonDp()` or `withAffiliateTag()`. Campaign links must be
 pasted by hand from the Amazon Ads console and must never be generated from site
 code.
 
+## Standing rule: verify the destination, never trust the catalogue
+
+Three things can disagree, and none of the first two is what the customer sees:
+
+1. The Eva catalogue in this repository.
+2. The publishing metadata we believe we set.
+3. The live Amazon listing.
+
+Only the third reaches a reader. A campaign destination is therefore not verified
+by its ASIN being right in the catalogue. It is verified by loading the page and
+reading what it actually says.
+
+**Creating a tag is mechanical. Trusting where it points is not.** Keep those two
+as separate steps and run the second one after creation, every time. Proven on
+22 September 2026: nine destinations were generated from a catalogue that was
+correct, and one of them still resolved to a listing with a different title and a
+different age range from every other language of the same book.
+
+Acceptance for any Amazon destination used in a campaign:
+
+1. Correct title.
+2. Correct language.
+3. Correct format, paperback or Kindle as intended.
+4. The generated URL used unchanged, with nothing appended.
+5. The URL resolves to the intended product page when loaded.
+
+Amazon blocks scripted fetches, so load it in a browser rather than with curl.
+
 ## Owner checklist (dashboard)
 
 - Replace any hashed PDF URL in an email with the `/download/<slug>` form.
