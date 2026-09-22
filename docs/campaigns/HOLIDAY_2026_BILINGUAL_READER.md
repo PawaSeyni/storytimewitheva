@@ -325,12 +325,47 @@ result, never the author page, never a Kindle edition, never a language selector
 Nine tags are quick to create and one pointing at the wrong edition would corrupt
 the holiday results quietly, so the verification is not optional.
 
-**One metadata discrepancy noted, not a blocker.** The French Heidi listing's
-subtitle says "pour Enfants de 3 à 8 Ans" while the English and Spanish say ages
-5 to 9. The ASIN is correct and the book is right; only the French subtitle's age
-range disagrees. It matters here because the holiday ladder is sold on age, so a
-French reader clicking the 5 to 9 rung lands on a page claiming 3 to 8. Worth
-fixing in KDP metadata at some point. It does not block the campaign.
+### The French Heidi listing, and the guard that follows from it
+
+Investigated 22 September 2026 after the destination check flagged it. The
+discrepancy is larger than the age range alone, and the fix is not available to us
+right now, so the campaign works around it.
+
+**What the nine destinations actually say.** Repo values come from the catalogue;
+Amazon values were read off the live product pages.
+
+| Ad group | Title matches repo | Age on Amazon | Age in repo | Status |
+|---|---|---|---|---|
+| `maya-en` | yes | not stated | 3-7 | fine |
+| `maya-fr` | yes | not stated | 3-7 | fine |
+| `maya-es` | yes | 3 to 8 | 3-7 | one year out, cosmetic |
+| `meadowbrook-en` | yes | not stated | 4-8 | fine |
+| `meadowbrook-fr` | yes | not stated | 4-8 | fine |
+| `meadowbrook-es` | yes | 4 to 8 | 4-8 | fine |
+| `heidi-en` | yes | 5 to 9 | 5-9 | fine |
+| `heidi-fr` | **no** | **3 to 8** | 5-9 | see below |
+| `heidi-es` | yes | 5 to 9 | 5-9 | fine |
+
+**`heidi-fr` is the only real problem, and it is two problems.** The live listing
+is titled *Le Voyage de Heidi vers la Maîtrise* while the site says *Le chemin de
+Heidi vers la maîtrise*, and its subtitle claims ages 3 to 8 where the site, the
+English listing and the Spanish listing all say 5 to 9. The French listing looks
+like an older generation of metadata that the other two languages moved past. The
+ASIN is correct and the book is the right book.
+
+**Why it cannot be fixed right now.** Two independent blocks. First, the title is
+not in this KDP account: a search including archived titles returns nothing, so it
+sits in the second account or came through IngramSpark. Second, and more
+fundamental, a prior KDP session recorded that paperback title and subtitle are
+locked after publication, with changes requiring a new edition. A new edition
+means a new ISBN and a fresh listing with no reviews or ranking, which is far too
+much to spend on a subtitle, and not something to do during a campaign.
+
+**The guard, which applies from Day 1.** Do not place a visible "5 to 9" claim
+immediately beside the French Heidi call to action. The email would otherwise
+contradict the product page one click later, which costs more trust than the age
+label earns. The other eight rungs may carry their age label normally. Revisit
+the listing itself outside the 30-day window.
 
 ---
 
