@@ -196,14 +196,13 @@ preview, and confirm `version.json` shows the new commit before trusting the res
 Do not fix Form Start. See section 0.1. Instead produce a clean comparison basis
 whose funnel definition does not change inside the window.
 
-```bash
-cd ~/Developer/storytimewitheva
-npm run report:funnels -- --from 2026-09-19 --to <day-0-date> \
-  --out docs/analytics/REPORT_PRECAMPAIGN.md
-```
+**Done 22 September 2026.** The result is frozen at
+`docs/analytics/REPORT_PRECAMPAIGN.md` and must not be regenerated: its value is
+that it was taken before any campaign traffic existed. Later windows go to their
+own files, `REPORT_D15.md` and `REPORT_D30.md`.
 
-**Acceptance:** the report writes with zero lines containing `HTTP`, and the
-Day 30 readout compares against this file rather than `REPORT_2026-09-18.md`.
+**Acceptance:** met. The report ran with zero lines containing `HTTP`, and the
+Day 30 readout compares against that file rather than `REPORT_2026-09-18.md`.
 
 ### D0-3 Confirm Pinterest conversions are actually flowing
 
@@ -270,15 +269,68 @@ purchases. No campaigns or tags exist yet, so every counter reads zero.
 | Controlled click | performed, landed on the product page with parameters intact |
 | Click recorded in the report | not yet, reporting lag is up to 24 hours |
 
-**The Associates question is closed, by construction rather than by policy alone.**
-Amazon's generated URL sets `tag=maas`. That is the same `tag` parameter the
-Associates ID occupies, so no URL can carry both without overwriting one. There
-was never a version of this that worked. The permanent rule now lives in
-`docs/analytics/NEWSLETTER_ATTRIBUTION.md` and a warning sits in
-`src/lib/amazon.ts` beside the helper that would otherwise cause it.
+**The Associates question is answered for our configuration.** Amazon's generated
+URL occupies the `tag` parameter itself and sets it to `maas`, which is the same
+parameter an Associates ID would use, so there is no room for one without
+overwriting Amazon's value. That is evidence for the architecture we chose, not a
+general claim about every Amazon linking context. The operative rule is simpler
+and survives any change in mechanism: use the generated URL verbatim and never
+add the Associates tag. The permanent rule now lives in
+`docs/analytics/NEWSLETTER_ATTRIBUTION.md`, with a warning in `src/lib/amazon.ts`
+beside the helper that would otherwise produce the combined link.
 
 **Remaining:** confirm the click appears in the Attribution report. Until then the
 gate is not open.
+
+
+### D0-4b The remaining eight tags, as one controlled batch
+
+Do not create these until the Maya English click has been confirmed in the
+Attribution report. The point of the single controlled click is to validate the
+whole pattern once before multiplying it ninefold. Once it lands, create the
+remaining eight and start the clock; do not wait for eight further reporting
+confirmations, because the mechanism will already have been proven.
+
+**The matrix is three books by three languages, all under
+`eva-bilingual-reader-2026`.** Ad group names are chosen so the report reads
+cleanly later.
+
+| Ad group | Book | Language | Paperback ASIN | Destination verified |
+|---|---|---|---|---|
+| `maya-en` | Maya's Shadow | EN | `1996972812` | created 22 Sep, click performed |
+| `maya-fr` | Maya's Shadow | FR | `1996972820` | title and language confirmed |
+| `maya-es` | Maya's Shadow | ES | `1996972804` | title and language confirmed |
+| `meadowbrook-en` | True Beauty of Meadowbrook | EN | `1996972650` | title confirmed |
+| `meadowbrook-fr` | True Beauty of Meadowbrook | FR | `1996972677` | title and language confirmed |
+| `meadowbrook-es` | True Beauty of Meadowbrook | ES | `1996972669` | title and language confirmed |
+| `heidi-en` | Heidi's Journey to Mastery | EN | `1997027062` | title confirmed |
+| `heidi-fr` | Heidi's Journey to Mastery | FR | `1997027275` | title and language confirmed |
+| `heidi-es` | Heidi's Journey to Mastery | ES | `199702733X` | title and language confirmed |
+
+Every ASIN is a paperback ISBN-10, all nine are distinct, and all nine were
+loaded in a browser on 22 September and returned the expected title in the
+expected language. Kindle editions carry `B0` ASINs and none appear here.
+
+**Each destination is the product page for that exact edition.** Never a search
+result, never the author page, never a Kindle edition, never a language selector.
+
+**Acceptance test, applied to each of the nine after creation:**
+
+1. Correct title.
+2. Correct language.
+3. Paperback, not Kindle.
+4. The generated Attribution URL is used unchanged, with nothing appended.
+5. The URL resolves to the intended Amazon product page when loaded.
+
+Nine tags are quick to create and one pointing at the wrong edition would corrupt
+the holiday results quietly, so the verification is not optional.
+
+**One metadata discrepancy noted, not a blocker.** The French Heidi listing's
+subtitle says "pour Enfants de 3 à 8 Ans" while the English and Spanish say ages
+5 to 9. The ASIN is correct and the book is right; only the French subtitle's age
+range disagrees. It matters here because the holiday ladder is sold on age, so a
+French reader clicking the 5 to 9 rung lands on a page claiming 3 to 8. Worth
+fixing in KDP metadata at some point. It does not block the campaign.
 
 ---
 
