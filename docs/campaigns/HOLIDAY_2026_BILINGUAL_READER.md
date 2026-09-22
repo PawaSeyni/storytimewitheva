@@ -325,6 +325,13 @@ result, never the author page, never a Kindle edition, never a language selector
 Nine tags are quick to create and one pointing at the wrong edition would corrupt
 the holiday results quietly, so the verification is not optional.
 
+**Then freeze the nine URLs.** Once all nine exist and their destinations have
+been verified, record the generated Attribution URLs verbatim in this repository
+and treat them as frozen for the thirty days, exactly as the pre-campaign
+baseline is frozen. They are the campaign's entire merchandising surface. A
+destination that changes mid-experiment invalidates the readout, and there would
+be no way to tell afterwards that it had.
+
 ### The French Heidi listing, and the guard that follows from it
 
 Investigated 22 September 2026 after the destination check flagged it. The
@@ -364,8 +371,24 @@ much to spend on a subtitle, and not something to do during a campaign.
 **The guard, which applies from Day 1.** Do not place a visible "5 to 9" claim
 immediately beside the French Heidi call to action. The email would otherwise
 contradict the product page one click later, which costs more trust than the age
-label earns. The other eight rungs may carry their age label normally. Revisit
-the listing itself outside the 30-day window.
+label earns. The other eight rungs may carry their age label normally.
+
+**`heidi-fr` stays in the matrix as a recorded exception, not an open defect.**
+Its treatment is fixed for the thirty days and is not revisited inside them:
+
+> verified correct book and edition, suppress the age claim in Eva's call to
+> action, accept the Amazon metadata discrepancy, no KDP remediation during the
+> experiment.
+
+Correcting the listing would mean a new edition, a new ISBN and a fresh listing
+with none of the existing history, which is disproportionate to an age and
+subtitle inconsistency. It would also introduce a new variable at the exact
+moment the experiment is trying to hold variables still. It waits until after
+Day 30.
+
+**`maya-es` needs no action at all.** Amazon says 3 to 8 where the catalogue says
+3 to 7. One year, and it does not undermine the proposition. Recorded and left
+alone.
 
 ---
 
