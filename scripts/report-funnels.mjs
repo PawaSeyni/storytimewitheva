@@ -37,9 +37,18 @@ async function fetchPlausible(from, to) {
   return rows;
 }
 
+// Default range: the last 30 days, today included. Plausible v2 takes explicit
+// ISO dates here; ['30d', 'now'] is not a valid date_range and returns HTTP 400.
+const isoDay = (d) => d.toLocaleDateString('en-CA'); // YYYY-MM-DD in local time
+const today = new Date();
+const range = {
+  from: args.from ?? isoDay(new Date(today.getTime() - 29 * 86400000)),
+  to: args.to ?? isoDay(today),
+};
+
 let rows; let source;
 if (args.fixture) { rows = JSON.parse(readFileSync(args.fixture, 'utf8')); source = `fixture ${args.fixture}`; }
-else { rows = await fetchPlausible(args.from ?? '30d', args.to ?? 'now'); source = 'Plausible Stats API v2'; }
+else { rows = await fetchPlausible(range.from, range.to); source = 'Plausible Stats API v2'; }
 
 const bookById = Object.fromEntries(books.map((b) => [b.id, b]));
 const count = (event, where = {}, by = null) => {
@@ -59,7 +68,7 @@ const pct = (a, b) => (b ? `${((100 * a) / b).toFixed(1)}%` : 'n/a');
 const warn = (n) => (n < MIN_SAMPLE ? ' ⚠︎ below minimum sample' : '');
 
 let md = `# Funnel and performance report\n\n`;
-md += `Source: ${source}. Range: ${args.from ?? (args.fixture ? 'fixture' : 'last 30 days')} to ${args.to ?? 'now'}. Event schema version ${SCHEMA_VERSION}. Minimum sample ${MIN_SAMPLE} events per segment. Rates are INTENT unless the funnel says outcome.\n\n`;
+md += `Source: ${source}. Range: ${args.fixture ? 'fixture' : `${range.from} to ${range.to}`}. Event schema version ${SCHEMA_VERSION}. Minimum sample ${MIN_SAMPLE} events per segment. Rates are INTENT unless the funnel says outcome.\n\n`;
 if (!rows) {
   md += `## No data\n\nNo \`PLAUSIBLE_API_KEY\` in the environment and no \`--fixture\`. The report definitions ran; the numbers cannot. See docs/analytics/BASELINE_2026-09.md for the gap.\n`;
 } else {

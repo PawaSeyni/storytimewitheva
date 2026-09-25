@@ -37,6 +37,17 @@ async function head(url) {
   }
 }
 
+// One hop, no redirect following: reports what the edge itself answers for a path.
+async function hop(url) {
+  try {
+    const r = await fetch(bust(url), { redirect: 'manual', signal: AbortSignal.timeout(20000) });
+    await r.body?.cancel();
+    return { code: r.status, location: r.headers.get('location') || '' };
+  } catch (e) {
+    return { code: 0, location: '', err: e.message };
+  }
+}
+
 // ── Live routes ────────────────────────────────────────────────────────────
 const ROUTES = ['/', '/books/', '/activities/', '/resources/', '/faq/', '/profile/', '/es/', '/fr/', '/games/matching.html'];
 const pages = {};
@@ -82,7 +93,10 @@ await Promise.all(
   const home = pages['/']?.body || '';
   const plausible = /plausible\.io\/js\/(script|pa-)/.test(home);
   add('Analytics', 'Plausible script present', plausible ? 'pass' : 'fail', plausible ? 'cookieless analytics loaded' : 'Plausible script MISSING from homepage');
-  const queue = /window\.plausible\s*=\s*window\.plausible\s*\|\|/.test(home);
+  // Either the classic one-liner (window.plausible = window.plausible || …) or the
+  // current index.html stub (if (!window.plausible) { … window.plausible.q = … || [] … }).
+  const queue = /window\.plausible\s*=\s*window\.plausible\s*\|\|/.test(home)
+    || /window\.plausible\.q\s*=\s*window\.plausible\.q\s*\|\|\s*\[\]/.test(home);
   add('Analytics', 'custom-events queue snippet', queue ? 'pass' : 'warn', queue ? 'window.plausible() enabled for funnel events' : 'queue snippet missing — early custom events may be dropped');
   const init = /plausible\.init\(\)/.test(home);
   add('Analytics', 'site-keyed init', init ? 'pass' : 'warn', init ? 'plausible.init() bootstraps the site-keyed script' : 'plausible.init() not found');
@@ -138,7 +152,10 @@ await Promise.all(
   add('Funnel', 'subscribe function captures email', subCode === 422 ? 'pass' : 'fail', subMsg);
 
   // Lead-magnet PDFs: the hashed URLs must resolve (delivery), the un-hashed base
-  // URLs must 404 (gate). A leaked base URL means the gate regressed.
+  // URLs must not serve the file (gate). Since 2026-08-04 public/_redirects sends
+  // each base URL to its signup form (301 → /?lm=<magnet>#email-signup), so a 404
+  // or a redirect to the signup both count as gated. A 200 PDF, or a redirect
+  // that lands on a PDF, means the gate regressed.
   const es = await readFile(path.join(ROOT, 'src', 'components', 'EmailSignup.tsx'), 'utf8');
   const hashed = [...new Set([...es.matchAll(/'(\/[^']+\.pdf)'/g)].map(m => m[1]))];
   const delivered = await Promise.all(hashed.map(p => head(SITE + p).then(r => r.code)));
@@ -147,10 +164,16 @@ await Promise.all(
       `${hashed.length - dBad}/${hashed.length} hashed URLs return 200`);
 
   const raws = [...new Set(hashed.map(p => p.replace(/\.[0-9a-f]{12}\.pdf$/, '.pdf')))];
-  const rawCodes = await Promise.all(raws.map(p => head(SITE + p).then(r => r.code)));
-  const leaked = raws.filter((p, i) => rawCodes[i] === 200);
+  const rawHops = await Promise.all(raws.map(p => hop(SITE + p)));
+  const toSignup = h => [301, 302, 307, 308].includes(h.code)
+    && /[?&]lm=|#email-signup/.test(h.location) && !/\.pdf(\?|#|$)/i.test(h.location);
+  const gated = h => h.code === 404 || toSignup(h);
+  const leaked = raws.map((p, i) => [p, rawHops[i]]).filter(([, h]) => !gated(h))
+    .map(([p, h]) => `${p} (${h.code || h.err}${h.location ? ' → ' + h.location : ''})`);
+  const redirected = rawHops.filter(toSignup).length;
   add('Funnel', 'raw PDF URLs gated', leaked.length === 0 ? 'pass' : 'fail',
-      leaked.length ? `LEAKED (200): ${leaked.join(', ')}` : `all ${raws.length} un-hashed paths 404`);
+      leaked.length ? `NOT GATED: ${leaked.join(', ')}`
+        : `all ${raws.length} un-hashed paths gated (${redirected} → signup form, ${raws.length - redirected} 404)`);
 }
 
 // ── Integrations ───────────────────────────────────────────────────────────
