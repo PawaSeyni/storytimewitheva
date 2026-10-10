@@ -72,5 +72,8 @@
   },
   "optionalDependencies": {
     "@rollup/rollup-darwin-arm64": "^4.63.1"
+  },
+  "overrides": {
+    "@parcel/watcher": "^2.6.0"
   }
 }
