@@ -36,6 +36,9 @@ export interface LocalizedBook {
   title: string;
   subtitle?: string;
   description: string;
+  /** What belongs in `<meta name="description">`: the per-book `seoDescription`
+   *  when set, otherwise the subtitle, otherwise the description. */
+  metaDescription: string;
   theme: string;
 }
 
@@ -61,6 +64,10 @@ function localize(book: Book, lang: Language): LocalizedBook {
     title: book.title[lang] ?? book.title.en,
     subtitle: book.subtitle ? (book.subtitle[lang] ?? book.subtitle.en) : undefined,
     description: book.description[lang] ?? book.description.en,
+    metaDescription:
+      book.seoDescription?.[lang] ??
+      (book.subtitle ? (book.subtitle[lang] ?? book.subtitle.en) : undefined) ??
+      (book.description[lang] ?? book.description.en),
     theme: book.theme[lang] ?? book.theme.en,
   };
 }
