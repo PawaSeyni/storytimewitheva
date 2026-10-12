@@ -98,10 +98,10 @@ export interface Book {
   title: LocalizedString;
   subtitle?: LocalizedString;
   description: LocalizedString;
-  /** Optional hand-written `<meta name="description">`, written for the adult
-   *  buyer: format, theme and age band first. Unset → the subtitle (or, failing
-   *  that, the description) is used, as before. Keep every language under 160
-   *  characters. */
+  /** Hand-written `<meta name="description">`, written for the adult buyer:
+   *  format, theme and age band first, then the story's hook. Every book sets one
+   *  (catalog metadata pass, 2026-10-12); unset → the subtitle (or, failing that,
+   *  the description) is used. Keep every language under 160 characters. */
   seoDescription?: LocalizedString;
   theme: LocalizedString;
 }
@@ -157,6 +157,11 @@ export const books: Book[] = [
       es: 'Hawel despierta y descubre que todos los colores del mundo se han cambiado: el plátano es azul, la tostada morada y el cielo está haciendo algo raro. Con Pixel la mariposa, sale a buscar al Guardián de los Colores y a aprender cómo el rojo, el amarillo y el azul forman todos los demás colores. Una primera lección suave sobre teoría del color.',
       fr: "Hawel se réveille et découvre que toutes les couleurs du monde ont été échangées — la banane est bleue, le pain grillé violet et le ciel fait quelque chose qu'il ne devrait pas. Avec Pixel le papillon, elle part chercher la Gardienne des Couleurs et apprendre comment le rouge, le jaune et le bleu composent toutes les autres couleurs. Une douce première leçon de théorie des couleurs.",
     },
+    seoDescription: {
+      en: "A picture book about colors and color mixing for ages 4–7. Every color in Hawel's world is swapped, so she sets off with Pixel to find the Color Keeper.",
+      es: "Un álbum sobre los colores y cómo se mezclan, de 4 a 7 años. Todos los colores del mundo de Hawel se han cambiado, y sale con Pixel a buscar al Guardián.",
+      fr: "Un album sur les couleurs et leurs mélanges, de 4 à 7 ans. Toutes les couleurs du monde de Hawel sont échangées : avec Pixel, elle part trouver leur gardien.",
+    },
     theme: {
       en: 'Color theory and curiosity',
       es: 'Teoría del color y curiosidad',
@@ -207,6 +212,11 @@ export const books: Book[] = [
       es: 'En el pueblo de Harmonía, cada color canta su propia canción. Cuando los colores se pelean por quién canta mejor, la música se rompe — y solo Pawa, una pequeña luz brillante que los quiere a todos, puede recordarles cómo funciona la verdadera sinfonía.',
       fr: "Dans le village d'Harmonia, chaque couleur chante sa propre chanson. Quand les couleurs se disputent pour savoir quelle chanson est la meilleure, la musique se brise — et seule Pawa, une petite lumière qui les aime toutes, peut leur rappeler comment fonctionne vraiment la symphonie.",
     },
+    seoDescription: {
+      en: "A picture book about diversity and harmony for ages 3–6. When the colors of Harmonia argue over whose song is best, Pawa reminds them how music works.",
+      es: "Un álbum sobre la diversidad y la armonía, de 3 a 6 años. Cuando los colores de Harmonia discuten por la mejor canción, Pawa les recuerda cómo suena la música.",
+      fr: "Un album sur la diversité et l'harmonie, de 3 à 6 ans. Quand les couleurs d'Harmonia se disputent la plus belle chanson, Pawa leur rappelle la musique.",
+    },
     theme: {
       en: 'Diversity and harmony',
       es: 'Diversidad y armonía',
@@ -255,6 +265,11 @@ export const books: Book[] = [
       en: 'Architect Victor Mercer designs the tallest tower ever conceived. Only one junior engineer raises a hand he never sees. When the dust settles, Victor learns how to design with questions rather than certainty.',
       es: 'El arquitecto Victor Mercer diseña la torre más alta jamás concebida. Solo una joven ingeniera levanta una mano que él nunca ve. Cuando el polvo se asienta, Victor aprende a diseñar con preguntas en lugar de certezas.',
       fr: "L'architecte Victor Mercer conçoit la tour la plus haute jamais imaginée. Une seule jeune ingénieure lève une main qu'il ne voit jamais. Quand la poussière retombe, Victor apprend à concevoir avec des questions plutôt qu'avec des certitudes.",
+    },
+    seoDescription: {
+      en: "A picture book about humility and listening for ages 5–9. An architect designs the tallest tower ever, and ignores the one engineer with a question.",
+      es: "Un álbum sobre la humildad y saber escuchar, de 5 a 9 años. Un arquitecto diseña la torre más alta e ignora a la única persona del equipo que tiene una duda.",
+      fr: "Un album sur l'humilité et l'écoute, de 5 à 9 ans. Un architecte conçoit la plus haute tour du monde et ignore le seul ingénieur qui pose une question.",
     },
     theme: {
       en: 'Humility and listening',
@@ -364,6 +379,11 @@ export const books: Book[] = [
       es: 'Cuando el bosque está en peligro, los animales más grandes no se dan cuenta. El gorrión más pequeño sí. Un álbum tierno sobre cómo los actos de bondad más pequeños pueden cambiarlo todo.',
       fr: "Quand la forêt est en difficulté, les plus grands animaux ne s'en aperçoivent pas. Le plus petit moineau, lui, le voit. Un album tendre sur la façon dont les plus petits gestes de bonté peuvent tout changer.",
     },
+    seoDescription: {
+      en: "A picture book about kindness and courage for ages 4–8. When the forest is in trouble, the biggest animals don't notice. The smallest sparrow does.",
+      es: "Un álbum sobre la bondad y la valentía, de 4 a 8 años. Cuando el bosque está en peligro, los animales grandes no se dan cuenta. El gorrión más pequeño, sí.",
+      fr: "Un album sur la gentillesse et le courage, de 4 à 8 ans. Quand la forêt est en danger, les grands animaux ne voient rien. Le plus petit moineau, si.",
+    },
     theme: {
       en: 'Kindness and courage',
       es: 'Bondad y valentía',
@@ -412,6 +432,11 @@ export const books: Book[] = [
       en: "On a sun-warmed cliff above the Mediterranean, Diego stands at the edge. Everyone is watching. The water is far below. A back-to-school picture book about the kind of bravery that doesn't feel brave from the inside.",
       es: 'En un acantilado iluminado por el sol sobre el Mediterráneo, Diego está al borde. Todos miran. El agua está muy abajo. Un álbum de regreso a clases sobre el tipo de valentía que no se siente valiente desde dentro.',
       fr: "Sur une falaise baignée de soleil au-dessus de la Méditerranée, Diego se tient au bord. Tout le monde regarde. L'eau est loin en dessous. Un album de rentrée sur le genre de courage qui ne se sent pas courageux de l'intérieur.",
+    },
+    seoDescription: {
+      en: "A back-to-school picture book about courage for ages 4–8. Diego stands at the edge of a cliff above the sea, and everyone is watching.",
+      es: "Un álbum de vuelta al cole sobre la valentía, de 4 a 8 años. Diego está al borde de un acantilado sobre el mar, y todos lo están mirando.",
+      fr: "Un album de rentrée sur le courage, de 4 à 8 ans. Diego se tient au bord d'une falaise au-dessus de la mer, et tout le monde le regarde.",
     },
     theme: {
       en: 'Courage and self-trust',
@@ -518,6 +543,11 @@ export const books: Book[] = [
       es: 'Un emperador con un palacio lleno de oro no entiende por qué se siente tan vacío. Los aldeanos, que casi no tienen nada, parecen tener todo lo que importa. Un álbum sobre dónde vive de verdad la riqueza.',
       fr: "Un empereur dont le palais regorge d'or ne comprend pas pourquoi il se sent si vide. Les villageois, qui n'ont presque rien, semblent avoir tout ce qui compte. Un album sur l'endroit où vit vraiment la richesse.",
     },
+    seoDescription: {
+      en: "A picture book about gratitude for ages 5–9. An emperor with a palace full of gold feels empty, while villagers with almost nothing have what matters.",
+      es: "Un álbum sobre la gratitud, de 5 a 9 años. Un emperador con un palacio lleno de oro se siente vacío, mientras los aldeanos tienen lo que de verdad importa.",
+      fr: "Un album sur la gratitude, de 5 à 9 ans. Un empereur au palais rempli d'or se sent vide, tandis que les villageois ont ce qui compte vraiment.",
+    },
     theme: {
       en: 'Gratitude and perspective',
       es: 'Gratitud y perspectiva',
@@ -623,6 +653,11 @@ export const books: Book[] = [
       es: 'En un pueblo donde todos compiten por ser los más bellos, una niña tranquila descubre otra forma de brillar. Un álbum sobre la bondad como esa belleza que perdura.',
       fr: 'Dans une ville où chacun rivalise pour être le plus beau, une fille discrète découvre une autre façon de briller. Un album sur la bonté comme cette beauté qui dure.',
     },
+    seoDescription: {
+      en: "A picture book about kindness and inner beauty for ages 4–8. In a town where everyone competes to look beautiful, a quiet girl finds another way to shine.",
+      es: "Un álbum sobre la bondad y la belleza interior, de 4 a 8 años. En un pueblo donde todos compiten por ser bellos, una niña callada brilla de otra manera.",
+      fr: "Un album sur la gentillesse et la beauté intérieure, de 4 à 8 ans. Dans une ville où chacun veut être le plus beau, une fille discrète brille autrement.",
+    },
     theme: {
       en: 'Inner beauty and kindness',
       es: 'Belleza interior y bondad',
@@ -671,6 +706,11 @@ export const books: Book[] = [
       en: 'A young boy wants to be a great woodworker today, right now. His grandfather hands him a sanding block. A picture book about the slow craft of becoming good at something, told in a sunlit workshop with shavings on the floor.',
       es: 'Un niño quiere ser un gran carpintero hoy, ya. Su abuelo le entrega un bloque de lijar. Un álbum sobre el oficio lento de llegar a ser bueno en algo, narrado en un taller iluminado por el sol con virutas en el suelo.',
       fr: "Un jeune garçon veut être un grand menuisier aujourd'hui, tout de suite. Son grand-père lui tend un bloc à poncer. Un album sur l'art patient de devenir bon en quelque chose, raconté dans un atelier ensoleillé aux copeaux de bois éparpillés au sol.",
+    },
+    seoDescription: {
+      en: "A picture book about patience and learning a craft for ages 5–9. A boy wants to be a great woodworker now; his grandfather hands him a sanding block.",
+      es: "Un álbum sobre la paciencia y aprender un oficio, de 5 a 9 años. Un niño quiere ser carpintero ya, y su abuelo le da un taco de lijar.",
+      fr: "Un album sur la patience et l'apprentissage, de 5 à 9 ans. Un garçon veut devenir menuisier tout de suite ; son grand-père lui tend une cale à poncer.",
     },
     theme: {
       en: 'Patience and craft',
@@ -723,6 +763,11 @@ export const books: Book[] = [
       es: 'Leo adora su primer trabajo de verdad como pastor. Pero las horas se hacen largas y una pequeña travesura le cruza la cara. «¡LOBO! ¡LOBO!», grita. Los aldeanos vienen corriendo y no encuentran nada. Vuelve a gritar. Dejan de venir. Y una tarde, unos ojos amarillos aparecen al borde del bosque. Dientes reales. Un lobo real. Una nueva versión de la fábula eterna sobre la confianza, la honestidad y el largo camino de vuelta.',
       fr: 'Léo adore son premier vrai métier de berger. Mais les heures s’allongent et une petite malice lui traverse le visage. « LOUP ! LOUP ! », crie-t-il. Les villageois accourent et ne trouvent rien. Il recommence. Ils ne viennent plus. Et un soir, des yeux jaunes apparaissent à la lisière de la forêt. De vraies dents. Un vrai loup. Une nouvelle version de la fable intemporelle sur la confiance, l’honnêteté et le long chemin du retour.',
     },
+    seoDescription: {
+      en: "The Boy Who Cried Wolf retold as a picture book about honesty and trust for ages 4–8. Leo cries wolf twice. Then a real wolf appears.",
+      es: "El pastorcito mentiroso contado de nuevo: un álbum sobre la honestidad y la confianza, de 4 a 8 años. Leo grita «¡lobo!» dos veces. Luego llega uno de verdad.",
+      fr: "Le garçon qui criait au loup revisité : un album sur l'honnêteté et la confiance, de 4 à 8 ans. Léo crie au loup deux fois. Puis un vrai loup arrive.",
+    },
     theme: {
       en: 'Honesty and trust',
       es: 'Honestidad y confianza',
@@ -772,6 +817,11 @@ export const books: Book[] = [
       es: 'Russet está seguro de ser el zorro más listo de la madriguera. Más rápido que sus hermanos. Más astuto que el granjero. Demasiado veloz para que lo atrapen. Así que cuando su madre le advierte sobre los perros y la alambrada, apenas escucha. Y llega la noche en que el alambre le rodea la pata. Una fábula ilustrada sobre la humildad, escuchar y la sabiduría tranquila de tomarse su tiempo.',
       fr: 'Russet est convaincu d’être le renard le plus malin du terrier. Plus rapide que ses frères. Plus rusé que le fermier. Trop vif pour se faire attraper. Alors quand sa mère le met en garde contre les chiens et la clôture en fil de fer, il écoute à peine. Puis vient la nuit où le fil s’enroule autour de sa patte. Une fable illustrée sur l’humilité, l’écoute et la sagesse tranquille de prendre son temps.',
     },
+    seoDescription: {
+      en: "A fable about listening and humility for ages 4–8. Russet is sure he is the cleverest fox in the den, so he barely listens to his mother's warning.",
+      es: "Una fábula sobre escuchar y la humildad, de 4 a 8 años. Russet cree ser el zorro más listo de la madriguera, así que apenas escucha a su madre.",
+      fr: "Une fable sur l'écoute et l'humilité, de 4 à 8 ans. Russet se croit le renard le plus malin du terrier, alors il écoute à peine sa mère.",
+    },
     theme: {
       en: 'Listening and humility',
       es: 'Escuchar y humildad',
@@ -818,6 +868,11 @@ export const books: Book[] = [
       en: 'A small yellow wooden boat sits on a shelf above the bathroom sink, watching the moon and dreaming of vast open ocean. Then one morning a boy carries him out to a sparkling puddle, and the adventure begins. A frog, a turtle, a goldfish, a duckling, each tiny water teaches the boat that the ocean was never the point. A gentle bedtime book about contentment and the wonder hidden in small worlds.',
       es: 'Un pequeño barco amarillo de madera está en un estante sobre el lavabo, mirando la luna y soñando con el vasto océano abierto. Hasta que una mañana un niño lo lleva a un charco brillante, y empieza la aventura. Una rana, una tortuga, un pez dorado, un patito — cada pequeño charco enseña al barco que el océano nunca fue lo importante. Un cuento tierno para la hora de dormir sobre el contentamiento y el asombro escondido en los mundos pequeños.',
       fr: 'Un petit bateau jaune en bois posé sur une étagère au-dessus du lavabo regarde la lune et rêve de vastes océans. Puis un matin, un enfant l’emporte vers une flaque scintillante, et l’aventure commence. Une grenouille, une tortue, un poisson rouge, un caneton — chaque petite étendue d’eau enseigne au bateau que l’océan n’était pas l’essentiel. Un doux livre du soir sur la satisfaction et l’émerveillement caché dans les petits mondes.',
+    },
+    seoDescription: {
+      en: "A calming bedtime picture book about contentment for ages 3–7. A little toy boat dreams of the ocean, and finds wonder in a puddle instead.",
+      es: "Un cuento tranquilo para dormir sobre estar contento, de 3 a 7 años. Un barquito de juguete sueña con el océano y encuentra la maravilla en un charco.",
+      fr: "Un album du soir apaisant sur le contentement, de 3 à 7 ans. Un petit bateau jouet rêve de l'océan et trouve l'émerveillement dans une flaque.",
     },
     theme: {
       en: 'Contentment and wonder in small worlds',
@@ -868,6 +923,11 @@ export const books: Book[] = [
       es: 'Heidi tiene siete años y sueña con inventos. Coches solares. Puentes con turbinas de viento. Un pequeño robot para limpiar el lago frente al taller de su abuelo Anders en Granholm. Por eso, cuando por fin cruza el umbral esperando engranajes y herramientas, se sorprende al recibir una escoba. Mes tras mes, barre. Luego clasifica piezas. Luego observa. Luego pregunta. Un álbum sobre el camino lento y paciente que va del soñar al hacer.',
       fr: 'Heidi a sept ans et rêve d’inventions. De voitures solaires. De ponts à éoliennes. D’un petit robot pour nettoyer le lac devant l’atelier de son grand-père Anders à Granholm. Alors quand elle franchit enfin le seuil en s’attendant à des engrenages et à des outils, elle est surprise qu’il lui tende un balai. Mois après mois, elle balaie. Puis elle trie les pièces. Puis elle observe. Puis elle pose des questions. Un album sur la lente route patiente qui mène du rêve à la fabrication.',
     },
+    seoDescription: {
+      en: "A STEM picture book about perseverance and growth mindset for ages 5–9. Heidi dreams of inventions, but her grandfather first hands her a broom.",
+      es: "Un álbum STEM sobre la perseverancia y la mentalidad de crecimiento, de 5 a 9 años. Heidi sueña con inventos, pero su abuelo primero le da una escoba.",
+      fr: "Un album STEM sur la persévérance et l'état d'esprit de croissance, de 5 à 9 ans. Heidi rêve d'inventions, mais son grand-père lui tend d'abord un balai.",
+    },
     theme: {
       en: 'Patience and apprenticeship',
       es: 'Paciencia y aprendizaje',
@@ -916,6 +976,11 @@ export const books: Book[] = [
       en: 'Luna loves the sky. The way clouds change shape, drift across the horizon, dance with the wind. When Grandpa Chen gives her a butterfly net and a glass jar, she sets out into the meadow with one big plan: collect one cloud of every kind. She meets cumulus clouds that float just out of reach, wispy cirrus painted high across the sky, and slowly learns that some things are too beautiful to keep. A picture book about wonder, attention, and the gift of letting beautiful things stay where they are.',
       es: 'A Luna le encanta el cielo. Cómo las nubes cambian de forma, recorren el horizonte, bailan con el viento. Cuando su abuelo Chen le regala una red de mariposas y un frasco de cristal, sale al prado con un gran plan: coleccionar una nube de cada tipo. Conoce nubes cúmulo que flotan justo fuera de su alcance, finos cirros pintados en lo alto, y poco a poco aprende que algunas cosas son demasiado hermosas para guardarlas. Un álbum sobre el asombro, la atención y el regalo de dejar que las cosas bellas se queden donde están.',
       fr: 'Luna adore le ciel. La façon dont les nuages changent de forme, dérivent à l’horizon, dansent avec le vent. Quand grand-père Chen lui offre un filet à papillons et un bocal en verre, elle part dans la prairie avec un grand projet : collectionner un nuage de chaque sorte. Elle rencontre des cumulus qui flottent juste hors de portée, des cirrus filants peints très haut, et apprend peu à peu que certaines choses sont trop belles pour qu’on les garde. Un album sur l’émerveillement, l’attention et le cadeau de laisser les belles choses là où elles sont.',
+    },
+    seoDescription: {
+      en: "A STEM picture book about clouds and weather for ages 4–8. Luna sets out with a net and a jar to collect one cloud of every kind.",
+      es: "Un álbum STEM sobre las nubes y el tiempo, de 4 a 8 años. Luna sale con una red y un frasco para atrapar una nube de cada tipo.",
+      fr: "Un album STEM sur les nuages et la météo, de 4 à 8 ans. Luna part avec un filet et un bocal pour attraper un nuage de chaque sorte.",
     },
     theme: {
       en: 'Wonder and letting go',
@@ -966,6 +1031,11 @@ export const books: Book[] = [
       es: 'Maya tiene cinco años, y dibuja mapas. Mapas de su habitación. Mapas de la cocina. Mapas del jardín con el columpio de neumático. Su perro Pepper se sienta a su lado con un pañuelo rojo mientras trabaja. Hasta que un día Maya dibuja un castillo entre la hierba alta, y cuando sale a buscarlo, está justo donde lo puso. Pronto un río corre por una grieta de la acera porque dibujó peces en ella. Un álbum sobre cómo la imaginación, la atención y un lápiz bastan para crear un mundo.',
       fr: 'Maya a cinq ans, et elle dessine des cartes. Des cartes de sa chambre. Des cartes de la cuisine. Des cartes du jardin avec la balançoire en pneu. Son chien Pepper s’assoit près d’elle avec un bandana rouge pendant qu’elle travaille. Puis un jour Maya dessine un château au fond des hautes herbes, et quand elle sort pour le chercher, il est exactement là où elle l’a posé. Bientôt une rivière coule dans une fissure du trottoir parce qu’elle y a esquissé des poissons. Un album sur la façon dont l’imagination, l’attention et un crayon suffisent à faire un monde.',
     },
+    seoDescription: {
+      en: "A picture book about imagination and creativity for ages 4–8. Five-year-old Maya draws maps, and one day the castle she drew is exactly where she put it.",
+      es: "Un álbum sobre la imaginación y la creatividad, de 4 a 8 años. Maya, de cinco años, dibuja mapas, y un día el castillo que dibujó aparece donde lo puso.",
+      fr: "Un album sur l'imagination et la créativité, de 4 à 8 ans. Maya, cinq ans, dessine des cartes, et un jour le château dessiné est là où elle l'a mis.",
+    },
     theme: {
       en: 'Imagination and making',
       es: 'Imaginación y crear',
@@ -1014,6 +1084,11 @@ export const books: Book[] = [
       en: 'Cirro is a little gray cloud who feels heavy and sad after a storm. He believes his tears only make the world messy and wet. But Pawa the wise Sun knows a quiet secret: when rain meets light, something extraordinary happens. Through Cirro\'s gentle transformation, young readers discover that the feelings that seem like too much are often the very things that make beauty possible.',
       es: 'Cirro es una pequeña nube gris que se siente pesada y triste después de una tormenta. Cree que sus lágrimas solo ensucian y mojan el mundo. Pero Pawa, el sabio Sol, conoce un secreto tranquilo: cuando la lluvia se encuentra con la luz, ocurre algo extraordinario. A través de la suave transformación de Cirro, los lectores pequeños descubren que los sentimientos que parecen demasiado son a menudo precisamente los que hacen posible la belleza.',
       fr: 'Cirro est un petit nuage gris qui se sent lourd et triste après l’orage. Il croit que ses larmes ne font que mouiller et salir le monde. Mais Pawa, le sage Soleil, connaît un secret tranquille : quand la pluie rencontre la lumière, quelque chose d’extraordinaire arrive. À travers la douce transformation de Cirro, les jeunes lecteurs découvrent que les sentiments qui semblent trop grands sont souvent ceux qui rendent la beauté possible.',
+    },
+    seoDescription: {
+      en: "A picture book about big feelings and self-worth for ages 3–7. A sad little gray cloud learns from the Sun that when rain meets light, rainbows appear.",
+      es: "Un álbum sobre las emociones y la autoestima, de 3 a 7 años. Una nubecita gris y triste aprende del Sol que cuando la lluvia encuentra la luz, nace el arcoíris.",
+      fr: "Un album sur les grandes émotions et l'estime de soi, de 3 à 7 ans. Un petit nuage gris apprend du Soleil que la pluie et la lumière font l'arc-en-ciel.",
     },
     theme: {
       en: 'Self-worth and transformation',
@@ -1064,6 +1139,11 @@ export const books: Book[] = [
       es: 'En un pueblo de montaña de talladores de piedra, la joven Mira sueña con esculpir águilas y figuras danzantes. Cuando el maestro Hiroshi la acepta como aprendiz, su primera tarea es tallar mil cubos idénticos: ni águilas ni bailarines. Entre manos doloridas y frustración, descubre la lección escondida en la repetición: el arte tranquilo de hacer bien lo pequeño y cómo las grandes cosas llevan tiempo.',
       fr: "Dans un village de montagne réputé pour ses sculpteurs, la jeune Mira rêve de tailler des aigles et des danseurs dans la pierre. Quand Maître Hiroshi la prend enfin comme apprentie, sa première tâche est de sculpter mille cubes identiques — ni aigles, ni danseurs. À travers les mains endolories et la frustration, Mira découvre la leçon cachée dans la répétition : l'art tranquille de bien faire les petites choses, et comment les grandes choses prennent du temps.",
     },
+    seoDescription: {
+      en: "A picture book about patience and practice for ages 5–9. Mira dreams of carving eagles, but her master's first task is a thousand identical cubes.",
+      es: "Un álbum sobre la paciencia y la práctica, de 5 a 9 años. Mira sueña con tallar águilas, pero su maestro primero le pide mil cubos idénticos.",
+      fr: "Un album sur la patience et la pratique, de 5 à 9 ans. Mira rêve de sculpter des aigles, mais son maître lui demande d'abord mille cubes identiques.",
+    },
     theme: {
       en: 'Patience and mastery',
       es: 'Paciencia y maestría',
@@ -1112,6 +1192,11 @@ export const books: Book[] = [
       en: "When Sofia inherits her grandmother's Mediterranean cottage, the gnarled old fig tree in the garden is first on her list to cut down. Then old Mr. Costas comes running through the gate and begins to tell her what the tree has watched: three hundred years of harvests, festivals, and recipes her grandmother kept by hand. A tender story about the trees and people we almost lose by going too fast, and how some inheritances are made of stories.",
       es: 'Cuando Sofía hereda la casita mediterránea de su abuela, la vieja higuera nudosa del jardín es lo primero que quiere talar. Entonces el viejo señor Costas cruza corriendo la verja y empieza a contarle lo que el árbol ha visto: trescientos años de cosechas, fiestas y recetas que su abuela guardaba a mano. Un cuento tierno sobre los árboles y las personas que casi perdemos por ir demasiado deprisa, y sobre cómo algunas herencias están hechas de historias.',
       fr: "Quand Sofia hérite de la maisonnette méditerranéenne de sa grand-mère, le vieux figuier noueux du jardin est la première chose qu'elle veut abattre. Puis le vieux monsieur Costas franchit le portail en courant et se met à lui raconter ce que l'arbre a vu : trois cents ans de récoltes, de fêtes et de recettes que sa grand-mère gardait de sa main. Un conte tendre sur les arbres et les gens que l'on perd presque à aller trop vite, et sur ces héritages qui sont faits d'histoires.",
+    },
+    seoDescription: {
+      en: "A Mediterranean picture book about heritage and family memory for ages 4–8. Sofia plans to cut down her grandmother's old fig tree, until she hears its story.",
+      es: "Un álbum mediterráneo sobre la herencia y la memoria familiar, de 4 a 8 años. Sofía quiere cortar la vieja higuera de su abuela, hasta que oye su historia.",
+      fr: "Un album méditerranéen sur l'héritage et la mémoire familiale, de 4 à 8 ans. Sofia veut abattre le vieux figuier de sa grand-mère, puis entend son histoire.",
     },
     theme: {
       en: 'Heritage and memory',
