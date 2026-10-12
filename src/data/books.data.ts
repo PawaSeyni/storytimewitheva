@@ -584,7 +584,7 @@ export const books: Book[] = [
     },
     title: {
       en: 'The Crooked Little Apple Tree',
-      es: 'El manzanito torcido',
+      es: 'El pequeño manzano torcido',
       fr: 'Le petit pommier tordu',
     },
     subtitle: {
@@ -594,14 +594,14 @@ export const books: Book[] = [
     },
     description: {
       en: 'The orchard wants only straight, perfect trees. The crooked little apple tree at the edge has been overlooked for years. Until the year someone really looks. A tender story about how worth is seen.',
-      es: 'En el huerto solo quieren árboles rectos y perfectos. Al manzanito torcido del borde llevan años sin verlo. Hasta el año en que alguien lo mira de verdad. Una historia tierna sobre cómo se reconoce el valor.',
+      es: 'En el huerto solo quieren árboles rectos y perfectos. Al pequeño manzano torcido del borde llevan años sin verlo. Hasta el año en que alguien lo mira de verdad. Una historia tierna sobre cómo se reconoce el valor.',
       fr: "Le verger ne veut que des arbres droits et parfaits. Le petit pommier tordu au bord est resté invisible pendant des années. Jusqu'à l'année où quelqu'un le regarde vraiment. Une histoire tendre sur la manière dont la valeur se voit.",
     },
     // Buyer-intent meta (pilot metadata audit, 2026-10-12). The visible subtitle
     // stays as printed on the cover.
     seoDescription: {
       en: 'A picture book about self-worth and being different, for ages 4–8. The crooked little apple tree was overlooked for years, until someone really looked.',
-      es: 'Un álbum sobre la autoestima y ser diferente, de 4 a 8 años. Nadie miraba al manzanito torcido, hasta que alguien lo miró de verdad.',
+      es: 'Un álbum sobre la autoestima y ser diferente, de 4 a 8 años. Nadie miraba al pequeño manzano torcido, hasta que alguien lo miró de verdad.',
       fr: "Un album sur l'estime de soi et la différence, de 4 à 8 ans. Personne ne regardait le petit pommier tordu, jusqu'au jour où quelqu'un l'a vraiment vu.",
     },
     theme: {
