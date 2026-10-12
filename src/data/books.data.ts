@@ -98,6 +98,11 @@ export interface Book {
   title: LocalizedString;
   subtitle?: LocalizedString;
   description: LocalizedString;
+  /** Optional hand-written `<meta name="description">`, written for the adult
+   *  buyer: format, theme and age band first. Unset → the subtitle (or, failing
+   *  that, the description) is used, as before. Keep every language under 160
+   *  characters. */
+  seoDescription?: LocalizedString;
   theme: LocalizedString;
 }
 
@@ -303,6 +308,13 @@ export const books: Book[] = [
       es: 'Cada noche, cuando Maya se va a la cama, ocurre algo mágico. Mientras Maya duerme y sueña, su sombra despierta y se escapa por la puerta hacia aventuras propias. El libro insignia de la colección: asombro tranquilo, magia nocturna y un regreso a casa al amanecer.',
       fr: "Chaque soir, quand Maya va se coucher, quelque chose de magique se produit. Pendant que Maya dort et rêve, son ombre se réveille et se glisse dehors pour vivre ses propres aventures. Le titre phare de la collection — émerveillement tranquille, magie nocturne et retour à la maison au petit matin.",
     },
+    // Buyer-intent meta (pilot metadata audit, 2026-10-12). The visible subtitle
+    // stays as printed on the cover.
+    seoDescription: {
+      en: 'A bedtime picture book about shadows for ages 3–7. While Maya sleeps, her shadow slips out for adventures of its own, and always comes home by morning.',
+      es: 'Un cuento ilustrado para dormir sobre sombras, de 3 a 7 años. Mientras Maya duerme, su sombra sale de aventura y siempre vuelve al amanecer.',
+      fr: "Un album du soir sur les ombres, de 3 à 7 ans. Pendant que Maya dort, son ombre part à l'aventure et rentre toujours au petit matin.",
+    },
     theme: {
       en: 'Wonder and imagination',
       es: 'Asombro e imaginación',
@@ -450,6 +462,13 @@ export const books: Book[] = [
       es: 'Un pequeño gesto amable se convierte en otro, y otro, y otro, hasta que una comunidad entera cambia. Un álbum sobre cómo la bondad viaja por caminos que no siempre vemos.',
       fr: "Un petit geste de bonté en entraîne un autre, puis un autre, jusqu'à transformer toute une communauté. Un album sur la façon dont la bonté voyage par des chemins que l'on ne voit pas toujours.",
     },
+    // Buyer-intent meta (pilot metadata audit, 2026-10-12). The visible subtitle
+    // stays as printed on the cover.
+    seoDescription: {
+      en: 'A picture book about how kindness spreads, for ages 5–9. One small kind act leads to another, and another, until a whole community is changed.',
+      es: 'Un álbum sobre cómo se propaga la bondad, de 5 a 9 años. Un pequeño gesto amable lleva a otro, y a otro, hasta cambiar a toda una comunidad.',
+      fr: "Un album sur la bonté qui se propage, de 5 à 9 ans. Un petit geste gentil en entraîne un autre, puis un autre, jusqu'à changer toute une communauté.",
+    },
     theme: {
       en: 'Kindness and ripple effects',
       es: 'Bondad y efectos en cadena',
@@ -547,6 +566,13 @@ export const books: Book[] = [
       en: 'The orchard wants only straight, perfect trees. The crooked little apple tree at the edge has been overlooked for years. Until the year someone really looks. A tender story about how worth is seen.',
       es: 'En el huerto solo quieren árboles rectos y perfectos. Al manzanito torcido del borde llevan años sin verlo. Hasta el año en que alguien lo mira de verdad. Una historia tierna sobre cómo se reconoce el valor.',
       fr: "Le verger ne veut que des arbres droits et parfaits. Le petit pommier tordu au bord est resté invisible pendant des années. Jusqu'à l'année où quelqu'un le regarde vraiment. Une histoire tendre sur la manière dont la valeur se voit.",
+    },
+    // Buyer-intent meta (pilot metadata audit, 2026-10-12). The visible subtitle
+    // stays as printed on the cover.
+    seoDescription: {
+      en: 'A picture book about self-worth and being different, for ages 4–8. The crooked little apple tree was overlooked for years, until someone really looked.',
+      es: 'Un álbum sobre la autoestima y ser diferente, de 4 a 8 años. Nadie miraba al manzanito torcido, hasta que alguien lo miró de verdad.',
+      fr: "Un album sur l'estime de soi et la différence, de 4 à 8 ans. Personne ne regardait le petit pommier tordu, jusqu'au jour où quelqu'un l'a vraiment vu.",
     },
     theme: {
       en: 'Worth and being seen',

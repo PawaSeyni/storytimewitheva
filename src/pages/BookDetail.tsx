@@ -26,6 +26,19 @@ import type { Language } from '../lib/language';
 import { isAmazonCover, sizedCover } from '../lib/covers';
 import { track } from '../lib/analytics';
 
+/** schema.org audience for an ageRange like '3-7'; nothing if it doesn't parse. */
+function ageAudience(range: string) {
+  const m = range.match(/^(\d+)\s*[-–]\s*(\d+)$/);
+  if (!m) return {};
+  return {
+    audience: {
+      '@type': 'PeopleAudience',
+      suggestedMinAge: Number(m[1]),
+      suggestedMaxAge: Number(m[2]),
+    },
+  };
+}
+
 const SITE_URL = 'https://storytimewitheva.com';
 const FLAG_TO_LANG: Record<string, string> = { '🇺🇸': 'en', '🇪🇸': 'es', '🇫🇷': 'fr' };
 
@@ -132,6 +145,9 @@ export default function BookDetail() {
       ...(book.subtitle ? { alternativeHeadline: book.subtitle } : {}),
       ...(book.amazonUrl ? { sameAs: book.amazonUrl.split('?')[0] } : {}),
       abstract: book.description,
+      // The reading age as structured data, so age-led searches ("books for
+      // 5 year olds") can match it. Derived from ageRange, e.g. '3-7'.
+      ...ageAudience(book.ageRange),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug, language, ogImage]);
@@ -161,7 +177,7 @@ export default function BookDetail() {
 
   return (
     <main className="py-8 px-4">
-      <Seo title={book.title} description={book.subtitle || book.description} path={`/books/${book.id}`} image={ogImage} />
+      <Seo title={book.title} description={book.metaDescription} path={`/books/${book.id}`} image={ogImage} />
       {bookSchema && <JsonLd id="book" data={bookSchema} />}
       {breadcrumbLd && <JsonLd id="breadcrumb" data={breadcrumbLd} />}
 
