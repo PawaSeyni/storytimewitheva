@@ -1,16 +1,18 @@
 import type { LocalizedBook } from '../data/books';
 import { isComingSoon } from '../data/books';
 import { Link } from './LocalizedLink';
+import { useActivity } from '../data/activities';
+import { gameUrl } from '../lib/gameUrl';
 import BookStatusButton from './BookStatusButton';
 import ReadAloudButton from './ReadAloudButton';
 import { isAmazonCover, sizedCover } from '../lib/covers';
-import { useTranslation } from '../lib/language';
+import { useLanguage, useTranslation } from '../lib/language';
 import { track } from '../lib/analytics';
 
 const TRANSLATIONS = {
-  en: { featured: 'Featured', discoverMore: 'Discover More ✨', buy: '🛒 Buy', comingSoon: 'Coming soon', coverAlt: 'book cover' },
-  es: { featured: 'Destacado', discoverMore: 'Descubrir más ✨', buy: '🛒 Comprar', comingSoon: 'Próximamente', coverAlt: 'portada del libro' },
-  fr: { featured: 'En vedette', discoverMore: 'Découvrir plus ✨', buy: '🛒 Acheter', comingSoon: 'Bientôt disponible', coverAlt: 'couverture du livre' },
+  en: { featured: 'Featured', freeActivity: 'Free activity', discoverMore: 'Discover More ✨', buy: '🛒 Buy', comingSoon: 'Coming soon', coverAlt: 'book cover' },
+  es: { featured: 'Destacado', freeActivity: 'Actividad gratis', discoverMore: 'Descubrir más ✨', buy: '🛒 Comprar', comingSoon: 'Próximamente', coverAlt: 'portada del libro' },
+  fr: { featured: 'En vedette', freeActivity: 'Activité gratuite', discoverMore: 'Découvrir plus ✨', buy: '🛒 Acheter', comingSoon: 'Bientôt disponible', coverAlt: 'couverture du livre' },
 };
 
 interface BookCardProps {
@@ -25,6 +27,10 @@ interface BookCardProps {
 
 export default function BookCard({ book, priority = false, onSelect }: BookCardProps) {
   const t = useTranslation(TRANSLATIONS);
+  const { language } = useLanguage();
+  // Every book ships with a free activity; the first related id is the paired one
+  // (locked by tests/funnel/activity-studio.test.mjs). The badge is its shortcut.
+  const paired = useActivity(book.pairedActivityId ?? '');
 
   // Narration text for the read-aloud button — title, subtitle, and blurb.
   const narration = [book.title, book.subtitle, book.description].filter(Boolean).join('. ');
@@ -36,7 +42,7 @@ export default function BookCard({ book, priority = false, onSelect }: BookCardP
   const href = `/books/${book.id}`;
 
   return (
-    <div className="card group flex flex-col">
+    <div className="card group relative flex flex-col">
       <Link to={href} onClick={onSelect} className="block relative bg-gray-100 aspect-square overflow-hidden">
         <img
           src={amazonCover ? sizedCover(book.coverImage, 400) : book.coverImage}
@@ -56,6 +62,23 @@ export default function BookCard({ book, priority = false, onSelect }: BookCardP
           </span>
         )}
       </Link>
+      {paired && (() => {
+        const badgeCls =
+          'absolute top-3 left-3 z-10 bg-green-700 hover:bg-green-800 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1 transition-colors';
+        const label = `${t.freeActivity}: ${paired.title}`;
+        const onClick = () => track('Continue Journey', { placement: 'card', destination: 'activity', activity: paired.slug, reason: 'related' });
+        const inner = (
+          <>
+            <span className="text-sm leading-none" aria-hidden="true">🎲</span>
+            {t.freeActivity}
+          </>
+        );
+        return paired.game ? (
+          <a href={gameUrl(paired.slug, language)} onClick={onClick} aria-label={label} className={badgeCls}>{inner}</a>
+        ) : (
+          <Link to={`/activities/${paired.slug}`} onClick={onClick} aria-label={label} className={badgeCls}>{inner}</Link>
+        );
+      })()}
 
       <div className="p-5 flex flex-col flex-1">
         <div className="flex items-center gap-2 mb-2">

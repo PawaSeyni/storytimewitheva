@@ -7,6 +7,7 @@ import Breadcrumbs, { breadcrumbSchema } from '../components/Breadcrumbs';
 import { useActivity } from '../data/activities';
 import { useLanguage, useTranslation } from '../lib/language';
 import ContinueJourney from '../components/ContinueJourney';
+import EmailSignup from '../components/EmailSignup';
 
 const TRANSLATIONS = {
   en: {
@@ -68,6 +69,9 @@ export default function DemoPage({ children }: DemoPageProps) {
             derived reverse relation; the first one is the next step. */}
         {activity && <ContinueJourney sourceType="activity" sourceId={activity.slug} placement="activity" />}
       </div>
+      {/* Activity pages were the one content type without the signup; the printable
+          pack is the natural next step after playing. */}
+      {activity && <EmailSignup placement="activity" />}
     </main>
   );
 }

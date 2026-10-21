@@ -40,6 +40,8 @@ export interface LocalizedBook {
    *  when set, otherwise the subtitle, otherwise the description. */
   metaDescription: string;
   theme: string;
+  /** Slug of the free activity paired with this book (first related id). */
+  pairedActivityId?: string;
 }
 
 const dp = amazonDp;
@@ -69,6 +71,7 @@ function localize(book: Book, lang: Language): LocalizedBook {
       (book.subtitle ? (book.subtitle[lang] ?? book.subtitle.en) : undefined) ??
       (book.description[lang] ?? book.description.en),
     theme: book.theme[lang] ?? book.theme.en,
+    pairedActivityId: book.relatedActivityIds?.[0],
   };
 }
 
