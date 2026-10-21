@@ -23,15 +23,44 @@ jobs:
       - uses: actions/setup-node@v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
+      # This waited 10 minutes and then failed. Failing is right, but it left a
+      # stale production site standing until someone read the email: on
+      # griotmoon.com on 2026-10-21 a push produced no Netlify build at all (PR
+      # preview fine, site settings untouched, zero Netlify statuses on the
+      # merge commit), and the shared Netlify team does the same thing silently
+      # when its credits run out. So the wait now has a recovery step: fire the
+      # build hook once, wait again, and only then fail.
       - name: Wait for production to serve this commit (push only, unless the commit skips Netlify)
+        id: first
         if: github.event_name == 'push' && !contains(github.event.head_commit.message, '[skip netlify]')
         run: |
-          for i in $(seq 1 40); do
-            live=$(curl -s https://storytimewitheva.com/version.json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>console.log(JSON.parse(s).commit||''))")
-            [ "$live" = "$GITHUB_SHA" ] && echo "live: $live" && exit 0
+          for i in $(seq 1 32); do   # 32 x 15s = 8 minutes
+            live=$(curl -s https://storytimewitheva.com/version.json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{console.log(JSON.parse(s).commit||'')}catch{console.log('')}})")
+            if [ "$live" = "$GITHUB_SHA" ]; then echo "live=true" >> "$GITHUB_OUTPUT"; echo "live: $live"; exit 0; fi
             sleep 15
           done
-          echo "production never reported $GITHUB_SHA"; exit 1
+          echo "live=false" >> "$GITHUB_OUTPUT"
+          echo "::warning::No production deploy for $GITHUB_SHA after 8 minutes. Firing the Netlify build hook."
+
+      - name: Fire the Netlify build hook
+        if: steps.first.outputs.live == 'false'
+        env: { HOOK: '${{ secrets.NETLIFY_BUILD_HOOK }}' }
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::error::NETLIFY_BUILD_HOOK is not set, so the deploy cannot be recovered automatically."; exit 1
+          fi
+          curl -fsS -X POST -d '{}' "$HOOK" && echo "Build hook accepted."
+
+      - name: Wait for the recovered deploy
+        if: steps.first.outputs.live == 'false'
+        run: |
+          for i in $(seq 1 60); do   # 60 x 15s = 15 minutes
+            live=$(curl -s https://storytimewitheva.com/version.json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{console.log(JSON.parse(s).commit||'')}catch{console.log('')}})")
+            if [ "$live" = "$GITHUB_SHA" ]; then echo "Production is on $GITHUB_SHA after the build hook."; exit 0; fi
+            sleep 15
+          done
+          echo "::error::Build hook fired but production never reached $GITHUB_SHA."; exit 1
+
       - name: Verify deploy chain
         run: npm run verify:deploy -- ${{ github.sha }}
         if: github.event_name == 'push' && !contains(github.event.head_commit.message, '[skip netlify]')
