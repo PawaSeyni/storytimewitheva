@@ -503,7 +503,7 @@ const PREVIEW_DIMS: Record<string, { w: number; h: number }> = {
   '/previews/leo-and-the-wolf.webp': { w: 720, h: 720 },
 };
 
-export type SignupPlacement = 'home' | 'landing' | 'books' | 'activities' | 'resources' | 'about';
+export type SignupPlacement = 'home' | 'landing' | 'books' | 'activities' | 'activity' | 'resources' | 'about';
 
 /** S5-006: one contextual line per placement, above the offer, in the site language. */
 const CONTEXT_LINE: Record<SignupPlacement, Record<Language, string>> = {
@@ -511,6 +511,7 @@ const CONTEXT_LINE: Record<SignupPlacement, Record<Language, string>> = {
   landing: { en: '', es: '', fr: '' },
   books: { en: 'Found a story you like? The printables below go with every book in the collection.', es: '¿Encontraste una historia que te gusta? Los imprimibles de abajo acompañan a todos los libros de la colección.', fr: 'Vous avez trouvé une histoire qui vous plaît ? Les fiches ci-dessous accompagnent chaque livre de la collection.' },
   activities: { en: 'Liked the activities? The printable pack keeps the fun going away from the screen.', es: '¿Te gustaron las actividades? El paquete imprimible sigue la diversión lejos de la pantalla.', fr: 'Les activités vous ont plu ? Le pack à imprimer prolonge le plaisir loin de l’écran.' },
+  activity: { en: 'Enjoyed this activity? The printable pack keeps the fun going away from the screen.', es: '¿Te gustó esta actividad? El paquete imprimible sigue la diversión lejos de la pantalla.', fr: 'Cette activité vous a plu ? Le pack à imprimer prolonge le plaisir loin de l’écran.' },
   resources: { en: 'Reading the guides? Take the printables that pair with them.', es: '¿Leyendo las guías? Llévate los imprimibles que las acompañan.', fr: 'Vous lisez les guides ? Emportez les fiches qui vont avec.' },
   about: { en: 'Want to read with Eva at home? Start with the free printables.', es: '¿Quieres leer con Eva en casa? Empieza con los imprimibles gratis.', fr: 'Envie de lire avec Eva à la maison ? Commencez par les fiches gratuites.' },
 };
