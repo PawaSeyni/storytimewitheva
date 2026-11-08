@@ -36,7 +36,7 @@
 | The Sanding Block | 5-9 | Maker Passport, Bookmark, Craft Corner, Puzzles | 1 | **B** | Passport shared by 3 books |
 | Heidi's Journey to Mastery | 5-9 | Maker Passport, Bookmark, Craft Corner, Build-a-Scene | 1 | **B** | Same set as Mira; nothing about inventions |
 | Mira's Thousand Cubes | 5-9 | Maker Passport, Bookmark, Craft Corner, Build-a-Scene | 1 | **B** | Same set as Heidi |
-| Leo and the Wolf | 4-8 | Character Workshop, Finish-the-Story, Story Dice | 0 | **C** | Has its own free PDF, but the book page doesn't link to it |
+| Leo and the Wolf | 4-8 | Character Workshop, Finish-the-Story, Story Dice | 0 | **C** | The free Leo PDF (the full storybook) isn't offered on the book page; see the correction in §4C |
 | The Rainbow Symphony | 3-6 | Flashcards, Build-a-Scene, Coloring | 0 | **C** | A book about music, with no music activity |
 | The Little Mapmaker | 4-8 | Coloring, Story Map, World Geography | 0 | **C-** | Story Map isn't about this book |
 | A Little Boat's Big Wish | 3-7 | Coloring, Reading Tracker, Rhyme | 0 | **C-** | Reading Tracker is 5-9; rhymes are generic nursery songs |
@@ -103,7 +103,7 @@ Word Explorer, Matching (3-5), Spelling Bee, Counting & Numbers (3-6) and Senten
 - Result: about 6 activities × 20 books, with no new game logic.
 
 **C. A "Story Companion" PDF for each book (P1, medium).**
-- *Leo and the Wolf* already has a free trilingual PDF, but it can only be reached at `/free/leo-and-the-wolf`. **The Leo book page doesn't link to it.**
+- *Leo and the Wolf* already has a free trilingual PDF, which can only be reached at `/free/leo-and-the-wolf`. **Correction (remediation pass):** that PDF is the complete 32-page storybook, not a one-page worksheet. Linking it from the book page, next to the Buy button, could take away sales, so it's an owner decision and was not done.
 - Generate a one-page companion for each book from data already in the repo: the 3 discussion prompts, the vocabulary, one printable activity and the cover.
 - Link each one through `relatedResourceIds`, a field that exists but is empty for every book.
 - Each companion is also a lead magnet for its book (`/free/<book-id>`), which gives 20 entry points for email signup in place of 1.
@@ -162,7 +162,7 @@ These reuse the existing `StudioFrame` (hero, "Pairs with", printable card, prin
 | **P0** | Rebuild Story Map with the 20 catalog books, or unlink it from Cloud Collector and Little Mapmaker | S–M | It shows parents books that aren't in this catalog |
 | **P0** | Rewrite Finish-the-Story prompts around catalog books (Hawel and Pixel, not Eva) | S | Off-brand copy on a book-linked page |
 | **P0** | Pass `?book=` so "Read next" returns to the right book; add `book` to activity events | S | Fixes the journey and makes the funnel measurable |
-| **P1** | Link the Leo PDF from the Leo book page; fill `relatedResourceIds` | XS | A finished asset that readers currently can't find |
+| **P1** | ~~Link the Leo PDF from the Leo book page~~ Owner decision: the PDF is the full storybook (see §4C). Fill `relatedResourceIds` once per-book companions exist | XS | — |
 | **P1** | 9 new Studio activities (§5a), in this order: Leo, Russet, Tower, Emperor, Little Mapmaker, Boat, Apple Tree, Meadowbrook, Rainbow Symphony | ~9–12 days | Takes book-specific coverage from 11/20 to 20/20 |
 | **P1** | `bookVocab` data, plus `?book=` support in the 5 orphaned games and Puzzles | M | About 6 × 20 book-specific activities from one data set |
 | **P1** | Book-specific coloring line art (start with the 6 books that link Coloring) | M (art) | Coloring is the most-linked activity for ages 3-7 |
@@ -204,3 +204,25 @@ Target: every book with at least 1 book-specific activity by the end of the P1 w
 | color-mix-lab, feelings-weather-report, first-day-brave-plan, cloud-detective-journal, shadow-theatre, story-quilt | Studio | — | 1 each | yes |
 | story-builder, puzzles | in-app page | — | 1 each | no |
 | word-explorer, matching, spelling-bee, counting-numbers, sentence-builder | mixed | — | **0** | — |
+
+---
+
+## Remediation log
+
+### Pass 1: November 2026 (branch `claude/brave-dijkstra-24t6xc`)
+
+**P0, done**
+- **Story Map rebuilt.** It's now an illustrated "Storyland" map with the 20 catalog books only. The 10 off-catalog titles and the outside Amazon links are gone. Titles, summaries, themes and the "explorer question" (each book's "before reading" prompt) are copied from the catalog by `scripts/patch-games.mjs`; the game only stores where each pin goes. Regions replace continents, because several settings are invented (Harmonia, Meadowbrook, Granholm) and pinning them to real countries would mean making up facts. Also fixed: the pin animation dropped each pin's anchor offset, so pins settled about one pin-height away from their place.
+- **Finish-the-Story rewritten.** Six stories in all three languages, each starting from a catalog book with its own characters: Diego, Leo, Russet, Hawel and Pixel, Sofia, and Luna. Eva is only the host who starts the story. A `?book=` visit lists that book's story first. Speech follows the game language, and choices containing quotes no longer break.
+- **"Read next" now follows the book the child came from.** Book pages add `?book=<id>` to their activity links, and the id is checked against that book's own activity list. Activity pages and games then show "Back to <book>" and continue to that book's first related book. `Activity Complete` and the book → activity click now carry `book`.
+- The "Try an activity" grid uses four columns when a book links four activities.
+
+**P1, done**
+- **9 new Studio activities**, one for each book that had none: Trust Meter (Leo), Harmonia Color Orchestra (Rainbow Symphony), Ask-First Architect (Tower), My True Treasure Chest (Emperor), My One-of-a-Kind Tree (Crooked Apple Tree), The Kindness Mirror (Meadowbrook), Listen Like a Fox (Russet), Puddle Voyage (Little Boat), Map My World (Little Mapmaker). Each one is listed first on its book page, so **20/20 books now lead with an activity made for them**. A test enforces this.
+- Links swapped out at the same time: Reading Tracker on Tower, Emperor and Little Boat; Adventure Journal (rated 6-9) on Crooked Apple Tree; Bingo on Russet. *Russet* also gains Finish-the-Story, now that it has a Russet story. *Crooked Apple Tree* gains Coloring, which already has an apple-tree scene.
+
+**Tests:** `tests/funnel/activities-audit.test.mjs`; `tests/funnel/activity-studio.test.mjs` and `tests/e2e/studio.spec.ts` extended to wave 2.
+
+**Still open:** a word list for each book (`bookVocab`) and support for it in the five orphaned games; coloring line art from the books; a companion printable for each book; the Reading Passport; age-fit modes for Journal, Bingo and Character Workshop; the Activities-hub age filter (E6); the second activities in §5b.
+
+**Noticed, not changed:** the Spanish catalog description of *The Day the Colors Got Mixed Up* calls the Color Keeper "el Guardián de los Colores", while its discussion prompt says "la Guardiana". The new Finish-the-Story uses "la Guardiana". The catalog should pick one.
