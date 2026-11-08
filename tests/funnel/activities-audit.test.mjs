@@ -51,7 +51,8 @@ function fromMap(html) {
 }
 
 test('games — the baked per-book continuation matches journey.ts for every referring book', () => {
-  for (const a of activities.filter((x) => x.game)) {
+  // Word games accept every book with story words; tests/funnel/book-vocab.test.mjs covers them.
+  for (const a of activities.filter((x) => x.game && !['bilingual-flashcards', 'matching', 'spelling-bee'].includes(x.slug))) {
     const map = fromMap(readFileSync(`public/games/${a.slug}.html`, 'utf8'));
     assert.ok(map, `${a.slug}: no data-ste-from map — re-run npm run patch:games`);
     const referrers = books.filter((b) => (b.relatedActivityIds ?? []).includes(a.slug));

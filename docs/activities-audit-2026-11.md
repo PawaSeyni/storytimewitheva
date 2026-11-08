@@ -223,7 +223,7 @@ Target: every book with at least 1 book-specific activity by the end of the P1 w
 
 **Tests:** `tests/funnel/activities-audit.test.mjs`; `tests/funnel/activity-studio.test.mjs` and `tests/e2e/studio.spec.ts` extended to wave 2.
 
-**Still open:** a word list for each book (`bookVocab`) and support for it in the five orphaned games; coloring line art from the books; a companion printable for each book; the Reading Passport; age-fit modes for Journal, Bingo and Character Workshop; the Activities-hub age filter (E6); the second activities in §5b.
+**Still open:** book mode for Word Explorer and Sentence Builder; coloring line art from the books; a companion printable for each book; the Reading Passport; age-fit modes for Journal, Bingo and Character Workshop; the Activities-hub age filter (E6); the second activities in §5b.
 
 ### Pass 2: owner decisions
 
@@ -231,3 +231,18 @@ Target: every book with at least 1 book-specific activity by the end of the P1 w
 - **Tower's junior engineer is a woman everywhere.** The discussion prompt now reads "her" / "una joven ingeniera" / "une jeune ingénieure" (also in the sign-off docs). The English description and the SEO lines in all three languages say so, as do the Ask-First Architect page and its card on the activities list.
 - **Leo: a complete worksheet, and the PDF stays as it is.** New page `/activities/leo-and-the-wolf-worksheet`, listed second on the Leo book page after Trust Meter. It prints on two pages in every language: before reading, story words (matching), story order, true or not true, feelings, honest or tricky, think and write, draw it, and an honesty promise. Name and date are optional, and there's an optional answer key that prints on its own page. Every fact comes from the book description, and the ending is not given away. The free storybook PDF (`/free/leo-and-the-wolf`) serves a different purpose and is unchanged.
 - Studio pages now leave the "Mark completed" and "Read next" buttons off the printout. A worksheet can also leave the Studio banner off paper (`printHero={false}`).
+
+### Pass 3: story words for every book (`bookVocab`)
+
+- **New data: `src/data/bookVocab.data.ts`.** Eight words per book in EN, ES and FR (160 in all), taken from each book's description. Each word has a single emoji and is one spellable word of 3 to 9 letters in every language. Tests enforce this (`tests/funnel/book-vocab.test.mjs`).
+- **Three word games now have a book mode:** Flashcards, Memory Match and Spelling Bee. Opened with `?book=<id>`, they add a "📖 <book>" set and select it.
+  - Spelling Bee spells each word in the game's language, accents included, and gives the other two languages as the hint.
+  - The words are baked into each game by `scripts/patch-games.mjs`, so they can't drift from the data.
+  - "Back to <book>" works from any of the 20 books.
+  - An unknown id falls back to the normal game.
+- **A "Story words" strip on every book page** shows the eight words in the reader's language and links to the three games in book mode.
+- **Result:** three of the five word games that no book linked are now word games for every book. Word Explorer and Sentence Builder are still to do: Sentence Builder needs whole sentences per book, not single words.
+- **Compromises in the word lists:**
+  - Some emoji are approximate (💧 for puddle, 🥅 for net, 🧊 for cube).
+  - A few natural words were left out because they were too long or hyphenated (cliff, rainbow / arc-en-ciel, grand-père, grenouille).
+  - French uses "papi/mamie" for grandpa/grandma.

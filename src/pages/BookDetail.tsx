@@ -15,6 +15,7 @@ import { relatedBooksFor } from '../data/relatedBooks';
 import { journeysByBookId, publishedJourneys } from '../data/contentIndex';
 import ResourceStrip from '../components/ResourceStrip';
 import RelatedActivities from '../components/RelatedActivities';
+import StoryWords from '../components/StoryWords';
 import ShareButton from '../components/ShareButton';
 import ReadAloudButton from '../components/ReadAloudButton';
 import { useExperiment } from '../lib/experiments';
@@ -348,6 +349,7 @@ export default function BookDetail() {
       )}
 
       <RelatedActivities slugs={activitySlugs} bookId={book.id} />
+      <StoryWords bookId={book.id} />
 
       <ResourceStrip />
     </main>

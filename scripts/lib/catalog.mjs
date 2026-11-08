@@ -19,6 +19,7 @@ const CONTENT_INDEX = path.join(ROOT, 'src', 'data', 'contentIndex.ts');
 const RESOURCES = path.join(ROOT, 'src', 'data', 'resources.ts');
 const RELATED = path.join(ROOT, 'src', 'data', 'relatedBooks.ts');
 const ACTIVITIES = path.join(ROOT, 'src', 'data', 'activities.data.ts');
+const BOOK_VOCAB = path.join(ROOT, 'src', 'data', 'bookVocab.data.ts');
 const JOURNEY = path.join(ROOT, 'src', 'lib', 'journey.ts');
 const JOURNEYS = path.join(ROOT, 'src', 'data', 'journeys.ts');
 const COLLECTIONS = path.join(ROOT, 'src', 'data', 'collections.ts');
@@ -106,6 +107,13 @@ let activitiesCache = null;
 export async function loadActivities() {
   if (!activitiesCache) activitiesCache = await loadModule(ACTIVITIES);
   return activitiesCache;
+}
+
+let bookVocabCache = null;
+/** Story words per book (src/data/bookVocab.data.ts), baked into the word games. */
+export async function loadBookVocab() {
+  if (!bookVocabCache) bookVocabCache = await loadModule(BOOK_VOCAB);
+  return bookVocabCache;
 }
 
 let journeyCache = null;

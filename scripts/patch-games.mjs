@@ -12,7 +12,7 @@
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadCatalog, loadJourney } from './lib/catalog.mjs';
+import { loadCatalog, loadJourney, loadBookVocab } from './lib/catalog.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const GAMES_DIR = path.resolve(__dirname, '..', 'public', 'games');
@@ -35,11 +35,22 @@ const bookTitles = new Map(books.map((b) => [b.id, b.title]));
 // (nextStep with fromBook), and baked as a small map. At runtime the inline script picks
 // the entry for the URL's book, re-points "Read next", and adds "Back to <book>". An id
 // that is not in the map (unrelated, invented) leaves the default block untouched.
+// Word games (audit 2026-11, bookVocab): opened from ANY book's "Story words" strip with
+// ?book=<id>, so every book with story words is a source book for them, not only the books
+// that list the game in relatedActivityIds.
+const WORD_GAMES = ['bilingual-flashcards', 'matching', 'spelling-bee'];
+const { bookVocab } = await loadBookVocab();
+const isSourceBook = (b, slug) => (b.relatedActivityIds ?? []).includes(slug) || (WORD_GAMES.includes(slug) && (bookVocab[b.id] ?? []).length > 0);
+
 const fromBookMap = (slug) => {
   const out = {};
   for (const b of books) {
-    if (!(b.relatedActivityIds ?? []).includes(slug)) continue;
-    const step = nextStep('activity', slug, b.id);
+    if (!isSourceBook(b, slug)) continue;
+    // A word game's referrer that does not list the game still continues from that book:
+    // nextStep only honours a book that links the activity, so resolve it from the book.
+    const step = (b.relatedActivityIds ?? []).includes(slug)
+      ? nextStep('activity', slug, b.id)
+      : (b.relatedBookIds ?? []).map((id) => ({ type: 'book', id, href: `/books/${id}/` })).find((s) => bookTitles.has(s.id)) ?? { type: 'book', id: b.id, href: `/books/${b.id}/` };
     if (!step || step.type !== 'book') continue;
     out[b.id] = { next: step.href, nextTitles: bookTitles.get(step.id), backTitles: b.title };
   }
@@ -104,6 +115,15 @@ const storyMapSnippet = () => {
   );
   // JSON inside <script>: escape "<" so no string can close the tag early.
   return `\n<!-- ${STORY_MAP_MARKER}: injected by scripts/patch-games.mjs from src/data/books.data.ts -->\n<script>window.STE_STORY_BOOKS = ${JSON.stringify(data).replace(/</g, '\\u003c')};</script>\n`;
+};
+
+// 5. Word-game book mode (audit 2026-11): story words for every book + the shared helper.
+const VOCAB_MARKER = 'STE_BOOK_VOCAB';
+const vocabSnippet = () => {
+  const data = Object.fromEntries(
+    books.filter((b) => (bookVocab[b.id] ?? []).length > 0).map((b) => [b.id, { title: b.title, words: bookVocab[b.id] }]),
+  );
+  return `\n<!-- ${VOCAB_MARKER}: injected by scripts/patch-games.mjs from src/data/bookVocab.data.ts -->\n<script>window.STE_BOOK_VOCAB = ${JSON.stringify(data).replace(/</g, '\\u003c')};</script>\n<script src="/games/book-words.js"></script>\n`;
 };
 
 const syncSnippet = (slug) => `
@@ -202,6 +222,13 @@ for (const file of files) {
     } else {
       console.warn(`⚠️  ${file}: no <footer> found, continuation not injected`);
     }
+  }
+  // 5. Word games: story words + book-words.js, right after i18n.js (before the game script).
+  html = html.replace(new RegExp(`\\n*<!-- ${VOCAB_MARKER}[\\s\\S]*?<script src="/games/book-words.js"></script>\\n*`), '\n');
+  if (WORD_GAMES.includes(slug)) {
+    const I18N_TAG = '<script src="/games/i18n.js"></script>';
+    if (!html.includes(I18N_TAG)) throw new Error(`${file}: i18n.js tag not found`);
+    html = html.replace(I18N_TAG, `${I18N_TAG}${vocabSnippet()}`);
   }
   // 4. Story Map data, right after i18n.js so it exists before the game script runs.
   if (slug === 'story-map') {
