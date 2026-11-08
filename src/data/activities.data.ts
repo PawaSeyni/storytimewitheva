@@ -26,6 +26,15 @@ export interface Activity {
   /** Standalone HTML game served from /public/games/<slug>.html, opened as a
    *  full page (vs an in-app React demo at /activities/<slug>). */
   game?: boolean;
+  /** Opened from EVERY book page (the "Story words" strip), so any valid book is accepted as
+   *  the source book (?book=<id>), not only the books that list it in relatedActivityIds. */
+  anyBook?: boolean;
+  /** Built for specific book(s) (the Activity Studio pages and the Leo worksheet). The hub
+   *  shows the book it belongs to, and every book must lead with one (activities-audit test). */
+  bookSpecific?: boolean;
+  /** Has a "little reader" mode (ages 4-5: pictures, taps and read-aloud instead of writing).
+   *  The hub labels it, and it is what lets a 6+ activity carry a 4-9 age range. */
+  littleReader?: boolean;
 }
 
 export const activities: Activity[] = [
@@ -52,7 +61,8 @@ export const activities: Activity[] = [
   {
     slug: 'character-workshop',
     emoji: '🎭',
-    ages: '6-9',
+    ages: '4-9',
+    littleReader: true,
     title: {
       en: 'Character Creation Workshop',
       es: 'Taller de creación de personajes',
@@ -72,7 +82,8 @@ export const activities: Activity[] = [
   {
     slug: 'adventure-journal',
     emoji: '📓',
-    ages: '6-9',
+    ages: '4-9',
+    littleReader: true,
     title: {
       en: 'Adventure Reading Journal',
       es: 'Diario de aventuras de lectura',
@@ -152,7 +163,8 @@ export const activities: Activity[] = [
   {
     slug: 'bingo',
     emoji: '🎯',
-    ages: '6-9',
+    ages: '4-9',
+    littleReader: true,
     title: {
       en: 'Reading Bingo',
       es: 'Bingo de lectura',
@@ -193,6 +205,7 @@ export const activities: Activity[] = [
     slug: 'word-explorer',
     emoji: '🔤',
     ages: '5-9',
+    anyBook: true,
     title: { en: 'Word Explorer', es: 'Explorador de palabras', fr: 'Explorateur de mots' },
     desc: {
       en: 'Learn new words in English, Spanish, and French with fun flashcards and quizzes.',
@@ -208,6 +221,7 @@ export const activities: Activity[] = [
     emoji: '🌍',
     ages: '4-8',
     game: true,
+    anyBook: true,
     title: { en: 'Multilingual Word Flashcards', es: 'Tarjetas de palabras multilingües', fr: 'Cartes de mots multilingues' },
     desc: {
       en: 'Tap a card to flip it and hear the word in English, Spanish, and French.',
@@ -221,6 +235,7 @@ export const activities: Activity[] = [
     emoji: '🃏',
     ages: '3-5',
     game: true,
+    anyBook: true,
     title: { en: "Eva's Matching Adventure", es: 'La aventura de parejas de Eva', fr: 'Le jeu de paires d\'Eva' },
     desc: {
       en: 'Flip two cards to find the matching pairs, perfect for little ones.',
@@ -247,6 +262,7 @@ export const activities: Activity[] = [
     emoji: '🐝',
     ages: '5-9',
     game: true,
+    anyBook: true,
     title: { en: "Eva's Spelling Bee", es: 'El concurso de ortografía de Eva', fr: 'Le concours d\'orthographe d\'Eva' },
     desc: {
       en: 'Listen to the word, then tap the letters to spell it. Three levels to master.',
@@ -363,14 +379,16 @@ export const activities: Activity[] = [
   // route segments; the book pairings live on the books (relatedActivityIds), first slot.
   {
     slug: 'color-mix-lab',
+    bookSpecific: true,
     emoji: '🎨',
     ages: '4-7',
-    title: { en: 'Color Keeper’s Mix-It Lab', es: 'El laboratorio de mezclas del Guardián de los Colores', fr: 'Le labo des mélanges du Gardien des Couleurs' },
+    title: { en: 'Color Keeper’s Mix-It Lab', es: 'El laboratorio de mezclas de la Guardiana de los Colores', fr: 'Le labo des mélanges de la Gardienne des Couleurs' },
     desc: { en: 'Predict what two paint colors will make, mix them, and print a color recipe card in three languages.', es: 'Predice qué color formarán dos pinturas, mézclalas e imprime una tarjeta de receta de color en tres idiomas.', fr: 'Prédis la couleur que donneront deux peintures, mélange-les et imprime une carte-recette de couleur en trois langues.' },
     category: { en: 'Discovery', es: 'Descubrimiento', fr: 'Découverte' },
   },
   {
     slug: 'feelings-weather-report',
+    bookSpecific: true,
     emoji: '🌦️',
     ages: '3-7',
     title: { en: 'My Feelings Weather Report', es: 'Mi parte del tiempo emocional', fr: 'Ma météo des émotions' },
@@ -379,6 +397,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'first-day-brave-plan',
+    bookSpecific: true,
     emoji: '🚩',
     ages: '4-8',
     title: { en: 'First-Day Brave Plan', es: 'Mi plan valiente para el primer día', fr: 'Mon plan courageux du premier jour' },
@@ -387,6 +406,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'cloud-detective-journal',
+    bookSpecific: true,
     emoji: '☁️',
     ages: '4-8',
     title: { en: 'Cloud Detective Field Journal', es: 'Diario de campo del detective de nubes', fr: 'Carnet de terrain du détective des nuages' },
@@ -395,6 +415,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'shadow-theatre',
+    bookSpecific: true,
     emoji: '🌙',
     ages: '3-7',
     title: { en: 'Shadow Theatre at Bedtime', es: 'Teatro de sombras a la hora de dormir', fr: 'Théâtre d’ombres au coucher' },
@@ -403,6 +424,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'kindness-ripple',
+    bookSpecific: true,
     emoji: '💗',
     ages: '4-9',
     title: { en: 'Kindness Ripple Challenge', es: 'El reto de las ondas de bondad', fr: 'Le défi des ondes de gentillesse' },
@@ -411,6 +433,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'story-quilt',
+    bookSpecific: true,
     emoji: '🧵',
     ages: '5-9',
     title: { en: 'Grandparent Story Quilt', es: 'La colcha de historias de los abuelos', fr: 'La courtepointe des histoires de grands-parents' },
@@ -419,11 +442,126 @@ export const activities: Activity[] = [
   },
   {
     slug: 'patient-maker-passport',
+    bookSpecific: true,
     emoji: '🛠️',
     ages: '5-9',
     title: { en: 'The Patient Maker Passport', es: 'El pasaporte del creador paciente', fr: 'Le passeport du fabricant patient' },
     desc: { en: 'Break a goal into small practice steps, record the attempts, and earn a printable completion certificate.', es: 'Divide una meta en pequeños pasos de práctica, registra los intentos y gana un certificado imprimible.', fr: 'Découpe un objectif en petites étapes d’entraînement, note les essais et gagne un certificat à imprimer.' },
     category: { en: 'Creativity', es: 'Creatividad', fr: 'Créativité' },
   },
+  // ── Activity Studio, wave 2 (activities audit 2026-11): one book-specific activity for
+  // each of the nine books that had none. Same contract as wave 1: the paired book lists
+  // the activity FIRST in its relatedActivityIds.
+  {
+    slug: 'trust-meter',
+    bookSpecific: true,
+    emoji: '🐑',
+    ages: '4-8',
+    title: { en: 'The Trust Meter', es: 'El medidor de confianza', fr: 'Le baromètre de la confiance' },
+    desc: { en: 'Make Leo’s choices on the hill and watch the village’s trust go down fast and come back slowly, then print an honesty promise.', es: 'Toma las decisiones de Leo en la colina y mira cómo la confianza del pueblo baja rápido y vuelve despacio; luego imprime una promesa de honestidad.', fr: 'Fais les choix de Léo sur la colline et regarde la confiance du village tomber vite et revenir lentement, puis imprime une promesse d’honnêteté.' },
+    category: { en: 'Feelings', es: 'Emociones', fr: 'Émotions' },
+  },
+  {
+    slug: 'harmonia-orchestra',
+    bookSpecific: true,
+    emoji: '🎶',
+    ages: '3-6',
+    title: { en: 'Harmonia Color Orchestra', es: 'La orquesta de colores de Harmonia', fr: 'L’orchestre des couleurs d’Harmonia' },
+    desc: { en: 'Every color sings its own note. Play the symphony with all of them, write an eight-beat song, and print the score to play at home.', es: 'Cada color canta su propia nota. Toca la sinfonía con todos, compón una canción de ocho tiempos e imprime la partitura para tocarla en casa.', fr: 'Chaque couleur chante sa propre note. Joue la symphonie avec toutes, compose une chanson de huit temps et imprime la partition pour la jouer à la maison.' },
+    category: { en: 'Music & Literacy', es: 'Música y lectura', fr: 'Musique et lecture' },
+  },
+  {
+    slug: 'ask-first-architect',
+    bookSpecific: true,
+    emoji: '🏗️',
+    ages: '5-9',
+    title: { en: 'Ask-First Architect', es: 'Arquitecto que pregunta primero', fr: 'L’architecte qui pose d’abord des questions' },
+    desc: { en: 'Build a tower floor by floor, and stop to listen when the junior engineer raises her hand. Print three questions for real block building.', es: 'Construye una torre piso a piso y detente a escuchar cuando la joven ingeniera levante la mano. Imprime tres preguntas para construir con bloques de verdad.', fr: 'Construis une tour étage par étage, et arrête-toi pour écouter quand la jeune ingénieure lève la main. Imprime trois questions pour construire avec de vrais cubes.' },
+    category: { en: 'Discovery', es: 'Descubrimiento', fr: 'Découverte' },
+  },
+  {
+    slug: 'true-treasure-chest',
+    bookSpecific: true,
+    emoji: '👑',
+    ages: '5-9',
+    title: { en: 'My True Treasure Chest', es: 'Mi cofre del verdadero tesoro', fr: 'Mon coffre au vrai trésor' },
+    desc: { en: 'Sort what gold can buy from what makes you truly rich, then fill and print your own treasure chest.', es: 'Separa lo que el oro puede comprar de lo que te hace rico de verdad, y luego llena e imprime tu propio cofre del tesoro.', fr: 'Sépare ce que l’or peut acheter de ce qui te rend vraiment riche, puis remplis et imprime ton propre coffre au trésor.' },
+    category: { en: 'Feelings', es: 'Emociones', fr: 'Émotions' },
+  },
+  {
+    slug: 'one-of-a-kind-tree',
+    bookSpecific: true,
+    emoji: '🍎',
+    ages: '4-8',
+    title: { en: 'My One-of-a-Kind Tree', es: 'Mi árbol único', fr: 'Mon arbre unique' },
+    desc: { en: 'Choose a trunk shape, crooked counts, and grow leaves that say what makes you special. Print it for a class orchard wall.', es: 'Elige la forma del tronco, torcido también vale, y haz crecer hojas que digan qué te hace especial. Imprímelo para un huerto en la pared de la clase.', fr: 'Choisis la forme du tronc, tordu compris, et fais pousser des feuilles qui disent ce qui te rend spécial. Imprime-le pour un verger mural en classe.' },
+    category: { en: 'Art & Creativity', es: 'Arte y creatividad', fr: 'Art et créativité' },
+  },
+  {
+    slug: 'kindness-mirror',
+    bookSpecific: true,
+    emoji: '🪞',
+    ages: '4-8',
+    title: { en: 'The Kindness Mirror', es: 'El espejo de la bondad', fr: 'Le miroir de la gentillesse' },
+    desc: { en: 'A mirror that shows how you shine, not how you look. Pick three ways you shine and make four compliment cards to give away.', es: 'Un espejo que muestra cómo brillas, no cómo te ves. Elige tres maneras en que brillas y crea cuatro tarjetas de cumplidos para regalar.', fr: 'Un miroir qui montre comment tu brilles, pas à quoi tu ressembles. Choisis trois façons de briller et crée quatre cartes de compliments à offrir.' },
+    category: { en: 'Feelings', es: 'Emociones', fr: 'Émotions' },
+  },
+  {
+    slug: 'listen-like-a-fox',
+    bookSpecific: true,
+    emoji: '🦊',
+    ages: '4-8',
+    title: { en: 'Listen Like a Fox', es: 'Escucha como un zorro', fr: 'Écoute comme un renard' },
+    desc: { en: 'Hear Mother Fox’s directions, then lead Russet home step by step, without rushing and away from the fence.', es: 'Escucha las indicaciones de Mamá Zorra y guía a Russet a casa paso a paso, sin prisas y lejos de la alambrada.', fr: 'Écoute les consignes de Maman Renarde, puis ramène Russet au terrier pas à pas, sans te presser et loin de la clôture.' },
+    category: { en: 'Games', es: 'Juegos', fr: 'Jeux' },
+  },
+  {
+    slug: 'puddle-voyage',
+    bookSpecific: true,
+    emoji: '⛵',
+    ages: '3-7',
+    title: { en: 'Puddle Voyage', es: 'Viaje por el charco', fr: 'Voyage dans la flaque' },
+    desc: { en: 'Put the little boat’s new friends in order, test what floats or sinks with a grown-up, and fold a paper boat.', es: 'Ordena a los nuevos amigos del barquito, prueba con un adulto qué flota y qué se hunde, y dobla un barco de papel.', fr: 'Remets dans l’ordre les nouveaux amis du petit bateau, teste avec un adulte ce qui flotte ou coule, et plie un bateau en papier.' },
+    category: { en: 'Discovery', es: 'Descubrimiento', fr: 'Découverte' },
+  },
+  {
+    slug: 'map-my-world',
+    bookSpecific: true,
+    emoji: '🗺️',
+    ages: '4-8',
+    title: { en: 'Map My World', es: 'El mapa de mi mundo', fr: 'La carte de mon monde' },
+    desc: { en: 'Draw a map of your room or yard with stamps and a legend, then hide a castle for a grown-up to find.', es: 'Dibuja un mapa de tu cuarto o tu patio con sellos y una leyenda, y esconde un castillo para que un adulto lo encuentre.', fr: 'Dessine la carte de ta chambre ou de ton jardin avec des tampons et une légende, puis cache un château qu’un adulte devra trouver.' },
+    category: { en: 'Creativity', es: 'Creatividad', fr: 'Créativité' },
+  },
+  // A complete paper worksheet for one book. Separate from the free Leo storybook PDF
+  // (/free/leo-and-the-wolf), which serves a different purpose and is left as it is.
+  {
+    slug: 'leo-and-the-wolf-worksheet',
+    bookSpecific: true,
+    emoji: '📝',
+    ages: '4-8',
+    title: { en: 'Leo and the Wolf: Story Worksheet', es: 'Leo y el lobo: ficha del cuento', fr: 'Léo et le loup : fiche de lecture' },
+    desc: { en: 'A complete two-page worksheet to print: story words, story order, true or not true, feelings, honest or tricky, writing, drawing and an honesty promise.', es: 'Una ficha completa de dos páginas para imprimir: palabras del cuento, orden, verdadero o falso, sentimientos, honesto o tramposo, escritura, dibujo y una promesa de honestidad.', fr: 'Une fiche complète de deux pages à imprimer : mots de l’histoire, ordre, vrai ou faux, émotions, honnête ou tricheur, écriture, dessin et une promesse d’honnêteté.' },
+    category: { en: 'Reading', es: 'Lectura', fr: 'Lecture' },
+  },
+  // A two-page printable for ANY book, built from its discussion prompts and story words.
+  // Offered on every book page (Story words strip), so it accepts any book as ?book=<id>.
+  {
+    slug: 'story-worksheet',
+    emoji: '📚',
+    ages: '4-9',
+    anyBook: true,
+    title: { en: 'Story Worksheet', es: 'Ficha del cuento', fr: 'Fiche de lecture' },
+    desc: { en: 'A two-page printable for any book: before, during and after questions, story words to match and translate, a drawing and a review.', es: 'Una ficha de dos páginas para cualquier libro: preguntas para antes, durante y después, palabras del cuento para unir y traducir, un dibujo y una opinión.', fr: 'Une fiche de deux pages pour n’importe quel livre : questions avant, pendant et après, mots de l’histoire à relier et à traduire, un dessin et un avis.' },
+    category: { en: 'Reading', es: 'Lectura', fr: 'Lecture' },
+  },
+  // One stamp per book read; the stamp is the book's "read" status in the personal library.
+  {
+    slug: 'reading-passport',
+    emoji: '🛂',
+    ages: '3-9',
+    title: { en: 'Eva Gallo Reading Passport', es: 'Pasaporte de lectura Eva Gallo', fr: 'Passeport de lecture Eva Gallo' },
+    desc: { en: 'Collect a stamp for every book in the collection, earn bronze, silver and gold badges, and print your reading certificate.', es: 'Consigue un sello por cada libro de la colección, gana insignias de bronce, plata y oro, e imprime tu certificado de lectura.', fr: 'Gagne un tampon pour chaque livre de la collection, remporte les badges de bronze, d’argent et d’or, et imprime ton diplôme de lecture.' },
+    category: { en: 'Reading', es: 'Lectura', fr: 'Lecture' },
+  },
 ];
-

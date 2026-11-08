@@ -41,6 +41,7 @@
         endingHeading: '🌟 Now write your ending!',
         endingPrompt: 'How does YOUR story end? Write anything you like!',
         endingPlaceholder: 'And then...',
+        congratsSpeech: 'Congratulations {name}! You finished the story! Amazing work!',
         finishMyStory: '🎉 Finish My Story!',
         certPresents: 'Story Time with Eva presents',
         certTitle: 'Story Ending Certificate',
@@ -72,6 +73,7 @@
         endingHeading: '🌟 ¡Ahora escribe tu final!',
         endingPrompt: '¿Cómo termina TU cuento? ¡Escribe lo que quieras!',
         endingPlaceholder: 'Y entonces...',
+        congratsSpeech: '¡Felicidades, {name}! ¡Terminaste el cuento! ¡Un trabajo increíble!',
         finishMyStory: '🎉 ¡Terminar mi cuento!',
         certPresents: 'Story Time with Eva presenta',
         certTitle: 'Certificado de final de cuento',
@@ -103,6 +105,7 @@
         endingHeading: '🌟 Maintenant, écris ta fin !',
         endingPrompt: 'Comment se termine TON histoire ? Écris ce que tu veux !',
         endingPlaceholder: 'Et puis...',
+        congratsSpeech: 'Bravo {name} ! Tu as terminé l’histoire ! Super travail !',
         finishMyStory: '🎉 Terminer mon histoire !',
         certPresents: 'Story Time with Eva présente',
         certTitle: 'Certificat de fin d\'histoire',
@@ -341,85 +344,183 @@
       return _voices.find(v => v.lang && v.lang.toLowerCase().startsWith(prefix)) || null;
     }
 
+    // Audit 2026-11 P0: every story starts from a real Eva Gallo Collection book, keeps
+    // that book's own characters (never Eva as the hero), and is written in all three
+    // languages. `book` is the catalog id: a ?book=<id> visit lists that story first.
+    const L3 = (o) => (o && (o[window.GAME_LANG] || o.en)) || '';
     const stories = [
       {
-        id: 'rainbow',
-        emoji: '🌈',
-        title: 'The Day the Colors Got Mixed Up',
-        opening: 'One morning, Eva woke up and looked out her window. Something was very strange: the sky was GREEN, the grass was BLUE, and the sun was PURPLE! All the colors in the world had gotten mixed up overnight.',
+        id: 'diego', book: 'diegos-brave-leap', emoji: '🌊',
+        title: { en: "Diego's Brave Leap", es: 'El salto valiente de Diego', fr: 'Le saut courageux de Diego' },
+        opening: {
+          en: 'Diego stood at the edge of the warm rock. Far below, the sea sparkled. His friends were splashing and waving. "Jump, Diego!" they called. His heart fluttered like a little bird.',
+          es: 'Diego estaba al borde de la roca tibia. Muy abajo, el mar brillaba. Sus amigos chapoteaban y saludaban. «¡Salta, Diego!», gritaban. Su corazón revoloteaba como un pajarito.',
+          fr: 'Diego se tenait au bord du rocher tiède. Tout en bas, la mer scintillait. Ses amis barbotaient et lui faisaient signe. « Saute, Diego ! » criaient-ils. Son cœur battait comme un petit oiseau.',
+        },
         steps: [
-          {
-            question: 'Eva decided to find out what happened. Where did she go first?',
-            choices: ['She ran to the Rainbow Garden at the edge of town', 'She climbed the tallest tree to see the whole village', 'She knocked on the door of the wise old owl', 'She followed a trail of colorful footprints'],
-          },
-          {
-            question: 'Eva discovered the colors were mixed up because...',
-            choices: ['A mischievous wind sprite had been playing tricks', 'The Color Keeper had lost her magic paintbrush', 'Two rainbows had crashed into each other', 'A little cloud had sneezed and scrambled everything'],
-          },
-          {
-            question: 'To fix the colors, Eva had to...',
-            choices: ['Sing a special color song with all her friends', 'Find all 7 color crystals hidden around the village', 'Paint a new rainbow from scratch', 'Ask the sun to sneeze everything back into place'],
-          },
+          { question: { en: 'Diego took a deep breath. What did he do first?', es: 'Diego respiró hondo. ¿Qué hizo primero?', fr: 'Diego a pris une grande inspiration. Qu’a-t-il fait d’abord ?' },
+            choices: {
+              en: ['He counted the waves, one, two, three', 'He looked for his family on the beach', 'He told himself, "It is okay to feel scared"', 'He sat down for a moment to feel the warm rock'],
+              es: ['Contó las olas: una, dos, tres', 'Buscó a su familia en la playa', 'Se dijo: «Está bien tener miedo»', 'Se sentó un momento para sentir la roca tibia'],
+              fr: ['Il a compté les vagues : une, deux, trois', 'Il a cherché sa famille sur la plage', 'Il s’est dit : « J’ai le droit d’avoir peur »', 'Il s’est assis un instant sur le rocher tiède'],
+            } },
+          { question: { en: 'Someone came to stand beside Diego. Who was it?', es: 'Alguien se acercó a Diego. ¿Quién era?', fr: 'Quelqu’un est venu se placer à côté de Diego. Qui était-ce ?' },
+            choices: {
+              en: ['His big sister, who said she was scared her first time too', 'An old fisherman with a kind smile', 'His best friend, holding out a hand', 'A seagull that landed right next to him'],
+              es: ['Su hermana mayor, que le dijo que ella también tuvo miedo la primera vez', 'Un viejo pescador con una sonrisa amable', 'Su mejor amigo, que le tendió la mano', 'Una gaviota que se posó justo a su lado'],
+              fr: ['Sa grande sœur, qui avait eu peur elle aussi la première fois', 'Un vieux pêcheur au sourire gentil', 'Son meilleur ami, qui lui tendait la main', 'Une mouette qui s’est posée juste à côté de lui'],
+            } },
+          { question: { en: 'Diego decided on his brave step. It was...', es: 'Diego eligió su paso valiente. Fue...', fr: 'Diego a choisi son pas courageux. C’était...' },
+            choices: {
+              en: ['To jump while his heart was still fluttering', 'To try the lower rock first, then the high one', 'To jump holding hands with a friend', 'To wait, watch, and jump when he felt ready'],
+              es: ['Saltar mientras el corazón todavía le revoloteaba', 'Probar primero la roca baja y luego la alta', 'Saltar de la mano de un amigo', 'Esperar, mirar y saltar cuando se sintiera listo'],
+              fr: ['Sauter pendant que son cœur battait encore fort', 'Essayer d’abord le petit rocher, puis le grand', 'Sauter en tenant la main d’un ami', 'Attendre, regarder, et sauter quand il se sentirait prêt'],
+            } },
         ],
       },
       {
-        id: 'forest',
-        emoji: '🌲',
-        title: 'The Secret of the Whispering Forest',
-        opening: 'Eva loved walking through the forest behind her house. But one day, the trees began to whisper her name. "Eva... Eva... we need your help," the leaves rustled softly. Eva stopped and listened very carefully.',
+        id: 'leo', book: 'leo-and-the-wolf', emoji: '🐑',
+        title: { en: 'Leo and the Wolf', es: 'Leo y el lobo', fr: 'Léo et le loup' },
+        opening: {
+          en: 'Leo had shouted "WOLF!" twice when there was no wolf. Twice the villagers came running up the hill and found only sheep. Now the sun was setting, and the hill was very quiet. Leo looked down at the village and felt a heavy feeling in his tummy.',
+          es: 'Leo había gritado «¡LOBO!» dos veces sin que hubiera lobo. Dos veces los aldeanos subieron corriendo la colina y solo encontraron ovejas. Ahora el sol se ponía y la colina estaba muy tranquila. Leo miró el pueblo y sintió un peso en la barriga.',
+          fr: 'Léo avait crié « LOUP ! » deux fois alors qu’il n’y avait pas de loup. Deux fois, les villageois avaient grimpé la colline en courant et n’avaient trouvé que des moutons. Maintenant le soleil se couchait et la colline était très calme. Léo regardait le village, le ventre tout lourd.',
+        },
         steps: [
-          {
-            question: 'The trees needed Eva\'s help because...',
-            choices: ['A family of birds had lost their home', 'Someone had been taking the forest\'s magic seeds', 'The river that fed the trees had stopped flowing', 'A sleeping giant was about to wake up'],
-          },
-          {
-            question: 'Eva found a clue, a tiny glowing door at the base of the oldest tree. She...',
-            choices: ['Knocked three times and waited politely', 'Peeked through the keyhole and saw something amazing', 'Placed her hand on it and it swung open by itself', 'Called out "Hello? Is anyone home?"'],
-          },
-          {
-            question: 'Inside, Eva met a tiny forest guardian who told her the solution was...',
-            choices: ['To plant a new magic seed under the moonlight', 'To tell the forest a story it had never heard before', 'To bring laughter back to the forest with music', 'To find the missing piece of the forest\'s ancient map'],
-          },
+          { question: { en: 'Leo knew he had made a mistake. What did he do?', es: 'Leo sabía que se había equivocado. ¿Qué hizo?', fr: 'Léo savait qu’il avait fait une bêtise. Qu’a-t-il fait ?' },
+            choices: {
+              en: ['He walked down to the village to say sorry', 'He wrote "I will tell the truth" on a flat stone', 'He asked the oldest shepherd what to do', 'He promised the sheep he would never trick anyone again'],
+              es: ['Bajó al pueblo a pedir perdón', 'Escribió «Diré la verdad» en una piedra plana', 'Le preguntó al pastor más anciano qué hacer', 'Les prometió a las ovejas que nunca volvería a engañar a nadie'],
+              fr: ['Il est descendu au village pour demander pardon', 'Il a écrit « Je dirai la vérité » sur une pierre plate', 'Il a demandé conseil au plus vieux berger', 'Il a promis aux moutons de ne plus jamais tromper personne'],
+            } },
+          { question: { en: 'Then, at the edge of the forest, two yellow eyes appeared. Leo...', es: 'Entonces, al borde del bosque, aparecieron dos ojos amarillos. Leo...', fr: 'Alors, à la lisière de la forêt, deux yeux jaunes sont apparus. Léo...' },
+            choices: {
+              en: ['Gathered the sheep close and stood very still', 'Rang the big bell that only meant real danger', 'Ran to the nearest farmhouse for help', 'Made himself tall and called out in a steady voice'],
+              es: ['Reunió a las ovejas y se quedó muy quieto', 'Tocó la gran campana que solo sonaba ante un peligro real', 'Corrió a la granja más cercana a pedir ayuda', 'Se hizo grande y gritó con voz firme'],
+              fr: ['Il a rassemblé les moutons et il est resté immobile', 'Il a sonné la grosse cloche réservée aux vrais dangers', 'Il a couru à la ferme la plus proche chercher de l’aide', 'Il s’est fait grand et a appelé d’une voix ferme'],
+            } },
+          { question: { en: 'Leo wanted the village to trust him again. Day by day, he...', es: 'Leo quería que el pueblo volviera a confiar en él. Día tras día...', fr: 'Léo voulait que le village lui fasse à nouveau confiance. Jour après jour, il...' },
+            choices: {
+              en: ['Told the truth, even about small things', 'Kept every promise, no matter how tiny', 'Helped each villager who had come running for nothing', 'Was patient, because trust grows back slowly'],
+              es: ['Decía la verdad, incluso en cosas pequeñas', 'Cumplía cada promesa, por pequeña que fuera', 'Ayudaba a cada aldeano que había subido corriendo para nada', 'Tenía paciencia, porque la confianza vuelve despacio'],
+              fr: ['Disait la vérité, même pour les petites choses', 'Tenait chaque promesse, même minuscule', 'Aidait chaque villageois qui était accouru pour rien', 'Restait patient, car la confiance repousse lentement'],
+            } },
         ],
       },
       {
-        id: 'ocean',
-        emoji: '🌊',
-        title: 'Eva and the Talking Fish',
-        opening: 'Eva was sitting on the dock, dangling her feet in the cool blue water, when a shimmery silver fish popped its head above the surface. "Excuse me," said the fish politely, "but I believe you dropped something." It held up a tiny golden key in its fin.',
+        id: 'russet', book: 'russet-the-fox', emoji: '🦊',
+        title: { en: 'Russet the Fox Learns a Lesson', es: 'Russet el zorro aprende una lección', fr: 'Russet le renard apprend une leçon' },
+        opening: {
+          en: '"Stay away from the farm," said Mother Fox. "The dogs are quick and the wire fence is sharp." But Russet just flicked his tail. He was the fastest fox in the den. Tonight the moon was bright, and the farm smelled of something delicious.',
+          es: '«Aléjate de la granja», dijo Mamá Zorra. «Los perros son rápidos y la alambrada corta». Pero Russet solo movió la cola. Era el zorro más rápido de la madriguera. Esa noche la luna brillaba y la granja olía a algo delicioso.',
+          fr: '« Ne t’approche pas de la ferme, dit Maman Renarde. Les chiens sont rapides et la clôture pique. » Mais Russet a seulement remué la queue. C’était le renard le plus rapide du terrier. Ce soir, la lune brillait et la ferme sentait quelque chose de délicieux.',
+        },
         steps: [
-          {
-            question: 'Eva recognized the golden key, it opened...',
-            choices: ['The treasure chest her grandmother had left her', 'A mysterious locked box she found on the beach', 'The door to an underwater kingdom', 'A secret room in the old lighthouse'],
-          },
-          {
-            question: 'The fish offered to help Eva. In return, Eva had to...',
-            choices: ['Tell the fish the most exciting story she knew', 'Help clean up the plastic from the ocean floor', 'Bring the fish a gift from the land world', 'Teach the fish how to whistle'],
-          },
-          {
-            question: 'Together, Eva and the fish discovered that the key unlocked...',
-            choices: ['A map to the most beautiful hidden beach in the world', 'A message from Eva\'s grandmother full of love and wisdom', 'A magical pearl that could grant one wish', 'A door to an underwater library of stories'],
-          },
+          { question: { en: 'Russet reached the edge of the farm. What did he notice?', es: 'Russet llegó al borde de la granja. ¿Qué notó?', fr: 'Russet est arrivé au bord de la ferme. Qu’a-t-il remarqué ?' },
+            choices: {
+              en: ['The fence shining silver in the moonlight', 'Two sleeping dogs by the barn door', 'His mother’s words, echoing in his ears', 'A little owl watching him from a post'],
+              es: ['La alambrada brillando plateada bajo la luna', 'Dos perros dormidos junto a la puerta del granero', 'Las palabras de su madre, resonando en sus orejas', 'Un pequeño búho que lo miraba desde un poste'],
+              fr: ['La clôture qui brillait, argentée, sous la lune', 'Deux chiens endormis près de la porte de la grange', 'Les mots de sa mère, qui résonnaient dans ses oreilles', 'Une petite chouette qui l’observait depuis un piquet'],
+            } },
+          { question: { en: 'Oh no! The wire caught Russet’s leg. He...', es: '¡Oh, no! El alambre atrapó la pata de Russet. Él...', fr: 'Oh non ! Le fil a attrapé la patte de Russet. Il...' },
+            choices: {
+              en: ['Stopped wriggling and stayed calm', 'Called softly for his mother', 'Remembered her advice: slow paws, not quick ones', 'Asked the little owl for help'],
+              es: ['Dejó de retorcerse y se calmó', 'Llamó bajito a su madre', 'Recordó su consejo: patas lentas, no rápidas', 'Le pidió ayuda al pequeño búho'],
+              fr: ['Il a arrêté de gigoter et il est resté calme', 'Il a appelé doucement sa mère', 'Il s’est souvenu de son conseil : des pattes lentes, pas rapides', 'Il a demandé de l’aide à la petite chouette'],
+            } },
+          { question: { en: 'Back home in the den, Russet told his siblings...', es: 'De vuelta en la madriguera, Russet les dijo a sus hermanos...', fr: 'De retour au terrier, Russet a dit à ses frères et sœurs...' },
+            choices: {
+              en: ['"Being fast is not the same as being wise"', '"Listen to Mother. She has seen more nights than us"', '"I was wrong, and that is okay to say"', '"Next time, let’s go slowly and look first"'],
+              es: ['«Ser rápido no es lo mismo que ser sabio»', '«Escuchen a mamá. Ha visto más noches que nosotros»', '«Me equivoqué, y está bien decirlo»', '«La próxima vez, vayamos despacio y miremos primero»'],
+              fr: ['« Être rapide, ce n’est pas la même chose qu’être sage »', '« Écoutez Maman. Elle a vu plus de nuits que nous »', '« Je me suis trompé, et on a le droit de le dire »', '« La prochaine fois, allons doucement et regardons d’abord »'],
+            } },
         ],
       },
       {
-        id: 'star',
-        emoji: '⭐',
-        title: 'The Star That Fell Into Eva\'s Garden',
-        opening: 'One night, Eva saw a streak of light fall from the sky and land with a soft thud in her garden. She ran outside in her pajamas and found a small, glowing star sitting in the flower bed, looking very lost and a little bit scared.',
+        id: 'colors', book: 'colors-mixed-up', emoji: '🎨',
+        title: { en: 'The Day the Colors Got Mixed Up', es: 'El día que se mezclaron los colores', fr: 'Le jour où les couleurs se sont mélangées' },
+        opening: {
+          en: 'Hawel woke up and rubbed her eyes. Her banana was blue! Her toast was purple! Outside, the sky was doing something it really should not do. Pixel the butterfly fluttered onto her shoulder. "We need to find the Color Keeper," Pixel whispered.',
+          es: 'Hawel se despertó y se frotó los ojos. ¡Su plátano era azul! ¡Su tostada era morada! Afuera, el cielo hacía algo que de verdad no debía hacer. Pixel, la mariposa, se posó en su hombro. «Tenemos que encontrar a la Guardiana de los colores», susurró Pixel.',
+          fr: 'Hawel s’est réveillée en se frottant les yeux. Sa banane était bleue ! Sa tartine était violette ! Dehors, le ciel faisait quelque chose qu’il ne devrait vraiment pas faire. Pixel le papillon s’est posé sur son épaule. « Il faut trouver la Gardienne des couleurs », a chuchoté Pixel.',
+        },
         steps: [
-          {
-            question: 'The little star told Eva it had fallen because...',
-            choices: ['It had leaned too far over to see the Earth and slipped', 'A big storm in space had blown it off course', 'It had been chasing a comet and got lost', 'It wanted to see what flowers smelled like'],
-          },
-          {
-            question: 'To help the star get home, Eva needed to...',
-            choices: ['Build a rocket out of things in her garden', 'Find the highest hill and launch the star at midnight', 'Collect moonbeams in a jar to power the star\'s journey', 'Ask all the fireflies in the neighborhood to guide the way'],
-          },
-          {
-            question: 'Before the star left, it gave Eva a special gift, it was...',
-            choices: ['A tiny piece of itself that would glow whenever she felt lonely', 'The ability to understand what animals were saying', 'A map of all the constellations with her name on one', 'A wish that could only be used to help someone else'],
-          },
+          { question: { en: 'Hawel and Pixel set off. Where did they look first?', es: 'Hawel y Pixel se pusieron en marcha. ¿Dónde buscaron primero?', fr: 'Hawel et Pixel sont partis. Où ont-ils cherché d’abord ?' },
+            choices: {
+              en: ['In the garden, where the roses had turned green', 'Up the hill, where the rainbow usually starts', 'At the painter’s house at the end of the street', 'Down by the pond, where the sky reflects'],
+              es: ['En el jardín, donde las rosas se habían vuelto verdes', 'En lo alto de la colina, donde suele empezar el arcoíris', 'En la casa del pintor al final de la calle', 'Junto al estanque, donde se refleja el cielo'],
+              fr: ['Dans le jardin, où les roses étaient devenues vertes', 'En haut de la colline, là où commence l’arc-en-ciel', 'Chez le peintre, au bout de la rue', 'Près de l’étang, où le ciel se reflète'],
+            } },
+          { question: { en: 'They found the Color Keeper. She showed them three special colors:', es: 'Encontraron a la Guardiana de los colores. Les mostró tres colores especiales:', fr: 'Ils ont trouvé la Gardienne des couleurs. Elle leur a montré trois couleurs spéciales :' },
+            choices: {
+              en: ['Red, yellow and blue, the colors that make all the others', 'Three paint pots with a note: "Mix me!"', 'Three glowing drops floating in the air', 'Three feathers, one for each primary color'],
+              es: ['Rojo, amarillo y azul, los colores que forman todos los demás', 'Tres botes de pintura con una nota: «¡Mézclame!»', 'Tres gotas brillantes flotando en el aire', 'Tres plumas, una por cada color primario'],
+              fr: ['Le rouge, le jaune et le bleu, les couleurs qui font toutes les autres', 'Trois pots de peinture avec un mot : « Mélange-moi ! »', 'Trois gouttes lumineuses qui flottaient dans l’air', 'Trois plumes, une pour chaque couleur primaire'],
+            } },
+          { question: { en: 'To put the world back, Hawel mixed...', es: 'Para arreglar el mundo, Hawel mezcló...', fr: 'Pour remettre le monde en ordre, Hawel a mélangé...' },
+            choices: {
+              en: ['Yellow and blue, to make the grass green again', 'Red and yellow, to make the oranges orange', 'Red and blue, to paint the evening purple', 'All three, very carefully, one drop at a time'],
+              es: ['Amarillo y azul, para que la hierba volviera a ser verde', 'Rojo y amarillo, para que las naranjas fueran naranjas', 'Rojo y azul, para pintar la tarde de morado', 'Los tres, con mucho cuidado, gota a gota'],
+              fr: ['Le jaune et le bleu, pour que l’herbe redevienne verte', 'Le rouge et le jaune, pour que les oranges soient orange', 'Le rouge et le bleu, pour peindre le soir en violet', 'Les trois, très doucement, goutte après goutte'],
+            } },
+        ],
+      },
+      {
+        id: 'fig', book: 'fig-trees-secret', emoji: '🌳',
+        title: { en: "The Fig Tree's Secret", es: 'El secreto de la higuera', fr: 'Le secret du figuier' },
+        opening: {
+          en: 'Sofia stood in her grandmother’s garden, looking at the gnarled old fig tree. "This tree has to go," she said. Just then the gate creaked open, and old Mr. Costas hurried in. "Wait!" he said. "Do you know what this tree has seen?"',
+          es: 'Sofía estaba en el jardín de su abuela, mirando la vieja higuera nudosa. «Este árbol tiene que irse», dijo. Justo entonces la verja chirrió y el viejo señor Costas entró deprisa. «¡Espera!», dijo. «¿Sabes lo que ha visto este árbol?».',
+          fr: 'Sofia se tenait dans le jardin de sa grand-mère et regardait le vieux figuier noueux. « Cet arbre doit partir », dit-elle. À ce moment, le portail grinça et le vieux monsieur Costas entra en hâte. « Attends ! dit-il. Sais-tu ce que cet arbre a vu ? »',
+        },
+        steps: [
+          { question: { en: 'Mr. Costas began his story. The tree had seen...', es: 'El señor Costas empezó su historia. El árbol había visto...', fr: 'M. Costas commença son histoire. L’arbre avait vu...' },
+            choices: {
+              en: ['A harvest festival with music under its branches', 'Sofia’s grandmother as a little girl, climbing it', 'A wedding, with figs on every table', 'A hundred summers of children eating figs in the shade'],
+              es: ['Una fiesta de la cosecha con música bajo sus ramas', 'A la abuela de Sofía de niña, trepando por él', 'Una boda, con higos en cada mesa', 'Cien veranos de niños comiendo higos a la sombra'],
+              fr: ['Une fête des récoltes avec de la musique sous ses branches', 'La grand-mère de Sofia petite fille, qui y grimpait', 'Un mariage, avec des figues sur chaque table', 'Cent étés d’enfants mangeant des figues à l’ombre'],
+            } },
+          { question: { en: 'Inside the cottage, Sofia found something her grandmother kept. It was...', es: 'Dentro de la casita, Sofía encontró algo que guardaba su abuela. Era...', fr: 'Dans la maisonnette, Sofia trouva quelque chose que sa grand-mère gardait. C’était...' },
+            choices: {
+              en: ['A handwritten book of fig recipes', 'A drawing of the tree from long ago', 'A jar of fig jam with a note: "For Sofia"', 'A photo of the whole family under the tree'],
+              es: ['Un cuaderno de recetas de higos escrito a mano', 'Un dibujo del árbol de hace mucho tiempo', 'Un tarro de mermelada de higos con una nota: «Para Sofía»', 'Una foto de toda la familia bajo el árbol'],
+              fr: ['Un cahier de recettes de figues écrit à la main', 'Un dessin de l’arbre d’il y a très longtemps', 'Un pot de confiture de figues avec un mot : « Pour Sofia »', 'Une photo de toute la famille sous l’arbre'],
+            } },
+          { question: { en: 'Sofia made her decision. She...', es: 'Sofía tomó su decisión. Ella...', fr: 'Sofia prit sa décision. Elle...' },
+            choices: {
+              en: ['Kept the tree and asked Mr. Costas for more stories', 'Cooked her grandmother’s recipe with the neighbors', 'Planted a new little fig tree beside the old one', 'Started her own book of stories about the garden'],
+              es: ['Se quedó con el árbol y le pidió más historias al señor Costas', 'Cocinó la receta de su abuela con los vecinos', 'Plantó una higuera nueva junto a la vieja', 'Empezó su propio cuaderno de historias del jardín'],
+              fr: ['Elle garda l’arbre et demanda d’autres histoires à M. Costas', 'Elle cuisina la recette de sa grand-mère avec les voisins', 'Elle planta un petit figuier à côté du vieux', 'Elle commença son propre cahier d’histoires du jardin'],
+            } },
+        ],
+      },
+      {
+        id: 'cloud', book: 'cloud-collector', emoji: '☁️',
+        title: { en: 'The Cloud Collector', es: 'La coleccionista de nubes', fr: 'La collectionneuse de nuages' },
+        opening: {
+          en: 'Grandpa Chen handed Luna a butterfly net and a glass jar. "What will you catch?" he asked. Luna looked up at the big blue sky. "One cloud of every kind!" she said, and ran into the meadow.',
+          es: 'El abuelo Chen le dio a Luna una red de mariposas y un frasco de cristal. «¿Qué vas a atrapar?», le preguntó. Luna miró el gran cielo azul. «¡Una nube de cada tipo!», dijo, y corrió hacia el prado.',
+          fr: 'Grand-père Chen tendit à Luna un filet à papillons et un bocal en verre. « Qu’est-ce que tu vas attraper ? » demanda-t-il. Luna leva les yeux vers le grand ciel bleu. « Un nuage de chaque sorte ! » dit-elle, et elle courut dans le pré.',
+        },
+        steps: [
+          { question: { en: 'The first cloud Luna tried to catch was...', es: 'La primera nube que Luna intentó atrapar fue...', fr: 'Le premier nuage que Luna essaya d’attraper était...' },
+            choices: {
+              en: ['A big puffy cumulus, like a sheep', 'A thin wispy cirrus, high up like a feather', 'A low gray stratus, like a soft blanket', 'A tiny cloud shaped like a rabbit'],
+              es: ['Un gran cúmulo esponjoso, como una oveja', 'Un cirro fino, alto como una pluma', 'Un estrato gris y bajo, como una manta suave', 'Una nube pequeñita con forma de conejo'],
+              fr: ['Un gros cumulus tout gonflé, comme un mouton', 'Un fin cirrus, tout en haut comme une plume', 'Un stratus gris et bas, comme une douce couverture', 'Un tout petit nuage en forme de lapin'],
+            } },
+          { question: { en: 'Luna swung her net, but the cloud...', es: 'Luna agitó la red, pero la nube...', fr: 'Luna agita son filet, mais le nuage...' },
+            choices: {
+              en: ['Floated right through it like a whisper', 'Changed shape and drifted away', 'Left only a few drops of rain in the jar', 'Seemed to wave at her as the wind carried it'],
+              es: ['La atravesó como un susurro', 'Cambió de forma y se alejó flotando', 'Solo dejó unas gotas de lluvia en el frasco', 'Pareció saludarla mientras el viento se la llevaba'],
+              fr: ['Passa à travers comme un murmure', 'Changea de forme et s’éloigna', 'Ne laissa que quelques gouttes de pluie dans le bocal', 'Sembla lui faire signe pendant que le vent l’emportait'],
+            } },
+          { question: { en: 'Back home, Luna showed Grandpa Chen...', es: 'De vuelta en casa, Luna le enseñó al abuelo Chen...', fr: 'De retour à la maison, Luna montra à Grand-père Chen...' },
+            choices: {
+              en: ['A notebook full of cloud drawings and names', 'A jar with a little rain inside, "a piece of a cloud"', 'Nothing in her jar, but a head full of sky', 'A plan to watch the clouds together every evening'],
+              es: ['Un cuaderno lleno de dibujos y nombres de nubes', 'Un frasco con un poco de lluvia, «un trocito de nube»', 'Nada en el frasco, pero la cabeza llena de cielo', 'Un plan para mirar las nubes juntos cada tarde'],
+              fr: ['Un carnet plein de dessins et de noms de nuages', 'Un bocal avec un peu de pluie, « un morceau de nuage »', 'Rien dans son bocal, mais la tête pleine de ciel', 'Un projet : regarder les nuages ensemble chaque soir'],
+            } },
         ],
       },
     ];
@@ -443,11 +544,14 @@
     function showStoryPicker() {
       document.getElementById('storyPicker').classList.remove('hidden');
       const container = document.getElementById('storyCards');
-      container.innerHTML = stories.map(s => `
+      // A visit from a book page (?book=<id>) lists that book's story first.
+      let fromBook = null; try { fromBook = new URLSearchParams(location.search).get('book'); } catch (e) {}
+      const ordered = stories.slice().sort((x, y) => (y.book === fromBook) - (x.book === fromBook));
+      container.innerHTML = ordered.map(s => `
         <button class="choice-btn text-left p-4 rounded-2xl border-2 border-purple-100 bg-white hover:border-purple-300 shadow-sm"
           onclick="startStory('${s.id}')">
           <div class="text-3xl mb-2">${s.emoji}</div>
-          <div class="font-extrabold text-gray-800 text-sm mb-1">${s.title}</div>
+          <div class="font-extrabold text-gray-800 text-sm mb-1">${L3(s.title)}</div>
           <div class="text-xs text-gray-400 font-semibold">${window.t('choicesPlusEnding')}</div>
         </button>
       `).join('');
@@ -457,16 +561,16 @@
       currentStory = stories.find(s => s.id === id);
       currentStep = 0;
       storyChoices = [];
-      builtStory = currentStory.opening + ' ';
+      builtStory = L3(currentStory.opening) + ' ';
       document.getElementById('storyPicker').classList.add('hidden');
       document.getElementById('storyGame').classList.remove('hidden');
       document.getElementById('storyEmoji').textContent = currentStory.emoji;
-      document.getElementById('storyTitle').textContent = currentStory.title;
-      document.getElementById('storyOpening').textContent = currentStory.opening;
+      document.getElementById('storyTitle').textContent = L3(currentStory.title);
+      document.getElementById('storyOpening').textContent = L3(currentStory.opening);
       document.getElementById('storyBuilt').classList.add('hidden');
       renderStepIndicator();
       renderStep();
-      speak(currentStory.opening);
+      speak(L3(currentStory.opening));
     }
 
     function renderStepIndicator() {
@@ -496,22 +600,23 @@
 
       stepQ.classList.remove('hidden');
       const step = currentStory.steps[currentStep];
-      document.getElementById('questionText').textContent = step.question;
+      document.getElementById('questionText').textContent = L3(step.question);
       document.getElementById('freeWrite').value = '';
 
       const choiceContainer = document.getElementById('choiceButtons');
-      choiceContainer.innerHTML = step.choices.map((c,i) => `
+      choiceContainer.innerHTML = L3(step.choices).map((c,i) => `
         <button class="choice-btn text-left px-4 py-3 rounded-2xl border-2 border-gray-200 bg-white text-sm font-bold text-gray-700"
-          id="choice-${i}" onclick="selectChoice(${i}, \`${c.replace(/`/g,'\\`')}\`)">
+          id="choice-${i}" onclick="selectChoice(${i})">
           ${['🅐','🅑','🅒','🅓'][i]} ${c}
         </button>
       `).join('');
 
-      speak(step.question);
+      speak(L3(step.question));
       renderStepIndicator();
     }
 
-    function selectChoice(idx, text) {
+    function selectChoice(idx) {
+      const text = L3(currentStory.steps[currentStep].choices)[idx];
       document.querySelectorAll('[id^="choice-"]').forEach((b,i) => b.classList.toggle('selected', i===idx));
       document.getElementById('freeWrite').value = '';
       setTimeout(() => advanceStep(text), 600);
@@ -544,9 +649,9 @@
       const section = document.getElementById('certificateSection');
       section.classList.remove('hidden');
       document.getElementById('certName').textContent = childName;
-      document.getElementById('certStoryTitle').textContent = `"${currentStory.title}"`;
+      document.getElementById('certStoryTitle').textContent = `"${L3(currentStory.title)}"`;
       document.getElementById('certFullStory').textContent = fullStory;
-      speak(`Congratulations ${childName}! You finished the story! Amazing work!`);
+      speak(window.t('congratsSpeech').replace('{name}', childName));
     }
 
     document.getElementById('printCert').addEventListener('click', () => window.print());
@@ -571,7 +676,7 @@
       if (!window.speechSynthesis) return;
       window.speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(text);
-      u.lang = 'en-US'; u.rate = 0.95; u.pitch = 1.05;
+      u.lang = { en: 'en-US', es: 'es-ES', fr: 'fr-FR' }[window.GAME_LANG] || 'en-US'; u.rate = 0.95; u.pitch = 1.05;
       const voice = pickVoice(u.lang);
       if (voice) u.voice = voice;
       window.speechSynthesis.speak(u);
@@ -580,7 +685,7 @@
 
   
 <!-- STE_CONTINUE: injected by scripts/patch-games.mjs (resolved by src/lib/journey.ts) -->
-<section id="ste-continue" class="max-w-7xl mx-auto px-4 mt-10 mb-2" aria-labelledby="ste-continue-eyebrow">
+<section id="ste-continue" class="max-w-7xl mx-auto px-4 mt-10 mb-2" aria-labelledby="ste-continue-eyebrow" data-ste-from='{"diegos-brave-leap":{"next":"/books/sparrow-saved-forest/","nextTitles":{"en":"The Sparrow Who Saved the Forest","es":"El gorrión que salvó el bosque","fr":"Le moineau qui sauva la forêt"},"backTitles":{"en":"Diego&#39;s Brave Leap","es":"El salto valiente de Diego","fr":"Le saut courageux de Diego"}},"leo-and-the-wolf":{"next":"/books/sparrow-saved-forest/","nextTitles":{"en":"The Sparrow Who Saved the Forest","es":"El gorrión que salvó el bosque","fr":"Le moineau qui sauva la forêt"},"backTitles":{"en":"Leo and the Wolf","es":"Leo y el lobo","fr":"Léo et le loup"}},"russet-the-fox":{"next":"/books/cloud-collector/","nextTitles":{"en":"The Cloud Collector","es":"La coleccionista de nubes","fr":"La collectionneuse de nuages"},"backTitles":{"en":"Russet the Fox Learns a Lesson","es":"Russet el zorro aprende una lección","fr":"Russet le renard apprend une leçon"}}}'>
   <p id="ste-continue-eyebrow" data-i18n="continueEyebrow" class="text-xs font-semibold uppercase tracking-wide text-purple-600 mb-2">Continue the journey</p>
   <a href="/books/diegos-brave-leap/" data-ste-continue='{"kind":"book","titles":{"en":"Diego&#39;s Brave Leap","es":"El salto valiente de Diego","fr":"Le saut courageux de Diego"}}' class="inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold px-5 py-3 shadow-md hover:shadow-lg transition-all">Read next <span aria-hidden="true">→</span></a>
 </section>
@@ -590,6 +695,18 @@
   if (!a || typeof window.t !== 'function') return;
   var d; try { d = JSON.parse(a.getAttribute('data-ste-continue')); } catch (e) { return; }
   var L = window.GAME_LANG || 'en';
+  var from = {}; try { from = JSON.parse(document.getElementById('ste-continue').getAttribute('data-ste-from') || '{}'); } catch (e) {}
+  var src = null; try { src = new URLSearchParams(window.location.search).get('book'); } catch (e) {}
+  var f = src && Object.prototype.hasOwnProperty.call(from, src) ? from[src] : null;
+  if (f) {
+    a.setAttribute('href', f.next);
+    d = { kind: 'book', titles: f.nextTitles };
+    var back = document.createElement('a');
+    back.setAttribute('href', '/books/' + src + '/');
+    back.className = 'inline-flex items-center gap-2 rounded-2xl border-2 border-purple-200 text-purple-700 font-semibold px-5 py-3 ml-0 sm:ml-3 mt-3 sm:mt-0 hover:bg-purple-50 transition-all';
+    back.textContent = '← ' + window.t('backTo') + ' ' + (f.backTitles[L] || f.backTitles.en);
+    a.parentNode.appendChild(back);
+  }
   var label = d.kind === 'book'
     ? window.t('readNext') + ': ' + ((d.titles && (d.titles[L] || d.titles.en)) || '')
     : window.t('browseBooks');

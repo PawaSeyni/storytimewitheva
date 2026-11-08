@@ -154,13 +154,13 @@ export const books: Book[] = [
     },
     description: {
       en: "Hawel wakes to find every color in the world swapped, banana blue, toast purple, sky doing something it shouldn't. With Pixel the butterfly, she sets off to find the Color Keeper and learn how red, yellow, and blue make every other color. A gentle first lesson in color theory.",
-      es: 'Hawel despierta y descubre que todos los colores del mundo se han cambiado: el plátano es azul, la tostada morada y el cielo está haciendo algo raro. Con Pixel la mariposa, sale a buscar al Guardián de los Colores y a aprender cómo el rojo, el amarillo y el azul forman todos los demás colores. Una primera lección suave sobre teoría del color.',
+      es: 'Hawel despierta y descubre que todos los colores del mundo se han cambiado: el plátano es azul, la tostada morada y el cielo está haciendo algo raro. Con Pixel la mariposa, sale a buscar a la Guardiana de los Colores y a aprender cómo el rojo, el amarillo y el azul forman todos los demás colores. Una primera lección suave sobre teoría del color.',
       fr: "Hawel se réveille et découvre que toutes les couleurs du monde ont été échangées — la banane est bleue, le pain grillé violet et le ciel fait quelque chose qu'il ne devrait pas. Avec Pixel le papillon, elle part chercher la Gardienne des Couleurs et apprendre comment le rouge, le jaune et le bleu composent toutes les autres couleurs. Une douce première leçon de théorie des couleurs.",
     },
     seoDescription: {
       en: "A picture book about colors and color mixing for ages 4–7. Every color in Hawel's world is swapped, so she sets off with Pixel to find the Color Keeper.",
-      es: "Un álbum sobre los colores y cómo se mezclan, de 4 a 7 años. Todos los colores del mundo de Hawel se han cambiado, y sale con Pixel a buscar al Guardián.",
-      fr: "Un album sur les couleurs et leurs mélanges, de 4 à 7 ans. Toutes les couleurs du monde de Hawel sont échangées : avec Pixel, elle part trouver leur gardien.",
+      es: "Un álbum sobre los colores y cómo se mezclan, de 4 a 7 años. Todos los colores del mundo de Hawel se han cambiado, y sale con Pixel a buscar a la Guardiana.",
+      fr: "Un album sur les couleurs et leurs mélanges, de 4 à 7 ans. Toutes les couleurs du monde de Hawel sont échangées : avec Pixel, elle part trouver leur gardienne.",
     },
     theme: {
       en: 'Color theory and curiosity',
@@ -173,7 +173,7 @@ export const books: Book[] = [
     ageRange: '3-6',
     themeIds: ['diversity', 'creativity'],
     relatedBookIds: ['mayas-shadow', 'colors-mixed-up', 'crooked-little-apple-tree'],
-    relatedActivityIds: ['bilingual-flashcards', 'build-a-scene', 'coloring'],
+    relatedActivityIds: ['harmonia-orchestra', 'build-a-scene', 'coloring', 'bilingual-flashcards'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Every color in Harmonia sings its own song. What sound do you think blue makes?",
@@ -228,7 +228,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['humility-listening'],
     relatedBookIds: ['emperors-true-treasure', 'russet-the-fox', 'cloud-collector'],
-    relatedActivityIds: ['adventure-journal', 'bingo', 'reading-tracker'],
+    relatedActivityIds: ['ask-first-architect', 'adventure-journal', 'bingo'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Victor is about to build the tallest tower ever. What could go wrong if nobody asks questions?",
@@ -236,9 +236,9 @@ export const books: Book[] = [
         fr: "Victor va construire la plus haute tour jamais imaginée. Que peut-il arriver si personne ne pose de questions ?",
       } },
       { stage: "during", prompt: {
-        en: "One young engineer keeps raising his hand and nobody sees him. Have you ever felt like that?",
-        es: "Un ingeniero joven levanta la mano y nadie lo ve. ¿Alguna vez te has sentido así?",
-        fr: "Un jeune ingénieur lève la main et personne ne le voit. T'es-tu déjà senti comme lui ?",
+        en: "One young engineer keeps raising her hand and nobody sees her. Have you ever felt like that?",
+        es: "Una joven ingeniera levanta la mano y nadie la ve. ¿Alguna vez te has sentido así?",
+        fr: "Une jeune ingénieure lève la main et personne ne la voit. T'es-tu déjà senti comme elle ?",
       } },
       { stage: "after", prompt: {
         en: "Victor learns to design with questions instead of certainty. What question would you have asked him?",
@@ -262,14 +262,14 @@ export const books: Book[] = [
       fr: "Une histoire d'humilité, d'écoute et de véritable brillance",
     },
     description: {
-      en: 'Architect Victor Mercer designs the tallest tower ever conceived. Only one junior engineer raises a hand he never sees. When the dust settles, Victor learns how to design with questions rather than certainty.',
+      en: 'Architect Victor Mercer designs the tallest tower ever conceived. Only one junior engineer raises her hand, and he never sees it. When the dust settles, Victor learns how to design with questions rather than certainty.',
       es: 'El arquitecto Victor Mercer diseña la torre más alta jamás concebida. Solo una joven ingeniera levanta una mano que él nunca ve. Cuando el polvo se asienta, Victor aprende a diseñar con preguntas en lugar de certezas.',
       fr: "L'architecte Victor Mercer conçoit la tour la plus haute jamais imaginée. Une seule jeune ingénieure lève une main qu'il ne voit jamais. Quand la poussière retombe, Victor apprend à concevoir avec des questions plutôt qu'avec des certitudes.",
     },
     seoDescription: {
-      en: "A picture book about humility and listening for ages 5–9. An architect designs the tallest tower ever, and ignores the one engineer with a question.",
-      es: "Un álbum sobre la humildad y saber escuchar, de 5 a 9 años. Un arquitecto diseña la torre más alta e ignora a la única persona del equipo que tiene una duda.",
-      fr: "Un album sur l'humilité et l'écoute, de 5 à 9 ans. Un architecte conçoit la plus haute tour du monde et ignore le seul ingénieur qui pose une question.",
+      en: "A picture book about humility and listening for ages 5–9. An architect designs the tallest tower ever, and ignores the one engineer with a question: a young woman on his team.",
+      es: "Un álbum sobre la humildad y saber escuchar, de 5 a 9 años. Un arquitecto diseña la torre más alta e ignora a la única ingeniera del equipo que tiene una duda.",
+      fr: "Un album sur l'humilité et l'écoute, de 5 à 9 ans. Un architecte conçoit la plus haute tour du monde et ignore la seule ingénieure qui pose une question.",
     },
     theme: {
       en: 'Humility and listening',
@@ -505,7 +505,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['gratitude', 'humility-listening'],
     relatedBookIds: ['tower-touched-sky', 'russet-the-fox', 'fig-trees-secret'],
-    relatedActivityIds: ['adventure-journal', 'bingo', 'reading-tracker'],
+    relatedActivityIds: ['true-treasure-chest', 'adventure-journal', 'bingo'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "The emperor has a palace full of gold and still feels empty. What do you think is missing?",
@@ -559,7 +559,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['self-worth', 'diversity', 'kindness'],
     relatedBookIds: ['true-beauty-meadowbrook', 'sparrow-saved-forest', 'rainbow-symphony'],
-    relatedActivityIds: ['emotion-wheel', 'adventure-journal', 'bilingual-flashcards'],
+    relatedActivityIds: ['one-of-a-kind-tree', 'emotion-wheel', 'coloring', 'bilingual-flashcards'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "The orchard only wants straight, perfect trees. What do you think of that rule?",
@@ -615,7 +615,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['self-worth', 'kindness', 'diversity'],
     relatedBookIds: ['crooked-little-apple-tree', 'sparrow-saved-forest', 'rainbow-symphony'],
-    relatedActivityIds: ['emotion-wheel', 'adventure-journal', 'bilingual-flashcards'],
+    relatedActivityIds: ['kindness-mirror', 'emotion-wheel', 'adventure-journal', 'bilingual-flashcards'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "In this town everyone competes to look the most beautiful. Does that sound fun to you?",
@@ -725,7 +725,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['honesty', 'courage'],
     relatedBookIds: ['sparrow-saved-forest', 'diegos-brave-leap'],
-    relatedActivityIds: ['character-workshop', 'finish-the-story', 'story-builder'],
+    relatedActivityIds: ['trust-meter', 'leo-and-the-wolf-worksheet', 'finish-the-story', 'character-workshop'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Leo has a real job looking after the sheep. What do you think that job needs most?",
@@ -779,7 +779,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['humility-listening', 'patience-mastery'],
     relatedBookIds: ['cloud-collector', 'tower-touched-sky', 'emperors-true-treasure'],
-    relatedActivityIds: ['adventure-journal', 'bingo', 'bookmark-designer'],
+    relatedActivityIds: ['listen-like-a-fox', 'finish-the-story', 'adventure-journal', 'bookmark-designer'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Russet is sure he is the cleverest fox of all. What could go wrong for him?",
@@ -833,7 +833,7 @@ export const books: Book[] = [
     ageRange: '3-7',
     themeIds: ['gratitude', 'wonder'],
     relatedBookIds: ['mayas-shadow', 'pawa-rainbow-cloud', 'emperors-true-treasure'],
-    relatedActivityIds: ['coloring', 'reading-tracker', 'rhyme-singalong'],
+    relatedActivityIds: ['puddle-voyage', 'rhyme-singalong', 'coloring'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "The little boat dreams of the big open ocean. Where would you sail first?",
@@ -993,7 +993,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['creativity', 'curiosity', 'wonder'],
     relatedBookIds: ['colors-mixed-up', 'cloud-collector', 'mayas-shadow'],
-    relatedActivityIds: ['coloring', 'story-map', 'world-geography'],
+    relatedActivityIds: ['map-my-world', 'story-map', 'coloring', 'world-geography'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Maya draws maps of her bedroom and her backyard. What would you put on a map of your home?",

@@ -4,6 +4,8 @@ import { CheckCircle2 } from 'lucide-react';
 import EmailSignup from '../components/EmailSignup';
 import Seo from '../components/Seo';
 import { useActivities } from '../data/activities';
+import { useBooks } from '../data/books';
+import { booksByActivityId } from '../data/contentIndex';
 import { isActivityCompleted, loadProgress, type Progress } from '../lib/progress';
 import { supportsAge } from '../data/taxonomy';
 import { useTranslation, useLanguage } from '../lib/language';
@@ -21,6 +23,8 @@ const TRANSLATIONS = {
     tryNow: 'Try Now →',
     openAgain: 'Open Again →',
     ageAll: 'All ages',
+    madeFor: 'Made for',
+    littleReader: 'Little reader mode for ages 4 to 5',
     emptyAge: 'No activities in this age range yet. Try another.',
   },
   es: {
@@ -34,6 +38,8 @@ const TRANSLATIONS = {
     tryNow: 'Probar ahora →',
     openAgain: 'Abrir otra vez →',
     ageAll: 'Todas las edades',
+    madeFor: 'Creada para',
+    littleReader: 'Modo para peques de 4 y 5 años',
     emptyAge: 'Aún no hay actividades en este rango de edad — prueba otro.',
   },
   fr: {
@@ -47,6 +53,8 @@ const TRANSLATIONS = {
     tryNow: 'Essayer →',
     openAgain: 'Rouvrir →',
     ageAll: 'Tous les âges',
+    madeFor: 'Créée pour',
+    littleReader: 'Mode petits lecteurs pour les 4 à 5 ans',
     emptyAge: 'Pas encore d\'activités dans cette tranche d\'âge — essayez-en une autre.',
   },
 };
@@ -57,6 +65,9 @@ export default function Activities() {
   const t = useTranslation(TRANSLATIONS);
   const { language } = useLanguage();
   const activities = useActivities();
+  const books = useBooks();
+  // Book-specific activities name the book(s) they were built for (activities audit 2026-11).
+  const madeFor = (slug: string) => (booksByActivityId[slug] ?? []).map((id) => books.find((b) => b.id === id)?.title).filter(Boolean).join(' · ');
 
   // Exact ages 3-9 (language-invariant), the same model /books uses. The old
   // 3-5 / 6-8 / "9+" bands matched by OVERLAP, so picking "3-5" surfaced a 5-9
@@ -138,6 +149,12 @@ export default function Activities() {
                       {act.category}
                     </span>
                     <h2 className="font-bold text-gray-800 text-xl mb-2">{act.title}</h2>
+                    {act.littleReader && (
+                      <p className="text-xs font-semibold text-amber-700 mb-2" data-little-reader-badge={act.slug}>🧸 {t.littleReader}</p>
+                    )}
+                    {act.bookSpecific && madeFor(act.slug) && (
+                      <p className="text-xs font-semibold text-pink-700 mb-2" data-made-for={act.slug}>📖 {t.madeFor}: {madeFor(act.slug)}</p>
+                    )}
                     <p className="text-gray-500 text-sm leading-relaxed mb-4 flex-1">{act.desc}</p>
                     <div className="flex items-center justify-between mt-auto">
                       <span className="text-xs text-gray-500">

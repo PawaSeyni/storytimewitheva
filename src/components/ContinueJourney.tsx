@@ -21,17 +21,20 @@ export default function ContinueJourney({
   sourceType,
   sourceId,
   placement,
+  fromBook,
 }: {
   sourceType: JourneySource;
   sourceId: string;
   placement: string;
+  /** Validated source book (activity pages opened from a book page). */
+  fromBook?: string | null;
 }) {
   const t = useTranslation(TRANSLATIONS);
   const { language } = useLanguage();
   const books = useBooks();
   const activities = useActivities();
 
-  const step = nextStep(sourceType, sourceId);
+  const step = nextStep(sourceType, sourceId, fromBook);
   if (!step) return null;
 
   let title = '';
@@ -55,7 +58,7 @@ export default function ContinueJourney({
     'inline-flex items-center gap-3 rounded-2xl bg-linear-to-r from-purple-600 to-pink-500 text-white font-semibold px-5 py-3 shadow-md hover:shadow-lg hover:from-purple-700 hover:to-pink-600 transition-all';
 
   return (
-    <div className="max-w-5xl mx-auto mt-10 mb-4">
+    <div className="max-w-5xl mx-auto mt-10 mb-4 print:hidden">
       <p className="text-xs font-semibold uppercase tracking-wide text-purple-600 mb-2">{t.eyebrow}</p>
       {step.game ? (
         <a href={gameUrl(step.id!, language)} onClick={onClick} className={cls}>

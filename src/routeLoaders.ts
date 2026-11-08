@@ -38,6 +38,18 @@ export const loadWordExplorerDemo = preloadable(() => import('./demos/WordExplor
 export const loadColorMixLabDemo = preloadable(() => import('./demos/ColorMixLabDemo'));
 export const loadFeelingsWeatherDemo = preloadable(() => import('./demos/FeelingsWeatherDemo'));
 export const loadBravePlanDemo = preloadable(() => import('./demos/BravePlanDemo'));
+export const loadTrustMeterDemo = preloadable(() => import('./demos/TrustMeterDemo'));
+export const loadColorOrchestraDemo = preloadable(() => import('./demos/ColorOrchestraDemo'));
+export const loadAskFirstArchitectDemo = preloadable(() => import('./demos/AskFirstArchitectDemo'));
+export const loadTreasureChestDemo = preloadable(() => import('./demos/TreasureChestDemo'));
+export const loadOneOfAKindTreeDemo = preloadable(() => import('./demos/OneOfAKindTreeDemo'));
+export const loadKindnessMirrorDemo = preloadable(() => import('./demos/KindnessMirrorDemo'));
+export const loadListenLikeAFoxDemo = preloadable(() => import('./demos/ListenLikeAFoxDemo'));
+export const loadPuddleVoyageDemo = preloadable(() => import('./demos/PuddleVoyageDemo'));
+export const loadMapMyWorldDemo = preloadable(() => import('./demos/MapMyWorldDemo'));
+export const loadLeoWorksheetDemo = preloadable(() => import('./demos/LeoWorksheetDemo'));
+export const loadStoryWorksheetDemo = preloadable(() => import('./demos/StoryWorksheetDemo'));
+export const loadReadingPassportDemo = preloadable(() => import('./demos/ReadingPassportDemo'));
 export const loadCloudDetectiveDemo = preloadable(() => import('./demos/CloudDetectiveDemo'));
 export const loadShadowTheatreDemo = preloadable(() => import('./demos/ShadowTheatreDemo'));
 export const loadKindnessRippleDemo = preloadable(() => import('./demos/KindnessRippleDemo'));
@@ -68,6 +80,18 @@ export const ROUTE_CHUNKS: ReadonlyArray<{ path: string; loaders: readonly Loade
   { path: '/activities/color-mix-lab', loaders: [loadDemoPage, loadColorMixLabDemo] },
   { path: '/activities/feelings-weather-report', loaders: [loadDemoPage, loadFeelingsWeatherDemo] },
   { path: '/activities/first-day-brave-plan', loaders: [loadDemoPage, loadBravePlanDemo] },
+  { path: '/activities/trust-meter', loaders: [loadDemoPage, loadTrustMeterDemo] },
+  { path: '/activities/harmonia-orchestra', loaders: [loadDemoPage, loadColorOrchestraDemo] },
+  { path: '/activities/ask-first-architect', loaders: [loadDemoPage, loadAskFirstArchitectDemo] },
+  { path: '/activities/true-treasure-chest', loaders: [loadDemoPage, loadTreasureChestDemo] },
+  { path: '/activities/one-of-a-kind-tree', loaders: [loadDemoPage, loadOneOfAKindTreeDemo] },
+  { path: '/activities/kindness-mirror', loaders: [loadDemoPage, loadKindnessMirrorDemo] },
+  { path: '/activities/listen-like-a-fox', loaders: [loadDemoPage, loadListenLikeAFoxDemo] },
+  { path: '/activities/puddle-voyage', loaders: [loadDemoPage, loadPuddleVoyageDemo] },
+  { path: '/activities/map-my-world', loaders: [loadDemoPage, loadMapMyWorldDemo] },
+  { path: '/activities/leo-and-the-wolf-worksheet', loaders: [loadDemoPage, loadLeoWorksheetDemo] },
+  { path: '/activities/story-worksheet', loaders: [loadDemoPage, loadStoryWorksheetDemo] },
+  { path: '/activities/reading-passport', loaders: [loadDemoPage, loadReadingPassportDemo] },
   { path: '/activities/cloud-detective-journal', loaders: [loadDemoPage, loadCloudDetectiveDemo] },
   { path: '/activities/shadow-theatre', loaders: [loadDemoPage, loadShadowTheatreDemo] },
   { path: '/activities/kindness-ripple', loaders: [loadDemoPage, loadKindnessRippleDemo] },

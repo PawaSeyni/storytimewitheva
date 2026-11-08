@@ -73,7 +73,7 @@ export const collections: CollectionRecord[] = [
     publishState: 'published',
     // Featured activities: referenced by the most member books (validated: each must be
     // related to at least one book in the collection). Editorial choice within that set.
-    activityIds: ['adventure-journal', 'bingo', 'reading-tracker'],
+    activityIds: ['ask-first-architect', 'listen-like-a-fox', 'adventure-journal'],
   },
   {
     id: 'wonder',
@@ -113,7 +113,7 @@ export const collections: CollectionRecord[] = [
     publishState: 'published',
     // Featured activities: referenced by the most member books (validated: each must be
     // related to at least one book in the collection). Editorial choice within that set.
-    activityIds: ['adventure-journal', 'bingo', 'reading-tracker'],
+    activityIds: ['true-treasure-chest', 'story-quilt', 'puddle-voyage'],
   },
   {
     id: 'self-worth',

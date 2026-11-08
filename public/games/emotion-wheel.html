@@ -589,7 +589,7 @@
 
   
 <!-- STE_CONTINUE: injected by scripts/patch-games.mjs (resolved by src/lib/journey.ts) -->
-<section id="ste-continue" class="max-w-7xl mx-auto px-4 mt-10 mb-2" aria-labelledby="ste-continue-eyebrow">
+<section id="ste-continue" class="max-w-7xl mx-auto px-4 mt-10 mb-2" aria-labelledby="ste-continue-eyebrow" data-ste-from='{"diegos-brave-leap":{"next":"/books/sparrow-saved-forest/","nextTitles":{"en":"The Sparrow Who Saved the Forest","es":"El gorrión que salvó el bosque","fr":"Le moineau qui sauva la forêt"},"backTitles":{"en":"Diego&#39;s Brave Leap","es":"El salto valiente de Diego","fr":"Le saut courageux de Diego"}},"butterfly-effect":{"next":"/books/sparrow-saved-forest/","nextTitles":{"en":"The Sparrow Who Saved the Forest","es":"El gorrión que salvó el bosque","fr":"Le moineau qui sauva la forêt"},"backTitles":{"en":"The Butterfly Effect","es":"El efecto mariposa","fr":"L&#39;effet papillon"}},"crooked-little-apple-tree":{"next":"/books/true-beauty-meadowbrook/","nextTitles":{"en":"The True Beauty of Meadowbrook","es":"La verdadera belleza de Meadowbrook","fr":"La vraie beauté de Meadowbrook"},"backTitles":{"en":"The Crooked Little Apple Tree","es":"El pequeño manzano torcido","fr":"Le petit pommier tordu"}},"true-beauty-meadowbrook":{"next":"/books/crooked-little-apple-tree/","nextTitles":{"en":"The Crooked Little Apple Tree","es":"El pequeño manzano torcido","fr":"Le petit pommier tordu"},"backTitles":{"en":"The True Beauty of Meadowbrook","es":"La verdadera belleza de Meadowbrook","fr":"La vraie beauté de Meadowbrook"}},"pawa-rainbow-cloud":{"next":"/books/mayas-shadow/","nextTitles":{"en":"The Adventures of Maya&#39;s Shadow","es":"Las aventuras de la sombra de Maya","fr":"Les aventures de l&#39;ombre de Maya"},"backTitles":{"en":"Pawa and the Little Rainbow Cloud","es":"Pawa y la pequeña nube arcoíris","fr":"Pawa et le petit nuage arc-en-ciel"}}}'>
   <p id="ste-continue-eyebrow" data-i18n="continueEyebrow" class="text-xs font-semibold uppercase tracking-wide text-purple-600 mb-2">Continue the journey</p>
   <a href="/books/diegos-brave-leap/" data-ste-continue='{"kind":"book","titles":{"en":"Diego&#39;s Brave Leap","es":"El salto valiente de Diego","fr":"Le saut courageux de Diego"}}' class="inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold px-5 py-3 shadow-md hover:shadow-lg transition-all">Read next <span aria-hidden="true">→</span></a>
 </section>
@@ -599,6 +599,18 @@
   if (!a || typeof window.t !== 'function') return;
   var d; try { d = JSON.parse(a.getAttribute('data-ste-continue')); } catch (e) { return; }
   var L = window.GAME_LANG || 'en';
+  var from = {}; try { from = JSON.parse(document.getElementById('ste-continue').getAttribute('data-ste-from') || '{}'); } catch (e) {}
+  var src = null; try { src = new URLSearchParams(window.location.search).get('book'); } catch (e) {}
+  var f = src && Object.prototype.hasOwnProperty.call(from, src) ? from[src] : null;
+  if (f) {
+    a.setAttribute('href', f.next);
+    d = { kind: 'book', titles: f.nextTitles };
+    var back = document.createElement('a');
+    back.setAttribute('href', '/books/' + src + '/');
+    back.className = 'inline-flex items-center gap-2 rounded-2xl border-2 border-purple-200 text-purple-700 font-semibold px-5 py-3 ml-0 sm:ml-3 mt-3 sm:mt-0 hover:bg-purple-50 transition-all';
+    back.textContent = '← ' + window.t('backTo') + ' ' + (f.backTitles[L] || f.backTitles.en);
+    a.parentNode.appendChild(back);
+  }
   var label = d.kind === 'book'
     ? window.t('readNext') + ': ' + ((d.titles && (d.titles[L] || d.titles.en)) || '')
     : window.t('browseBooks');

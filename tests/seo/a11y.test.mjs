@@ -134,11 +134,13 @@ test('a11y — every book page renders its paired activities (B-02)', () => {
         // one shared file serves all three languages, and the language travels in the
         // query string (C6-04) so it survives an arrival with no stored preference.
         const lang = prefix.replace('/', '');
+        // Activities audit 2026-11: the link also names the source book (?book=<id>), so the
+        // activity can say "Back to <book>" and continue from it. HTML escapes & as &amp;.
         const href = game
-          ? `/games/${slug}.html${lang ? `?lang=${lang}` : ''}`
-          : `${prefix}/activities/${slug}`;
+          ? `/games/${slug}.html${lang ? `?lang=${lang}&amp;book=${b.id}` : `?book=${b.id}`}`
+          : `${prefix}/activities/${slug}/?book=${b.id}`;
         assert.ok(
-          (h.includes(`href="${href}/"`) || h.includes(`href="${href}"`)),
+          h.includes(`href="${href}"`),
           `${prefix}/books/${b.id}: missing activity link ${href}`,
         );
       }

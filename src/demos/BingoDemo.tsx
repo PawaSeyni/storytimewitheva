@@ -6,6 +6,8 @@ import { RefreshCw, Trophy, Award } from 'lucide-react';
 import { useLanguage, useTranslation } from '../lib/language';
 import type { Language } from '../lib/language';
 import { useToast } from '../lib/toast';
+import LittleReaderToggle from '../components/LittleReaderToggle';
+import ReadAloudButton from '../components/ReadAloudButton';
 
 type Item = { emoji: string; text: string; free?: boolean };
 type ThemeKey = 'fairytale' | 'adventure' | 'mystery' | 'animal';
@@ -270,6 +272,196 @@ const TRANSLATIONS = {
   },
 };
 
+// Little reader mode (ages 4-5, pre-readers): a fixed 3x3 board of picture-first things to do
+// with a grown-up. Same order in every language, so marks stay valid when the language changes.
+const LITTLE_ITEMS: Record<Language, Item[]> = {
+  en: [
+    { emoji: '🐶', text: 'Read a book about an animal' },
+    { emoji: '🛋️', text: 'Read in a cozy spot' },
+    { emoji: '🔴', text: 'Point to something red in a book' },
+    { emoji: '🐮', text: 'Make an animal sound from a story' },
+    { emoji: '🧑‍🧒', text: 'Read with a grown-up' },
+    { emoji: '🌳', text: 'Read outside' },
+    { emoji: '😂', text: 'Find a funny picture' },
+    { emoji: '🖼️', text: 'Tell the story with the pictures' },
+    { emoji: '🌙', text: 'Read a story before bed' },
+  ],
+  es: [
+    { emoji: '🐶', text: 'Lee un libro de animales' },
+    { emoji: '🛋️', text: 'Lee en un rincón cómodo' },
+    { emoji: '🔴', text: 'Señala algo rojo en un libro' },
+    { emoji: '🐮', text: 'Haz el sonido de un animal del cuento' },
+    { emoji: '🧑‍🧒', text: 'Lee con un adulto' },
+    { emoji: '🌳', text: 'Lee al aire libre' },
+    { emoji: '😂', text: 'Busca un dibujo gracioso' },
+    { emoji: '🖼️', text: 'Cuenta el cuento con los dibujos' },
+    { emoji: '🌙', text: 'Lee un cuento antes de dormir' },
+  ],
+  fr: [
+    { emoji: '🐶', text: 'Lis un livre sur un animal' },
+    { emoji: '🛋️', text: 'Lis dans un coin douillet' },
+    { emoji: '🔴', text: 'Montre quelque chose de rouge dans un livre' },
+    { emoji: '🐮', text: 'Fais le cri d’un animal de l’histoire' },
+    { emoji: '🧑‍🧒', text: 'Lis avec un grand' },
+    { emoji: '🌳', text: 'Lis dehors' },
+    { emoji: '😂', text: 'Trouve une image rigolote' },
+    { emoji: '🖼️', text: 'Raconte l’histoire avec les images' },
+    { emoji: '🌙', text: 'Lis une histoire avant de dormir' },
+  ],
+};
+
+const LITTLE_SIZE = 3;
+const LITTLE_LINES: number[][] = [
+  [0, 1, 2], [3, 4, 5], [6, 7, 8],
+  [0, 3, 6], [1, 4, 7], [2, 5, 8],
+  [0, 4, 8], [2, 4, 6],
+];
+
+/** Prefix for each square's read-aloud button name, so screen readers hear which square. */
+const LISTEN = { en: 'Listen:', es: 'Escuchar:', fr: 'Écouter :' } as const;
+
+const LITTLE_TRANSLATIONS = {
+  en: {
+    title: 'Picture Bingo',
+    intro: 'Pick a square and do it with your grown-up. Then tap the picture to get a star stamp. Three in a row wins!',
+    howTo: 'Tap 🔊 Listen to hear a square. Tap the picture to stamp it.',
+    hearRules: 'How to play',
+    boardLabel: 'Picture bingo board',
+    done: 'Done!',
+    stamps: (n: number) => `Stamps: ${n} of 9`,
+    win: 'Three in a row! Hooray!',
+    winMore: 'Great reading! Keep going and fill the whole board.',
+    full: 'The whole board! Super reading!',
+    startOver: 'Start over',
+  },
+  es: {
+    title: 'Bingo de dibujos',
+    intro: 'Elige una casilla y hazlo con un adulto. Luego toca el dibujo para ponerle un sello de estrella. ¡Tres en fila y ganas!',
+    howTo: 'Toca 🔊 Escuchar para oír una casilla. Toca el dibujo para ponerle un sello.',
+    hearRules: 'Cómo jugar',
+    boardLabel: 'Cartón de bingo de dibujos',
+    done: '¡Hecho!',
+    stamps: (n: number) => `Sellos: ${n} de 9`,
+    win: '¡Tres en fila! ¡Hurra!',
+    winMore: '¡Qué bien lees! Sigue y llena todo el cartón.',
+    full: '¡Cartón lleno! ¡Lo hiciste genial!',
+    startOver: 'Empezar de nuevo',
+  },
+  fr: {
+    title: 'Bingo en images',
+    intro: 'Choisis une case et fais-la avec un grand. Puis touche l’image pour avoir un tampon étoile. Trois à la suite, tu as gagné !',
+    howTo: 'Touche 🔊 Écouter pour entendre une case. Touche l’image pour mettre un tampon.',
+    hearRules: 'Comment jouer',
+    boardLabel: 'Carton de bingo en images',
+    done: 'Fait !',
+    stamps: (n: number) => `Tampons : ${n} sur 9`,
+    win: 'Trois à la suite ! Hourra !',
+    winMore: 'Bravo ! Continue pour remplir tout le carton.',
+    full: 'Tout le carton est rempli ! Super lecture !',
+    startOver: 'Recommencer',
+  },
+};
+
+function LittleReaderBingo({ marked, onToggle, onReset }: {
+  marked: Set<number>;
+  onToggle: (index: number) => void;
+  onReset: () => void;
+}) {
+  const { language } = useLanguage();
+  const t = useTranslation(LITTLE_TRANSLATIONS);
+  const items = LITTLE_ITEMS[language] ?? LITTLE_ITEMS.en;
+  const winningLines = LITTLE_LINES.filter((line) => line.every((i) => marked.has(i)));
+  const winningCells = new Set(winningLines.flat());
+  const hasWin = winningLines.length > 0;
+  const isFull = marked.size === LITTLE_SIZE * LITTLE_SIZE;
+
+  return (
+    <div>
+      <Card className="bg-linear-to-r from-yellow-100 to-orange-100 p-5 mb-6 border-4 border-orange-300">
+        <h3 className="font-bold text-2xl mb-2 text-orange-700"><span aria-hidden="true">🖍️ </span>{t.title}</h3>
+        <p className="text-lg text-gray-800 mb-2">{t.intro}</p>
+        <p className="text-base text-gray-700 mb-3">{t.howTo}</p>
+        <div className="flex flex-wrap items-center gap-2 [&>button]:min-h-11">
+          <span className="font-semibold text-orange-800">{t.hearRules}:</span>
+          <ReadAloudButton text={`${t.intro} ${t.howTo.replace('🔊 ', '')}`} compact label={t.hearRules} />
+        </div>
+      </Card>
+
+      <div className="bg-linear-to-br from-amber-300 to-orange-400 rounded-2xl p-2 sm:p-6 mb-4 shadow-2xl">
+        <div role="group" aria-label={t.boardLabel} className="grid grid-cols-3 gap-2 sm:gap-4 max-w-2xl mx-auto">
+          {items.map((item, index) => {
+            const isMarked = marked.has(index);
+            const inWin = winningCells.has(index);
+            return (
+              <div
+                key={index}
+                role="group"
+                aria-label={item.text}
+                className={`flex flex-col rounded-xl sm:rounded-2xl bg-white p-1.5 sm:p-2 shadow-md ${
+                  inWin ? 'ring-4 ring-yellow-300' : ''
+                }`}
+              >
+                <button
+                  type="button"
+                  onClick={() => onToggle(index)}
+                  aria-pressed={isMarked}
+                  aria-label={item.text}
+                  className={`relative flex flex-1 min-h-28 sm:min-h-36 flex-col items-center justify-center gap-1 rounded-lg sm:rounded-xl border-4 p-1 sm:p-2 text-center cursor-pointer focus:outline-hidden focus-visible:ring-4 focus-visible:ring-purple-500 motion-safe:transition-transform ${
+                    isMarked
+                      ? 'border-solid border-amber-500 bg-amber-100'
+                      : 'border-dashed border-gray-300 bg-white hover:bg-orange-50 motion-safe:hover:scale-[1.03]'
+                  }`}
+                >
+                  <span aria-hidden="true" className={`text-4xl sm:text-6xl leading-none ${isMarked ? 'opacity-60' : ''}`}>{item.emoji}</span>
+                  <span className="text-xs sm:text-base font-semibold leading-tight text-gray-800 wrap-break-word w-full">{item.text}</span>
+                  {isMarked && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 flex flex-col items-center rounded-full border-2 border-amber-600 bg-white px-1.5 py-0.5 sm:px-2 rotate-12 shadow motion-safe:animate-[ping_0.4s_ease-out_1_reverse]"
+                    >
+                      <span className="text-xl sm:text-3xl leading-none">⭐</span>
+                      <span className="text-[10px] sm:text-xs font-bold text-amber-800 leading-none">{t.done}</span>
+                    </span>
+                  )}
+                </button>
+                <div className="mt-1.5 flex justify-center [&>button]:min-h-11 [&>button]:w-full [&>button]:px-1 [&>button]:text-xs sm:[&>button]:text-sm">
+                  <ReadAloudButton text={item.text} compact label={`${LISTEN[language]} ${item.text}`} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <p className="text-center text-lg font-semibold text-gray-800 mb-4">{t.stamps(marked.size)}</p>
+
+      <div role="status" aria-live="polite">
+        {hasWin && (
+          <div className="bg-linear-to-r from-yellow-300 via-orange-300 to-pink-400 rounded-2xl p-6 mb-6 text-center shadow-xl">
+            <div aria-hidden="true" className="text-5xl mb-2">
+              <span className="inline-block motion-safe:animate-bounce">🎉</span>
+              <span className="inline-block mx-2">🌟</span>
+              <span className="inline-block motion-safe:animate-bounce">🎉</span>
+            </div>
+            <p className="text-3xl font-bold text-purple-800 mb-1">{isFull ? t.full : t.win}</p>
+            {!isFull && <p className="text-lg text-purple-900">{t.winMore}</p>}
+          </div>
+        )}
+      </div>
+
+      <div className="flex justify-center">
+        <Button
+          onClick={onReset}
+          className="bg-linear-to-r from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600 text-white font-bold text-lg px-8 py-6 min-h-11 rounded-full shadow-lg"
+        >
+          <RefreshCw aria-hidden="true" className="w-5 h-5 mr-2" />
+          {t.startOver}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 const BADGE_DEFS: { id: string; emoji: string; condition: 'marks' | 'bingo' | 'fullcard' | 'themes'; value: number }[] = [
   { id: 'first', emoji: '⭐', condition: 'marks', value: 1 },
   { id: 'five', emoji: '🌟', condition: 'marks', value: 5 },
@@ -303,6 +495,16 @@ export default function BingoDemo() {
   const [fullCardAwarded, setFullCardAwarded] = useState(false);
   const [unlockedBadges, setUnlockedBadges] = useState<Set<string>>(new Set());
   const [themesPlayed, setThemesPlayed] = useState<Set<ThemeKey>>(new Set(['fairytale']));
+  // Little reader mode: off by default, with its own marks so it never touches the 5x5 board.
+  const [littleReader, setLittleReader] = useState(false);
+  const [littleMarked, setLittleMarked] = useState<Set<number>>(new Set());
+  const toggleLittleSquare = (index: number) => {
+    setLittleMarked((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index); else next.add(index);
+      return next;
+    });
+  };
 
   const generateCard = useCallback(() => {
     const theme = themes[currentTheme];
@@ -422,6 +624,12 @@ export default function BingoDemo() {
         <div className="text-5xl mb-4">📚🎯</div>
       </div>
 
+      <LittleReaderToggle on={littleReader} onChange={setLittleReader} />
+
+      {littleReader ? (
+        <LittleReaderBingo marked={littleMarked} onToggle={toggleLittleSquare} onReset={() => setLittleMarked(new Set())} />
+      ) : (
+      <>
       <Card className="bg-linear-to-r from-yellow-100 to-orange-100 p-6 mb-6 border-4 border-orange-300">
         <h3 className="font-bold text-lg mb-3 text-orange-700">{t.howToPlay}</h3>
         <ol className="list-decimal list-inside space-y-2 text-gray-700">
@@ -553,6 +761,8 @@ export default function BingoDemo() {
           ))}
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 }

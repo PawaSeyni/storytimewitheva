@@ -6,7 +6,7 @@
 
 ## Totals
 - **Books:** 20
-- **Activities:** 21 (12 standalone games · 9 in-app React demos)
+- **Activities:** 0 (0 standalone games · 0 in-app React demos)
 - **Languages:** English, Spanish, French (every book & activity page is served at `/`, `/es/`, `/fr/` via path-prefix routing)
 
 ## Text parity (title · subtitle · description · theme)
@@ -22,7 +22,7 @@ to the English edition by design.
 | Coverage | 🇺🇸 EN | 🇪🇸 ES | 🇫🇷 FR |
 |---|---|---|---|
 | Language-specific cover | 20/20 | 19/20 | 19/20 |
-| Own Amazon edition (Buy link) | 20/20 | 16/20 | 18/20 |
+| Own Amazon edition (Buy link) | 20/20 | 19/20 | 18/20 |
 
 ## Per-book detail
 | Book id | EN cover | EN buy | ES cover | ES buy | FR cover | FR buy |
@@ -32,16 +32,16 @@ to the English edition by design.
 | tower-touched-sky | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | mayas-shadow | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | sparrow-saved-forest | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| diegos-brave-leap | ✅ | ✅ | ✅ | — | ✅ | ✅ |
+| diegos-brave-leap | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | butterfly-effect | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | emperors-true-treasure | ✅ | ✅ | ✅ | ✅ | ✅ | — |
 | crooked-little-apple-tree | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | true-beauty-meadowbrook | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| sanding-block | ✅ | ✅ | ✅ | — | ✅ | ✅ |
+| sanding-block | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | leo-and-the-wolf | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | russet-the-fox | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | little-boats-big-wish | ✅ | ✅ | — | — | — | — |
-| heidis-journey-to-mastery | ✅ | ✅ | ✅ | — | ✅ | ✅ |
+| heidis-journey-to-mastery | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | cloud-collector | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | little-mapmaker | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | pawa-rainbow-cloud | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
@@ -50,10 +50,7 @@ to the English edition by design.
 
 ## Gaps (where a language falls back to English)
 ### Missing Spanish Amazon edition (Buy → English)
-- diegos-brave-leap
-- sanding-block
 - little-boats-big-wish
-- heidis-journey-to-mastery
 
 ### Missing French Amazon edition (Buy → English)
 - emperors-true-treasure

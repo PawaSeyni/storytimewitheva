@@ -43,16 +43,18 @@ interface StudioFrameProps {
   bookIds: string[];
   grownup: string;
   children: ReactNode;
+  /** False for paper-first pages (worksheets): the hero stays on screen but not on paper. */
+  printHero?: boolean;
 }
 
-export function StudioFrame({ emoji, hue, skill, title, subtitle, ages, minutes, bookIds, grownup, children }: StudioFrameProps) {
+export function StudioFrame({ emoji, hue, skill, title, subtitle, ages, minutes, bookIds, grownup, children, printHero = true }: StudioFrameProps) {
   const t = useTranslation(TRANSLATIONS);
   const books = useBooks();
   const paired = bookIds.map((id) => books.find((b) => b.id === id)).filter((b) => b !== undefined);
   const h = HUES[hue];
   return (
     <div className="rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-sm">
-      <header className={`bg-linear-to-br ${h.hero} px-4 py-6 sm:px-8 sm:py-8 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6`}>
+      <header className={`${printHero ? '' : 'print:hidden '}bg-linear-to-br ${h.hero} px-4 py-6 sm:px-8 sm:py-8 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6`}>
         <div className={`shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white/80 border ${h.ring} grid place-items-center text-4xl sm:text-5xl`} aria-hidden>
           {emoji}
         </div>

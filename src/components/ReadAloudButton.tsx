@@ -13,9 +13,12 @@ interface ReadAloudButtonProps {
   text: string;
   /** Compact style for cards; otherwise a larger pill for the detail modal. */
   compact?: boolean;
+  /** Accessible name when the button reads something other than a book description (e.g. a
+   *  bingo square or a step's question). Defaults to "Listen to this book". */
+  label?: string;
 }
 
-export default function ReadAloudButton({ text, compact = false }: ReadAloudButtonProps) {
+export default function ReadAloudButton({ text, compact = false, label }: ReadAloudButtonProps) {
   const id = useId();
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
@@ -38,7 +41,7 @@ export default function ReadAloudButton({ text, compact = false }: ReadAloudButt
   };
 
   const base = compact
-    ? 'inline-flex items-center justify-center gap-1.5 py-2 px-3 text-sm font-semibold rounded-full transition-colors'
+    ? 'inline-flex items-center justify-center gap-1.5 min-h-11 py-2 px-3 text-sm font-semibold rounded-full transition-colors'
     : 'inline-flex items-center justify-center gap-2 py-3 px-6 text-base font-semibold rounded-full transition-colors';
   const tone = speaking
     ? 'bg-purple-600 text-white hover:bg-purple-700'
@@ -49,7 +52,7 @@ export default function ReadAloudButton({ text, compact = false }: ReadAloudButt
       type="button"
       onClick={handleClick}
       aria-pressed={speaking}
-      aria-label={speaking ? t.stopAria : t.listenAria}
+      aria-label={speaking ? t.stopAria : label ?? t.listenAria}
       className={`${base} ${tone}`}
     >
       <span aria-hidden className="leading-none">{speaking ? '⏹️' : '🔊'}</span>

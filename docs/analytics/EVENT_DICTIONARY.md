@@ -31,7 +31,7 @@ when a property's meaning changes. Reports state the schema version they were bu
 | `Share` | share_initiated | intent | `book`, `target`, `placement` |  | target: native \| copy; placement: detail | growth | target kind only; the share sheet never reports the recipient |
 | `Experiment Exposure` | experiment_exposure | exposure | `experiment`, `variant` | `placement` |  | product | once per assignment when the variant is viewable; ids only |
 | `Read Aloud` |  | intent |  | `book`, `language` |  | product | no text |
-| `Activity Complete` |  | outcome | `activity` |  |  | product | activity slug |
+| `Activity Complete` |  | outcome | `activity` | `book` |  | product | activity slug; source book id when opened from a book page |
 | `Language Switch` |  | intent |  | `language` |  | product | target language |
 | `Library Status` |  | intent | `book`, `status` | `placement` |  | product | status token, never the library |
 | `Favorite` |  | intent | `book`, `status` | `placement` |  | product | as above |

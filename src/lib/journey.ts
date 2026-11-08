@@ -56,7 +56,23 @@ const CATALOG: JourneyTarget = { type: 'catalog', href: '/books/', reason: 'fall
  * The first valid continuation for a piece of content, in spec priority. Deterministic:
  * relationship arrays are in editorial order and the first resolvable entry wins.
  */
-export function nextStep(sourceType: JourneySource, sourceId: string): JourneyTarget | null {
+/**
+ * The book a reader came FROM when they opened an activity (`?book=<id>`), or null.
+ *
+ * Accepted only when the book exists AND lists the activity in its relatedActivityIds (or the
+ * activity is `anyBook`, i.e. offered on every book page):
+ * the parameter is user-editable, and an unrelated id must never re-label a page or
+ * steer the continuation. Activities with no book context behave exactly as before.
+ */
+export function sourceBookFor(activitySlug: string, bookId: string | null | undefined): string | null {
+  if (!bookId) return null;
+  const b = bookById.get(bookId);
+  const a = activityBySlug.get(activitySlug);
+  if (!b || !a) return null;
+  return a.anyBook || (b.relatedActivityIds ?? []).includes(activitySlug) ? bookId : null;
+}
+
+export function nextStep(sourceType: JourneySource, sourceId: string, fromBook?: string | null): JourneyTarget | null {
   if (sourceType === 'book') {
     const b = bookById.get(sourceId);
     if (!b) return null;
@@ -68,6 +84,15 @@ export function nextStep(sourceType: JourneySource, sourceId: string): JourneyTa
 
   if (sourceType === 'activity') {
     if (!activityBySlug.has(sourceId)) return null;
+    // Audit 2026-11 P0: with book context, the loop continues from THAT book (its first
+    // editorial related book), not from whichever referrer happens to be first in catalog
+    // order. The page also offers a "back to <book>" link, so the reader can return.
+    const src = sourceBookFor(sourceId, fromBook);
+    if (src) {
+      for (const id of bookById.get(src)!.relatedBookIds ?? []) { const t = bookTarget(id, 'related-book'); if (t) return t; }
+      const back = bookTarget(src, 'related-book');
+      if (back) return back;
+    }
     // An activity has no forward relations of its own; the books that reference it are
     // the DERIVED reverse relation (S4-011), in catalog order, so no activity dead-ends
     // while any book points at it.

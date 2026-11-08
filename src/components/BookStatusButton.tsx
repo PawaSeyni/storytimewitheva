@@ -9,6 +9,7 @@ import {
 } from '../lib/personalLibrary';
 import { useTranslation } from '../lib/language';
 import { track } from '../lib/analytics';
+import { Link } from './LocalizedLink';
 
 // Three states (Sprint 6 S6-001), up from the previous two. Reading status now lives in
 // the versioned personalization envelope rather than the legacy `readingProgress` key;
@@ -22,6 +23,7 @@ const TRANSLATIONS = {
     ariaMarkAsRead: 'Mark as read', ariaMarkAsNotRead: 'Mark as not read',
     ariaMarkAsReading: 'Mark as reading now', ariaMarkAsNotReading: 'Stop marking as reading now',
     ariaAddToWant: 'Add to want-to-read', ariaRemoveFromWant: 'Remove from want-to-read',
+    passport: 'Stamped in your Reading Passport',
   },
   es: {
     read: 'Leído', markRead: 'Marcar leído',
@@ -30,6 +32,7 @@ const TRANSLATIONS = {
     ariaMarkAsRead: 'Marcar como leído', ariaMarkAsNotRead: 'Marcar como no leído',
     ariaMarkAsReading: 'Marcar como leyendo ahora', ariaMarkAsNotReading: 'Dejar de marcar como leyendo ahora',
     ariaAddToWant: 'Añadir a por leer', ariaRemoveFromWant: 'Quitar de por leer',
+    passport: 'Sellado en tu pasaporte de lectura',
   },
   fr: {
     read: 'Lu', markRead: 'Marquer lu',
@@ -38,6 +41,7 @@ const TRANSLATIONS = {
     ariaMarkAsRead: 'Marquer comme lu', ariaMarkAsNotRead: 'Marquer comme non lu',
     ariaMarkAsReading: 'Marquer comme en cours de lecture', ariaMarkAsNotReading: 'Ne plus marquer comme en cours',
     ariaAddToWant: 'Ajouter à la liste à lire', ariaRemoveFromWant: 'Retirer de la liste à lire',
+    passport: 'Tamponné dans ton passeport de lecture',
   },
 };
 
@@ -120,6 +124,12 @@ export default function BookStatusButton({ bookId, compact = false }: BookStatus
           </button>
         );
       })}
+      {/* A "read" book is a stamp in the Reading Passport (same library state). */}
+      {!compact && status === 'read' && (
+        <Link to="/activities/reading-passport" className="basis-full text-sm font-semibold text-teal-700 hover:text-teal-900 underline-offset-4 hover:underline" data-passport-link>
+          <span aria-hidden>🛂 </span>{t.passport} <span aria-hidden>→</span>
+        </Link>
+      )}
     </div>
   );
 }
