@@ -137,7 +137,7 @@ export const collections: CollectionRecord[] = [
     publishState: 'published',
     // Featured activities: referenced by the most member books (validated: each must be
     // related to at least one book in the collection). Editorial choice within that set.
-    activityIds: ['emotion-wheel', 'character-workshop', 'coloring'],
+    activityIds: ['emotion-wheel', 'brave-breathing', 'coloring'],
   },
   {
     id: 'ages-3-5',

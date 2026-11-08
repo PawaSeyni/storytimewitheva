@@ -30,11 +30,17 @@ const TABLE = {
   'puddle-voyage': ['little-boats-big-wish'],
   'map-my-world': ['little-mapmaker'],
   'leo-and-the-wolf-worksheet': ['leo-and-the-wolf'],
+  // Wave 3 (§5b): a second activity for the five strongest books.
+  'shadow-science': ['mayas-shadow'],
+  'brave-breathing': ['diegos-brave-leap'],
+  'inventor-blueprint': ['heidis-journey-to-mastery'],
+  'thousand-cubes-challenge': ['miras-thousand-cubes'],
+  'tree-timeline': ['fig-trees-secret'],
 };
 const AGES = {
   'color-mix-lab': '4-7', 'feelings-weather-report': '3-7', 'first-day-brave-plan': '4-8', 'cloud-detective-journal': '4-8',
   'shadow-theatre': '3-7', 'kindness-ripple': '4-9', 'story-quilt': '5-9', 'patient-maker-passport': '5-9',
-  'trust-meter': '4-8', 'harmonia-orchestra': '3-6', 'ask-first-architect': '5-9', 'true-treasure-chest': '5-9', 'one-of-a-kind-tree': '4-8', 'kindness-mirror': '4-8', 'listen-like-a-fox': '4-8', 'puddle-voyage': '3-7', 'map-my-world': '4-8', 'leo-and-the-wolf-worksheet': '4-8',
+  'trust-meter': '4-8', 'harmonia-orchestra': '3-6', 'ask-first-architect': '5-9', 'true-treasure-chest': '5-9', 'one-of-a-kind-tree': '4-8', 'kindness-mirror': '4-8', 'listen-like-a-fox': '4-8', 'puddle-voyage': '3-7', 'map-my-world': '4-8', 'leo-and-the-wolf-worksheet': '4-8', 'shadow-science': '3-7', 'brave-breathing': '4-8', 'inventor-blueprint': '5-9', 'thousand-cubes-challenge': '5-9', 'tree-timeline': '5-9',
 };
 
 test('studio — all studio activities exist, trilingual, with the table ages', () => {
@@ -52,7 +58,7 @@ test('studio — all studio activities exist, trilingual, with the table ages', 
 });
 
 /** Position on the book page when not first: the Leo worksheet follows Trust Meter. */
-const SLOT = { 'leo-and-the-wolf-worksheet': 1 };
+const SLOT = { 'leo-and-the-wolf-worksheet': 1, 'shadow-science': 1, 'brave-breathing': 1, 'inventor-blueprint': 1, 'thousand-cubes-challenge': 1, 'tree-timeline': 1 };
 
 test('studio — every "best book connection" lists the activity first, and only those books do', () => {
   for (const [slug, ids] of Object.entries(TABLE)) {
@@ -71,7 +77,7 @@ test('studio — no English copy in the studio pages carries an em dash', async 
   // House style: no em dashes in English copy. The studio files hold all three languages,
   // and none of them uses one, so the whole file is checked.
   const { readFileSync, readdirSync } = await import('node:fs');
-  const files = ['src/demos/studio/StudioFrame.tsx', ...readdirSync('src/demos').filter((f) => /^(ColorMixLab|FeelingsWeather|BravePlan|CloudDetective|ShadowTheatre|KindnessRipple|StoryQuilt|MakerPassport|TrustMeter|ColorOrchestra|AskFirstArchitect|TreasureChest|OneOfAKindTree|KindnessMirror|ListenLikeAFox|PuddleVoyage|MapMyWorld|LeoWorksheet)Demo\.tsx$/.test(f)).map((f) => `src/demos/${f}`)];
-  assert.equal(files.length, 19);
+  const files = ['src/demos/studio/StudioFrame.tsx', ...readdirSync('src/demos').filter((f) => /^(ColorMixLab|FeelingsWeather|BravePlan|CloudDetective|ShadowTheatre|KindnessRipple|StoryQuilt|MakerPassport|TrustMeter|ColorOrchestra|AskFirstArchitect|TreasureChest|OneOfAKindTree|KindnessMirror|ListenLikeAFox|PuddleVoyage|MapMyWorld|LeoWorksheet|ShadowScience|BraveBreathing|InventorBlueprint|ThousandCubes|TreeTimeline)Demo\.tsx$/.test(f)).map((f) => `src/demos/${f}`)];
+  assert.equal(files.length, 24);
   for (const f of files) assert.ok(!readFileSync(f, 'utf8').includes('\u2014'), `${f}: em dash`);
 });
