@@ -130,6 +130,11 @@ const MapMyWorldDemo = chunk(L.loadMapMyWorldDemo);
 const LeoWorksheetDemo = chunk(L.loadLeoWorksheetDemo);
 const StoryWorksheetDemo = chunk(L.loadStoryWorksheetDemo);
 const ReadingPassportDemo = chunk(L.loadReadingPassportDemo);
+const ShadowScienceDemo = chunk(L.loadShadowScienceDemo);
+const BraveBreathingDemo = chunk(L.loadBraveBreathingDemo);
+const InventorBlueprintDemo = chunk(L.loadInventorBlueprintDemo);
+const ThousandCubesDemo = chunk(L.loadThousandCubesDemo);
+const TreeTimelineDemo = chunk(L.loadTreeTimelineDemo);
 const CloudDetectiveDemo = chunk(L.loadCloudDetectiveDemo);
 const ShadowTheatreDemo = chunk(L.loadShadowTheatreDemo);
 const KindnessRippleDemo = chunk(L.loadKindnessRippleDemo);
@@ -171,6 +176,11 @@ const routeDefs = [
   { path: '/activities/leo-and-the-wolf-worksheet', element: <DemoPage><LeoWorksheetDemo /></DemoPage> },
   { path: '/activities/story-worksheet', element: <DemoPage><StoryWorksheetDemo /></DemoPage> },
   { path: '/activities/reading-passport', element: <DemoPage><ReadingPassportDemo /></DemoPage> },
+  { path: '/activities/shadow-science', element: <DemoPage><ShadowScienceDemo /></DemoPage> },
+  { path: '/activities/brave-breathing', element: <DemoPage><BraveBreathingDemo /></DemoPage> },
+  { path: '/activities/inventor-blueprint', element: <DemoPage><InventorBlueprintDemo /></DemoPage> },
+  { path: '/activities/thousand-cubes-challenge', element: <DemoPage><ThousandCubesDemo /></DemoPage> },
+  { path: '/activities/tree-timeline', element: <DemoPage><TreeTimelineDemo /></DemoPage> },
   { path: '/activities/cloud-detective-journal', element: <DemoPage><CloudDetectiveDemo /></DemoPage> },
   { path: '/activities/shadow-theatre', element: <DemoPage><ShadowTheatreDemo /></DemoPage> },
   { path: '/activities/kindness-ripple', element: <DemoPage><KindnessRippleDemo /></DemoPage> },

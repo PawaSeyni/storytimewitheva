@@ -239,4 +239,4 @@ resources to feel specific.
 |---|---|---|---|
 | `before` | Sofia wants to cut down an old fig tree. What do you think that tree has seen? | Sofia veut abattre un vieux figuier. Qu'a pu voir cet arbre, à ton avis ? | Sofía quiere talar una higuera vieja. ¿Qué crees que ha visto ese árbol? |
 | `during` | Mr. Costas remembers harvests and recipes from long ago. Who tells the old stories in your family? | M. Costas se souvient des récoltes et des recettes d'autrefois. Qui raconte les vieilles histoires dans ta famille ? | El señor Costas recuerda cosechas y recetas de hace mucho. ¿Quién cuenta las historias antiguas en tu familia? |
-| `after` | Some of what we inherit is made of stories. Which story would you keep? | Une partie de ce que l'on hérite est faite d'histoires. Quelle histoire garderais-tu ? | Parte de lo que heredamos está hecho de historias. ¿Qué historia guardarías tú? |
+| `after` | Some of what we inherit is made of stories. Which story would you keep? | Une partie de ce dont on hérite est faite d'histoires. Quelle histoire garderais-tu ? | Parte de lo que heredamos está hecho de historias. ¿Qué historia guardarías tú? |

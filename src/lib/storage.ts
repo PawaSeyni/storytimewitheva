@@ -251,6 +251,7 @@ export const LEGACY_KEYS = [
   'bookmarkDesign',         // src/demos/BookmarkCraftsDemo.tsx — saved design
   'kindnessRipples',        // src/demos/KindnessRippleDemo.tsx — one week of ripples
   'makerPassport',          // src/demos/MakerPassportDemo.tsx — goal, steps, attempts
+  'thousandCubes',          // src/demos/ThousandCubesDemo.tsx: practice name, dream goal, 30 cubes
 ] as const;
 
 export type LegacyKey = (typeof LEGACY_KEYS)[number];

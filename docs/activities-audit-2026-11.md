@@ -283,7 +283,7 @@ Target: every book with at least 1 book-specific activity by the end of the P1 w
 - **The three activities are re-rated from 6-9 to 4-9.** The Activities hub and the book-page activity cards show "🧸 Little reader mode". This resolves the age-fit issue in §4D for these three.
 - **Accessibility fixes to the shared read-aloud button:** an optional `label`, so each button says what it reads (it always said "Listen to this book"), and a 44px minimum tap height in the compact style.
 - **A test** checks that every activity flagged `littleReader` really renders the toggle and read-aloud, and is rated from age 4.
-- **Still open:** coloring art from the books; second activities for the strongest books.
+- **Still open:** coloring art from the books.
 
 ### Pass 7: age fit closed
 
@@ -301,7 +301,7 @@ Target: every book with at least 1 book-specific activity by the end of the P1 w
 - The STEM classroom collection now features Map My World instead of World Geography, and its description was updated in all three languages.
 - **A new test enforces the age rule** from §4D: no book may link an activity whose minimum age is two or more years above the book's, unless the activity has a little reader mode.
 - Story Dice is no longer linked from any 4-8 book (Leo's worksheet replaced it in pass 2), so it needed nothing.
-- **Still open:** coloring art from the books; second activities for the strongest books.
+- **Still open:** coloring art from the books.
 
 ### Pass 8: Sentence Builder book mode, so every word game plays the books
 
@@ -319,3 +319,21 @@ Target: every book with at least 1 book-specific activity by the end of the P1 w
   - Mr. Costas, Grandpa Chen and Anders aren't named in any sentence (punctuation or hyphen rules).
 - **Tests:** `tests/funnel/book-sentences.test.mjs`; the word-game test now also covers Sentence Builder.
 - **Still open:** second activities for the strongest books; coloring art from the books.
+
+### Pass 9: a second activity for the five strongest books (§5b)
+
+New Studio pages, each listed second on its book page (wave 3):
+- **Where Did My Shadow Go?** (*Maya's Shadow*, 3-7). Move a lamp around a child in a simple scene: low means a long shadow, high means a short one, close means bigger and blurrier. Then plan the shadow's night adventure. The printout adds a flashlight experiment to try at home.
+- **Brave Breathing with Diego** (*Diego's Brave Leap*, 4-8). Six slow wave breaths of 4 seconds in and 4 out, with a tummy check before and after and a gentle comparison. With reduced motion, the circle stays still and a countdown shows instead. Prints a pocket breath card.
+- **Inventor's Blueprint** (*Heidi's Journey to Mastery*, 5-9). Design an invention: what it helps and up to 3 materials, then the 3 small skills to learn first. Prints a blueprint card.
+- **The Thousand Cubes Challenge** (*Mira's Thousand Cubes*, 5-9). A 30-day practice tracker where each day fills a cube. It is saved on the device under a new storage key, `thousandCubes`, checked strictly when read back and registered in `LEGACY_KEYS`, so "clear my data" covers it.
+- **What the Tree Has Seen** (*The Fig Tree's Secret*, 5-9). Pick a "witness" from family life and build a three-generation timeline of what it has seen.
+
+Links that made room for them:
+- Diego no longer links Character Workshop, so the "emotions" collection features Brave Breathing instead.
+- Heidi and Mira no longer link Bookmark Designer.
+- Fig Tree no longer links Flashcards; its own story words in the Story words strip cover that.
+
+Tests: Studio tests extended to 24 pages, with the new activities in slot 2. All 15 page and language combinations checked in a browser.
+
+**Still open:** coloring pages drawn from the book illustrations, which need the owner's artwork.

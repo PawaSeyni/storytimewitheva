@@ -284,7 +284,7 @@ export const books: Book[] = [
     ageRange: '3-7',
     themeIds: ['wonder', 'creativity'],
     relatedBookIds: ['little-mapmaker', 'rainbow-symphony', 'little-boats-big-wish'],
-    relatedActivityIds: ['shadow-theatre', 'coloring', 'build-a-scene'],
+    relatedActivityIds: ['shadow-theatre', 'shadow-science', 'coloring', 'build-a-scene'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Look at your shadow. Where do you think it goes when you fall asleep?",
@@ -395,7 +395,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['courage', 'emotions'],
     relatedBookIds: ['sparrow-saved-forest', 'leo-and-the-wolf', 'pawa-rainbow-cloud'],
-    relatedActivityIds: ['first-day-brave-plan', 'character-workshop', 'emotion-wheel', 'finish-the-story'],
+    relatedActivityIds: ['first-day-brave-plan', 'brave-breathing', 'emotion-wheel', 'finish-the-story'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Diego is standing at the edge of a cliff and everyone is watching. How do you think his tummy feels?",
@@ -885,7 +885,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['patience-mastery', 'curiosity', 'creativity'],
     relatedBookIds: ['miras-thousand-cubes', 'colors-mixed-up', 'little-mapmaker'],
-    relatedActivityIds: ['patient-maker-passport', 'bookmark-designer', 'craft-corner', 'build-a-scene'],
+    relatedActivityIds: ['patient-maker-passport', 'inventor-blueprint', 'craft-corner', 'build-a-scene'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Heidi dreams of building solar cars and robots. What would you invent first?",
@@ -1101,7 +1101,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['patience-mastery', 'creativity'],
     relatedBookIds: ['heidis-journey-to-mastery', 'sanding-block', 'colors-mixed-up'],
-    relatedActivityIds: ['patient-maker-passport', 'bookmark-designer', 'craft-corner', 'build-a-scene'],
+    relatedActivityIds: ['patient-maker-passport', 'thousand-cubes-challenge', 'craft-corner', 'build-a-scene'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Mira wants to carve eagles. Her first task is a thousand plain cubes. How would you feel?",
@@ -1155,7 +1155,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['heritage', 'gratitude'],
     relatedBookIds: ['emperors-true-treasure', 'little-boats-big-wish'],
-    relatedActivityIds: ['story-quilt', 'adventure-journal', 'bilingual-flashcards', 'bingo'],
+    relatedActivityIds: ['story-quilt', 'tree-timeline', 'adventure-journal', 'bingo'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Sofia wants to cut down an old fig tree. What do you think that tree has seen?",
@@ -1170,7 +1170,7 @@ export const books: Book[] = [
       { stage: "after", prompt: {
         en: "Some of what we inherit is made of stories. Which story would you keep?",
         es: "Parte de lo que heredamos está hecho de historias. ¿Qué historia guardarías tú?",
-        fr: "Une partie de ce que l'on hérite est faite d'histoires. Quelle histoire garderais-tu ?",
+        fr: "Une partie de ce dont on hérite est faite d'histoires. Quelle histoire garderais-tu ?",
       } },
     ],
     editions: {

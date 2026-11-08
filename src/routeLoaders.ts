@@ -50,6 +50,11 @@ export const loadMapMyWorldDemo = preloadable(() => import('./demos/MapMyWorldDe
 export const loadLeoWorksheetDemo = preloadable(() => import('./demos/LeoWorksheetDemo'));
 export const loadStoryWorksheetDemo = preloadable(() => import('./demos/StoryWorksheetDemo'));
 export const loadReadingPassportDemo = preloadable(() => import('./demos/ReadingPassportDemo'));
+export const loadShadowScienceDemo = preloadable(() => import('./demos/ShadowScienceDemo'));
+export const loadBraveBreathingDemo = preloadable(() => import('./demos/BraveBreathingDemo'));
+export const loadInventorBlueprintDemo = preloadable(() => import('./demos/InventorBlueprintDemo'));
+export const loadThousandCubesDemo = preloadable(() => import('./demos/ThousandCubesDemo'));
+export const loadTreeTimelineDemo = preloadable(() => import('./demos/TreeTimelineDemo'));
 export const loadCloudDetectiveDemo = preloadable(() => import('./demos/CloudDetectiveDemo'));
 export const loadShadowTheatreDemo = preloadable(() => import('./demos/ShadowTheatreDemo'));
 export const loadKindnessRippleDemo = preloadable(() => import('./demos/KindnessRippleDemo'));
@@ -92,6 +97,11 @@ export const ROUTE_CHUNKS: ReadonlyArray<{ path: string; loaders: readonly Loade
   { path: '/activities/leo-and-the-wolf-worksheet', loaders: [loadDemoPage, loadLeoWorksheetDemo] },
   { path: '/activities/story-worksheet', loaders: [loadDemoPage, loadStoryWorksheetDemo] },
   { path: '/activities/reading-passport', loaders: [loadDemoPage, loadReadingPassportDemo] },
+  { path: '/activities/shadow-science', loaders: [loadDemoPage, loadShadowScienceDemo] },
+  { path: '/activities/brave-breathing', loaders: [loadDemoPage, loadBraveBreathingDemo] },
+  { path: '/activities/inventor-blueprint', loaders: [loadDemoPage, loadInventorBlueprintDemo] },
+  { path: '/activities/thousand-cubes-challenge', loaders: [loadDemoPage, loadThousandCubesDemo] },
+  { path: '/activities/tree-timeline', loaders: [loadDemoPage, loadTreeTimelineDemo] },
   { path: '/activities/cloud-detective-journal', loaders: [loadDemoPage, loadCloudDetectiveDemo] },
   { path: '/activities/shadow-theatre', loaders: [loadDemoPage, loadShadowTheatreDemo] },
   { path: '/activities/kindness-ripple', loaders: [loadDemoPage, loadKindnessRippleDemo] },
