@@ -283,4 +283,39 @@ Target: every book with at least 1 book-specific activity by the end of the P1 w
 - **The three activities are re-rated from 6-9 to 4-9.** The Activities hub and the book-page activity cards show "🧸 Little reader mode". This resolves the age-fit issue in §4D for these three.
 - **Accessibility fixes to the shared read-aloud button:** an optional `label`, so each button says what it reads (it always said "Listen to this book"), and a 44px minimum tap height in the compact style.
 - **A test** checks that every activity flagged `littleReader` really renders the toggle and read-aloud, and is rated from age 4.
-- **Still open:** Finish-the-Story and Story Dice are still 6-9 on some 4-8 books; Sentence Builder book mode; coloring art from the books; second activities for the strongest books.
+- **Still open:** coloring art from the books; second activities for the strongest books.
+
+### Pass 7: age fit closed
+
+- **Finish-the-Story has a little reader mode**, the same 🧸 switch as the React activities, inside the standalone game:
+  - the name is optional;
+  - every choice has a big picture and its own read-aloud button, and the "write your own" box is hidden;
+  - the ending can be drawn instead of written: the printed certificate gets a "My ending" drawing box;
+  - a `?little=1` link starts it in that mode.
+  - Two bugs fixed for both modes: tapping a choice twice added it twice, and the step dots didn't move to the ending.
+  - Re-rated from 6-9 to 4-9. Diego, Leo and Russet (4-8) keep linking it.
+- **Generic activities aimed at older children were unlinked** where each book already had a better-fitting activity:
+  - World Geography (6-9) from Cloud Collector and Little Mapmaker;
+  - Bookmark Designer (5-9) from Maya's Shadow (3-7);
+  - Puzzle Paradise (7-9) from The Sanding Block.
+- The STEM classroom collection now features Map My World instead of World Geography, and its description was updated in all three languages.
+- **A new test enforces the age rule** from §4D: no book may link an activity whose minimum age is two or more years above the book's, unless the activity has a little reader mode.
+- Story Dice is no longer linked from any 4-8 book (Leo's worksheet replaced it in pass 2), so it needed nothing.
+- **Still open:** coloring art from the books; second activities for the strongest books.
+
+### Pass 8: Sentence Builder book mode, so every word game plays the books
+
+- **New data: `src/data/bookSentences.data.ts`.** Three short sentences per book in EN, ES and FR (60 in all), taken only from each book's description and ordered from easy to harder. The test rules:
+  - 3 to 7 words each;
+  - no punctuation;
+  - no word repeated within a sentence, so the tiles have exactly one right order.
+- **Sentence Builder book mode.** Opened with `?book=<id>`, the book's sentences become a level of their own, selected first. The tiles, the clue and the speech are in the game's language (the built-in levels are English only), and the reveal shows all three languages. An unknown book falls back to the normal game.
+- **Shared data.** The sentences are baked next to the story words in the shared word-game data (`STE_BOOK_VOCAB`), so `book-words.js` exposes them as `STE_BOOK.sentences`. Sentence Builder is now an `anyBook` activity with "Back to <book>" from every book.
+- **The Story words strip** on each book page links to Sentence Builder too: "Eight words and three sentences from this book".
+- **Result:** all five word games that no book linked (Flashcards, Memory Match, Spelling Bee, Word Explorer, Sentence Builder) now play each book's own words.
+- **Wording compromises, to stay within 7 words in every language:**
+  - Sanding Block: "He gets a sanding block" (the grandfather isn't named);
+  - Colors: "Three colors make all the others";
+  - Mr. Costas, Grandpa Chen and Anders aren't named in any sentence (punctuation or hyphen rules).
+- **Tests:** `tests/funnel/book-sentences.test.mjs`; the word-game test now also covers Sentence Builder.
+- **Still open:** second activities for the strongest books; coloring art from the books.

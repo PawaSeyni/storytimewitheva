@@ -7,7 +7,7 @@ import { loadCatalog, loadBookVocab } from '../../scripts/lib/catalog.mjs';
 
 const { books } = await loadCatalog();
 const { bookVocab } = await loadBookVocab();
-const WORD_GAMES = ['bilingual-flashcards', 'matching', 'spelling-bee'];
+const WORD_GAMES = ['bilingual-flashcards', 'matching', 'spelling-bee', 'sentence-builder'];
 
 test('vocab — every book, in catalog order, has eight words', () => {
   assert.deepEqual(Object.keys(bookVocab), books.map((b) => b.id));

@@ -11,15 +11,16 @@ import { Link } from './LocalizedLink';
  * (?book=<id>), so the games play THIS book's words. Renders nothing for a book without words.
  */
 const TRANSLATIONS = {
-  en: { heading: 'Story words', sub: 'Eight words from this book, in English, Spanish and French. Play them:', flashcards: 'Flashcards', matching: 'Memory match', spelling: 'Spelling bee', worksheet: 'Printable worksheet' },
-  es: { heading: 'Palabras del cuento', sub: 'Ocho palabras de este libro, en español, inglés y francés. Juega con ellas:', flashcards: 'Tarjetas', matching: 'Memoria', spelling: 'Deletreo', worksheet: 'Ficha para imprimir' },
-  fr: { heading: 'Les mots de l’histoire', sub: 'Huit mots de ce livre, en français, anglais et espagnol. Joue avec eux :', flashcards: 'Cartes', matching: 'Memory', spelling: 'Épellation', worksheet: 'Fiche à imprimer' },
+  en: { heading: 'Story words', sub: 'Eight words and three sentences from this book, in English, Spanish and French. Play them:', flashcards: 'Flashcards', matching: 'Memory match', spelling: 'Spelling bee', sentences: 'Sentence builder', worksheet: 'Printable worksheet' },
+  es: { heading: 'Palabras del cuento', sub: 'Ocho palabras y tres frases de este libro, en español, inglés y francés. Juega con ellas:', flashcards: 'Tarjetas', matching: 'Memoria', spelling: 'Deletreo', sentences: 'Frases', worksheet: 'Ficha para imprimir' },
+  fr: { heading: 'Les mots de l’histoire', sub: 'Huit mots et trois phrases de ce livre, en français, anglais et espagnol. Joue avec eux :', flashcards: 'Cartes', matching: 'Memory', spelling: 'Épellation', sentences: 'Phrases', worksheet: 'Fiche à imprimer' },
 };
 
 const WORD_GAMES = [
   { slug: 'bilingual-flashcards', emoji: '🌍', key: 'flashcards' },
   { slug: 'matching', emoji: '🃏', key: 'matching' },
   { slug: 'spelling-bee', emoji: '🐝', key: 'spelling' },
+  { slug: 'sentence-builder', emoji: '🧱', key: 'sentences' },
 ] as const;
 
 export default function StoryWords({ bookId }: { bookId: string }) {

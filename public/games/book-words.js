@@ -15,8 +15,9 @@
   var entry = src && Object.prototype.hasOwnProperty.call(data, src) ? data[src] : null;
   var L = window.GAME_LANG || 'en';
 
-  /** { id, title, words: [{ emoji, en, es, fr }] } for the requested book, or null. */
-  window.STE_BOOK = entry ? { id: src, title: entry.title[L] || entry.title.en, words: entry.words } : null;
+  /** { id, title, words: [{ emoji, en, es, fr }], sentences: [{ emoji, en, es, fr }] } for the
+   *  requested book, or null. */
+  window.STE_BOOK = entry ? { id: src, title: entry.title[L] || entry.title.en, words: entry.words, sentences: entry.sentences || [] } : null;
 
   /**
    * Add a "📖 <book title>" choice in front of a game's existing button group and make it the

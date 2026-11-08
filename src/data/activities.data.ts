@@ -326,7 +326,8 @@ export const activities: Activity[] = [
   {
     slug: 'finish-the-story',
     emoji: '📖',
-    ages: '6-9',
+    ages: '4-9',
+    littleReader: true,
     game: true,
     title: { en: 'Finish the Story', es: 'Termina la historia', fr: 'Termine l\'histoire' },
     desc: {
@@ -341,6 +342,7 @@ export const activities: Activity[] = [
     emoji: '🧱',
     ages: '5-9',
     game: true,
+    anyBook: true,
     title: { en: 'Multilingual Sentence Builder', es: 'Constructor de frases multilingüe', fr: 'Constructeur de phrases multilingue' },
     desc: {
       en: 'Tap words to build sentences in English, Spanish, and French.',
