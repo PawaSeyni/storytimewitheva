@@ -20,6 +20,7 @@ const RESOURCES = path.join(ROOT, 'src', 'data', 'resources.ts');
 const RELATED = path.join(ROOT, 'src', 'data', 'relatedBooks.ts');
 const ACTIVITIES = path.join(ROOT, 'src', 'data', 'activities.data.ts');
 const BOOK_VOCAB = path.join(ROOT, 'src', 'data', 'bookVocab.data.ts');
+const BOOK_SENTENCES = path.join(ROOT, 'src', 'data', 'bookSentences.data.ts');
 const JOURNEY = path.join(ROOT, 'src', 'lib', 'journey.ts');
 const JOURNEYS = path.join(ROOT, 'src', 'data', 'journeys.ts');
 const COLLECTIONS = path.join(ROOT, 'src', 'data', 'collections.ts');
@@ -114,6 +115,13 @@ let bookVocabCache = null;
 export async function loadBookVocab() {
   if (!bookVocabCache) bookVocabCache = await loadModule(BOOK_VOCAB);
   return bookVocabCache;
+}
+
+let bookSentencesCache = null;
+/** Story sentences per book (src/data/bookSentences.data.ts), baked into Sentence Builder. */
+export async function loadBookSentences() {
+  if (!bookSentencesCache) bookSentencesCache = await loadModule(BOOK_SENTENCES);
+  return bookSentencesCache;
 }
 
 let journeyCache = null;

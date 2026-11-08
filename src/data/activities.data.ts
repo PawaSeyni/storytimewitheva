@@ -342,6 +342,7 @@ export const activities: Activity[] = [
     emoji: '🧱',
     ages: '5-9',
     game: true,
+    anyBook: true,
     title: { en: 'Multilingual Sentence Builder', es: 'Constructor de frases multilingüe', fr: 'Constructeur de phrases multilingue' },
     desc: {
       en: 'Tap words to build sentences in English, Spanish, and French.',

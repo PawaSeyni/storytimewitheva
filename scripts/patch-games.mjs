@@ -12,7 +12,7 @@
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadCatalog, loadJourney, loadBookVocab, loadActivities } from './lib/catalog.mjs';
+import { loadCatalog, loadJourney, loadBookVocab, loadBookSentences, loadActivities } from './lib/catalog.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const GAMES_DIR = path.resolve(__dirname, '..', 'public', 'games');
@@ -39,6 +39,7 @@ const bookTitles = new Map(books.map((b) => [b.id, b.title]));
 // "Story words" strip, so every book is a source book for them. journey.ts applies the same
 // rule (sourceBookFor), so the baked map and the app agree.
 const { bookVocab } = await loadBookVocab();
+const { bookSentences } = await loadBookSentences();
 const { activities } = await loadActivities();
 const anyBook = new Set(activities.filter((a) => a.anyBook).map((a) => a.slug));
 const WORD_GAMES = activities.filter((a) => a.game && a.anyBook).map((a) => a.slug);
@@ -119,7 +120,7 @@ const storyMapSnippet = () => {
 const VOCAB_MARKER = 'STE_BOOK_VOCAB';
 const vocabSnippet = () => {
   const data = Object.fromEntries(
-    books.filter((b) => (bookVocab[b.id] ?? []).length > 0).map((b) => [b.id, { title: b.title, words: bookVocab[b.id] }]),
+    books.filter((b) => (bookVocab[b.id] ?? []).length > 0).map((b) => [b.id, { title: b.title, words: bookVocab[b.id], sentences: bookSentences[b.id] ?? [] }]),
   );
   return `\n<!-- ${VOCAB_MARKER}: injected by scripts/patch-games.mjs from src/data/bookVocab.data.ts -->\n<script>window.STE_BOOK_VOCAB = ${JSON.stringify(data).replace(/</g, '\\u003c')};</script>\n<script src="/games/book-words.js"></script>\n`;
 };
