@@ -173,7 +173,7 @@ export const books: Book[] = [
     ageRange: '3-6',
     themeIds: ['diversity', 'creativity'],
     relatedBookIds: ['mayas-shadow', 'colors-mixed-up', 'crooked-little-apple-tree'],
-    relatedActivityIds: ['bilingual-flashcards', 'build-a-scene', 'coloring'],
+    relatedActivityIds: ['harmonia-orchestra', 'build-a-scene', 'coloring', 'bilingual-flashcards'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Every color in Harmonia sings its own song. What sound do you think blue makes?",
@@ -228,7 +228,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['humility-listening'],
     relatedBookIds: ['emperors-true-treasure', 'russet-the-fox', 'cloud-collector'],
-    relatedActivityIds: ['adventure-journal', 'bingo', 'reading-tracker'],
+    relatedActivityIds: ['ask-first-architect', 'adventure-journal', 'bingo'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Victor is about to build the tallest tower ever. What could go wrong if nobody asks questions?",
@@ -505,7 +505,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['gratitude', 'humility-listening'],
     relatedBookIds: ['tower-touched-sky', 'russet-the-fox', 'fig-trees-secret'],
-    relatedActivityIds: ['adventure-journal', 'bingo', 'reading-tracker'],
+    relatedActivityIds: ['true-treasure-chest', 'adventure-journal', 'bingo'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "The emperor has a palace full of gold and still feels empty. What do you think is missing?",
@@ -559,7 +559,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['self-worth', 'diversity', 'kindness'],
     relatedBookIds: ['true-beauty-meadowbrook', 'sparrow-saved-forest', 'rainbow-symphony'],
-    relatedActivityIds: ['emotion-wheel', 'adventure-journal', 'bilingual-flashcards'],
+    relatedActivityIds: ['one-of-a-kind-tree', 'emotion-wheel', 'coloring', 'bilingual-flashcards'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "The orchard only wants straight, perfect trees. What do you think of that rule?",
@@ -615,7 +615,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['self-worth', 'kindness', 'diversity'],
     relatedBookIds: ['crooked-little-apple-tree', 'sparrow-saved-forest', 'rainbow-symphony'],
-    relatedActivityIds: ['emotion-wheel', 'adventure-journal', 'bilingual-flashcards'],
+    relatedActivityIds: ['kindness-mirror', 'emotion-wheel', 'adventure-journal', 'bilingual-flashcards'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "In this town everyone competes to look the most beautiful. Does that sound fun to you?",
@@ -725,7 +725,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['honesty', 'courage'],
     relatedBookIds: ['sparrow-saved-forest', 'diegos-brave-leap'],
-    relatedActivityIds: ['character-workshop', 'finish-the-story', 'story-builder'],
+    relatedActivityIds: ['trust-meter', 'finish-the-story', 'character-workshop', 'story-builder'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Leo has a real job looking after the sheep. What do you think that job needs most?",
@@ -779,7 +779,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['humility-listening', 'patience-mastery'],
     relatedBookIds: ['cloud-collector', 'tower-touched-sky', 'emperors-true-treasure'],
-    relatedActivityIds: ['adventure-journal', 'bingo', 'bookmark-designer'],
+    relatedActivityIds: ['listen-like-a-fox', 'finish-the-story', 'adventure-journal', 'bookmark-designer'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Russet is sure he is the cleverest fox of all. What could go wrong for him?",
@@ -833,7 +833,7 @@ export const books: Book[] = [
     ageRange: '3-7',
     themeIds: ['gratitude', 'wonder'],
     relatedBookIds: ['mayas-shadow', 'pawa-rainbow-cloud', 'emperors-true-treasure'],
-    relatedActivityIds: ['coloring', 'reading-tracker', 'rhyme-singalong'],
+    relatedActivityIds: ['puddle-voyage', 'rhyme-singalong', 'coloring'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "The little boat dreams of the big open ocean. Where would you sail first?",
@@ -993,7 +993,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['creativity', 'curiosity', 'wonder'],
     relatedBookIds: ['colors-mixed-up', 'cloud-collector', 'mayas-shadow'],
-    relatedActivityIds: ['coloring', 'story-map', 'world-geography'],
+    relatedActivityIds: ['map-my-world', 'story-map', 'coloring', 'world-geography'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Maya draws maps of her bedroom and her backyard. What would you put on a map of your home?",

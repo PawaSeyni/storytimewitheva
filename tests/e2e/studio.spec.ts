@@ -12,6 +12,15 @@ const PAIRINGS: Record<string, string[]> = {
   '/activities/kindness-ripple': ['butterfly-effect', 'sparrow-saved-forest'],
   '/activities/story-quilt': ['fig-trees-secret'],
   '/activities/patient-maker-passport': ['heidis-journey-to-mastery', 'miras-thousand-cubes', 'sanding-block'],
+  '/activities/trust-meter': ['leo-and-the-wolf'],
+  '/activities/harmonia-orchestra': ['rainbow-symphony'],
+  '/activities/ask-first-architect': ['tower-touched-sky'],
+  '/activities/true-treasure-chest': ['emperors-true-treasure'],
+  '/activities/one-of-a-kind-tree': ['crooked-little-apple-tree'],
+  '/activities/kindness-mirror': ['true-beauty-meadowbrook'],
+  '/activities/listen-like-a-fox': ['russet-the-fox'],
+  '/activities/puddle-voyage': ['little-boats-big-wish'],
+  '/activities/map-my-world': ['little-mapmaker'],
 };
 
 for (const [route, books] of Object.entries(PAIRINGS)) {

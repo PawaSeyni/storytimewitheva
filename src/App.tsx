@@ -118,6 +118,15 @@ const WordExplorerDemo = chunk(L.loadWordExplorerDemo);
 const ColorMixLabDemo = chunk(L.loadColorMixLabDemo);
 const FeelingsWeatherDemo = chunk(L.loadFeelingsWeatherDemo);
 const BravePlanDemo = chunk(L.loadBravePlanDemo);
+const TrustMeterDemo = chunk(L.loadTrustMeterDemo);
+const ColorOrchestraDemo = chunk(L.loadColorOrchestraDemo);
+const AskFirstArchitectDemo = chunk(L.loadAskFirstArchitectDemo);
+const TreasureChestDemo = chunk(L.loadTreasureChestDemo);
+const OneOfAKindTreeDemo = chunk(L.loadOneOfAKindTreeDemo);
+const KindnessMirrorDemo = chunk(L.loadKindnessMirrorDemo);
+const ListenLikeAFoxDemo = chunk(L.loadListenLikeAFoxDemo);
+const PuddleVoyageDemo = chunk(L.loadPuddleVoyageDemo);
+const MapMyWorldDemo = chunk(L.loadMapMyWorldDemo);
 const CloudDetectiveDemo = chunk(L.loadCloudDetectiveDemo);
 const ShadowTheatreDemo = chunk(L.loadShadowTheatreDemo);
 const KindnessRippleDemo = chunk(L.loadKindnessRippleDemo);
@@ -147,6 +156,15 @@ const routeDefs = [
   { path: '/activities/color-mix-lab', element: <DemoPage><ColorMixLabDemo /></DemoPage> },
   { path: '/activities/feelings-weather-report', element: <DemoPage><FeelingsWeatherDemo /></DemoPage> },
   { path: '/activities/first-day-brave-plan', element: <DemoPage><BravePlanDemo /></DemoPage> },
+  { path: '/activities/trust-meter', element: <DemoPage><TrustMeterDemo /></DemoPage> },
+  { path: '/activities/harmonia-orchestra', element: <DemoPage><ColorOrchestraDemo /></DemoPage> },
+  { path: '/activities/ask-first-architect', element: <DemoPage><AskFirstArchitectDemo /></DemoPage> },
+  { path: '/activities/true-treasure-chest', element: <DemoPage><TreasureChestDemo /></DemoPage> },
+  { path: '/activities/one-of-a-kind-tree', element: <DemoPage><OneOfAKindTreeDemo /></DemoPage> },
+  { path: '/activities/kindness-mirror', element: <DemoPage><KindnessMirrorDemo /></DemoPage> },
+  { path: '/activities/listen-like-a-fox', element: <DemoPage><ListenLikeAFoxDemo /></DemoPage> },
+  { path: '/activities/puddle-voyage', element: <DemoPage><PuddleVoyageDemo /></DemoPage> },
+  { path: '/activities/map-my-world', element: <DemoPage><MapMyWorldDemo /></DemoPage> },
   { path: '/activities/cloud-detective-journal', element: <DemoPage><CloudDetectiveDemo /></DemoPage> },
   { path: '/activities/shadow-theatre', element: <DemoPage><ShadowTheatreDemo /></DemoPage> },
   { path: '/activities/kindness-ripple', element: <DemoPage><KindnessRippleDemo /></DemoPage> },

@@ -111,3 +111,16 @@ test('finish the story — every story is a catalog book, titled as in the catal
   // Eva is the host who starts the story, never the hero of a catalog book.
   assert.ok(!/Eva woke up|Eva and the Talking Fish|Whispering Forest/.test(html), 'old non-catalog stories remain');
 });
+
+test('coverage — every published book leads with an activity built for it (audit goal: 20/20)', () => {
+  // Studio activities are the book-specific ones; the generic activities stay available
+  // as second-to-fourth picks but never as a book's headline activity.
+  const STUDIO = new Set([
+    'color-mix-lab', 'feelings-weather-report', 'first-day-brave-plan', 'cloud-detective-journal', 'shadow-theatre',
+    'kindness-ripple', 'story-quilt', 'patient-maker-passport',
+    'trust-meter', 'harmonia-orchestra', 'ask-first-architect', 'true-treasure-chest', 'one-of-a-kind-tree',
+    'kindness-mirror', 'listen-like-a-fox', 'puddle-voyage', 'map-my-world',
+  ]);
+  for (const s of STUDIO) assert.ok(activities.some((a) => a.slug === s), `unknown studio activity ${s}`);
+  for (const b of published) assert.ok(STUDIO.has(b.relatedActivityIds?.[0]), `${b.id}: first activity "${b.relatedActivityIds?.[0]}" is not book-specific`);
+});
