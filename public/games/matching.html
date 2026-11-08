@@ -429,6 +429,12 @@
     }
 
     // ─── THEME BUTTONS ──────────────────────────────────────────────────────────
+    // ─── BOOK MODE (?book=<id>, see /games/book-words.js) ─────────────────────────
+    if (window.STE_BOOK) {
+      themes.book = { easy: window.STE_BOOK.words.map((w) => w.emoji), label: window.STE_BOOK.title, cardBg: 'bg-violet-100', accent: '#8b5cf6' };
+      steAddBookButton('.theme-btn', 'theme');
+    }
+
     document.querySelectorAll('.theme-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.theme-btn').forEach(b => {
@@ -456,7 +462,7 @@
     });
 
     // ─── INIT ───────────────────────────────────────────────────────────────────
-    initGame('animals', false);
+    initGame(window.STE_BOOK ? 'book' : 'animals', false);
   </script>
 
   <!-- Footer -->

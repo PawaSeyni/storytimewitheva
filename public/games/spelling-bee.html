@@ -527,8 +527,9 @@
       if (!window.speechSynthesis) return;
       window.speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(word.toLowerCase());
-      // Deliberately slow (0.7) so young spellers can hear each sound clearly.
-      u.lang = 'en-US'; u.rate = 0.7; u.pitch = 1.1;
+      // Deliberately slow (0.7) so young spellers can hear each sound clearly. Book words
+      // are in the game's language; the built-in levels are English.
+      u.lang = currentLevel === 'book' ? ({ en: 'en-US', es: 'es-ES', fr: 'fr-FR' }[BOOK_LANG] || 'en-US') : 'en-US'; u.rate = 0.7; u.pitch = 1.1;
       const voice = pickVoice(u.lang);
       if (voice) u.voice = voice;
       window.speechSynthesis.speak(u);
@@ -549,6 +550,16 @@
         window.t('celebStats').replace('{score}', score).replace('{total}', words.length);
       document.getElementById('celebration').classList.remove('hidden');
       speakFeedback('Congratulations! You are a Spelling Bee Champion!');
+    }
+
+    // ─── BOOK MODE (?book=<id>, see /games/book-words.js) ─────────────────────────
+    // Book words are spelled in the game's language (accents included); the hint shows
+    // the same word in the other two languages, which helps without giving it away.
+    const BOOK_LANG = window.GAME_LANG || 'en';
+    if (window.STE_BOOK) {
+      const others = ['en', 'es', 'fr'].filter((l) => l !== BOOK_LANG);
+      wordSets.book = window.STE_BOOK.words.map((w) => ({ word: w[BOOK_LANG].toUpperCase(), emoji: w.emoji, hint: others.map((l) => w[l]).join(' · ') }));
+      steAddBookButton('.level-btn', 'level');
     }
 
     // Level buttons
@@ -606,7 +617,7 @@
     });
 
     // Init
-    initLevel('beginner');
+    initLevel(window.STE_BOOK ? 'book' : 'beginner');
   </script>
 
   

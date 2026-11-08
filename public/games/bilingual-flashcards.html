@@ -401,6 +401,15 @@
       document.getElementById('progressBar').style.width = `${(flipped / total) * 100}%`;
     }
 
+    // ─── BOOK MODE (?book=<id>, see /games/book-words.js) ─────────────────────────
+    if (window.STE_BOOK) {
+      const P = [['bg-red-100', '#ef4444'], ['bg-blue-100', '#3b82f6'], ['bg-yellow-100', '#eab308'], ['bg-green-100', '#22c55e'], ['bg-purple-100', '#a855f7'], ['bg-orange-100', '#f97316'], ['bg-pink-100', '#ec4899'], ['bg-teal-100', '#14b8a6']];
+      vocab.book = window.STE_BOOK.words.map((w, i) => ({ emoji: w.emoji, en: steCap(w.en), es: steCap(w.es), fr: steCap(w.fr), bg: P[i % 8][0], accent: P[i % 8][1] }));
+      currentCat = 'book';
+      if (window.GAME_LANG === 'fr') currentLang = 'fr';
+      steAddBookButton('.cat-btn', 'cat');
+    }
+
     // ─── CATEGORY BUTTONS ───────────────────────────────────────────────────────
     document.querySelectorAll('.cat-btn').forEach(btn => {
       btn.addEventListener('click', () => {
