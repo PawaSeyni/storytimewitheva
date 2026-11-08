@@ -557,6 +557,17 @@ export const activities: Activity[] = [
     desc: { en: 'A two-page printable for any book: before, during and after questions, story words to match and translate, a drawing and a review.', es: 'Una ficha de dos páginas para cualquier libro: preguntas para antes, durante y después, palabras del cuento para unir y traducir, un dibujo y una opinión.', fr: 'Une fiche de deux pages pour n’importe quel livre : questions avant, pendant et après, mots de l’histoire à relier et à traduire, un dessin et un avis.' },
     category: { en: 'Reading', es: 'Lectura', fr: 'Lecture' },
   },
+  // A spoken picture quiz for pre-readers, for ANY book: its story words and its "after" prompt.
+  // Offered on every book page (Story words strip), so it accepts any book as ?book=<id>.
+  {
+    slug: 'pixel-quiz',
+    emoji: '🦋',
+    ages: '3-6',
+    anyBook: true,
+    title: { en: 'Pixel’s Story Quiz', es: 'El quiz de Pixel', fr: 'Le quiz de Pixel' },
+    desc: { en: 'After the read-aloud, Pixel the butterfly asks about any book with pictures and a voice: find the story pictures, then talk about it together.', es: 'Después de leer en voz alta, Pixel la mariposa pregunta por cualquier libro con dibujos y con voz: encuentra los dibujos del cuento y luego hablen juntos.', fr: 'Après la lecture à voix haute, Pixel le papillon pose des questions sur n’importe quel livre avec des images et une voix : trouve les images de l’histoire, puis parlez-en ensemble.' },
+    category: { en: 'Reading', es: 'Lectura', fr: 'Lecture' },
+  },
   // One stamp per book read; the stamp is the book's "read" status in the personal library.
   {
     slug: 'reading-passport',

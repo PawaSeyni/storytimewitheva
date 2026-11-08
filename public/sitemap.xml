@@ -838,6 +838,33 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://storytimewitheva.com/activities/pixel-quiz/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/pixel-quiz/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/pixel-quiz/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/pixel-quiz/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/pixel-quiz/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/activities/pixel-quiz/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/pixel-quiz/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/pixel-quiz/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/pixel-quiz/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/pixel-quiz/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/activities/pixel-quiz/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/pixel-quiz/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/pixel-quiz/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/pixel-quiz/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/pixel-quiz/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://storytimewitheva.com/activities/reading-passport/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/reading-passport/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/reading-passport/"/>

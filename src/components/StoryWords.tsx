@@ -11,9 +11,9 @@ import { Link } from './LocalizedLink';
  * (?book=<id>), so the games play THIS book's words. Renders nothing for a book without words.
  */
 const TRANSLATIONS = {
-  en: { heading: 'Story words', sub: 'Eight words and three sentences from this book, in English, Spanish and French. Play them:', flashcards: 'Flashcards', matching: 'Memory match', spelling: 'Spelling bee', sentences: 'Sentence builder', worksheet: 'Printable worksheet' },
-  es: { heading: 'Palabras del cuento', sub: 'Ocho palabras y tres frases de este libro, en español, inglés y francés. Juega con ellas:', flashcards: 'Tarjetas', matching: 'Memoria', spelling: 'Deletreo', sentences: 'Frases', worksheet: 'Ficha para imprimir' },
-  fr: { heading: 'Les mots de l’histoire', sub: 'Huit mots et trois phrases de ce livre, en français, anglais et espagnol. Joue avec eux :', flashcards: 'Cartes', matching: 'Memory', spelling: 'Épellation', sentences: 'Phrases', worksheet: 'Fiche à imprimer' },
+  en: { heading: 'Story words', sub: 'Eight words and three sentences from this book, in English, Spanish and French. Play them:', flashcards: 'Flashcards', matching: 'Memory match', spelling: 'Spelling bee', sentences: 'Sentence builder', worksheet: 'Printable worksheet', quiz: 'Pixel’s quiz' },
+  es: { heading: 'Palabras del cuento', sub: 'Ocho palabras y tres frases de este libro, en español, inglés y francés. Juega con ellas:', flashcards: 'Tarjetas', matching: 'Memoria', spelling: 'Deletreo', sentences: 'Frases', worksheet: 'Ficha para imprimir', quiz: 'Quiz de Pixel' },
+  fr: { heading: 'Les mots de l’histoire', sub: 'Huit mots et trois phrases de ce livre, en français, anglais et espagnol. Joue avec eux :', flashcards: 'Cartes', matching: 'Memory', spelling: 'Épellation', sentences: 'Phrases', worksheet: 'Fiche à imprimer', quiz: 'Quiz de Pixel' },
 };
 
 const WORD_GAMES = [
@@ -59,6 +59,14 @@ export default function StoryWords({ bookId }: { bookId: string }) {
           data-story-worksheet
         >
           <span aria-hidden>📝</span>{t.worksheet}
+        </Link>
+        <Link
+          to={withSourceBook('/activities/pixel-quiz', bookId)}
+          onClick={() => track('Continue Journey', { placement: 'detail', destination: 'activity', activity: 'pixel-quiz', reason: 'story-words', book: bookId })}
+          className="inline-flex items-center gap-2 rounded-full border-2 border-sky-300 text-sky-800 font-semibold px-4 py-2 hover:bg-sky-50 transition-colors"
+          data-pixel-quiz
+        >
+          <span aria-hidden>🦋</span>{t.quiz}
         </Link>
       </div>
     </section>

@@ -169,7 +169,7 @@ These reuse the existing `StudioFrame` (hero, "Pairs with", printable card, prin
 | **P2** | Story Companion PDF and `/free/<book-id>` magnet for each book | M | 20 signup entry points in place of 1 |
 | **P2** | Reading Passport | M | Turns activities into catalog purchases |
 | **P2** | Age-fit fixes, 4-column grid, Activities-hub age filter (E6) | S | Polish |
-| **P3** | Second activities (§5b), Sequencing Cards, Pixel Quiz, themed Classroom Units | L | Expansion once the P0–P1 work is in and measured |
+| **P3** | ~~Second activities (§5b)~~ (pass 9), ~~Pixel Quiz~~ (pass 10), Sequencing Cards, themed Classroom Units | L | Expansion once the P0–P1 work is in and measured |
 
 **How to measure success.** After the P0 tracking fix, report every month:
 - book page → activity click-through, by book
@@ -337,3 +337,22 @@ Links that made room for them:
 Tests: Studio tests extended to 24 pages, with the new activities in slot 2. All 15 page and language combinations checked in a browser.
 
 **Still open:** coloring pages drawn from the book illustrations, which need the owner's artwork.
+
+### Pass 10: Pixel's Story Quiz, a spoken picture quiz for pre-readers (§5c item 4)
+
+- **New page `/activities/pixel-quiz?book=<id>`** (ages 3-6, about 10 minutes), for any book in the collection. It's reached from a new **"🦋 Pixel's quiz"** button in every book's Story words strip. Without a book, the page shows a book picker.
+- **How it plays**, after the grown-up has read the book aloud:
+  1. Pixel the butterfly (from *The Day the Colors Got Mixed Up*) says hello, then asks "Which picture was in the story?" four times. Each round shows three big pictures with their words.
+  2. A wrong tap fades that picture and Pixel says "Not that one. Try again!"; the right one is read aloud ("Yes! "wolf" was in the story!"). There's no score and no way to fail.
+  3. "Let's talk": Pixel reads the book's own "after reading" prompt, and the child taps a face for how the story felt.
+  4. A printable **story badge** shows the four pictures found, the feeling, Pixel's question and a box to draw a favourite part.
+- **Everything comes from catalog data**, so no new content was written about any book:
+  - the right picture is one of the book's eight story words (`bookVocab`);
+  - the two wrong pictures are story words from other books, but only from a short list of concrete, distinctive things (animals, objects, buildings), and never a word the book's description, subtitle or discussion prompts use in any language. Feelings, colours, body parts, people, times of day and everyday nature (sun, rain, tree) are never offered as wrong answers, because they could be in any story even when the catalog doesn't mention them;
+  - the right picture moves one place each round, so tapping the same spot never wins;
+  - rounds are seeded by the book id, so the server-rendered page and the browser agree.
+- **Speech:** every prompt is spoken in the page language using the existing speech library. Where the device can't speak, the page asks the grown-up to read Pixel's words aloud.
+- **Feeling words** are nouns in Spanish and French ("alegría", "de la joie"), so they don't need to agree with the child's gender.
+- **Tests:** `tests/funnel/pixel-quiz.test.mjs` checks every book: four rounds with three different pictures, exactly one from the book, no wrong picture named anywhere in the book's catalog text, the right picture not always in the same place, the same rounds on every run, and an "after reading" prompt in all three languages. Played through in a browser in EN (*Leo*), ES (*The Adventures of Maya's Shadow*) and FR (*A Little Boat's Big Wish*). The badge prints on one page.
+- **Size:** total JavaScript is now 413 KB gzip (warning at 400, limit 420). The next new activity will need some trimming or a budget review first.
+- **Still open:** Story Sequencing Cards (needs 4-6 scene images per book), themed Classroom Units, and coloring pages from the book illustrations (needs the owner's artwork).

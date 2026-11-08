@@ -51,6 +51,7 @@ const staticPages = [
   ['/activities/map-my-world', 'monthly', '0.7'],
   ['/activities/leo-and-the-wolf-worksheet', 'monthly', '0.7'],
   ['/activities/story-worksheet', 'monthly', '0.7'],
+  ['/activities/pixel-quiz', 'monthly', '0.7'],
   ['/activities/reading-passport', 'monthly', '0.7'],
   ['/activities/shadow-science', 'monthly', '0.7'],
   ['/activities/brave-breathing', 'monthly', '0.7'],
