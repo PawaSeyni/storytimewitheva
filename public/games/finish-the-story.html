@@ -51,6 +51,24 @@
         certTagline: 'storytimewitheva.com | Keep reading, keep imagining! 📚',
         printCert: '🖨️ Print Certificate',
         newStory: '📖 Try Another Story!',
+        littleLabel: 'Little reader mode',
+        littleHint: 'For ages 4 to 5: pictures and taps instead of writing, and every prompt read aloud.',
+        littleOn: 'On',
+        littleOff: 'Off',
+        littleSep: ':',
+        howto1Little: 'Pick a story to finish (a name is optional)',
+        howto4Little: 'Draw your ending, or write it if you like',
+        nameHeadingLittle: "👋 What's your name? You can skip this!",
+        skipName: '⏭️ Start without a name',
+        listenAgain: '🔊 Listen again',
+        listenLabel: 'Listen: {text}',
+        endingHeadingLittle: '🌟 How does your story end?',
+        endingPromptLittle: 'Draw your ending in the box when you print, or tell it to a grown-up. Writing is optional!',
+        drawEndingHere: '🖍️ Draw your ending here',
+        drawEndingNote: 'Print your certificate and draw in this box.',
+        certMyEnding: '🖍️ My ending',
+        storyStar: '⭐ A Story Star ⭐',
+        congratsSpeechNoName: 'Congratulations! You finished the story! Amazing work!',
       },
       es: {
         title: '¡Termina el cuento de Eva!',
@@ -83,6 +101,24 @@
         certTagline: 'storytimewitheva.com | ¡Sigue leyendo, sigue imaginando! 📚',
         printCert: '🖨️ Imprimir certificado',
         newStory: '📖 ¡Probar otro cuento!',
+        littleLabel: 'Modo para peques',
+        littleHint: 'Para 4 y 5 años: dibujos y toques en lugar de escribir, y cada consigna leída en voz alta.',
+        littleOn: 'Sí',
+        littleOff: 'No',
+        littleSep: ':',
+        howto1Little: 'Elige un cuento para terminar (el nombre es opcional)',
+        howto4Little: 'Dibuja tu final, o escríbelo si quieres',
+        nameHeadingLittle: '👋 ¿Cómo te llamas? ¡Puedes saltar este paso!',
+        skipName: '⏭️ Empezar sin nombre',
+        listenAgain: '🔊 Escuchar otra vez',
+        listenLabel: 'Escuchar: {text}',
+        endingHeadingLittle: '🌟 ¿Cómo termina tu cuento?',
+        endingPromptLittle: 'Dibuja tu final en el recuadro al imprimir, o cuéntaselo a un adulto. ¡Escribir es opcional!',
+        drawEndingHere: '🖍️ Dibuja tu final aquí',
+        drawEndingNote: 'Imprime tu certificado y dibuja en este recuadro.',
+        certMyEnding: '🖍️ Mi final',
+        storyStar: '⭐ Una estrella del cuento ⭐',
+        congratsSpeechNoName: '¡Felicidades! ¡Terminaste el cuento! ¡Un trabajo increíble!',
       },
       fr: {
         title: "Termine l'histoire d'Eva !",
@@ -115,6 +151,24 @@
         certTagline: 'storytimewitheva.com | Continue à lire, continue à imaginer ! 📚',
         printCert: '🖨️ Imprimer le certificat',
         newStory: '📖 Essayer une autre histoire !',
+        littleLabel: 'Mode petits lecteurs',
+        littleHint: 'Pour les 4 à 5 ans : des images et des touches au lieu d’écrire, et chaque consigne lue à voix haute.',
+        littleOn: 'Oui',
+        littleOff: 'Non',
+        littleSep: '\u00a0:',
+        howto1Little: 'Choisis une histoire à terminer (le prénom est facultatif)',
+        howto4Little: 'Dessine ta fin, ou écris-la si tu veux',
+        nameHeadingLittle: '👋 Comment t’appelles-tu ? Tu peux passer cette étape !',
+        skipName: '⏭️ Commencer sans prénom',
+        listenAgain: '🔊 Réécouter',
+        listenLabel: 'Écouter : {text}',
+        endingHeadingLittle: '🌟 Comment se termine ton histoire ?',
+        endingPromptLittle: 'Dessine ta fin dans le cadre après l’impression, ou raconte-la à un adulte. Écrire, c’est facultatif !',
+        drawEndingHere: '🖍️ Dessine ta fin ici',
+        drawEndingNote: 'Imprime ton certificat et dessine dans ce cadre.',
+        certMyEnding: '🖍️ Ma fin',
+        storyStar: '⭐ Une étoile des histoires ⭐',
+        congratsSpeechNoName: 'Bravo ! Tu as terminé l’histoire ! Super travail !',
       },
     };
   </script>
@@ -187,7 +241,7 @@
 </head>
 <body class="min-h-screen bg-gradient-to-b from-purple-50 to-white">
 
-  <!-- Nav (standardized across all game pages — matches the site nav) -->
+  <!-- Nav (standardized across all game pages, matches the site nav) -->
   <nav class="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
@@ -222,17 +276,30 @@
     <div class="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 rounded-2xl p-5 mb-6 text-white shadow-lg">
       <h2 data-i18n="howToPlay" class="font-extrabold text-lg mb-2">✨ How to Play ✨</h2>
       <ol class="list-decimal list-inside space-y-1 text-sm font-semibold">
-        <li data-i18n="howto1">Enter your name, then pick a story to finish</li>
+        <li data-i18n="howto1" id="howto1Item">Enter your name, then pick a story to finish</li>
         <li data-i18n="howto2">Read Eva's opening, she started it for you!</li>
         <li data-i18n="howto3">Choose what happens next at each story step</li>
-        <li data-i18n="howto4">Write your own ending in the box</li>
+        <li data-i18n="howto4" id="howto4Item">Write your own ending in the box</li>
         <li data-i18n="howto5">Print your very own Story Certificate! 🎓</li>
       </ol>
     </div>
 
+    <!-- Little reader mode (ages 4-5, pre-readers): same switch and wording as the site's LittleReaderToggle -->
+    <div id="littleWrap" class="flex flex-wrap items-center gap-3 rounded-2xl border-2 border-amber-200 bg-amber-50 px-4 py-3 mb-6" data-little-reader="off">
+      <button id="littleToggle" type="button" role="switch" aria-checked="false" aria-describedby="littleHint"
+        class="relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors bg-gray-300 focus-visible:ring-2 focus-visible:ring-purple-500">
+        <span id="littleSrLabel" class="sr-only">Little reader mode</span>
+        <span id="littleKnob" aria-hidden="true" class="inline-block h-5 w-5 rounded-full bg-white shadow" style="transform:translateX(4px);transition:transform 0.2s;"></span>
+      </button>
+      <div class="min-w-0">
+        <p class="font-bold text-amber-900"><span aria-hidden="true">🧸 </span><span id="littleLabel">Little reader mode: Off</span></p>
+        <p id="littleHint" class="text-xs text-amber-900">For ages 4 to 5: pictures and taps instead of writing, and every prompt read aloud.</p>
+      </div>
+    </div>
+
     <!-- Name Input -->
     <div id="nameSection" class="bg-white rounded-3xl shadow-xl border-2 border-purple-100 p-6 mb-5">
-      <h2 data-i18n="nameHeading" class="text-lg font-extrabold text-purple-700 mb-3">👋 First, what's your name?</h2>
+      <h2 data-i18n="nameHeading" id="nameHeadingText" class="text-lg font-extrabold text-purple-700 mb-3">👋 First, what's your name?</h2>
       <div class="flex gap-3">
         <input id="childName" type="text" placeholder="Type your name here..." aria-label="Type your name here" maxlength="30"
           class="flex-1 px-4 py-3 rounded-2xl border-2 border-purple-200 font-bold text-gray-700 focus:outline-none focus:border-purple-400 text-base"/>
@@ -240,6 +307,7 @@
           Let's Go! →
         </button>
       </div>
+      <button id="skipName" type="button" class="hidden mt-3 w-full py-3 bg-amber-50 border-2 border-amber-200 text-amber-900 font-extrabold rounded-2xl hover:shadow-lg transition-all" style="min-height:56px;">⏭️ Start without a name</button>
     </div>
 
     <!-- Story Picker -->
@@ -274,9 +342,10 @@
       <!-- Current step question -->
       <div id="stepQuestion" class="bg-white rounded-3xl shadow-xl border-2 border-purple-100 p-6 mb-5 slide-up">
         <p class="text-base font-extrabold text-gray-800 mb-4" id="questionText"></p>
+        <button id="listenQuestion" type="button" class="hidden mb-4 px-5 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-full text-sm transition-all" style="min-height:44px;">🔊 Listen again</button>
         <div class="grid sm:grid-cols-2 gap-3" id="choiceButtons"></div>
         <!-- Free write -->
-        <div class="mt-4">
+        <div class="mt-4" id="freeWriteBox">
           <p data-i18n="orWriteOwn" class="text-xs font-bold text-purple-500 mb-1">Or write your own:</p>
           <textarea id="freeWrite" class="w-full px-4 py-3 rounded-2xl border-2 border-purple-200 font-semibold text-gray-700 text-sm" placeholder="Write what happens next..." aria-label="Write what happens next in your story"></textarea>
           <button id="useMyIdea" data-i18n="useMyIdea" class="mt-2 px-5 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-full text-sm transition-all">Use My Idea ✏️</button>
@@ -285,8 +354,13 @@
 
       <!-- Final ending step -->
       <div id="endingSection" class="hidden bg-white rounded-3xl shadow-xl border-2 border-pink-100 p-6 mb-5 slide-up">
-        <h3 data-i18n="endingHeading" class="text-lg font-extrabold text-pink-600 mb-2">🌟 Now write your ending!</h3>
-        <p data-i18n="endingPrompt" class="text-sm text-gray-500 font-semibold mb-3">How does YOUR story end? Write anything you like!</p>
+        <h3 data-i18n="endingHeading" id="endingHeadingText" class="text-lg font-extrabold text-pink-600 mb-2">🌟 Now write your ending!</h3>
+        <p data-i18n="endingPrompt" id="endingPromptText" class="text-sm text-gray-500 font-semibold mb-3">How does YOUR story end? Write anything you like!</p>
+        <button id="listenEnding" type="button" class="hidden mb-3 px-5 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-full text-sm transition-all" style="min-height:44px;">🔊 Listen again</button>
+        <div id="drawBox" class="hidden mb-3 rounded-3xl flex flex-col items-center justify-center text-center p-4" style="border:4px dashed #f9a8d4;min-height:220px;">
+          <p id="drawBoxLabel" class="text-xl font-extrabold text-pink-600 mb-2">🖍️ Draw your ending here</p>
+          <p id="drawBoxNote" class="text-sm text-gray-500 font-semibold">Print your certificate and draw in this box.</p>
+        </div>
         <textarea id="endingText" class="w-full px-4 py-3 rounded-2xl border-2 border-pink-200 font-semibold text-gray-700 text-sm" placeholder="And then..." aria-label="Write your own ending to the story" rows="4"></textarea>
         <button id="finishStory" data-i18n="finishMyStory" class="mt-3 w-full py-3 bg-gradient-to-r from-pink-500 to-orange-400 text-white font-extrabold rounded-full shadow-lg hover:shadow-xl transition-all">
           🎉 Finish My Story!
@@ -309,6 +383,12 @@
         <div class="bg-white rounded-2xl p-5 text-left mb-5 border-2 border-purple-100">
           <p data-i18n="certComplete" class="text-xs font-bold text-purple-400 mb-2 uppercase tracking-wide">Their complete story:</p>
           <p class="text-sm font-semibold text-gray-700 leading-relaxed italic" id="certFullStory"></p>
+        </div>
+
+        <!-- Little reader mode with no written ending: a box to draw it in on the printout -->
+        <div id="certDrawBox" class="hidden bg-white rounded-2xl p-5 text-left mb-5" style="border:4px dashed #c084fc;">
+          <p id="certMyEnding" class="text-xs font-bold text-purple-400 mb-2 uppercase tracking-wide">🖍️ My ending</p>
+          <div style="min-height:260px;"></div>
         </div>
 
         <div class="flex justify-center gap-2 text-2xl mb-4">⭐⭐⭐⭐⭐</div>
@@ -358,19 +438,19 @@
           fr: 'Diego se tenait au bord du rocher tiède. Tout en bas, la mer scintillait. Ses amis barbotaient et lui faisaient signe. « Saute, Diego ! » criaient-ils. Son cœur battait comme un petit oiseau.',
         },
         steps: [
-          { question: { en: 'Diego took a deep breath. What did he do first?', es: 'Diego respiró hondo. ¿Qué hizo primero?', fr: 'Diego a pris une grande inspiration. Qu’a-t-il fait d’abord ?' },
+          { emojis: ['🌊', '👪', '❤️', '🪨'], question: { en: 'Diego took a deep breath. What did he do first?', es: 'Diego respiró hondo. ¿Qué hizo primero?', fr: 'Diego a pris une grande inspiration. Qu’a-t-il fait d’abord ?' },
             choices: {
               en: ['He counted the waves, one, two, three', 'He looked for his family on the beach', 'He told himself, "It is okay to feel scared"', 'He sat down for a moment to feel the warm rock'],
               es: ['Contó las olas: una, dos, tres', 'Buscó a su familia en la playa', 'Se dijo: «Está bien tener miedo»', 'Se sentó un momento para sentir la roca tibia'],
               fr: ['Il a compté les vagues : une, deux, trois', 'Il a cherché sa famille sur la plage', 'Il s’est dit : « J’ai le droit d’avoir peur »', 'Il s’est assis un instant sur le rocher tiède'],
             } },
-          { question: { en: 'Someone came to stand beside Diego. Who was it?', es: 'Alguien se acercó a Diego. ¿Quién era?', fr: 'Quelqu’un est venu se placer à côté de Diego. Qui était-ce ?' },
+          { emojis: ['👧', '🎣', '🤝', '🐦'], question: { en: 'Someone came to stand beside Diego. Who was it?', es: 'Alguien se acercó a Diego. ¿Quién era?', fr: 'Quelqu’un est venu se placer à côté de Diego. Qui était-ce ?' },
             choices: {
               en: ['His big sister, who said she was scared her first time too', 'An old fisherman with a kind smile', 'His best friend, holding out a hand', 'A seagull that landed right next to him'],
               es: ['Su hermana mayor, que le dijo que ella también tuvo miedo la primera vez', 'Un viejo pescador con una sonrisa amable', 'Su mejor amigo, que le tendió la mano', 'Una gaviota que se posó justo a su lado'],
               fr: ['Sa grande sœur, qui avait eu peur elle aussi la première fois', 'Un vieux pêcheur au sourire gentil', 'Son meilleur ami, qui lui tendait la main', 'Une mouette qui s’est posée juste à côté de lui'],
             } },
-          { question: { en: 'Diego decided on his brave step. It was...', es: 'Diego eligió su paso valiente. Fue...', fr: 'Diego a choisi son pas courageux. C’était...' },
+          { emojis: ['💓', '🪜', '👫', '👀'], question: { en: 'Diego decided on his brave step. It was...', es: 'Diego eligió su paso valiente. Fue...', fr: 'Diego a choisi son pas courageux. C’était...' },
             choices: {
               en: ['To jump while his heart was still fluttering', 'To try the lower rock first, then the high one', 'To jump holding hands with a friend', 'To wait, watch, and jump when he felt ready'],
               es: ['Saltar mientras el corazón todavía le revoloteaba', 'Probar primero la roca baja y luego la alta', 'Saltar de la mano de un amigo', 'Esperar, mirar y saltar cuando se sintiera listo'],
@@ -387,19 +467,19 @@
           fr: 'Léo avait crié « LOUP ! » deux fois alors qu’il n’y avait pas de loup. Deux fois, les villageois avaient grimpé la colline en courant et n’avaient trouvé que des moutons. Maintenant le soleil se couchait et la colline était très calme. Léo regardait le village, le ventre tout lourd.',
         },
         steps: [
-          { question: { en: 'Leo knew he had made a mistake. What did he do?', es: 'Leo sabía que se había equivocado. ¿Qué hizo?', fr: 'Léo savait qu’il avait fait une bêtise. Qu’a-t-il fait ?' },
+          { emojis: ['🙏', '✍️', '👴', '🐑'], question: { en: 'Leo knew he had made a mistake. What did he do?', es: 'Leo sabía que se había equivocado. ¿Qué hizo?', fr: 'Léo savait qu’il avait fait une bêtise. Qu’a-t-il fait ?' },
             choices: {
               en: ['He walked down to the village to say sorry', 'He wrote "I will tell the truth" on a flat stone', 'He asked the oldest shepherd what to do', 'He promised the sheep he would never trick anyone again'],
               es: ['Bajó al pueblo a pedir perdón', 'Escribió «Diré la verdad» en una piedra plana', 'Le preguntó al pastor más anciano qué hacer', 'Les prometió a las ovejas que nunca volvería a engañar a nadie'],
               fr: ['Il est descendu au village pour demander pardon', 'Il a écrit « Je dirai la vérité » sur une pierre plate', 'Il a demandé conseil au plus vieux berger', 'Il a promis aux moutons de ne plus jamais tromper personne'],
             } },
-          { question: { en: 'Then, at the edge of the forest, two yellow eyes appeared. Leo...', es: 'Entonces, al borde del bosque, aparecieron dos ojos amarillos. Leo...', fr: 'Alors, à la lisière de la forêt, deux yeux jaunes sont apparus. Léo...' },
+          { emojis: ['🧍', '🔔', '🏠', '📣'], question: { en: 'Then, at the edge of the forest, two yellow eyes appeared. Leo...', es: 'Entonces, al borde del bosque, aparecieron dos ojos amarillos. Leo...', fr: 'Alors, à la lisière de la forêt, deux yeux jaunes sont apparus. Léo...' },
             choices: {
               en: ['Gathered the sheep close and stood very still', 'Rang the big bell that only meant real danger', 'Ran to the nearest farmhouse for help', 'Made himself tall and called out in a steady voice'],
               es: ['Reunió a las ovejas y se quedó muy quieto', 'Tocó la gran campana que solo sonaba ante un peligro real', 'Corrió a la granja más cercana a pedir ayuda', 'Se hizo grande y gritó con voz firme'],
               fr: ['Il a rassemblé les moutons et il est resté immobile', 'Il a sonné la grosse cloche réservée aux vrais dangers', 'Il a couru à la ferme la plus proche chercher de l’aide', 'Il s’est fait grand et a appelé d’une voix ferme'],
             } },
-          { question: { en: 'Leo wanted the village to trust him again. Day by day, he...', es: 'Leo quería que el pueblo volviera a confiar en él. Día tras día...', fr: 'Léo voulait que le village lui fasse à nouveau confiance. Jour après jour, il...' },
+          { emojis: ['💬', '🤞', '🤲', '🌱'], question: { en: 'Leo wanted the village to trust him again. Day by day, he...', es: 'Leo quería que el pueblo volviera a confiar en él. Día tras día...', fr: 'Léo voulait que le village lui fasse à nouveau confiance. Jour après jour, il...' },
             choices: {
               en: ['Told the truth, even about small things', 'Kept every promise, no matter how tiny', 'Helped each villager who had come running for nothing', 'Was patient, because trust grows back slowly'],
               es: ['Decía la verdad, incluso en cosas pequeñas', 'Cumplía cada promesa, por pequeña que fuera', 'Ayudaba a cada aldeano que había subido corriendo para nada', 'Tenía paciencia, porque la confianza vuelve despacio'],
@@ -416,19 +496,19 @@
           fr: '« Ne t’approche pas de la ferme, dit Maman Renarde. Les chiens sont rapides et la clôture pique. » Mais Russet a seulement remué la queue. C’était le renard le plus rapide du terrier. Ce soir, la lune brillait et la ferme sentait quelque chose de délicieux.',
         },
         steps: [
-          { question: { en: 'Russet reached the edge of the farm. What did he notice?', es: 'Russet llegó al borde de la granja. ¿Qué notó?', fr: 'Russet est arrivé au bord de la ferme. Qu’a-t-il remarqué ?' },
+          { emojis: ['🌙', '🐕', '👂', '🦉'], question: { en: 'Russet reached the edge of the farm. What did he notice?', es: 'Russet llegó al borde de la granja. ¿Qué notó?', fr: 'Russet est arrivé au bord de la ferme. Qu’a-t-il remarqué ?' },
             choices: {
               en: ['The fence shining silver in the moonlight', 'Two sleeping dogs by the barn door', 'His mother’s words, echoing in his ears', 'A little owl watching him from a post'],
               es: ['La alambrada brillando plateada bajo la luna', 'Dos perros dormidos junto a la puerta del granero', 'Las palabras de su madre, resonando en sus orejas', 'Un pequeño búho que lo miraba desde un poste'],
               fr: ['La clôture qui brillait, argentée, sous la lune', 'Deux chiens endormis près de la porte de la grange', 'Les mots de sa mère, qui résonnaient dans ses oreilles', 'Une petite chouette qui l’observait depuis un piquet'],
             } },
-          { question: { en: 'Oh no! The wire caught Russet’s leg. He...', es: '¡Oh, no! El alambre atrapó la pata de Russet. Él...', fr: 'Oh non ! Le fil a attrapé la patte de Russet. Il...' },
+          { emojis: ['😌', '🦊', '🐾', '🦉'], question: { en: 'Oh no! The wire caught Russet’s leg. He...', es: '¡Oh, no! El alambre atrapó la pata de Russet. Él...', fr: 'Oh non ! Le fil a attrapé la patte de Russet. Il...' },
             choices: {
               en: ['Stopped wriggling and stayed calm', 'Called softly for his mother', 'Remembered her advice: slow paws, not quick ones', 'Asked the little owl for help'],
               es: ['Dejó de retorcerse y se calmó', 'Llamó bajito a su madre', 'Recordó su consejo: patas lentas, no rápidas', 'Le pidió ayuda al pequeño búho'],
               fr: ['Il a arrêté de gigoter et il est resté calme', 'Il a appelé doucement sa mère', 'Il s’est souvenu de son conseil : des pattes lentes, pas rapides', 'Il a demandé de l’aide à la petite chouette'],
             } },
-          { question: { en: 'Back home in the den, Russet told his siblings...', es: 'De vuelta en la madriguera, Russet les dijo a sus hermanos...', fr: 'De retour au terrier, Russet a dit à ses frères et sœurs...' },
+          { emojis: ['🧠', '👂', '🙋', '🐢'], question: { en: 'Back home in the den, Russet told his siblings...', es: 'De vuelta en la madriguera, Russet les dijo a sus hermanos...', fr: 'De retour au terrier, Russet a dit à ses frères et sœurs...' },
             choices: {
               en: ['"Being fast is not the same as being wise"', '"Listen to Mother. She has seen more nights than us"', '"I was wrong, and that is okay to say"', '"Next time, let’s go slowly and look first"'],
               es: ['«Ser rápido no es lo mismo que ser sabio»', '«Escuchen a mamá. Ha visto más noches que nosotros»', '«Me equivoqué, y está bien decirlo»', '«La próxima vez, vayamos despacio y miremos primero»'],
@@ -445,19 +525,19 @@
           fr: 'Hawel s’est réveillée en se frottant les yeux. Sa banane était bleue ! Sa tartine était violette ! Dehors, le ciel faisait quelque chose qu’il ne devrait vraiment pas faire. Pixel le papillon s’est posé sur son épaule. « Il faut trouver la Gardienne des couleurs », a chuchoté Pixel.',
         },
         steps: [
-          { question: { en: 'Hawel and Pixel set off. Where did they look first?', es: 'Hawel y Pixel se pusieron en marcha. ¿Dónde buscaron primero?', fr: 'Hawel et Pixel sont partis. Où ont-ils cherché d’abord ?' },
+          { emojis: ['🌹', '🌈', '🎨', '🦆'], question: { en: 'Hawel and Pixel set off. Where did they look first?', es: 'Hawel y Pixel se pusieron en marcha. ¿Dónde buscaron primero?', fr: 'Hawel et Pixel sont partis. Où ont-ils cherché d’abord ?' },
             choices: {
               en: ['In the garden, where the roses had turned green', 'Up the hill, where the rainbow usually starts', 'At the painter’s house at the end of the street', 'Down by the pond, where the sky reflects'],
               es: ['En el jardín, donde las rosas se habían vuelto verdes', 'En lo alto de la colina, donde suele empezar el arcoíris', 'En la casa del pintor al final de la calle', 'Junto al estanque, donde se refleja el cielo'],
               fr: ['Dans le jardin, où les roses étaient devenues vertes', 'En haut de la colline, là où commence l’arc-en-ciel', 'Chez le peintre, au bout de la rue', 'Près de l’étang, où le ciel se reflète'],
             } },
-          { question: { en: 'They found the Color Keeper. She showed them three special colors:', es: 'Encontraron a la Guardiana de los colores. Les mostró tres colores especiales:', fr: 'Ils ont trouvé la Gardienne des couleurs. Elle leur a montré trois couleurs spéciales :' },
+          { emojis: ['🔴', '🖌️', '💧', '🪶'], question: { en: 'They found the Color Keeper. She showed them three special colors:', es: 'Encontraron a la Guardiana de los colores. Les mostró tres colores especiales:', fr: 'Ils ont trouvé la Gardienne des couleurs. Elle leur a montré trois couleurs spéciales :' },
             choices: {
               en: ['Red, yellow and blue, the colors that make all the others', 'Three paint pots with a note: "Mix me!"', 'Three glowing drops floating in the air', 'Three feathers, one for each primary color'],
               es: ['Rojo, amarillo y azul, los colores que forman todos los demás', 'Tres botes de pintura con una nota: «¡Mézclame!»', 'Tres gotas brillantes flotando en el aire', 'Tres plumas, una por cada color primario'],
               fr: ['Le rouge, le jaune et le bleu, les couleurs qui font toutes les autres', 'Trois pots de peinture avec un mot : « Mélange-moi ! »', 'Trois gouttes lumineuses qui flottaient dans l’air', 'Trois plumes, une pour chaque couleur primaire'],
             } },
-          { question: { en: 'To put the world back, Hawel mixed...', es: 'Para arreglar el mundo, Hawel mezcló...', fr: 'Pour remettre le monde en ordre, Hawel a mélangé...' },
+          { emojis: ['🌿', '🍊', '🟣', '🌈'], question: { en: 'To put the world back, Hawel mixed...', es: 'Para arreglar el mundo, Hawel mezcló...', fr: 'Pour remettre le monde en ordre, Hawel a mélangé...' },
             choices: {
               en: ['Yellow and blue, to make the grass green again', 'Red and yellow, to make the oranges orange', 'Red and blue, to paint the evening purple', 'All three, very carefully, one drop at a time'],
               es: ['Amarillo y azul, para que la hierba volviera a ser verde', 'Rojo y amarillo, para que las naranjas fueran naranjas', 'Rojo y azul, para pintar la tarde de morado', 'Los tres, con mucho cuidado, gota a gota'],
@@ -474,19 +554,19 @@
           fr: 'Sofia se tenait dans le jardin de sa grand-mère et regardait le vieux figuier noueux. « Cet arbre doit partir », dit-elle. À ce moment, le portail grinça et le vieux monsieur Costas entra en hâte. « Attends ! dit-il. Sais-tu ce que cet arbre a vu ? »',
         },
         steps: [
-          { question: { en: 'Mr. Costas began his story. The tree had seen...', es: 'El señor Costas empezó su historia. El árbol había visto...', fr: 'M. Costas commença son histoire. L’arbre avait vu...' },
+          { emojis: ['🎶', '🧗', '💒', '☀️'], question: { en: 'Mr. Costas began his story. The tree had seen...', es: 'El señor Costas empezó su historia. El árbol había visto...', fr: 'M. Costas commença son histoire. L’arbre avait vu...' },
             choices: {
               en: ['A harvest festival with music under its branches', 'Sofia’s grandmother as a little girl, climbing it', 'A wedding, with figs on every table', 'A hundred summers of children eating figs in the shade'],
               es: ['Una fiesta de la cosecha con música bajo sus ramas', 'A la abuela de Sofía de niña, trepando por él', 'Una boda, con higos en cada mesa', 'Cien veranos de niños comiendo higos a la sombra'],
               fr: ['Une fête des récoltes avec de la musique sous ses branches', 'La grand-mère de Sofia petite fille, qui y grimpait', 'Un mariage, avec des figues sur chaque table', 'Cent étés d’enfants mangeant des figues à l’ombre'],
             } },
-          { question: { en: 'Inside the cottage, Sofia found something her grandmother kept. It was...', es: 'Dentro de la casita, Sofía encontró algo que guardaba su abuela. Era...', fr: 'Dans la maisonnette, Sofia trouva quelque chose que sa grand-mère gardait. C’était...' },
+          { emojis: ['📖', '🖼️', '🍯', '📷'], question: { en: 'Inside the cottage, Sofia found something her grandmother kept. It was...', es: 'Dentro de la casita, Sofía encontró algo que guardaba su abuela. Era...', fr: 'Dans la maisonnette, Sofia trouva quelque chose que sa grand-mère gardait. C’était...' },
             choices: {
               en: ['A handwritten book of fig recipes', 'A drawing of the tree from long ago', 'A jar of fig jam with a note: "For Sofia"', 'A photo of the whole family under the tree'],
               es: ['Un cuaderno de recetas de higos escrito a mano', 'Un dibujo del árbol de hace mucho tiempo', 'Un tarro de mermelada de higos con una nota: «Para Sofía»', 'Una foto de toda la familia bajo el árbol'],
               fr: ['Un cahier de recettes de figues écrit à la main', 'Un dessin de l’arbre d’il y a très longtemps', 'Un pot de confiture de figues avec un mot : « Pour Sofia »', 'Une photo de toute la famille sous l’arbre'],
             } },
-          { question: { en: 'Sofia made her decision. She...', es: 'Sofía tomó su decisión. Ella...', fr: 'Sofia prit sa décision. Elle...' },
+          { emojis: ['🌳', '🍳', '🌱', '📝'], question: { en: 'Sofia made her decision. She...', es: 'Sofía tomó su decisión. Ella...', fr: 'Sofia prit sa décision. Elle...' },
             choices: {
               en: ['Kept the tree and asked Mr. Costas for more stories', 'Cooked her grandmother’s recipe with the neighbors', 'Planted a new little fig tree beside the old one', 'Started her own book of stories about the garden'],
               es: ['Se quedó con el árbol y le pidió más historias al señor Costas', 'Cocinó la receta de su abuela con los vecinos', 'Plantó una higuera nueva junto a la vieja', 'Empezó su propio cuaderno de historias del jardín'],
@@ -503,19 +583,19 @@
           fr: 'Grand-père Chen tendit à Luna un filet à papillons et un bocal en verre. « Qu’est-ce que tu vas attraper ? » demanda-t-il. Luna leva les yeux vers le grand ciel bleu. « Un nuage de chaque sorte ! » dit-elle, et elle courut dans le pré.',
         },
         steps: [
-          { question: { en: 'The first cloud Luna tried to catch was...', es: 'La primera nube que Luna intentó atrapar fue...', fr: 'Le premier nuage que Luna essaya d’attraper était...' },
+          { emojis: ['🐑', '🪶', '🌫️', '🐰'], question: { en: 'The first cloud Luna tried to catch was...', es: 'La primera nube que Luna intentó atrapar fue...', fr: 'Le premier nuage que Luna essaya d’attraper était...' },
             choices: {
               en: ['A big puffy cumulus, like a sheep', 'A thin wispy cirrus, high up like a feather', 'A low gray stratus, like a soft blanket', 'A tiny cloud shaped like a rabbit'],
               es: ['Un gran cúmulo esponjoso, como una oveja', 'Un cirro fino, alto como una pluma', 'Un estrato gris y bajo, como una manta suave', 'Una nube pequeñita con forma de conejo'],
               fr: ['Un gros cumulus tout gonflé, comme un mouton', 'Un fin cirrus, tout en haut comme une plume', 'Un stratus gris et bas, comme une douce couverture', 'Un tout petit nuage en forme de lapin'],
             } },
-          { question: { en: 'Luna swung her net, but the cloud...', es: 'Luna agitó la red, pero la nube...', fr: 'Luna agita son filet, mais le nuage...' },
+          { emojis: ['🌬️', '☁️', '💧', '👋'], question: { en: 'Luna swung her net, but the cloud...', es: 'Luna agitó la red, pero la nube...', fr: 'Luna agita son filet, mais le nuage...' },
             choices: {
               en: ['Floated right through it like a whisper', 'Changed shape and drifted away', 'Left only a few drops of rain in the jar', 'Seemed to wave at her as the wind carried it'],
               es: ['La atravesó como un susurro', 'Cambió de forma y se alejó flotando', 'Solo dejó unas gotas de lluvia en el frasco', 'Pareció saludarla mientras el viento se la llevaba'],
               fr: ['Passa à travers comme un murmure', 'Changea de forme et s’éloigna', 'Ne laissa que quelques gouttes de pluie dans le bocal', 'Sembla lui faire signe pendant que le vent l’emportait'],
             } },
-          { question: { en: 'Back home, Luna showed Grandpa Chen...', es: 'De vuelta en casa, Luna le enseñó al abuelo Chen...', fr: 'De retour à la maison, Luna montra à Grand-père Chen...' },
+          { emojis: ['📓', '🌧️', '💭', '🌅'], question: { en: 'Back home, Luna showed Grandpa Chen...', es: 'De vuelta en casa, Luna le enseñó al abuelo Chen...', fr: 'De retour à la maison, Luna montra à Grand-père Chen...' },
             choices: {
               en: ['A notebook full of cloud drawings and names', 'A jar with a little rain inside, "a piece of a cloud"', 'Nothing in her jar, but a head full of sky', 'A plan to watch the clouds together every evening'],
               es: ['Un cuaderno lleno de dibujos y nombres de nubes', 'Un frasco con un poco de lluvia, «un trocito de nube»', 'Nada en el frasco, pero la cabeza llena de cielo', 'Un plan para mirar las nubes juntos cada tarde'],
@@ -530,6 +610,75 @@
     let currentStep = 0;
     let storyChoices = [];
     let builtStory = '';
+    let choosing = false; // one tap = one step, even when a child taps a choice several times
+
+    // ── LITTLE READER MODE (ages 4-5) ─────────────────────────────────────────
+    // Off by default (a ?little=1 link can start it on). When on: the name is optional,
+    // every choice has a big picture and its own listen button, every prompt is read aloud
+    // with a "Listen again" button, the free-write box is hidden, and the ending can be
+    // drawn on the printout instead of typed.
+    let littleMode = false;
+    try { littleMode = new URLSearchParams(location.search).get('little') === '1'; } catch (e) {}
+    const isShown = (id) => !document.getElementById(id).classList.contains('hidden');
+    const escAttr = (v) => String(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const noEmoji = (v) => String(v).replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}\u{200D}]/gu, '').replace(/\s+/g, ' ').trim();
+    const listenLabel = (text) => window.t('listenLabel').replace('{text}', text);
+    // Swap a data-i18n key so i18n.js (which re-applies on DOMContentLoaded) keeps the right text.
+    function setKey(id, key) {
+      const el = document.getElementById(id);
+      el.setAttribute('data-i18n', key);
+      el.textContent = window.t(key);
+    }
+    function speakPrompt(text) { speak(noEmoji(text)); }
+
+    function applyLittleMode() {
+      const on = littleMode;
+      const toggle = document.getElementById('littleToggle');
+      toggle.setAttribute('aria-checked', on ? 'true' : 'false');
+      toggle.classList.toggle('bg-amber-500', on);
+      toggle.classList.toggle('bg-gray-300', !on);
+      document.getElementById('littleKnob').style.transform = on ? 'translateX(24px)' : 'translateX(4px)';
+      document.getElementById('littleWrap').setAttribute('data-little-reader', on ? 'on' : 'off');
+      document.getElementById('littleSrLabel').textContent = window.t('littleLabel');
+      document.getElementById('littleLabel').textContent =
+        window.t('littleLabel') + window.t('littleSep') + ' ' + window.t(on ? 'littleOn' : 'littleOff');
+      document.getElementById('littleHint').textContent = window.t('littleHint');
+
+      setKey('howto1Item', on ? 'howto1Little' : 'howto1');
+      setKey('howto4Item', on ? 'howto4Little' : 'howto4');
+      setKey('nameHeadingText', on ? 'nameHeadingLittle' : 'nameHeading');
+      setKey('endingHeadingText', on ? 'endingHeadingLittle' : 'endingHeading');
+      setKey('endingPromptText', on ? 'endingPromptLittle' : 'endingPrompt');
+      document.getElementById('skipName').textContent = window.t('skipName');
+      document.getElementById('listenQuestion').textContent = window.t('listenAgain');
+      document.getElementById('listenEnding').textContent = window.t('listenAgain');
+      document.getElementById('drawBoxLabel').textContent = window.t('drawEndingHere');
+      document.getElementById('drawBoxNote').textContent = window.t('drawEndingNote');
+      document.getElementById('certMyEnding').textContent = window.t('certMyEnding');
+
+      ['skipName', 'listenQuestion', 'listenEnding', 'drawBox'].forEach(id => document.getElementById(id).classList.toggle('hidden', !on));
+      document.getElementById('freeWriteBox').classList.toggle('hidden', on);
+    }
+
+    document.getElementById('littleToggle').addEventListener('click', () => {
+      littleMode = !littleMode;
+      applyLittleMode();
+      // Redraw whatever is on screen so it matches the new mode.
+      if (isShown('storyPicker')) showStoryPicker();
+      else if (isShown('storyGame') && currentStory) renderStep();
+      else if (littleMode && isShown('nameSection')) speakPrompt(window.t('nameHeadingLittle'));
+    });
+    document.getElementById('skipName').addEventListener('click', () => {
+      childName = document.getElementById('childName').value.trim();
+      document.getElementById('nameSection').classList.add('hidden');
+      showStoryPicker();
+    });
+    document.getElementById('listenQuestion').addEventListener('click', () => {
+      if (currentStory && currentStep < currentStory.steps.length) speak(L3(currentStory.steps[currentStep].question));
+    });
+    document.getElementById('listenEnding').addEventListener('click', () => speakPrompt(window.t('endingHeadingLittle') + ' ' + window.t('endingPromptLittle')));
+    function listenChoice(idx) { speak(L3(currentStory.steps[currentStep].choices)[idx]); }
+    function listenStory(id) { const s = stories.find(x => x.id === id); if (s) speak(L3(s.title)); }
 
     // ── NAME SECTION ──────────────────────────────────────────────────────────
     document.getElementById('startBtn').addEventListener('click', () => {
@@ -547,6 +696,22 @@
       // A visit from a book page (?book=<id>) lists that book's story first.
       let fromBook = null; try { fromBook = new URLSearchParams(location.search).get('book'); } catch (e) {}
       const ordered = stories.slice().sort((x, y) => (y.book === fromBook) - (x.book === fromBook));
+      if (littleMode) {
+        // Big picture cards, each with its own listen button (a sibling, never nested in the card button).
+        container.innerHTML = ordered.map(s => `
+          <div class="relative">
+            <button type="button" class="choice-btn w-full flex flex-col items-center justify-center text-center p-4 rounded-2xl border-2 border-purple-100 bg-white hover:border-purple-300 shadow-sm"
+              style="min-height:140px;" onclick="startStory('${s.id}')">
+              <span class="text-5xl mb-2" aria-hidden="true" style="line-height:1;">${s.emoji}</span>
+              <span class="font-extrabold text-gray-800 text-base">${L3(s.title)}</span>
+            </button>
+            <button type="button" class="absolute w-11 h-11 rounded-full bg-purple-100 hover:bg-purple-200 text-xl shadow-sm"
+              style="top:8px;right:8px;z-index:1;" aria-label="${escAttr(listenLabel(L3(s.title)))}" onclick="listenStory('${s.id}')"><span aria-hidden="true">🔊</span></button>
+          </div>
+        `).join('');
+        speakPrompt(window.t('pickStory'));
+        return;
+      }
       container.innerHTML = ordered.map(s => `
         <button class="choice-btn text-left p-4 rounded-2xl border-2 border-purple-100 bg-white hover:border-purple-300 shadow-sm"
           onclick="startStory('${s.id}')">
@@ -560,6 +725,7 @@
     function startStory(id) {
       currentStory = stories.find(s => s.id === id);
       currentStep = 0;
+      choosing = false;
       storyChoices = [];
       builtStory = L3(currentStory.opening) + ' ';
       document.getElementById('storyPicker').classList.add('hidden');
@@ -595,6 +761,8 @@
           document.getElementById('storyBuilt').classList.remove('hidden');
           document.getElementById('storyBuiltText').textContent = builtStory;
         }
+        renderStepIndicator();
+        if (littleMode) speakPrompt(window.t('endingHeadingLittle') + ' ' + window.t('endingPromptLittle'));
         return;
       }
 
@@ -604,6 +772,23 @@
       document.getElementById('freeWrite').value = '';
 
       const choiceContainer = document.getElementById('choiceButtons');
+      if (littleMode) {
+        const pics = step.emojis || [];
+        choiceContainer.innerHTML = L3(step.choices).map((c,i) => `
+          <div class="relative">
+            <button type="button" class="choice-btn w-full flex flex-col items-center justify-center text-center px-4 py-4 rounded-2xl border-2 border-gray-200 bg-white text-base font-bold text-gray-700"
+              style="min-height:132px;padding-right:3.5rem;padding-left:3.5rem;" id="choice-${i}" aria-pressed="false" onclick="selectChoice(${i})">
+              <span class="text-5xl mb-2" aria-hidden="true" style="line-height:1;">${pics[i] || ''}</span>
+              <span>${c}</span>
+            </button>
+            <button type="button" class="absolute w-11 h-11 rounded-full bg-purple-100 hover:bg-purple-200 text-xl shadow-sm"
+              style="top:8px;right:8px;z-index:1;" id="listen-${i}" aria-label="${escAttr(listenLabel(c))}" onclick="listenChoice(${i})"><span aria-hidden="true">🔊</span></button>
+          </div>
+        `).join('');
+        speak(L3(step.question));
+        renderStepIndicator();
+        return;
+      }
       choiceContainer.innerHTML = L3(step.choices).map((c,i) => `
         <button class="choice-btn text-left px-4 py-3 rounded-2xl border-2 border-gray-200 bg-white text-sm font-bold text-gray-700"
           id="choice-${i}" onclick="selectChoice(${i})">
@@ -616,8 +801,17 @@
     }
 
     function selectChoice(idx) {
+      if (choosing) return;
+      choosing = true;
       const text = L3(currentStory.steps[currentStep].choices)[idx];
-      document.querySelectorAll('[id^="choice-"]').forEach((b,i) => b.classList.toggle('selected', i===idx));
+      document.querySelectorAll('[id^="choice-"]').forEach((b,i) => {
+        b.classList.toggle('selected', i===idx);
+        // Not by colour alone: little mode marks the picked card with a tick and aria-pressed.
+        if (b.hasAttribute('aria-pressed')) {
+          b.setAttribute('aria-pressed', i===idx ? 'true' : 'false');
+          if (i===idx) b.insertAdjacentHTML('afterbegin', '<span class="text-2xl" aria-hidden="true">✅</span>');
+        }
+      });
       document.getElementById('freeWrite').value = '';
       setTimeout(() => advanceStep(text), 600);
     }
@@ -629,6 +823,7 @@
     });
 
     function advanceStep(choiceText) {
+      choosing = false;
       storyChoices.push(choiceText);
       builtStory += choiceText + '. ';
       document.getElementById('storyBuilt').classList.remove('hidden');
@@ -639,19 +834,21 @@
 
     document.getElementById('finishStory').addEventListener('click', () => {
       const ending = document.getElementById('endingText').value.trim();
-      if (!ending) { document.getElementById('endingText').focus(); return; }
-      const fullStory = builtStory + ending;
-      showCertificate(fullStory);
+      // Little reader mode: typing is optional, the ending can be drawn on the printout.
+      if (!ending && !littleMode) { document.getElementById('endingText').focus(); return; }
+      const fullStory = ending ? builtStory + ending : builtStory.trim();
+      showCertificate(fullStory, !ending);
     });
 
-    function showCertificate(fullStory) {
+    function showCertificate(fullStory, drawEnding) {
+      document.getElementById('certDrawBox').classList.toggle('hidden', !drawEnding);
       document.getElementById('storyGame').classList.add('hidden');
       const section = document.getElementById('certificateSection');
       section.classList.remove('hidden');
-      document.getElementById('certName').textContent = childName;
+      document.getElementById('certName').textContent = childName || window.t('storyStar');
       document.getElementById('certStoryTitle').textContent = `"${L3(currentStory.title)}"`;
       document.getElementById('certFullStory').textContent = fullStory;
-      speak(window.t('congratsSpeech').replace('{name}', childName));
+      speak(childName ? window.t('congratsSpeech').replace('{name}', childName) : window.t('congratsSpeechNoName'));
     }
 
     document.getElementById('printCert').addEventListener('click', () => window.print());
@@ -671,6 +868,9 @@
     document.getElementById('childName').placeholder = window.t('namePlaceholder');
     document.getElementById('freeWrite').placeholder = window.t('freeWritePlaceholder');
     document.getElementById('endingText').placeholder = window.t('endingPlaceholder');
+    applyLittleMode();
+    // i18n.js re-applies data-i18n text on DOMContentLoaded; keep the switch's own text in step.
+    document.addEventListener('DOMContentLoaded', applyLittleMode);
 
     function speak(text) {
       if (!window.speechSynthesis) return;

@@ -326,7 +326,8 @@ export const activities: Activity[] = [
   {
     slug: 'finish-the-story',
     emoji: '📖',
-    ages: '6-9',
+    ages: '4-9',
+    littleReader: true,
     game: true,
     title: { en: 'Finish the Story', es: 'Termina la historia', fr: 'Termine l\'histoire' },
     desc: {

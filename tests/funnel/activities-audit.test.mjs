@@ -124,13 +124,35 @@ test('coverage — every published book leads with an activity built for it (aud
 test('little readers — every activity flagged littleReader really offers the mode, and fits 4-5', async () => {
   const { readFileSync } = await import('node:fs');
   const FILES = { 'adventure-journal': 'AdventureJournalDemo', bingo: 'BingoDemo', 'character-workshop': 'CharacterWorkshopDemo' };
+  // Standalone games have no React toggle: they render their own role="switch" and read
+  // prompts with the game's speech helper.
+  const GAMES = ['finish-the-story'];
   const flagged = activities.filter((a) => a.littleReader).map((a) => a.slug).sort();
-  assert.deepEqual(flagged, Object.keys(FILES).sort(), 'flagged activities and their files drifted');
+  assert.deepEqual(flagged, [...Object.keys(FILES), ...GAMES].sort(), 'flagged activities and their files drifted');
+  for (const slug of GAMES) {
+    const html = readFileSync(`public/games/${slug}.html`, 'utf8');
+    assert.match(html, /role="switch"/, `${slug}: no little-reader switch`);
+    assert.ok(!html.includes('\u2014'), `${slug}: em dash`);
+    assert.equal(Number(activities.find((a) => a.slug === slug).ages.split('-')[0]), 4, `${slug}: should be rated from age 4`);
+  }
   for (const [slug, file] of Object.entries(FILES)) {
     const src = readFileSync(`src/demos/${file}.tsx`, 'utf8');
     assert.match(src, /<LittleReaderToggle\b/, `${slug}: no little-reader toggle`);
     assert.match(src, /<ReadAloudButton\b/, `${slug}: little-reader mode must read prompts aloud`);
     assert.ok(!src.includes('—'), `${slug}: em dash`);
     assert.equal(Number(activities.find((a) => a.slug === slug).ages.split('-')[0]), 4, `${slug}: should be rated from age 4`);
+  }
+});
+
+test('age fit — no book links an activity aimed two or more years older, unless it has a little-reader mode', () => {
+  // The audit's age-fit rule (§4D). Overlapping ranges are not enough: a 4-8 book linking a
+  // 6-9 activity sends its youngest readers to something they cannot do.
+  const min = (r) => Number(r.split('-')[0]);
+  for (const b of books) {
+    for (const slug of b.relatedActivityIds ?? []) {
+      const a = activities.find((x) => x.slug === slug);
+      if (a.littleReader) continue;
+      assert.ok(min(a.ages) - min(b.ageRange) < 2, `${b.id} (${b.ageRange}) links ${slug} (${a.ages})`);
+    }
   }
 });

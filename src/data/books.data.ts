@@ -284,7 +284,7 @@ export const books: Book[] = [
     ageRange: '3-7',
     themeIds: ['wonder', 'creativity'],
     relatedBookIds: ['little-mapmaker', 'rainbow-symphony', 'little-boats-big-wish'],
-    relatedActivityIds: ['shadow-theatre', 'coloring', 'bookmark-designer', 'build-a-scene'],
+    relatedActivityIds: ['shadow-theatre', 'coloring', 'build-a-scene'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Look at your shadow. Where do you think it goes when you fall asleep?",
@@ -669,7 +669,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['patience-mastery'],
     relatedBookIds: ['heidis-journey-to-mastery', 'miras-thousand-cubes', 'russet-the-fox'],
-    relatedActivityIds: ['patient-maker-passport', 'bookmark-designer', 'craft-corner', 'puzzles'],
+    relatedActivityIds: ['patient-maker-passport', 'bookmark-designer', 'craft-corner'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "The boy wants to be a great woodworker today, right now. Do you think that can happen?",
@@ -939,7 +939,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['curiosity', 'wonder', 'humility-listening'],
     relatedBookIds: ['little-mapmaker', 'colors-mixed-up', 'russet-the-fox'],
-    relatedActivityIds: ['cloud-detective-journal', 'rhyme-singalong', 'story-map', 'world-geography'],
+    relatedActivityIds: ['cloud-detective-journal', 'rhyme-singalong', 'story-map'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Luna wants to catch one cloud of every kind in a jar. Do you think she can?",
@@ -993,7 +993,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['creativity', 'curiosity', 'wonder'],
     relatedBookIds: ['colors-mixed-up', 'cloud-collector', 'mayas-shadow'],
-    relatedActivityIds: ['map-my-world', 'story-map', 'coloring', 'world-geography'],
+    relatedActivityIds: ['map-my-world', 'story-map', 'coloring'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Maya draws maps of her bedroom and her backyard. What would you put on a map of your home?",

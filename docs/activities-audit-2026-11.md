@@ -283,4 +283,22 @@ Target: every book with at least 1 book-specific activity by the end of the P1 w
 - **The three activities are re-rated from 6-9 to 4-9.** The Activities hub and the book-page activity cards show "🧸 Little reader mode". This resolves the age-fit issue in §4D for these three.
 - **Accessibility fixes to the shared read-aloud button:** an optional `label`, so each button says what it reads (it always said "Listen to this book"), and a 44px minimum tap height in the compact style.
 - **A test** checks that every activity flagged `littleReader` really renders the toggle and read-aloud, and is rated from age 4.
-- **Still open:** Finish-the-Story and Story Dice are still 6-9 on some 4-8 books; Sentence Builder book mode; coloring art from the books; second activities for the strongest books.
+- **Still open:** Sentence Builder book mode; coloring art from the books; second activities for the strongest books.
+
+### Pass 7: age fit closed
+
+- **Finish-the-Story has a little reader mode**, the same 🧸 switch as the React activities, inside the standalone game:
+  - the name is optional;
+  - every choice has a big picture and its own read-aloud button, and the "write your own" box is hidden;
+  - the ending can be drawn instead of written: the printed certificate gets a "My ending" drawing box;
+  - a `?little=1` link starts it in that mode.
+  - Two bugs fixed for both modes: tapping a choice twice added it twice, and the step dots didn't move to the ending.
+  - Re-rated from 6-9 to 4-9. Diego, Leo and Russet (4-8) keep linking it.
+- **Generic activities aimed at older children were unlinked** where each book already had a better-fitting activity:
+  - World Geography (6-9) from Cloud Collector and Little Mapmaker;
+  - Bookmark Designer (5-9) from Maya's Shadow (3-7);
+  - Puzzle Paradise (7-9) from The Sanding Block.
+- The STEM classroom collection now features Map My World instead of World Geography, and its description was updated in all three languages.
+- **A new test enforces the age rule** from §4D: no book may link an activity whose minimum age is two or more years above the book's, unless the activity has a little reader mode.
+- Story Dice is no longer linked from any 4-8 book (Leo's worksheet replaced it in pass 2), so it needed nothing.
+- **Still open:** Sentence Builder book mode; coloring art from the books; second activities for the strongest books.

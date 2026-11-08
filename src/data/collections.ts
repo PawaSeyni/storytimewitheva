@@ -220,12 +220,12 @@ export const collections: CollectionRecord[] = [
       es: 'Cuentos STEM para aulas curiosas',
     },
     description: {
-      en: 'Clouds and weather, colour mixing, maps, and a young inventor who learns by sweeping the workshop first. Read one, then build the scene, explore the story map, or find the places on the globe.',
-      fr: 'Nuages et météo, mélange des couleurs, cartes, et une jeune inventrice qui apprend en balayant d’abord l’atelier. Lisez-en une, puis construisez la scène, explorez la carte aux histoires ou retrouvez les lieux sur le globe.',
-      es: 'Nubes y clima, mezcla de colores, mapas y una joven inventora que aprende barriendo primero el taller. Lee una, luego construye la escena, explora el mapa de historias o busca los lugares en el globo.',
+      en: 'Clouds and weather, colour mixing, maps, and a young inventor who learns by sweeping the workshop first. Read one, then build the scene, explore the story map, or draw a map of your own world.',
+      fr: 'Nuages et météo, mélange des couleurs, cartes, et une jeune inventrice qui apprend en balayant d’abord l’atelier. Lisez-en une, puis construisez la scène, explorez la carte aux histoires ou dessinez la carte de votre propre monde.',
+      es: 'Nubes y clima, mezcla de colores, mapas y una joven inventora que aprende barriendo primero el taller. Lee una, luego construye la escena, explora el mapa de historias o dibuja el mapa de tu propio mundo.',
     },
     bookIds: ['cloud-collector', 'colors-mixed-up', 'little-mapmaker', 'heidis-journey-to-mastery'],
-    activityIds: ['story-map', 'world-geography', 'build-a-scene'],
+    activityIds: ['story-map', 'map-my-world', 'build-a-scene'],
     resourceIds: ['article-follow-up-activities', 'download-follow-up-activities'],
   },
 
