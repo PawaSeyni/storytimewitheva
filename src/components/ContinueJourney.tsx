@@ -21,17 +21,20 @@ export default function ContinueJourney({
   sourceType,
   sourceId,
   placement,
+  fromBook,
 }: {
   sourceType: JourneySource;
   sourceId: string;
   placement: string;
+  /** Validated source book (activity pages opened from a book page). */
+  fromBook?: string | null;
 }) {
   const t = useTranslation(TRANSLATIONS);
   const { language } = useLanguage();
   const books = useBooks();
   const activities = useActivities();
 
-  const step = nextStep(sourceType, sourceId);
+  const step = nextStep(sourceType, sourceId, fromBook);
   if (!step) return null;
 
   let title = '';

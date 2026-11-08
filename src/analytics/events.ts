@@ -55,7 +55,7 @@ export const EVENTS: EventDefinition[] = [
   { name: 'Experiment Exposure', alias: 'experiment_exposure', kind: 'exposure', required: ['experiment', 'variant'], optional: ['placement'], owner: 'product', privacy: 'once per assignment when the variant is viewable; ids only' },
   // ---- engagement ----
   { name: 'Read Aloud', kind: 'intent', required: [], optional: ['book', 'language'], owner: 'product', privacy: 'no text' },
-  { name: 'Activity Complete', kind: 'outcome', required: ['activity'], optional: [], owner: 'product', privacy: 'activity slug' },
+  { name: 'Activity Complete', kind: 'outcome', required: ['activity'], optional: ['book'], owner: 'product', privacy: 'activity slug; source book id when opened from a book page' },
   { name: 'Language Switch', kind: 'intent', required: [], optional: ['language'], owner: 'product', privacy: 'target language' },
   // ---- personalization (Sprint 6) ----
   { name: 'Library Status', kind: 'intent', required: ['book', 'status'], optional: ['placement'], owner: 'product', privacy: 'status token, never the library' },

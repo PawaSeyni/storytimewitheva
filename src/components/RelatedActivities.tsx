@@ -3,6 +3,7 @@ import { useLanguage, useTranslation } from '../lib/language';
 import { gameUrl } from '../lib/gameUrl';
 import { track } from '../lib/analytics';
 import { useActivities } from '../data/activities';
+import { withSourceBook } from '../lib/sourceBook';
 
 /**
  * "Try an activity" — renders a book's `relatedActivityIds` (B-02).
@@ -22,7 +23,7 @@ const TRANSLATIONS = {
   fr: { heading: 'Essayez une activité', sub: 'Choisies pour cette histoire.', ages: 'Âges', tryNow: 'Essayer' },
 };
 
-export default function RelatedActivities({ slugs }: { slugs: string[] }) {
+export default function RelatedActivities({ slugs, bookId }: { slugs: string[]; bookId?: string }) {
   const t = useTranslation(TRANSLATIONS);
   const { language } = useLanguage();
   const all = useActivities();
@@ -35,7 +36,7 @@ export default function RelatedActivities({ slugs }: { slugs: string[] }) {
           related-books section follow, locked by tests/seo/a11y.test.mjs. */}
       <h2 className="text-2xl font-bold text-gray-800 mb-1">{t.heading}</h2>
       <p className="text-gray-500 text-sm mb-5">{t.sub}</p>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 ${items.length === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}`}>
         {items.map((a) => {
           const cta = (
             <span className="text-sm font-semibold text-white bg-linear-to-r from-purple-500 to-pink-500 group-hover:from-purple-600 group-hover:to-pink-600 px-4 py-1.5 rounded-full shadow-xs transition-all">
@@ -61,11 +62,11 @@ export default function RelatedActivities({ slugs }: { slugs: string[] }) {
           const cls =
             'group bg-white rounded-2xl shadow-md hover:shadow-xl border border-gray-50 p-5 flex flex-col h-full transition-all';
           // S5-015: the Book → Activity half of the loop, tracked as a continuation.
-          const onClick = () => track('Continue Journey', { placement: 'detail', destination: 'activity', activity: a.slug, reason: 'related' });
+          const onClick = () => track('Continue Journey', { placement: 'detail', destination: 'activity', activity: a.slug, reason: 'related', ...(bookId ? { book: bookId } : {}) });
           return a.game ? (
-            <a key={a.slug} href={gameUrl(a.slug, language)} onClick={onClick} className={cls}>{inner}</a>
+            <a key={a.slug} href={withSourceBook(gameUrl(a.slug, language), bookId)} onClick={onClick} className={cls}>{inner}</a>
           ) : (
-            <Link key={a.slug} to={`/activities/${a.slug}`} onClick={onClick} className={cls}>{inner}</Link>
+            <Link key={a.slug} to={withSourceBook(`/activities/${a.slug}`, bookId)} onClick={onClick} className={cls}>{inner}</Link>
           );
         })}
       </div>

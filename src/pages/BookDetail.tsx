@@ -347,7 +347,7 @@ export default function BookDetail() {
         </section>
       )}
 
-      <RelatedActivities slugs={activitySlugs} />
+      <RelatedActivities slugs={activitySlugs} bookId={book.id} />
 
       <ResourceStrip />
     </main>

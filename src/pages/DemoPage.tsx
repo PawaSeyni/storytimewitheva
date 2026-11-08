@@ -8,22 +8,28 @@ import { useActivity } from '../data/activities';
 import { useLanguage, useTranslation } from '../lib/language';
 import ContinueJourney from '../components/ContinueJourney';
 import EmailSignup from '../components/EmailSignup';
+import { Link } from '../components/LocalizedLink';
+import { useBooks } from '../data/books';
+import { useSourceBook } from '../lib/sourceBook';
 
 const TRANSLATIONS = {
   en: {
     homeCrumb: 'Home',
     activitiesCrumb: 'Activities',
     seoSuffix: 'Free interactive activity for ages',
+    backTo: 'Back to',
   },
   es: {
     homeCrumb: 'Inicio',
     activitiesCrumb: 'Actividades',
     seoSuffix: 'Actividad interactiva gratuita para edades',
+    backTo: 'Volver a',
   },
   fr: {
     homeCrumb: 'Accueil',
     activitiesCrumb: 'Activités',
     seoSuffix: 'Activité interactive gratuite pour les',
+    backTo: 'Retour à',
   },
 };
 
@@ -38,6 +44,11 @@ export default function DemoPage({ children }: DemoPageProps) {
   const activity = useActivity(slug);
   const t = useTranslation(TRANSLATIONS);
   const { language } = useLanguage();
+  // Audit 2026-11 P0: the book page passes ?book=<id>; validated against the book's own
+  // relatedActivityIds, so an unrelated or invented id is ignored.
+  const fromBook = useSourceBook(slug);
+  const books = useBooks();
+  const fromBookTitle = fromBook ? books.find((b) => b.id === fromBook)?.title : undefined;
   // Same breadcrumb component and BreadcrumbList schema as book and collection pages
   // (S3-007); activity pages were the one detail type without them.
   const crumbs = activity
@@ -61,13 +72,20 @@ export default function DemoPage({ children }: DemoPageProps) {
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
           {crumbs && <Breadcrumbs crumbs={crumbs} />}
-          {activity && <ActivityStatusButton slug={activity.slug} />}
+          {activity && <ActivityStatusButton slug={activity.slug} book={fromBook} />}
         </div>
+        {fromBook && fromBookTitle && (
+          <p className="-mt-3 mb-5">
+            <Link to={`/books/${fromBook}`} className="text-sm font-semibold text-purple-700 hover:text-purple-900 underline-offset-4 hover:underline">
+              <span aria-hidden>← </span>{t.backTo} {fromBookTitle}
+            </Link>
+          </p>
+        )}
         {activity && <h1 className="sr-only">{activity.title}</h1>}
         {children}
         {/* S4-011: no activity dead-ends. The books that reference this activity are the
             derived reverse relation; the first one is the next step. */}
-        {activity && <ContinueJourney sourceType="activity" sourceId={activity.slug} placement="activity" />}
+        {activity && <ContinueJourney sourceType="activity" sourceId={activity.slug} placement="activity" fromBook={fromBook} />}
       </div>
       {/* Activity pages were the one content type without the signup; the printable
           pack is the natural next step after playing. */}

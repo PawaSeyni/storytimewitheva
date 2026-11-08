@@ -12,9 +12,11 @@ const TRANSLATIONS = {
 
 interface ActivityStatusButtonProps {
   slug: string;
+  /** Validated source book, so completion can be attributed per book. */
+  book?: string | null;
 }
 
-export default function ActivityStatusButton({ slug }: ActivityStatusButtonProps) {
+export default function ActivityStatusButton({ slug, book }: ActivityStatusButtonProps) {
   const [done, setDone] = useState(false);
   const t = useTranslation(TRANSLATIONS);
 
@@ -29,7 +31,7 @@ export default function ActivityStatusButton({ slug }: ActivityStatusButtonProps
     const next = !done;
     setActivityCompleted(slug, next);
     setDone(next);
-    if (next) track('Activity Complete', { activity: slug });
+    if (next) track('Activity Complete', { activity: slug, ...(book ? { book } : {}) });
   };
 
   return (

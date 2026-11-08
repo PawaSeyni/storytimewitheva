@@ -30,15 +30,32 @@ const { books } = await loadCatalog();
 const { nextStep } = await loadJourney();
 const bookTitles = new Map(books.map((b) => [b.id, b.title]));
 
+// Audit 2026-11 P0: book pages open games with ?book=<id>. The continuation for each
+// referring book is resolved HERE by the same journey.ts rule the activity pages use
+// (nextStep with fromBook), and baked as a small map. At runtime the inline script picks
+// the entry for the URL's book, re-points "Read next", and adds "Back to <book>". An id
+// that is not in the map (unrelated, invented) leaves the default block untouched.
+const fromBookMap = (slug) => {
+  const out = {};
+  for (const b of books) {
+    if (!(b.relatedActivityIds ?? []).includes(slug)) continue;
+    const step = nextStep('activity', slug, b.id);
+    if (!step || step.type !== 'book') continue;
+    out[b.id] = { next: step.href, nextTitles: bookTitles.get(step.id), backTitles: b.title };
+  }
+  return out;
+};
+
 const continueSnippet = (slug) => {
   const step = nextStep('activity', slug);
   if (!step) return '';
   const isBook = step.type === 'book';
   const titles = isBook ? bookTitles.get(step.id) : null;
   const payload = JSON.stringify({ kind: isBook ? 'book' : 'catalog', titles });
+  const from = JSON.stringify(fromBookMap(slug));
   return `
 <!-- ${CONTINUE_MARKER}: injected by scripts/patch-games.mjs (resolved by src/lib/journey.ts) -->
-<section id="ste-continue" class="max-w-7xl mx-auto px-4 mt-10 mb-2" aria-labelledby="ste-continue-eyebrow">
+<section id="ste-continue" class="max-w-7xl mx-auto px-4 mt-10 mb-2" aria-labelledby="ste-continue-eyebrow" data-ste-from='${from.replace(/'/g, '&#39;')}'>
   <p id="ste-continue-eyebrow" data-i18n="continueEyebrow" class="text-xs font-semibold uppercase tracking-wide text-purple-600 mb-2">Continue the journey</p>
   <a href="${step.href}" data-ste-continue='${payload.replace(/'/g, '&#39;')}' class="inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold px-5 py-3 shadow-md hover:shadow-lg transition-all">${isBook ? 'Read next' : 'Browse all books'} <span aria-hidden="true">→</span></a>
 </section>
@@ -48,6 +65,18 @@ const continueSnippet = (slug) => {
   if (!a || typeof window.t !== 'function') return;
   var d; try { d = JSON.parse(a.getAttribute('data-ste-continue')); } catch (e) { return; }
   var L = window.GAME_LANG || 'en';
+  var from = {}; try { from = JSON.parse(document.getElementById('ste-continue').getAttribute('data-ste-from') || '{}'); } catch (e) {}
+  var src = null; try { src = new URLSearchParams(window.location.search).get('book'); } catch (e) {}
+  var f = src && Object.prototype.hasOwnProperty.call(from, src) ? from[src] : null;
+  if (f) {
+    a.setAttribute('href', f.next);
+    d = { kind: 'book', titles: f.nextTitles };
+    var back = document.createElement('a');
+    back.setAttribute('href', '/books/' + src + '/');
+    back.className = 'inline-flex items-center gap-2 rounded-2xl border-2 border-purple-200 text-purple-700 font-semibold px-5 py-3 ml-0 sm:ml-3 mt-3 sm:mt-0 hover:bg-purple-50 transition-all';
+    back.textContent = '\u2190 ' + window.t('backTo') + ' ' + (f.backTitles[L] || f.backTitles.en);
+    a.parentNode.appendChild(back);
+  }
   var label = d.kind === 'book'
     ? window.t('readNext') + ': ' + ((d.titles && (d.titles[L] || d.titles.en)) || '')
     : window.t('browseBooks');
@@ -55,6 +84,26 @@ const continueSnippet = (slug) => {
 })();
 </script>
 `;
+};
+
+// 4. Story Map catalog data (audit 2026-11 P0). The map shows ONLY Eva Gallo Collection
+//    books; their titles, summaries, themes and explorer question (the book's "before"
+//    discussion prompt) are baked from the catalog so the static game cannot drift from it.
+//    The game file owns placement only (region + pin position per book id).
+const STORY_MAP_MARKER = 'STE_STORY_BOOKS';
+const storyMapSnippet = () => {
+  const data = Object.fromEntries(
+    books
+      .filter((b) => b.status !== 'coming-soon')
+      .map((b) => [b.id, {
+        title: b.title,
+        description: b.description,
+        theme: b.theme,
+        ask: (b.discussionQuestions ?? []).find((q) => q.stage === 'before')?.prompt ?? null,
+      }]),
+  );
+  // JSON inside <script>: escape "<" so no string can close the tag early.
+  return `\n<!-- ${STORY_MAP_MARKER}: injected by scripts/patch-games.mjs from src/data/books.data.ts -->\n<script>window.STE_STORY_BOOKS = ${JSON.stringify(data).replace(/</g, '\\u003c')};</script>\n`;
 };
 
 const syncSnippet = (slug) => `
@@ -153,6 +202,13 @@ for (const file of files) {
     } else {
       console.warn(`⚠️  ${file}: no <footer> found, continuation not injected`);
     }
+  }
+  // 4. Story Map data, right after i18n.js so it exists before the game script runs.
+  if (slug === 'story-map') {
+    html = html.replace(new RegExp(`\\n*<!-- ${STORY_MAP_MARKER}[\\s\\S]*?</script>\\n*`), '\n');
+    const I18N_TAG = '<script src="/games/i18n.js"></script>';
+    if (!html.includes(I18N_TAG)) throw new Error('story-map.html: i18n.js tag not found');
+    html = html.replace(I18N_TAG, `${I18N_TAG}${storyMapSnippet()}`);
   }
   changed = true; // always (re)write the current snippets
 
