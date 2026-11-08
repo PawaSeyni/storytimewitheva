@@ -36,18 +36,18 @@ const TRANSLATIONS = {
     cardTitle: 'Color Keeper’s recipe', makes: 'makes', name: 'My name', namePh: 'Write here', footer: 'Signed by the Color Keeper of Harmonia. Try mixing real paint, then draw your new color here.', cardLabel: 'Printable color recipe card',
   },
   es: {
-    skill: 'Vocabulario de colores', title: 'El laboratorio de mezclas del Guardián de los Colores', subtitle: 'Predice, mezcla y crea una tarjeta de receta de color en tres idiomas.', grownup: 'Leer la consigna',
+    skill: 'Vocabulario de colores', title: 'El laboratorio de mezclas de la Guardiana de los Colores', subtitle: 'Predice, mezcla y crea una tarjeta de receta de color en tres idiomas.', grownup: 'Leer la consigna',
     step1: 'Haz una predicción', intro: 'Elige dos colores de pintura. ¿Qué color crees que formarán juntos? En el cuento, Hawel y la mariposa Pixel tuvieron que descubrirlo por las malas.',
     first: 'Primer color', second: 'Segundo color', choose: (c: string, side: string) => `Elegir ${c} como ${side} color`,
     words: 'Palabras de color', step2: 'Ahora compruébalo con pintura real', check: 'Mezcla los dos colores con un adulto. ¿Acertaste? Dibuja tu nuevo color en la tarjeta.',
-    cardTitle: 'Receta del Guardián de los Colores', makes: 'forman', name: 'Mi nombre', namePh: 'Escribe aquí', footer: 'Firmado por el Guardián de los Colores de Harmonia. Mezcla pintura de verdad y luego dibuja tu nuevo color aquí.', cardLabel: 'Tarjeta imprimible de receta de color',
+    cardTitle: 'Receta de la Guardiana de los Colores', makes: 'forman', name: 'Mi nombre', namePh: 'Escribe aquí', footer: 'Firmado por la Guardiana de los Colores de Harmonia. Mezcla pintura de verdad y luego dibuja tu nuevo color aquí.', cardLabel: 'Tarjeta imprimible de receta de color',
   },
   fr: {
-    skill: 'Vocabulaire des couleurs', title: 'Le labo des mélanges du Gardien des Couleurs', subtitle: 'Prédis, mélange et crée une carte-recette de couleur en trois langues.', grownup: 'Lire la consigne',
+    skill: 'Vocabulaire des couleurs', title: 'Le labo des mélanges de la Gardienne des Couleurs', subtitle: 'Prédis, mélange et crée une carte-recette de couleur en trois langues.', grownup: 'Lire la consigne',
     step1: 'Fais une prédiction', intro: 'Choisis deux couleurs de peinture. Quelle couleur vont-elles donner ensemble ? Dans l’histoire, Hawel et le papillon Pixel ont dû le découvrir à leurs dépens.',
     first: 'Première couleur', second: 'Deuxième couleur', choose: (c: string, side: string) => `Choisir ${c} comme ${side} couleur`,
     words: 'Mots de couleur', step2: 'Vérifie maintenant avec de la vraie peinture', check: 'Mélange les deux couleurs avec un adulte. Avais-tu raison ? Dessine ta nouvelle couleur sur la carte.',
-    cardTitle: 'Recette du Gardien des Couleurs', makes: 'donnent', name: 'Mon nom', namePh: 'Écris ici', footer: 'Signé par le Gardien des Couleurs d’Harmonia. Mélange de la vraie peinture, puis dessine ta nouvelle couleur ici.', cardLabel: 'Carte-recette de couleur à imprimer',
+    cardTitle: 'Recette de la Gardienne des Couleurs', makes: 'donnent', name: 'Mon nom', namePh: 'Écris ici', footer: 'Signé par la Gardienne des Couleurs d’Harmonia. Mélange de la vraie peinture, puis dessine ta nouvelle couleur ici.', cardLabel: 'Carte-recette de couleur à imprimer',
   },
 };
 

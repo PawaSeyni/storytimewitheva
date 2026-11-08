@@ -127,6 +127,7 @@ const KindnessMirrorDemo = chunk(L.loadKindnessMirrorDemo);
 const ListenLikeAFoxDemo = chunk(L.loadListenLikeAFoxDemo);
 const PuddleVoyageDemo = chunk(L.loadPuddleVoyageDemo);
 const MapMyWorldDemo = chunk(L.loadMapMyWorldDemo);
+const LeoWorksheetDemo = chunk(L.loadLeoWorksheetDemo);
 const CloudDetectiveDemo = chunk(L.loadCloudDetectiveDemo);
 const ShadowTheatreDemo = chunk(L.loadShadowTheatreDemo);
 const KindnessRippleDemo = chunk(L.loadKindnessRippleDemo);
@@ -165,6 +166,7 @@ const routeDefs = [
   { path: '/activities/listen-like-a-fox', element: <DemoPage><ListenLikeAFoxDemo /></DemoPage> },
   { path: '/activities/puddle-voyage', element: <DemoPage><PuddleVoyageDemo /></DemoPage> },
   { path: '/activities/map-my-world', element: <DemoPage><MapMyWorldDemo /></DemoPage> },
+  { path: '/activities/leo-and-the-wolf-worksheet', element: <DemoPage><LeoWorksheetDemo /></DemoPage> },
   { path: '/activities/cloud-detective-journal', element: <DemoPage><CloudDetectiveDemo /></DemoPage> },
   { path: '/activities/shadow-theatre', element: <DemoPage><ShadowTheatreDemo /></DemoPage> },
   { path: '/activities/kindness-ripple', element: <DemoPage><KindnessRippleDemo /></DemoPage> },

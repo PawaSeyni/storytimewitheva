@@ -49,6 +49,7 @@ const staticPages = [
   ['/activities/listen-like-a-fox', 'monthly', '0.7'],
   ['/activities/puddle-voyage', 'monthly', '0.7'],
   ['/activities/map-my-world', 'monthly', '0.7'],
+  ['/activities/leo-and-the-wolf-worksheet', 'monthly', '0.7'],
   ['/resources', 'monthly', '0.6'],
   ['/about', 'monthly', '0.6'],
   ['/contact', 'monthly', '0.5'],

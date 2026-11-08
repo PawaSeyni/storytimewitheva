@@ -365,7 +365,7 @@ export const activities: Activity[] = [
     slug: 'color-mix-lab',
     emoji: '🎨',
     ages: '4-7',
-    title: { en: 'Color Keeper’s Mix-It Lab', es: 'El laboratorio de mezclas del Guardián de los Colores', fr: 'Le labo des mélanges du Gardien des Couleurs' },
+    title: { en: 'Color Keeper’s Mix-It Lab', es: 'El laboratorio de mezclas de la Guardiana de los Colores', fr: 'Le labo des mélanges de la Gardienne des Couleurs' },
     desc: { en: 'Predict what two paint colors will make, mix them, and print a color recipe card in three languages.', es: 'Predice qué color formarán dos pinturas, mézclalas e imprime una tarjeta de receta de color en tres idiomas.', fr: 'Prédis la couleur que donneront deux peintures, mélange-les et imprime une carte-recette de couleur en trois langues.' },
     category: { en: 'Discovery', es: 'Descubrimiento', fr: 'Découverte' },
   },
@@ -449,7 +449,7 @@ export const activities: Activity[] = [
     emoji: '🏗️',
     ages: '5-9',
     title: { en: 'Ask-First Architect', es: 'Arquitecto que pregunta primero', fr: 'L’architecte qui pose d’abord des questions' },
-    desc: { en: 'Build a tower floor by floor, and stop to listen when the junior engineer raises a hand. Print three questions for real block building.', es: 'Construye una torre piso a piso y detente a escuchar cuando alguien del equipo levante la mano. Imprime tres preguntas para construir con bloques de verdad.', fr: 'Construis une tour étage par étage, et arrête-toi pour écouter quand quelqu’un de l’équipe lève la main. Imprime trois questions pour construire avec de vrais cubes.' },
+    desc: { en: 'Build a tower floor by floor, and stop to listen when the junior engineer raises her hand. Print three questions for real block building.', es: 'Construye una torre piso a piso y detente a escuchar cuando la joven ingeniera levante la mano. Imprime tres preguntas para construir con bloques de verdad.', fr: 'Construis une tour étage par étage, et arrête-toi pour écouter quand la jeune ingénieure lève la main. Imprime trois questions pour construire avec de vrais cubes.' },
     category: { en: 'Discovery', es: 'Descubrimiento', fr: 'Découverte' },
   },
   {
@@ -499,5 +499,15 @@ export const activities: Activity[] = [
     title: { en: 'Map My World', es: 'El mapa de mi mundo', fr: 'La carte de mon monde' },
     desc: { en: 'Draw a map of your room or yard with stamps and a legend, then hide a castle for a grown-up to find.', es: 'Dibuja un mapa de tu cuarto o tu patio con sellos y una leyenda, y esconde un castillo para que un adulto lo encuentre.', fr: 'Dessine la carte de ta chambre ou de ton jardin avec des tampons et une légende, puis cache un château qu’un adulte devra trouver.' },
     category: { en: 'Creativity', es: 'Creatividad', fr: 'Créativité' },
+  },
+  // A complete paper worksheet for one book. Separate from the free Leo storybook PDF
+  // (/free/leo-and-the-wolf), which serves a different purpose and is left as it is.
+  {
+    slug: 'leo-and-the-wolf-worksheet',
+    emoji: '📝',
+    ages: '4-8',
+    title: { en: 'Leo and the Wolf: Story Worksheet', es: 'Leo y el lobo: ficha del cuento', fr: 'Léo et le loup : fiche de lecture' },
+    desc: { en: 'A complete two-page worksheet to print: story words, story order, true or not true, feelings, honest or tricky, writing, drawing and an honesty promise.', es: 'Una ficha completa de dos páginas para imprimir: palabras del cuento, orden, verdadero o falso, sentimientos, honesto o tramposo, escritura, dibujo y una promesa de honestidad.', fr: 'Une fiche complète de deux pages à imprimer : mots de l’histoire, ordre, vrai ou faux, émotions, honnête ou tricheur, écriture, dessin et une promesse d’honnêteté.' },
+    category: { en: 'Reading', es: 'Lectura', fr: 'Lecture' },
   },
 ];

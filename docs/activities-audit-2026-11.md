@@ -162,7 +162,7 @@ These reuse the existing `StudioFrame` (hero, "Pairs with", printable card, prin
 | **P0** | Rebuild Story Map with the 20 catalog books, or unlink it from Cloud Collector and Little Mapmaker | S–M | It shows parents books that aren't in this catalog |
 | **P0** | Rewrite Finish-the-Story prompts around catalog books (Hawel and Pixel, not Eva) | S | Off-brand copy on a book-linked page |
 | **P0** | Pass `?book=` so "Read next" returns to the right book; add `book` to activity events | S | Fixes the journey and makes the funnel measurable |
-| **P1** | ~~Link the Leo PDF from the Leo book page~~ Owner decision: the PDF is the full storybook (see §4C). Fill `relatedResourceIds` once per-book companions exist | XS | — |
+| **P1** | ~~Link the Leo PDF from the Leo book page~~ Owner decision: the PDF stays as it is for its own purpose; a complete Leo worksheet was built instead (see the remediation log) | — | Done |
 | **P1** | 9 new Studio activities (§5a), in this order: Leo, Russet, Tower, Emperor, Little Mapmaker, Boat, Apple Tree, Meadowbrook, Rainbow Symphony | ~9–12 days | Takes book-specific coverage from 11/20 to 20/20 |
 | **P1** | `bookVocab` data, plus `?book=` support in the 5 orphaned games and Puzzles | M | About 6 × 20 book-specific activities from one data set |
 | **P1** | Book-specific coloring line art (start with the 6 books that link Coloring) | M (art) | Coloring is the most-linked activity for ages 3-7 |
@@ -225,4 +225,9 @@ Target: every book with at least 1 book-specific activity by the end of the P1 w
 
 **Still open:** a word list for each book (`bookVocab`) and support for it in the five orphaned games; coloring line art from the books; a companion printable for each book; the Reading Passport; age-fit modes for Journal, Bingo and Character Workshop; the Activities-hub age filter (E6); the second activities in §5b.
 
-**Noticed, not changed:** the Spanish catalog description of *The Day the Colors Got Mixed Up* calls the Color Keeper "el Guardián de los Colores", while its discussion prompt says "la Guardiana". The new Finish-the-Story uses "la Guardiana". The catalog should pick one.
+### Pass 2: owner decisions
+
+- **The Color Keeper is female in every language.** Fixed the Spanish book description and SEO line ("la Guardiana de los Colores"), the French SEO line ("leur gardienne"), and the Spanish and French titles and card text of the Color Mix Lab.
+- **Tower's junior engineer is a woman everywhere.** The discussion prompt now reads "her" / "una joven ingeniera" / "une jeune ingénieure" (also in the sign-off docs). The English description and the SEO lines in all three languages say so, as do the Ask-First Architect page and its card on the activities list.
+- **Leo: a complete worksheet, and the PDF stays as it is.** New page `/activities/leo-and-the-wolf-worksheet`, listed second on the Leo book page after Trust Meter. It prints on two pages in every language: before reading, story words (matching), story order, true or not true, feelings, honest or tricky, think and write, draw it, and an honesty promise. Name and date are optional, and there's an optional answer key that prints on its own page. Every fact comes from the book description, and the ending is not given away. The free storybook PDF (`/free/leo-and-the-wolf`) serves a different purpose and is unchanged.
+- Studio pages now leave the "Mark completed" and "Read next" buttons off the printout. A worksheet can also leave the Studio banner off paper (`printHero={false}`).

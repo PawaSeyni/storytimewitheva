@@ -12,9 +12,9 @@ const MAX_FLOORS = 6;
 const TRANSLATIONS = {
   en: {
     open: '“', close: '”',
-    skill: 'Listening and early engineering', title: 'Ask-First Architect', subtitle: 'Build a tower, and stop to listen when a hand goes up.', grownup: 'Be the junior engineer',
-    step1: 'Build floor by floor', intro: 'In the story, architect Victor Mercer never sees the one hand that goes up. This time, you are the architect. Before each new floor, the junior engineer raises a hand.',
-    hand: 'The junior engineer raises a hand:',
+    skill: 'Listening and early engineering', title: 'Ask-First Architect', subtitle: 'Build a tower, and stop to listen when the junior engineer raises her hand.', grownup: 'Be the junior engineer',
+    step1: 'Build floor by floor', intro: 'In the story, architect Victor Mercer never sees the one hand that goes up. This time, you are the architect. Before each new floor, the junior engineer raises her hand.',
+    hand: 'The junior engineer raises her hand:',
     questions: ['Is the base wide enough?', 'Did we check the ground?', 'What happens when the wind blows?', 'Who will use this floor?', 'Are the floors lined up?', 'Can people get out safely?'],
     listen: 'Stop and listen', keep: 'Keep building',
     done: 'Six floors! Your tower is finished.',
@@ -28,7 +28,7 @@ const TRANSLATIONS = {
   },
   es: {
     open: '«', close: '»',
-    skill: 'Escuchar e ingeniería para peques', title: 'Arquitecto que pregunta primero', subtitle: 'Construye una torre y detente a escuchar cuando alguien levanta la mano.', grownup: 'Levantar la mano y preguntar',
+    skill: 'Escuchar e ingeniería para peques', title: 'Arquitecto que pregunta primero', subtitle: 'Construye una torre y detente a escuchar cuando la joven ingeniera levanta la mano.', grownup: 'Levantar la mano y preguntar',
     step1: 'Construye piso a piso', intro: 'En el cuento, el arquitecto Victor Mercer nunca ve la única mano levantada. Esta vez, tú eres quien diseña. Antes de cada piso nuevo, la joven ingeniera levanta la mano.',
     hand: 'La joven ingeniera levanta la mano:',
     questions: ['¿La base es lo bastante ancha?', '¿Revisamos el suelo?', '¿Qué pasa cuando sopla el viento?', '¿Quién usará este piso?', '¿Los pisos están alineados?', '¿La gente puede salir con seguridad?'],
@@ -44,7 +44,7 @@ const TRANSLATIONS = {
   },
   fr: {
     open: '« ', close: ' »',
-    skill: 'Écoute et premiers pas en ingénierie', title: 'L’architecte qui pose d’abord des questions', subtitle: 'Construis une tour, et arrête-toi pour écouter quand une main se lève.', grownup: 'Lever la main et poser les questions',
+    skill: 'Écoute et premiers pas en ingénierie', title: 'L’architecte qui pose d’abord des questions', subtitle: 'Construis une tour, et arrête-toi pour écouter quand la jeune ingénieure lève la main.', grownup: 'Lever la main et poser les questions',
     step1: 'Construis étage par étage', intro: 'Dans l’histoire, l’architecte Victor Mercer ne voit jamais la seule main levée. Cette fois, c’est toi l’architecte. Avant chaque nouvel étage, la jeune ingénieure lève la main.',
     hand: 'La jeune ingénieure lève la main :',
     questions: ['La base est-elle assez large ?', 'A-t-on vérifié le sol ?', 'Que se passe-t-il quand le vent souffle ?', 'Qui va utiliser cet étage ?', 'Les étages sont-ils bien alignés ?', 'Les gens peuvent-ils sortir en sécurité ?'],

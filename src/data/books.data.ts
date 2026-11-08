@@ -154,13 +154,13 @@ export const books: Book[] = [
     },
     description: {
       en: "Hawel wakes to find every color in the world swapped, banana blue, toast purple, sky doing something it shouldn't. With Pixel the butterfly, she sets off to find the Color Keeper and learn how red, yellow, and blue make every other color. A gentle first lesson in color theory.",
-      es: 'Hawel despierta y descubre que todos los colores del mundo se han cambiado: el plátano es azul, la tostada morada y el cielo está haciendo algo raro. Con Pixel la mariposa, sale a buscar al Guardián de los Colores y a aprender cómo el rojo, el amarillo y el azul forman todos los demás colores. Una primera lección suave sobre teoría del color.',
+      es: 'Hawel despierta y descubre que todos los colores del mundo se han cambiado: el plátano es azul, la tostada morada y el cielo está haciendo algo raro. Con Pixel la mariposa, sale a buscar a la Guardiana de los Colores y a aprender cómo el rojo, el amarillo y el azul forman todos los demás colores. Una primera lección suave sobre teoría del color.',
       fr: "Hawel se réveille et découvre que toutes les couleurs du monde ont été échangées — la banane est bleue, le pain grillé violet et le ciel fait quelque chose qu'il ne devrait pas. Avec Pixel le papillon, elle part chercher la Gardienne des Couleurs et apprendre comment le rouge, le jaune et le bleu composent toutes les autres couleurs. Une douce première leçon de théorie des couleurs.",
     },
     seoDescription: {
       en: "A picture book about colors and color mixing for ages 4–7. Every color in Hawel's world is swapped, so she sets off with Pixel to find the Color Keeper.",
-      es: "Un álbum sobre los colores y cómo se mezclan, de 4 a 7 años. Todos los colores del mundo de Hawel se han cambiado, y sale con Pixel a buscar al Guardián.",
-      fr: "Un album sur les couleurs et leurs mélanges, de 4 à 7 ans. Toutes les couleurs du monde de Hawel sont échangées : avec Pixel, elle part trouver leur gardien.",
+      es: "Un álbum sobre los colores y cómo se mezclan, de 4 a 7 años. Todos los colores del mundo de Hawel se han cambiado, y sale con Pixel a buscar a la Guardiana.",
+      fr: "Un album sur les couleurs et leurs mélanges, de 4 à 7 ans. Toutes les couleurs du monde de Hawel sont échangées : avec Pixel, elle part trouver leur gardienne.",
     },
     theme: {
       en: 'Color theory and curiosity',
@@ -236,9 +236,9 @@ export const books: Book[] = [
         fr: "Victor va construire la plus haute tour jamais imaginée. Que peut-il arriver si personne ne pose de questions ?",
       } },
       { stage: "during", prompt: {
-        en: "One young engineer keeps raising his hand and nobody sees him. Have you ever felt like that?",
-        es: "Un ingeniero joven levanta la mano y nadie lo ve. ¿Alguna vez te has sentido así?",
-        fr: "Un jeune ingénieur lève la main et personne ne le voit. T'es-tu déjà senti comme lui ?",
+        en: "One young engineer keeps raising her hand and nobody sees her. Have you ever felt like that?",
+        es: "Una joven ingeniera levanta la mano y nadie la ve. ¿Alguna vez te has sentido así?",
+        fr: "Une jeune ingénieure lève la main et personne ne la voit. T'es-tu déjà senti comme elle ?",
       } },
       { stage: "after", prompt: {
         en: "Victor learns to design with questions instead of certainty. What question would you have asked him?",
@@ -262,14 +262,14 @@ export const books: Book[] = [
       fr: "Une histoire d'humilité, d'écoute et de véritable brillance",
     },
     description: {
-      en: 'Architect Victor Mercer designs the tallest tower ever conceived. Only one junior engineer raises a hand he never sees. When the dust settles, Victor learns how to design with questions rather than certainty.',
+      en: 'Architect Victor Mercer designs the tallest tower ever conceived. Only one junior engineer raises her hand, and he never sees it. When the dust settles, Victor learns how to design with questions rather than certainty.',
       es: 'El arquitecto Victor Mercer diseña la torre más alta jamás concebida. Solo una joven ingeniera levanta una mano que él nunca ve. Cuando el polvo se asienta, Victor aprende a diseñar con preguntas en lugar de certezas.',
       fr: "L'architecte Victor Mercer conçoit la tour la plus haute jamais imaginée. Une seule jeune ingénieure lève une main qu'il ne voit jamais. Quand la poussière retombe, Victor apprend à concevoir avec des questions plutôt qu'avec des certitudes.",
     },
     seoDescription: {
-      en: "A picture book about humility and listening for ages 5–9. An architect designs the tallest tower ever, and ignores the one engineer with a question.",
-      es: "Un álbum sobre la humildad y saber escuchar, de 5 a 9 años. Un arquitecto diseña la torre más alta e ignora a la única persona del equipo que tiene una duda.",
-      fr: "Un album sur l'humilité et l'écoute, de 5 à 9 ans. Un architecte conçoit la plus haute tour du monde et ignore le seul ingénieur qui pose une question.",
+      en: "A picture book about humility and listening for ages 5–9. An architect designs the tallest tower ever, and ignores the one engineer with a question: a young woman on his team.",
+      es: "Un álbum sobre la humildad y saber escuchar, de 5 a 9 años. Un arquitecto diseña la torre más alta e ignora a la única ingeniera del equipo que tiene una duda.",
+      fr: "Un album sur l'humilité et l'écoute, de 5 à 9 ans. Un architecte conçoit la plus haute tour du monde et ignore la seule ingénieure qui pose une question.",
     },
     theme: {
       en: 'Humility and listening',
@@ -725,7 +725,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['honesty', 'courage'],
     relatedBookIds: ['sparrow-saved-forest', 'diegos-brave-leap'],
-    relatedActivityIds: ['trust-meter', 'finish-the-story', 'character-workshop', 'story-builder'],
+    relatedActivityIds: ['trust-meter', 'leo-and-the-wolf-worksheet', 'finish-the-story', 'character-workshop'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Leo has a real job looking after the sheep. What do you think that job needs most?",

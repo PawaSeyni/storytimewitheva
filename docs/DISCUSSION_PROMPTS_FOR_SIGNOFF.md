@@ -68,7 +68,7 @@ resources to feel specific.
 | Stage | EN | FR | ES |
 |---|---|---|---|
 | `before` | Victor is about to build the tallest tower ever. What could go wrong if nobody asks questions? | Victor va construire la plus haute tour jamais imaginée. Que peut-il arriver si personne ne pose de questions ? | Victor va a construir la torre más alta jamás imaginada. ¿Qué puede pasar si nadie hace preguntas? |
-| `during` | One young engineer keeps raising his hand and nobody sees him. Have you ever felt like that? | Un jeune ingénieur lève la main et personne ne le voit. T'es-tu déjà senti comme lui ? | Un ingeniero joven levanta la mano y nadie lo ve. ¿Alguna vez te has sentido así? |
+| `during` | One young engineer keeps raising her hand and nobody sees her. Have you ever felt like that? | Une jeune ingénieure lève la main et personne ne la voit. T'es-tu déjà senti comme elle ? | Una joven ingeniera levanta la mano y nadie la ve. ¿Alguna vez te has sentido así? |
 | `after` | Victor learns to design with questions instead of certainty. What question would you have asked him? | Victor apprend à concevoir avec des questions plutôt qu'avec des certitudes. Quelle question lui aurais-tu posée ? | Victor aprende a diseñar con preguntas en vez de certezas. ¿Qué pregunta le habrías hecho? |
 
 ## The Adventures of Maya's Shadow

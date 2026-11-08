@@ -63,9 +63,9 @@
     {
       "stage": "during",
       "prompt": {
-        "en": "One young engineer keeps raising his hand and nobody sees him. Have you ever felt like that?",
-        "fr": "Un jeune ingénieur lève la main et personne ne le voit. T'es-tu déjà senti comme lui ?",
-        "es": "Un ingeniero joven levanta la mano y nadie lo ve. ¿Alguna vez te has sentido así?"
+        "en": "One young engineer keeps raising her hand and nobody sees her. Have you ever felt like that?",
+        "fr": "Une jeune ingénieure lève la main et personne ne la voit. T'es-tu déjà senti comme elle ?",
+        "es": "Una joven ingeniera levanta la mano y nadie la ve. ¿Alguna vez te has sentido así?"
       }
     },
     {
