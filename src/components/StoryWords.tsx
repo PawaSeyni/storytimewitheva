@@ -3,6 +3,7 @@ import { useLanguage, useTranslation } from '../lib/language';
 import { gameUrl } from '../lib/gameUrl';
 import { withSourceBook } from '../lib/sourceBook';
 import { track } from '../lib/analytics';
+import { Link } from './LocalizedLink';
 
 /**
  * "Story words" on a book page (activities audit 2026-11, bookVocab): the book's eight
@@ -10,9 +11,9 @@ import { track } from '../lib/analytics';
  * (?book=<id>), so the games play THIS book's words. Renders nothing for a book without words.
  */
 const TRANSLATIONS = {
-  en: { heading: 'Story words', sub: 'Eight words from this book, in English, Spanish and French. Play them:', flashcards: 'Flashcards', matching: 'Memory match', spelling: 'Spelling bee' },
-  es: { heading: 'Palabras del cuento', sub: 'Ocho palabras de este libro, en español, inglés y francés. Juega con ellas:', flashcards: 'Tarjetas', matching: 'Memoria', spelling: 'Deletreo' },
-  fr: { heading: 'Les mots de l’histoire', sub: 'Huit mots de ce livre, en français, anglais et espagnol. Joue avec eux :', flashcards: 'Cartes', matching: 'Memory', spelling: 'Épellation' },
+  en: { heading: 'Story words', sub: 'Eight words from this book, in English, Spanish and French. Play them:', flashcards: 'Flashcards', matching: 'Memory match', spelling: 'Spelling bee', worksheet: 'Printable worksheet' },
+  es: { heading: 'Palabras del cuento', sub: 'Ocho palabras de este libro, en español, inglés y francés. Juega con ellas:', flashcards: 'Tarjetas', matching: 'Memoria', spelling: 'Deletreo', worksheet: 'Ficha para imprimir' },
+  fr: { heading: 'Les mots de l’histoire', sub: 'Huit mots de ce livre, en français, anglais et espagnol. Joue avec eux :', flashcards: 'Cartes', matching: 'Memory', spelling: 'Épellation', worksheet: 'Fiche à imprimer' },
 };
 
 const WORD_GAMES = [
@@ -49,6 +50,15 @@ export default function StoryWords({ bookId }: { bookId: string }) {
             <span aria-hidden>{g.emoji}</span>{t[g.key]}
           </a>
         ))}
+        {/* Leo has a hand-written worksheet; every other book uses the generated one. */}
+        <Link
+          to={bookId === 'leo-and-the-wolf' ? '/activities/leo-and-the-wolf-worksheet' : withSourceBook('/activities/story-worksheet', bookId)}
+          onClick={() => track('Continue Journey', { placement: 'detail', destination: 'activity', activity: bookId === 'leo-and-the-wolf' ? 'leo-and-the-wolf-worksheet' : 'story-worksheet', reason: 'story-words', book: bookId })}
+          className="inline-flex items-center gap-2 rounded-full bg-linear-to-r from-purple-500 to-pink-500 text-white font-semibold px-4 py-2 shadow-xs hover:from-purple-600 hover:to-pink-600 transition-colors"
+          data-story-worksheet
+        >
+          <span aria-hidden>📝</span>{t.worksheet}
+        </Link>
       </div>
     </section>
   );

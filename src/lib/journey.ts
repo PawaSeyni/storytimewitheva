@@ -59,15 +59,17 @@ const CATALOG: JourneyTarget = { type: 'catalog', href: '/books/', reason: 'fall
 /**
  * The book a reader came FROM when they opened an activity (`?book=<id>`), or null.
  *
- * Accepted only when the book exists AND lists the activity in its relatedActivityIds:
+ * Accepted only when the book exists AND lists the activity in its relatedActivityIds (or the
+ * activity is `anyBook`, i.e. offered on every book page):
  * the parameter is user-editable, and an unrelated id must never re-label a page or
  * steer the continuation. Activities with no book context behave exactly as before.
  */
 export function sourceBookFor(activitySlug: string, bookId: string | null | undefined): string | null {
   if (!bookId) return null;
   const b = bookById.get(bookId);
-  if (!b || !activityBySlug.has(activitySlug)) return null;
-  return (b.relatedActivityIds ?? []).includes(activitySlug) ? bookId : null;
+  const a = activityBySlug.get(activitySlug);
+  if (!b || !a) return null;
+  return a.anyBook || (b.relatedActivityIds ?? []).includes(activitySlug) ? bookId : null;
 }
 
 export function nextStep(sourceType: JourneySource, sourceId: string, fromBook?: string | null): JourneyTarget | null {

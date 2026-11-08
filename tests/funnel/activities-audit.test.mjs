@@ -20,7 +20,7 @@ const published = books.filter((b) => b.status !== 'coming-soon');
 test('book context — accepted only for a book that links the activity', () => {
   for (const b of books) {
     for (const slug of b.relatedActivityIds ?? []) assert.equal(sourceBookFor(slug, b.id), b.id, `${b.id} -> ${slug}`);
-    const unrelated = activities.find((a) => !(b.relatedActivityIds ?? []).includes(a.slug));
+    const unrelated = activities.find((a) => !a.anyBook && !(b.relatedActivityIds ?? []).includes(a.slug));
     if (unrelated) assert.equal(sourceBookFor(unrelated.slug, b.id), null, `${b.id} must not label ${unrelated.slug}`);
   }
   assert.equal(sourceBookFor('emotion-wheel', 'no-such-book'), null);
@@ -52,7 +52,7 @@ function fromMap(html) {
 
 test('games — the baked per-book continuation matches journey.ts for every referring book', () => {
   // Word games accept every book with story words; tests/funnel/book-vocab.test.mjs covers them.
-  for (const a of activities.filter((x) => x.game && !['bilingual-flashcards', 'matching', 'spelling-bee'].includes(x.slug))) {
+  for (const a of activities.filter((x) => x.game && !x.anyBook)) {
     const map = fromMap(readFileSync(`public/games/${a.slug}.html`, 'utf8'));
     assert.ok(map, `${a.slug}: no data-ste-from map — re-run npm run patch:games`);
     const referrers = books.filter((b) => (b.relatedActivityIds ?? []).includes(a.slug));
@@ -116,12 +116,7 @@ test('finish the story — every story is a catalog book, titled as in the catal
 test('coverage — every published book leads with an activity built for it (audit goal: 20/20)', () => {
   // Studio activities are the book-specific ones; the generic activities stay available
   // as second-to-fourth picks but never as a book's headline activity.
-  const STUDIO = new Set([
-    'color-mix-lab', 'feelings-weather-report', 'first-day-brave-plan', 'cloud-detective-journal', 'shadow-theatre',
-    'kindness-ripple', 'story-quilt', 'patient-maker-passport',
-    'trust-meter', 'harmonia-orchestra', 'ask-first-architect', 'true-treasure-chest', 'one-of-a-kind-tree',
-    'kindness-mirror', 'listen-like-a-fox', 'puddle-voyage', 'map-my-world',
-  ]);
-  for (const s of STUDIO) assert.ok(activities.some((a) => a.slug === s), `unknown studio activity ${s}`);
+  const STUDIO = new Set(activities.filter((a) => a.bookSpecific).map((a) => a.slug));
+  assert.ok(STUDIO.size >= 18, `expected the book-specific activities to be flagged, got ${STUDIO.size}`);
   for (const b of published) assert.ok(STUDIO.has(b.relatedActivityIds?.[0]), `${b.id}: first activity "${b.relatedActivityIds?.[0]}" is not book-specific`);
 });

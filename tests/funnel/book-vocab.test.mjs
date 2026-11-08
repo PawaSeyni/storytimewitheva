@@ -53,3 +53,17 @@ test('word games — the helper and its label exist in every language', () => {
   assert.match(readFileSync('public/games/book-words.js', 'utf8'), /window\.STE_BOOK =/);
   assert.equal((readFileSync('public/games/i18n.js', 'utf8').match(/\bstoryWordsFrom:/g) || []).length, 3);
 });
+
+test('story worksheet — every book has the before/during/after prompts the worksheet prints', async () => {
+  const { loadActivities } = await import('../../scripts/lib/catalog.mjs');
+  const { activities } = await loadActivities();
+  const ws = activities.find((a) => a.slug === 'story-worksheet');
+  assert.ok(ws && ws.anyBook, 'story-worksheet must exist and accept any book');
+  for (const b of books) {
+    for (const stage of ['before', 'during', 'after']) {
+      const q = (b.discussionQuestions ?? []).find((x) => x.stage === stage);
+      assert.ok(q, `${b.id}: no "${stage}" prompt for the worksheet`);
+      for (const l of ['en', 'es', 'fr']) assert.ok(q.prompt[l]?.trim(), `${b.id}: "${stage}" prompt missing ${l}`);
+    }
+  }
+});

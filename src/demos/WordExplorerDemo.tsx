@@ -3,6 +3,9 @@ import { LANGUAGES } from '../lib/locales';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, XCircle, RotateCcw } from 'lucide-react';
 import { useLanguage, useTranslation, type Language } from '../lib/language';
+import { bookVocab } from '../data/bookVocab.data';
+import { useBooks } from '../data/books';
+import { useSourceBook } from '../lib/sourceBook';
 
 // ---------------------------------------------------------------------------
 // Word bank
@@ -16,7 +19,9 @@ type WordEntry = {
   category: CategoryKey;
 };
 
-type CategoryKey = 'animals' | 'nature' | 'feelings' | 'virtues' | 'adventure';
+type BaseCategory = 'animals' | 'nature' | 'feelings' | 'virtues' | 'adventure';
+/** 'book': the story words of the book the page was opened from (?book=<id>). */
+type CategoryKey = BaseCategory | 'book';
 
 const WORDS: WordEntry[] = [
   // Animals
@@ -70,7 +75,7 @@ const WORDS: WordEntry[] = [
 // Translations
 // ---------------------------------------------------------------------------
 
-const CATEGORY_LABELS: Record<Language, Record<CategoryKey, string>> = {
+const CATEGORY_LABELS: Record<Language, Record<BaseCategory, string>> = {
   en: { animals: 'Animals', nature: 'Nature', feelings: 'Feelings', virtues: 'Virtues', adventure: 'Adventure' },
   es: { animals: 'Animales', nature: 'Naturaleza', feelings: 'Emociones', virtues: 'Virtudes', adventure: 'Aventura' },
   fr: { animals: 'Animaux', nature: 'Nature', feelings: 'Émotions', virtues: 'Vertus', adventure: 'Aventure' },
@@ -189,6 +194,15 @@ export default function WordExplorerDemo() {
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
   const catLabels = CATEGORY_LABELS[language] ?? CATEGORY_LABELS.en;
+  // Book mode (activities audit 2026-11): opened from a book's "Story words" strip, the
+  // book's eight words become a category of their own, selected first.
+  const fromBook = useSourceBook('word-explorer');
+  const books = useBooks();
+  const bookTitle = fromBook ? books.find((b) => b.id === fromBook)?.title ?? '' : '';
+  const ALL = useMemo<WordEntry[]>(
+    () => (fromBook ? [...(bookVocab[fromBook] ?? []).map((w) => ({ ...w, category: 'book' as const })), ...WORDS] : WORDS),
+    [fromBook],
+  );
 
   // Helper: localized language name
   const langLabel = (l: Language): string => {
@@ -199,11 +213,11 @@ export default function WordExplorerDemo() {
   };
 
   // --- category filter ---
-  const [selectedCategory, setSelectedCategory] = useState<CategoryKey | 'all'>('all');
+  const [selectedCategory, setSelectedCategory] = useState<CategoryKey | 'all'>(fromBook ? 'book' : 'all');
 
   const filteredWords = useMemo(
-    () => (selectedCategory === 'all' ? WORDS : WORDS.filter((w) => w.category === selectedCategory)),
-    [selectedCategory],
+    () => (selectedCategory === 'all' ? ALL : ALL.filter((w) => w.category === selectedCategory)),
+    [selectedCategory, ALL],
   );
 
   // --- mode ---
@@ -226,7 +240,7 @@ export default function WordExplorerDemo() {
   };
 
   // --- quiz state ---
-  const [quizWords, setQuizWords] = useState<WordEntry[]>(() => shuffle(WORDS));
+  const [quizWords, setQuizWords] = useState<WordEntry[]>(() => shuffle(fromBook ? ALL.filter((w) => w.category === 'book') : ALL));
   const [quizIndex, setQuizIndex] = useState(0);
   const [quizScore, setQuizScore] = useState(0);
   const [quizAnswered, setQuizAnswered] = useState<string | null>(null);
@@ -257,7 +271,7 @@ export default function WordExplorerDemo() {
     setSelectedCategory(cat);
     setCardIndex(0);
     setFlipped(false);
-    const pool = cat === 'all' ? WORDS : WORDS.filter((w) => w.category === cat);
+    const pool = cat === 'all' ? ALL : ALL.filter((w) => w.category === cat);
     resetQuiz(pool);
   };
 
@@ -281,7 +295,7 @@ export default function WordExplorerDemo() {
     () =>
       quizWord
         ? pickDistractors(
-            selectedCategory === 'all' ? WORDS : WORDS.filter((w) => w.category === selectedCategory),
+            selectedCategory === 'all' ? ALL : ALL.filter((w) => w.category === selectedCategory),
             quizWord,
             targetLang,
             2,
@@ -318,7 +332,7 @@ export default function WordExplorerDemo() {
   };
 
   const categories: (CategoryKey | 'all')[] = [
-    'all', 'animals', 'nature', 'feelings', 'virtues', 'adventure',
+    ...(fromBook ? (['book'] as const) : []), 'all', 'animals', 'nature', 'feelings', 'virtues', 'adventure',
   ];
 
   return (
@@ -369,7 +383,7 @@ export default function WordExplorerDemo() {
                   : 'bg-white text-teal-700 border-teal-300 hover:bg-teal-50'
               }`}
             >
-              {cat === 'all' ? t.all : catLabels[cat]}
+              {cat === 'all' ? t.all : cat === 'book' ? `📖 ${bookTitle}` : catLabels[cat]}
             </button>
           ))}
         </div>

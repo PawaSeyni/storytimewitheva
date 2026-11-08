@@ -26,6 +26,12 @@ export interface Activity {
   /** Standalone HTML game served from /public/games/<slug>.html, opened as a
    *  full page (vs an in-app React demo at /activities/<slug>). */
   game?: boolean;
+  /** Opened from EVERY book page (the "Story words" strip), so any valid book is accepted as
+   *  the source book (?book=<id>), not only the books that list it in relatedActivityIds. */
+  anyBook?: boolean;
+  /** Built for specific book(s) (the Activity Studio pages and the Leo worksheet). The hub
+   *  shows the book it belongs to, and every book must lead with one (activities-audit test). */
+  bookSpecific?: boolean;
 }
 
 export const activities: Activity[] = [
@@ -193,6 +199,7 @@ export const activities: Activity[] = [
     slug: 'word-explorer',
     emoji: '🔤',
     ages: '5-9',
+    anyBook: true,
     title: { en: 'Word Explorer', es: 'Explorador de palabras', fr: 'Explorateur de mots' },
     desc: {
       en: 'Learn new words in English, Spanish, and French with fun flashcards and quizzes.',
@@ -208,6 +215,7 @@ export const activities: Activity[] = [
     emoji: '🌍',
     ages: '4-8',
     game: true,
+    anyBook: true,
     title: { en: 'Multilingual Word Flashcards', es: 'Tarjetas de palabras multilingües', fr: 'Cartes de mots multilingues' },
     desc: {
       en: 'Tap a card to flip it and hear the word in English, Spanish, and French.',
@@ -221,6 +229,7 @@ export const activities: Activity[] = [
     emoji: '🃏',
     ages: '3-5',
     game: true,
+    anyBook: true,
     title: { en: "Eva's Matching Adventure", es: 'La aventura de parejas de Eva', fr: 'Le jeu de paires d\'Eva' },
     desc: {
       en: 'Flip two cards to find the matching pairs, perfect for little ones.',
@@ -247,6 +256,7 @@ export const activities: Activity[] = [
     emoji: '🐝',
     ages: '5-9',
     game: true,
+    anyBook: true,
     title: { en: "Eva's Spelling Bee", es: 'El concurso de ortografía de Eva', fr: 'Le concours d\'orthographe d\'Eva' },
     desc: {
       en: 'Listen to the word, then tap the letters to spell it. Three levels to master.',
@@ -363,6 +373,7 @@ export const activities: Activity[] = [
   // route segments; the book pairings live on the books (relatedActivityIds), first slot.
   {
     slug: 'color-mix-lab',
+    bookSpecific: true,
     emoji: '🎨',
     ages: '4-7',
     title: { en: 'Color Keeper’s Mix-It Lab', es: 'El laboratorio de mezclas de la Guardiana de los Colores', fr: 'Le labo des mélanges de la Gardienne des Couleurs' },
@@ -371,6 +382,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'feelings-weather-report',
+    bookSpecific: true,
     emoji: '🌦️',
     ages: '3-7',
     title: { en: 'My Feelings Weather Report', es: 'Mi parte del tiempo emocional', fr: 'Ma météo des émotions' },
@@ -379,6 +391,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'first-day-brave-plan',
+    bookSpecific: true,
     emoji: '🚩',
     ages: '4-8',
     title: { en: 'First-Day Brave Plan', es: 'Mi plan valiente para el primer día', fr: 'Mon plan courageux du premier jour' },
@@ -387,6 +400,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'cloud-detective-journal',
+    bookSpecific: true,
     emoji: '☁️',
     ages: '4-8',
     title: { en: 'Cloud Detective Field Journal', es: 'Diario de campo del detective de nubes', fr: 'Carnet de terrain du détective des nuages' },
@@ -395,6 +409,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'shadow-theatre',
+    bookSpecific: true,
     emoji: '🌙',
     ages: '3-7',
     title: { en: 'Shadow Theatre at Bedtime', es: 'Teatro de sombras a la hora de dormir', fr: 'Théâtre d’ombres au coucher' },
@@ -403,6 +418,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'kindness-ripple',
+    bookSpecific: true,
     emoji: '💗',
     ages: '4-9',
     title: { en: 'Kindness Ripple Challenge', es: 'El reto de las ondas de bondad', fr: 'Le défi des ondes de gentillesse' },
@@ -411,6 +427,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'story-quilt',
+    bookSpecific: true,
     emoji: '🧵',
     ages: '5-9',
     title: { en: 'Grandparent Story Quilt', es: 'La colcha de historias de los abuelos', fr: 'La courtepointe des histoires de grands-parents' },
@@ -419,6 +436,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'patient-maker-passport',
+    bookSpecific: true,
     emoji: '🛠️',
     ages: '5-9',
     title: { en: 'The Patient Maker Passport', es: 'El pasaporte del creador paciente', fr: 'Le passeport du fabricant patient' },
@@ -430,6 +448,7 @@ export const activities: Activity[] = [
   // the activity FIRST in its relatedActivityIds.
   {
     slug: 'trust-meter',
+    bookSpecific: true,
     emoji: '🐑',
     ages: '4-8',
     title: { en: 'The Trust Meter', es: 'El medidor de confianza', fr: 'Le baromètre de la confiance' },
@@ -438,6 +457,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'harmonia-orchestra',
+    bookSpecific: true,
     emoji: '🎶',
     ages: '3-6',
     title: { en: 'Harmonia Color Orchestra', es: 'La orquesta de colores de Harmonia', fr: 'L’orchestre des couleurs d’Harmonia' },
@@ -446,6 +466,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'ask-first-architect',
+    bookSpecific: true,
     emoji: '🏗️',
     ages: '5-9',
     title: { en: 'Ask-First Architect', es: 'Arquitecto que pregunta primero', fr: 'L’architecte qui pose d’abord des questions' },
@@ -454,6 +475,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'true-treasure-chest',
+    bookSpecific: true,
     emoji: '👑',
     ages: '5-9',
     title: { en: 'My True Treasure Chest', es: 'Mi cofre del verdadero tesoro', fr: 'Mon coffre au vrai trésor' },
@@ -462,6 +484,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'one-of-a-kind-tree',
+    bookSpecific: true,
     emoji: '🍎',
     ages: '4-8',
     title: { en: 'My One-of-a-Kind Tree', es: 'Mi árbol único', fr: 'Mon arbre unique' },
@@ -470,6 +493,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'kindness-mirror',
+    bookSpecific: true,
     emoji: '🪞',
     ages: '4-8',
     title: { en: 'The Kindness Mirror', es: 'El espejo de la bondad', fr: 'Le miroir de la gentillesse' },
@@ -478,6 +502,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'listen-like-a-fox',
+    bookSpecific: true,
     emoji: '🦊',
     ages: '4-8',
     title: { en: 'Listen Like a Fox', es: 'Escucha como un zorro', fr: 'Écoute comme un renard' },
@@ -486,6 +511,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'puddle-voyage',
+    bookSpecific: true,
     emoji: '⛵',
     ages: '3-7',
     title: { en: 'Puddle Voyage', es: 'Viaje por el charco', fr: 'Voyage dans la flaque' },
@@ -494,6 +520,7 @@ export const activities: Activity[] = [
   },
   {
     slug: 'map-my-world',
+    bookSpecific: true,
     emoji: '🗺️',
     ages: '4-8',
     title: { en: 'Map My World', es: 'El mapa de mi mundo', fr: 'La carte de mon monde' },
@@ -504,10 +531,22 @@ export const activities: Activity[] = [
   // (/free/leo-and-the-wolf), which serves a different purpose and is left as it is.
   {
     slug: 'leo-and-the-wolf-worksheet',
+    bookSpecific: true,
     emoji: '📝',
     ages: '4-8',
     title: { en: 'Leo and the Wolf: Story Worksheet', es: 'Leo y el lobo: ficha del cuento', fr: 'Léo et le loup : fiche de lecture' },
     desc: { en: 'A complete two-page worksheet to print: story words, story order, true or not true, feelings, honest or tricky, writing, drawing and an honesty promise.', es: 'Una ficha completa de dos páginas para imprimir: palabras del cuento, orden, verdadero o falso, sentimientos, honesto o tramposo, escritura, dibujo y una promesa de honestidad.', fr: 'Une fiche complète de deux pages à imprimer : mots de l’histoire, ordre, vrai ou faux, émotions, honnête ou tricheur, écriture, dessin et une promesse d’honnêteté.' },
+    category: { en: 'Reading', es: 'Lectura', fr: 'Lecture' },
+  },
+  // A two-page printable for ANY book, built from its discussion prompts and story words.
+  // Offered on every book page (Story words strip), so it accepts any book as ?book=<id>.
+  {
+    slug: 'story-worksheet',
+    emoji: '📚',
+    ages: '4-9',
+    anyBook: true,
+    title: { en: 'Story Worksheet', es: 'Ficha del cuento', fr: 'Fiche de lecture' },
+    desc: { en: 'A two-page printable for any book: before, during and after questions, story words to match and translate, a drawing and a review.', es: 'Una ficha de dos páginas para cualquier libro: preguntas para antes, durante y después, palabras del cuento para unir y traducir, un dibujo y una opinión.', fr: 'Une fiche de deux pages pour n’importe quel livre : questions avant, pendant et après, mots de l’histoire à relier et à traduire, un dessin et un avis.' },
     category: { en: 'Reading', es: 'Lectura', fr: 'Lecture' },
   },
 ];

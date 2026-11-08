@@ -246,3 +246,19 @@ Target: every book with at least 1 book-specific activity by the end of the P1 w
   - Some emoji are approximate (💧 for puddle, 🥅 for net, 🧊 for cube).
   - A few natural words were left out because they were too long or hyphenated (cliff, rainbow / arc-en-ciel, grand-père, grenouille).
   - French uses "papi/mamie" for grandpa/grandma.
+
+### Pass 4: a worksheet for every book, Word Explorer book mode, "Made for" on the hub
+
+- **Story worksheet for every book** (`/activities/story-worksheet?book=<id>`). It's built entirely from catalog data, so it can't disagree with the book:
+  - the book's own before, during and after discussion prompts;
+  - 5 story words to match with pictures and 3 to write in another language (EN→ES, ES/FR→EN);
+  - a drawing box, a favourite character and a star rating;
+  - an optional answer key on its own page.
+
+  All 20 books × 3 languages were printed: each comes out at exactly 2 pages. It's reached from a new **"Printable worksheet"** button in every book's Story words strip; Leo's button goes to its hand-written worksheet. Without a book, the page shows a book picker.
+- **Word Explorer has a book mode.** Opened with `?book=<id>`, it adds a "📖 <book>" category of that book's 8 words, selected first, for both flashcards and the quiz.
+- **`anyBook` activities.** Activities offered on every book page (the word games and the story worksheet) accept any valid book as the source book. `journey.ts` and the game patcher share this rule, and the baked game data came out identical.
+- **The Activities hub shows "📖 Made for: <book>"** on the 18 book-specific activities (new `bookSpecific` flag). The 20/20 coverage test now reads the same flag.
+- **Backlog E6 (the Activities age filter) was already done**: the hub uses the same exact-age model as /books.
+- Shared worksheet building blocks now live in `src/demos/studio/Worksheet.tsx` and `worksheetText.ts`, used by both worksheets.
+- **Still open:** Sentence Builder book mode (needs sentences per book), the Reading Passport, younger-reader modes for Journal, Bingo and Character Workshop, coloring art from the books, and second activities for the strongest books.

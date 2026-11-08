@@ -75,7 +75,7 @@ export default function DemoPage({ children }: DemoPageProps) {
           {activity && <ActivityStatusButton slug={activity.slug} book={fromBook} />}
         </div>
         {fromBook && fromBookTitle && (
-          <p className="-mt-3 mb-5">
+          <p className="-mt-3 mb-5 print:hidden">
             <Link to={`/books/${fromBook}`} className="text-sm font-semibold text-purple-700 hover:text-purple-900 underline-offset-4 hover:underline">
               <span aria-hidden>← </span>{t.backTo} {fromBookTitle}
             </Link>

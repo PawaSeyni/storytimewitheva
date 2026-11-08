@@ -12,7 +12,7 @@
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadCatalog, loadJourney, loadBookVocab } from './lib/catalog.mjs';
+import { loadCatalog, loadJourney, loadBookVocab, loadActivities } from './lib/catalog.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const GAMES_DIR = path.resolve(__dirname, '..', 'public', 'games');
@@ -35,22 +35,20 @@ const bookTitles = new Map(books.map((b) => [b.id, b.title]));
 // (nextStep with fromBook), and baked as a small map. At runtime the inline script picks
 // the entry for the URL's book, re-points "Read next", and adds "Back to <book>". An id
 // that is not in the map (unrelated, invented) leaves the default block untouched.
-// Word games (audit 2026-11, bookVocab): opened from ANY book's "Story words" strip with
-// ?book=<id>, so every book with story words is a source book for them, not only the books
-// that list the game in relatedActivityIds.
-const WORD_GAMES = ['bilingual-flashcards', 'matching', 'spelling-bee'];
+// Word games (audit 2026-11, bookVocab) are `anyBook` activities: opened from EVERY book's
+// "Story words" strip, so every book is a source book for them. journey.ts applies the same
+// rule (sourceBookFor), so the baked map and the app agree.
 const { bookVocab } = await loadBookVocab();
-const isSourceBook = (b, slug) => (b.relatedActivityIds ?? []).includes(slug) || (WORD_GAMES.includes(slug) && (bookVocab[b.id] ?? []).length > 0);
+const { activities } = await loadActivities();
+const anyBook = new Set(activities.filter((a) => a.anyBook).map((a) => a.slug));
+const WORD_GAMES = activities.filter((a) => a.game && a.anyBook).map((a) => a.slug);
+const isSourceBook = (b, slug) => anyBook.has(slug) || (b.relatedActivityIds ?? []).includes(slug);
 
 const fromBookMap = (slug) => {
   const out = {};
   for (const b of books) {
     if (!isSourceBook(b, slug)) continue;
-    // A word game's referrer that does not list the game still continues from that book:
-    // nextStep only honours a book that links the activity, so resolve it from the book.
-    const step = (b.relatedActivityIds ?? []).includes(slug)
-      ? nextStep('activity', slug, b.id)
-      : (b.relatedBookIds ?? []).map((id) => ({ type: 'book', id, href: `/books/${id}/` })).find((s) => bookTitles.has(s.id)) ?? { type: 'book', id: b.id, href: `/books/${b.id}/` };
+    const step = nextStep('activity', slug, b.id);
     if (!step || step.type !== 'book') continue;
     out[b.id] = { next: step.href, nextTitles: bookTitles.get(step.id), backTitles: b.title };
   }

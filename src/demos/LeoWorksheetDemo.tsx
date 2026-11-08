@@ -4,9 +4,11 @@
 // a drawing box and an honesty promise, plus an optional answer key for the grown-up.
 // Every story fact comes from the book's catalog description; the ending is not given away.
 // The free storybook PDF (/free/leo-and-the-wolf) is a separate offer and is not linked here.
-import { useState, type ReactNode } from 'react';
+import { useState } from 'react';
 import { useTranslation } from '../lib/language';
 import { StudioFrame, Panel, Printable, StudioActions, LineInput } from './studio/StudioFrame';
+import { Lines, Section, Circle } from './studio/Worksheet';
+import { nb, DERANGE } from './studio/worksheetText';
 
 const TRANSLATIONS = {
   en: {
@@ -83,30 +85,7 @@ const TRANSLATIONS = {
 /** Marks to circle: [true, not true] are symbols in every language, so English "T" stays free for "tricky". */
 const MARKS = { en: { tf: ['✓', '✗'], hk: ['H', 'T'] }, es: { tf: ['✓', '✗'], hk: ['H', 'T'] }, fr: { tf: ['✓', '✗'], hk: ['H', 'T'] } };
 /** Pictures in a different order from the words, so the matching is a real task. */
-const PICTURE_ORDER = [2, 4, 0, 3, 1];
-/** Keep French guillemets and ? ! : ; with their words, so a « never ends a line alone. */
-const nb = (text: string) => text.replace(/« /g, '«\u00a0').replace(/ ([»?!:;])/g, '\u00a0$1');
-
-function Lines({ n }: { n: number }) {
-  return <div aria-hidden>{Array.from({ length: n }, (_, i) => <div key={i} className="h-8 print:h-7 border-b border-gray-400" />)}</div>;
-}
-
-function Section({ n, title, prompt, children, className = '' }: { n: number; title: string; prompt: string; children: ReactNode; className?: string }) {
-  return (
-    <section className={`rounded-xl border-2 border-gray-300 p-4 print:p-3 break-inside-avoid ${className}`}>
-      <h4 className="font-bold text-gray-900 flex items-center gap-2">
-        <span className="w-6 h-6 shrink-0 rounded-full bg-orange-500 text-white text-xs grid place-items-center print:bg-white print:text-black print:border print:border-black">{n}</span>
-        {title}
-      </h4>
-      <p className="text-sm text-gray-700 mt-1 mb-3 print:mb-2">{nb(prompt)}</p>
-      {children}
-    </section>
-  );
-}
-
-function Circle({ letter }: { letter: string }) {
-  return <span className="inline-grid place-items-center w-7 h-7 rounded-full border-2 border-gray-500 text-sm font-bold text-gray-800">{letter}</span>;
-}
+const PICTURE_ORDER = DERANGE[5];
 
 export default function LeoWorksheetDemo() {
   const t = useTranslation(TRANSLATIONS);

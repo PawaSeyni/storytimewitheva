@@ -8,7 +8,7 @@
 | Type | Count | Detail |
 |---|---|---|
 | Books | 20 | 20 with related activities, 20 with related books, 20 with discussion prompts (60 prompts) |
-| Activities | 39 | 12 games, 27 in-app |
+| Activities | 40 | 12 games, 28 in-app |
 | Resources | 12 | download 4, article 8 |
 | Collections | 20 | theme 11, age 3, educator 3, seasonal 3; 20 published; 20 routable |
 | Journeys | 3 | 3 published, 15 steps |
