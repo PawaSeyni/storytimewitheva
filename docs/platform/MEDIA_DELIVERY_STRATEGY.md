@@ -12,7 +12,7 @@ enforced by `budgets.json`, `tests/seo/media.test.mjs`, and the headers in `netl
 | Previews | product shots of the printables, WebP 720 px | 0.4 MB | yes, landing pages |
 | Games | 12 static HTML games with inline CSS | 744 KB | yes, on demand |
 | PDFs | 14 content-hashed printables and the free book | 20.7 MB | on download only, through `/download/` 302s |
-| Campaign assets | 29 Pinterest pin PNGs in `/pins`, ~2 MB each, CORS-enabled for Pinterest | 48.9 MB | never |
+| Campaign assets | 56 Pinterest pin PNGs in `/pins`, 0.3–0.9 MB each (256-colour palette with dithering since 2026-11; were ~2.5 MB), CORS-enabled for Pinterest | 30.8 MB | never |
 | Audio | none: read-aloud is Web Speech synthesis | 0 | |
 
 ## Rules
@@ -21,7 +21,7 @@ enforced by `budgets.json`, `tests/seo/media.test.mjs`, and the headers in `netl
 2. **Formats.** WebP for photos and covers, SVG for icons and the mascot, PNG only where transparency or a third party (Pinterest) requires it. New raster assets over 300 KB need a reason in the PR.
 3. **Caching.** Hashed files (`/assets/*`, `*.pdf`) are `immutable, max-age=1y`; un-hashed images (`*.png`, `*.webp`, `*.svg`) are `max-age=1d, must-revalidate`; `version.json` is `no-store`. A replaced PDF gets a new hash and the `/download/` redirect follows it at build time, so links never rot.
 4. **Downloads.** Served only through `/download/<slug>[?lang=]` (302 to the hashed file) or from a gated success screen; raw `/<name>.pdf` paths 301 to the offer page. Every download resource's `localizedFile` flag mirrors the files on disk (tested).
-5. **Campaign assets** are not site media. They stay out of every page budget and every page (tested: no prerendered page references `/pins/`). They inflate the deploy artifact by 49 MB; the owner decides whether they move to the marketing bucket outside the repo (punch list PB-05). Until then, each must stay under 3 MB (warn) / 5 MB (fail).
+5. **Campaign assets** are not site media. They stay out of every page budget and every page (tested: no prerendered page references `/pins/`). They inflate the deploy artifact by 31 MB (76 MB before the 2026-11 recompression: 256-colour palette PNG with Floyd-Steinberg dithering, same filenames and URLs, checked by eye at full size); the owner decides whether they move to the marketing bucket outside the repo (punch list PB-05). Until then, each must stay under 3 MB (warn) / 5 MB (fail).
 6. **CDN.** Netlify's CDN serves everything; there is no second CDN and no image service. Lighthouse mobile is measured by the Netlify plugin on every deploy.
 
 ## Integrity tests
