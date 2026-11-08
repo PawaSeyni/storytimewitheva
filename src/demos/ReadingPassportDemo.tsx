@@ -107,7 +107,7 @@ export default function ReadingPassportDemo() {
               <p className="text-xs font-bold uppercase tracking-wider text-amber-800">{t.next}</p>
               <p className="text-sm text-gray-700 mt-1">{lastTitle && relatedNext ? `${t.nextWhy} ${lastTitle}:` : `${t.nextAny}:`}</p>
               <Link to={`/books/${nextBook.id}`} className="mt-2 inline-flex items-center gap-3 font-bold text-gray-900 hover:text-purple-700" data-passport-next={nextBook.id}>
-                {nextBook.coverImage && <img src={thumb(nextBook.coverImage)} alt="" className="w-12 h-12 rounded-md object-cover" loading="lazy" />}
+                {nextBook.coverImage && <img src={thumb(nextBook.coverImage)} alt="" width={48} height={48} className="w-12 h-12 rounded-md object-cover" loading="lazy" />}
                 {nextBook.title} <span aria-hidden>→</span>
               </Link>
             </Panel>
@@ -118,7 +118,7 @@ export default function ReadingPassportDemo() {
               const on = read.has(b.id);
               return (
                 <li key={b.id} className={`relative rounded-2xl border-2 p-3 flex gap-3 ${on ? 'border-teal-400 bg-teal-50' : 'border-dashed border-gray-300 bg-white'}`} data-passport-book={b.id} data-stamped={on ? 'yes' : 'no'}>
-                  {b.coverImage && <img src={thumb(b.coverImage)} alt="" className={`w-16 h-16 shrink-0 rounded-lg object-cover ${on ? '' : 'opacity-60 grayscale'}`} loading="lazy" />}
+                  {b.coverImage && <img src={thumb(b.coverImage)} alt="" width={64} height={64} className={`w-16 h-16 shrink-0 rounded-lg object-cover ${on ? '' : 'opacity-60 grayscale'}`} loading="lazy" />}
                   <div className="min-w-0 flex-1">
                     <p className={`font-bold text-gray-800 leading-snug ${on ? 'pr-7' : ''}`}>{b.title}</p>
                     {on ? (

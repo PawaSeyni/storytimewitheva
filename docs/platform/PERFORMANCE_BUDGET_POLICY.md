@@ -10,7 +10,7 @@ this file's history. Values were set from the September 2026 baseline with rough
 |---|---|---|---|
 | Entry JavaScript chunk, gzip | 135 KB | 140 KB | 118 KB at baseline; 128 KB after Sprint 5 instrumentation (+5) and React Router 7 (+5), warn raised 2026-09-10 for that reason; Vite 8 (Rolldown) then brought the entry down to 81 KB, so the warn returns to 125 |
 | Any lazy page chunk, gzip | 35 KB | 50 KB | 23 KB (Resources) |
-| Total JavaScript, gzip | 320 KB | 350 KB | 275 KB at baseline; 302 KB after React 19 (+22 KB in the entry), warn raised 2026-09-10 for that reason; entry itself 103 KB |
+| Total JavaScript, gzip | 400 KB | 420 KB | 275 KB at baseline; 302 KB after React 19 (+22 KB in the entry), warn raised 2026-09-10 for that reason; entry itself 103 KB. 387 KB after the activities-audit remediation (2026-11): 13 new lazy activity pages (Activity Studio wave 2, the two worksheets, the Reading Passport) at 3 to 5 KB each, plus little-reader modes; the entry stayed at 107 KB and no page chunk is above 13 KB, so warn and fail were raised to 400 / 420 for that reason. The total counts every lazy chunk; no visitor downloads them all. |
 | App CSS, gzip | 40 KB | 60 KB | 35 KB at baseline; 17 KB after Tailwind 4 |
 | Games stylesheet (`/games/games.css`), gzip | 30 KB | 40 KB | 24 KB (v3), 25 KB (v4); loaded only by the twelve static games |
 | Prerendered HTML per route | 130 KB | 200 KB | 27 to 60 KB; the catalog page is 123 to 127 KB (20 cards with srcSets), which set the warn level |
