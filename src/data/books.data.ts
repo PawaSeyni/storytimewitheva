@@ -1170,7 +1170,7 @@ export const books: Book[] = [
       { stage: "after", prompt: {
         en: "Some of what we inherit is made of stories. Which story would you keep?",
         es: "Parte de lo que heredamos está hecho de historias. ¿Qué historia guardarías tú?",
-        fr: "Une partie de ce que l'on hérite est faite d'histoires. Quelle histoire garderais-tu ?",
+        fr: "Une partie de ce dont on hérite est faite d'histoires. Quelle histoire garderais-tu ?",
       } },
     ],
     editions: {

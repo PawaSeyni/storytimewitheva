@@ -60,7 +60,7 @@ const TRANSLATIONS = {
     memory: 'Un souvenir', memoryPh: 'Il a vu…', picture: 'Une image pour ce souvenir',
     pics: { celebration: 'Fête', food: 'Repas', harvest: 'Récolte', music: 'Musique', work: 'Travail', travel: 'Voyage', baby: 'Un bébé', friends: 'Amis' },
     heading: (w: string) => `Ce que ${w} a vu`, step: 'Époque', blank: 'Écris ou dessine un souvenir ici.', noPic: 'Pas encore d’image',
-    draw: 'Dessine ton témoin', closing: '« Une partie de ce que l’on hérite est faite d’histoires. »', cardLabel: 'Frise à imprimer',
+    draw: 'Dessine ton témoin', closing: '« Une partie de ce dont on hérite est faite d’histoires. »', cardLabel: 'Frise à imprimer',
   },
 };
 
