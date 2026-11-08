@@ -31,7 +31,8 @@ test('sentences — 3 to 7 tiles, no punctuation, capitalized, no repeated word 
 
 test('sentence builder — book sentences are baked from the data and the game has a book mode', () => {
   const html = readFileSync('public/games/sentence-builder.html', 'utf8');
-  const data = JSON.parse(/window\.STE_BOOK_VOCAB = (\{.*?\});<\/script>/s.exec(html)[1]);
+  const data = JSON.parse(/window\.STE_BOOK_VOCAB = (\{.*\});\s*$/s.exec(readFileSync('public/games/book-vocab.js', 'utf8'))[1]);
+  assert.ok(html.includes('<script src="/games/book-vocab.js"></script>'), 'Sentence Builder must load the shared data file');
   for (const b of books) assert.deepEqual(data[b.id].sentences, bookSentences[b.id], `${b.id}: sentences drifted — run npm run patch:games`);
   assert.match(html, /steAddBookButton\('\.level-tab', 'level'\)/);
   assert.match(html, /x\[BOOK_LANG\]\.split\(' '\)/, 'tiles must come from the game language');
