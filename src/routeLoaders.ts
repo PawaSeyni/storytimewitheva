@@ -49,6 +49,7 @@ export const loadPuddleVoyageDemo = preloadable(() => import('./demos/PuddleVoya
 export const loadMapMyWorldDemo = preloadable(() => import('./demos/MapMyWorldDemo'));
 export const loadLeoWorksheetDemo = preloadable(() => import('./demos/LeoWorksheetDemo'));
 export const loadStoryWorksheetDemo = preloadable(() => import('./demos/StoryWorksheetDemo'));
+export const loadReadingPassportDemo = preloadable(() => import('./demos/ReadingPassportDemo'));
 export const loadCloudDetectiveDemo = preloadable(() => import('./demos/CloudDetectiveDemo'));
 export const loadShadowTheatreDemo = preloadable(() => import('./demos/ShadowTheatreDemo'));
 export const loadKindnessRippleDemo = preloadable(() => import('./demos/KindnessRippleDemo'));
@@ -90,6 +91,7 @@ export const ROUTE_CHUNKS: ReadonlyArray<{ path: string; loaders: readonly Loade
   { path: '/activities/map-my-world', loaders: [loadDemoPage, loadMapMyWorldDemo] },
   { path: '/activities/leo-and-the-wolf-worksheet', loaders: [loadDemoPage, loadLeoWorksheetDemo] },
   { path: '/activities/story-worksheet', loaders: [loadDemoPage, loadStoryWorksheetDemo] },
+  { path: '/activities/reading-passport', loaders: [loadDemoPage, loadReadingPassportDemo] },
   { path: '/activities/cloud-detective-journal', loaders: [loadDemoPage, loadCloudDetectiveDemo] },
   { path: '/activities/shadow-theatre', loaders: [loadDemoPage, loadShadowTheatreDemo] },
   { path: '/activities/kindness-ripple', loaders: [loadDemoPage, loadKindnessRippleDemo] },

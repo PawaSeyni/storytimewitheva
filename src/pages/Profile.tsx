@@ -53,6 +53,7 @@ const TRANSLATIONS = {
     wantToReadSection: 'Want to Read',
     activitiesSection: 'Completed Activities',
     statsHeading: 'Your Reading Stats',
+    passport: 'Open your Reading Passport',
     statBooksRead: 'Books Read',
     statActivitiesDone: 'Activities Done',
     statTopTheme: 'Top Theme',
@@ -97,6 +98,7 @@ const TRANSLATIONS = {
     wantToReadSection: 'Por leer',
     activitiesSection: 'Actividades completadas',
     statsHeading: 'Tus estadísticas de lectura',
+    passport: 'Abre tu pasaporte de lectura',
     statBooksRead: 'Libros leídos',
     statActivitiesDone: 'Actividades hechas',
     statTopTheme: 'Tema favorito',
@@ -141,6 +143,7 @@ const TRANSLATIONS = {
     wantToReadSection: 'À lire',
     activitiesSection: 'Activités terminées',
     statsHeading: 'Vos statistiques de lecture',
+    passport: 'Ouvrir ton passeport de lecture',
     statBooksRead: 'Livres lus',
     statActivitiesDone: 'Activités faites',
     statTopTheme: 'Thème préféré',
@@ -358,6 +361,9 @@ export default function Profile() {
                   {booksRead.length} / {rawBooks.length}
                 </div>
                 <div className="text-xs text-gray-500 mt-1 font-medium">{t.statBooksRead}</div>
+                <Link to="/activities/reading-passport" className="mt-2 inline-block text-xs font-semibold text-teal-700 hover:text-teal-900 underline-offset-2 hover:underline" data-passport-link>
+                  🛂 {t.passport}
+                </Link>
               </div>
 
               <div className="bg-white rounded-xl p-4 text-center shadow-xs">

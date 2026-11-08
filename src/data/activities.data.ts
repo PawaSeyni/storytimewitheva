@@ -549,4 +549,13 @@ export const activities: Activity[] = [
     desc: { en: 'A two-page printable for any book: before, during and after questions, story words to match and translate, a drawing and a review.', es: 'Una ficha de dos páginas para cualquier libro: preguntas para antes, durante y después, palabras del cuento para unir y traducir, un dibujo y una opinión.', fr: 'Une fiche de deux pages pour n’importe quel livre : questions avant, pendant et après, mots de l’histoire à relier et à traduire, un dessin et un avis.' },
     category: { en: 'Reading', es: 'Lectura', fr: 'Lecture' },
   },
+  // One stamp per book read; the stamp is the book's "read" status in the personal library.
+  {
+    slug: 'reading-passport',
+    emoji: '🛂',
+    ages: '3-9',
+    title: { en: 'Eva Gallo Reading Passport', es: 'Pasaporte de lectura Eva Gallo', fr: 'Passeport de lecture Eva Gallo' },
+    desc: { en: 'Collect a stamp for every book in the collection, earn bronze, silver and gold badges, and print your reading certificate.', es: 'Consigue un sello por cada libro de la colección, gana insignias de bronce, plata y oro, e imprime tu certificado de lectura.', fr: 'Gagne un tampon pour chaque livre de la collection, remporte les badges de bronze, d’argent et d’or, et imprime ton diplôme de lecture.' },
+    category: { en: 'Reading', es: 'Lectura', fr: 'Lecture' },
+  },
 ];

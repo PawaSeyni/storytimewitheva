@@ -129,6 +129,7 @@ const PuddleVoyageDemo = chunk(L.loadPuddleVoyageDemo);
 const MapMyWorldDemo = chunk(L.loadMapMyWorldDemo);
 const LeoWorksheetDemo = chunk(L.loadLeoWorksheetDemo);
 const StoryWorksheetDemo = chunk(L.loadStoryWorksheetDemo);
+const ReadingPassportDemo = chunk(L.loadReadingPassportDemo);
 const CloudDetectiveDemo = chunk(L.loadCloudDetectiveDemo);
 const ShadowTheatreDemo = chunk(L.loadShadowTheatreDemo);
 const KindnessRippleDemo = chunk(L.loadKindnessRippleDemo);
@@ -169,6 +170,7 @@ const routeDefs = [
   { path: '/activities/map-my-world', element: <DemoPage><MapMyWorldDemo /></DemoPage> },
   { path: '/activities/leo-and-the-wolf-worksheet', element: <DemoPage><LeoWorksheetDemo /></DemoPage> },
   { path: '/activities/story-worksheet', element: <DemoPage><StoryWorksheetDemo /></DemoPage> },
+  { path: '/activities/reading-passport', element: <DemoPage><ReadingPassportDemo /></DemoPage> },
   { path: '/activities/cloud-detective-journal', element: <DemoPage><CloudDetectiveDemo /></DemoPage> },
   { path: '/activities/shadow-theatre', element: <DemoPage><ShadowTheatreDemo /></DemoPage> },
   { path: '/activities/kindness-ripple', element: <DemoPage><KindnessRippleDemo /></DemoPage> },

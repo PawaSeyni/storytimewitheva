@@ -261,4 +261,15 @@ Target: every book with at least 1 book-specific activity by the end of the P1 w
 - **The Activities hub shows "📖 Made for: <book>"** on the 18 book-specific activities (new `bookSpecific` flag). The 20/20 coverage test now reads the same flag.
 - **Backlog E6 (the Activities age filter) was already done**: the hub uses the same exact-age model as /books.
 - Shared worksheet building blocks now live in `src/demos/studio/Worksheet.tsx` and `worksheetText.ts`, used by both worksheets.
-- **Still open:** Sentence Builder book mode (needs sentences per book), the Reading Passport, younger-reader modes for Journal, Bingo and Character Workshop, coloring art from the books, and second activities for the strongest books.
+- **Still open:** Sentence Builder book mode (needs sentences per book), younger-reader modes for Journal, Bingo and Character Workshop, coloring art from the books, and second activities for the strongest books.
+
+### Pass 5: the Eva Gallo Reading Passport
+
+- **New page `/activities/reading-passport`.** One stamp per book in the collection, 20 in all.
+  - **A stamp is the book's existing "Read" status** in the reading list kept on the device. Marking a book "Read" on its page stamps the passport, and stamping in the passport marks the book read: one source, nothing new stored. A test enforces that the passport adds no storage of its own.
+  - **Badges:** bronze at 5 books, silver at 10, gold at every book. There's a progress bar and a "N more to the next badge" line.
+  - **A reward for each stamp:** the stamp reveals that book's "after reading" question, to talk about together.
+  - **"Up next for your passport"** suggests a book related to the most recent stamp (the same editorial "You might also like" ranking as the book pages), or the first unread book. Unstamped books link to their book page, where the Buy button is.
+  - **A printable reading certificate** with the reader's name, the number of books, the highest badge earned and the list of stamped books.
+- **Linked from:** the book page's "Read" button ("🛂 Stamped in your Reading Passport →" once a book is marked read), the Profile's books-read stat, and the Activities hub.
+- Tested in a browser: stamping 5 books earns bronze and changes "Up next"; marking a book read on a Spanish book page shows as stamped in the passport, and unstamping works.
