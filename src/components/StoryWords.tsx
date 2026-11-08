@@ -15,7 +15,7 @@ const TRANSLATIONS = {
   fr: { heading: 'Les mots de l’histoire', sub: 'Huit mots de ce livre, en français, anglais et espagnol. Joue avec eux :', flashcards: 'Cartes', matching: 'Memory', spelling: 'Épellation' },
 };
 
-export const WORD_GAMES = [
+const WORD_GAMES = [
   { slug: 'bilingual-flashcards', emoji: '🌍', key: 'flashcards' },
   { slug: 'matching', emoji: '🃏', key: 'matching' },
   { slug: 'spelling-bee', emoji: '🐝', key: 'spelling' },
