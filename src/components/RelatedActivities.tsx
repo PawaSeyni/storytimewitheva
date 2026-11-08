@@ -18,9 +18,9 @@ import { withSourceBook } from '../lib/sourceBook';
  * Activities.tsx — deliberately not re-invented.
  */
 const TRANSLATIONS = {
-  en: { heading: 'Try an activity', sub: 'Hand-matched to this story.', ages: 'Ages', tryNow: 'Try it' },
-  es: { heading: 'Prueba una actividad', sub: 'Elegidas para esta historia.', ages: 'Edades', tryNow: 'Probar' },
-  fr: { heading: 'Essayez une activité', sub: 'Choisies pour cette histoire.', ages: 'Âges', tryNow: 'Essayer' },
+  en: { heading: 'Try an activity', sub: 'Hand-matched to this story.', ages: 'Ages', tryNow: 'Try it', little: 'Little reader mode' },
+  es: { heading: 'Prueba una actividad', sub: 'Elegidas para esta historia.', ages: 'Edades', tryNow: 'Probar', little: 'Modo para peques' },
+  fr: { heading: 'Essayez une activité', sub: 'Choisies pour cette histoire.', ages: 'Âges', tryNow: 'Essayer', little: 'Mode petits lecteurs' },
 };
 
 export default function RelatedActivities({ slugs, bookId }: { slugs: string[]; bookId?: string }) {
@@ -50,6 +50,7 @@ export default function RelatedActivities({ slugs, bookId }: { slugs: string[]; 
                 {a.category}
               </span>
               <h3 className="font-bold text-gray-800 leading-snug mb-1">{a.title}</h3>
+              {a.littleReader && <span className="text-xs font-semibold text-amber-700 mb-1">🧸 {t.little}</span>}
               <p className="text-gray-500 text-xs leading-relaxed mb-4 flex-1">{a.desc}</p>
               <span className="flex items-center justify-between mt-auto">
                 <span className="text-xs text-gray-500">

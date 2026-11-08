@@ -120,3 +120,17 @@ test('coverage — every published book leads with an activity built for it (aud
   assert.ok(STUDIO.size >= 18, `expected the book-specific activities to be flagged, got ${STUDIO.size}`);
   for (const b of published) assert.ok(STUDIO.has(b.relatedActivityIds?.[0]), `${b.id}: first activity "${b.relatedActivityIds?.[0]}" is not book-specific`);
 });
+
+test('little readers — every activity flagged littleReader really offers the mode, and fits 4-5', async () => {
+  const { readFileSync } = await import('node:fs');
+  const FILES = { 'adventure-journal': 'AdventureJournalDemo', bingo: 'BingoDemo', 'character-workshop': 'CharacterWorkshopDemo' };
+  const flagged = activities.filter((a) => a.littleReader).map((a) => a.slug).sort();
+  assert.deepEqual(flagged, Object.keys(FILES).sort(), 'flagged activities and their files drifted');
+  for (const [slug, file] of Object.entries(FILES)) {
+    const src = readFileSync(`src/demos/${file}.tsx`, 'utf8');
+    assert.match(src, /<LittleReaderToggle\b/, `${slug}: no little-reader toggle`);
+    assert.match(src, /<ReadAloudButton\b/, `${slug}: little-reader mode must read prompts aloud`);
+    assert.ok(!src.includes('—'), `${slug}: em dash`);
+    assert.equal(Number(activities.find((a) => a.slug === slug).ages.split('-')[0]), 4, `${slug}: should be rated from age 4`);
+  }
+});

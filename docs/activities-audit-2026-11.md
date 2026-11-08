@@ -261,7 +261,7 @@ Target: every book with at least 1 book-specific activity by the end of the P1 w
 - **The Activities hub shows "📖 Made for: <book>"** on the 18 book-specific activities (new `bookSpecific` flag). The 20/20 coverage test now reads the same flag.
 - **Backlog E6 (the Activities age filter) was already done**: the hub uses the same exact-age model as /books.
 - Shared worksheet building blocks now live in `src/demos/studio/Worksheet.tsx` and `worksheetText.ts`, used by both worksheets.
-- **Still open:** Sentence Builder book mode (needs sentences per book), younger-reader modes for Journal, Bingo and Character Workshop, coloring art from the books, and second activities for the strongest books.
+- **Still open:** Sentence Builder book mode (needs sentences per book), coloring art from the books, and second activities for the strongest books.
 
 ### Pass 5: the Eva Gallo Reading Passport
 
@@ -273,3 +273,14 @@ Target: every book with at least 1 book-specific activity by the end of the P1 w
   - **A printable reading certificate** with the reader's name, the number of books, the highest badge earned and the list of stamped books.
 - **Linked from:** the book page's "Read" button ("🛂 Stamped in your Reading Passport →" once a book is marked read), the Profile's books-read stat, and the Activities hub.
 - Tested in a browser: stamping 5 books earns bronze and changes "Up next"; marking a book read on a Spanish book page shows as stamped in the passport, and unstamping works.
+
+### Pass 6: little reader modes (ages 4-5)
+
+- **A shared "🧸 Little reader mode" switch** (`LittleReaderToggle`). It's off by default; when on, the activity uses pictures and taps instead of writing, has fewer steps, uses big tap targets, and reads every prompt aloud.
+  - **Reading Journal:** four picture questions, one at a time: which book (tap a cover), favourite character, how the story felt, and stars. It prints a "draw it" page. Entries use the same saved format, plus optional fields, so old entries, the .txt download and the Profile page still work.
+  - **Reading Bingo:** a 3×3 picture board. Each square has a separate read-aloud button, gets a star stamp when done, and three in a row wins. Its state is kept separately from the 5×5 board.
+  - **Character Workshop:** four picture-only steps (who, look, personality, power) and an optional tap-a-name. The result card shows a one-sentence description, grammatical in ES and FR, which can be read aloud.
+- **The three activities are re-rated from 6-9 to 4-9.** The Activities hub and the book-page activity cards show "🧸 Little reader mode". This resolves the age-fit issue in §4D for these three.
+- **Accessibility fixes to the shared read-aloud button:** an optional `label`, so each button says what it reads (it always said "Listen to this book"), and a 44px minimum tap height in the compact style.
+- **A test** checks that every activity flagged `littleReader` really renders the toggle and read-aloud, and is rated from age 4.
+- **Still open:** Finish-the-Story and Story Dice are still 6-9 on some 4-8 books; Sentence Builder book mode; coloring art from the books; second activities for the strongest books.

@@ -7,9 +7,9 @@ import { useTranslation } from '../lib/language';
  * Pure UI: the activity owns the state.
  */
 const TRANSLATIONS = {
-  en: { label: 'Little reader mode', hint: 'For ages 4 to 5: pictures and taps instead of writing, and every prompt read aloud.', on: 'On', off: 'Off' },
-  es: { label: 'Modo para peques', hint: 'Para 4 y 5 años: dibujos y toques en lugar de escribir, y cada consigna leída en voz alta.', on: 'Sí', off: 'No' },
-  fr: { label: 'Mode petits lecteurs', hint: 'Pour les 4 à 5 ans : des images et des touches au lieu d’écrire, et chaque consigne lue à voix haute.', on: 'Oui', off: 'Non' },
+  en: { label: 'Little reader mode', hint: 'For ages 4 to 5: pictures and taps instead of writing, and every prompt read aloud.', on: 'On', off: 'Off', sep: ':' },
+  es: { label: 'Modo para peques', hint: 'Para 4 y 5 años: dibujos y toques en lugar de escribir, y cada consigna leída en voz alta.', on: 'Sí', off: 'No', sep: ':' },
+  fr: { label: 'Mode petits lecteurs', hint: 'Pour les 4 à 5 ans : des images et des touches au lieu d’écrire, et chaque consigne lue à voix haute.', on: 'Oui', off: 'Non', sep: '\u00a0:' },
 };
 
 export default function LittleReaderToggle({ on, onChange }: { on: boolean; onChange: (next: boolean) => void }) {
@@ -27,7 +27,7 @@ export default function LittleReaderToggle({ on, onChange }: { on: boolean; onCh
         <span aria-hidden className={`inline-block h-5 w-5 rounded-full bg-white shadow motion-safe:transition-transform ${on ? 'translate-x-6' : 'translate-x-1'}`} />
       </button>
       <div className="min-w-0">
-        <p className="font-bold text-amber-900"><span aria-hidden>🧸 </span>{t.label}: {on ? t.on : t.off}</p>
+        <p className="font-bold text-amber-900"><span aria-hidden>🧸 </span>{t.label}{t.sep} {on ? t.on : t.off}</p>
         <p className="text-xs text-amber-900/80">{t.hint}</p>
       </div>
     </div>

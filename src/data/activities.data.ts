@@ -32,6 +32,9 @@ export interface Activity {
   /** Built for specific book(s) (the Activity Studio pages and the Leo worksheet). The hub
    *  shows the book it belongs to, and every book must lead with one (activities-audit test). */
   bookSpecific?: boolean;
+  /** Has a "little reader" mode (ages 4-5: pictures, taps and read-aloud instead of writing).
+   *  The hub labels it, and it is what lets a 6+ activity carry a 4-9 age range. */
+  littleReader?: boolean;
 }
 
 export const activities: Activity[] = [
@@ -58,7 +61,8 @@ export const activities: Activity[] = [
   {
     slug: 'character-workshop',
     emoji: '🎭',
-    ages: '6-9',
+    ages: '4-9',
+    littleReader: true,
     title: {
       en: 'Character Creation Workshop',
       es: 'Taller de creación de personajes',
@@ -78,7 +82,8 @@ export const activities: Activity[] = [
   {
     slug: 'adventure-journal',
     emoji: '📓',
-    ages: '6-9',
+    ages: '4-9',
+    littleReader: true,
     title: {
       en: 'Adventure Reading Journal',
       es: 'Diario de aventuras de lectura',
@@ -158,7 +163,8 @@ export const activities: Activity[] = [
   {
     slug: 'bingo',
     emoji: '🎯',
-    ages: '6-9',
+    ages: '4-9',
+    littleReader: true,
     title: {
       en: 'Reading Bingo',
       es: 'Bingo de lectura',

@@ -19,6 +19,7 @@ export interface LocalizedActivity {
   category: string;
   game?: boolean;
   bookSpecific?: boolean;
+  littleReader?: boolean;
 }
 
 
@@ -32,6 +33,7 @@ function localize(activity: Activity, lang: Language): LocalizedActivity {
     category: activity.category[lang] ?? activity.category.en,
     game: activity.game,
     bookSpecific: activity.bookSpecific,
+    littleReader: activity.littleReader,
   };
 }
 

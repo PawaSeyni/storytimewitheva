@@ -41,7 +41,7 @@ export default function ReadAloudButton({ text, compact = false, label }: ReadAl
   };
 
   const base = compact
-    ? 'inline-flex items-center justify-center gap-1.5 py-2 px-3 text-sm font-semibold rounded-full transition-colors'
+    ? 'inline-flex items-center justify-center gap-1.5 min-h-11 py-2 px-3 text-sm font-semibold rounded-full transition-colors'
     : 'inline-flex items-center justify-center gap-2 py-3 px-6 text-base font-semibold rounded-full transition-colors';
   const tone = speaking
     ? 'bg-purple-600 text-white hover:bg-purple-700'

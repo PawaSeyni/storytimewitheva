@@ -24,6 +24,7 @@ const TRANSLATIONS = {
     openAgain: 'Open Again →',
     ageAll: 'All ages',
     madeFor: 'Made for',
+    littleReader: 'Little reader mode for ages 4 to 5',
     emptyAge: 'No activities in this age range yet. Try another.',
   },
   es: {
@@ -38,6 +39,7 @@ const TRANSLATIONS = {
     openAgain: 'Abrir otra vez →',
     ageAll: 'Todas las edades',
     madeFor: 'Creada para',
+    littleReader: 'Modo para peques de 4 y 5 años',
     emptyAge: 'Aún no hay actividades en este rango de edad — prueba otro.',
   },
   fr: {
@@ -52,6 +54,7 @@ const TRANSLATIONS = {
     openAgain: 'Rouvrir →',
     ageAll: 'Tous les âges',
     madeFor: 'Créée pour',
+    littleReader: 'Mode petits lecteurs pour les 4 à 5 ans',
     emptyAge: 'Pas encore d\'activités dans cette tranche d\'âge — essayez-en une autre.',
   },
 };
@@ -146,6 +149,9 @@ export default function Activities() {
                       {act.category}
                     </span>
                     <h2 className="font-bold text-gray-800 text-xl mb-2">{act.title}</h2>
+                    {act.littleReader && (
+                      <p className="text-xs font-semibold text-amber-700 mb-2" data-little-reader-badge={act.slug}>🧸 {t.littleReader}</p>
+                    )}
                     {act.bookSpecific && madeFor(act.slug) && (
                       <p className="text-xs font-semibold text-pink-700 mb-2" data-made-for={act.slug}>📖 {t.madeFor}: {madeFor(act.slug)}</p>
                     )}
