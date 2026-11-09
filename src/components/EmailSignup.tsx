@@ -7,6 +7,7 @@ import { LANGUAGES } from '../lib/locales';
 import { Link } from './LocalizedLink';
 import { useExperiment } from '../lib/experiments';
 import { books as CATALOG } from '../data/books.data';
+import { companionBooks, companionSlug, companionItems, type CompanionItemKey } from '../data/bookCompanions';
 
 // Three featured titles (catalog order) offered after signup; ids only, titles localized at render.
 const CONTINUE_BOOKS = CATALOG.filter((b) => b.featured && b.status !== 'coming-soon').slice(0, 3);
@@ -30,7 +31,12 @@ const SUBSCRIBE_ENDPOINT = '/.netlify/functions/subscribe';
 // per-language PDF (single-file bilingual magnets repeat the same path).
 type MagnetCopy = { title: string; blurb: string; bullets: string[]; cta: string };
 /** One downloadable item inside a multi-resource magnet. */
-type BundleItem = { label: Record<Language, string>; href: Record<Language, string> };
+type BundleItem = {
+  label: Record<Language, string>;
+  href: Record<Language, string>;
+  /** A page on the site (an activity), not a file: opened, never downloaded. */
+  page?: boolean;
+};
 
 type Magnet = {
   tag: string;
@@ -45,6 +51,8 @@ type Magnet = {
    *  section renders the preview only when one exists, so art can land later
    *  without another code change. */
   preview?: string;
+  /** Per-language product shot (a book cover); wins over `preview`. */
+  previewFor?: Record<Language, string>;
 };
 
 /**
@@ -184,8 +192,71 @@ const PACK_MAGNETS: Record<string, Magnet> = Object.fromEntries(
   }),
 );
 
+/**
+ * Book companions (activities audit 2026-11, §4C) are lead magnets GENERATED from
+ * src/data/bookCompanions.ts: one offer per published book at /free/<book-id>-companion,
+ * delivering that book's worksheet, Pixel's Story Quiz and story-word flashcards as named
+ * links. They are activity pages, so they open rather than download. Copy is templated
+ * from the catalog title and age range, so a new book gets a companion with no new copy.
+ * Like packs, these slugs are deliberately NOT literal keys below.
+ */
+const COMPANION_UI: Record<Language, {
+  title: (t: string) => string; blurb: (t: string, from: string, to: string) => string;
+  bullets: [string, string, string]; cta: string; items: Record<CompanionItemKey, string>;
+}> = {
+  en: {
+    title: (t) => `${t}: free activity kit`,
+    blurb: (t, from, to) => `Everything for after you read “${t}” together: a story worksheet to print, a picture quiz read aloud for little ones, and flashcards with the story’s own words in three languages. For ages ${from} to ${to}.`,
+    bullets: ['✓ A two-page story worksheet: questions, story words, drawing and a review', '✓ Pixel’s Story Quiz: pictures and a voice, for children who don’t read yet', '✓ Story-word flashcards in English, Spanish and French'],
+    cta: 'Send me the kit',
+    items: { worksheet: 'Story worksheet (print or save as PDF)', quiz: 'Pixel’s Story Quiz', flashcards: 'Story-word flashcards' },
+  },
+  es: {
+    title: (t) => `${t}: actividades gratis`,
+    blurb: (t, from, to) => `Todo para después de leer «${t}» juntos: una ficha del cuento para imprimir, un quiz con dibujos y voz para los más pequeños y tarjetas con las palabras del cuento en tres idiomas. Para edades de ${from} a ${to} años.`,
+    bullets: ['✓ Una ficha de dos páginas: preguntas, palabras del cuento, dibujo y opinión', '✓ El quiz de Pixel: dibujos y voz, para quienes aún no leen', '✓ Tarjetas con las palabras del cuento en español, inglés y francés'],
+    cta: 'Envíenme las actividades',
+    items: { worksheet: 'Ficha del cuento (imprimir o guardar en PDF)', quiz: 'El quiz de Pixel', flashcards: 'Tarjetas con las palabras del cuento' },
+  },
+  fr: {
+    title: (t) => `${t} : le kit d’activités gratuit`,
+    blurb: (t, from, to) => `Tout pour après la lecture de « ${t} » : une fiche de lecture à imprimer, un quiz en images et à voix haute pour les plus petits, et des cartes avec les mots de l’histoire en trois langues. Pour les ${from} à ${to} ans.`,
+    bullets: ['✓ Une fiche de deux pages : questions, mots de l’histoire, dessin et avis', '✓ Le quiz de Pixel : des images et une voix, pour les enfants qui ne lisent pas encore', '✓ Des cartes avec les mots de l’histoire en français, anglais et espagnol'],
+    cta: 'Envoyez-moi le kit',
+    items: { worksheet: 'Fiche de lecture (imprimer ou enregistrer en PDF)', quiz: 'Le quiz de Pixel', flashcards: 'Cartes des mots de l’histoire' },
+  },
+};
+const COMPANION_MAGNETS: Record<string, Magnet> = Object.fromEntries(
+  companionBooks.map((book) => {
+    const slug = companionSlug(book.id);
+    const [from, to] = book.ageRange.split('-');
+    const titleIn = (lang: Language) => book.title[lang] ?? book.title.en;
+    const copy = Object.fromEntries(
+      LANGUAGES.map((lang) => {
+        const ui = COMPANION_UI[lang];
+        return [lang, { title: ui.title(titleIn(lang)), blurb: ui.blurb(titleIn(lang), from, to), bullets: [...ui.bullets], cta: ui.cta }];
+      }),
+    ) as Record<Language, MagnetCopy>;
+    const perLang = Object.fromEntries(LANGUAGES.map((lang) => [lang, companionItems(book.id, lang)])) as Record<Language, ReturnType<typeof companionItems>>;
+    const bundle: BundleItem[] = perLang.en.map((item, i) => ({
+      label: Object.fromEntries(LANGUAGES.map((lang) => [lang, COMPANION_UI[lang].items[item.key]])) as Record<Language, string>,
+      href: Object.fromEntries(LANGUAGES.map((lang) => [lang, perLang[lang][i].href])) as Record<Language, string>,
+      page: true,
+    }));
+    const cover = (lang: Language) => book.editions[lang]?.cover ?? book.editions.en.cover ?? '';
+    return [slug, {
+      tag: slug,
+      copy,
+      bundle,
+      pdf: { en: bundle[0].href.en, es: bundle[0].href.es, fr: bundle[0].href.fr },
+      ...(cover('en') ? { previewFor: { en: cover('en'), es: cover('es'), fr: cover('fr') } } : {}),
+    } satisfies Magnet];
+  }),
+);
+
 const LEAD_MAGNETS: Record<string, Magnet> = {
   ...PACK_MAGNETS,
+  ...COMPANION_MAGNETS,
   'bedtime-routine': {
     tag: 'bedtime-routine',
     preview: '/previews/bedtime-routine.webp',
@@ -502,6 +573,8 @@ const PREVIEW_DIMS: Record<string, { w: number; h: number }> = {
   '/previews/follow-up-activities.webp': { w: 720, h: 932 },
   '/previews/leo-and-the-wolf.webp': { w: 720, h: 720 },
 };
+/** Book covers (book companions) are square. */
+const COVER_DIMS = { w: 700, h: 700 };
 
 export type SignupPlacement = 'home' | 'landing' | 'books' | 'activities' | 'activity' | 'resources' | 'about';
 
@@ -537,6 +610,7 @@ export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: 
   const [{ magnet, focused }] = useState(() => resolveMagnet(magnetSlug));
   const [utm] = useState(readUtm);
   const offer = magnet.copy[language] ?? magnet.copy.en;
+  const preview = magnet.previewFor?.[language] ?? magnet.preview;
   const successRef = useRef<HTMLParagraphElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const hpRef = useRef<HTMLInputElement>(null); // honeypot; real users never fill it
@@ -654,12 +728,12 @@ export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: 
 
         {/* Product shot, so the visitor sees the thing the pin promised before
             being asked for an email. Only rendered when art exists. */}
-        {focused && magnet.preview && (
+        {focused && preview && (
           <img
-            src={magnet.preview}
+            src={preview}
             alt=""
-            width={PREVIEW_DIMS[magnet.preview]?.w ?? 720}
-            height={PREVIEW_DIMS[magnet.preview]?.h ?? 639}
+            width={magnet.previewFor ? COVER_DIMS.w : PREVIEW_DIMS[preview]?.w ?? 720}
+            height={magnet.previewFor ? COVER_DIMS.h : PREVIEW_DIMS[preview]?.h ?? 639}
             loading="eager"
             decoding="async"
             className="mx-auto mb-6 w-64 md:w-80 rounded-2xl shadow-2xl ring-1 ring-white/20"
@@ -686,13 +760,13 @@ export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: 
                   <li key={i}>
                     <a
                       href={item.href[language]}
-                      download
+                      download={item.page ? undefined : true}
                       target="_blank"
                       rel="noopener"
                       onClick={() => track('Magnet Download', { language, lead_magnet: magnet.tag, asset: item.href[language], placement })}
                       className="flex items-center gap-3 px-4 py-3 bg-white/15 hover:bg-white/25 rounded-xl font-semibold transition-colors duration-200"
                     >
-                      <span aria-hidden="true">📥</span>
+                      <span aria-hidden="true">{item.page ? '👉' : '📥'}</span>
                       <span>{item.label[language]}</span>
                     </a>
                   </li>
