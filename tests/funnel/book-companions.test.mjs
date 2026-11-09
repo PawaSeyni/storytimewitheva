@@ -69,6 +69,11 @@ test('companions — wired into the signup offers and the prerender', () => {
   assert.match(signup, /\.\.\.COMPANION_MAGNETS,/);
   // Activity pages open; only files download.
   assert.match(signup, /download=\{item\.page \? undefined : true\}/);
+  // Kits have their own success wording (they open activities, they are not downloads).
+  assert.match(signup, /magnet\.success\?\.\[language\]\.heading \?\? t\.successHeading/);
+  const kitCopy = signup.slice(signup.indexOf('const COMPANION_UI'), signup.indexOf('const COMPANION_MAGNETS'));
+  for (const word of ['successHeading', 'successDetail']) assert.equal((kitCopy.match(new RegExp(`^ {4}${word}: `, 'gm')) || []).length, 3, `${word} in every language`);
+  assert.ok(!/download|descarga|téléchargement/i.test(kitCopy.slice(kitCopy.indexOf('successHeading'))), 'kit success copy must not promise a download');
   const prerender = readFileSync('scripts/prerender.mjs', 'utf8');
   assert.match(prerender, /\.\.\.COMPANION_LANDING_SLUGS\]\.map\(s => `\/free\/\$\{s\}`\)/);
 });

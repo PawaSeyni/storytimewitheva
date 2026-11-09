@@ -53,6 +53,8 @@ type Magnet = {
   preview?: string;
   /** Per-language product shot (a book cover); wins over `preview`. */
   previewFor?: Record<Language, string>;
+  /** Success-screen wording for this offer; defaults to the shared "your download is ready". */
+  success?: Record<Language, { heading: string; detail: string }>;
 };
 
 /**
@@ -203,6 +205,7 @@ const PACK_MAGNETS: Record<string, Magnet> = Object.fromEntries(
 const COMPANION_UI: Record<Language, {
   title: (t: string) => string; blurb: (t: string, from: string, to: string) => string;
   bullets: [string, string, string]; cta: string; items: Record<CompanionItemKey, string>;
+  successHeading: (t: string) => string; successDetail: string;
 }> = {
   en: {
     title: (t) => `${t}: free activity kit`,
@@ -210,6 +213,8 @@ const COMPANION_UI: Record<Language, {
     bullets: ['✓ A two-page story worksheet: questions, story words, drawing and a review', '✓ Pixel’s Story Quiz: pictures and a voice, for children who don’t read yet', '✓ Story-word flashcards in English, Spanish and French'],
     cta: 'Send me the kit',
     items: { worksheet: 'Story worksheet (print or save as PDF)', quiz: 'Pixel’s Story Quiz', flashcards: 'Story-word flashcards' },
+    successHeading: (t) => `Your “${t}” activity kit is ready!`,
+    successDetail: 'Tap an activity below to open it. You’re on the list, so new printables and reading tips are on the way.',
   },
   es: {
     title: (t) => `${t}: actividades gratis`,
@@ -217,6 +222,8 @@ const COMPANION_UI: Record<Language, {
     bullets: ['✓ Una ficha de dos páginas: preguntas, palabras del cuento, dibujo y opinión', '✓ El quiz de Pixel: dibujos y voz, para quienes aún no leen', '✓ Tarjetas con las palabras del cuento en español, inglés y francés'],
     cta: 'Envíenme las actividades',
     items: { worksheet: 'Ficha del cuento (imprimir o guardar en PDF)', quiz: 'El quiz de Pixel', flashcards: 'Tarjetas con las palabras del cuento' },
+    successHeading: (t) => `¡Listo! Tus actividades de «${t}» te esperan.`,
+    successDetail: 'Toca una actividad para abrirla. Ya estás en la lista, así que pronto recibirás más materiales y consejos de lectura.',
   },
   fr: {
     title: (t) => `${t} : le kit d’activités gratuit`,
@@ -224,6 +231,8 @@ const COMPANION_UI: Record<Language, {
     bullets: ['✓ Une fiche de deux pages : questions, mots de l’histoire, dessin et avis', '✓ Le quiz de Pixel : des images et une voix, pour les enfants qui ne lisent pas encore', '✓ Des cartes avec les mots de l’histoire en français, anglais et espagnol'],
     cta: 'Envoyez-moi le kit',
     items: { worksheet: 'Fiche de lecture (imprimer ou enregistrer en PDF)', quiz: 'Le quiz de Pixel', flashcards: 'Cartes des mots de l’histoire' },
+    successHeading: (t) => `C’est fait ! Votre kit d’activités « ${t} » est prêt.`,
+    successDetail: 'Touchez une activité ci-dessous pour l’ouvrir. Votre inscription est confirmée : de nouveaux imprimables et conseils de lecture arrivent bientôt.',
   },
 };
 const COMPANION_MAGNETS: Record<string, Magnet> = Object.fromEntries(
@@ -249,6 +258,7 @@ const COMPANION_MAGNETS: Record<string, Magnet> = Object.fromEntries(
       copy,
       bundle,
       pdf: { en: bundle[0].href.en, es: bundle[0].href.es, fr: bundle[0].href.fr },
+      success: Object.fromEntries(LANGUAGES.map((lang) => [lang, { heading: COMPANION_UI[lang].successHeading(titleIn(lang)), detail: COMPANION_UI[lang].successDetail }])) as Record<Language, { heading: string; detail: string }>,
       ...(cover('en') ? { previewFor: { en: cover('en'), es: cover('es'), fr: cover('fr') } } : {}),
     } satisfies Magnet];
   }),
@@ -749,8 +759,8 @@ export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: 
         {status === 'submitted' ? (
           <div className="bg-white/20 rounded-2xl p-6 text-white" role="status" aria-live="polite">
             <div className="text-4xl mb-2">🎉</div>
-            <p ref={successRef} tabIndex={-1} className="font-bold text-xl outline-hidden">{t.successHeading}</p>
-            <p className="text-purple-100 text-sm mt-1 mb-4">{t.successDetail}</p>
+            <p ref={successRef} tabIndex={-1} className="font-bold text-xl outline-hidden">{magnet.success?.[language].heading ?? t.successHeading}</p>
+            <p className="text-purple-100 text-sm mt-1 mb-4">{magnet.success?.[language].detail ?? t.successDetail}</p>
             {magnet.bundle ? (
               /* Multi-resource magnet: one named link per file. Deliberately not
                  a zip — most of this traffic is mobile and a parent on a phone
