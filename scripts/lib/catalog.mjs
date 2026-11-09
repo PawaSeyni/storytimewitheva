@@ -25,6 +25,7 @@ const JOURNEY = path.join(ROOT, 'src', 'lib', 'journey.ts');
 const JOURNEYS = path.join(ROOT, 'src', 'data', 'journeys.ts');
 const COLLECTIONS = path.join(ROOT, 'src', 'data', 'collections.ts');
 const LEARNING_PACKS = path.join(ROOT, 'src', 'data', 'learningPacks.ts');
+const BOOK_COMPANIONS = path.join(ROOT, 'src', 'data', 'bookCompanions.ts');
 const SEARCH = path.join(ROOT, 'src', 'lib', 'searchIndex.ts');
 
 /** Compile a browser-free TS module with esbuild and evaluate it in-process. */
@@ -150,6 +151,13 @@ let packsCache = null;
 export async function loadLearningPacks() {
   if (!packsCache) packsCache = await loadModule(LEARNING_PACKS);
   return packsCache;
+}
+
+let companionsCache = null;
+/** Book companions (activities audit 2026-11, §4C): one /free/<book-id>-companion per book. */
+export async function loadBookCompanions() {
+  if (!companionsCache) companionsCache = await loadModule(BOOK_COMPANIONS);
+  return companionsCache;
 }
 
 let searchCache = null;

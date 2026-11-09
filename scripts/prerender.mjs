@@ -14,7 +14,7 @@
 // interactive routes (the activity games) work exactly as before.
 
 import http from 'node:http';
-import { bookIds, loadContentIndex, loadLocales } from './lib/catalog.mjs';
+import { bookIds, loadContentIndex, loadLocales, loadBookCompanions } from './lib/catalog.mjs';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync, statSync, readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -108,6 +108,8 @@ const { LANG_PREFIXES } = await loadLocales(); // registry (S8-019)
 // Learning packs (S7-008) are generated lead magnets; their /free/<id> pages come from
 // the data module through the same projection the other guards use.
 const { learningPackIds: PACK_LANDING_SLUGS } = await loadContentIndex();
+// Book companions (activities audit 2026-11, §4C) are generated lead magnets too, one per book.
+const { BOOK_COMPANION_SLUGS: COMPANION_LANDING_SLUGS } = await loadBookCompanions();
 // Closed seasonal collections (S7-012): prerendered (empty state, noindex) but not in the sitemap.
 const closedSeasonalRoutes = [];
 
@@ -136,7 +138,12 @@ const closedSeasonalRoutes = [];
     console.error(`\nPrerender aborted: learning pack ids collide with registered magnets: ${packClash.join(', ')}\n`);
     process.exit(1);
   }
-  console.log(`Landing-page guard OK: ${registered.length} magnet slugs + ${PACK_LANDING_SLUGS.length} learning packs all prerendered.`);
+  const companionClash = COMPANION_LANDING_SLUGS.filter(slug => registered.includes(slug) || LANDING_SLUGS.includes(slug) || PACK_LANDING_SLUGS.includes(slug));
+  if (companionClash.length) {
+    console.error(`\nPrerender aborted: book companion slugs collide with registered magnets or packs: ${companionClash.join(', ')}\n`);
+    process.exit(1);
+  }
+  console.log(`Landing-page guard OK: ${registered.length} magnet slugs + ${PACK_LANDING_SLUGS.length} learning packs + ${COMPANION_LANDING_SLUGS.length} book companions all prerendered.`);
 }
 
 // Book-page guard (Sprint 3 S3-005 — catalog/sitemap/prerender parity): every book
@@ -197,7 +204,7 @@ const closedSeasonalRoutes = [];
   console.log(`Journey guard OK: ${journeyRouteIds.length} published journeys + index.`);
 }
 
-const extraRoutes = [...NOINDEX_SPA_ROUTES, ...closedSeasonalRoutes, ...[...LANDING_SLUGS, ...PACK_LANDING_SLUGS].map(s => `/free/${s}`)].flatMap(p =>
+const extraRoutes = [...NOINDEX_SPA_ROUTES, ...closedSeasonalRoutes, ...[...LANDING_SLUGS, ...PACK_LANDING_SLUGS, ...COMPANION_LANDING_SLUGS].map(s => `/free/${s}`)].flatMap(p =>
   LANG_PREFIXES.map(pre => `${pre}${p}`),
 );
 
