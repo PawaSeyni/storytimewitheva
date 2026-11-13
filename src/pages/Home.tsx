@@ -13,7 +13,9 @@ import Pixel from '../components/Pixel';
 import TestimonialSection from '../components/TestimonialSection';
 import { useTranslation, useLanguage } from '../lib/language';
 import { track } from '../lib/analytics';
-import evaReadingWebp from '../assets/eva-reading.webp'; // optimized on-page hero (LCP)
+import evaReadingWebp from '../assets/eva-reading.webp'; // optimized on-page hero (LCP), 900w
+import evaReading640 from '../assets/eva-reading-640.webp';
+import evaReading480 from '../assets/eva-reading-480.webp';
 import evaReading from '../assets/eva-reading.jpg'; // kept for the og:image (broad social compatibility)
 import evaHeadshot from '../assets/eva-headshot.jpg'; // Meet Eva section (author portrait)
 
@@ -66,7 +68,7 @@ const LANGUAGE_CARDS = [
 
 const TRANSLATIONS = {
   en: {
-    seoTitle: 'Story Time with Eva: Multicultural Picture Books for Curious Minds',
+    seoTitle: 'Story Time with Eva: Multicultural Picture Books for Kids',
     seoDesc: 'The Eva Gallo Collection: picture books for children ages 3–9 about quiet wonder, nighttime magic, and morning homecoming. Read with us and explore free activities.',
     // Hero
     heroHeadline: 'Magical Stories for Curious Young Minds',
@@ -116,7 +118,7 @@ const TRANSLATIONS = {
     evaCta: 'Meet Eva',
   },
   es: {
-    seoTitle: 'Story Time with Eva — Libros ilustrados multiculturales para mentes curiosas',
+    seoTitle: 'Story Time with Eva: libros ilustrados multiculturales',
     seoDesc: 'La Colección Eva Gallo — libros ilustrados para niños de 3 a 9 años sobre asombro tranquilo, magia nocturna y el regreso a casa. Lee con nosotros y descubre actividades gratuitas.',
     heroHeadline: 'Historias mágicas para mentes jóvenes y curiosas',
     heroSupport: 'Lee el libro. Juega la actividad gratis.',
@@ -160,7 +162,7 @@ const TRANSLATIONS = {
     evaCta: 'Conoce a Eva',
   },
   fr: {
-    seoTitle: 'Story Time with Eva — Albums illustrés multiculturels pour les esprits curieux',
+    seoTitle: 'Story Time with Eva : albums illustrés multiculturels',
     seoDesc: 'La Collection Eva Gallo — des albums pour enfants de 3 à 9 ans sur l\'émerveillement tranquille, la magie nocturne et le retour à la maison. Lisez avec nous et explorez des activités gratuites.',
     heroHeadline: 'Des histoires magiques pour les jeunes esprits curieux',
     heroSupport: 'Lisez le livre. Jouez à l\'activité gratuite.',
@@ -275,6 +277,10 @@ export default function Home() {
           <div className="order-first mb-10 lg:order-0 lg:mb-0 lg:mt-0 lg:flex-1">
             <img
               src={evaReadingWebp}
+              // Shown at most max-w-md (448 CSS px) wide: phones fetch the 480/640 file
+              // instead of the 900 one (the 2026-09-24 health check measured 29 KB wasted).
+              srcSet={`${evaReading480} 480w, ${evaReading640} 640w, ${evaReadingWebp} 900w`}
+              sizes="(min-width: 480px) 448px, calc(100vw - 2rem)"
               alt={t.heroImageAlt}
               width={900}
               height={675}

@@ -31,7 +31,7 @@ const TRANSLATIONS = {
   en: {
     home: 'Home', journeys: 'Reading journeys', stepOf: 'Step', of: 'of', optional: 'optional',
     types: { book: 'Read', discussion: 'Talk about it', activity: 'Try an activity', resource: 'For the grown-up', 'next-book': 'Read next' },
-    markDone: 'Mark step done', markUndone: 'Mark step not done', done: 'Done', resume: 'Resume at step',
+    done: 'Done', resume: 'Resume at step',
     complete: 'Journey complete. Well done!', progressAnnounce: (n: number, t: number) => `${n} of ${t} steps done.`,
     save: 'Save this journey', unsave: 'Remove from saved', saved: 'Saved on this device',
     open: 'Open', seoPrefix: 'A reading journey',
@@ -39,7 +39,7 @@ const TRANSLATIONS = {
   es: {
     home: 'Inicio', journeys: 'Recorridos de lectura', stepOf: 'Paso', of: 'de', optional: 'opcional',
     types: { book: 'Leer', discussion: 'Hablen juntos', activity: 'Prueba una actividad', resource: 'Para el adulto', 'next-book': 'Sigue leyendo' },
-    markDone: 'Marcar paso hecho', markUndone: 'Marcar paso no hecho', done: 'Hecho', resume: 'Continuar en el paso',
+    done: 'Hecho', resume: 'Continuar en el paso',
     complete: '¡Recorrido completado! Muy bien.', progressAnnounce: (n: number, t: number) => `${n} de ${t} pasos hechos.`,
     save: 'Guardar este recorrido', unsave: 'Quitar de guardados', saved: 'Guardado en este dispositivo',
     open: 'Abrir', seoPrefix: 'Un recorrido de lectura',
@@ -47,7 +47,7 @@ const TRANSLATIONS = {
   fr: {
     home: 'Accueil', journeys: 'Parcours de lecture', stepOf: 'Étape', of: 'sur', optional: 'facultatif',
     types: { book: 'Lire', discussion: 'Parlez-en ensemble', activity: 'Essayez une activité', resource: 'Pour l’adulte', 'next-book': 'À lire ensuite' },
-    markDone: 'Marquer l’étape comme faite', markUndone: 'Marquer l’étape comme non faite', done: 'Fait', resume: 'Reprendre à l’étape',
+    done: 'Fait', resume: 'Reprendre à l’étape',
     complete: 'Parcours terminé. Bravo !', progressAnnounce: (n: number, t: number) => `${n} étapes sur ${t} faites.`,
     save: 'Enregistrer ce parcours', unsave: 'Retirer des enregistrés', saved: 'Enregistré sur cet appareil',
     open: 'Ouvrir', seoPrefix: 'Un parcours de lecture',
@@ -170,7 +170,7 @@ export default function Journey() {
                     type="button"
                     onClick={() => onToggle(step.id, i)}
                     aria-pressed={done}
-                    aria-label={`${done ? t.markUndone : t.markDone}: ${t.types[step.type]} ${i + 1}`}
+                    aria-label={`${t.done}: ${t.types[step.type]} ${i + 1}`}
                     className={`shrink-0 inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-semibold border transition-all ${done ? 'bg-green-500 border-green-500 text-white' : 'bg-white border-green-300 text-green-700 hover:bg-green-50'}`}
                   >
                     <span aria-hidden>{done ? '✓' : '○'}</span> {t.done}

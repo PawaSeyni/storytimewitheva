@@ -40,18 +40,19 @@ async function blockStorage(context: BrowserContext): Promise<void> {
 async function exerciseBookControls(page: Page): Promise<void> {
   await page.goto('/books/mayas-shadow', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('h1')).toBeVisible();
-  const reading = page.getByRole('button', { name: 'Mark as reading now', exact: true }).first();
+  const reading = page.getByRole('button', { name: 'Reading now', exact: true }).first();
   await reading.click();
-  await expect(page.getByRole('button', { name: 'Stop marking as reading now', exact: true }).first()).toHaveAttribute('aria-pressed', 'true');
-  const fav = page.getByRole('button', { name: 'Add to favorites', exact: true }).first();
+  await expect(page.getByRole('button', { name: 'Reading', exact: true }).first()).toHaveAttribute('aria-pressed', 'true');
+  // The full Favorite button is named by its visible text; aria-pressed carries the state.
+  const fav = page.getByRole('button', { name: 'Favorite', exact: true }).first();
   await fav.click();
-  await expect(page.getByRole('button', { name: 'Remove from favorites', exact: true }).first()).toHaveAttribute('aria-pressed', 'true');
+  await expect(fav).toHaveAttribute('aria-pressed', 'true');
   // and a second click reverses it immediately — the inverted-toggle bug showed the
   // opposite of storage on every click after the first
-  await page.getByRole('button', { name: 'Remove from favorites', exact: true }).first().click();
-  await expect(page.getByRole('button', { name: 'Add to favorites', exact: true }).first()).toHaveAttribute('aria-pressed', 'false');
-  await page.getByRole('button', { name: 'Add to favorites', exact: true }).first().click();
-  await expect(page.getByRole('button', { name: 'Remove from favorites', exact: true }).first()).toHaveAttribute('aria-pressed', 'true');
+  await fav.click();
+  await expect(fav).toHaveAttribute('aria-pressed', 'false');
+  await fav.click();
+  await expect(fav).toHaveAttribute('aria-pressed', 'true');
 }
 
 test.describe('cookie-free — no core flow sets a cookie', () => {
@@ -167,7 +168,7 @@ test.describe('corrupt state — a malformed envelope never breaks a page', () =
     });
     await page.goto('/books/mayas-shadow', { waitUntil: 'domcontentloaded' });
     await expect(page.locator('h1')).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Mark as read', exact: true }).first()).toHaveAttribute('aria-pressed', 'false');
+    await expect(page.getByRole('button', { name: 'Mark Read', exact: true }).first()).toHaveAttribute('aria-pressed', 'false');
     await page.goto('/profile', { waitUntil: 'domcontentloaded' });
     await expect(page.locator('h1')).toBeVisible();
     expect(errors).toEqual([]);
@@ -184,7 +185,7 @@ test.describe('sprint 7 ecosystem — cookie-free and storage-free', () => {
     await page.getByRole('button', { name: /^Books/ }).click();
     await page.goto('/collections/classroom-feelings');
     await page.goto('/journeys/kindness-that-shines');
-    await page.getByRole('button', { name: 'Mark step done' }).first().click();
+    await page.getByRole('button', { name: /^Done: / }).first().click();
     await page.goto('/free/classroom-pack');
     await page.goto('/resources');
     expect(await context.cookies(), 'cookies set by the site').toEqual([]);
@@ -211,11 +212,13 @@ test.describe('sprint 7 ecosystem — cookie-free and storage-free', () => {
     await expect(progressLine).toBeVisible();
     const n = Number(/of (\d+) steps/.exec(await progressLine.innerText())?.[1]);
     expect(n).toBeGreaterThan(1);
-    await expect(page.getByRole('button', { name: 'Mark step done' })).toHaveCount(n);
+    // Step buttons are named by their visible "Done" (WCAG 2.5.3); aria-pressed is the state.
+    const steps = page.getByRole('button', { name: /^Done: / });
+    await expect(steps).toHaveCount(n);
     for (let i = 0; i < n; i++) {
-      await page.getByRole('button', { name: 'Mark step done' }).first().click();
+      await steps.nth(i).click();
       // Serialize on the rendered state so a re-render never swallows a click under load.
-      await expect(page.getByRole('button', { name: 'Mark step not done' })).toHaveCount(i + 1);
+      await expect(page.getByRole('button', { name: /^Done: /, pressed: true })).toHaveCount(i + 1);
     }
     // Completion is state (5 of 5) and an announcement; assert both with the live text so a
     // failure reports what was announced instead of "not found".
@@ -243,7 +246,7 @@ test.describe('sprint 7 ecosystem — cookie-free and storage-free', () => {
     await page.emulateMedia({ media: 'print' });
     await expect(page.locator('[data-print="chrome"]').first()).toBeHidden();
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Mark step done' }).first()).toBeVisible();
+    await expect(page.getByRole('button', { name: /^Done: / }).first()).toBeVisible();
   });
 
   test('continuation from an activity to a book works with storage denied', async ({ page, context }) => {

@@ -283,12 +283,21 @@ for (const route of routes) {
     // the asset whenever it changes). Injected only on routes that actually render
     // the hero (home + /es,/fr), never site-wide. The <img> already carries
     // fetchpriority="high"; this adds the preload tag some auditors look for.
-    const hero = html.match(/\/assets\/eva-reading-[A-Za-z0-9_-]+\.webp/);
-    if (hero && !html.includes('rel="preload" as="image"')) {
-      html = html.replace(
-        '</head>',
-        `<link rel="preload" as="image" href="${hero[0]}" fetchpriority="high"></head>`,
-      );
+    // The hero carries a srcset (480/640/900w), so the hint copies the <img>'s own
+    // srcset and sizes: a plain href would make phones fetch the 900w file twice over.
+    const heroImg = html.match(/<img\b[^>]*\/assets\/eva-reading-[^>]*>/);
+    if (heroImg && !html.includes('rel="preload" as="image"')) {
+      const attr = (name) => (heroImg[0].match(new RegExp(`\\s${name}="([^"]*)"`)) || [])[1];
+      const src = attr('src');
+      const srcset = attr('srcset');
+      const sizes = attr('sizes');
+      if (src) {
+        const set = srcset ? ` imagesrcset="${srcset}"${sizes ? ` imagesizes="${sizes}"` : ''}` : '';
+        html = html.replace(
+          '</head>',
+          `<link rel="preload" as="image" href="${src}"${set} fetchpriority="high"></head>`,
+        );
+      }
     }
     const outDir = route === '/' ? DIST : path.join(DIST, route);
     await mkdir(outDir, { recursive: true });

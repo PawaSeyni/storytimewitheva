@@ -46,8 +46,8 @@ for (const prefix of ['', '/fr']) {
 
 test('a11y — the dashboard with saved state: toggles expose pressed state and the clear control is reachable by keyboard', async ({ page }) => {
   await page.goto('/books/mayas-shadow', { waitUntil: 'domcontentloaded' });
-  await page.getByRole('button', { name: 'Mark as reading now', exact: true }).first().click();
-  await page.getByRole('button', { name: 'Add to favorites', exact: true }).first().click();
+  await page.getByRole('button', { name: 'Reading now', exact: true }).first().click();
+  await page.getByRole('button', { name: 'Favorite', exact: true }).first().click();
   await page.goto('/profile', { waitUntil: 'domcontentloaded' });
   // Wait for the client to hydrate the preferences block before counting; the prerendered
   // shell may not carry client-only controls, and counting too early undercounts.
@@ -79,15 +79,15 @@ test('a11y — the dashboard with saved state: toggles expose pressed state and 
 // and a polite announcement; a closed seasonal collection exposes its empty state as status.
 test('a11y — journey steps toggle with Space/Enter, expose aria-pressed, and announce progress', async ({ page }) => {
   await page.goto('/journeys/kindness-that-shines', { waitUntil: 'domcontentloaded' });
-  const first = page.getByRole('button', { name: 'Mark step done' }).first();
+  // The name starts with the visible "Done" (WCAG 2.5.3); aria-pressed carries the state.
+  const first = page.getByRole('button', { name: /^Done: / }).first();
   await first.focus();
   await page.keyboard.press('Space');
-  const undone = page.getByRole('button', { name: 'Mark step not done' }).first();
-  await expect(undone).toHaveAttribute('aria-pressed', 'true');
+  await expect(first).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('[aria-live="polite"]')).toContainText(/1 of \d+ steps done/);
-  await undone.focus();
+  await first.focus();
   await page.keyboard.press('Enter');
-  await expect(page.getByRole('button', { name: 'Mark step done' }).first()).toHaveAttribute('aria-pressed', 'false');
+  await expect(first).toHaveAttribute('aria-pressed', 'false');
   await expect(page.locator('[aria-live="polite"]')).toContainText(/0 of \d+ steps done/);
 });
 

@@ -48,7 +48,9 @@ export default function LanguageSwitcher({ vertical = false }: LanguageSwitcherP
               if (lang !== language) track('Language Switch', { language: lang });
               setLanguage(lang);
             }}
-            aria-label={t.switchTo(name)}
+            // The accessible name must contain the visible text (WCAG 2.5.3, axe
+            // label-content-name-mismatch): the compact pill shows only the code.
+            aria-label={vertical ? t.switchTo(name) : `${lang.toUpperCase()}, ${t.switchTo(name)}`}
             aria-pressed={active}
             title={name}
             className={`${base} ${activeCls}`}

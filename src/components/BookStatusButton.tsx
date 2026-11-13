@@ -116,7 +116,9 @@ export default function BookStatusButton({ bookId, compact = false }: BookStatus
               toggle(b.value);
             }}
             aria-pressed={active}
-            aria-label={active ? b.ariaOn : b.ariaOff}
+            // No aria-label: the visible text is the name and aria-pressed carries the
+            // state (WCAG 2.5.3; axe label-content-name-mismatch). ariaOn/ariaOff stay as titles.
+            title={active ? b.ariaOn : b.ariaOff}
             className={`${base} ${active ? b.active : b.idle}`}
           >
             <b.Icon className={icon} />

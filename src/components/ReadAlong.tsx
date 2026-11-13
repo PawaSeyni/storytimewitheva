@@ -85,7 +85,8 @@ export default function ReadAlong({ text, className = '' }: ReadAlongProps) {
         type="button"
         onClick={handleClick}
         aria-pressed={speaking}
-        aria-label={speaking ? t.stopAria : t.listenAria}
+        // Visible text is the accessible name (WCAG 2.5.3); the longer phrase is a tooltip.
+        title={speaking ? t.stopAria : t.listenAria}
         className={`inline-flex items-center gap-2 py-2 px-4 mb-3 text-sm font-semibold rounded-full transition-colors ${
           speaking ? 'bg-purple-600 text-white hover:bg-purple-700' : 'text-purple-600 border border-purple-200 hover:bg-purple-50'
         }`}
