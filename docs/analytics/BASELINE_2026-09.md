@@ -77,3 +77,41 @@ What this approval means and does not mean:
 - It is the reference point, not a target. Every step except Form View and Landing View is below the 50-event minimum sample, so no rate in this window is statistically usable; the report marks each one. The baseline is approved as "this is where we started", which is what release gate 11.1 asks for.
 - The two experiments (EXP-001, EXP-002) may now move from `draft` to `active` when the owner sets `startAt` and gives the go. Their `analysisRule` still refuses to report a cell under the minimum sample, so activation is safe but will not produce a verdict at current traffic; the Google-facing content work (DA-03) is what changes that.
 - The newsletter funnel in this report still lists `Form Submit` (9); that event was removed on 2026-09-18 (DA-01) and the funnel is now three steps. The scheduled rerun on 2026-10-16 reports the new shape. The duplicate-counting the deeper audit found (automatic `Form: Submission` and `File Download`) never entered this report, which reads custom events only.
+
+## Rerun 2026-10-16
+
+Reports: `REPORT_2026-10-16.md` (four weeks, 2026-09-19 to 2026-10-16) and `REPORT_2026-10-16_cumulative.md` (2026-08-23 to 2026-10-16, everything since the instrumentation fix). Same script, same 50-event minimum per segment. Both runs answered without HTTP errors. The newsletter funnel now has the three-step shape (Form View, Form Start, Lead Created) after the DA-01 removal of Form Submit.
+
+**What meets the 50-event minimum**
+
+- Four-week window: nothing. No step in any funnel reaches 50 events.
+- Cumulative window: only top-of-funnel counts. Form View 130, Landing View 118, and English form views 91 (locale parity table). Every step after them is below the minimum, so no conversion rate is usable yet. For reference only, the rates the report prints from these denominators are: Form View to Form Start 7.7% (10), Landing View to Form Start 8.5% (10), Landing View to Lead Created 9.3% (11), and English form views to leads 2.2% (2). The numerators are all under 50, so none of these is a baseline.
+
+**What still does not**
+
+Every other step and every breakdown: Book View (20 cumulative), Purchase CTA View (8), Purchase Click (0), Continue Journey (0 to activity, 1 from signup success), Activity Complete (0), Personalized View (3), Recommendation Click (0), Share (0), Magnet Download (19), all placement, lead magnet, language, book and age-band segments, and the French and Spanish form views (21 and 18). No book reached 50 views, so the S5-004 book classification is still empty.
+
+**Four weeks versus the September window**
+
+Traffic fell in the rerun window, which matches the campaign freeze.
+
+| Step | 2026-08-23 to 09-18 | 2026-09-19 to 10-16 |
+|---|---|---|
+| Form View | 107 | 19 |
+| Landing View | 96 | 18 |
+| Form Start | 8 | 2 |
+| Lead Created | 9 | 2 |
+| Magnet Download | 16 | 3 |
+| Book View | 13 | 4 |
+| Purchase CTA View (detail) | 6 | 0 |
+| Purchase Click | 0 | 0 |
+| Homepage CTA | 0 | 1 |
+| Personalized View | 0 | 2 |
+
+Both leads in the new window are French, on the landing placement, for the bilingual flashcards. French form views rose from 7 to 14 while English fell from 87 to 2.
+
+**Form Start undercount**
+
+Not reproduced in the new window, but not ruled out. In the four weeks Form Start (2) equals Lead Created (2). Cumulatively Form Start (10) is still one below Lead Created (11), and that whole gap comes from the September window (8 against 9). With only two leads since 2026-09-19, the sample cannot confirm or clear the suspected native pre-hydration submit path that skips Form Start.
+
+**Report quirk to note:** both new reports, like the September one, print "1 unknown book id(s) in the data: (none) ... validation failed" in the age-band section. The unknown id is the literal `(none)` row (events without a book property), not a missing book in the taxonomy.
