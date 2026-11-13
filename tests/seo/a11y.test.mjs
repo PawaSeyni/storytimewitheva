@@ -261,7 +261,7 @@ test('dashboard — /profile renders the Sprint 6 sections and transparency pane
 });
 
 test('journeys — every journey page states progress in text, has pressed-state step controls and a live region (S7-003 / S7-010)', () => {
-  const labels = { en: ['Step 1 of', 'Mark step done', 'Talk about it', 'Read next'], fr: ['Étape 1 sur', 'Marquer l’étape comme faite', 'Parlez-en ensemble', 'À lire ensuite'], es: ['Paso 1 de', 'Marcar paso hecho', 'Hablen juntos', 'Sigue leyendo'] };
+  const labels = { en: ['Step 1 of', 'Done: ', 'Talk about it', 'Read next'], fr: ['Étape 1 sur', 'Fait: ', 'Parlez-en ensemble', 'À lire ensuite'], es: ['Paso 1 de', 'Hecho: ', 'Hablen juntos', 'Sigue leyendo'] };
   for (const [loc, prefix] of Object.entries(LOCALES)) {
     for (const id of journeyRouteIds) {
       const h = read(`${prefix}/journeys/${id}`);
@@ -270,7 +270,7 @@ test('journeys — every journey page states progress in text, has pressed-state
       for (const l of labels[loc]) assert.ok(text.includes(l), `${prefix}/journeys/${id}: missing "${l}"`);
       assert.ok((h.match(/aria-pressed="false"/g) || []).length >= 5, `${prefix}/journeys/${id}: expected a pressed-state control per step`);
       assert.ok(/role="status"[^>]*aria-live="polite"/.test(h), `${prefix}/journeys/${id}: no polite live region`);
-      if (loc !== 'en') assert.ok(!text.includes('Mark step done'), `${prefix}/journeys/${id}: English control label leaked`);
+      if (loc !== 'en') assert.ok(!text.includes('Done: '), `${prefix}/journeys/${id}: English control label leaked`);
     }
     const idx = read(`${prefix}/journeys`);
     assert.ok(idx && journeyRouteIds.every((id) => idx.includes(`/journeys/${id}/"`)), `${prefix}/journeys: index must link every published journey`);
