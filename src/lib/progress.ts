@@ -49,6 +49,9 @@ const empty = (): Progress => ({
   activitiesCompleted: [],
 });
 
+/** Nothing recorded yet: a component's first render (it must match the prerendered snapshot). */
+export const emptyProgress = (): Progress => empty();
+
 export function loadProgress(): Progress {
   const parsed = getShared(STORAGE_KEY, isProgressLike);
   if (!parsed) return empty();

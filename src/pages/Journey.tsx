@@ -18,7 +18,7 @@ import { useActivities } from '../data/activities';
 import { resources, resourcePath } from '../data/resources';
 import { publishedJourneys, journeyRouteIds } from '../data/contentIndex';
 import { THEMES, AGE_BANDS } from '../data/taxonomy';
-import { loadProgress, toggleStep, onJourneyChange, nextIncompleteStepId } from '../lib/journeyProgress';
+import { loadProgress, toggleStep, onJourneyChange, nextIncompleteStepId, emptyProgress } from '../lib/journeyProgress';
 import { loadLibrary, isJourneySaved, toggleSavedJourney, onLibraryChange } from '../lib/personalLibrary';
 import { gameUrl } from '../lib/gameUrl';
 import { isAmazonCover, sizedCover } from '../lib/covers';
@@ -64,7 +64,8 @@ export default function Journey() {
   const journey = publishedJourneys.find((j) => j.id === journeyId);
   const stepIds = useMemo(() => (journey ? journey.steps.map((s) => s.id) : []), [journey]);
 
-  const [progress, setProgress] = useState(() => loadProgress(journeyId, stepIds));
+  // Empty first render (hydration); the effect below loads the stored progress.
+  const [progress, setProgress] = useState(() => emptyProgress(journeyId));
   const [saved, setSaved] = useState(false);
   const [announce, setAnnounce] = useState('');
 

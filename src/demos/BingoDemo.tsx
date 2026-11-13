@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { isPrerendering } from '../lib/prerender';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -493,7 +493,9 @@ export default function BingoDemo() {
   // unchanged winning card doesn't keep inflating the cumulative counters.
   const [awardedLines, setAwardedLines] = useState<Set<string>>(new Set());
   const [fullCardAwarded, setFullCardAwarded] = useState(false);
-  const [unlockedBadges, setUnlockedBadges] = useState<Set<string>>(new Set());
+  // 'first' (one marked square) is earned by the free centre square on every card, so it
+  // starts unlocked: the first render must match the prerendered snapshot (hydration).
+  const [unlockedBadges, setUnlockedBadges] = useState<Set<string>>(new Set(['first']));
   const [themesPlayed, setThemesPlayed] = useState<Set<ThemeKey>>(new Set(['fairytale']));
   // Little reader mode: off by default, with its own marks so it never touches the 5x5 board.
   const [littleReader, setLittleReader] = useState(false);
@@ -506,10 +508,11 @@ export default function BingoDemo() {
     });
   };
 
-  const generateCard = useCallback(() => {
+  const buildCard = useCallback((shuffle: boolean) => {
     const theme = themes[currentTheme];
-    // Fixed order under the build-time prerender (deterministic snapshot); shuffled for visitors.
-    const shuffled = isPrerendering() ? [...theme.items] : [...theme.items].sort(() => Math.random() - 0.5);
+    // Fixed order for the first render (it must match the prerendered snapshot for hydration)
+    // and under the build-time prerender; shuffled for visitors everywhere else.
+    const shuffled = shuffle ? [...theme.items].sort(() => Math.random() - 0.5) : [...theme.items];
     const newCard = shuffled.slice(0, 24);
     newCard.splice(12, 0, freeSpace);
     setCurrentCard(newCard);
@@ -519,6 +522,7 @@ export default function BingoDemo() {
     setAwardedLines(new Set());
     setFullCardAwarded(false);
   }, [currentTheme, themes, freeSpace]);
+  const generateCard = useCallback(() => buildCard(!isPrerendering()), [buildCard]);
 
   // The board follows the theme and the language (labels must match the active locale). It
   // is rebuilt during render when either changes, and on the first render: React's pattern
@@ -526,9 +530,16 @@ export default function BingoDemo() {
   const boardKey = `${currentTheme}:${language}`;
   const [seenBoardKey, setSeenBoardKey] = useState<string | null>(null);
   if (seenBoardKey !== boardKey) {
+    const first = seenBoardKey === null;
     setSeenBoardKey(boardKey);
-    generateCard();
+    // The first board is the fixed one the snapshot holds; it is shuffled right after mount.
+    if (first) buildCard(false);
+    else generateCard();
   }
+  const shuffleAfterMount = useRef(generateCard);
+  useEffect(() => {
+    shuffleAfterMount.current();
+  }, []);
 
   useEffect(() => {
     BADGE_DEFS.forEach((badge) => {

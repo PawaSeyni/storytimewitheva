@@ -14,6 +14,7 @@ import { useTranslation, useLanguage } from '../lib/language';
 import { gameUrl } from '../lib/gameUrl';
 import { buildSearchIndex, searchRecords, SEARCH_TYPES, typeLabel, type SearchType } from '../lib/searchIndex';
 import { track } from '../lib/analytics';
+import { useHydrated } from '../lib/hydrated';
 
 const TRANSLATIONS = {
   en: {
@@ -66,9 +67,12 @@ export default function Search() {
   const { language } = useLanguage();
   const books = useBooks();
 
-  const raw = params.get('q') ?? '';
+  // The prerendered /search/ snapshot has no query, so the first (hydrating) render ignores
+  // the URL's q/type and matches it; results render right after (src/lib/hydrated.ts).
+  const hydrated = useHydrated();
+  const raw = hydrated ? params.get('q') ?? '' : '';
   const q = raw.trim();
-  const typeParam = params.get('type');
+  const typeParam = hydrated ? params.get('type') : null;
   const type: SearchType | null = isType(typeParam) ? typeParam : null;
 
   const hits = useMemo(

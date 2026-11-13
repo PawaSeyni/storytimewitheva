@@ -7,6 +7,7 @@ import { LANGUAGES } from '../lib/locales';
 import { Link } from './LocalizedLink';
 import { useExperiment } from '../lib/experiments';
 import { books as CATALOG } from '../data/books.data';
+import { useHydrated } from '../lib/hydrated';
 
 // Three featured titles (catalog order) offered after signup; ids only, titles localized at render.
 const CONTINUE_BOOKS = CATALOG.filter((b) => b.featured && b.status !== 'coming-soon').slice(0, 3);
@@ -528,13 +529,19 @@ export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: 
   // A pre-hydration native submit posts to the function, which 303-redirects back with
   // ?signup=<result>; start in that state so those visitors see the success screen (or an
   // error) rather than a bare reload.
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'submitted' | 'error'>(() => {
+  // URL-driven state (?signup=, ?lm=) is applied once hydration is done: the prerendered
+  // snapshot was taken without query params, so the first render must not use them.
+  const hydrated = useHydrated();
+  const [statusState, setStatus] = useState<'idle' | 'submitting' | 'submitted' | 'error'>(() => {
     const r = (readParam('signup') || '').toLowerCase();
     return r === 'ok' ? 'submitted' : r === 'invalid' || r === 'error' ? 'error' : 'idle';
   });
   const { language, setLanguage } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
-  const [{ magnet, focused }] = useState(() => resolveMagnet(magnetSlug));
+  const status = hydrated ? statusState : 'idle';
+  const [resolved] = useState(() => resolveMagnet(magnetSlug));
+  // A route-given magnet (/free/:magnet) is in the snapshot; a ?lm= one waits for hydration.
+  const { magnet, focused } = hydrated || magnetSlug ? resolved : { magnet: LEAD_MAGNETS[DEFAULT_MAGNET], focused: false };
   const [utm] = useState(readUtm);
   const offer = magnet.copy[language] ?? magnet.copy.en;
   const successRef = useRef<HTMLParagraphElement>(null);

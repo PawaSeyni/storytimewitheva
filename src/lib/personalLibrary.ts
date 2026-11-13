@@ -122,6 +122,13 @@ function migrateFromLegacy(): PersonalizationStateV1 {
   return state;
 }
 
+/**
+ * The state a component starts from before it reads storage. Pages are prerendered with
+ * empty storage and then HYDRATED (src/main.tsx), so a component's first render must show
+ * what the snapshot shows: start from this, then load the real state in an effect.
+ */
+export const emptyLibrary = (): PersonalizationStateV1 => empty();
+
 /** Read the envelope, migrating from the legacy key the first time. Never throws. */
 export function loadLibrary(): PersonalizationStateV1 {
   const stored = get(KEY, isState);

@@ -12,19 +12,28 @@ import './index.css'
 // S8-012: privacy-safe error counts (error class + route pattern only), cookie-free.
 installErrorReporting()
 
-const root = ReactDOM.createRoot(document.getElementById('root')!)
-const render = () =>
-  root.render(
-    <React.StrictMode>
-      <BrowserRouter>
-        <LanguageProvider>
-          <ToastProvider>
-            <App />
-          </ToastProvider>
-        </LanguageProvider>
-      </BrowserRouter>
-    </React.StrictMode>,
-  )
+const app = (
+  <React.StrictMode>
+    <BrowserRouter>
+      <LanguageProvider>
+        <ToastProvider>
+          <App />
+        </ToastProvider>
+      </LanguageProvider>
+    </BrowserRouter>
+  </React.StrictMode>
+)
+
+// Production pages are prerendered snapshots (scripts/prerender.mjs). Hydrating adopts
+// that markup instead of discarding it and repainting once the JS loads, which is what
+// held mobile LCP at 3.6 s (2026-09-24 health check: 1.1 s of render delay). The empty
+// shell (dev server, the prerender itself) still client-renders.
+// scripts/check-hydration.mjs fails the build if any page stops hydrating cleanly.
+const container = document.getElementById('root')!
+const render = () => {
+  if (container.hasChildNodes()) ReactDOM.hydrateRoot(container, app)
+  else ReactDOM.createRoot(container).render(app)
+}
 
 // PD-04: the prerendered HTML stays on screen until the current route's chunk is in, so the
 // first commit is the full page rather than the Suspense fallback (which pulled the footer

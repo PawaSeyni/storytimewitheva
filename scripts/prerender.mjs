@@ -229,6 +229,28 @@ if (IS_CI) {
   };
 }
 
+// Hydration contract (src/main.tsx hydrates these snapshots; scripts/check-hydration.mjs
+// gates it). React's SSR marks a resolved Suspense boundary as <!--$--> … <!--/$-->, and
+// separates adjacent text nodes with <!-- -->, which HTML serialization would otherwise
+// merge. Without both, hydration fails (#418/#423) and falls back to a full repaint.
+async function addHydrationMarkers(page) {
+  await page.evaluate(() => {
+    const root = document.getElementById('root');
+    if (!root) return;
+    const outlet = root.querySelector('[data-suspense-outlet]') || root;
+    outlet.insertBefore(document.createComment('$'), outlet.firstChild);
+    outlet.appendChild(document.createComment('/$'));
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const texts = [];
+    while (walker.nextNode()) texts.push(walker.currentNode);
+    for (const node of texts) {
+      if (node.nextSibling && node.nextSibling.nodeType === Node.TEXT_NODE) {
+        node.parentNode.insertBefore(document.createComment(' '), node.nextSibling);
+      }
+    }
+  });
+}
+
 let browser;
 try {
   browser = await puppeteer.launch(launchOpts);
@@ -268,10 +290,17 @@ for (const route of routes) {
   const page = await browser.newPage();
   // S8-006: tell the app it is being snapshotted, so random-first-render pages (bingo,
   // puzzles) render a fixed state and the output is deterministic build to build.
-  await page.evaluateOnNewDocument(() => { window.__PRERENDERING__ = true; });
+  // Every snapshot starts from EMPTY storage. Pages share one browser, and book pages record
+  // "recently explored" books, so without this the /profile snapshot baked in counts from the
+  // build's own browsing; it also has to match a first-time visitor's first render (hydration).
+  await page.evaluateOnNewDocument(() => {
+    window.__PRERENDERING__ = true;
+    try { localStorage.clear(); sessionStorage.clear(); } catch { /* storage unavailable */ }
+  });
   try {
     await page.goto(ORIGIN + route, { waitUntil: 'load', timeout: 30000 });
     await waitUntilReady(page);
+    await addHydrationMarkers(page);
     let html = await page.content();
     // Vite 8's runtime preload helper injects <link rel="modulepreload"> tags with an
     // ABSOLUTE href on the prerender origin (http://localhost:<port>/assets/…). Snapshotted
@@ -317,6 +346,7 @@ try {
   const page = await browser.newPage();
   await page.goto(ORIGIN + '/__prerender_not_found__', { waitUntil: 'load', timeout: 30000 });
   await waitUntilReady(page);
+  await addHydrationMarkers(page);
   await writeFile(path.join(DIST, '404.html'), (await page.content()).split(ORIGIN + '/').join('/')); // same origin rewrite as every route
   await page.close();
   console.log('Wrote dist/404.html (NotFound snapshot, noindex).');

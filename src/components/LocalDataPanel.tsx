@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Trash2 } from 'lucide-react';
-import { loadLibrary, libraryCounts, clearLibrary, onLibraryChange } from '../lib/personalLibrary';
+import { loadLibrary, libraryCounts, clearLibrary, onLibraryChange, emptyLibrary } from '../lib/personalLibrary';
 import { loadProgress, clearProgress, loadReadingJournal, loadReadingTracker } from '../lib/progress';
 import { available } from '../lib/storage';
 import { useTranslation } from '../lib/language';
 import { track } from '../lib/analytics';
+import { useHydrated } from '../lib/hydrated';
 
 // S6-013. Shows WHAT this device remembers, WHERE it lives, and WHAT clearing does —
 // then clears all of it for real. Two stores are involved and both are cleared: the
@@ -80,7 +81,11 @@ function readCounts(): Counts {
 
 export default function LocalDataPanel({ onCleared }: { onCleared?: () => void }) {
   const t = useTranslation(TRANSLATIONS);
-  const [counts, setCounts] = useState<Counts>(() => readCounts());
+  // The storage notice depends on this browser: shown only after hydration (src/lib/hydrated.ts).
+  const hydrated = useHydrated();
+  // All zero on the first render (hydration: the snapshot was taken with empty storage);
+  // the effect below reads the real counts.
+  const [counts, setCounts] = useState<Counts>(() => ({ ...libraryCounts(emptyLibrary()), activities: 0, journal: 0, tracker: 0 }));
   const [announcement, setAnnouncement] = useState('');
 
   useEffect(() => {
@@ -111,7 +116,7 @@ export default function LocalDataPanel({ onCleared }: { onCleared?: () => void }
     <div className="bg-white rounded-2xl shadow-xs border border-gray-50 p-6">
       <h2 className="font-bold text-gray-800 mb-1">{t.heading}</h2>
       <p className="text-gray-500 text-sm mb-4">{t.where}</p>
-      {!available() && (
+      {hydrated && !available() && (
         <p className="text-amber-800 bg-amber-50 border border-amber-100 rounded-lg text-sm px-3 py-2 mb-4">
           {t.notPersisting}
         </p>

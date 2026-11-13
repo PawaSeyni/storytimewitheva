@@ -27,5 +27,6 @@ jobs:
       - run: npm run check:budgets        # S8-021: JS/CSS/HTML/image/PDF budgets against the built dist/
       - run: npm run check:secrets        # S8-016: no secret names or token-shaped strings in dist/
       - run: npm run test:seo               # per-route SEO assertions against prerendered dist/
+      - run: npm run check:hydration        # every prerendered page hydrates cleanly (src/main.tsx hydrateRoot)
       - run: npx playwright install --with-deps chromium
       - run: npx playwright test --project=local   # Layers 2, 3, 4 against the built artifact

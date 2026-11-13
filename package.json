@@ -35,7 +35,8 @@
     "patch:games": "node scripts/patch-games.mjs",
     "refresh-covers": "node scripts/refresh-covers.mjs",
     "refresh-ratings": "node scripts/refresh-ratings.mjs",
-    "maintenance": "node scripts/maintenance.mjs"
+    "maintenance": "node scripts/maintenance.mjs",
+    "check:hydration": "node scripts/check-hydration.mjs"
   },
   "dependencies": {
     "@fontsource-variable/lexend": "^5.3.0",

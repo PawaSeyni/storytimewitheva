@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useHydrated } from '../lib/hydrated';
+import { isPrerendering } from '../lib/prerender';
 import { useLanguage, useTranslation } from '../lib/language';
 import { localizePath } from '../lib/locales';
 import { track } from '../lib/analytics';
@@ -21,7 +23,11 @@ export default function ShareButton({ bookId, title }: { bookId: string; title: 
   const t = useTranslation(TRANSLATIONS);
   const [note, setNote] = useState('');
   const url = `${SITE_URL}${localizePath(`/books/${bookId}`, language)}/`;
-  const canNative = typeof navigator !== 'undefined' && typeof navigator.share === 'function';
+  const hydrated = useHydrated();
+  // The prerendered snapshot always shows the share label; the browser's real capability is
+  // used once hydration is done (useHydrated), so the first render matches the snapshot.
+  const canNative =
+    !hydrated || isPrerendering() || (typeof navigator !== 'undefined' && typeof navigator.share === 'function');
 
   const onShare = async () => {
     if (canNative) {

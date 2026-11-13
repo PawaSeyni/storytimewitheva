@@ -7,6 +7,7 @@ import { useBooks, books as rawBooks } from '../data/books';
 import { useActivities } from '../data/activities';
 import {
   loadProgress,
+  emptyProgress,
   loadReadingJournal,
   loadReadingTracker,
   type Progress,
@@ -21,6 +22,7 @@ import { gameUrl } from '../lib/gameUrl';
 import LocalDataPanel from '../components/LocalDataPanel';
 import {
   loadLibrary,
+  emptyLibrary,
   booksWithStatus,
   favoriteBookIds,
   onLibraryChange,
@@ -238,12 +240,14 @@ function ItemList({ items, emptyMsg, emptyCta }: ItemListProps) {
 }
 
 export default function Profile() {
-  const [progress, setProgress] = useState<Progress>(() => loadProgress());
-  const [journal, setJournal] = useState<JournalEntry[]>(() => loadReadingJournal());
-  const [tracker, setTracker] = useState<ReadingTracker | null>(() => loadReadingTracker());
+  // Empty first render: the prerendered /profile snapshot has no saved data, and the page is
+  // hydrated from it (src/main.tsx). The effect below loads what this browser has stored.
+  const [progress, setProgress] = useState<Progress>(emptyProgress);
+  const [journal, setJournal] = useState<JournalEntry[]>([]);
+  const [tracker, setTracker] = useState<ReadingTracker | null>(null);
   // Book status, favorites, recent, saved resources and preferences (Sprint 6). Reading
   // status no longer lives in `progress` — see personalLibrary.ts for why.
-  const [lib, setLib] = useState<PersonalizationStateV1>(() => loadLibrary());
+  const [lib, setLib] = useState<PersonalizationStateV1>(emptyLibrary);
   const t = useTranslation(TRANSLATIONS);
   const { language } = useLanguage();
   const activities = useActivities();

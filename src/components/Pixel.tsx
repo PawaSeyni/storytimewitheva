@@ -8,6 +8,7 @@ import praiseUrl from '../assets/pixel/praise.svg';
 import sleepyUrl from '../assets/pixel/sleepy.svg';
 import pointingUrl from '../assets/pixel/pointing.svg';
 import listeningUrl from '../assets/pixel/listening.svg';
+import { useHydrated } from '../lib/hydrated';
 
 // Pixel the Butterfly mascot.
 //
@@ -76,7 +77,9 @@ export function usePixelEnabled(): boolean {
   // Read once at first render (the storage adapter never throws), so the mascot no longer
   // pops in after an effect. The prerender snapshot keeps the mascot, as before.
   const [enabled] = useState(readEnabled);
-  return enabled;
+  // The snapshot always has the mascot; a stored or ?pixel=0 "off" applies after hydration.
+  const hydrated = useHydrated();
+  return hydrated ? enabled : true;
 }
 
 interface PixelProps {

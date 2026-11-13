@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { LANGUAGES } from '../lib/locales';
 import ContinueReading from '../components/ContinueReading';
 import PickedForYou from '../components/PickedForYou';
@@ -18,6 +17,7 @@ import evaReading640 from '../assets/eva-reading-640.webp';
 import evaReading480 from '../assets/eva-reading-480.webp';
 import evaReading from '../assets/eva-reading.jpg'; // kept for the og:image (broad social compatibility)
 import evaHeadshot from '../assets/eva-headshot.jpg'; // Meet Eva section (author portrait)
+import { useHydrated } from '../lib/hydrated';
 
 const SITE_URL = 'https://storytimewitheva.com';
 
@@ -218,7 +218,10 @@ export default function Home() {
   // Visitors arriving on a `?lm=` deep link clicked an ad or pin for ONE specific
   // freebie. For that traffic the offer goes first and the rest of the homepage
   // becomes supporting content below it. Organic visitors see the full IA.
-  const offerFirst = useMemo(() => hasLeadMagnetRequest(), []);
+  // Applied after hydration: the prerendered home snapshot has no ?lm=, so the first render
+  // keeps the organic order and the offer moves up right after (src/lib/hydrated.ts).
+  const hydrated = useHydrated();
+  const offerFirst = hydrated && hasLeadMagnetRequest();
 
   return (
     <main>

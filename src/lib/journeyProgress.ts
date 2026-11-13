@@ -33,6 +33,11 @@ export function onJourneyChange(fn: () => void): () => void {
   return () => window.removeEventListener(EVENT, fn);
 }
 
+/** No steps done: the first render's state (it must match the prerendered snapshot). */
+export function emptyProgress(journeyId: string): JourneyProgressV1 {
+  return { version: 1, journeyId, completedStepIds: [], lastStepId: undefined, updatedAt: '' };
+}
+
 /** Read progress, keeping only step ids still present in `validStepIds`. */
 export function loadProgress(journeyId: string, validStepIds: readonly string[]): JourneyProgressV1 {
   const valid = new Set(validStepIds);

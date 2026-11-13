@@ -267,7 +267,10 @@ export default function App() {
         {t.skip}
       </a>
       <Navbar />
-      <div className="flex-1 outline-hidden" id="main-content" tabIndex={-1}>
+      {/* data-suspense-outlet: the route <Suspense> boundary's content lives exactly
+          here, so scripts/prerender.mjs wraps it in React's <!--$--> … <!--/$-->
+          markers and main.tsx can hydrate the snapshot (landing pages: #root itself). */}
+      <div className="flex-1 outline-hidden" id="main-content" tabIndex={-1} data-suspense-outlet>
         {routes}
       </div>
       <Footer />

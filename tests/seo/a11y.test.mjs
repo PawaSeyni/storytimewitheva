@@ -266,7 +266,8 @@ test('journeys — every journey page states progress in text, has pressed-state
     for (const id of journeyRouteIds) {
       const h = read(`${prefix}/journeys/${id}`);
       assert.ok(h, `${prefix}/journeys/${id}: not prerendered`);
-      const text = h.replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+      // <!-- --> separates adjacent text nodes in the snapshots (React's hydration contract).
+      const text = h.replace(/<!-- -->/g, '').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
       for (const l of labels[loc]) assert.ok(text.includes(l), `${prefix}/journeys/${id}: missing "${l}"`);
       assert.ok((h.match(/aria-pressed="false"/g) || []).length >= 5, `${prefix}/journeys/${id}: expected a pressed-state control per step`);
       assert.ok(/role="status"[^>]*aria-live="polite"/.test(h), `${prefix}/journeys/${id}: no polite live region`);

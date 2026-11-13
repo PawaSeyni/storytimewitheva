@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from './LocalizedLink';
 import { useBooks } from '../data/books';
-import { loadLibrary, continueReadingId, recentlyExploredIds, onLibraryChange } from '../lib/personalLibrary';
+import { loadLibrary, continueReadingId, recentlyExploredIds, onLibraryChange, emptyLibrary } from '../lib/personalLibrary';
 import { useTranslation } from '../lib/language';
 import { isAmazonCover, sizedCover } from '../lib/covers';
 
@@ -18,7 +18,8 @@ const TRANSLATIONS = {
 export default function ContinueReading({ excludeBookId }: { excludeBookId?: string }) {
   const t = useTranslation(TRANSLATIONS);
   const books = useBooks();
-  const [state, setState] = useState(() => loadLibrary());
+  // Empty first render (hydration: it must match the prerendered snapshot); the effect loads storage.
+  const [state, setState] = useState(emptyLibrary);
 
   useEffect(() => {
     const sync = () => setState(loadLibrary());

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { isPrerendering } from '../lib/prerender';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -452,8 +452,17 @@ export default function PuzzleAdventuresDemo() {
   // reflect the real puzzle count instead of a hardcoded 8.
   const totalPuzzles = scrambledWords.length + riddles.length + 2;
 
-  // Random starting puzzle, chosen once in the state initializer (fixed under the prerender).
-  const [logicIndex, setLogicIndex] = useState(() => (isPrerendering() ? 0 : Math.floor(Math.random() * logicPuzzles.length)));
+  // Random starting puzzle. The first render always shows puzzle 0, exactly like the
+  // prerendered snapshot, so hydration matches (scripts/check-hydration.mjs); visitors get
+  // a random pick right after mount.
+  const [logicIndex, setLogicIndex] = useState(0);
+  // Mount only: a fresh random puzzle once per visit, not on every re-render.
+  const pickRandomPuzzle = useRef(() => {
+    if (!isPrerendering()) setLogicIndex(Math.floor(Math.random() * logicPuzzles.length));
+  });
+  useEffect(() => {
+    pickRandomPuzzle.current();
+  }, []);
   const logic = logicPuzzles[logicIndex];
 
   const [score, setScore] = useState(0);

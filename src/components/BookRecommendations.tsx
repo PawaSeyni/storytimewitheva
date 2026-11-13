@@ -14,6 +14,7 @@ import {
   booksWithStatus,
   favoriteBookIds,
   onLibraryChange,
+  emptyLibrary,
 } from '../lib/personalLibrary';
 import { recommend } from '../lib/recommendations';
 import BookCard from './BookCard';
@@ -41,7 +42,8 @@ const TRANSLATIONS = {
 export default function BookRecommendations() {
   const t = useTranslation(TRANSLATIONS);
   const books = useBooks();
-  const [state, setState] = useState(() => loadLibrary());
+  // Empty first render (hydration: it must match the prerendered snapshot); the effect loads storage.
+  const [state, setState] = useState(emptyLibrary);
 
   useEffect(() => {
     const sync = () => setState(loadLibrary());
