@@ -268,7 +268,13 @@ for (const route of routes) {
   const page = await browser.newPage();
   // S8-006: tell the app it is being snapshotted, so random-first-render pages (bingo,
   // puzzles) render a fixed state and the output is deterministic build to build.
-  await page.evaluateOnNewDocument(() => { window.__PRERENDERING__ = true; });
+  // Every snapshot starts from EMPTY storage. Pages share one browser, and book pages record
+  // "recently explored" books, so without this the /profile snapshot baked in counts from the
+  // build's own browsing, which first-time visitors then saw before the app took over.
+  await page.evaluateOnNewDocument(() => {
+    window.__PRERENDERING__ = true;
+    try { localStorage.clear(); sessionStorage.clear(); } catch { /* storage unavailable */ }
+  });
   try {
     await page.goto(ORIGIN + route, { waitUntil: 'load', timeout: 30000 });
     await waitUntilReady(page);
