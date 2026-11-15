@@ -166,7 +166,7 @@ These reuse the existing `StudioFrame` (hero, "Pairs with", printable card, prin
 | **P1** | 9 new Studio activities (§5a), in this order: Leo, Russet, Tower, Emperor, Little Mapmaker, Boat, Apple Tree, Meadowbrook, Rainbow Symphony | ~9–12 days | Takes book-specific coverage from 11/20 to 20/20 |
 | **P1** | `bookVocab` data, plus `?book=` support in the 5 orphaned games and Puzzles | M | About 6 × 20 book-specific activities from one data set |
 | **P1** | Book-specific coloring line art (start with the 6 books that link Coloring) | M (art) | Coloring is the most-linked activity for ages 3-7 |
-| **P2** | Story Companion PDF and `/free/<book-id>` magnet for each book | M | 20 signup entry points in place of 1 |
+| **P2** | ~~Story Companion PDF and `/free/<book-id>` magnet for each book~~ Done in pass 11 as a free activity kit per book at `/free/<book-id>-companion` | M | 20 signup entry points in place of 1 |
 | **P2** | Reading Passport | M | Turns activities into catalog purchases |
 | **P2** | Age-fit fixes, 4-column grid, Activities-hub age filter (E6) | S | Polish |
 | **P3** | ~~Second activities (§5b)~~ (pass 9), ~~Pixel Quiz~~ (pass 10), Sequencing Cards, themed Classroom Units | L | Expansion once the P0–P1 work is in and measured |
@@ -356,3 +356,19 @@ Tests: Studio tests extended to 24 pages, with the new activities in slot 2. All
 - **Tests:** `tests/funnel/pixel-quiz.test.mjs` checks every book: four rounds with three different pictures, exactly one from the book, no wrong picture named anywhere in the book's catalog text, the right picture not always in the same place, the same rounds on every run, and an "after reading" prompt in all three languages. Played through in a browser in EN (*Leo*), ES (*The Adventures of Maya's Shadow*) and FR (*A Little Boat's Big Wish*). The badge prints on one page.
 - **Size:** total JavaScript is now 413 KB gzip (warning at 400, limit 420). The next new activity will need some trimming or a budget review first.
 - **Still open:** Story Sequencing Cards (needs 4-6 scene images per book), themed Classroom Units, and coloring pages from the book illustrations (needs the owner's artwork).
+
+### Pass 11: a free activity kit for every book (§4C)
+
+- **20 new email-gated landing pages**, one per published book, at `/free/<book-id>-companion` (also `/es/…` and `/fr/…`). The `-companion` suffix keeps `/free/leo-and-the-wolf` for the free Leo storybook, unchanged.
+- **The offer** is the book's cover, a short blurb with the book's title and age range, and the same signup form as every other free printable. After signing up, the visitor gets three links in their language, each opened in that book's mode:
+  - the two-page story worksheet (Leo's hand-written worksheet for Leo);
+  - Pixel's Story Quiz;
+  - the story-word flashcards.
+- **Nothing new to write or maintain.** The kits are built from the catalog and the activities that already exist, like the learning packs (`src/data/bookCompanions.ts`). A new published book gets its kit automatically; "coming soon" books don't get one.
+- **Tagging:** each signup is tagged `lead_magnet = <book-id>-companion` in MailerLite, so signups can be counted book by book. The subscribe function already accepts any tag, so no server change was needed.
+- **Activity links open instead of downloading.** Bundle links used to carry the `download` attribute, which on an HTML page would save the page as a file. Links to activity pages now open normally (marked 👉); file links still download (📥), checked on the bilingual bundle, the classroom pack and the Leo storybook.
+- **Build guards:** the prerender builds all 60 pages and aborts if a companion slug collides with an existing magnet or pack. Like the other landing pages, they are noindex and stay out of the sitemap.
+- **Not linked from the site on purpose.** On the site, the same activities are already free and open from each book page. These pages are entry points for Pinterest, social posts and ads, one per book.
+- **Tests:** `tests/funnel/book-companions.test.mjs` (one kit per published book, no slug collisions, every link opens an existing activity in that book's mode and language); `tests/seo/book-companions.test.mjs` (all 60 pages prerendered, noindex, tagged, naming the book).
+- **Size:** the signup form is part of the first page load, so the entry bundle grows by 2 KB to 109 KB gzip (budget 125); total JavaScript is 415 KB. A trimming pass found nothing to remove without cutting features, so the total-JavaScript budget was raised to 460 / 480 KB (owner decision; reasons in `docs/platform/PERFORMANCE_BUDGET_POLICY.md`). The entry and per-page budgets, which govern what a visitor downloads, are unchanged.
+- **Their own thank-you message** (owner decision). After signup a kit names the book and says to open the activities ("Your "The Fig Tree's Secret" activity kit is ready! Tap an activity below to open it."), in all three languages. The other offers keep "your download is ready".
