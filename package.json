@@ -39,9 +39,9 @@
   },
   "dependencies": {
     "@fontsource-variable/lexend": "^5.3.0",
-    "@netlify/aws-lambda-compat": "^2.0.3",
-    "@netlify/blobs": "^11.1.7",
-    "lucide-react": "^1.69.0",
+    "@netlify/aws-lambda-compat": "^2.0.4",
+    "@netlify/blobs": "^11.1.9",
+    "lucide-react": "^1.72.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-router-dom": "^7.18.5"
@@ -51,27 +51,27 @@
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.65.0",
     "@sparticuz/chromium": "^149.0.0",
-    "@tailwindcss/cli": "^4.3.4",
-    "@tailwindcss/postcss": "^4.3.4",
+    "@tailwindcss/cli": "^4.3.5",
+    "@tailwindcss/postcss": "^4.3.5",
     "@types/node": "^22.20.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "@vitejs/plugin-react": "^6.2.1",
+    "@vitejs/plugin-react": "^6.3.0",
     "esbuild": "^0.28.2",
     "eslint": "^10.14.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.7",
     "globals": "^17.14.0",
     "postcss": "^8.5.32",
-    "puppeteer": "^25.10.0",
+    "puppeteer": "^25.17.0",
     "puppeteer-core": "^25.1.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.1",
-    "vite": "8.3.6"
+    "typescript-eslint": "^8.72.2",
+    "vite": "8.3.8"
   },
   "optionalDependencies": {
-    "@rollup/rollup-darwin-arm64": "^4.67.5"
+    "@rollup/rollup-darwin-arm64": "^4.68.2"
   },
   "overrides": {
     "@parcel/watcher": "^2.6.0"
