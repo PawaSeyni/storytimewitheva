@@ -624,4 +624,33 @@ export const activities: Activity[] = [
     desc: {"en": "Choose a witness from your family’s life and build a timeline of what it has seen across three generations.", "es": "Elige un testigo de la vida de tu familia y crea una línea del tiempo de lo que ha visto en tres generaciones.", "fr": "Choisis un témoin de la vie de ta famille et crée une frise de ce qu’il a vu sur trois générations."},
     category: {"en": "Family Stories", "es": "Historias familiares", "fr": "Histoires de famille"},
   },
+  // ── Activity Studio, wave 4 (activities re-audit 2026-11-18): an activity of their own for
+  // the three books whose only book-specific activity was shared with other books.
+  {
+    slug: 'small-noticer',
+    bookSpecific: true,
+    emoji: '🐦',
+    ages: '4-8',
+    title: { en: 'Small Noticer', es: 'Ojos de gorrión', fr: 'Yeux de moineau' },
+    desc: { en: 'Find the three small things the big animals walked past, then notice small things at home and plan a tiny kind act for each.', es: 'Encuentra las tres cosas pequeñas que los animales grandes no vieron y luego fíjate en cosas pequeñas en casa y planea un pequeño acto amable para cada una.', fr: 'Trouve les trois petites choses que les grands animaux n’ont pas vues, puis remarque de petites choses à la maison et prévois un petit geste gentil pour chacune.' },
+    category: { en: 'Kindness', es: 'Bondad', fr: 'Gentillesse' },
+  },
+  {
+    slug: 'kindness-chain',
+    bookSpecific: true,
+    emoji: '🦋',
+    ages: '5-9',
+    title: { en: 'Kindness Chain', es: 'La cadena de la bondad', fr: 'La chaîne de gentillesse' },
+    desc: { en: 'Start with one small kind act and follow it from person to person, then print paper chain strips to keep kindness travelling.', es: 'Empieza con un pequeño acto amable y síguelo de persona en persona; luego imprime tiras para una cadena de papel y que la bondad siga viajando.', fr: 'Commence par un petit geste gentil et suis-le de personne en personne, puis imprime des bandes pour une chaîne en papier qui fait voyager la gentillesse.' },
+    category: { en: 'Kindness', es: 'Bondad', fr: 'Gentillesse' },
+  },
+  {
+    slug: 'rough-to-smooth',
+    bookSpecific: true,
+    emoji: '🪵',
+    ages: '5-9',
+    title: { en: 'Rough to Smooth', es: 'De áspero a suave', fr: 'De rugueux à lisse' },
+    desc: { en: 'Sand a rough plank smooth one patient stroke at a time, then choose a skill to grow slowly and print a seven-day practice card.', es: 'Lija una tabla áspera hasta dejarla suave, un movimiento paciente cada vez; luego elige una habilidad que harás crecer despacio e imprime una tarjeta de práctica de siete días.', fr: 'Ponce une planche rugueuse jusqu’à ce qu’elle soit lisse, un geste patient à la fois, puis choisis un savoir-faire à faire grandir doucement et imprime une carte d’entraînement de sept jours.' },
+    category: { en: 'Patience', es: 'Paciencia', fr: 'Patience' },
+  },
 ];

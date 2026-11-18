@@ -136,6 +136,9 @@ const BraveBreathingDemo = chunk(L.loadBraveBreathingDemo);
 const InventorBlueprintDemo = chunk(L.loadInventorBlueprintDemo);
 const ThousandCubesDemo = chunk(L.loadThousandCubesDemo);
 const TreeTimelineDemo = chunk(L.loadTreeTimelineDemo);
+const SmallNoticerDemo = chunk(L.loadSmallNoticerDemo);
+const KindnessChainDemo = chunk(L.loadKindnessChainDemo);
+const RoughToSmoothDemo = chunk(L.loadRoughToSmoothDemo);
 const CloudDetectiveDemo = chunk(L.loadCloudDetectiveDemo);
 const ShadowTheatreDemo = chunk(L.loadShadowTheatreDemo);
 const KindnessRippleDemo = chunk(L.loadKindnessRippleDemo);
@@ -183,6 +186,9 @@ const routeDefs = [
   { path: '/activities/inventor-blueprint', element: <DemoPage><InventorBlueprintDemo /></DemoPage> },
   { path: '/activities/thousand-cubes-challenge', element: <DemoPage><ThousandCubesDemo /></DemoPage> },
   { path: '/activities/tree-timeline', element: <DemoPage><TreeTimelineDemo /></DemoPage> },
+  { path: '/activities/small-noticer', element: <DemoPage><SmallNoticerDemo /></DemoPage> },
+  { path: '/activities/kindness-chain', element: <DemoPage><KindnessChainDemo /></DemoPage> },
+  { path: '/activities/rough-to-smooth', element: <DemoPage><RoughToSmoothDemo /></DemoPage> },
   { path: '/activities/cloud-detective-journal', element: <DemoPage><CloudDetectiveDemo /></DemoPage> },
   { path: '/activities/shadow-theatre', element: <DemoPage><ShadowTheatreDemo /></DemoPage> },
   { path: '/activities/kindness-ripple', element: <DemoPage><KindnessRippleDemo /></DemoPage> },

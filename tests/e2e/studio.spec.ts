@@ -27,6 +27,9 @@ const PAIRINGS: Record<string, string[]> = {
   '/activities/inventor-blueprint': ['heidis-journey-to-mastery'],
   '/activities/thousand-cubes-challenge': ['miras-thousand-cubes'],
   '/activities/tree-timeline': ['fig-trees-secret'],
+  '/activities/small-noticer': ['sparrow-saved-forest'],
+  '/activities/kindness-chain': ['butterfly-effect'],
+  '/activities/rough-to-smooth': ['sanding-block'],
 };
 
 for (const [route, books] of Object.entries(PAIRINGS)) {

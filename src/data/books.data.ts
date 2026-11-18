@@ -341,7 +341,7 @@ export const books: Book[] = [
     ageRange: '4-8',
     themeIds: ['kindness', 'courage'],
     relatedBookIds: ['diegos-brave-leap', 'butterfly-effect', 'true-beauty-meadowbrook'],
-    relatedActivityIds: ['kindness-ripple', 'adventure-journal', 'bingo', 'character-workshop'],
+    relatedActivityIds: ['small-noticer', 'kindness-ripple', 'adventure-journal', 'bingo'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "The biggest animals do not notice the forest is in trouble. Who do you think will?",
@@ -449,7 +449,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['kindness'],
     relatedBookIds: ['sparrow-saved-forest', 'crooked-little-apple-tree', 'true-beauty-meadowbrook'],
-    relatedActivityIds: ['kindness-ripple', 'adventure-journal', 'bingo', 'emotion-wheel'],
+    relatedActivityIds: ['kindness-chain', 'kindness-ripple', 'emotion-wheel', 'adventure-journal'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "What do you think one small kind thing could turn into?",
@@ -669,7 +669,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['patience-mastery'],
     relatedBookIds: ['heidis-journey-to-mastery', 'miras-thousand-cubes', 'russet-the-fox'],
-    relatedActivityIds: ['patient-maker-passport', 'bookmark-designer', 'craft-corner'],
+    relatedActivityIds: ['rough-to-smooth', 'patient-maker-passport', 'bookmark-designer', 'craft-corner'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "The boy wants to be a great woodworker today, right now. Do you think that can happen?",
