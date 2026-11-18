@@ -8,11 +8,12 @@
 | Type | Count | Detail |
 |---|---|---|
 | Books | 20 | 20 with related activities, 20 with related books, 20 with discussion prompts (60 prompts) |
-| Activities | 52 | 12 games, 40 in-app |
+| Activities | 53 | 12 games, 41 in-app |
 | Resources | 12 | download 4, article 8 |
 | Collections | 20 | theme 11, age 3, educator 3, seasonal 3; 20 published; 20 routable |
 | Journeys | 3 | 3 published, 15 steps |
 | Learning packs | 2 | 2 published |
+| Classroom units | 5 | 5 published, 25 plan days |
 
 ## Collections
 
@@ -53,6 +54,16 @@
 |---|---|---|---|---|
 | classroom-pack | educator | published | download-parents-guide, download-follow-up-activities, download-bilingual-flashcards | classroom-feelings, classroom-bilingual, classroom-stem-curiosity |
 | home-reading-pack | parent | published | download-bedtime-routine, download-parents-guide, download-follow-up-activities | ages-3-5, ages-6-7 |
+
+## Classroom units (activities audit 2026-11, §5c item 5)
+
+| id | state | ages | themes | books | activities | printables | pack |
+|---|---|---|---|---|---|---|---|
+| unit-kindness | published | 4-9 | kindness | sparrow-saved-forest, butterfly-effect, true-beauty-meadowbrook | small-noticer, kindness-chain, kindness-mirror | download-parents-guide, download-follow-up-activities | /free/unit-kindness-pack |
+| unit-patience | published | 5-9 | patience-mastery | sanding-block, heidis-journey-to-mastery, miras-thousand-cubes | rough-to-smooth, inventor-blueprint, thousand-cubes-challenge, patient-maker-passport | download-parents-guide, download-follow-up-activities | /free/unit-patience-pack |
+| unit-courage | published | 4-8 | courage | diegos-brave-leap, leo-and-the-wolf | first-day-brave-plan, brave-breathing, trust-meter | download-parents-guide, download-follow-up-activities | /free/unit-courage-pack |
+| unit-feelings | published | 3-8 | emotions, self-worth | pawa-rainbow-cloud, crooked-little-apple-tree | feelings-weather-report, emotion-wheel, one-of-a-kind-tree | download-parents-guide, download-follow-up-activities | /free/unit-feelings-pack |
+| unit-curiosity | published | 4-8 | curiosity | cloud-collector, little-mapmaker, colors-mixed-up | cloud-detective-journal, map-my-world, color-mix-lab | download-parents-guide, download-follow-up-activities | /free/unit-curiosity-pack |
 
 ## Parent guides (S7-006)
 

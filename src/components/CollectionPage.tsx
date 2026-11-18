@@ -9,6 +9,7 @@ import { useActivities } from '../data/activities';
 import { resources as RESOURCES, resourcePath } from '../data/resources';
 import { learningPackById, packResources } from '../data/contentIndex';
 import { gameUrl } from '../lib/gameUrl';
+import { classroomUnitById } from '../data/classroomUnits';
 
 // Presentation for ANY collection — theme or age band (S7-001 / S7-002). The route
 // component resolves the id and hands over localized title, intro, the books, and the
@@ -29,6 +30,7 @@ const TRANSLATIONS = {
     seasonalUntil: 'Available until',
     packInside: 'Inside the pack:',
     getPack: 'Get the pack',
+    unitsHeading: 'Classroom units with these books',
   },
   es: {
     home: 'Inicio', books: 'Libros',
@@ -42,6 +44,7 @@ const TRANSLATIONS = {
     seasonalUntil: 'Disponible hasta el',
     packInside: 'El paquete incluye:',
     getPack: 'Quiero el paquete',
+    unitsHeading: 'Unidades para el aula con estos libros',
   },
   fr: {
     home: 'Accueil', books: 'Livres',
@@ -55,6 +58,7 @@ const TRANSLATIONS = {
     seasonalUntil: 'Disponible jusqu’au',
     packInside: 'Le pack contient :',
     getPack: 'Recevoir le pack',
+    unitsHeading: 'Unités pour la classe avec ces livres',
   },
 };
 
@@ -74,19 +78,22 @@ export interface CollectionPageProps {
   audience?: 'educator';
   /** Published learning packs that accompany this collection (S7-008). */
   packIds?: string[];
+  /** Classroom units (activities audit 2026-11, §5c item 5) that share a theme and a book with this collection. */
+  unitIds?: string[];
   /** Seasonal (S7-012): window state text. `emptyState` replaces the book grid when closed. */
   season?: { closesLabel: string };
   emptyState?: string;
   noindex?: boolean;
 }
 
-export default function CollectionPage({ id, title, intro, seoTitle, books, browseOthersHeading, others, activityIds = [], resourceIds = [], audience, packIds = [], season, emptyState, noindex = false }: CollectionPageProps) {
+export default function CollectionPage({ id, title, intro, seoTitle, books, browseOthersHeading, others, activityIds = [], resourceIds = [], audience, packIds = [], unitIds = [], season, emptyState, noindex = false }: CollectionPageProps) {
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
   const allActivities = useActivities();
   const featured = activityIds.map((slug) => allActivities.find((a) => a.slug === slug)).filter((a) => a !== undefined);
   const featuredResources = resourceIds.map((rid) => RESOURCES.find((r) => r.id === rid)).filter((r) => r !== undefined);
   const packs = packIds.map((pid) => learningPackById[pid]).filter((p) => p !== undefined);
+  const units = unitIds.map((uid) => classroomUnitById[uid]).filter((u) => u !== undefined);
   const path = `/collections/${id}`;
 
   const crumbs = [
@@ -222,6 +229,23 @@ export default function CollectionPage({ id, title, intro, seoTitle, books, brow
                   </ul>
                   <Link to={`/free/${p.id}`} className="mt-auto inline-flex justify-center px-5 py-2 rounded-full bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold transition-colors">
                     {t.getPack} →
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {units.length > 0 && (
+        <section className="pb-10 px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">{t.unitsHeading}</h2>
+            <ul className="flex flex-wrap gap-2">
+              {units.map((u) => (
+                <li key={u.id}>
+                  <Link to={`/classroom/${u.id}`} className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white border border-emerald-100 text-sm text-emerald-900 font-semibold hover:border-emerald-300">
+                    <span aria-hidden>{u.emoji}</span>{u.title[language]} →
                   </Link>
                 </li>
               ))}

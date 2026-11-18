@@ -75,6 +75,7 @@ function ScrollToHash() {
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import FeedbackWidget from './components/FeedbackWidget';
+import { StatusIconSprite } from './components/StatusIcons';
 import Home from './pages/Home';
 
 // All non-home pages are code-split so the initial bundle only contains what
@@ -86,6 +87,8 @@ const BookDetail = chunk(L.loadBookDetail);
 const Collection = chunk(L.loadCollection);
 const Journeys = chunk(L.loadJourneys);
 const Journey = chunk(L.loadJourney);
+const Classroom = chunk(L.loadClassroom);
+const ClassroomUnit = chunk(L.loadClassroomUnit);
 const Activities = chunk(L.loadActivities);
 const Resources = chunk(L.loadResources);
 const Article = chunk(L.loadArticle);
@@ -141,6 +144,7 @@ const KindnessChainDemo = chunk(L.loadKindnessChainDemo);
 const RoughToSmoothDemo = chunk(L.loadRoughToSmoothDemo);
 const EveryoneGetsHeardDemo = chunk(L.loadEveryoneGetsHeardDemo);
 const TrueRichesCoinsDemo = chunk(L.loadTrueRichesCoinsDemo);
+const StoryDiceDemo = chunk(L.loadStoryDiceDemo);
 const CloudDetectiveDemo = chunk(L.loadCloudDetectiveDemo);
 const ShadowTheatreDemo = chunk(L.loadShadowTheatreDemo);
 const KindnessRippleDemo = chunk(L.loadKindnessRippleDemo);
@@ -157,6 +161,8 @@ const routeDefs = [
   { path: '/collections/:collectionId', element: <Collection /> },
   { path: '/journeys', element: <Journeys /> },
   { path: '/journeys/:journeyId', element: <Journey /> },
+  { path: '/classroom', element: <Classroom /> },
+  { path: '/classroom/:unitId', element: <ClassroomUnit /> },
   { path: '/activities', element: <Activities /> },
   { path: '/activities/story-builder', element: <DemoPage><StoryBuilderDemo /></DemoPage> },
   { path: '/activities/character-workshop', element: <DemoPage><CharacterWorkshopDemo /></DemoPage> },
@@ -193,6 +199,7 @@ const routeDefs = [
   { path: '/activities/rough-to-smooth', element: <DemoPage><RoughToSmoothDemo /></DemoPage> },
   { path: '/activities/everyone-gets-heard', element: <DemoPage><EveryoneGetsHeardDemo /></DemoPage> },
   { path: '/activities/coins-you-cant-spend', element: <DemoPage><TrueRichesCoinsDemo /></DemoPage> },
+  { path: '/activities/collection-story-dice', element: <DemoPage><StoryDiceDemo /></DemoPage> },
   { path: '/activities/cloud-detective-journal', element: <DemoPage><CloudDetectiveDemo /></DemoPage> },
   { path: '/activities/shadow-theatre', element: <DemoPage><ShadowTheatreDemo /></DemoPage> },
   { path: '/activities/kindness-ripple', element: <DemoPage><KindnessRippleDemo /></DemoPage> },
@@ -262,6 +269,7 @@ export default function App() {
     return (
       <>
         <ScrollToHash />
+        <StatusIconSprite />
         {routes}
       </>
     );
@@ -270,6 +278,8 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <ScrollToHash />
+      {/* One copy of the reading-status icons per document; every BookStatusButton <use>s them. */}
+      <StatusIconSprite />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-100 focus:top-3 focus:left-3 focus:bg-white focus:text-purple-700 focus:font-semibold focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg"

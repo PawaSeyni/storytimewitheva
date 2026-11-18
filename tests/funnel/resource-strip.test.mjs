@@ -1,8 +1,10 @@
-// The shared resource strip on book pages (B-03).
+// The resource strip on book pages.
 //
-// relatedResourceIds stays EMPTY on purpose: all ten resources are general reading
-// guidance with no theme, age or title reference, so per-book pairing would invent a
-// signal that does not exist. These tests keep the shared set honest instead.
+// B-03 (2026-09) kept relatedResourceIds EMPTY and rendered one SHARED set everywhere,
+// because resources then carried no theme or age signal. S7-006 gave every guide
+// relatedThemeIds, and in 2026-11 the strip became per-book (books.data.ts, rule in the
+// field's doc comment, re-derived in book-resources.test.mjs). The shared set survives
+// only as the fallback for a page with no book context; these tests keep it honest.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -31,15 +33,16 @@ test('resource strip — shared resources are complete in EN, FR and ES', () => 
   }
 });
 
-test('resource strip — relatedResourceIds stays empty while the strip is shared', () => {
-  // If someone populates relatedResourceIds, the strip is the wrong model and this
-  // test should be replaced deliberately, not deleted quietly.
+test('resource strip — renders the book record, with the shared set only as a fallback', () => {
+  // Deliberate replacement of the B-03 "stays empty" guard (see the header). Every book
+  // now carries its own pairs, so the shared set must never be what a book page shows.
   for (const b of books) {
-    assert.equal(
-      (b.relatedResourceIds ?? []).length, 0,
-      `${b.id}: relatedResourceIds populated — B-03 decided on a SHARED strip instead; revisit docs/PUNCH_LIST.md B-03 before changing this`,
-    );
+    assert.ok((b.relatedResourceIds ?? []).length > 0, `${b.id}: no relatedResourceIds; the strip would fall back to the shared set`);
   }
+  assert.ok(strip.includes('relatedResourceIds'), 'ResourceStrip must read the book record');
+  assert.ok(/perBook \? own : SHARED_RESOURCE_IDS/.test(strip), 'the shared set is the fallback, not the default');
+  const detail = readFileSync(new URL('../../src/pages/BookDetail.tsx', import.meta.url), 'utf8');
+  assert.ok(detail.includes('<ResourceStrip bookId={book.id} />'), 'BookDetail must pass the book id to the strip');
 });
 
 test('resource save controls — the save id is the registry id, never a hand-built literal', () => {

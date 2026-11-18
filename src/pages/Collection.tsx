@@ -18,6 +18,7 @@ import CollectionPage from '../components/CollectionPage';
 import NotFound from './NotFound';
 import { useTranslation, useLanguage } from '../lib/language';
 import { intlLocale } from '../lib/locales';
+import { unitsForCollection } from '../data/classroomUnits';
 
 const TRANSLATIONS = {
   en: { browseThemes: 'Browse other themes', browseAges: 'Browse by age', seoTheme: 'Picture books about', seoAge: 'Picture books for', seoEducator: 'A classroom collection', seoSeasonal: 'A seasonal collection', returns: 'This seasonal collection is resting. It returns on', closedIntro: 'Browse the collections below in the meantime.' },
@@ -83,8 +84,10 @@ export default function Collection() {
         />
       );
     }
+    // Educator collections also point at the classroom units that share a theme and a book with them.
+    const unitIds = record.kind === 'educator' ? unitsForCollection(record.themeIds, record.bookIds ?? []).map((u) => u.id) : [];
     return (
-      <CollectionPage id={collectionId} title={title} intro={record.description[language]} seoTitle={`${title}: ${t.seoEducator}`} books={inCollection} browseOthersHeading={t.browseThemes} others={others} audience={record.kind === 'educator' ? 'educator' : undefined} {...extras} />
+      <CollectionPage id={collectionId} title={title} intro={record.description[language]} seoTitle={`${title}: ${t.seoEducator}`} books={inCollection} browseOthersHeading={t.browseThemes} others={others} audience={record.kind === 'educator' ? 'educator' : undefined} unitIds={unitIds} {...extras} />
     );
   }
 

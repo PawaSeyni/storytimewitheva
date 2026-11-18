@@ -11,6 +11,8 @@ export const loadBookDetail = preloadable(() => import('./pages/BookDetail'));
 export const loadCollection = preloadable(() => import('./pages/Collection'));
 export const loadJourneys = preloadable(() => import('./pages/Journeys'));
 export const loadJourney = preloadable(() => import('./pages/Journey'));
+export const loadClassroom = preloadable(() => import('./pages/Classroom'));
+export const loadClassroomUnit = preloadable(() => import('./pages/ClassroomUnit'));
 export const loadActivities = preloadable(() => import('./pages/Activities'));
 export const loadResources = preloadable(() => import('./pages/Resources'));
 export const loadArticle = preloadable(() => import('./pages/Article'));
@@ -61,6 +63,7 @@ export const loadKindnessChainDemo = preloadable(() => import('./demos/KindnessC
 export const loadRoughToSmoothDemo = preloadable(() => import('./demos/RoughToSmoothDemo'));
 export const loadEveryoneGetsHeardDemo = preloadable(() => import('./demos/EveryoneGetsHeardDemo'));
 export const loadTrueRichesCoinsDemo = preloadable(() => import('./demos/TrueRichesCoinsDemo'));
+export const loadStoryDiceDemo = preloadable(() => import('./demos/StoryDiceDemo'));
 export const loadCloudDetectiveDemo = preloadable(() => import('./demos/CloudDetectiveDemo'));
 export const loadShadowTheatreDemo = preloadable(() => import('./demos/ShadowTheatreDemo'));
 export const loadKindnessRippleDemo = preloadable(() => import('./demos/KindnessRippleDemo'));
@@ -78,6 +81,8 @@ export const ROUTE_CHUNKS: ReadonlyArray<{ path: string; loaders: readonly Loade
   { path: '/collections/:collectionId', loaders: [loadCollection] },
   { path: '/journeys', loaders: [loadJourneys] },
   { path: '/journeys/:journeyId', loaders: [loadJourney] },
+  { path: '/classroom', loaders: [loadClassroom] },
+  { path: '/classroom/:unitId', loaders: [loadClassroomUnit] },
   { path: '/activities', loaders: [loadActivities] },
   { path: '/activities/story-builder', loaders: [loadDemoPage, loadStoryBuilderDemo] },
   { path: '/activities/character-workshop', loaders: [loadDemoPage, loadCharacterWorkshopDemo] },
@@ -114,6 +119,7 @@ export const ROUTE_CHUNKS: ReadonlyArray<{ path: string; loaders: readonly Loade
   { path: '/activities/rough-to-smooth', loaders: [loadDemoPage, loadRoughToSmoothDemo] },
   { path: '/activities/everyone-gets-heard', loaders: [loadDemoPage, loadEveryoneGetsHeardDemo] },
   { path: '/activities/coins-you-cant-spend', loaders: [loadDemoPage, loadTrueRichesCoinsDemo] },
+  { path: '/activities/collection-story-dice', loaders: [loadDemoPage, loadStoryDiceDemo] },
   { path: '/activities/cloud-detective-journal', loaders: [loadDemoPage, loadCloudDetectiveDemo] },
   { path: '/activities/shadow-theatre', loaders: [loadDemoPage, loadShadowTheatreDemo] },
   { path: '/activities/kindness-ripple', loaders: [loadDemoPage, loadKindnessRippleDemo] },

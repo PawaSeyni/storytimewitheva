@@ -81,7 +81,24 @@ export interface Book {
   /** References into the resource registry (src/data/resources.ts). IDs there are
    *  kind-prefixed and globally unique because the article anchor and the download
    *  slug `follow-up-activities` collide; a bare slug would resolve to the wrong one.
-   *  Validated in tests/funnel/relationships.test.mjs. */
+   *  Validated in tests/funnel/relationships.test.mjs.
+   *
+   *  RULE (2026-11, supersedes B-03 "shared strip"; tests/funnel/book-resources.test.mjs
+   *  re-derives it and fails if a record drifts). Two or three ids per book, in this order:
+   *    1. `download-parents-guide`: the one printable written per story (discussion
+   *       prompts and read-aloud tips), so it goes with every book.
+   *    2. One printable by reading age, taken from the learning pack whose age bands
+   *       cover the book's PRIMARY band (taxonomy.derivePrimaryAgeBand): ages-3-5 and
+   *       ages-6-7 books get the home routine chart (`download-bedtime-routine`, the
+   *       home-reading pack's lead item); ages-8-9 books (every 5-9 title) get the
+   *       classroom follow-up sheets (`download-follow-up-activities`).
+   *    3. The parent guide whose `relatedThemeIds` share the MOST themes with the book,
+   *       ties broken by the book's primary theme (themeIds[0]) and then registry order.
+   *       No guide names honesty, kindness, gratitude or humility-listening, so a book
+   *       with only those themes carries two ids rather than a guide that does not fit.
+   *  B-03 (2026-09) left this empty because resources then carried no theme or age
+   *  signal; S7-006 gave every guide `relatedThemeIds`, which is what the rule matches.
+   *  `download-bilingual-flashcards` is reached through the bilingual guides, not here. */
   relatedResourceIds?: string[];
   /** Read-aloud discussion prompts. The MODEL and its validation ship now; the
    *  prompts themselves are editorial and are populated per book after sign-off,
@@ -119,6 +136,7 @@ export const books: Book[] = [
     themeIds: ['curiosity', 'creativity'],
     relatedBookIds: ['little-mapmaker', 'heidis-journey-to-mastery', 'cloud-collector'],
     relatedActivityIds: ['color-mix-lab', 'bookmark-designer', 'build-a-scene', 'coloring'],
+    relatedResourceIds: ['download-parents-guide', 'download-bedtime-routine', 'article-follow-up-activities'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "If you could paint the sky any color at all, which one would you choose?",
@@ -174,6 +192,7 @@ export const books: Book[] = [
     themeIds: ['diversity', 'creativity'],
     relatedBookIds: ['mayas-shadow', 'colors-mixed-up', 'crooked-little-apple-tree'],
     relatedActivityIds: ['harmonia-orchestra', 'build-a-scene', 'coloring', 'bilingual-flashcards'],
+    relatedResourceIds: ['download-parents-guide', 'download-bedtime-routine', 'article-bilingual-reading'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Every color in Harmonia sings its own song. What sound do you think blue makes?",
@@ -229,6 +248,7 @@ export const books: Book[] = [
     themeIds: ['humility-listening'],
     relatedBookIds: ['emperors-true-treasure', 'russet-the-fox', 'cloud-collector'],
     relatedActivityIds: ['ask-first-architect', 'everyone-gets-heard', 'adventure-journal'],
+    relatedResourceIds: ['download-parents-guide', 'download-follow-up-activities'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Victor is about to build the tallest tower ever. What could go wrong if nobody asks questions?",
@@ -285,6 +305,7 @@ export const books: Book[] = [
     themeIds: ['wonder', 'creativity'],
     relatedBookIds: ['little-mapmaker', 'rainbow-symphony', 'little-boats-big-wish'],
     relatedActivityIds: ['shadow-theatre', 'shadow-science', 'coloring', 'build-a-scene'],
+    relatedResourceIds: ['download-parents-guide', 'download-bedtime-routine', 'article-making-reading-magical'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Look at your shadow. Where do you think it goes when you fall asleep?",
@@ -342,6 +363,7 @@ export const books: Book[] = [
     themeIds: ['kindness', 'courage'],
     relatedBookIds: ['diegos-brave-leap', 'butterfly-effect', 'true-beauty-meadowbrook'],
     relatedActivityIds: ['small-noticer', 'kindness-ripple', 'adventure-journal', 'bingo'],
+    relatedResourceIds: ['download-parents-guide', 'download-bedtime-routine', 'article-reluctant-readers'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "The biggest animals do not notice the forest is in trouble. Who do you think will?",
@@ -396,6 +418,7 @@ export const books: Book[] = [
     themeIds: ['courage', 'emotions'],
     relatedBookIds: ['sparrow-saved-forest', 'leo-and-the-wolf', 'pawa-rainbow-cloud'],
     relatedActivityIds: ['first-day-brave-plan', 'brave-breathing', 'emotion-wheel', 'finish-the-story'],
+    relatedResourceIds: ['download-parents-guide', 'download-bedtime-routine', 'article-reluctant-readers'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Diego is standing at the edge of a cliff and everyone is watching. How do you think his tummy feels?",
@@ -450,6 +473,7 @@ export const books: Book[] = [
     themeIds: ['kindness'],
     relatedBookIds: ['sparrow-saved-forest', 'crooked-little-apple-tree', 'true-beauty-meadowbrook'],
     relatedActivityIds: ['kindness-chain', 'kindness-ripple', 'emotion-wheel', 'adventure-journal'],
+    relatedResourceIds: ['download-parents-guide', 'download-follow-up-activities'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "What do you think one small kind thing could turn into?",
@@ -506,6 +530,7 @@ export const books: Book[] = [
     themeIds: ['gratitude', 'humility-listening'],
     relatedBookIds: ['tower-touched-sky', 'russet-the-fox', 'fig-trees-secret'],
     relatedActivityIds: ['true-treasure-chest', 'coins-you-cant-spend', 'adventure-journal'],
+    relatedResourceIds: ['download-parents-guide', 'download-follow-up-activities'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "The emperor has a palace full of gold and still feels empty. What do you think is missing?",
@@ -560,6 +585,7 @@ export const books: Book[] = [
     themeIds: ['self-worth', 'diversity', 'kindness'],
     relatedBookIds: ['true-beauty-meadowbrook', 'sparrow-saved-forest', 'rainbow-symphony'],
     relatedActivityIds: ['one-of-a-kind-tree', 'emotion-wheel', 'coloring', 'bilingual-flashcards'],
+    relatedResourceIds: ['download-parents-guide', 'download-bedtime-routine', 'article-reluctant-readers'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "The orchard only wants straight, perfect trees. What do you think of that rule?",
@@ -616,6 +642,7 @@ export const books: Book[] = [
     themeIds: ['self-worth', 'kindness', 'diversity'],
     relatedBookIds: ['crooked-little-apple-tree', 'sparrow-saved-forest', 'rainbow-symphony'],
     relatedActivityIds: ['kindness-mirror', 'emotion-wheel', 'adventure-journal', 'bilingual-flashcards'],
+    relatedResourceIds: ['download-parents-guide', 'download-bedtime-routine', 'article-reluctant-readers'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "In this town everyone competes to look the most beautiful. Does that sound fun to you?",
@@ -670,6 +697,7 @@ export const books: Book[] = [
     themeIds: ['patience-mastery'],
     relatedBookIds: ['heidis-journey-to-mastery', 'miras-thousand-cubes', 'russet-the-fox'],
     relatedActivityIds: ['rough-to-smooth', 'patient-maker-passport', 'bookmark-designer', 'craft-corner'],
+    relatedResourceIds: ['download-parents-guide', 'download-follow-up-activities', 'article-age-appropriate-reading'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "The boy wants to be a great woodworker today, right now. Do you think that can happen?",
@@ -726,6 +754,7 @@ export const books: Book[] = [
     themeIds: ['honesty', 'courage'],
     relatedBookIds: ['sparrow-saved-forest', 'diegos-brave-leap'],
     relatedActivityIds: ['trust-meter', 'leo-and-the-wolf-worksheet', 'finish-the-story', 'character-workshop'],
+    relatedResourceIds: ['download-parents-guide', 'download-bedtime-routine', 'article-reluctant-readers'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Leo has a real job looking after the sheep. What do you think that job needs most?",
@@ -780,6 +809,7 @@ export const books: Book[] = [
     themeIds: ['humility-listening', 'patience-mastery'],
     relatedBookIds: ['cloud-collector', 'tower-touched-sky', 'emperors-true-treasure'],
     relatedActivityIds: ['listen-like-a-fox', 'finish-the-story', 'adventure-journal', 'bookmark-designer'],
+    relatedResourceIds: ['download-parents-guide', 'download-bedtime-routine', 'article-age-appropriate-reading'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Russet is sure he is the cleverest fox of all. What could go wrong for him?",
@@ -834,6 +864,7 @@ export const books: Book[] = [
     themeIds: ['gratitude', 'wonder'],
     relatedBookIds: ['mayas-shadow', 'pawa-rainbow-cloud', 'emperors-true-treasure'],
     relatedActivityIds: ['puddle-voyage', 'rhyme-singalong', 'coloring'],
+    relatedResourceIds: ['download-parents-guide', 'download-bedtime-routine', 'article-making-reading-magical'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "The little boat dreams of the big open ocean. Where would you sail first?",
@@ -886,6 +917,7 @@ export const books: Book[] = [
     themeIds: ['patience-mastery', 'curiosity', 'creativity'],
     relatedBookIds: ['miras-thousand-cubes', 'colors-mixed-up', 'little-mapmaker'],
     relatedActivityIds: ['patient-maker-passport', 'inventor-blueprint', 'craft-corner', 'build-a-scene'],
+    relatedResourceIds: ['download-parents-guide', 'download-follow-up-activities', 'article-age-appropriate-reading'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Heidi dreams of building solar cars and robots. What would you invent first?",
@@ -940,6 +972,7 @@ export const books: Book[] = [
     themeIds: ['curiosity', 'wonder', 'humility-listening'],
     relatedBookIds: ['little-mapmaker', 'colors-mixed-up', 'russet-the-fox'],
     relatedActivityIds: ['cloud-detective-journal', 'rhyme-singalong', 'story-map'],
+    relatedResourceIds: ['download-parents-guide', 'download-bedtime-routine', 'article-age-appropriate-reading'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Luna wants to catch one cloud of every kind in a jar. Do you think she can?",
@@ -994,6 +1027,7 @@ export const books: Book[] = [
     themeIds: ['creativity', 'curiosity', 'wonder'],
     relatedBookIds: ['colors-mixed-up', 'cloud-collector', 'mayas-shadow'],
     relatedActivityIds: ['map-my-world', 'story-map', 'coloring'],
+    relatedResourceIds: ['download-parents-guide', 'download-bedtime-routine', 'article-making-reading-magical'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Maya draws maps of her bedroom and her backyard. What would you put on a map of your home?",
@@ -1048,6 +1082,7 @@ export const books: Book[] = [
     themeIds: ['emotions', 'self-worth', 'wonder'],
     relatedBookIds: ['mayas-shadow', 'little-boats-big-wish', 'diegos-brave-leap'],
     relatedActivityIds: ['feelings-weather-report', 'coloring', 'emotion-wheel', 'rhyme-singalong'],
+    relatedResourceIds: ['download-parents-guide', 'download-bedtime-routine', 'article-perfect-reading-environment'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Cirro is a little cloud who feels heavy and sad. What do you think might help him?",
@@ -1102,6 +1137,7 @@ export const books: Book[] = [
     themeIds: ['patience-mastery', 'creativity'],
     relatedBookIds: ['heidis-journey-to-mastery', 'sanding-block', 'colors-mixed-up'],
     relatedActivityIds: ['patient-maker-passport', 'thousand-cubes-challenge', 'craft-corner', 'build-a-scene'],
+    relatedResourceIds: ['download-parents-guide', 'download-follow-up-activities', 'article-age-appropriate-reading'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Mira wants to carve eagles. Her first task is a thousand plain cubes. How would you feel?",
@@ -1156,6 +1192,7 @@ export const books: Book[] = [
     themeIds: ['heritage', 'gratitude'],
     relatedBookIds: ['emperors-true-treasure', 'little-boats-big-wish'],
     relatedActivityIds: ['story-quilt', 'tree-timeline', 'adventure-journal', 'bingo'],
+    relatedResourceIds: ['download-parents-guide', 'download-bedtime-routine', 'article-bilingual-reading'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Sofia wants to cut down an old fig tree. What do you think that tree has seen?",

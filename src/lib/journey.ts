@@ -100,7 +100,7 @@ export function nextStep(sourceType: JourneySource, sourceId: string, fromBook?:
     return CATALOG;
   }
 
-  // Resources carry no relationships yet (B-03 chose a shared strip over per-book
-  // pairing), so the only honest continuation is the catalog.
+  // Resources carry no FORWARD relationships of their own (books point at them, through
+  // relatedResourceIds, not the reverse), so the only honest continuation is the catalog.
   return resourceById.has(sourceId) ? CATALOG : null;
 }

@@ -59,6 +59,14 @@ export const booksByActivityId: Record<string, BookId[]> = (() => {
   return idx;
 })();
 
+/** Which books pair with a given resource (reverse of relatedResourceIds), in catalog order.
+ *  Drives "Pairs with" on the /resources index; the forward field stays the only source. */
+export const booksByResourceId: Record<string, BookId[]> = (() => {
+  const idx: Record<string, BookId[]> = Object.fromEntries(resources.map((r) => [r.id, [] as BookId[]]));
+  for (const b of books) for (const r of b.relatedResourceIds ?? []) (idx[r] ??= []).push(b.id);
+  return idx;
+})();
+
 /** Published-book count per theme — drives collection counts and eligibility. */
 export const themeCounts: Record<ThemeId, number> = Object.fromEntries(
   THEME_IDS.map((t) => [t, booksByThemeId[t].length]),

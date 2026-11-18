@@ -254,8 +254,8 @@ On every book page, the Story words strip offers 6 more activities in that book'
 5. **Rhyme & Sing-Along** is still public-domain nursery rhymes ("Twinkle Twinkle") on three books about clouds, rain and a boat.
 6. ~~**Bookmark Designer** still offers generic quotes.~~ **Done in pass 14:** opened from a book, the bookmark starts with that book's own line.
 7. **The Studio printables are still text and emoji only.** A spot illustration from each book was the first audit's top idea for making prints shareable. It needs artwork.
-8. **`relatedResourceIds` is still empty for every book,** so the Resources page and the book pages don't point to each other.
-9. **Nothing points to the 20 activity kits yet.** They're noindex and deliberately not linked from the site, so until pins, posts or ads link to them, they get no visitors.
+8. ~~**`relatedResourceIds` is still empty for every book.**~~ **Done in pass 15.** This reversed the September decision (backlog B-03) to keep a shared strip; the guides now carry theme tags, which was the missing signal.
+9. **Nothing points to the 20 activity kits yet.** They're noindex and deliberately not linked from the site, so until pins, posts or ads link to them, they get no visitors. **Pass 15 drafted the 60 pins** for the owner's approval.
 10. **No measurement since September.** The funnel events and the `book` property are in place, and so are the MailerLite tags for the kits. But nobody has looked at book → activity → completion, or at signups by kit.
 
 ### 7d. Updated to-do list
@@ -263,20 +263,20 @@ On every book page, the Story words strip offers 6 more activities in that book'
 | Priority | Item | Needs | Effort | Why now |
 |---|---|---|---|---|
 | **P0** | **First funnel report:** book page → activity click-through by book, completions by activity and source book, signups by magnet (including the 20 kits). **Email half done** (`docs/analytics/REPORT_2026-11-18-signups.md`): 16 active site signups, non-English posts convert best, zero kit signups because nothing links to them. **Plausible half still open.** | Plausible export or access | S | 11 passes shipped with no data on what children actually use. This decides what gets built next. |
-| **P0** | **Point traffic at the 20 kits:** one Pinterest pin and caption per book linking to `/free/<book-id>-companion` | Owner approval of copy; pin art from existing covers | S–M | The kits get no visitors until something links to them |
+| **P0** | **Point traffic at the 20 kits.** **Drafted in pass 15:** 60 pins (EN/ES/FR per book, ids P-078 to P-137, tracked links) in `docs/marketing/KIT_PINS_2026-11.md`, awaiting the owner's tick per pin. | Owner approval of copy; pin art from existing covers | S–M | The kits get no visitors until something links to them |
 | ~~**P1**~~ | ~~**One activity of their own for *Sparrow*, *Butterfly Effect* and *Sanding Block*.**~~ **Done in pass 12.** Ideas from their descriptions: *Small Noticer* (spot what the big animals miss), *Kindness Chain* (each kind act leads to the next; a paper chain to print), *Rough to Smooth* (patient strokes that smooth a plank, with a practice card) | — | M (3 Studio pages) | They're the three B books; this gives 20/20 books an activity of their own |
 | ~~**P1**~~ | ~~**Book mode for the two most-linked generic activities**~~ **Done in pass 13.** | — | S–M | 12 book links became book-aware |
 | ~~**P1**~~ | ~~**Fix Puzzle Paradise**~~ **Rebuilt in pass 13** on the books' words and sentences. | Owner chose: rebuild | S | Off-brand content on the hub |
 | **P1** | **Coloring pages from the book illustrations,** starting with the 7 books that link Coloring | Owner artwork | M (art) | Coloring is now the most-linked activity |
-| **P2** | **Themed classroom units** (kindness, patience, courage, feelings, curiosity) | Owner decision: open, gated, or open plus a gated pack | M | Teacher audience; the content already exists |
+| ~~**P2**~~ | ~~**Themed classroom units**~~ **Done in pass 15:** five open unit pages at `/classroom/<unit>` with a 5-day plan each, plus a gated pack per unit (owner chose: open plus a gated pack). | — | M | Teacher audience; the content already exists |
 | ~~**P2**~~ | ~~**Bookmark quotes per book**~~ **Done in pass 14.** | — | S | Cheap, and makes 3 links book-aware |
 | ~~**P2**~~ | ~~**A second activity for *Tower* and *Emperor***~~ **Done in pass 14:** Everyone Gets Heard and Coins You Can't Spend. | — | M | The two B+ books |
-| **P2** | **Link books to resources** (`relatedResourceIds`): the worksheet, kit and guides | — | S | The Resources page and book pages don't point to each other |
-| **P2** | **Trim the `/books` catalog HTML** (135–140 KB; warning at 130) | — | S | The last budget warning |
+| ~~**P2**~~ | ~~**Link books to resources**~~ **Done in pass 15.** | — | S | The Resources page and book pages don't point to each other |
+| ~~**P2**~~ | ~~**Trim the `/books` catalog HTML**~~ **Done in pass 15:** 113–117 KB. No budget warnings remain. | — | S | The last budget warning |
 | **P3** | **Story sequencing cards** | 4–6 scene images per book | M | Waiting on art |
 | **P3** | **Original songs** for the cloud, rain and boat books in Rhyme & Sing-Along | Lyrics (owner) | M | Replaces nursery rhymes on 3 books |
 | **P3** | **Spot illustrations on the Studio printables** | Owner artwork | M (art) | Makes prints shareable |
-| **P3** | **Collection Story Dice** (characters, settings and problems from the 20 books) | — | S | Fun extra, no assets needed |
+| ~~**P3**~~ | ~~**Collection Story Dice**~~ **Done in pass 15.** | — | S | Fun extra, no assets needed |
 | **P3** | **Decide on the unlinked generic activities** (Story Builder, Counting & Numbers, World Geography, Reading Tracker): give them a book mode or retire them | Owner decision | S | Hub clean-up |
 
 ---
@@ -518,3 +518,16 @@ New Studio pages, each listed first on its book page:
 - **First signups report** (`docs/analytics/REPORT_2026-11-18-signups.md`), from the MailerLite account: 16 active site signups since August, falling from 7 a month to 2 once posting stopped; French flashcards and the Spanish bundle were the two posts that produced repeat signups; the 20 activity kits have had no signups because nothing links to them; the account is shared with another project and test addresses, which inflate the raw count 3×. The Plausible half of the funnel report is still to do.
 - **Grades:** 8 A, 12 A-, nothing below A-.
 - **Tests:** `tests/funnel/book-quotes.test.mjs` (one line per book, three languages, within 30 characters, wired to the bookmark); the Studio tests cover 29 pages.
+
+### Pass 15: five items built in parallel
+
+Five pieces of work were run side by side, each in its own copy of the repo, then merged.
+
+- **Kit pins drafted for approval** (`docs/marketing/KIT_PINS_2026-11.md`). 60 pins: an EN, ES and FR pin for each of the 20 books, ids P-078 to P-137, each with a tracked link (`utm_campaign=kit_<book-id>`, `utm_content=<pin id>`) to `/free/<book-id>-companion`, the board, the cover to use and a tick box. The copy promises exactly what the kit delivers. Flagged: *A Little Boat's Big Wish* has no local cover file, and the ids must be confirmed against the Pinterest tracker before scheduling.
+- **Books and resources point to each other.** Every book now carries two or three `relatedResourceIds`: the parents' guide for every book; the bedtime routine chart (ages 3-7 books) or the classroom follow-up sheets (5-9 books); and the parent guide that shares the most themes with the book, where one does. The book page shows them in a "Guides and printables for this book" block, and the Resources page shows "Pairs with: <books>" under each guide and printable. This reverses the September B-03 decision (a shared strip), which was made before the guides had theme tags; the decision change is recorded in `docs/backlog.md` and `docs/PUNCH_LIST.md`.
+- **The `/books` catalog HTML is under budget:** 136/140/142 KB → 113/116/117 KB. The three status icons on every book card (60 inline SVGs, 25 KB) became one shared sprite, and the catalog's structured data dropped a description field that each book page already carries. Nothing visible changed. **No performance-budget warnings remain.**
+- **Collection Story Dice** (`/activities/collection-story-dice`, ages 5-9). Three dice, a character, a setting and a problem, whose faces all come from the 20 books' own descriptions ("Leo the shepherd", "a meadow under the sky", "a cloud that can't be kept"), each face naming and linking its book. Roll, lock a die, re-roll; tell, write or draw the story; a read-aloud of the three faces; a printable story-starter card. New data `src/data/storyDice.data.ts`.
+- **Themed classroom units** (owner decision: open pages plus a gated pack). Five units at `/classroom/<unit>` with an index at `/classroom`, in three languages, indexable: Kindness (Sparrow, Butterfly Effect, Meadowbrook), Patience (Sanding Block, Heidi, Mira), Courage (Diego, Leo), Feelings (Pawa, Crooked Apple Tree), Curiosity (Cloud Collector, Little Mapmaker, Colors). Each has a 5-day plan built only from things that exist (the books, their Studio activities, the worksheet, Pixel's quiz, the word games, the discussion prompts), the unit's story words, and a gated **classroom pack** at `/free/<unit>-pack` that delivers the unit's worksheets, quizzes and activities as links plus the parents' guide and follow-up sheets as downloads. Linked from the teachers' section of `/resources` and from the educator collections. Data in `src/data/classroomUnits.ts` (light, used by the signup form) and `src/data/classroomUnitPlans.ts` (the plans, loaded only by the unit page, to keep the entry bundle small).
+- **Size:** the entry bundle is 116 KB gz (budget warn 125, fail 140), up from 110, from the five unit packs' offer copy in the signup form.
+- **Tests:** `tests/funnel/book-resources.test.mjs`, `tests/funnel/story-dice.test.mjs`, `tests/funnel/classroom-units.test.mjs`, `tests/seo/classroom-units.test.mjs`, and new book-page checks in `tests/seo/a11y.test.mjs`. 284 unit tests, 435 prerendered routes, 395 SEO tests.
+- **For the owner to read:** the unit titles, descriptions and 25 teacher notes are new copy in three languages; the pins need a tick per pin.

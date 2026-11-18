@@ -10,7 +10,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadCatalog, loadContentIndex, loadRelatedBooks, loadActivities, loadCollections, loadLearningPacks } from '../../scripts/lib/catalog.mjs';
+import { loadCatalog, loadContentIndex, loadRelatedBooks, loadActivities, loadCollections, loadLearningPacks, loadResources } from '../../scripts/lib/catalog.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const DIST = path.join(ROOT, 'dist');
@@ -20,6 +20,7 @@ const { relatedBooksFor } = await loadRelatedBooks();
 const { activities } = await loadActivities();
 const { collections } = await loadCollections();
 const { learningPacks } = await loadLearningPacks();
+const { resources } = await loadResources();
 const LOCALES = { en: '', fr: '/fr', es: '/es' };
 
 /** English-only UI strings that must never appear on a localized collection page. */
@@ -143,6 +144,26 @@ test('a11y — every book page renders its paired activities (B-02)', () => {
           h.includes(`href="${href}"`),
           `${prefix}/books/${b.id}: missing activity link ${href}`,
         );
+      }
+    }
+  }
+});
+
+test('book resources — each book page renders its own guides and printables, linked through /free and /resources, per locale', () => {
+  const heading = { en: 'Guides and printables for this book', fr: 'Guides et fiches pour ce livre', es: 'Guías e imprimibles para este libro' };
+  for (const [loc, prefix] of Object.entries(LOCALES)) {
+    for (const b of books) {
+      const h = read(`${prefix}/books/${b.id}`);
+      assert.ok(h, `${prefix}/books/${b.id}: not prerendered`);
+      const start = h.indexOf(`data-book-resources="${b.id}"`);
+      assert.ok(start >= 0, `${prefix}/books/${b.id}: per-book resource section missing (fell back to the shared set?)`);
+      const section = h.slice(start, h.indexOf('</section>', start));
+      assert.ok(section.includes(`<h2 class="text-2xl font-bold text-gray-800">${heading[loc]}</h2>`), `${prefix}/books/${b.id}: ${loc} heading`);
+      assert.ok(!/\.pdf/.test(section), `${prefix}/books/${b.id}: a PDF filename leaked into the strip`);
+      for (const id of b.relatedResourceIds ?? []) {
+        const r = resources.find((x) => x.id === id);
+        const href = r.kind === 'article' ? `${prefix}/resources/${r.slug}/` : `${prefix}/free/${r.slug}/`;
+        assert.ok(section.includes(`href="${href}"`), `${prefix}/books/${b.id}: missing resource link ${href}`);
       }
     }
   }

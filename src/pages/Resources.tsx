@@ -7,7 +7,9 @@ import { localizePath, useLanguage, useTranslation } from '../lib/language';
 import { withTrailingSlash } from '../lib/locales';
 import { resources as RESOURCES, resourcePath, type Resource } from '../data/resources';
 import SaveResourceButton from '../components/SaveResourceButton';
-import { educatorCollectionIds, collectionRecordById, publishedLearningPacks, packResources } from '../data/contentIndex';
+import { educatorCollectionIds, collectionRecordById, publishedLearningPacks, packResources, booksByResourceId } from '../data/contentIndex';
+import { useBooks } from '../data/books';
+import { publishedClassroomUnits, unitAgeRange } from '../data/classroomUnits';
 import { THEMES, AGE_BANDS, type ThemeId, type AgeBandId } from '../data/taxonomy';
 import type { Language } from '../lib/language';
 
@@ -27,6 +29,38 @@ function collectionLabel(id: string, language: Language): string {
   return collectionRecordById[id]?.title?.[language] ?? id;
 }
 
+/** How many paired book titles a card names before collapsing the rest into "+N more". */
+const PAIRS_SHOWN = 4;
+
+// "Pairs with": the books whose relatedResourceIds name this resource (the DERIVED reverse
+// index, so the book page and this index can never disagree). Rendered as a sibling of the
+// card link, never inside it: an <a> inside an <a> is invalid markup.
+function PairsWith({ resourceId, labels }: { resourceId: string; labels: { pairsWith: string; more: (n: number) => string } }) {
+  const all = useBooks();
+  const ids = booksByResourceId[resourceId] ?? [];
+  const paired = ids.map((id) => all.find((b) => b.id === id)).filter((b) => b !== undefined);
+  if (paired.length === 0) return null;
+  const shown = paired.slice(0, PAIRS_SHOWN);
+  const rest = paired.length - shown.length;
+  return (
+    <p className="text-xs text-gray-500 mt-2 px-1" data-pairs-with={resourceId}>
+      {labels.pairsWith}{' '}
+      {shown.map((b, i) => (
+        <span key={b.id}>
+          {i > 0 ? ', ' : ''}
+          <Link to={`/books/${b.id}`} className="underline hover:text-purple-700">{b.title}</Link>
+        </span>
+      ))}
+      {rest > 0 && (
+        <>
+          {' '}
+          <Link to="/books" className="underline hover:text-purple-700">{labels.more(rest)}</Link>
+        </>
+      )}
+    </p>
+  );
+}
+
 // ---------------------------------------------------------------------------
 // TRANSLATIONS
 // ---------------------------------------------------------------------------
@@ -41,6 +75,8 @@ const TRANSLATIONS = {
     readArticle: 'Read article →',
     emptyMsg: 'No resources found. Try a different search!',
     minRead: 'min read',
+    pairsWith: 'Pairs with:',
+    more: (n: number) => `+${n} more`,
     categories: {
       all: 'All Resources',
       readingTips: 'Reading Tips',
@@ -62,6 +98,10 @@ const TRANSLATIONS = {
       downloadCta: 'Download PDF',
       tipsHeading: 'Using Eva’s books in the classroom',
       classroomHeading: 'Classroom collections',
+      unitsHeading: 'Classroom units',
+      unitsIntro: 'Five themed weeks, each with two or three read-alouds, a five-day plan, activities, story words and discussion prompts. Open to read; each unit also has a printable pack.',
+      allUnits: 'All classroom units',
+      ages: 'Ages',
       tips: [
         'Read aloud as a group – tap 🔊 Listen to model pronunciation in English, Spanish, or French.',
         'Pause for predictions and discussion; each story carries a gentle theme like kindness, courage, or patience.',
@@ -80,6 +120,8 @@ const TRANSLATIONS = {
     readArticle: 'Leer el art\xedculo →',
     emptyMsg: 'No se encontraron recursos. \xa1Prueba otra b\xfasqueda!',
     minRead: 'min de lectura',
+    pairsWith: 'Acompaña a:',
+    more: (n: number) => `+${n} más`,
     categories: {
       all: 'Todos los recursos',
       readingTips: 'Consejos de lectura',
@@ -101,6 +143,10 @@ const TRANSLATIONS = {
       downloadCta: 'Descargar PDF',
       tipsHeading: 'Usar los libros de Eva en el aula',
       classroomHeading: 'Colecciones para el aula',
+      unitsHeading: 'Unidades para el aula',
+      unitsIntro: 'Cinco semanas temáticas, cada una con dos o tres lecturas en voz alta, un plan de cinco días, actividades, palabras del cuento y preguntas para conversar. Se leen libremente; cada unidad tiene además un paquete imprimible.',
+      allUnits: 'Todas las unidades para el aula',
+      ages: 'Edades',
       tips: [
         'Lean en voz alta en grupo – pulsa 🔊 Escuchar para modelar la pronunciaci\xf3n en ingl\xe9s, espa\xf1ol o franc\xe9s.',
         'Hagan pausas para predecir y conversar; cada historia tiene un valor como la bondad, la valent\xeda o la paciencia.',
@@ -119,6 +165,8 @@ const TRANSLATIONS = {
     readArticle: 'Lire l’article →',
     emptyMsg: 'Aucune ressource trouv\xe9e. Essayez une autre recherche\xa0!',
     minRead: 'min de lecture',
+    pairsWith: 'Accompagne :',
+    more: (n: number) => `+${n} autres`,
     categories: {
       all: 'Toutes les ressources',
       readingTips: 'Conseils de lecture',
@@ -140,6 +188,10 @@ const TRANSLATIONS = {
       downloadCta: 'T\xe9l\xe9charger le PDF',
       tipsHeading: 'Utiliser les livres d’Eva en classe',
       classroomHeading: 'Collections pour la classe',
+      unitsHeading: 'Unités pour la classe',
+      unitsIntro: 'Cinq semaines thématiques, chacune avec deux ou trois lectures à voix haute, un plan de cinq jours, des activités, les mots de l’histoire et des questions de discussion. Libres à lire ; chaque unité a aussi son pack à imprimer.',
+      allUnits: 'Toutes les unités pour la classe',
+      ages: 'Âges',
       tips: [
         'Lisez \xe0 voix haute en groupe – appuyez sur 🔊 \xc9couter pour mod\xe9liser la prononciation en anglais, espagnol ou fran\xe7ais.',
         'Faites des pauses pour les pr\xe9dictions et la discussion\xa0; chaque histoire porte une valeur comme la gentillesse, le courage ou la patience.',
@@ -279,6 +331,7 @@ export default function Resources() {
                 <span className="absolute top-4 right-4 z-10">
                   <SaveResourceButton resourceId={r.id} />
                 </span>
+                <PairsWith resourceId={r.id} labels={{ pairsWith: t.pairsWith, more: t.more }} />
               </div>
             ))}
           </div>
@@ -365,7 +418,7 @@ export default function Resources() {
               // signup; LocalizedLink adds the /es,/fr prefix to keep the language.
               const to = `/free/${d.slug}`;
               return (
-                <div key={i} className="relative flex">
+                <div key={i} className="relative flex flex-col">
                 <span className="absolute top-3 right-3 z-10">
                   <SaveResourceButton resourceId={d.id} />
                 </span>
@@ -378,10 +431,28 @@ export default function Resources() {
                   <p className="text-gray-500 text-sm leading-relaxed flex-1">{d.description[language]}</p>
                   <span className="mt-3 text-sm font-semibold text-purple-600">⬇ {t.teachers.downloadCta}</span>
                 </Link>
+                <PairsWith resourceId={d.id} labels={{ pairsWith: t.pairsWith, more: t.more }} />
                 </div>
               );
             })}
           </div>
+          {/* Classroom units (activities audit 2026-11, §5c item 5): open unit pages, each with a gated pack. */}
+          {publishedClassroomUnits.length > 0 && (
+            <div id="classroom-units" className="scroll-mt-24 max-w-3xl mx-auto mb-8">
+              <h3 className="font-bold text-gray-800 mb-1">{t.teachers.unitsHeading}</h3>
+              <p className="text-sm text-gray-500 mb-3">{t.teachers.unitsIntro}</p>
+              <ul className="flex flex-wrap gap-2 mb-3">
+                {publishedClassroomUnits.map((u) => (
+                  <li key={u.id}>
+                    <Link to={`/classroom/${u.id}`} className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white border border-emerald-100 text-sm text-emerald-900 font-semibold hover:border-emerald-300">
+                      <span aria-hidden>{u.emoji}</span>{u.title[language]} <span className="text-xs text-gray-500 font-normal">· {t.teachers.ages} {unitAgeRange(u)}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <Link to="/classroom" className="text-sm font-semibold text-emerald-700 hover:text-emerald-900">{t.teachers.allUnits} →</Link>
+            </div>
+          )}
           {educatorCollectionIds.length > 0 && (
             <div className="max-w-3xl mx-auto mb-8">
               <h3 className="font-bold text-gray-800 mb-3">{t.teachers.classroomHeading}</h3>

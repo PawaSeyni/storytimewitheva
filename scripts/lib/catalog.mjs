@@ -23,11 +23,14 @@ const BOOK_VOCAB = path.join(ROOT, 'src', 'data', 'bookVocab.data.ts');
 const BOOK_SENTENCES = path.join(ROOT, 'src', 'data', 'bookSentences.data.ts');
 const BOOK_HEROES = path.join(ROOT, 'src', 'data', 'bookHeroes.data.ts');
 const BOOK_QUOTES = path.join(ROOT, 'src', 'data', 'bookQuotes.data.ts');
+const STORY_DICE = path.join(ROOT, 'src', 'data', 'storyDice.data.ts');
 const JOURNEY = path.join(ROOT, 'src', 'lib', 'journey.ts');
 const JOURNEYS = path.join(ROOT, 'src', 'data', 'journeys.ts');
 const COLLECTIONS = path.join(ROOT, 'src', 'data', 'collections.ts');
 const LEARNING_PACKS = path.join(ROOT, 'src', 'data', 'learningPacks.ts');
 const BOOK_COMPANIONS = path.join(ROOT, 'src', 'data', 'bookCompanions.ts');
+const CLASSROOM_UNITS = path.join(ROOT, 'src', 'data', 'classroomUnits.ts');
+const CLASSROOM_UNIT_PLANS = path.join(ROOT, 'src', 'data', 'classroomUnitPlans.ts');
 const SEARCH = path.join(ROOT, 'src', 'lib', 'searchIndex.ts');
 
 /** Compile a browser-free TS module with esbuild and evaluate it in-process. */
@@ -169,11 +172,32 @@ export async function loadBookHeroes() {
   return heroesCache;
 }
 
+let storyDiceCache = null;
+/** Story dice faces per book (src/data/storyDice.data.ts): character, setting, problem. */
+export async function loadStoryDice() {
+  if (!storyDiceCache) storyDiceCache = await loadModule(STORY_DICE);
+  return storyDiceCache;
+}
+
 let companionsCache = null;
 /** Book companions (activities audit 2026-11, §4C): one /free/<book-id>-companion per book. */
 export async function loadBookCompanions() {
   if (!companionsCache) companionsCache = await loadModule(BOOK_COMPANIONS);
   return companionsCache;
+}
+
+let unitsCache = null;
+/** Classroom units (activities audit 2026-11, §5c item 5): /classroom/<unit-id> pages and their /free/<unit-id>-pack. */
+export async function loadClassroomUnits() {
+  if (!unitsCache) unitsCache = await loadModule(CLASSROOM_UNITS);
+  return unitsCache;
+}
+
+let unitPlansCache = null;
+/** The units' five-day plans, story words and plan validator (src/data/classroomUnitPlans.ts). */
+export async function loadClassroomUnitPlans() {
+  if (!unitPlansCache) unitPlansCache = await loadModule(CLASSROOM_UNIT_PLANS);
+  return unitPlansCache;
 }
 
 let searchCache = null;

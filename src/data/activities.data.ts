@@ -675,4 +675,15 @@ export const activities: Activity[] = [
     desc: { en: 'Mint a coin for each thing no money could buy, fill a treasury richer than the emperor’s, and print a week of coins to notice one each day.', es: 'Acuña una moneda por cada cosa que el dinero no puede comprar, llena un tesoro más rico que el del emperador e imprime una semana de monedas para notar una cada día.', fr: 'Frappe une pièce pour chaque chose que l’argent ne peut pas acheter, remplis un trésor plus riche que celui de l’empereur et imprime une semaine de pièces pour en remarquer une chaque jour.' },
     category: { en: 'Gratitude', es: 'Gratitud', fr: 'Gratitude' },
   },
+  // ── Collection Story Dice (activities audit 2026-11, §5c item 3): three dice whose faces all
+  // come from the twenty books (src/data/storyDice.data.ts). Not tied to one book, so neither
+  // bookSpecific nor anyBook.
+  {
+    slug: 'collection-story-dice',
+    emoji: '🎲',
+    ages: '5-9',
+    title: { en: 'Collection Story Dice', es: 'Dados de cuentos de la colección', fr: 'Dés à histoires de la collection' },
+    desc: { en: 'Roll a character, a setting and a problem from the twenty books of the collection, then tell, write or draw a story that mixes them and print your story-starter card.', es: 'Lanza un personaje, un lugar y un problema sacados de los veinte libros de la colección; luego cuenta, escribe o dibuja un cuento que los mezcle e imprime tu tarjeta para empezar.', fr: 'Lance un personnage, un lieu et un problème tirés des vingt livres de la collection, puis raconte, écris ou dessine une histoire qui les mélange et imprime ta carte de départ.' },
+    category: { en: 'Creativity', es: 'Creatividad', fr: 'Créativité' },
+  },
 ];
