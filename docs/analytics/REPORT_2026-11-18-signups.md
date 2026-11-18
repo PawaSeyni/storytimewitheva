@@ -1,7 +1,7 @@
 # Newsletter signups report, 18 November 2026
 
 **Source:** the MailerLite account, read on 18 November 2026 (all 50 subscriber records, with their `lead_magnet`, `language` and `utm_*` fields). Aggregates only; no subscriber is named here.
-**Why:** the activities re-audit (`docs/activities-audit-2026-11.md` §7d, P0) found that nothing had been measured since September. Plausible could not be read from the session that wrote this, so page and activity numbers are still to do; this report covers the email side.
+**Why:** the activities re-audit (`docs/activities-audit-2026-11.md` §7d, P0) found that nothing had been measured since September. This report covers the email side; the traffic side, from a Plausible export, is `docs/analytics/REPORT_2026-11-18-funnel.md`.
 **Period:** the first site signup was on 11 August 2026; the last on 12 November 2026.
 
 ## 1. What is in the account

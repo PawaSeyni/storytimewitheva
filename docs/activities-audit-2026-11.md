@@ -262,7 +262,7 @@ On every book page, the Story words strip offers 6 more activities in that book'
 
 | Priority | Item | Needs | Effort | Why now |
 |---|---|---|---|---|
-| **P0** | **First funnel report:** book page → activity click-through by book, completions by activity and source book, signups by magnet (including the 20 kits). **Email half done** (`docs/analytics/REPORT_2026-11-18-signups.md`): 16 active site signups, non-English posts convert best, zero kit signups because nothing links to them. **Plausible half still open.** | Plausible export or access | S | 11 passes shipped with no data on what children actually use. This decides what gets built next. |
+| **P0** | **First funnel report:** book page → activity click-through by book, completions by activity and source book, signups by magnet (including the 20 kits). **Done:** email half in `docs/analytics/REPORT_2026-11-18-signups.md`, traffic half in `docs/analytics/REPORT_2026-11-18-funnel.md`. About 640 visitors in six months, 58% from one August paid Pinterest campaign (5-second visits, about 1% signup); organic French and Spanish posts converted at 20-40%; 22 book-page visitors; activities barely visited because traffic is low, not because of the activities. | — | S | 11 passes shipped with no data on what children actually use. This decides what gets built next. |
 | **P0** | **Point traffic at the 20 kits.** **Drafted in pass 15:** 60 pins (EN/ES/FR per book, ids P-078 to P-137, tracked links) in `docs/marketing/KIT_PINS_2026-11.md`, awaiting the owner's tick per pin. | Owner approval of copy; pin art from existing covers | S–M | The kits get no visitors until something links to them |
 | ~~**P1**~~ | ~~**One activity of their own for *Sparrow*, *Butterfly Effect* and *Sanding Block*.**~~ **Done in pass 12.** Ideas from their descriptions: *Small Noticer* (spot what the big animals miss), *Kindness Chain* (each kind act leads to the next; a paper chain to print), *Rough to Smooth* (patient strokes that smooth a plank, with a practice card) | — | M (3 Studio pages) | They're the three B books; this gives 20/20 books an activity of their own |
 | ~~**P1**~~ | ~~**Book mode for the two most-linked generic activities**~~ **Done in pass 13.** | — | S–M | 12 book links became book-aware |
@@ -531,3 +531,16 @@ Five pieces of work were run side by side, each in its own copy of the repo, the
 - **Size:** the entry bundle is 116 KB gz (budget warn 125, fail 140), up from 110, from the five unit packs' offer copy in the signup form.
 - **Tests:** `tests/funnel/book-resources.test.mjs`, `tests/funnel/story-dice.test.mjs`, `tests/funnel/classroom-units.test.mjs`, `tests/seo/classroom-units.test.mjs`, and new book-page checks in `tests/seo/a11y.test.mjs`. 284 unit tests, 435 prerendered routes, 395 SEO tests.
 - **For the owner to read:** the unit titles, descriptions and 25 teacher notes are new copy in three languages; the pins need a tick per pin.
+
+### Pass 16: the traffic half of the funnel report
+
+`docs/analytics/REPORT_2026-11-18-funnel.md`, from a Plausible export of the whole site history (21 May to 18 November 2026). With the signups report, this closes the P0 "first funnel report".
+- **About 640 visitors in six months.** 374 (58%) came from one paid Pinterest campaign in August; they stayed about 5 seconds and signed up at about 1%. Since September the site draws 15 to 35 visitors a week.
+- **Organic French and Spanish posts converted at 20-40%** (P-032, FB-025, P-012), against about 1% for the paid pins. A third of all visitors are in Spanish-speaking countries.
+- **The signup leak is form view → form start (4%);** once someone starts typing, 94% finish.
+- **Only 22 people have opened a book page, and the activities have had almost no visitors.** That is a traffic problem, not an activity problem. The exception is **Story Builder** (25 visitors, mostly from Google, about 2 minutes on the page), so it should be kept and given a book mode.
+- **Google's one door is the follow-up activities guide** (64 entries, 85-88% leave from it).
+- **10 client TypeErrors,** 9 on the homepage. The event records no message, so the cause needs engineering follow-up.
+
+**Updated next steps:** post the kit pins organically, leading with Spanish and French (do not boost yet); find the homepage TypeError; give the follow-up activities guide a next step (classroom units, kits); give Story Builder a book mode.
+
