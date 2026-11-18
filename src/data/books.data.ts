@@ -191,7 +191,7 @@ export const books: Book[] = [
     ageRange: '3-6',
     themeIds: ['diversity', 'creativity'],
     relatedBookIds: ['mayas-shadow', 'colors-mixed-up', 'crooked-little-apple-tree'],
-    relatedActivityIds: ['harmonia-orchestra', 'build-a-scene', 'coloring', 'bilingual-flashcards'],
+    relatedActivityIds: ['harmonia-orchestra', 'rhyme-singalong', 'coloring', 'bilingual-flashcards'],
     relatedResourceIds: ['download-parents-guide', 'download-bedtime-routine', 'article-bilingual-reading'],
     discussionQuestions: [
       { stage: "before", prompt: {

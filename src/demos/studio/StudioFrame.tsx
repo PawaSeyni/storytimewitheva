@@ -5,11 +5,15 @@
 // adds what the studio activities share: the hero strip with the book pairing from the
 // activity table, the local-only note, the instructions panel that does not print, the
 // printable card, and the print button. No storage, no accounts, no network.
-import type { ReactNode } from 'react';
+import { createContext, useContext, type ReactNode } from 'react';
 import { Printer, RotateCcw, ShieldCheck, BookOpen } from 'lucide-react';
 import { Link } from '../../components/LocalizedLink';
 import { useBooks } from '../../data/books';
 import { useTranslation } from '../../lib/language';
+import { spotFor } from '../../data/spots';
+
+/** The page's first paired book that has a spot illustration, for the printable card. */
+const SpotContext = createContext<string | null>(null);
 
 const TRANSLATIONS = {
   en: { ages: 'Ages', minutes: 'min', pairsWith: 'Pairs with', localOnly: 'Your work stays on this device. Print it or save it as a PDF with a grown-up.', print: 'Print or save as PDF', reset: 'Start again', grownup: 'Grown-up role' },
@@ -52,7 +56,9 @@ export function StudioFrame({ emoji, hue, skill, title, subtitle, ages, minutes,
   const books = useBooks();
   const paired = bookIds.map((id) => books.find((b) => b.id === id)).filter((b) => b !== undefined);
   const h = HUES[hue];
+  const spot = bookIds.map((id) => spotFor(id)).find((x) => x !== null) ?? null;
   return (
+    <SpotContext.Provider value={spot}>
     <div className="rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-sm">
       <header className={`${printHero ? '' : 'print:hidden '}bg-linear-to-br ${h.hero} px-4 py-6 sm:px-8 sm:py-8 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6`}>
         <div className={`shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white/80 border ${h.ring} grid place-items-center text-4xl sm:text-5xl`} aria-hidden>
@@ -88,6 +94,7 @@ export function StudioFrame({ emoji, hue, skill, title, subtitle, ages, minutes,
       </p>
       <div className="p-4 sm:p-6 md:p-8">{children}</div>
     </div>
+    </SpotContext.Provider>
   );
 }
 
@@ -98,8 +105,13 @@ export function Panel({ children, className = '' }: { children: ReactNode; class
 
 /** The take-home card: the only thing that prints. */
 export function Printable({ children, className = '', label }: { children: ReactNode; className?: string; label: string }) {
+  // A small illustration from the paired book, top corner, on screen and on paper.
+  const spot = useContext(SpotContext);
   return (
-    <section aria-label={label} data-studio-printable className={`rounded-2xl border-2 border-dashed border-gray-300 bg-white p-4 sm:p-6 print:border-0 print:p-0 print:shadow-none ${className}`}>
+    <section aria-label={label} data-studio-printable className={`relative rounded-2xl border-2 border-dashed border-gray-300 bg-white p-4 sm:p-6 print:border-0 print:p-0 print:shadow-none ${className}`}>
+      {spot && (
+        <img src={spot} alt="" aria-hidden width={64} height={64} loading="lazy" data-studio-spot className="float-right ml-3 mb-2 h-16 w-16 rounded-xl object-cover shadow-sm print:shadow-none" />
+      )}
       {children}
     </section>
   );
