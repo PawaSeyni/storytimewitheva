@@ -4,6 +4,8 @@
 
 **Catalog at audit time:** 20 books · 29 activities (13 standalone HTML games, 16 in-app React pages) · 70 book→activity links.
 
+> **Re-audited 18 November 2026,** after remediation passes 1 to 11. For the current scorecard and the open to-do list, see **§7**. Sections 1 to 6 describe the site as it was at the first audit.
+
 ---
 
 ## 1. Summary
@@ -181,7 +183,105 @@ Target: every book with at least 1 book-specific activity by the end of the P1 w
 
 ---
 
-## Appendix: how the activity links are distributed today
+## 7. Re-audit, 18 November 2026
+
+**Scope:** the same method as the first audit, run against `main` after passes 1 to 11 (PRs #256 to #263) and the live site. Spot-checked live: `/books/leo-and-the-wolf/`, `/es/books/fig-trees-secret/`, `/fr/free/little-boats-big-wish-companion/`, `/activities/pixel-quiz/?book=russet-the-fox`.
+
+**Catalog now:** 20 books · **47 activities** (12 standalone games, 35 in-app pages), up from 29 · **74 book→activity links**, up from 70.
+- **23 book-specific activities** (8 at the first audit);
+- **7 that work for any book** (word games, story worksheet, Pixel's Story Quiz);
+- **4 with a little-reader mode.**
+
+On every book page, the Story words strip offers 6 more activities in that book's mode (4 word games, the worksheet and the quiz). Each book also has a free activity kit at `/free/<book-id>-companion`.
+
+### 7a. What the first audit found, and where it stands
+
+| First-audit finding | Now |
+|---|---|
+| Only 11 of 20 books had an activity built for them | **Fixed.** 20/20 books lead with a book-specific activity; a test enforces it. 6 books have two. |
+| Story Map showed 10 off-catalog books | **Fixed.** It shows the 20 catalog books only. |
+| Finish-the-Story starred Eva and invented plots | **Fixed.** Six stories from catalog books. |
+| "Read next" ignored the book the child came from | **Fixed.** `?book=` carries the book; activity events record it. |
+| 5 word activities had no book link | **Fixed.** All five play each book's words (book mode, from the Story words strip). |
+| Activities rated 6-9 linked from 4-8 books | **Fixed.** Little-reader modes or swapped links; a test enforces the age rule. |
+| No per-book printable | **Fixed.** A two-page worksheet for every book, plus Leo's hand-written one. |
+| One signup entry point | **Fixed.** 20 per-book activity kits, tagged by book in MailerLite. |
+| No performance data | **Still open.** Events now carry `book`, but no report has been run since the September baseline. |
+| Coloring has no scenes from the books | **Still open** (needs artwork). Coloring is now the most-linked activity, from 7 books. |
+
+### 7b. Book-by-book scorecard
+
+**Grades:** **A** = two activities built for the book; **A-** = one of its own plus good theme matches; **B+** = one of its own, but only three activities, two of them generic logs; **B** = its only "book-specific" activity is shared with other books. (★ = book-specific.)
+
+| Book | Ages | Linked activities | Own | Grade | Main problem now |
+|---|---|---|:-:|:-:|---|
+| The Adventures of Maya's Shadow | 3-7 | ★Shadow Theatre, ★Where Did My Shadow Go?, Coloring, Build-a-Scene | 2 | **A** | Coloring is generic |
+| Diego's Brave Leap | 4-8 | ★Brave Plan, ★Brave Breathing, Emotion Wheel, Finish-the-Story | 2 | **A** | — |
+| Leo and the Wolf | 4-8 | ★Trust Meter, ★Leo worksheet, Finish-the-Story, Character Workshop | 2 | **A** | — |
+| Heidi's Journey to Mastery | 5-9 | ★Maker Passport (shared), ★Inventor's Blueprint, Craft Corner, Build-a-Scene | 2 | **A** | — |
+| Mira's Thousand Cubes | 5-9 | ★Maker Passport (shared), ★Thousand Cubes Challenge, Craft Corner, Build-a-Scene | 2 | **A** | — |
+| The Fig Tree's Secret | 4-8 | ★Story Quilt, ★What the Tree Has Seen, Journal, Bingo | 2 | **A** | — |
+| The Day the Colors Got Mixed Up | 4-7 | ★Color Mix Lab, Bookmark, Build-a-Scene, Coloring | 1 | **A-** | No Hawel and Pixel coloring page |
+| The Rainbow Symphony | 3-6 | ★Harmonia Orchestra, Build-a-Scene, Coloring, Flashcards | 1 | **A-** | — |
+| Pawa and the Little Rainbow Cloud | 3-7 | ★Feelings Weather Report, Coloring, Emotion Wheel, Rhyme | 1 | **A-** | Rhyme & Sing-Along is nursery rhymes, no Cirro song |
+| The Crooked Little Apple Tree | 4-8 | ★One-of-a-Kind Tree, Emotion Wheel, Coloring, Flashcards | 1 | **A-** | — |
+| The True Beauty of Meadowbrook | 4-8 | ★Kindness Mirror, Emotion Wheel, Journal, Flashcards | 1 | **A-** | — |
+| Russet the Fox Learns a Lesson | 4-8 | ★Listen Like a Fox, Finish-the-Story, Journal, Bookmark | 1 | **A-** | — |
+| A Little Boat's Big Wish | 3-7 | ★Puddle Voyage, Rhyme, Coloring | 1 | **A-** | Rhymes are generic; no boat coloring page |
+| The Cloud Collector | 4-8 | ★Cloud Detective, Rhyme, Story Map | 1 | **A-** | — |
+| The Little Mapmaker | 4-8 | ★Map My World, Story Map, Coloring | 1 | **A-** | — |
+| The Tower That Touched the Sky | 5-9 | ★Ask-First Architect, Journal, Bingo | 1 | **B+** | Two of three are generic reading logs |
+| The Emperor's True Treasure | 5-9 | ★True Treasure Chest, Journal, Bingo | 1 | **B+** | Same set as Tower |
+| The Sparrow Who Saved the Forest | 4-8 | ★Kindness Ripple (shared), Journal, Bingo, Character Workshop | 0 own | **B** | Its only specific activity is shared with *Butterfly Effect* |
+| The Butterfly Effect | 5-9 | ★Kindness Ripple (shared), Journal, Bingo, Emotion Wheel | 0 own | **B** | Shared with *Sparrow* |
+| The Sanding Block | 5-9 | ★Maker Passport (shared), Bookmark, Craft Corner | 0 own | **B** | Shares the passport with Heidi and Mira, who now each have a second activity of their own |
+
+**Grade spread:** 6 A, 9 A-, 2 B+, 3 B, and nothing below B. At the first audit: 0 A, 3 A-, 2 B+, 6 B, 2 C, 4 C- and 3 D.
+
+### 7c. New and remaining findings
+
+1. **Three books still have no activity of their own:** *Sparrow*, *Butterfly Effect* and *Sanding Block*. Each one shares its only book-specific activity with other books. They're now the weakest books in the collection.
+2. **The generic activities carry the most links, and they still ignore the book.** None of these reads `?book=`:
+   - Adventure Journal (7 books) and Coloring (7);
+   - Bingo, Emotion Wheel and Build-a-Scene (5 each);
+   - Bookmark, Craft Corner and Rhyme (3 each).
+
+   Two of these improvements need no art:
+   - **Journal:** pre-fill the book title and cover when opened from a book.
+   - **Emotion Wheel:** ask "How did <character> feel?".
+3. **Puzzle Paradise still has fairy-tale content:** "Red Riding Hood" and "Wolf & Grandma". It's unlinked from every book, but it's on the Activities hub, where a wolf-and-grandma puzzle can be confused with *Leo and the Wolf*.
+4. **Five activities are linked from no book and have no book mode:** Story Builder, Puzzle Paradise, Counting & Numbers, World Geography and Reading Tracker. The Reading Passport is also unlinked, but book pages reach it from the "Read" button, so it's fine.
+5. **Rhyme & Sing-Along** is still public-domain nursery rhymes ("Twinkle Twinkle") on three books about clouds, rain and a boat.
+6. **Bookmark Designer** still offers generic quotes ("Keep Reading"), not lines from the books.
+7. **The Studio printables are still text and emoji only.** A spot illustration from each book was the first audit's top idea for making prints shareable. It needs artwork.
+8. **`relatedResourceIds` is still empty for every book,** so the Resources page and the book pages don't point to each other.
+9. **Nothing points to the 20 activity kits yet.** They're noindex and deliberately not linked from the site, so until pins, posts or ads link to them, they get no visitors.
+10. **No measurement since September.** The funnel events and the `book` property are in place, and so are the MailerLite tags for the kits. But nobody has looked at book → activity → completion, or at signups by kit.
+
+### 7d. Updated to-do list
+
+| Priority | Item | Needs | Effort | Why now |
+|---|---|---|---|---|
+| **P0** | **First funnel report:** book page → activity click-through by book, completions by activity and source book, signups by magnet (including the 20 kits) | Analytics access (Plausible) and MailerLite | S | 11 passes shipped with no data on what children actually use. This decides what gets built next. |
+| **P0** | **Point traffic at the 20 kits:** one Pinterest pin and caption per book linking to `/free/<book-id>-companion` | Owner approval of copy; pin art from existing covers | S–M | The kits get no visitors until something links to them |
+| **P1** | **One activity of their own for *Sparrow*, *Butterfly Effect* and *Sanding Block*.** Ideas from their descriptions: *Small Noticer* (spot what the big animals miss), *Kindness Chain* (each kind act leads to the next; a paper chain to print), *Rough to Smooth* (patient strokes that smooth a plank, with a practice card) | — | M (3 Studio pages) | They're the three B books; this gives 20/20 books an activity of their own |
+| **P1** | **Book mode for the two most-linked generic activities:** Adventure Journal pre-fills the book; Emotion Wheel asks how the book's character felt | — | S–M | 12 book links become book-aware |
+| **P1** | **Fix Puzzle Paradise:** replace the fairy-tale puzzles with each book's story words (word scrambles, `?book=`), or retire it | Owner decision: rebuild or retire | S | Off-brand content on the hub |
+| **P1** | **Coloring pages from the book illustrations,** starting with the 7 books that link Coloring | Owner artwork | M (art) | Coloring is now the most-linked activity |
+| **P2** | **Themed classroom units** (kindness, patience, courage, feelings, curiosity) | Owner decision: open, gated, or open plus a gated pack | M | Teacher audience; the content already exists |
+| **P2** | **Bookmark quotes per book:** each book's own line, in three languages | — | S | Cheap, and makes 3 links book-aware |
+| **P2** | **A second activity for *Tower* and *Emperor*,** replacing one of their two generic logs | — | M | The two B+ books |
+| **P2** | **Link books to resources** (`relatedResourceIds`): the worksheet, kit and guides | — | S | The Resources page and book pages don't point to each other |
+| **P2** | **Trim the `/books` catalog HTML** (135–140 KB; warning at 130) | — | S | The last budget warning |
+| **P3** | **Story sequencing cards** | 4–6 scene images per book | M | Waiting on art |
+| **P3** | **Original songs** for the cloud, rain and boat books in Rhyme & Sing-Along | Lyrics (owner) | M | Replaces nursery rhymes on 3 books |
+| **P3** | **Spot illustrations on the Studio printables** | Owner artwork | M (art) | Makes prints shareable |
+| **P3** | **Collection Story Dice** (characters, settings and problems from the 20 books) | — | S | Fun extra, no assets needed |
+| **P3** | **Decide on the unlinked generic activities** (Story Builder, Counting & Numbers, World Geography, Reading Tracker): give them a book mode or retire them | Owner decision | S | Hub clean-up |
+
+---
+
+## Appendix: how the activity links were distributed at the first audit
 
 | Activity | Type | Ages | # books | Book-specific? |
 |---|---|---|:-:|:-:|
