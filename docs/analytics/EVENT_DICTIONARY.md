@@ -41,7 +41,7 @@ when a property's meaning changes. Reports state the schema version they were bu
 | `Journey Step` |  | intent | `journey`, `activity`, `status` |  | status: done \| undone | product | journey id, step index, state |
 | `Journey Complete` |  | outcome | `journey` |  |  | product | journey id |
 | `Journey Saved` |  | intent | `journey`, `status` |  | status: added \| removed | product | journey id |
-| `Client Error` |  | diagnostic | `kind`, `route` |  |  | engineering | error class and route pattern only |
+| `Client Error` |  | diagnostic | `kind`, `route` | `message`, `source`, `line` |  | engineering | error class, route pattern and a redacted message (no URLs, emails, quoted strings, numbers over 4 digits or query; 120 chars), script file name and line:col |
 
 ## Funnels (derived, `src/analytics/funnels.ts`)
 

@@ -72,7 +72,8 @@ export default function BookDetail() {
   // S5-002: one "Purchase CTA View" per book page, when the Buy group is actually viewable.
   useEffect(() => {
     const el = buyRef.current;
-    if (!el || !book) return;
+    // Impression only: a browser without IntersectionObserver skips it rather than throwing.
+    if (!el || !book || typeof IntersectionObserver === 'undefined') return;
     let fired = false;
     const io = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && !fired) {
