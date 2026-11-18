@@ -593,3 +593,7 @@ Total JavaScript reached 463 KB (warn 460). A second trimming pass found nothing
 ### Pass 22: pin ids moved onto the tracker's range
 
 P-078 to P-110 already belonged to published or planned pins in the owner's master tracker, so the first-draft ids would have mixed new clicks into old pins' attribution. The owner renumbered the 65 new pins to **P-111 to P-175, in posting-date order** (map: `PIN_ID_MAP_2026-11-18.csv` in the tracker folder). The 62 images were renamed in two passes (the old and new ranges overlap), and the pins tracker CSV, the posting schedule (links and images), the posting plan, both pin docs and `scripts/make-kit-pins.mjs` (the classroom-angle pin is now P-121) use the new ids. Facebook posts FB-047 to FB-050 keep theirs. Little Boat's pins are P-154 (ES), P-155 (FR) and P-175 (EN), still waiting for a cover.
+
+### Pass 23: five merges that never deployed
+
+Production stayed on #273 (`453bf90`) while #274 to #278 merged. Those squash merges used GitHub's default message, which lists every commit on the long-lived work branch, and two old commits in that list say `[skip netlify]`. Netlify skips any build whose message contains that marker, and the post-deploy workflow skips its "wait for production" check on the same marker, so the gap was not flagged. **Fix:** this merge carries a short message of its own, so Netlify builds main (which already holds #274 to #278). **From now on** every squash merge passes an explicit commit message.
