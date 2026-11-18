@@ -228,7 +228,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['humility-listening'],
     relatedBookIds: ['emperors-true-treasure', 'russet-the-fox', 'cloud-collector'],
-    relatedActivityIds: ['ask-first-architect', 'adventure-journal', 'bingo'],
+    relatedActivityIds: ['ask-first-architect', 'everyone-gets-heard', 'adventure-journal'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "Victor is about to build the tallest tower ever. What could go wrong if nobody asks questions?",
@@ -505,7 +505,7 @@ export const books: Book[] = [
     ageRange: '5-9',
     themeIds: ['gratitude', 'humility-listening'],
     relatedBookIds: ['tower-touched-sky', 'russet-the-fox', 'fig-trees-secret'],
-    relatedActivityIds: ['true-treasure-chest', 'adventure-journal', 'bingo'],
+    relatedActivityIds: ['true-treasure-chest', 'coins-you-cant-spend', 'adventure-journal'],
     discussionQuestions: [
       { stage: "before", prompt: {
         en: "The emperor has a palace full of gold and still feels empty. What do you think is missing?",

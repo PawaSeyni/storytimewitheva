@@ -230,13 +230,13 @@ On every book page, the Story words strip offers 6 more activities in that book'
 | A Little Boat's Big Wish | 3-7 | ★Puddle Voyage, Rhyme, Coloring | 1 | **A-** | Rhymes are generic; no boat coloring page |
 | The Cloud Collector | 4-8 | ★Cloud Detective, Rhyme, Story Map | 1 | **A-** | — |
 | The Little Mapmaker | 4-8 | ★Map My World, Story Map, Coloring | 1 | **A-** | — |
-| The Tower That Touched the Sky | 5-9 | ★Ask-First Architect, Journal, Bingo | 1 | **B+** | Two of three are generic reading logs |
-| The Emperor's True Treasure | 5-9 | ★True Treasure Chest, Journal, Bingo | 1 | **B+** | Same set as Tower |
+| The Tower That Touched the Sky | 5-9 | ★Ask-First Architect, ★Everyone Gets Heard, Journal | 2 | **A** | Fixed in pass 14 |
+| The Emperor's True Treasure | 5-9 | ★True Treasure Chest, ★Coins You Can't Spend, Journal | 2 | **A** | Fixed in pass 14 |
 | The Sparrow Who Saved the Forest | 4-8 | ★Small Noticer, ★Kindness Ripple (shared), Journal, Bingo | 1 | **A-** | Fixed in pass 12. Before: its only book-specific activity was shared with *Butterfly Effect* |
 | The Butterfly Effect | 5-9 | ★Kindness Chain, ★Kindness Ripple (shared), Emotion Wheel, Journal | 1 | **A-** | Fixed in pass 12. Before: shared its only activity with *Sparrow* |
 | The Sanding Block | 5-9 | ★Rough to Smooth, ★Maker Passport (shared), Bookmark, Craft Corner | 1 | **A-** | Fixed in pass 12. Before: shared the passport with Heidi and Mira |
 
-**Grade spread:** 6 A, 9 A-, 2 B+, 3 B, and nothing below B at the re-audit. **After pass 12:** 6 A, 12 A-, 2 B+. At the first audit: 0 A, 3 A-, 2 B+, 6 B, 2 C, 4 C- and 3 D.
+**Grade spread:** 6 A, 9 A-, 2 B+, 3 B, and nothing below B at the re-audit. **After pass 12:** 6 A, 12 A-, 2 B+. **After pass 14:** 8 A, 12 A-, nothing below A-. At the first audit: 0 A, 3 A-, 2 B+, 6 B, 2 C, 4 C- and 3 D.
 
 ### 7c. New and remaining findings
 
@@ -252,7 +252,7 @@ On every book page, the Story words strip offers 6 more activities in that book'
 3. ~~**Puzzle Paradise still has fairy-tale content.**~~ **Rebuilt in pass 13** on each book's story words and sentences (owner decision: rebuild, not retire).
 4. **Five activities are linked from no book and have no book mode:** Story Builder, Puzzle Paradise, Counting & Numbers, World Geography and Reading Tracker. The Reading Passport is also unlinked, but book pages reach it from the "Read" button, so it's fine.
 5. **Rhyme & Sing-Along** is still public-domain nursery rhymes ("Twinkle Twinkle") on three books about clouds, rain and a boat.
-6. **Bookmark Designer** still offers generic quotes ("Keep Reading"), not lines from the books.
+6. ~~**Bookmark Designer** still offers generic quotes.~~ **Done in pass 14:** opened from a book, the bookmark starts with that book's own line.
 7. **The Studio printables are still text and emoji only.** A spot illustration from each book was the first audit's top idea for making prints shareable. It needs artwork.
 8. **`relatedResourceIds` is still empty for every book,** so the Resources page and the book pages don't point to each other.
 9. **Nothing points to the 20 activity kits yet.** They're noindex and deliberately not linked from the site, so until pins, posts or ads link to them, they get no visitors.
@@ -262,15 +262,15 @@ On every book page, the Story words strip offers 6 more activities in that book'
 
 | Priority | Item | Needs | Effort | Why now |
 |---|---|---|---|---|
-| **P0** | **First funnel report:** book page → activity click-through by book, completions by activity and source book, signups by magnet (including the 20 kits) | Analytics access (Plausible) and MailerLite | S | 11 passes shipped with no data on what children actually use. This decides what gets built next. |
+| **P0** | **First funnel report:** book page → activity click-through by book, completions by activity and source book, signups by magnet (including the 20 kits). **Email half done** (`docs/analytics/REPORT_2026-11-18-signups.md`): 16 active site signups, non-English posts convert best, zero kit signups because nothing links to them. **Plausible half still open.** | Plausible export or access | S | 11 passes shipped with no data on what children actually use. This decides what gets built next. |
 | **P0** | **Point traffic at the 20 kits:** one Pinterest pin and caption per book linking to `/free/<book-id>-companion` | Owner approval of copy; pin art from existing covers | S–M | The kits get no visitors until something links to them |
 | ~~**P1**~~ | ~~**One activity of their own for *Sparrow*, *Butterfly Effect* and *Sanding Block*.**~~ **Done in pass 12.** Ideas from their descriptions: *Small Noticer* (spot what the big animals miss), *Kindness Chain* (each kind act leads to the next; a paper chain to print), *Rough to Smooth* (patient strokes that smooth a plank, with a practice card) | — | M (3 Studio pages) | They're the three B books; this gives 20/20 books an activity of their own |
 | ~~**P1**~~ | ~~**Book mode for the two most-linked generic activities**~~ **Done in pass 13.** | — | S–M | 12 book links became book-aware |
 | ~~**P1**~~ | ~~**Fix Puzzle Paradise**~~ **Rebuilt in pass 13** on the books' words and sentences. | Owner chose: rebuild | S | Off-brand content on the hub |
 | **P1** | **Coloring pages from the book illustrations,** starting with the 7 books that link Coloring | Owner artwork | M (art) | Coloring is now the most-linked activity |
 | **P2** | **Themed classroom units** (kindness, patience, courage, feelings, curiosity) | Owner decision: open, gated, or open plus a gated pack | M | Teacher audience; the content already exists |
-| **P2** | **Bookmark quotes per book:** each book's own line, in three languages | — | S | Cheap, and makes 3 links book-aware |
-| **P2** | **A second activity for *Tower* and *Emperor*,** replacing one of their two generic logs | — | M | The two B+ books |
+| ~~**P2**~~ | ~~**Bookmark quotes per book**~~ **Done in pass 14.** | — | S | Cheap, and makes 3 links book-aware |
+| ~~**P2**~~ | ~~**A second activity for *Tower* and *Emperor***~~ **Done in pass 14:** Everyone Gets Heard and Coins You Can't Spend. | — | M | The two B+ books |
 | **P2** | **Link books to resources** (`relatedResourceIds`): the worksheet, kit and guides | — | S | The Resources page and book pages don't point to each other |
 | **P2** | **Trim the `/books` catalog HTML** (135–140 KB; warning at 130) | — | S | The last budget warning |
 | **P3** | **Story sequencing cards** | 4–6 scene images per book | M | Waiting on art |
@@ -508,3 +508,13 @@ New Studio pages, each listed first on its book page:
   - a score ("Solved: 7 of 11"), a "Puzzle Master" line, and a **one-page printable worksheet** of the same puzzles.
   - Shuffles are seeded by book and language, so the page is the same on the server, in the browser and after a reload. Now an `anyBook` activity, ages 6-9, reached from a new "🧩 Word puzzles" button in every book's Story words strip.
 - **Tests:** `tests/funnel/book-modes.test.mjs`: the Journal reads the source book in both modes; every book that links the wheel has a hero and the baked data matches the catalog; the puzzles carry no fairy-tale content; for every book and language, each scramble is a true permutation that never equals the answer and is stable between runs.
+
+### Pass 14: the last two B+ books, bookmark lines, and the first signups report
+
+- **Everyone Gets Heard** (*The Tower That Touched the Sky*, 5-9), listed second on its book page. In three rooms (a meeting, a classroom, a dinner table) one small figure has a hand up while everyone else talks; find it before it's too late ("You saw it! Victor never did."). Then pick up to three ways the family or class will make sure the quietest hand is seen, and answer the book's own question: what would you have asked Victor? Prints a "Getting-Heard Promise" card with a talking token to cut out.
+- **Coins You Can't Spend** (*The Emperor's True Treasure*, 5-9), listed second on its book page. Mint up to seven coins for things no money could buy (a hug, a story at bedtime, a walk together, or two of the child's own), watch the emperor's empty treasury fill, and choose one coin to "spend" today. Prints a week of coins to colour one each day.
+- Both replace Bingo on those book pages. Bingo stays on three books. The *Ages 8-9* collection, which featured Bingo, now features Craft Corner instead, which its member books do link.
+- **Bookmark Designer book mode.** Opened from a book page, the bookmark starts with that book's own line, and "Surprise me" can pick it too. **New data: `src/data/bookQuotes.data.ts`**, one line per book in three languages, each drawn from the book's catalog description or theme and short enough for the bookmark's 30-character field ("Build with questions", "Kindness travels", "Even shadows have adventures").
+- **First signups report** (`docs/analytics/REPORT_2026-11-18-signups.md`), from the MailerLite account: 16 active site signups since August, falling from 7 a month to 2 once posting stopped; French flashcards and the Spanish bundle were the two posts that produced repeat signups; the 20 activity kits have had no signups because nothing links to them; the account is shared with another project and test addresses, which inflate the raw count 3×. The Plausible half of the funnel report is still to do.
+- **Grades:** 8 A, 12 A-, nothing below A-.
+- **Tests:** `tests/funnel/book-quotes.test.mjs` (one line per book, three languages, within 30 characters, wired to the bookmark); the Studio tests cover 29 pages.

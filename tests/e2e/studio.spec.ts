@@ -30,6 +30,8 @@ const PAIRINGS: Record<string, string[]> = {
   '/activities/small-noticer': ['sparrow-saved-forest'],
   '/activities/kindness-chain': ['butterfly-effect'],
   '/activities/rough-to-smooth': ['sanding-block'],
+  '/activities/everyone-gets-heard': ['tower-touched-sky'],
+  '/activities/coins-you-cant-spend': ['emperors-true-treasure'],
 };
 
 for (const [route, books] of Object.entries(PAIRINGS)) {

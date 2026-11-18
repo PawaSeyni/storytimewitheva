@@ -656,4 +656,23 @@ export const activities: Activity[] = [
     desc: { en: 'Sand a rough plank smooth one patient stroke at a time, then choose a skill to grow slowly and print a seven-day practice card.', es: 'Lija una tabla áspera hasta dejarla suave, un movimiento paciente cada vez; luego elige una habilidad que harás crecer despacio e imprime una tarjeta de práctica de siete días.', fr: 'Ponce une planche rugueuse jusqu’à ce qu’elle soit lisse, un geste patient à la fois, puis choisis un savoir-faire à faire grandir doucement et imprime une carte d’entraînement de sept jours.' },
     category: { en: 'Patience', es: 'Paciencia', fr: 'Patience' },
   },
+  // ── Activity Studio, wave 5 (re-audit §7d): a second activity for the two B+ books.
+  {
+    slug: 'everyone-gets-heard',
+    bookSpecific: true,
+    emoji: '🙋',
+    ages: '5-9',
+    title: { en: 'Everyone Gets Heard', es: 'Que todos sean escuchados', fr: 'Tout le monde est écouté' },
+    desc: { en: 'Spot the raised hand nobody in the room sees, then make a family or class promise about how the quietest hand gets heard, with a talking token to print.', es: 'Encuentra la mano levantada que nadie ve en la sala y haz una promesa en familia o en clase sobre cómo se escuchará a la mano más callada, con una ficha para hablar que se imprime.', fr: 'Trouve la main levée que personne ne voit dans la pièce, puis fais une promesse en famille ou en classe sur la façon d’écouter la main la plus discrète, avec un jeton de parole à imprimer.' },
+    category: { en: 'Listening', es: 'Escuchar', fr: 'Écoute' },
+  },
+  {
+    slug: 'coins-you-cant-spend',
+    bookSpecific: true,
+    emoji: '🪙',
+    ages: '5-9',
+    title: { en: 'Coins You Can’t Spend', es: 'Monedas que no se gastan', fr: 'Des pièces qu’on ne dépense pas' },
+    desc: { en: 'Mint a coin for each thing no money could buy, fill a treasury richer than the emperor’s, and print a week of coins to notice one each day.', es: 'Acuña una moneda por cada cosa que el dinero no puede comprar, llena un tesoro más rico que el del emperador e imprime una semana de monedas para notar una cada día.', fr: 'Frappe une pièce pour chaque chose que l’argent ne peut pas acheter, remplis un trésor plus riche que celui de l’empereur et imprime une semaine de pièces pour en remarquer une chaque jour.' },
+    category: { en: 'Gratitude', es: 'Gratitud', fr: 'Gratitude' },
+  },
 ];

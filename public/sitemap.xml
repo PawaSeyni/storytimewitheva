@@ -1108,6 +1108,60 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://storytimewitheva.com/activities/everyone-gets-heard/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/everyone-gets-heard/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/everyone-gets-heard/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/everyone-gets-heard/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/everyone-gets-heard/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/activities/everyone-gets-heard/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/everyone-gets-heard/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/everyone-gets-heard/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/everyone-gets-heard/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/everyone-gets-heard/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/activities/everyone-gets-heard/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/everyone-gets-heard/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/everyone-gets-heard/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/everyone-gets-heard/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/everyone-gets-heard/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/activities/coins-you-cant-spend/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/coins-you-cant-spend/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/coins-you-cant-spend/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/coins-you-cant-spend/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/coins-you-cant-spend/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/activities/coins-you-cant-spend/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/coins-you-cant-spend/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/coins-you-cant-spend/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/coins-you-cant-spend/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/coins-you-cant-spend/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/activities/coins-you-cant-spend/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/coins-you-cant-spend/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/coins-you-cant-spend/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/coins-you-cant-spend/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/coins-you-cant-spend/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://storytimewitheva.com/resources/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/"/>

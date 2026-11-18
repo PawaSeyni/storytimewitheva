@@ -40,12 +40,16 @@ const TABLE = {
   'small-noticer': ['sparrow-saved-forest'],
   'kindness-chain': ['butterfly-effect'],
   'rough-to-smooth': ['sanding-block'],
+  // Wave 5 (re-audit §7d): a second activity for the two B+ books.
+  'everyone-gets-heard': ['tower-touched-sky'],
+  'coins-you-cant-spend': ['emperors-true-treasure'],
 };
 const AGES = {
   'color-mix-lab': '4-7', 'feelings-weather-report': '3-7', 'first-day-brave-plan': '4-8', 'cloud-detective-journal': '4-8',
   'shadow-theatre': '3-7', 'kindness-ripple': '4-9', 'story-quilt': '5-9', 'patient-maker-passport': '5-9',
   'trust-meter': '4-8', 'harmonia-orchestra': '3-6', 'ask-first-architect': '5-9', 'true-treasure-chest': '5-9', 'one-of-a-kind-tree': '4-8', 'kindness-mirror': '4-8', 'listen-like-a-fox': '4-8', 'puddle-voyage': '3-7', 'map-my-world': '4-8', 'leo-and-the-wolf-worksheet': '4-8', 'shadow-science': '3-7', 'brave-breathing': '4-8', 'inventor-blueprint': '5-9', 'thousand-cubes-challenge': '5-9', 'tree-timeline': '5-9',
   'small-noticer': '4-8', 'kindness-chain': '5-9', 'rough-to-smooth': '5-9',
+  'everyone-gets-heard': '5-9', 'coins-you-cant-spend': '5-9',
 };
 
 test('studio — all studio activities exist, trilingual, with the table ages', () => {
@@ -68,6 +72,7 @@ test('studio — all studio activities exist, trilingual, with the table ages', 
 const SLOT = {
   'leo-and-the-wolf-worksheet': 1, 'shadow-science': 1, 'brave-breathing': 1, 'inventor-blueprint': 1, 'thousand-cubes-challenge': 1, 'tree-timeline': 1,
   'kindness-ripple': 1,
+  'everyone-gets-heard': 1, 'coins-you-cant-spend': 1,
   'patient-maker-passport': { 'sanding-block': 1 },
 };
 const slotFor = (slug, id) => (typeof SLOT[slug] === 'object' ? SLOT[slug][id] ?? 0 : SLOT[slug] ?? 0);
@@ -89,7 +94,7 @@ test('studio — no English copy in the studio pages carries an em dash', async 
   // House style: no em dashes in English copy. The studio files hold all three languages,
   // and none of them uses one, so the whole file is checked.
   const { readFileSync, readdirSync } = await import('node:fs');
-  const files = ['src/demos/studio/StudioFrame.tsx', ...readdirSync('src/demos').filter((f) => /^(ColorMixLab|FeelingsWeather|BravePlan|CloudDetective|ShadowTheatre|KindnessRipple|StoryQuilt|MakerPassport|TrustMeter|ColorOrchestra|AskFirstArchitect|TreasureChest|OneOfAKindTree|KindnessMirror|ListenLikeAFox|PuddleVoyage|MapMyWorld|LeoWorksheet|ShadowScience|BraveBreathing|InventorBlueprint|ThousandCubes|TreeTimeline|SmallNoticer|KindnessChain|RoughToSmooth)Demo\.tsx$/.test(f)).map((f) => `src/demos/${f}`)];
-  assert.equal(files.length, 27);
+  const files = ['src/demos/studio/StudioFrame.tsx', ...readdirSync('src/demos').filter((f) => /^(ColorMixLab|FeelingsWeather|BravePlan|CloudDetective|ShadowTheatre|KindnessRipple|StoryQuilt|MakerPassport|TrustMeter|ColorOrchestra|AskFirstArchitect|TreasureChest|OneOfAKindTree|KindnessMirror|ListenLikeAFox|PuddleVoyage|MapMyWorld|LeoWorksheet|ShadowScience|BraveBreathing|InventorBlueprint|ThousandCubes|TreeTimeline|SmallNoticer|KindnessChain|RoughToSmooth|EveryoneGetsHeard|TrueRichesCoins)Demo\.tsx$/.test(f)).map((f) => `src/demos/${f}`)];
+  assert.equal(files.length, 29);
   for (const f of files) assert.ok(!readFileSync(f, 'utf8').includes('\u2014'), `${f}: em dash`);
 });
