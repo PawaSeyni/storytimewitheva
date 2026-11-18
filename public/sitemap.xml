@@ -2701,6 +2701,168 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://storytimewitheva.com/classroom/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/classroom/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/classroom/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/classroom/unit-kindness/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/unit-kindness/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/unit-kindness/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/unit-kindness/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/unit-kindness/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/classroom/unit-kindness/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/unit-kindness/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/unit-kindness/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/unit-kindness/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/unit-kindness/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/classroom/unit-kindness/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/unit-kindness/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/unit-kindness/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/unit-kindness/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/unit-kindness/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/classroom/unit-patience/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/unit-patience/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/unit-patience/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/unit-patience/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/unit-patience/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/classroom/unit-patience/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/unit-patience/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/unit-patience/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/unit-patience/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/unit-patience/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/classroom/unit-patience/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/unit-patience/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/unit-patience/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/unit-patience/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/unit-patience/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/classroom/unit-courage/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/unit-courage/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/unit-courage/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/unit-courage/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/unit-courage/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/classroom/unit-courage/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/unit-courage/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/unit-courage/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/unit-courage/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/unit-courage/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/classroom/unit-courage/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/unit-courage/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/unit-courage/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/unit-courage/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/unit-courage/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/classroom/unit-feelings/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/unit-feelings/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/unit-feelings/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/unit-feelings/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/unit-feelings/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/classroom/unit-feelings/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/unit-feelings/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/unit-feelings/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/unit-feelings/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/unit-feelings/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/classroom/unit-feelings/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/unit-feelings/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/unit-feelings/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/unit-feelings/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/unit-feelings/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/classroom/unit-curiosity/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/unit-curiosity/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/unit-curiosity/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/unit-curiosity/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/unit-curiosity/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/classroom/unit-curiosity/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/unit-curiosity/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/unit-curiosity/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/unit-curiosity/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/unit-curiosity/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/classroom/unit-curiosity/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/classroom/unit-curiosity/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/classroom/unit-curiosity/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/classroom/unit-curiosity/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/classroom/unit-curiosity/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://storytimewitheva.com/games/bilingual-flashcards.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

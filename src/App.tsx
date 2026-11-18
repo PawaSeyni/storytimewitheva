@@ -87,6 +87,8 @@ const BookDetail = chunk(L.loadBookDetail);
 const Collection = chunk(L.loadCollection);
 const Journeys = chunk(L.loadJourneys);
 const Journey = chunk(L.loadJourney);
+const Classroom = chunk(L.loadClassroom);
+const ClassroomUnit = chunk(L.loadClassroomUnit);
 const Activities = chunk(L.loadActivities);
 const Resources = chunk(L.loadResources);
 const Article = chunk(L.loadArticle);
@@ -159,6 +161,8 @@ const routeDefs = [
   { path: '/collections/:collectionId', element: <Collection /> },
   { path: '/journeys', element: <Journeys /> },
   { path: '/journeys/:journeyId', element: <Journey /> },
+  { path: '/classroom', element: <Classroom /> },
+  { path: '/classroom/:unitId', element: <ClassroomUnit /> },
   { path: '/activities', element: <Activities /> },
   { path: '/activities/story-builder', element: <DemoPage><StoryBuilderDemo /></DemoPage> },
   { path: '/activities/character-workshop', element: <DemoPage><CharacterWorkshopDemo /></DemoPage> },

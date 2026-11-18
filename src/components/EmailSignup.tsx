@@ -8,6 +8,9 @@ import { Link } from './LocalizedLink';
 import { useExperiment } from '../lib/experiments';
 import { books as CATALOG } from '../data/books.data';
 import { companionBooks, companionSlug, companionItems, type CompanionItemKey } from '../data/bookCompanions';
+import { publishedClassroomUnits, unitPackSlug, unitPackItems, unitAgeRange } from '../data/classroomUnits';
+import { activities as ACTIVITIES } from '../data/activities.data';
+import { resources as RESOURCES } from '../data/resources';
 
 // Three featured titles (catalog order) offered after signup; ids only, titles localized at render.
 const CONTINUE_BOOKS = CATALOG.filter((b) => b.featured && b.status !== 'coming-soon').slice(0, 3);
@@ -264,9 +267,89 @@ const COMPANION_MAGNETS: Record<string, Magnet> = Object.fromEntries(
   }),
 );
 
+/**
+ * Classroom unit packs (activities audit 2026-11, §5c item 5) are lead magnets GENERATED from
+ * src/data/classroomUnits.ts: one offer per published unit at /free/<unit-id>-pack, delivering
+ * each unit book's worksheet and Pixel quiz, the unit's Studio activities (pages, opened) and
+ * the classroom printables (files, downloaded). Copy is templated from the unit record, so a
+ * new unit gets a pack with no new copy. Like packs, these slugs are NOT literal keys below.
+ */
+const UNIT_UI: Record<Language, {
+  title: (t: string) => string; blurb: (t: string, from: string, to: string, books: number) => string;
+  bullets: (books: number, activities: number) => string[]; cta: string;
+  worksheet: (b: string) => string; quiz: (b: string) => string;
+  successHeading: (t: string) => string; successDetail: string;
+}> = {
+  en: {
+    title: (t) => `${t}: the printable classroom pack`,
+    blurb: (t, from, to, n) => `Everything in the “${t}” unit, ready to open or print: the story worksheet and Pixel’s Story Quiz for each of the ${n} books, the Studio activities with their printouts, and the classroom printables. For ages ${from} to ${to}.`,
+    bullets: (b, a) => [`✓ ${b} story worksheets and ${b} picture quizzes, one per book`, `✓ ${a} Studio activities, each with something to print`, '✓ The teacher guide and follow-up sheets, in English, Spanish and French'],
+    cta: 'Send me the pack',
+    worksheet: (b) => `Story worksheet: ${b}`, quiz: (b) => `Pixel’s Story Quiz: ${b}`,
+    successHeading: (t) => `Your “${t}” classroom pack is ready!`,
+    successDetail: 'Tap a link below to open it; the two printables at the end save as PDFs. You’re on the list, so new units and printables are on the way.',
+  },
+  es: {
+    title: (t) => `${t}: el paquete imprimible para el aula`,
+    blurb: (t, from, to, n) => `Todo lo de la unidad «${t}», listo para abrir o imprimir: la ficha del cuento y el quiz de Pixel de cada uno de los ${n} libros, las actividades del Estudio con sus hojas para imprimir y los imprimibles para el aula. Para edades de ${from} a ${to} años.`,
+    bullets: (b, a) => [`✓ ${b} fichas del cuento y ${b} quiz con dibujos, uno por libro`, `✓ ${a} actividades del Estudio, cada una con algo para imprimir`, '✓ La guía para docentes y las fichas de actividades, en español, inglés y francés'],
+    cta: 'Envíenme el paquete',
+    worksheet: (b) => `Ficha del cuento: ${b}`, quiz: (b) => `El quiz de Pixel: ${b}`,
+    successHeading: (t) => `¡Listo! Tu paquete para el aula «${t}» te espera.`,
+    successDetail: 'Toca un enlace para abrirlo; los dos imprimibles del final se guardan como PDF. Ya estás en la lista, así que pronto recibirás más unidades y materiales.',
+  },
+  fr: {
+    title: (t) => `${t} : le pack à imprimer pour la classe`,
+    blurb: (t, from, to, n) => `Tout le contenu de l’unité « ${t} », prêt à ouvrir ou à imprimer : la fiche de lecture et le quiz de Pixel pour chacun des ${n} livres, les activités du Studio avec leurs impressions, et les fiches pour la classe. Pour les ${from} à ${to} ans.`,
+    bullets: (b, a) => [`✓ ${b} fiches de lecture et ${b} quiz en images, un par livre`, `✓ ${a} activités du Studio, chacune avec quelque chose à imprimer`, '✓ Le guide pour enseignants et les fiches d’activités, en français, anglais et espagnol'],
+    cta: 'Envoyez-moi le pack',
+    worksheet: (b) => `Fiche de lecture : ${b}`, quiz: (b) => `Le quiz de Pixel : ${b}`,
+    successHeading: (t) => `C’est fait ! Votre pack pour la classe « ${t} » est prêt.`,
+    successDetail: 'Touchez un lien ci-dessous pour l’ouvrir ; les deux fiches à la fin s’enregistrent en PDF. Votre inscription est confirmée : de nouvelles unités et fiches arrivent bientôt.',
+  },
+};
+const UNIT_MAGNETS: Record<string, Magnet> = Object.fromEntries(
+  publishedClassroomUnits.map((unit) => {
+    const slug = unitPackSlug(unit.id);
+    const [from, to] = unitAgeRange(unit).split('-');
+    const bookTitle = (id: string, lang: Language) => { const b = CATALOG.find((x) => x.id === id); return b ? b.title[lang] ?? b.title.en : id; };
+    const copy = Object.fromEntries(
+      LANGUAGES.map((lang) => {
+        const ui = UNIT_UI[lang];
+        const t = unit.title[lang];
+        return [lang, { title: ui.title(t), blurb: ui.blurb(t, from, to, unit.bookIds.length), bullets: ui.bullets(unit.bookIds.length, unit.activityIds.length), cta: ui.cta }];
+      }),
+    ) as Record<Language, MagnetCopy>;
+    const perLang = Object.fromEntries(LANGUAGES.map((lang) => [lang, unitPackItems(unit, lang)])) as Record<Language, ReturnType<typeof unitPackItems>>;
+    const bundle: BundleItem[] = perLang.en.map((item, i) => ({
+      label: Object.fromEntries(LANGUAGES.map((lang) => {
+        const ui = UNIT_UI[lang];
+        const label = item.kind === 'worksheet' ? ui.worksheet(bookTitle(item.bookId ?? '', lang))
+          : item.kind === 'quiz' ? ui.quiz(bookTitle(item.bookId ?? '', lang))
+          : item.kind === 'activity' ? ACTIVITIES.find((a) => a.slug === item.activityId)?.title[lang] ?? item.activityId ?? ''
+          : RESOURCES.find((r) => r.id === item.resourceId)?.title[lang] ?? item.resourceId ?? '';
+        return [lang, label];
+      })) as Record<Language, string>,
+      href: Object.fromEntries(LANGUAGES.map((lang) => [lang, perLang[lang][i].href])) as Record<Language, string>,
+      page: item.page,
+    }));
+    const first = CATALOG.find((b) => b.id === unit.bookIds[0]);
+    const cover = (lang: Language) => first?.editions[lang]?.cover ?? first?.editions.en.cover ?? '';
+    return [slug, {
+      tag: slug,
+      copy,
+      bundle,
+      pdf: { en: bundle[0].href.en, es: bundle[0].href.es, fr: bundle[0].href.fr },
+      success: Object.fromEntries(LANGUAGES.map((lang) => [lang, { heading: UNIT_UI[lang].successHeading(unit.title[lang]), detail: UNIT_UI[lang].successDetail }])) as Record<Language, { heading: string; detail: string }>,
+      ...(cover('en') ? { previewFor: { en: cover('en'), es: cover('es'), fr: cover('fr') } } : {}),
+    } satisfies Magnet];
+  }),
+);
+
 const LEAD_MAGNETS: Record<string, Magnet> = {
   ...PACK_MAGNETS,
   ...COMPANION_MAGNETS,
+  ...UNIT_MAGNETS,
   'bedtime-routine': {
     tag: 'bedtime-routine',
     preview: '/previews/bedtime-routine.webp',
@@ -586,7 +669,7 @@ const PREVIEW_DIMS: Record<string, { w: number; h: number }> = {
 /** Book covers (book companions) are square. */
 const COVER_DIMS = { w: 700, h: 700 };
 
-export type SignupPlacement = 'home' | 'landing' | 'books' | 'activities' | 'activity' | 'resources' | 'about';
+export type SignupPlacement = 'home' | 'landing' | 'books' | 'activities' | 'activity' | 'resources' | 'about' | 'classroom';
 
 /** S5-006: one contextual line per placement, above the offer, in the site language. */
 const CONTEXT_LINE: Record<SignupPlacement, Record<Language, string>> = {
@@ -596,6 +679,7 @@ const CONTEXT_LINE: Record<SignupPlacement, Record<Language, string>> = {
   activities: { en: 'Liked the activities? The printable pack keeps the fun going away from the screen.', es: '¿Te gustaron las actividades? El paquete imprimible sigue la diversión lejos de la pantalla.', fr: 'Les activités vous ont plu ? Le pack à imprimer prolonge le plaisir loin de l’écran.' },
   activity: { en: 'Enjoyed this activity? The printable pack keeps the fun going away from the screen.', es: '¿Te gustó esta actividad? El paquete imprimible sigue la diversión lejos de la pantalla.', fr: 'Cette activité vous a plu ? Le pack à imprimer prolonge le plaisir loin de l’écran.' },
   resources: { en: 'Reading the guides? Take the printables that pair with them.', es: '¿Leyendo las guías? Llévate los imprimibles que las acompañan.', fr: 'Vous lisez les guides ? Emportez les fiches qui vont avec.' },
+  classroom: { en: 'Teaching this unit? The pack gathers every worksheet, quiz and activity in it.', es: '¿Vas a dar esta unidad? El paquete reúne todas sus fichas, quiz y actividades.', fr: 'Vous enseignez cette unité ? Le pack rassemble toutes ses fiches, quiz et activités.' },
   about: { en: 'Want to read with Eva at home? Start with the free printables.', es: '¿Quieres leer con Eva en casa? Empieza con los imprimibles gratis.', fr: 'Envie de lire avec Eva à la maison ? Commencez par les fiches gratuites.' },
 };
 

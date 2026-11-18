@@ -29,6 +29,8 @@ const JOURNEYS = path.join(ROOT, 'src', 'data', 'journeys.ts');
 const COLLECTIONS = path.join(ROOT, 'src', 'data', 'collections.ts');
 const LEARNING_PACKS = path.join(ROOT, 'src', 'data', 'learningPacks.ts');
 const BOOK_COMPANIONS = path.join(ROOT, 'src', 'data', 'bookCompanions.ts');
+const CLASSROOM_UNITS = path.join(ROOT, 'src', 'data', 'classroomUnits.ts');
+const CLASSROOM_UNIT_PLANS = path.join(ROOT, 'src', 'data', 'classroomUnitPlans.ts');
 const SEARCH = path.join(ROOT, 'src', 'lib', 'searchIndex.ts');
 
 /** Compile a browser-free TS module with esbuild and evaluate it in-process. */
@@ -182,6 +184,20 @@ let companionsCache = null;
 export async function loadBookCompanions() {
   if (!companionsCache) companionsCache = await loadModule(BOOK_COMPANIONS);
   return companionsCache;
+}
+
+let unitsCache = null;
+/** Classroom units (activities audit 2026-11, §5c item 5): /classroom/<unit-id> pages and their /free/<unit-id>-pack. */
+export async function loadClassroomUnits() {
+  if (!unitsCache) unitsCache = await loadModule(CLASSROOM_UNITS);
+  return unitsCache;
+}
+
+let unitPlansCache = null;
+/** The units' five-day plans, story words and plan validator (src/data/classroomUnitPlans.ts). */
+export async function loadClassroomUnitPlans() {
+  if (!unitPlansCache) unitPlansCache = await loadModule(CLASSROOM_UNIT_PLANS);
+  return unitPlansCache;
 }
 
 let searchCache = null;

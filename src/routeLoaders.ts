@@ -11,6 +11,8 @@ export const loadBookDetail = preloadable(() => import('./pages/BookDetail'));
 export const loadCollection = preloadable(() => import('./pages/Collection'));
 export const loadJourneys = preloadable(() => import('./pages/Journeys'));
 export const loadJourney = preloadable(() => import('./pages/Journey'));
+export const loadClassroom = preloadable(() => import('./pages/Classroom'));
+export const loadClassroomUnit = preloadable(() => import('./pages/ClassroomUnit'));
 export const loadActivities = preloadable(() => import('./pages/Activities'));
 export const loadResources = preloadable(() => import('./pages/Resources'));
 export const loadArticle = preloadable(() => import('./pages/Article'));
@@ -79,6 +81,8 @@ export const ROUTE_CHUNKS: ReadonlyArray<{ path: string; loaders: readonly Loade
   { path: '/collections/:collectionId', loaders: [loadCollection] },
   { path: '/journeys', loaders: [loadJourneys] },
   { path: '/journeys/:journeyId', loaders: [loadJourney] },
+  { path: '/classroom', loaders: [loadClassroom] },
+  { path: '/classroom/:unitId', loaders: [loadClassroomUnit] },
   { path: '/activities', loaders: [loadActivities] },
   { path: '/activities/story-builder', loaders: [loadDemoPage, loadStoryBuilderDemo] },
   { path: '/activities/character-workshop', loaders: [loadDemoPage, loadCharacterWorkshopDemo] },
