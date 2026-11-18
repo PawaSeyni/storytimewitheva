@@ -577,3 +577,9 @@ The owner approved everything in pass 18's brief that needs no new art.
   - *A Little Boat's Big Wish* has no cover file yet, so it has no spot.
   - Final art can replace any crop under the same file name.
 - **Still with the owner:** a native ES and FR sing-through (SW-018), a review of the crops (SW-019), and the colouring and sequencing art.
+
+### Pass 20: a size budget per page
+
+Total JavaScript reached 463 KB (warn 460). A second trimming pass found nothing duplicated and no dead pages. The total is the sum of every page in the site, so it grows with each activity, while a visitor downloads only one page's share.
+- **New budget (owner decision):** the JavaScript each page downloads up front (its scripts and modulepreloads plus their static imports), warn 210 KB, fail 240 KB, checked for all 435 routes in CI. Heaviest today: Story Builder at 192 KB; median 181 KB; homepage 173 KB.
+- The site total stays as a loose ceiling (560 / 600). The entry (125 / 140) and per-chunk (35 / 50) budgets are unchanged.
