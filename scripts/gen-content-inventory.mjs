@@ -12,7 +12,7 @@ import { readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  loadCatalog, loadActivities, loadResources, loadContentIndex, loadCollections, loadJourneys, loadLearningPacks, loadRelatedBooks, loadLocales } from './lib/catalog.mjs';
+  loadCatalog, loadActivities, loadResources, loadContentIndex, loadCollections, loadJourneys, loadLearningPacks, loadRelatedBooks, loadLocales, loadClassroomUnits, loadClassroomUnitPlans } from './lib/catalog.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CHECK = process.argv.includes('--check');
@@ -26,6 +26,8 @@ const { collections } = await loadCollections();
 const { journeys } = await loadJourneys();
 const { learningPacks } = await loadLearningPacks();
 const { relatedBooksFor } = await loadRelatedBooks();
+const { classroomUnits, classroomUnitProblems, unitPackSlug, unitAgeRange } = await loadClassroomUnits();
+const { unitPlanProblems, unitPlans } = await loadClassroomUnitPlans();
 
 const errors = [];
 const warnings = [];
@@ -42,11 +44,14 @@ dup(resources.map((r) => r.id), 'resource');
 dup(collections.map((c) => c.id), 'collection');
 dup(journeys.map((j) => j.id), 'journey');
 dup(learningPacks.map((p) => p.id), 'pack');
+dup(classroomUnits.map((u) => u.id), 'classroom unit');
 
 // ---- validators on every published record
 for (const c of collections.filter((c) => c.publishState === 'published')) for (const p of idx.collectionProblems(c)) err(`collection ${c.id}: ${p}`);
 for (const j of journeys.filter((j) => j.publishState === 'published')) for (const p of idx.journeyProblems(j)) err(`journey ${j.id}: ${p}`);
 for (const p of learningPacks.filter((p) => p.publishState === 'published')) for (const q of idx.learningPackProblems(p)) err(`pack ${p.id}: ${q}`);
+for (const u of classroomUnits.filter((u) => u.publishState === 'published')) for (const q of [...classroomUnitProblems(u), ...unitPlanProblems(u)]) err(`classroom unit ${u.id}: ${q}`);
+for (const u of classroomUnits.filter((u) => u.publishState === 'draft')) warnings.push(`classroom unit ${u.id} is a draft`);
 for (const c of collections.filter((c) => c.publishState === 'draft')) warnings.push(`collection ${c.id} is a draft`);
 for (const j of journeys.filter((j) => j.publishState === 'draft')) warnings.push(`journey ${j.id} is a draft`);
 
@@ -101,6 +106,7 @@ const md = `# Ecosystem Content Inventory (S7-014)
 | Collections | ${collections.length} | ${kinds(collections, 'kind')}; ${collections.filter((c) => c.publishState === 'published').length} published; ${idx.collectionRouteIds.length} routable |
 | Journeys | ${journeys.length} | ${journeys.filter((j) => j.publishState === 'published').length} published, ${journeys.reduce((n, j) => n + j.steps.length, 0)} steps |
 | Learning packs | ${learningPacks.length} | ${learningPacks.filter((p) => p.publishState === 'published').length} published |
+| Classroom units | ${classroomUnits.length} | ${classroomUnits.filter((u) => u.publishState === 'published').length} published, ${Object.values(unitPlans).reduce((n, d) => n + d.length, 0)} plan days |
 
 ## Collections
 
@@ -119,6 +125,12 @@ ${journeys.map((j) => `| ${j.id} | ${j.publishState} | ${j.steps.length} | ${j.s
 | id | audience | state | items | accompanies |
 |---|---|---|---|---|
 ${learningPacks.map((p) => `| ${p.id} | ${p.audience} | ${p.publishState} | ${p.resourceIds.join(', ')} | ${(p.collectionIds ?? []).join(', ')} |`).join('\n')}
+
+## Classroom units (activities audit 2026-11, §5c item 5)
+
+| id | state | ages | themes | books | activities | printables | pack |
+|---|---|---|---|---|---|---|---|
+${classroomUnits.map((u) => `| ${u.id} | ${u.publishState} | ${unitAgeRange(u)} | ${u.themeIds.join(', ')} | ${u.bookIds.join(', ')} | ${u.activityIds.join(', ')} | ${u.resourceIds.join(', ')} | /free/${unitPackSlug(u.id)} |`).join('\n')}
 
 ## Parent guides (S7-006)
 

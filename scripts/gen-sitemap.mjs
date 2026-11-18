@@ -4,7 +4,7 @@
 // the sitemap can't drift from the catalog. Run: npm run gen:sitemap
 
 import { readFile, writeFile, readdir } from 'node:fs/promises';
-import { bookIds as loadBookIds, loadContentIndex, loadLocales, loadResources } from './lib/catalog.mjs';
+import { bookIds as loadBookIds, loadContentIndex, loadLocales, loadResources, loadClassroomUnits } from './lib/catalog.mjs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -92,7 +92,13 @@ const journeyPages = [['/journeys', 'monthly', '0.6'], ...journeyRouteIds.map(id
 const { resources } = await loadResources();
 const guidePages = resources.filter(r => r.kind === 'article').map(r => [`/resources/${r.slug}`, 'monthly', '0.7']);
 
-const pages = [...staticPages, ...bookPages, ...collectionPages, ...journeyPages, ...guidePages];
+// Classroom units (activities audit 2026-11, §5c item 5): the index plus every PUBLISHED, VALID
+// unit, from the same list the page and the prerender guard read. Their gated packs
+// (/free/<unit-id>-pack) are landing pages and stay out of the sitemap.
+const { CLASSROOM_UNIT_IDS } = await loadClassroomUnits();
+const unitPages = [['/classroom', 'monthly', '0.7'], ...CLASSROOM_UNIT_IDS.map(id => [`/classroom/${id}`, 'monthly', '0.7'])];
+
+const pages = [...staticPages, ...bookPages, ...collectionPages, ...journeyPages, ...guidePages, ...unitPages];
 
 // Standalone games: single static URL each (self-contained pages with their
 // own internal EN/ES/FR toggles), so no per-language hreflang.
@@ -113,4 +119,4 @@ for (const file of gameFiles) {
 out += '</urlset>\n';
 
 await writeFile(path.join(ROOT, 'public/sitemap.xml'), out);
-console.log(`sitemap.xml: ${pages.length * LANGS.length} localized URLs + ${gameFiles.length} game URLs (${bookIds.length} book pages, ${collectionPages.length} collections, ${journeyRouteIds.length} journeys)`);
+console.log(`sitemap.xml: ${pages.length * LANGS.length} localized URLs + ${gameFiles.length} game URLs (${bookIds.length} book pages, ${collectionPages.length} collections, ${journeyRouteIds.length} journeys, ${CLASSROOM_UNIT_IDS.length} classroom units)`);

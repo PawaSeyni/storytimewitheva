@@ -14,7 +14,7 @@
 // interactive routes (the activity games) work exactly as before.
 
 import http from 'node:http';
-import { bookIds, loadContentIndex, loadLocales, loadBookCompanions } from './lib/catalog.mjs';
+import { bookIds, loadContentIndex, loadLocales, loadBookCompanions, loadClassroomUnits } from './lib/catalog.mjs';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync, statSync, readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -110,6 +110,8 @@ const { LANG_PREFIXES } = await loadLocales(); // registry (S8-019)
 const { learningPackIds: PACK_LANDING_SLUGS } = await loadContentIndex();
 // Book companions (activities audit 2026-11, §4C) are generated lead magnets too, one per book.
 const { BOOK_COMPANION_SLUGS: COMPANION_LANDING_SLUGS } = await loadBookCompanions();
+// Classroom units (activities audit 2026-11, §5c item 5): one gated pack per published unit.
+const { UNIT_PACK_SLUGS: UNIT_LANDING_SLUGS, CLASSROOM_UNIT_IDS } = await loadClassroomUnits();
 // Closed seasonal collections (S7-012): prerendered (empty state, noindex) but not in the sitemap.
 const closedSeasonalRoutes = [];
 
@@ -143,7 +145,12 @@ const closedSeasonalRoutes = [];
     console.error(`\nPrerender aborted: book companion slugs collide with registered magnets or packs: ${companionClash.join(', ')}\n`);
     process.exit(1);
   }
-  console.log(`Landing-page guard OK: ${registered.length} magnet slugs + ${PACK_LANDING_SLUGS.length} learning packs + ${COMPANION_LANDING_SLUGS.length} book companions all prerendered.`);
+  const unitClash = UNIT_LANDING_SLUGS.filter(slug => registered.includes(slug) || LANDING_SLUGS.includes(slug) || PACK_LANDING_SLUGS.includes(slug) || COMPANION_LANDING_SLUGS.includes(slug));
+  if (unitClash.length) {
+    console.error(`\nPrerender aborted: classroom unit pack slugs collide with registered magnets, packs or companions: ${unitClash.join(', ')}\n`);
+    process.exit(1);
+  }
+  console.log(`Landing-page guard OK: ${registered.length} magnet slugs + ${PACK_LANDING_SLUGS.length} learning packs + ${COMPANION_LANDING_SLUGS.length} book companions + ${UNIT_LANDING_SLUGS.length} classroom unit packs all prerendered.`);
 }
 
 // Book-page guard (Sprint 3 S3-005 — catalog/sitemap/prerender parity): every book
@@ -202,9 +209,17 @@ const closedSeasonalRoutes = [];
     throw new Error(`\nPrerender aborted: journey/sitemap parity failed. missing=${jMissing.join(',')} extra=${jExtra.join(',')} index=${routeSet.has('/journeys')}`);
   }
   console.log(`Journey guard OK: ${journeyRouteIds.length} published journeys + index.`);
+  // Classroom-unit guard (activities audit 2026-11, §5c item 5): same parity for /classroom/*.
+  const uMissing = CLASSROOM_UNIT_IDS.filter(id => !routeSet.has(`/classroom/${id}`));
+  const uAdvertised = [...routeSet].filter(r => /^\/classroom\/[^/]+$/.test(r)).map(r => r.split('/')[2]);
+  const uExtra = uAdvertised.filter(id => !CLASSROOM_UNIT_IDS.includes(id));
+  if (uMissing.length || uExtra.length || !routeSet.has('/classroom')) {
+    throw new Error(`\nPrerender aborted: classroom-unit/sitemap parity failed. missing=${uMissing.join(',')} extra=${uExtra.join(',')} index=${routeSet.has('/classroom')}`);
+  }
+  console.log(`Classroom-unit guard OK: ${CLASSROOM_UNIT_IDS.length} published units + index.`);
 }
 
-const extraRoutes = [...NOINDEX_SPA_ROUTES, ...closedSeasonalRoutes, ...[...LANDING_SLUGS, ...PACK_LANDING_SLUGS, ...COMPANION_LANDING_SLUGS].map(s => `/free/${s}`)].flatMap(p =>
+const extraRoutes = [...NOINDEX_SPA_ROUTES, ...closedSeasonalRoutes, ...[...LANDING_SLUGS, ...PACK_LANDING_SLUGS, ...UNIT_LANDING_SLUGS, ...COMPANION_LANDING_SLUGS].map(s => `/free/${s}`)].flatMap(p =>
   LANG_PREFIXES.map(pre => `${pre}${p}`),
 );
 
