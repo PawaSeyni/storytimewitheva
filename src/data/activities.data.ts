@@ -42,6 +42,10 @@ export const activities: Activity[] = [
     slug: 'story-builder',
     emoji: '📝',
     ages: '6-9',
+    // Book mode (2026-11-18): the book's character, setting and problem (storyDice) come
+    // preselected and its story words become a word bank; offered on every book page from the
+    // Story words strip, so it accepts any book as ?book=<id>.
+    anyBook: true,
     title: {
       en: 'Story Dice Creator',
       es: 'Creador de dados de historia',
