@@ -84,7 +84,8 @@ Each song below has **original words** set to a **public-domain melody**, so any
 
 - Each song becomes one entry in the `songs` list in `public/games/rhyme-singalong.html`, in the same shape as the existing four: an emoji, title, subtitle with ages, lines in three languages, and a "Sing it to the tune of…" line.
 - Each linking book page could open the sing-along on its own song (`?book=<id>`), the way the word games open on a book's words.
-- This needs no artwork. **Say "approved" (with any edits) and I'll add them.**
+- This needs no artwork.
+- **Status, 18 November: approved and added.** All four are in the sing-along, and each linking book page opens it on its own song (`?book=<id>`), in the page's language (`?lang=` now sets the lyrics too). *The Rainbow Symphony* now links the sing-along. Still open: a native ES and FR sing-through (tracker SW-018).
 
 ---
 
@@ -156,6 +157,8 @@ All 29 Studio printables are text and emoji today. One small illustration per ca
 
 **Where they go:** the top of each `Printable` card in `src/demos/*Demo.tsx`. I can wire them up as soon as the files exist (for example `public/spots/<book-id>.png`).
 
+**Status, 18 November: first pass live.** 19 crops from the cover files (`public/spots/<book-id>.webp`, 300 × 300, about 19 KB each), shown at the top right of every Studio printable for its book, on screen and in print. *A Little Boat's Big Wish* has no cover file on the site yet, so its printables have no spot. These are crops, not transparent cut-outs: replace any file with the final art under the same name and nothing else changes. Owner review: tracker SW-019.
+
 ---
 
 ## 5. Suggested order, and what I need from you
@@ -167,4 +170,4 @@ All 29 Studio printables are text and emoji today. One small illustration per ca
 | 3 | **Colouring pages** | 7 line-art SVGs, one per book (traced from the books) | Add them to the Coloring activity, with book mode |
 | 4 | **Sequencing cards** | 4-6 spread thumbnails per book, and your scene picks for the five books marked above | Build the drag-to-order activity and the printable cards |
 
-**Fastest win:** songs (step 1), since they need only your approval. **Step 2 could start today** if you're happy for me to make first-pass crops from the cover images already on the site; you'd review them before anything goes live.
+**Done:** steps 1 and 2 (first pass), 18 November. **Next:** colouring pages (step 3) and sequencing cards (step 4), which need your art.

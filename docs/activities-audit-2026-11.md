@@ -565,3 +565,15 @@ Three fixes from `docs/analytics/REPORT_2026-11-18-funnel.md`, built in parallel
 - **Spot illustrations:** one 600 px transparent PNG per book, ideally a cover crop, reused across that book's printables (20 crops cover all 29).
 - **Suggested order:** songs first (approval only), then spot illustrations (first-pass crops from the existing covers are possible), then colouring pages, then sequencing cards.
 
+
+### Pass 19: the songs and the first spot illustrations
+
+The owner approved everything in pass 18's brief that needs no new art.
+- **Four original songs are live** in Rhyme & Sing-Along: *Little Gray Cloud* (Pawa), *Little Yellow Boat* (Little Boat), *Clouds Up High* (Cloud Collector) and *Every Color Sings* (Rainbow Symphony), in English, Spanish and French.
+  - Each book page opens the game on its own song (`?book=<id>`). *The Rainbow Symphony* now links the sing-along instead of Build-a-Scene.
+  - **Fixed along the way:** the sing-along's lyrics ignored `?lang=`, so Spanish and French book pages opened English lyrics. The URL language now wins, as in `i18n.js`.
+  - A test checks that every book linking the sing-along has a song, with equal line counts in all three languages.
+- **Spot illustrations, first pass:** 19 cover crops (`public/spots/`, 300 px WebP, about 363 KB in total, loaded lazily) appear at the top right of every Studio printable for their book, on screen and in print. Print page counts are unchanged.
+  - *A Little Boat's Big Wish* has no cover file yet, so it has no spot.
+  - Final art can replace any crop under the same file name.
+- **Still with the owner:** a native ES and FR sing-through (SW-018), a review of the crops (SW-019), and the colouring and sequencing art.
