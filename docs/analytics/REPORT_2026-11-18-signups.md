@@ -80,3 +80,9 @@ With 18 people, none of these rates means much yet. They do say that the welcome
 | P1 | **Separate the sites in MailerLite:** a group per site, and a segment that excludes `pnguer+` test addresses, so the next count is clean. | Owner (MailerLite settings) |
 | P2 | **Post for the three offers that have no signups** (home reading pack, Leo storybook, starter kit), or retire the ones not worth promoting. | Owner |
 | P2 | Re-run this report monthly. The reading is a few API calls; the write-up is this file's format. | — |
+
+## Update, 18 November 2026 (later the same day)
+
+- **The sites were already separated.** The site's signup function adds every subscriber to the `storytimewitheva-signups` group; this report read the whole account, which is why other projects' records appeared. The group holds 18 active members, 2 of them test addresses.
+- **New segment:** "Eva — Real site signups (storytimewitheva-signups, no test addresses)" counts the group minus `pnguer+` and `@example.com` addresses: **16**, matching section 1. Use it for the next count.
+- **Repeat-what-worked drafts** (P0) are in `docs/marketing/REPEAT_WINNERS_2026-11.md`, and the kit pins' posting order in `docs/marketing/KIT_PINS_POSTING_PLAN_2026-11.md`.

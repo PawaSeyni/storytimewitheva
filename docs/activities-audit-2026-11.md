@@ -583,3 +583,9 @@ The owner approved everything in pass 18's brief that needs no new art.
 Total JavaScript reached 463 KB (warn 460). A second trimming pass found nothing duplicated and no dead pages. The total is the sum of every page in the site, so it grows with each activity, while a visitor downloads only one page's share.
 - **New budget (owner decision):** the JavaScript each page downloads up front (its scripts and modulepreloads plus their static imports), warn 210 KB, fail 240 KB, checked for all 435 routes in CI. Heaviest today: Story Builder at 192 KB; median 181 KB; homepage 173 KB.
 - The site total stays as a loose ceiling (560 / 600). The entry (125 / 140) and per-chunk (35 / 50) budgets are unchanged.
+
+### Pass 21: getting the kits and the winning offers in front of people
+
+- **MailerLite:** site signups already land in the `storytimewitheva-signups` group. A new segment, "Eva — Real site signups", leaves out test addresses and counts 16 people, the same as the signups report.
+- **Repeat what worked:** `docs/marketing/REPEAT_WINNERS_2026-11.md` has 9 drafts for approval: 5 pins (P-138 to P-142: French and Spanish flashcards, Spanish and French bundle) and 4 Facebook posts (FB-047 to FB-050, Spanish bundle in FB-025's shape, French and Spanish flashcards). Ids are provisional until checked against the master tracker.
+- **Kit pin posting plan:** `docs/marketing/KIT_PINS_POSTING_PLAN_2026-11.md` orders the 60 kit pins and the 5 new pins at 5 a week from 23 November (13 weeks): Spanish and French first, books with existing visitors first, Little Boat last. Every pin has a checklist: image, link check, posted, logged. Every link was checked against the build.
