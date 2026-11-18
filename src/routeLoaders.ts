@@ -61,6 +61,7 @@ export const loadKindnessChainDemo = preloadable(() => import('./demos/KindnessC
 export const loadRoughToSmoothDemo = preloadable(() => import('./demos/RoughToSmoothDemo'));
 export const loadEveryoneGetsHeardDemo = preloadable(() => import('./demos/EveryoneGetsHeardDemo'));
 export const loadTrueRichesCoinsDemo = preloadable(() => import('./demos/TrueRichesCoinsDemo'));
+export const loadStoryDiceDemo = preloadable(() => import('./demos/StoryDiceDemo'));
 export const loadCloudDetectiveDemo = preloadable(() => import('./demos/CloudDetectiveDemo'));
 export const loadShadowTheatreDemo = preloadable(() => import('./demos/ShadowTheatreDemo'));
 export const loadKindnessRippleDemo = preloadable(() => import('./demos/KindnessRippleDemo'));
@@ -114,6 +115,7 @@ export const ROUTE_CHUNKS: ReadonlyArray<{ path: string; loaders: readonly Loade
   { path: '/activities/rough-to-smooth', loaders: [loadDemoPage, loadRoughToSmoothDemo] },
   { path: '/activities/everyone-gets-heard', loaders: [loadDemoPage, loadEveryoneGetsHeardDemo] },
   { path: '/activities/coins-you-cant-spend', loaders: [loadDemoPage, loadTrueRichesCoinsDemo] },
+  { path: '/activities/collection-story-dice', loaders: [loadDemoPage, loadStoryDiceDemo] },
   { path: '/activities/cloud-detective-journal', loaders: [loadDemoPage, loadCloudDetectiveDemo] },
   { path: '/activities/shadow-theatre', loaders: [loadDemoPage, loadShadowTheatreDemo] },
   { path: '/activities/kindness-ripple', loaders: [loadDemoPage, loadKindnessRippleDemo] },

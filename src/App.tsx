@@ -142,6 +142,7 @@ const KindnessChainDemo = chunk(L.loadKindnessChainDemo);
 const RoughToSmoothDemo = chunk(L.loadRoughToSmoothDemo);
 const EveryoneGetsHeardDemo = chunk(L.loadEveryoneGetsHeardDemo);
 const TrueRichesCoinsDemo = chunk(L.loadTrueRichesCoinsDemo);
+const StoryDiceDemo = chunk(L.loadStoryDiceDemo);
 const CloudDetectiveDemo = chunk(L.loadCloudDetectiveDemo);
 const ShadowTheatreDemo = chunk(L.loadShadowTheatreDemo);
 const KindnessRippleDemo = chunk(L.loadKindnessRippleDemo);
@@ -194,6 +195,7 @@ const routeDefs = [
   { path: '/activities/rough-to-smooth', element: <DemoPage><RoughToSmoothDemo /></DemoPage> },
   { path: '/activities/everyone-gets-heard', element: <DemoPage><EveryoneGetsHeardDemo /></DemoPage> },
   { path: '/activities/coins-you-cant-spend', element: <DemoPage><TrueRichesCoinsDemo /></DemoPage> },
+  { path: '/activities/collection-story-dice', element: <DemoPage><StoryDiceDemo /></DemoPage> },
   { path: '/activities/cloud-detective-journal', element: <DemoPage><CloudDetectiveDemo /></DemoPage> },
   { path: '/activities/shadow-theatre', element: <DemoPage><ShadowTheatreDemo /></DemoPage> },
   { path: '/activities/kindness-ripple', element: <DemoPage><KindnessRippleDemo /></DemoPage> },

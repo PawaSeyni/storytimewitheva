@@ -63,6 +63,7 @@ const staticPages = [
   ['/activities/rough-to-smooth', 'monthly', '0.7'],
   ['/activities/everyone-gets-heard', 'monthly', '0.7'],
   ['/activities/coins-you-cant-spend', 'monthly', '0.7'],
+  ['/activities/collection-story-dice', 'monthly', '0.7'],
   ['/resources', 'monthly', '0.6'],
   ['/about', 'monthly', '0.6'],
   ['/contact', 'monthly', '0.5'],
