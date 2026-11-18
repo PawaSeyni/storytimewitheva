@@ -37,7 +37,9 @@ export const EVENTS: EventDefinition[] = [
   { name: 'Book View', kind: 'intent', required: ['book'], optional: [], owner: 'product', privacy: 'stable book id' },
   { name: 'Recommendation Click', kind: 'intent', required: ['book', 'placement', 'reason'], optional: [], values: { reason: ['editorial', 'related', 'theme', 'age', 'preference'] }, owner: 'product', privacy: 'ids and reason tier' },
   { name: 'Personalized View', kind: 'exposure', required: ['placement'], optional: [], owner: 'product', privacy: 'placement only; never the library' },
-  { name: 'Continue Journey', kind: 'intent', required: ['placement', 'destination'], optional: ['book', 'activity', 'reason', 'resource'], owner: 'product', privacy: 'ids and placement' },
+  // placement 'guide' (2026-11): the "Try it with a book" blocks on /resources/<slug>; reason is
+  // guide-mid | guide-end, the target id travels as book (books) or resource (printable or unit id).
+  { name: 'Continue Journey', kind: 'intent', required: ['placement', 'destination'], optional: ['book', 'activity', 'reason', 'resource'], values: { placement: ['detail', 'card', 'activity', 'signup-success', 'classroom-unit', 'guide'], destination: ['book', 'books', 'activity', 'resource', 'catalog', 'classroom-unit', 'classroom', 'printable'] }, owner: 'product', privacy: 'ids and placement' },
   { name: 'Search', kind: 'intent', required: ['language', 'filter', 'results'], optional: [], owner: 'product', privacy: 'filter and count; NEVER the query text' },
   // ---- purchase intent (S5-002 / S5-003) ----
   { name: 'Purchase CTA View', alias: 'purchase_cta_impression', kind: 'exposure', required: ['book', 'placement', 'edition'], optional: [], values: { placement: ['detail'], edition: ['en', 'es', 'fr'] }, owner: 'growth', privacy: 'once per book page view when the Buy control is viewable' },
