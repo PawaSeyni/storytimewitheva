@@ -1027,6 +1027,87 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://storytimewitheva.com/activities/small-noticer/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/small-noticer/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/small-noticer/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/small-noticer/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/small-noticer/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/activities/small-noticer/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/small-noticer/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/small-noticer/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/small-noticer/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/small-noticer/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/activities/small-noticer/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/small-noticer/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/small-noticer/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/small-noticer/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/small-noticer/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/activities/kindness-chain/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/kindness-chain/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/kindness-chain/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/kindness-chain/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/kindness-chain/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/activities/kindness-chain/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/kindness-chain/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/kindness-chain/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/kindness-chain/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/kindness-chain/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/activities/kindness-chain/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/kindness-chain/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/kindness-chain/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/kindness-chain/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/kindness-chain/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/activities/rough-to-smooth/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/rough-to-smooth/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/rough-to-smooth/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/rough-to-smooth/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/rough-to-smooth/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/es/activities/rough-to-smooth/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/rough-to-smooth/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/rough-to-smooth/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/rough-to-smooth/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/rough-to-smooth/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://storytimewitheva.com/fr/activities/rough-to-smooth/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/activities/rough-to-smooth/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/activities/rough-to-smooth/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://storytimewitheva.com/fr/activities/rough-to-smooth/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://storytimewitheva.com/activities/rough-to-smooth/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://storytimewitheva.com/resources/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://storytimewitheva.com/resources/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://storytimewitheva.com/es/resources/"/>

@@ -232,15 +232,15 @@ On every book page, the Story words strip offers 6 more activities in that book'
 | The Little Mapmaker | 4-8 | ★Map My World, Story Map, Coloring | 1 | **A-** | — |
 | The Tower That Touched the Sky | 5-9 | ★Ask-First Architect, Journal, Bingo | 1 | **B+** | Two of three are generic reading logs |
 | The Emperor's True Treasure | 5-9 | ★True Treasure Chest, Journal, Bingo | 1 | **B+** | Same set as Tower |
-| The Sparrow Who Saved the Forest | 4-8 | ★Kindness Ripple (shared), Journal, Bingo, Character Workshop | 0 own | **B** | Its only specific activity is shared with *Butterfly Effect* |
-| The Butterfly Effect | 5-9 | ★Kindness Ripple (shared), Journal, Bingo, Emotion Wheel | 0 own | **B** | Shared with *Sparrow* |
-| The Sanding Block | 5-9 | ★Maker Passport (shared), Bookmark, Craft Corner | 0 own | **B** | Shares the passport with Heidi and Mira, who now each have a second activity of their own |
+| The Sparrow Who Saved the Forest | 4-8 | ★Small Noticer, ★Kindness Ripple (shared), Journal, Bingo | 1 | **A-** | Fixed in pass 12. Before: its only book-specific activity was shared with *Butterfly Effect* |
+| The Butterfly Effect | 5-9 | ★Kindness Chain, ★Kindness Ripple (shared), Emotion Wheel, Journal | 1 | **A-** | Fixed in pass 12. Before: shared its only activity with *Sparrow* |
+| The Sanding Block | 5-9 | ★Rough to Smooth, ★Maker Passport (shared), Bookmark, Craft Corner | 1 | **A-** | Fixed in pass 12. Before: shared the passport with Heidi and Mira |
 
-**Grade spread:** 6 A, 9 A-, 2 B+, 3 B, and nothing below B. At the first audit: 0 A, 3 A-, 2 B+, 6 B, 2 C, 4 C- and 3 D.
+**Grade spread:** 6 A, 9 A-, 2 B+, 3 B, and nothing below B at the re-audit. **After pass 12:** 6 A, 12 A-, 2 B+. At the first audit: 0 A, 3 A-, 2 B+, 6 B, 2 C, 4 C- and 3 D.
 
 ### 7c. New and remaining findings
 
-1. **Three books still have no activity of their own:** *Sparrow*, *Butterfly Effect* and *Sanding Block*. Each one shares its only book-specific activity with other books. They're now the weakest books in the collection.
+1. ~~**Three books still have no activity of their own:** *Sparrow*, *Butterfly Effect* and *Sanding Block*.~~ **Done in pass 12:** Small Noticer, Kindness Chain and Rough to Smooth. All 20 books now have an activity of their own.
 2. **The generic activities carry the most links, and they still ignore the book.** None of these reads `?book=`:
    - Adventure Journal (7 books) and Coloring (7);
    - Bingo, Emotion Wheel and Build-a-Scene (5 each);
@@ -264,7 +264,7 @@ On every book page, the Story words strip offers 6 more activities in that book'
 |---|---|---|---|---|
 | **P0** | **First funnel report:** book page → activity click-through by book, completions by activity and source book, signups by magnet (including the 20 kits) | Analytics access (Plausible) and MailerLite | S | 11 passes shipped with no data on what children actually use. This decides what gets built next. |
 | **P0** | **Point traffic at the 20 kits:** one Pinterest pin and caption per book linking to `/free/<book-id>-companion` | Owner approval of copy; pin art from existing covers | S–M | The kits get no visitors until something links to them |
-| **P1** | **One activity of their own for *Sparrow*, *Butterfly Effect* and *Sanding Block*.** Ideas from their descriptions: *Small Noticer* (spot what the big animals miss), *Kindness Chain* (each kind act leads to the next; a paper chain to print), *Rough to Smooth* (patient strokes that smooth a plank, with a practice card) | — | M (3 Studio pages) | They're the three B books; this gives 20/20 books an activity of their own |
+| ~~**P1**~~ | ~~**One activity of their own for *Sparrow*, *Butterfly Effect* and *Sanding Block*.**~~ **Done in pass 12.** Ideas from their descriptions: *Small Noticer* (spot what the big animals miss), *Kindness Chain* (each kind act leads to the next; a paper chain to print), *Rough to Smooth* (patient strokes that smooth a plank, with a practice card) | — | M (3 Studio pages) | They're the three B books; this gives 20/20 books an activity of their own |
 | **P1** | **Book mode for the two most-linked generic activities:** Adventure Journal pre-fills the book; Emotion Wheel asks how the book's character felt | — | S–M | 12 book links become book-aware |
 | **P1** | **Fix Puzzle Paradise:** replace the fairy-tale puzzles with each book's story words (word scrambles, `?book=`), or retire it | Owner decision: rebuild or retire | S | Off-brand content on the hub |
 | **P1** | **Coloring pages from the book illustrations,** starting with the 7 books that link Coloring | Owner artwork | M (art) | Coloring is now the most-linked activity |
@@ -472,3 +472,24 @@ Tests: Studio tests extended to 24 pages, with the new activities in slot 2. All
 - **Tests:** `tests/funnel/book-companions.test.mjs` (one kit per published book, no slug collisions, every link opens an existing activity in that book's mode and language); `tests/seo/book-companions.test.mjs` (all 60 pages prerendered, noindex, tagged, naming the book).
 - **Size:** the signup form is part of the first page load, so the entry bundle grows by 2 KB to 109 KB gzip (budget 125); total JavaScript is 415 KB. A trimming pass found nothing to remove without cutting features, so the total-JavaScript budget was raised to 460 / 480 KB (owner decision; reasons in `docs/platform/PERFORMANCE_BUDGET_POLICY.md`). The entry and per-page budgets, which govern what a visitor downloads, are unchanged.
 - **Their own thank-you message** (owner decision). After signup a kit names the book and says to open the activities ("Your "The Fig Tree's Secret" activity kit is ready! Tap an activity below to open it."), in all three languages. The other offers keep "your download is ready".
+
+### Pass 12: an activity of their own for the last three books (re-audit §7c item 1)
+
+New Studio pages, each listed first on its book page:
+- **Small Noticer** (*The Sparrow Who Saved the Forest*, 4-8), `/activities/small-noticer`:
+  - Find the three small things in a forest the big animals walked past: a fallen chick, a thirsty sprout, a ladybug on its back. The small things are drawn smaller, so children have to look closely.
+  - Then notice up to three small things at home or school and pick a tiny kind act for each. Only acts that fit are offered (a thirsty plant gets "water it", an empty pet bowl "fill the bowl").
+  - Prints a card: "I noticed… so I will…" and "Nobody is too small to help."
+- **Kindness Chain** (*The Butterfly Effect*, 5-9), `/activities/kindness-chain`:
+  - Start with one small kind act, then follow it from person to person: who it reached, and what they passed on, up to six links ("Your one kind thing reached 3 people!").
+  - Prints paper-chain strips to cut, glue and keep growing at home or in class.
+- **Rough to Smooth** (*The Sanding Block*, 5-9), `/activities/rough-to-smooth`:
+  - Sand a rough plank one stroke at a time (24 strokes). The rough marks fade, the message changes as it gets smoother, and it ends: "No one stroke did that. All of them together did." The progress bar respects reduced motion.
+  - Then choose something to get good at and a small daily step.
+  - Prints a seven-day practice card.
+
+**Grounded in the catalog.** Each page uses only what the book's description says. The grandfather and the boy in *The Sanding Block* aren't named in the catalog, so they aren't named here either. Spanish and French titles are gender-neutral: "Ojos de gorrión" and "Yeux de moineau" ("Sparrow eyes").
+
+**Links that made room.** The shared activities move to second place. *Sparrow* no longer links Character Workshop (Leo still does), and *Butterfly Effect* no longer links Bingo (five other books still do).
+
+**Tests:** the Studio unit test covers 27 pages and allows a shared activity to sit in a different slot per book; the Studio browser test covers the three new pages (30 pass). All three were played through in EN, ES and FR, and each prints on one page.

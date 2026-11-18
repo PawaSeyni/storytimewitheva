@@ -36,11 +36,16 @@ const TABLE = {
   'inventor-blueprint': ['heidis-journey-to-mastery'],
   'thousand-cubes-challenge': ['miras-thousand-cubes'],
   'tree-timeline': ['fig-trees-secret'],
+  // Wave 4 (re-audit 2026-11-18): an activity of their own for Sparrow, Butterfly Effect and Sanding Block.
+  'small-noticer': ['sparrow-saved-forest'],
+  'kindness-chain': ['butterfly-effect'],
+  'rough-to-smooth': ['sanding-block'],
 };
 const AGES = {
   'color-mix-lab': '4-7', 'feelings-weather-report': '3-7', 'first-day-brave-plan': '4-8', 'cloud-detective-journal': '4-8',
   'shadow-theatre': '3-7', 'kindness-ripple': '4-9', 'story-quilt': '5-9', 'patient-maker-passport': '5-9',
   'trust-meter': '4-8', 'harmonia-orchestra': '3-6', 'ask-first-architect': '5-9', 'true-treasure-chest': '5-9', 'one-of-a-kind-tree': '4-8', 'kindness-mirror': '4-8', 'listen-like-a-fox': '4-8', 'puddle-voyage': '3-7', 'map-my-world': '4-8', 'leo-and-the-wolf-worksheet': '4-8', 'shadow-science': '3-7', 'brave-breathing': '4-8', 'inventor-blueprint': '5-9', 'thousand-cubes-challenge': '5-9', 'tree-timeline': '5-9',
+  'small-noticer': '4-8', 'kindness-chain': '5-9', 'rough-to-smooth': '5-9',
 };
 
 test('studio — all studio activities exist, trilingual, with the table ages', () => {
@@ -57,15 +62,22 @@ test('studio — all studio activities exist, trilingual, with the table ages', 
   }
 });
 
-/** Position on the book page when not first: the Leo worksheet follows Trust Meter. */
-const SLOT = { 'leo-and-the-wolf-worksheet': 1, 'shadow-science': 1, 'brave-breathing': 1, 'inventor-blueprint': 1, 'thousand-cubes-challenge': 1, 'tree-timeline': 1 };
+/** Position on the book page when not first: the Leo worksheet follows Trust Meter. A number
+ *  applies to every book in the table; an object gives the slot per book. Wave 4 put each
+ *  book's own activity first, so the shared ones moved to slot 2 on those books. */
+const SLOT = {
+  'leo-and-the-wolf-worksheet': 1, 'shadow-science': 1, 'brave-breathing': 1, 'inventor-blueprint': 1, 'thousand-cubes-challenge': 1, 'tree-timeline': 1,
+  'kindness-ripple': 1,
+  'patient-maker-passport': { 'sanding-block': 1 },
+};
+const slotFor = (slug, id) => (typeof SLOT[slug] === 'object' ? SLOT[slug][id] ?? 0 : SLOT[slug] ?? 0);
 
 test('studio — every "best book connection" lists the activity first, and only those books do', () => {
   for (const [slug, ids] of Object.entries(TABLE)) {
     for (const id of ids) {
       const b = books.find((x) => x.id === id);
       assert.ok(b, `${slug}: unknown book ${id}`);
-      const slot = SLOT[slug] ?? 0;
+      const slot = slotFor(slug, id);
       assert.equal(b.relatedActivityIds?.[slot], slug, `${id}: ${slug} must be related activity #${slot + 1}`);
     }
     const referencing = books.filter((b) => (b.relatedActivityIds ?? []).includes(slug)).map((b) => b.id).sort();
@@ -77,7 +89,7 @@ test('studio — no English copy in the studio pages carries an em dash', async 
   // House style: no em dashes in English copy. The studio files hold all three languages,
   // and none of them uses one, so the whole file is checked.
   const { readFileSync, readdirSync } = await import('node:fs');
-  const files = ['src/demos/studio/StudioFrame.tsx', ...readdirSync('src/demos').filter((f) => /^(ColorMixLab|FeelingsWeather|BravePlan|CloudDetective|ShadowTheatre|KindnessRipple|StoryQuilt|MakerPassport|TrustMeter|ColorOrchestra|AskFirstArchitect|TreasureChest|OneOfAKindTree|KindnessMirror|ListenLikeAFox|PuddleVoyage|MapMyWorld|LeoWorksheet|ShadowScience|BraveBreathing|InventorBlueprint|ThousandCubes|TreeTimeline)Demo\.tsx$/.test(f)).map((f) => `src/demos/${f}`)];
-  assert.equal(files.length, 24);
+  const files = ['src/demos/studio/StudioFrame.tsx', ...readdirSync('src/demos').filter((f) => /^(ColorMixLab|FeelingsWeather|BravePlan|CloudDetective|ShadowTheatre|KindnessRipple|StoryQuilt|MakerPassport|TrustMeter|ColorOrchestra|AskFirstArchitect|TreasureChest|OneOfAKindTree|KindnessMirror|ListenLikeAFox|PuddleVoyage|MapMyWorld|LeoWorksheet|ShadowScience|BraveBreathing|InventorBlueprint|ThousandCubes|TreeTimeline|SmallNoticer|KindnessChain|RoughToSmooth)Demo\.tsx$/.test(f)).map((f) => `src/demos/${f}`)];
+  assert.equal(files.length, 27);
   for (const f of files) assert.ok(!readFileSync(f, 'utf8').includes('\u2014'), `${f}: em dash`);
 });
