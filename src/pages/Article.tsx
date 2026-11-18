@@ -1,4 +1,4 @@
-import { use, useMemo } from 'react';
+import { Fragment, use, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from '../components/LocalizedLink';
 import Seo from '../components/Seo';
@@ -6,6 +6,7 @@ import JsonLd from '../components/JsonLd';
 import Breadcrumbs, { breadcrumbSchema } from '../components/Breadcrumbs';
 import EmailSignup from '../components/EmailSignup';
 import GuideLinks from '../components/GuideLinks';
+import GuideNextStep from '../components/GuideNextStep';
 import ReadAloudButton from '../components/ReadAloudButton';
 import SaveResourceButton from '../components/SaveResourceButton';
 import NotFound from './NotFound';
@@ -83,14 +84,19 @@ function renderBody(parts: BodyPart[]) {
   );
 }
 
-function Sections({ sections }: { sections: Section[] }) {
+// `insertAfter` places `insert` after that section (0-based), so the compact next step can
+// sit part-way through the body rather than only at the end.
+function Sections({ sections, insertAfter = -1, insert }: { sections: Section[]; insertAfter?: number; insert?: React.ReactNode }) {
   return (
     <>
       {sections.map((s, i) => (
-        <section key={i}>
-          <h2 className="text-xl font-bold text-gray-800 mb-2">{s.title}</h2>
-          <p>{renderBody(s.body)}</p>
-        </section>
+        <Fragment key={i}>
+          <section>
+            <h2 className="text-xl font-bold text-gray-800 mb-2">{s.title}</h2>
+            <p>{renderBody(s.body)}</p>
+          </section>
+          {i === insertAfter && insert}
+        </Fragment>
       ))}
     </>
   );
@@ -147,6 +153,13 @@ export default function Article() {
 
   const others = ARTICLES.filter((r) => r.slug !== slug);
 
+  // The compact "Try it with a book" block goes about 40% of the way through the body
+  // (visitors scroll about 45% of the page), counted across sections then choices.
+  const nSections = body.sections?.length ?? 0;
+  const nTotal = nSections + (body.choices?.length ?? 0);
+  const midAt = Math.max(0, Math.round(nTotal * 0.4) - 1);
+  const midStep = <GuideNextStep slug={slug} variant="compact" />;
+
   return (
     <main className="py-8 px-4">
       <Seo title={resource.title[language]} description={resource.description[language]} path={path} />
@@ -182,8 +195,8 @@ export default function Article() {
           </header>
 
           <div className="space-y-6 text-gray-700 leading-relaxed">
-            {body.sections && <Sections sections={body.sections} />}
-            {body.choices && <Sections sections={body.choices} />}
+            {body.sections && <Sections sections={body.sections} insertAfter={midAt} insert={midStep} />}
+            {body.choices && <Sections sections={body.choices} insertAfter={midAt - nSections} insert={midStep} />}
             {body.skip && (
               <section>
                 <h2 className="text-xl font-bold text-gray-800 mb-2">{body.skip.title}</h2>
@@ -197,6 +210,8 @@ export default function Article() {
               </section>
             )}
           </div>
+
+          <GuideNextStep slug={slug} variant="full" />
 
           <GuideLinks slug={slug} />
         </article>
