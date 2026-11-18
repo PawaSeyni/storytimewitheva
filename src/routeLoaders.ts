@@ -2,9 +2,14 @@
 // lazy() components from these, and main.tsx awaits the current route's loaders before the
 // first render so the prerendered HTML is never replaced by the Suspense fallback.
 import { matchPath } from 'react-router-dom';
-import { preloadable } from './lib/preloadable';
+import { preloadable as settledLoader } from './lib/preloadable';
+import { recoverFromChunkError } from './lib/chunkRecovery';
 import { splitLangFromPath } from './lib/locales';
 import { guideBodies } from './data/articleBodies';
+
+// Every route chunk recovers from a failed load (stale deploy, dropped connection) by
+// reloading once instead of rejecting into a blank page; see lib/chunkRecovery.ts.
+const preloadable = <T>(loader: () => Promise<T>) => settledLoader(loader, recoverFromChunkError);
 
 export const loadBooks = preloadable(() => import('./pages/Books'));
 export const loadBookDetail = preloadable(() => import('./pages/BookDetail'));

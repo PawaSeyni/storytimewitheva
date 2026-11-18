@@ -23,11 +23,23 @@ dashboard (`npm run maintenance`) remains the on-demand deep check.
 
 ## Error-report payload (S8-012)
 
-A client error report is exactly two strings: `kind` (the error class name, e.g.
+A client error report is two required strings: `kind` (the error class name, e.g.
 `TypeError`, `ChunkLoadError`; `UnknownError` when the class is missing or malformed) and
 `route` (the pathname with the language prefix kept and every dynamic segment replaced:
-`/fr/books/:id`). Redaction is a pure function (`src/lib/errorRedact.ts`) with unit tests
-for messages, stacks, query strings, hashes, emails and free text. Never sent: the message,
+`/fr/books/:id`). Three optional strings make a count traceable to a cause (added
+2026-11 after ten `TypeError` reports on `/` could not be diagnosed):
+
+- `message`: the error message with every URL, email, double-quoted string, number longer
+  than 4 digits and everything after a `?` removed, whitespace collapsed, at most 120
+  characters. Single-quoted property names stay (`Cannot read properties of undefined
+  (reading 'x')`), because they are code, not data.
+- `source`: the script file name only (`index-BrTaYYlY.js`), never the scheme, host, path
+  or query; `page` when the error came from an inline or injected script or the document.
+- `line`: `line:col` in that file, from the stack's top frame (falling back to the
+  ErrorEvent's position). The bundle is minified, so the column is what locates the code.
+
+Redaction is a pure function (`src/lib/errorRedact.ts`) with unit tests for messages,
+stacks, query strings, hashes, emails and free text. Never sent: the raw message,
 the stack, the URL query, storage values, form values, user agent beyond what Plausible
 already derives, or anything from the personalization envelope. At most three reports per
 page load. The beacon goes through `track()`, so the typed default-deny allowlist applies

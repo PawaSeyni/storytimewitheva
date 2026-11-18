@@ -15,11 +15,23 @@ export type SettledPromise<T> = Promise<T> & {
   reason?: unknown;
 };
 
-export function preloadable<T>(loader: () => Promise<T>): () => SettledPromise<T> {
+//
+// `recover` sees a failed load first. When it returns true it has taken over (main.tsx's
+// chunk recovery reloads the page once so a stale deploy or a dropped connection fetches
+// fresh chunks), and the promise stays pending instead of rejecting into a blank page.
+export function preloadable<T>(
+  loader: () => Promise<T>,
+  recover?: (reason: unknown) => boolean,
+): () => SettledPromise<T> {
   let cached: SettledPromise<T> | undefined;
   return () => {
     if (!cached) {
-      const p: SettledPromise<T> = loader();
+      const p: SettledPromise<T> = recover
+        ? loader().catch((reason: unknown) => {
+            if (recover(reason)) return new Promise<T>(() => {});
+            throw reason;
+          })
+        : loader();
       p.status = 'pending';
       p.then(
         (value) => {

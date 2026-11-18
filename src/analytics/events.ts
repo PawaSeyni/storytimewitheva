@@ -70,7 +70,7 @@ export const EVENTS: EventDefinition[] = [
   { name: 'Journey Complete', kind: 'outcome', required: ['journey'], optional: [], owner: 'product', privacy: 'journey id' },
   { name: 'Journey Saved', kind: 'intent', required: ['journey', 'status'], optional: [], values: { status: ['added', 'removed'] }, owner: 'product', privacy: 'journey id' },
   // ---- diagnostics (Sprint 8) ----
-  { name: 'Client Error', kind: 'diagnostic', required: ['kind', 'route'], optional: [], owner: 'engineering', privacy: 'error class and route pattern only' },
+  { name: 'Client Error', kind: 'diagnostic', required: ['kind', 'route'], optional: ['message', 'source', 'line'], owner: 'engineering', privacy: 'error class, route pattern and a redacted message (no URLs, emails, quoted strings, numbers over 4 digits or query; 120 chars), script file name and line:col' },
 ];
 
 export const EVENT_BY_NAME: Record<string, EventDefinition> = Object.fromEntries(EVENTS.map((e) => [e.name, e]));

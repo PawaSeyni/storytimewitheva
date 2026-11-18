@@ -10,19 +10,34 @@
 
 import type { Language } from './language';
 import { intlLocale } from './locales';
+import { listen } from './compat';
 
 export function isSpeechSupported(): boolean {
-  return typeof window !== 'undefined' && 'speechSynthesis' in window;
+  return (
+    typeof window !== 'undefined' &&
+    'speechSynthesis' in window &&
+    !!window.speechSynthesis &&
+    typeof window.speechSynthesis.speak === 'function' &&
+    typeof window.SpeechSynthesisUtterance === 'function'
+  );
 }
 
 let voices: SpeechSynthesisVoice[] = [];
 function refreshVoices() {
-  if (isSpeechSupported()) voices = window.speechSynthesis.getVoices();
+  if (!isSpeechSupported()) return;
+  try {
+    const list = window.speechSynthesis.getVoices();
+    if (Array.isArray(list)) voices = list;
+  } catch {
+    /* a partial speechSynthesis (some WebViews): keep the voices we have */
+  }
 }
 if (isSpeechSupported()) {
   refreshVoices();
-  // getVoices() is populated asynchronously in most browsers.
-  window.speechSynthesis.addEventListener('voiceschanged', refreshVoices);
+  // getVoices() is populated asynchronously in most browsers. This runs at module load, in
+  // the entry chunk, so it must not throw: some WebViews ship a speechSynthesis that is not
+  // an EventTarget, and a throw here stops the whole app before React renders.
+  listen(window.speechSynthesis, 'voiceschanged', refreshVoices);
 }
 
 function pickVoice(bcp47: string): SpeechSynthesisVoice | null {
@@ -87,7 +102,13 @@ export function play(id: string, text: string, lang: Language, opts?: PlayOption
 
 /** Stop any current narration. */
 export function stop(): void {
-  if (isSpeechSupported()) window.speechSynthesis.cancel();
+  if (isSpeechSupported()) {
+    try {
+      window.speechSynthesis.cancel();
+    } catch {
+      /* nothing was playing */
+    }
+  }
   if (activeId !== null) {
     activeId = null;
     notify();

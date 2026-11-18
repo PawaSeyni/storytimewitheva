@@ -81,9 +81,14 @@ const ALLOWED_PROP_KEYS = [
   // S7-015 search: the active content-type filter ('all' | type) and a result count.
   'filter',
   'results',
-  // S8-012 error reports: error class name and route pattern (/books/:id), never a message.
+  // S8-012 error reports: error class name and route pattern (/books/:id), plus a redacted
+  // message (no URLs, emails, quoted strings, long numbers or query; 120 chars), the script
+  // file name only, and line:col. Redaction lives in errorRedact.ts.
   'kind',
   'route',
+  'message',
+  'source',
+  'line',
   // Sprint 5: edition language behind a Buy link, share target kind, experiment id + variant.
   'edition',
   'target',
