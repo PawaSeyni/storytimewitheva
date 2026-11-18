@@ -75,6 +75,7 @@ function ScrollToHash() {
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import FeedbackWidget from './components/FeedbackWidget';
+import { StatusIconSprite } from './components/StatusIcons';
 import Home from './pages/Home';
 
 // All non-home pages are code-split so the initial bundle only contains what
@@ -262,6 +263,7 @@ export default function App() {
     return (
       <>
         <ScrollToHash />
+        <StatusIconSprite />
         {routes}
       </>
     );
@@ -270,6 +272,8 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <ScrollToHash />
+      {/* One copy of the reading-status icons per document; every BookStatusButton <use>s them. */}
+      <StatusIconSprite />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-100 focus:top-3 focus:left-3 focus:bg-white focus:text-purple-700 focus:font-semibold focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg"

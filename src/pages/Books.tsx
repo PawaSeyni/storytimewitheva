@@ -114,7 +114,10 @@ export default function Books() {
   const books = useBooks();
 
   // ItemList of Book schema for the full catalog — each entry links to its
-  // on-site book page (localized), with Amazon kept under sameAs.
+  // on-site book page (localized), with Amazon kept under sameAs. No `abstract`: the
+  // description is already on the page in each card (and in full, with its own Book
+  // schema, on the book page the item URL points to); repeating all 20 here cost 6 to
+  // 7 KB of the per-route HTML budget for text a crawler reads twice.
   const booksSchema = useMemo(
     () => ({
       '@context': 'https://schema.org',
@@ -133,7 +136,6 @@ export default function Books() {
           sameAs: book.amazonUrl.split('?')[0], // clean product URL (no tracking param) for structured-data identity
           image: book.coverImage.startsWith('http') ? book.coverImage : `${SITE_URL}${book.coverImage}`,
           ...(book.subtitle ? { alternativeHeadline: book.subtitle } : {}),
-          abstract: book.description,
         },
       })),
     }),
