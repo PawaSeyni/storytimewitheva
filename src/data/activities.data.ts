@@ -184,16 +184,19 @@ export const activities: Activity[] = [
   {
     slug: 'puzzles',
     emoji: '🧩',
-    ages: '7-9',
+    ages: '6-9',
+    // Rebuilt (re-audit 2026-11-18) on each book's story words and sentences; offered on every
+    // book page from the Story words strip, so it accepts any book as ?book=<id>.
+    anyBook: true,
     title: {
       en: 'Puzzle Paradise',
       es: 'Paraíso de rompecabezas',
       fr: 'Paradis des énigmes',
     },
     desc: {
-      en: 'Word puzzles and riddles based on the stories, a thinking workout that builds vocabulary.',
-      es: 'Acertijos y rompecabezas de palabras inspirados en las historias — un entrenamiento mental que amplía el vocabulario.',
-      fr: 'Énigmes et jeux de mots inspirés des histoires — un entraînement mental qui enrichit le vocabulaire.',
+      en: 'Unscramble the story words and put the story sentences back in order, for any book in the collection. Prints as a worksheet.',
+      es: 'Ordena las letras de las palabras del cuento y vuelve a armar sus frases, para cualquier libro de la colección. Se imprime como ficha.',
+      fr: 'Remets les lettres des mots de l’histoire dans l’ordre et reconstitue ses phrases, pour n’importe quel livre de la collection. S’imprime comme une fiche.',
     },
     category: {
       en: 'Games',

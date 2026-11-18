@@ -7,6 +7,7 @@ import { BookOpen, Calendar, Star, Trash2, Download } from 'lucide-react';
 import { useTranslation } from '../lib/language';
 import { getLegacy, setLegacy, type LegacyKey } from '../lib/storage';
 import { useBooks, isComingSoon, type LocalizedBook } from '../data/books';
+import { useSourceBook } from '../lib/sourceBook';
 import LittleReaderToggle from '../components/LittleReaderToggle';
 import ReadAloudButton from '../components/ReadAloudButton';
 
@@ -51,6 +52,7 @@ const TRANSLATIONS = {
     ],
     newEntry: 'New Entry',
     bookTitleLabel: 'Book Title:',
+    fromBook: 'This entry is about',
     bookTitlePlaceholder: 'What book did you read?',
     dateLabel: 'Date:',
     ratingLabel: 'My Rating:',
@@ -89,6 +91,7 @@ const TRANSLATIONS = {
     ],
     newEntry: 'Nueva entrada',
     bookTitleLabel: 'Título del libro:',
+    fromBook: 'Esta entrada es sobre',
     bookTitlePlaceholder: '¿Qué libro leíste?',
     dateLabel: 'Fecha:',
     ratingLabel: 'Mi valoración:',
@@ -127,6 +130,7 @@ const TRANSLATIONS = {
     ],
     newEntry: 'Nouvelle entrée',
     bookTitleLabel: 'Titre du livre :',
+    fromBook: 'Cette page parle de',
     bookTitlePlaceholder: 'Quel livre as-tu lu ?',
     dateLabel: 'Date :',
     ratingLabel: 'Ma note :',
@@ -188,6 +192,7 @@ const LITTLE_TRANSLATIONS = {
     stepOf: (n: number, total: number) => `Question ${n} of ${total}`,
     qBook: 'Which book did you read? Tap its cover.',
     otherBook: 'A different book',
+    fromBook: 'Your page is about',
     qCharacter: 'Who did you like best in the story?',
     qFeeling: 'How did the story make you feel?',
     qStars: 'How many stars do you give this book?',
@@ -214,6 +219,7 @@ const LITTLE_TRANSLATIONS = {
     intro: 'Toca los dibujos para completar tu página de lectura. ¡Una persona mayor puede ayudarte!',
     stepOf: (n: number, total: number) => `Pregunta ${n} de ${total}`,
     qBook: '¿Qué libro leíste? Toca su portada.',
+    fromBook: 'Tu página es sobre',
     otherBook: 'Otro libro',
     qCharacter: '¿Quién te gustó más del cuento?',
     qFeeling: '¿Qué sentiste con el cuento?',
@@ -241,6 +247,7 @@ const LITTLE_TRANSLATIONS = {
     intro: 'Touche les images pour remplir ta page de lecture. Un grand peut t’aider !',
     stepOf: (n: number, total: number) => `Question ${n} sur ${total}`,
     qBook: 'Quel livre as-tu lu ? Touche sa couverture.',
+    fromBook: 'Ta page parle de',
     otherBook: 'Un autre livre',
     qCharacter: 'Qui as-tu préféré dans l’histoire ?',
     qFeeling: 'Qu’as-tu ressenti avec cette histoire ?',
@@ -319,22 +326,24 @@ function ChoiceButton({ selected, onClick, children, label }: { selected: boolea
 }
 
 type LittleDraft = { bookId: string; character: CharacterId | ''; feeling: FeelingId | ''; rating: number };
-const blankDraft = (): LittleDraft => ({ bookId: '', character: '', feeling: '', rating: 0 });
+const blankDraft = (bookId = ''): LittleDraft => ({ bookId, character: '', feeling: '', rating: 0 });
 
-function LittleJournal({ books, lt, onSave, printEntry }: {
+function LittleJournal({ books, lt, onSave, printEntry, sourceBook }: {
   books: LocalizedBook[];
   lt: LittleText;
   onSave: (draft: LittleDraft) => void;
   printEntry: Entry | null;
+  /** The book the child came from (?book=<id>): its cover starts selected. */
+  sourceBook: string | null;
 }) {
   const [step, setStep] = useState(0);
-  const [draft, setDraft] = useState<LittleDraft>(blankDraft);
+  const [draft, setDraft] = useState<LittleDraft>(() => blankDraft(sourceBook ?? ''));
   const [done, setDone] = useState(false);
   const chosenBook = books.find((b) => b.id === draft.bookId);
   const bookLabel = chosenBook?.title ?? (draft.bookId === OTHER_BOOK ? lt.otherBook : '');
 
   const restart = () => {
-    setDraft(blankDraft());
+    setDraft(blankDraft(sourceBook ?? ''));
     setStep(0);
     setDone(false);
   };
@@ -526,28 +535,32 @@ function LittlePrintSheet({ entry, books, lt }: { entry: Entry; books: Localized
   );
 }
 
-const blankEntry = (): Omit<Entry, 'id'> => ({
-  bookTitle: '',
+const blankEntry = (book?: LocalizedBook): Omit<Entry, 'id'> => ({
+  bookTitle: book?.title ?? '',
   date: new Date().toISOString().split('T')[0],
   rating: 0,
   favoriteCharacter: '',
   favoriteScene: '',
   thoughts: '',
   emoji: '📖',
+  ...(book ? { bookId: book.id } : {}),
 });
 
 export default function AdventureJournalDemo() {
   // Storage goes through src/lib/storage.ts, which validates and never throws, so the
   // saved journal can seed the state directly.
   const [entries, setEntries] = useState<Entry[]>(() => (getLegacy(JOURNAL_KEY, isArray) as Entry[] | null) ?? []);
-  const [currentEntry, setCurrentEntry] = useState(blankEntry());
-  const [showForm, setShowForm] = useState(true);
-  const [littleReader, setLittleReader] = useState(false);
-  const [lastLittleId, setLastLittleId] = useState<number | null>(null);
   const t = useTranslation(TRANSLATIONS);
   const lt = useTranslation(LITTLE_TRANSLATIONS);
   const books = useBooks();
   const pickableBooks = books.filter((b) => !isComingSoon(b));
+  // Opened from a book page (?book=<id>): that book is filled in, in both modes.
+  const sourceBook = useSourceBook('adventure-journal');
+  const fromBook = sourceBook ? books.find((b) => b.id === sourceBook) : undefined;
+  const [currentEntry, setCurrentEntry] = useState(() => blankEntry(fromBook));
+  const [showForm, setShowForm] = useState(true);
+  const [littleReader, setLittleReader] = useState(false);
+  const [lastLittleId, setLastLittleId] = useState<number | null>(null);
 
   const persist = (next: Entry[]) => {
     // In-memory state stays authoritative: a storage failure (private mode, quota) must
@@ -558,8 +571,13 @@ export default function AdventureJournalDemo() {
 
   const saveEntry = () => {
     if (!currentEntry.bookTitle) return;
-    persist([...entries, { ...currentEntry, id: Date.now() }]);
-    setCurrentEntry(blankEntry());
+    // A typed title that no longer matches the source book drops the book id, so the
+    // entry's cover and localized title never disagree with what the child wrote.
+    const keepId = fromBook && currentEntry.bookTitle.trim() === fromBook.title;
+    const { bookId: _drop, ...rest } = currentEntry;
+    void _drop;
+    persist([...entries, { ...rest, ...(keepId ? { bookId: fromBook.id } : {}), id: Date.now() }]);
+    setCurrentEntry(blankEntry(fromBook));
     setShowForm(false);
   };
 
@@ -632,7 +650,7 @@ ${'='.repeat(50)}
 
       {littleReader ? (
         <div className="print:hidden">
-          <LittleJournal books={pickableBooks} lt={lt} onSave={saveLittleEntry} printEntry={printEntry} />
+          <LittleJournal books={pickableBooks} lt={lt} onSave={saveLittleEntry} printEntry={printEntry} sourceBook={fromBook ? fromBook.id : null} />
         </div>
       ) : (<>
       <div className="bg-linear-to-r from-orange-400 to-pink-400 text-white rounded-2xl p-6 mb-6">
@@ -650,6 +668,12 @@ ${'='.repeat(50)}
           </h3>
 
           <div className="space-y-4">
+            {fromBook && (
+              <div className="flex items-center gap-3 rounded-xl bg-orange-50 border-2 border-orange-200 p-3" data-journal-book={fromBook.id}>
+                {fromBook.coverImage && <img src={fromBook.coverImage} alt="" className="h-16 w-auto rounded-md" />}
+                <p className="text-sm text-gray-700"><span className="font-bold">{t.fromBook}</span> <span className="font-semibold text-orange-800">{fromBook.title}</span></p>
+              </div>
+            )}
             <div>
               <label htmlFor="aj-book-title" className="block text-sm font-bold text-gray-700 mb-2">{t.bookTitleLabel}</label>
               <Input

@@ -246,10 +246,10 @@ On every book page, the Story words strip offers 6 more activities in that book'
    - Bingo, Emotion Wheel and Build-a-Scene (5 each);
    - Bookmark, Craft Corner and Rhyme (3 each).
 
-   Two of these improvements need no art:
-   - **Journal:** pre-fill the book title and cover when opened from a book.
-   - **Emotion Wheel:** ask "How did <character> feel?".
-3. **Puzzle Paradise still has fairy-tale content:** "Red Riding Hood" and "Wolf & Grandma". It's unlinked from every book, but it's on the Activities hub, where a wolf-and-grandma puzzle can be confused with *Leo and the Wolf*.
+   Two of these improvements need no art, and were **done in pass 13**:
+   - **Journal:** pre-fills the book title and cover when opened from a book.
+   - **Emotion Wheel:** asks "How did <character> feel in the story?".
+3. ~~**Puzzle Paradise still has fairy-tale content.**~~ **Rebuilt in pass 13** on each book's story words and sentences (owner decision: rebuild, not retire).
 4. **Five activities are linked from no book and have no book mode:** Story Builder, Puzzle Paradise, Counting & Numbers, World Geography and Reading Tracker. The Reading Passport is also unlinked, but book pages reach it from the "Read" button, so it's fine.
 5. **Rhyme & Sing-Along** is still public-domain nursery rhymes ("Twinkle Twinkle") on three books about clouds, rain and a boat.
 6. **Bookmark Designer** still offers generic quotes ("Keep Reading"), not lines from the books.
@@ -265,8 +265,8 @@ On every book page, the Story words strip offers 6 more activities in that book'
 | **P0** | **First funnel report:** book page → activity click-through by book, completions by activity and source book, signups by magnet (including the 20 kits) | Analytics access (Plausible) and MailerLite | S | 11 passes shipped with no data on what children actually use. This decides what gets built next. |
 | **P0** | **Point traffic at the 20 kits:** one Pinterest pin and caption per book linking to `/free/<book-id>-companion` | Owner approval of copy; pin art from existing covers | S–M | The kits get no visitors until something links to them |
 | ~~**P1**~~ | ~~**One activity of their own for *Sparrow*, *Butterfly Effect* and *Sanding Block*.**~~ **Done in pass 12.** Ideas from their descriptions: *Small Noticer* (spot what the big animals miss), *Kindness Chain* (each kind act leads to the next; a paper chain to print), *Rough to Smooth* (patient strokes that smooth a plank, with a practice card) | — | M (3 Studio pages) | They're the three B books; this gives 20/20 books an activity of their own |
-| **P1** | **Book mode for the two most-linked generic activities:** Adventure Journal pre-fills the book; Emotion Wheel asks how the book's character felt | — | S–M | 12 book links become book-aware |
-| **P1** | **Fix Puzzle Paradise:** replace the fairy-tale puzzles with each book's story words (word scrambles, `?book=`), or retire it | Owner decision: rebuild or retire | S | Off-brand content on the hub |
+| ~~**P1**~~ | ~~**Book mode for the two most-linked generic activities**~~ **Done in pass 13.** | — | S–M | 12 book links became book-aware |
+| ~~**P1**~~ | ~~**Fix Puzzle Paradise**~~ **Rebuilt in pass 13** on the books' words and sentences. | Owner chose: rebuild | S | Off-brand content on the hub |
 | **P1** | **Coloring pages from the book illustrations,** starting with the 7 books that link Coloring | Owner artwork | M (art) | Coloring is now the most-linked activity |
 | **P2** | **Themed classroom units** (kindness, patience, courage, feelings, curiosity) | Owner decision: open, gated, or open plus a gated pack | M | Teacher audience; the content already exists |
 | **P2** | **Bookmark quotes per book:** each book's own line, in three languages | — | S | Cheap, and makes 3 links book-aware |
@@ -493,3 +493,18 @@ New Studio pages, each listed first on its book page:
 **Links that made room.** The shared activities move to second place. *Sparrow* no longer links Character Workshop (Leo still does), and *Butterfly Effect* no longer links Bingo (five other books still do).
 
 **Tests:** the Studio unit test covers 27 pages and allows a shared activity to sit in a different slot per book; the Studio browser test covers the three new pages (30 pass). All three were played through in EN, ES and FR, and each prints on one page.
+
+### Pass 13: the generic activities learn which book they came from (re-audit §7c items 2 and 3)
+
+- **Adventure Journal** (linked from 7 books). Opened with `?book=<id>`, it fills the book in:
+  - normal mode shows the cover and pre-fills the title, and the saved entry keeps the book id, so the journal and the Profile page show the cover and the title in the reader's language. If the child types a different title, the id is dropped so they never disagree;
+  - little-reader mode starts with that cover already selected.
+- **Emotion Wheel** (linked from 5 books). Opened with `?book=<id>` from one of them, a banner names the book and the wheel asks how its character felt: "How did Diego feel in the story? Tap a feeling on the wheel, then tell a grown-up when." Each feeling then asks "Do you think Diego felt this way in the story? When?" before the game's own question.
+  - **New data: `src/data/bookHeroes.data.ts`**, who each book is about in the words of its own description: Diego; Cirro; the crooked little apple tree; the quiet girl; and, for *The Butterfly Effect*, "the people in the story". `scripts/patch-games.mjs` bakes it into the game for the books that link the wheel.
+  - The wording never needs an adjective to agree with the hero, so "la niña tranquila" and "le petit pommier tordu" read correctly.
+- **Puzzle Paradise rebuilt** (owner decision: rebuild). The fairy-tale scrambles, riddles, "Wolf & Grandma" matching and logic puzzles are gone. For any book in the collection, it now offers:
+  - **Unscramble the story words:** the book's eight story words in the page language, accent-free so a child can type them, with a hint in the other two languages, three tries, then "show the word";
+  - **Put the sentence back together:** the book's three story sentences as word tiles to tap in order;
+  - a score ("Solved: 7 of 11"), a "Puzzle Master" line, and a **one-page printable worksheet** of the same puzzles.
+  - Shuffles are seeded by book and language, so the page is the same on the server, in the browser and after a reload. Now an `anyBook` activity, ages 6-9, reached from a new "🧩 Word puzzles" button in every book's Story words strip.
+- **Tests:** `tests/funnel/book-modes.test.mjs`: the Journal reads the source book in both modes; every book that links the wheel has a hero and the baked data matches the catalog; the puzzles carry no fairy-tale content; for every book and language, each scramble is a true permutation that never equals the answer and is stable between runs.
