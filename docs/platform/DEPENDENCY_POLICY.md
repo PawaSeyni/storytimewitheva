@@ -3,7 +3,7 @@
 ## Facts (baseline 2026-09)
 7 runtime and 20 dev dependencies, 249 installed; `package-lock.json` committed; Node 20 on
 Netlify and CI, 22 locally. After the non-breaking `npm audit fix` in #180 four advisories remained; React Router 7
-(2026-09-10) cleared two. Vite 8 + @vitejs/plugin-react 6 (2026-09-10) cleared the last two; `npm audit` is clean and the allowlist is empty. Node is pinned to 22 in `netlify.toml` and both workflows (Vite 8 requires ^20.19 or >=22.12). The two advisories that were: vite 5 and esbuild (dev-server-only path traversal / request
+(2026-09-10) cleared two. Vite 8 + @vitejs/plugin-react 6 (2026-09-10) cleared the last two; `npm audit` is clean and the allowlist is empty. **2026-11-18:** eight entries added for GHSA-fc5q-39xc-vjpf (picomatch ≤ 4.0.7 ReDoS, reached only through build and dev tooling, with no patched release yet), reviewed by 2026-12-18 (owner decision). Remove them once picomatch is patched. Node is pinned to 22 in `netlify.toml` and both workflows (Vite 8 requires ^20.19 or >=22.12). The two advisories that were: vite 5 and esbuild (dev-server-only path traversal / request
 exposure; the production build is static files and unaffected), react-router 6 open redirect
 via `//` and `\` paths (the site never navigates to user-supplied paths).
 

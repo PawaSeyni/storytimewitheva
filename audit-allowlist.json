@@ -1,4 +1,61 @@
 {
   "_doc": "S8-014: advisories that do not block CI. Each needs the reason it does not apply, an owner and a review date within 90 days. Reviewed at every release audit.",
-  "allow": []
+  "allow": [
+    {
+      "package": "picomatch",
+      "advisory": "GHSA-fc5q-39xc-vjpf",
+      "reason": "picomatch <=4.0.7 ReDoS (single-branch repeated extglobs); no patched release exists (4.0.7 is the latest). Reached only through build and dev tooling (vite, tinyglobby, fdir, @tailwindcss/cli, @parcel/watcher, typescript-eslint). It matches glob patterns written in the repo's own config, never visitor input, and is not shipped to the site. npm's only offered fix downgrades vite 8 to 6.2.7. Owner decision 2026-11-18: allowlist for 30 days, drop when picomatch is patched.",
+      "owner": "PawaSeyni",
+      "review": "2026-12-18"
+    },
+    {
+      "package": "vite",
+      "advisory": "GHSA-fc5q-39xc-vjpf",
+      "reason": "picomatch <=4.0.7 ReDoS (single-branch repeated extglobs); no patched release exists (4.0.7 is the latest). Reached only through build and dev tooling (vite, tinyglobby, fdir, @tailwindcss/cli, @parcel/watcher, typescript-eslint). It matches glob patterns written in the repo's own config, never visitor input, and is not shipped to the site. npm's only offered fix downgrades vite 8 to 6.2.7. Owner decision 2026-11-18: allowlist for 30 days, drop when picomatch is patched.",
+      "owner": "PawaSeyni",
+      "review": "2026-12-18"
+    },
+    {
+      "package": "tinyglobby",
+      "advisory": "GHSA-fc5q-39xc-vjpf",
+      "reason": "picomatch <=4.0.7 ReDoS (single-branch repeated extglobs); no patched release exists (4.0.7 is the latest). Reached only through build and dev tooling (vite, tinyglobby, fdir, @tailwindcss/cli, @parcel/watcher, typescript-eslint). It matches glob patterns written in the repo's own config, never visitor input, and is not shipped to the site. npm's only offered fix downgrades vite 8 to 6.2.7. Owner decision 2026-11-18: allowlist for 30 days, drop when picomatch is patched.",
+      "owner": "PawaSeyni",
+      "review": "2026-12-18"
+    },
+    {
+      "package": "fdir",
+      "advisory": "GHSA-fc5q-39xc-vjpf",
+      "reason": "picomatch <=4.0.7 ReDoS (single-branch repeated extglobs); no patched release exists (4.0.7 is the latest). Reached only through build and dev tooling (vite, tinyglobby, fdir, @tailwindcss/cli, @parcel/watcher, typescript-eslint). It matches glob patterns written in the repo's own config, never visitor input, and is not shipped to the site. npm's only offered fix downgrades vite 8 to 6.2.7. Owner decision 2026-11-18: allowlist for 30 days, drop when picomatch is patched.",
+      "owner": "PawaSeyni",
+      "review": "2026-12-18"
+    },
+    {
+      "package": "@vitejs/plugin-react",
+      "advisory": "GHSA-fc5q-39xc-vjpf",
+      "reason": "picomatch <=4.0.7 ReDoS (single-branch repeated extglobs); no patched release exists (4.0.7 is the latest). Reached only through build and dev tooling (vite, tinyglobby, fdir, @tailwindcss/cli, @parcel/watcher, typescript-eslint). It matches glob patterns written in the repo's own config, never visitor input, and is not shipped to the site. npm's only offered fix downgrades vite 8 to 6.2.7. Owner decision 2026-11-18: allowlist for 30 days, drop when picomatch is patched.",
+      "owner": "PawaSeyni",
+      "review": "2026-12-18"
+    },
+    {
+      "package": "@tailwindcss/cli",
+      "advisory": "GHSA-fc5q-39xc-vjpf",
+      "reason": "picomatch <=4.0.7 ReDoS (single-branch repeated extglobs); no patched release exists (4.0.7 is the latest). Reached only through build and dev tooling (vite, tinyglobby, fdir, @tailwindcss/cli, @parcel/watcher, typescript-eslint). It matches glob patterns written in the repo's own config, never visitor input, and is not shipped to the site. npm's only offered fix downgrades vite 8 to 6.2.7. Owner decision 2026-11-18: allowlist for 30 days, drop when picomatch is patched.",
+      "owner": "PawaSeyni",
+      "review": "2026-12-18"
+    },
+    {
+      "package": "@parcel/watcher",
+      "advisory": "GHSA-fc5q-39xc-vjpf",
+      "reason": "picomatch <=4.0.7 ReDoS (single-branch repeated extglobs); no patched release exists (4.0.7 is the latest). Reached only through build and dev tooling (vite, tinyglobby, fdir, @tailwindcss/cli, @parcel/watcher, typescript-eslint). It matches glob patterns written in the repo's own config, never visitor input, and is not shipped to the site. npm's only offered fix downgrades vite 8 to 6.2.7. Owner decision 2026-11-18: allowlist for 30 days, drop when picomatch is patched.",
+      "owner": "PawaSeyni",
+      "review": "2026-12-18"
+    },
+    {
+      "package": "@typescript-eslint/typescript-estree",
+      "advisory": "GHSA-fc5q-39xc-vjpf",
+      "reason": "picomatch <=4.0.7 ReDoS (single-branch repeated extglobs); no patched release exists (4.0.7 is the latest). Reached only through build and dev tooling (vite, tinyglobby, fdir, @tailwindcss/cli, @parcel/watcher, typescript-eslint). It matches glob patterns written in the repo's own config, never visitor input, and is not shipped to the site. npm's only offered fix downgrades vite 8 to 6.2.7. Owner decision 2026-11-18: allowlist for 30 days, drop when picomatch is patched.",
+      "owner": "PawaSeyni",
+      "review": "2026-12-18"
+    }
+  ]
 }
