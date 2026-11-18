@@ -351,7 +351,8 @@ export default function BookDetail() {
       <RelatedActivities slugs={activitySlugs} bookId={book.id} />
       <StoryWords bookId={book.id} />
 
-      <ResourceStrip />
+      {/* Per-book guides and printables (books.data.ts relatedResourceIds); falls back to the shared set. */}
+      <ResourceStrip bookId={book.id} />
     </main>
   );
 }

@@ -7,7 +7,8 @@ import { localizePath, useLanguage, useTranslation } from '../lib/language';
 import { withTrailingSlash } from '../lib/locales';
 import { resources as RESOURCES, resourcePath, type Resource } from '../data/resources';
 import SaveResourceButton from '../components/SaveResourceButton';
-import { educatorCollectionIds, collectionRecordById, publishedLearningPacks, packResources } from '../data/contentIndex';
+import { educatorCollectionIds, collectionRecordById, publishedLearningPacks, packResources, booksByResourceId } from '../data/contentIndex';
+import { useBooks } from '../data/books';
 import { THEMES, AGE_BANDS, type ThemeId, type AgeBandId } from '../data/taxonomy';
 import type { Language } from '../lib/language';
 
@@ -27,6 +28,38 @@ function collectionLabel(id: string, language: Language): string {
   return collectionRecordById[id]?.title?.[language] ?? id;
 }
 
+/** How many paired book titles a card names before collapsing the rest into "+N more". */
+const PAIRS_SHOWN = 4;
+
+// "Pairs with": the books whose relatedResourceIds name this resource (the DERIVED reverse
+// index, so the book page and this index can never disagree). Rendered as a sibling of the
+// card link, never inside it: an <a> inside an <a> is invalid markup.
+function PairsWith({ resourceId, labels }: { resourceId: string; labels: { pairsWith: string; more: (n: number) => string } }) {
+  const all = useBooks();
+  const ids = booksByResourceId[resourceId] ?? [];
+  const paired = ids.map((id) => all.find((b) => b.id === id)).filter((b) => b !== undefined);
+  if (paired.length === 0) return null;
+  const shown = paired.slice(0, PAIRS_SHOWN);
+  const rest = paired.length - shown.length;
+  return (
+    <p className="text-xs text-gray-500 mt-2 px-1" data-pairs-with={resourceId}>
+      {labels.pairsWith}{' '}
+      {shown.map((b, i) => (
+        <span key={b.id}>
+          {i > 0 ? ', ' : ''}
+          <Link to={`/books/${b.id}`} className="underline hover:text-purple-700">{b.title}</Link>
+        </span>
+      ))}
+      {rest > 0 && (
+        <>
+          {' '}
+          <Link to="/books" className="underline hover:text-purple-700">{labels.more(rest)}</Link>
+        </>
+      )}
+    </p>
+  );
+}
+
 // ---------------------------------------------------------------------------
 // TRANSLATIONS
 // ---------------------------------------------------------------------------
@@ -41,6 +74,8 @@ const TRANSLATIONS = {
     readArticle: 'Read article →',
     emptyMsg: 'No resources found. Try a different search!',
     minRead: 'min read',
+    pairsWith: 'Pairs with:',
+    more: (n: number) => `+${n} more`,
     categories: {
       all: 'All Resources',
       readingTips: 'Reading Tips',
@@ -80,6 +115,8 @@ const TRANSLATIONS = {
     readArticle: 'Leer el art\xedculo →',
     emptyMsg: 'No se encontraron recursos. \xa1Prueba otra b\xfasqueda!',
     minRead: 'min de lectura',
+    pairsWith: 'Acompaña a:',
+    more: (n: number) => `+${n} más`,
     categories: {
       all: 'Todos los recursos',
       readingTips: 'Consejos de lectura',
@@ -119,6 +156,8 @@ const TRANSLATIONS = {
     readArticle: 'Lire l’article →',
     emptyMsg: 'Aucune ressource trouv\xe9e. Essayez une autre recherche\xa0!',
     minRead: 'min de lecture',
+    pairsWith: 'Accompagne :',
+    more: (n: number) => `+${n} autres`,
     categories: {
       all: 'Toutes les ressources',
       readingTips: 'Conseils de lecture',
@@ -279,6 +318,7 @@ export default function Resources() {
                 <span className="absolute top-4 right-4 z-10">
                   <SaveResourceButton resourceId={r.id} />
                 </span>
+                <PairsWith resourceId={r.id} labels={{ pairsWith: t.pairsWith, more: t.more }} />
               </div>
             ))}
           </div>
@@ -365,7 +405,7 @@ export default function Resources() {
               // signup; LocalizedLink adds the /es,/fr prefix to keep the language.
               const to = `/free/${d.slug}`;
               return (
-                <div key={i} className="relative flex">
+                <div key={i} className="relative flex flex-col">
                 <span className="absolute top-3 right-3 z-10">
                   <SaveResourceButton resourceId={d.id} />
                 </span>
@@ -378,6 +418,7 @@ export default function Resources() {
                   <p className="text-gray-500 text-sm leading-relaxed flex-1">{d.description[language]}</p>
                   <span className="mt-3 text-sm font-semibold text-purple-600">⬇ {t.teachers.downloadCta}</span>
                 </Link>
+                <PairsWith resourceId={d.id} labels={{ pairsWith: t.pairsWith, more: t.more }} />
                 </div>
               );
             })}
