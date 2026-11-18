@@ -59,7 +59,9 @@ test('relationships — every relatedResourceId resolves to a real resource', ()
   // Resources are modeled now (src/data/resources.ts), so references are checked
   // against the registry instead of being forbidden. A typo fails the build.
   for (const b of books) {
-    for (const rid of b.relatedResourceIds ?? []) {
+    const rel = b.relatedResourceIds ?? [];
+    assert.equal(new Set(rel).size, rel.length, `${b.id}: duplicate id in relatedResourceIds`);
+    for (const rid of rel) {
       assert.ok(
         resourceIds.has(rid),
         `${b.id}: relatedResourceIds -> "${rid}" is not a known resource id`,
