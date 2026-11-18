@@ -31,6 +31,27 @@ if (entry) check('entry chunk (gzip)', jsGz[rel(entry)], B.js.entryGzipKB, 'KB')
 for (const f of js) if (f !== entry) check(`chunk ${rel(f)} (gzip)`, jsGz[rel(f)], B.js.pageChunkGzipKB, 'KB');
 check('total JavaScript (gzip)', Object.values(jsGz).reduce((a, b) => a + b, 0), B.js.totalGzipKB, 'KB');
 
+// JavaScript each page downloads up front (2026-11-18): the scripts and modulepreloads in its
+// prerendered HTML plus every chunk they statically import. This is what a visitor pays; the
+// total above only sums every page in the site.
+const jsBytes = {};
+const gzBytes = (r) => (jsBytes[r] ??= gzipSync(readFileSync(path.join(DIST, r))).length);
+const staticDeps = {};
+const depsOf = (r) => (staticDeps[r] ??= [...readFileSync(path.join(DIST, r), 'utf8').matchAll(/(?:from|import)\s*["']\.\/([\w.-]+\.js)["']/g)].map((m) => `assets/${m[1]}`));
+const pageJsKB = (htmlFile) => {
+  const seeds = [...readFileSync(htmlFile, 'utf8').matchAll(/(?:src|href)="\/(assets\/[\w.-]+\.js)"/g)].map((m) => m[1]);
+  const seen = new Set();
+  for (const stack = [...seeds]; stack.length;) {
+    const r = stack.pop();
+    if (seen.has(r) || !existsSync(path.join(DIST, r))) continue;
+    seen.add(r); stack.push(...depsOf(r));
+  }
+  return kb([...seen].reduce((n, r) => n + gzBytes(r), 0));
+};
+const pageJs = files.filter((f) => f.endsWith('index.html')).map((f) => [rel(f), pageJsKB(f)]).sort((a, b) => b[1] - a[1]);
+for (const [r, v] of pageJs) check(`page JavaScript ${r} (gzip)`, v, B.js.perPageGzipKB, 'KB');
+const heaviestPage = pageJs[0] ?? ['?', 0];
+
 // CSS
 // App CSS (Vite output) and the static games' stylesheet are separate budgets: a visitor
 // never loads both on one page.
@@ -57,10 +78,10 @@ for (const f of files.filter((f) => f.endsWith('.pdf'))) check(`pdf ${rel(f)}`, 
 
 const fails = findings.filter((x) => x.level === 'fail');
 const warns = findings.filter((x) => x.level === 'warn');
-if (process.argv.includes('--json')) console.log(JSON.stringify({ fails, warns, entryGzipKB: entry ? jsGz[rel(entry)] : null, routes: html.length }, null, 2));
+if (process.argv.includes('--json')) console.log(JSON.stringify({ fails, warns, entryGzipKB: entry ? jsGz[rel(entry)] : null, routes: html.length, heaviestPageJs: { route: heaviestPage[0], gzipKB: heaviestPage[1] } }, null, 2));
 else {
   for (const x of warns) console.log(`WARN ${x.what}: ${typeof x.value === 'number' ? +x.value.toFixed(1) : x.value} ${x.unit} (budget ${x.limit})`);
   for (const x of fails) console.error(`FAIL ${x.what}: ${typeof x.value === 'number' ? +x.value.toFixed(1) : x.value} ${x.unit} (budget ${x.limit})`);
-  console.log(`check-budgets: ${html.length} routes, entry ${entry ? jsGz[rel(entry)] : '?'} KB gz, ${warns.length} warnings, ${fails.length} failures`);
+  console.log(`check-budgets: ${html.length} routes, entry ${entry ? jsGz[rel(entry)] : '?'} KB gz, heaviest page JS ${heaviestPage[1]} KB gz (${heaviestPage[0]}), ${warns.length} warnings, ${fails.length} failures`);
 }
 process.exit(fails.length ? 1 : 0);

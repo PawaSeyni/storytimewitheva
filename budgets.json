@@ -9,9 +9,13 @@
       "warn": 35,
       "fail": 50
     },
+    "perPageGzipKB": {
+      "warn": 210,
+      "fail": 240
+    },
     "totalGzipKB": {
-      "warn": 460,
-      "fail": 480
+      "warn": 560,
+      "fail": 600
     }
   },
   "css": {
