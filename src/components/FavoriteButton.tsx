@@ -37,7 +37,8 @@ export default function FavoriteButton({ bookId, compact = false }: { bookId: st
         track('Favorite', { book: bookId, status: fav ? 'removed' : 'added' });
       }}
       aria-pressed={fav}
-      aria-label={fav ? t.remove : t.add}
+      // Only the compact (icon-only) variant needs a label; the full one shows its text (WCAG 2.5.3).
+      aria-label={compact ? (fav ? t.remove : t.add) : undefined}
       title={fav ? t.remove : t.add}
       className={`inline-flex items-center justify-center gap-1.5 rounded-full border transition-all ${
         compact ? 'px-2 py-1.5 text-xs' : 'px-4 py-2 text-sm font-semibold'
