@@ -544,3 +544,15 @@ Five pieces of work were run side by side, each in its own copy of the repo, the
 
 **Updated next steps:** post the kit pins organically, leading with Spanish and French (do not boost yet); find the homepage TypeError; give the follow-up activities guide a next step (classroom units, kits); give Story Builder a book mode.
 
+### Pass 17: acting on the funnel report
+
+Three fixes from `docs/analytics/REPORT_2026-11-18-funnel.md`, built in parallel and merged.
+- **The client errors, partly found.**
+  - The one on an activity page was real. When a page's code file fails to load (after a deploy removes the old files, or on a flaky in-app connection), the page went blank with "Failed to fetch dynamically imported module". It now **reloads once to recover**, guarded to at most once every 5 minutes and never when session storage is blocked (`src/lib/chunkRecovery.ts`).
+  - Two crash paths for embedded browsers were closed: speech on a WebView whose `speechSynthesis` is not an event target, and a missing IntersectionObserver.
+  - The nine homepage errors could not be reproduced from the site's code; the likeliest source is scripts the Pinterest in-app browser injects. **`Client Error` now records a redacted `message`, the script file name and line:col**, so the next ones can be traced.
+- **A next step on every parent guide.** Google sends almost all its search visitors to the follow-up activities guide, and most left from it. All eight guides now show "Try it with a book" twice: a compact block about 40% of the way down, and a fuller one at the end with 3-4 book covers, the free printable and the five classroom units. Clicks are tracked as `Continue Journey {placement: guide}`.
+- **Story Builder book mode.** The activity people find through search now opens in a book's mode from every book page (new "✍️ Story builder" link): the book's character, setting and problem preselected, its story words as a word bank, and a back link. It is now an `anyBook` activity. Two generic characters that could be mistaken for catalog books were renamed: a clever fox (too close to Russet) is now an otter, and a fairy named Luna (*The Cloud Collector*'s Luna) is now Clover.
+- **Tracker rows** for the owner's master tracker: `docs/marketing/tracker-punch-list-2026-11-18.csv` (17 to-dos) and `docs/marketing/tracker-pinterest-pins-2026-11-18.csv` (the 60 kit pins).
+- **Size:** total JavaScript is 462 KB, just over the 460 KB warning (fail 480), from this month's new pages. Entry bundle 117 KB (warn 125). A trimming pass, or a decision on the total budget, is due before the next new activity.
+
