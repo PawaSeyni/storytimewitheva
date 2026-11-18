@@ -113,3 +113,37 @@ test('3.5d a failed signup never fires Lead Created', async ({ page }) => {
   expect(events).not.toContain('Lead Created');
   expect(events.filter((e) => e === 'Lead Created' || e === 'Form Submit')).toEqual([]);
 });
+
+// 2026-11-18: signup attribution must survive moving between pages. Before the fix only the
+// form page's own URL was read, so a visitor who landed from a pin and signed up elsewhere was
+// recorded with no source. The first visit's tags now live in sessionStorage for the tab.
+test('3.2b UTMs from the landing page are kept when the signup happens on a later page', async ({ page }) => {
+  let body: Record<string, unknown> | null = null;
+  await page.route(SUBSCRIBE, async (route) => {
+    body = route.request().postDataJSON();
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true }) });
+  });
+
+  // Land from the pin on its free-printable page, then go to the French home page (no query).
+  await page.goto('/fr/free/bilingual-flashcards/?utm_source=pinterest&utm_medium=social&utm_campaign=flashcards_fr&utm_content=P-111');
+  await page.goto('/fr/');
+  expect(new URL(page.url()).search).toBe('');
+  await fillAndSubmit(page);
+  await expect(page.locator('[role="status"]')).toBeVisible();
+
+  expect(body).toMatchObject({ utm_source: 'pinterest', utm_medium: 'social', utm_campaign: 'flashcards_fr', utm_content: 'P-111' });
+  // Nothing is kept in a cookie.
+  expect(await page.context().cookies()).toEqual([]);
+});
+
+test('3.2c a visit with no tags anywhere sends no UTMs', async ({ page }) => {
+  let body: Record<string, unknown> | null = null;
+  await page.route(SUBSCRIBE, async (route) => {
+    body = route.request().postDataJSON();
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true }) });
+  });
+  await page.goto('/');
+  await fillAndSubmit(page);
+  await expect(page.locator('[role="status"]')).toBeVisible();
+  expect(Object.keys(body ?? {}).filter((k) => k.startsWith('utm_'))).toEqual([]);
+});

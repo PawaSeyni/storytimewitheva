@@ -214,6 +214,13 @@ export async function loadErrorRedact() {
   return redactCache;
 }
 
+let firstTouchCache = null;
+/** First-touch campaign tags (2026-11-18): utmFromSearch, captureFirstTouch, resolveSignupUtm, ... */
+export async function loadFirstTouch() {
+  if (!firstTouchCache) firstTouchCache = await loadModule(path.join(ROOT, 'src', 'lib', 'firstTouch.ts'));
+  return firstTouchCache;
+}
+
 let localesCache = null;
 /** The locale registry (S8-019): codes, prefixes, labels, Intl/OG locales, path helpers. */
 export async function loadLocales() {

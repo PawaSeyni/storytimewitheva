@@ -52,3 +52,21 @@ The site is technically sound; its constraint is traffic. About 25 visitors a we
 ## 5. Environment note
 
 Eight finished agent worktrees remain under `.claude/worktrees/` in the cloud workspace (no uncommitted changes). They are not in the repo and do not affect CI, but they make a local `eslint .` fail with "multiple candidate TSConfigRootDirs"; lint was run with `--ignore-pattern '.claude/**'`.
+
+## 6. Remediation task list
+
+Tracker ids are the rows added to `docs/marketing/tracker-punch-list-2026-11-18.csv`. "Done when" is the check that closes each one.
+
+| Tracker | Task | Owner | Priority | Due | Done when |
+|---|---|---|---|---|---|
+| SW-021 | **Signup attribution survives page changes.** First visit's `utm_*` tags kept in sessionStorage (no cookie); the form falls back to them when its own page has none. *Fixed in the PR that adds this list.* | Claude | **P0** | before 23 Nov, 8 PM ET | Merged and live; tests `first-touch-utm.test.mjs` (7) and e2e 3.2b/3.2c pass (3.2b fails on the old code); owner's test signup on production shows the pin's tags in MailerLite |
+| SW-022 | **Owner test signup** after SW-021 is live: open a pin link (e.g. P-111's), move to another page, sign up with a `+test` address, check the four `utm_` fields in MailerLite, then delete the test subscriber. | Paul | **P0** | before 23 Nov, 8 PM ET | Fields present on the test subscriber |
+| SW-023 | **Responsive catalog covers** (finding 1): 400 px cover variants and a `srcset` for local covers in `BookCard`; recompress `colors-mixed-up-en.webp`. | Claude | P1 | 30 Nov | `/books/` mobile LCP under 2.5 s in three Lighthouse runs; a test asserts every local cover has a 400 px variant |
+| SW-024 | **Post-deploy check reads only the first line** for `[skip netlify]` (finding 2), and every squash merge carries its own message. | Claude | P1 | 30 Nov | Workflow condition changed; a test or lint rule covers it |
+| SW-025 | **Remove the em dash** on the English privacy page (finding 4), and add a check that fails on em dashes in built English pages. | Claude | P2 | 30 Nov | Built-page scan finds 0 |
+| SW-026 | **Trim meta descriptions** over 160 characters (finding 3), starting with the follow-up activities guide (ES first) and the ES/FR home pages; add a length warning to the SEO tests. | Claude drafts, Paul approves ES/FR | P2 | 15 Dec | Under 160 characters on the guides and home pages; warning in place |
+| SW-027 | **Dependency review** (finding 5): picomatch allowlist entry and the dev-only eslint advisory. | Claude | P2 | **18 Dec** | Allowlist renewed or removed; `check:audit` clean |
+| SW-028 | **Lint warnings** (finding 6): fix the unused directive and the fast-refresh warnings. | Claude | P3 | when convenient | `eslint` reports 0 warnings |
+| SW-029 | **Remove the eight finished agent worktrees** in the cloud workspace so a local `eslint .` runs clean. | Claude | P3 | when convenient | `.claude/worktrees/` empty |
+
+Owner items already in the tracker and still open: SW-003 (Little Boat cover), SW-018 (ES/FR sing-through), SW-019 (cover-crop review), SW-020 (starter kit French edition), SW-017 (mid-December reports).

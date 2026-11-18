@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { resolveSignupUtm, sessionStore } from '../lib/firstTouch';
 import { useLanguage, useTranslation, type Language } from '../lib/language';
 import { track } from '../lib/analytics';
 import { publishedLearningPacks, packResources } from '../data/contentIndex';
@@ -575,14 +576,13 @@ function readParam(name: string): string | null {
 // Field keys pass through unchanged (URL `utm_source` -> MailerLite field
 // `utm_source`). "source" alone is reserved in MailerLite, so the utm_ prefix is
 // kept end to end.
-const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
+// This page's own utm_* tags when it has any; otherwise the tags saved when the visitor first
+// arrived in this tab (src/lib/firstTouch.ts, captured in main.tsx). Before 2026-11-18 only the
+// form page's URL was read, so a visitor who landed from a pin and signed up on another page
+// was recorded with no source.
 function readUtm(): Record<string, string> {
-  const out: Record<string, string> = {};
-  for (const k of UTM_KEYS) {
-    const v = readParam(k);
-    if (v) out[k] = v.slice(0, 120);
-  }
-  return out;
+  if (typeof window === 'undefined') return {};
+  return resolveSignupUtm(window.location.search, sessionStore()) as Record<string, string>;
 }
 
 /**
