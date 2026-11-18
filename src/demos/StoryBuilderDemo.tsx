@@ -1,24 +1,41 @@
 import { useState, useRef, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RefreshCw, Copy, Save } from 'lucide-react';
 import { useTranslation, useLanguage } from '../lib/language';
 import type { Language } from '../lib/language';
 import { useToast } from '../lib/toast';
+import { useBooks, isComingSoon } from '../data/books';
+import { storyDice, storyDiceEmoji } from '../data/storyDice.data';
+import { bookVocab } from '../data/bookVocab.data';
+import { useSourceBook, SOURCE_BOOK_PARAM } from '../lib/sourceBook';
+import { Link } from '../components/LocalizedLink';
 
 type StoryItem = { name: string; emoji: string };
 type ElementKey = 'character' | 'setting' | 'goal' | 'problem' | 'solution' | 'twist';
 type Story = Partial<Record<ElementKey, StoryItem>>;
 
+// Book mode (?book=<id>, or a book picked on the page): the book's own character, setting
+// and problem from the Collection Story Dice data (src/data/storyDice.data.ts, drawn only from
+// the catalog descriptions) start preselected and join the generic faces, and the book's eight
+// story words (src/data/bookVocab.data.ts) become a word bank for writing the story out.
+// Without a book the page is the generic dice roller it always was.
+const SLUG = 'story-builder';
+const BOOK_KEYS = ['character', 'setting', 'problem'] as const;
+const BOOK_ICON: Record<(typeof BOOK_KEYS)[number], string> = { character: '📖', setting: '🗺️', problem: '⚡' };
+
+// Generic pools hold no catalog names: the fox (now an otter) and the fairy (renamed) were
+// changed so neither can be mistaken for Russet the Fox or for Luna in The Cloud Collector.
 // Story element pools are localized — each language has its own phrasings.
 const STORY_ELEMENTS: Record<Language, Record<ElementKey, StoryItem[]>> = {
   en: {
     character: [
       { name: 'a brave knight named Sir Courage', emoji: '⚔️' },
-      { name: 'a clever fox named Whiskers', emoji: '🦊' },
+      { name: 'a cheerful otter named Pebble', emoji: '🦦' },
       { name: 'a friendly dragon named Spark', emoji: '🐉' },
       { name: 'a curious robot named Bolt', emoji: '🤖' },
-      { name: 'a magical fairy named Luna', emoji: '🧚' },
+      { name: 'a magical fairy named Clover', emoji: '🧚' },
       { name: 'a wise wizard named Merlin', emoji: '🧙' },
     ],
     setting: [
@@ -65,10 +82,10 @@ const STORY_ELEMENTS: Record<Language, Record<ElementKey, StoryItem[]>> = {
   es: {
     character: [
       { name: 'un valiente caballero llamado Don Coraje', emoji: '⚔️' },
-      { name: 'un zorro astuto llamado Bigotes', emoji: '🦊' },
+      { name: 'una nutria alegre llamada Guijarro', emoji: '🦦' },
       { name: 'un dragón amistoso llamado Chispa', emoji: '🐉' },
       { name: 'un robot curioso llamado Tornillo', emoji: '🤖' },
-      { name: 'un hada mágica llamada Luna', emoji: '🧚' },
+      { name: 'un hada mágica llamada Trébol', emoji: '🧚' },
       { name: 'un sabio mago llamado Merlín', emoji: '🧙' },
     ],
     setting: [
@@ -115,10 +132,10 @@ const STORY_ELEMENTS: Record<Language, Record<ElementKey, StoryItem[]>> = {
   fr: {
     character: [
       { name: 'un brave chevalier nommé Sire Courage', emoji: '⚔️' },
-      { name: 'un renard malin nommé Moustaches', emoji: '🦊' },
+      { name: 'une loutre joyeuse nommée Galet', emoji: '🦦' },
       { name: 'un dragon sympathique nommé Étincelle', emoji: '🐉' },
       { name: 'un robot curieux nommé Boulon', emoji: '🤖' },
-      { name: 'une fée magique nommée Luna', emoji: '🧚' },
+      { name: 'une fée magique nommée Trèfle', emoji: '🧚' },
       { name: 'un sage magicien nommé Merlin', emoji: '🧙' },
     ],
     setting: [
@@ -191,8 +208,22 @@ const TRANSLATIONS = {
     tipsBody: 'Once you have your story elements, try expanding your tale! Add more details about your character, describe the setting with colorful words, or create dialogue between characters. Every great author starts with a simple idea!',
     savedHeading: '📚 Your Saved Stories 📚',
     storyN: 'Story #',
+    pick: 'Use a book from the collection',
+    pickPh: 'No book, just the dice',
+    bookBanner: 'Story ideas from',
+    bookHint: 'The book’s character, setting and problem are ready. Roll the other dice, or roll these too.',
+    backToBook: 'Back to the book',
+    useBook: 'Use the book’s',
+    wordBank: '📖 Word bank',
+    wordBankHint: 'Tap a story word to add it to your story.',
+    addWord: (w: string) => `Add “${w}”`,
+    writeHeading: '✍️ Write it your way',
+    writePh: 'Write your own story here. Use the dice and the story words…',
+    saveWritten: 'Save my story',
     template: (s: Story) =>
       `Once upon a time, there lived ${s.character?.name}. They lived in ${s.setting?.name}. One day, they decided to ${s.goal?.name}! But there was a problem: ${s.problem?.name}. Thinking quickly, our hero ${s.solution?.name}! And here's the amazing part: ${s.twist?.name} The End! 🌟`,
+    bookTemplate: (s: Story) =>
+      `Once upon a time, there was ${s.character?.name}. The story begins in ${s.setting?.name}. One day, they decided to ${s.goal?.name}! But there was a problem: ${s.problem?.name}. Thinking quickly, our hero ${s.solution?.name}! And here's the amazing part: ${s.twist?.name} The End! 🌟`,
   },
   es: {
     title: 'Creador de dados de historia con Eva',
@@ -220,8 +251,22 @@ const TRANSLATIONS = {
     tipsBody: 'Cuando tengas los elementos, ¡prueba a ampliar tu cuento! Añade más detalles sobre tu personaje, describe el escenario con palabras llenas de color o crea diálogos entre personajes. ¡Cada gran autor empieza con una idea sencilla!',
     savedHeading: '📚 Tus historias guardadas 📚',
     storyN: 'Historia n.º ',
+    pick: 'Usa un libro de la colección',
+    pickPh: 'Sin libro, solo los dados',
+    bookBanner: 'Ideas de historia del libro',
+    bookHint: 'El personaje, el escenario y el problema del libro ya están listos. Tira los otros dados, o tira también estos.',
+    backToBook: 'Volver al libro',
+    useBook: 'Usar el del libro',
+    wordBank: '📖 Banco de palabras',
+    wordBankHint: 'Toca una palabra del cuento para añadirla a tu historia.',
+    addWord: (w: string) => `Añadir «${w}»`,
+    writeHeading: '✍️ Escríbela a tu manera',
+    writePh: 'Escribe aquí tu propia historia. Usa los dados y las palabras del cuento…',
+    saveWritten: 'Guardar mi historia',
     template: (s: Story) =>
       `Érase una vez ${s.character?.name}. Vivía en ${s.setting?.name}. Un día decidió ${s.goal?.name}. Pero había un problema: ${s.problem?.name}. Pensando rápido, nuestro héroe ${s.solution?.name}. Y lo más increíble fue: ${s.twist?.name} ¡Fin! 🌟`,
+    bookTemplate: (s: Story) =>
+      `Érase una vez ${s.character?.name}. La historia empieza en ${s.setting?.name}. Un día surgió un plan: ${s.goal?.name}. Pero había un problema: ${s.problem?.name}. Pensando rápido, nuestro personaje ${s.solution?.name}. Y lo más increíble fue: ${s.twist?.name} ¡Fin! 🌟`,
   },
   fr: {
     title: 'Créateur de dés à histoire avec Eva',
@@ -249,8 +294,22 @@ const TRANSLATIONS = {
     tipsBody: "Une fois que tu as tes éléments, essaie d'étoffer ton récit ! Ajoute des détails sur ton personnage, décris le décor avec des mots colorés ou invente des dialogues. Chaque grand auteur commence par une simple idée !",
     savedHeading: '📚 Tes histoires sauvegardées 📚',
     storyN: 'Histoire n°',
+    pick: 'Utiliser un livre de la collection',
+    pickPh: 'Pas de livre, juste les dés',
+    bookBanner: 'Des idées d’histoire tirées du livre',
+    bookHint: 'Le personnage, le décor et le problème du livre sont prêts. Lance les autres dés, ou relance aussi ceux-ci.',
+    backToBook: 'Retour au livre',
+    useBook: 'Reprendre celui du livre',
+    wordBank: '📖 Banque de mots',
+    wordBankHint: 'Touche un mot de l’histoire pour l’ajouter à ton récit.',
+    addWord: (w: string) => `Ajouter « ${w} »`,
+    writeHeading: '✍️ Écris-la à ta façon',
+    writePh: 'Écris ta propre histoire ici. Utilise les dés et les mots de l’histoire…',
+    saveWritten: 'Sauvegarder mon histoire',
     template: (s: Story) =>
       `Il était une fois ${s.character?.name}. Il vivait dans ${s.setting?.name}. Un jour, il a décidé de ${s.goal?.name}. Mais il y eut un problème : ${s.problem?.name}. Réfléchissant vite, notre héros ${s.solution?.name}. Et voici l'incroyable : ${s.twist?.name} Fin ! 🌟`,
+    bookTemplate: (s: Story) =>
+      `Il était une fois ${s.character?.name}. L’histoire commence dans ${s.setting?.name}. Un jour, un projet est né : ${s.goal?.name}. Mais il y eut un problème : ${s.problem?.name}. Réfléchissant vite, notre personnage ${s.solution?.name}. Et voici l'incroyable : ${s.twist?.name} Fin ! 🌟`,
   },
 };
 
@@ -265,21 +324,48 @@ const ICONS: Record<ElementKey, string> = {
   twist: '🌟',
 };
 
-type SavedStory = { text: string; date: string };
+// In-memory only (never persisted); `book` is optional so a dice-only story looks as before.
+type SavedStory = { text: string; date: string; book?: string };
 
 export default function StoryBuilderDemo() {
   const { language } = useLanguage();
   const t = useTranslation(TRANSLATIONS);
   const toast = useToast();
-  const pools = STORY_ELEMENTS[language] || STORY_ELEMENTS.en;
+  const generic = STORY_ELEMENTS[language] || STORY_ELEMENTS.en;
+  const books = useBooks();
+  const [, setParams] = useSearchParams();
+  const sourceId = useSourceBook(SLUG);
+  const bookId = sourceId && storyDice[sourceId] ? sourceId : null;
+  const book = bookId ? books.find((b) => b.id === bookId) : undefined;
+  const pickable = books.filter((b) => !isComingSoon(b) && storyDice[b.id]);
+  const words = bookId ? bookVocab[bookId] ?? [] : [];
 
-  const [currentStory, setCurrentStory] = useState<Story>({});
+  // The book's faces: first in their pools and preselected.
+  const bookItems: Partial<Record<ElementKey, StoryItem>> = {};
+  if (bookId) {
+    for (const k of BOOK_KEYS) bookItems[k] = { name: storyDice[bookId][k][language], emoji: k === 'character' ? storyDiceEmoji[bookId] ?? BOOK_ICON.character : BOOK_ICON[k] };
+  }
+  const pools: Record<ElementKey, StoryItem[]> = { ...generic };
+  for (const k of BOOK_KEYS) if (bookItems[k]) pools[k] = [bookItems[k]!, ...generic[k]];
+
+  const [currentStory, setCurrentStory] = useState<Story>(() => ({ ...bookItems }));
+  const [written, setWritten] = useState('');
   const [rollingElement, setRollingElement] = useState<ElementKey | null>(null);
   // True while "Roll All" is animating, so individual dice can't be clicked
   // mid-sequence and clobber the staggered rolls.
   const [isRollingAll, setIsRollingAll] = useState(false);
   const [showStory, setShowStory] = useState(false);
   const [savedStories, setSavedStories] = useState<SavedStory[]>([]);
+
+  // Book mode follows the book and the language (reset during render, React's pattern for
+  // state that tracks a prop). Without a book nothing resets, exactly as before.
+  const modeKey = bookId ? `${bookId}:${language}` : '';
+  const [key, setKey] = useState(modeKey);
+  if (key !== modeKey) {
+    setKey(modeKey);
+    setCurrentStory({ ...bookItems });
+    setShowStory(false);
+  }
 
   // Track dice-animation timeouts so they can be cleared on unmount (otherwise
   // they fire setState after the component is gone).
@@ -329,7 +415,21 @@ export default function StoryBuilderDemo() {
     });
   };
 
-  const generateStoryText = () => t.template(currentStory);
+  const generateStoryText = () => (bookId ? t.bookTemplate(currentStory) : t.template(currentStory));
+
+  const pickBookItem = (k: ElementKey) => {
+    const item = bookItems[k];
+    if (!item || isRollingAll || rollingElement) return;
+    setCurrentStory((prev) => ({ ...prev, [k]: item }));
+  };
+
+  const addWord = (w: string) => setWritten((prev) => (prev && !/\s$/.test(prev) ? `${prev} ${w}` : `${prev}${w}`));
+
+  const saveWritten = () => {
+    if (!written.trim()) return;
+    setSavedStories((prev) => [...prev, { text: written.trim(), date: new Date().toLocaleString(), ...(bookId ? { book: bookId } : {}) }]);
+    toast.success(t.saved);
+  };
 
   const copyStory = async () => {
     // clipboard API is undefined on insecure origins and rejects without
@@ -344,7 +444,7 @@ export default function StoryBuilderDemo() {
 
   const saveStory = () => {
     const date = new Date().toLocaleString();
-    setSavedStories(prev => [...prev, { text: generateStoryText(), date }]);
+    setSavedStories(prev => [...prev, { text: generateStoryText(), date, ...(bookId ? { book: bookId } : {}) }]);
     toast.success(t.saved);
   };
 
@@ -354,6 +454,31 @@ export default function StoryBuilderDemo() {
         <h2 className="text-3xl font-bold mb-2 text-purple-700">{t.title}</h2>
         <p className="text-gray-700 mb-4">{t.subtitle}</p>
         <div className="text-5xl mb-4">🎲📖</div>
+      </div>
+
+      <div className="bg-white/70 rounded-2xl p-4 mb-6">
+        <label className="block text-sm font-semibold text-gray-700">
+          <span className="block mb-1">{t.pick}</span>
+          <select
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-purple-500"
+            value={bookId ?? ''}
+            onChange={(e) => setParams(e.target.value ? { [SOURCE_BOOK_PARAM]: e.target.value } : {}, { replace: true })}
+            data-story-builder-picker
+          >
+            <option value="">{t.pickPh}</option>
+            {pickable.map((b) => <option key={b.id} value={b.id}>{b.title}</option>)}
+          </select>
+        </label>
+        {book && (
+          <div className="mt-4 flex items-center gap-4 rounded-xl bg-purple-50 border-2 border-purple-200 p-3" data-story-builder-book={book.id}>
+            {book.coverImage && <img src={book.coverImage} alt="" className="h-20 w-auto rounded-md shadow-sm" />}
+            <div className="min-w-0">
+              <p className="font-bold text-purple-800">{t.bookBanner} <cite className="italic">{book.title}</cite></p>
+              <p className="text-sm text-gray-700 mt-1">{t.bookHint}</p>
+              <Link to={`/books/${book.id}`} className="inline-block mt-1 text-sm font-semibold text-purple-700 underline hover:text-purple-900">← {t.backToBook}</Link>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="bg-linear-to-r from-blue-400 to-cyan-400 text-white rounded-2xl p-6 mb-6 text-center">
@@ -397,6 +522,17 @@ export default function StoryBuilderDemo() {
                 t.rollPrompts[element]
               )}
             </div>
+            {bookItems[element] && currentStory[element]?.name !== bookItems[element]!.name && (
+              <button
+                type="button"
+                onClick={() => pickBookItem(element)}
+                disabled={isRollingAll || rollingElement !== null}
+                className="mt-2 text-sm font-semibold text-purple-700 underline hover:text-purple-900 disabled:opacity-50"
+                data-story-builder-use-book={element}
+              >
+                📖 {t.useBook}: {bookItems[element]!.name}
+              </button>
+            )}
           </Card>
         ))}
       </div>
@@ -434,6 +570,45 @@ export default function StoryBuilderDemo() {
         </div>
       )}
 
+      {book && words.length > 0 && (
+        <div className="bg-white rounded-2xl p-6 mb-6 border-4 border-purple-200" data-story-builder-words={book.id}>
+          <h3 className="text-xl font-bold text-purple-700 mb-1">{t.wordBank}</h3>
+          <p className="text-sm text-gray-600 mb-3">{t.wordBankHint}</p>
+          <ul className="flex flex-wrap gap-2 mb-4">
+            {words.map((w) => (
+              <li key={w.emoji}>
+                <button
+                  type="button"
+                  lang={language}
+                  onClick={() => addWord(w[language])}
+                  aria-label={t.addWord(w[language])}
+                  className="inline-flex items-center gap-1.5 rounded-full bg-purple-50 border-2 border-purple-200 px-3 py-1.5 text-sm font-semibold text-gray-800 hover:bg-purple-100 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-purple-500"
+                >
+                  <span aria-hidden>{w.emoji}</span>{w[language]}
+                </button>
+              </li>
+            ))}
+          </ul>
+          <label className="block">
+            <span className="block font-bold text-gray-800 mb-1">{t.writeHeading}</span>
+            <textarea
+              value={written}
+              onChange={(e) => setWritten(e.target.value)}
+              placeholder={t.writePh}
+              rows={5}
+              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-purple-500"
+              data-story-builder-text
+            />
+          </label>
+          <div className="mt-3 text-right">
+            <Button onClick={saveWritten} disabled={!written.trim()} className="bg-purple-600 text-white hover:bg-purple-700 font-bold rounded-full">
+              <Save className="w-4 h-4 mr-2" />
+              {t.saveWritten}
+            </Button>
+          </div>
+        </div>
+      )}
+
       <div className="bg-green-300 text-green-900 rounded-2xl p-6 border-l-8 border-green-600 mb-6">
         <h3 className="font-bold text-lg mb-2">{t.tipsHeading}</h3>
         <p className="leading-relaxed">{t.tipsBody}</p>
@@ -447,6 +622,7 @@ export default function StoryBuilderDemo() {
               <div key={index} className="bg-white rounded-xl p-6 border-l-4 border-purple-500 shadow-lg">
                 <div className="text-purple-700 font-bold text-lg mb-2">
                   {t.storyN}{savedStories.length - index} · {story.date}
+                  {story.book ? ` · ${books.find((b) => b.id === story.book)?.title ?? ''}` : ''}
                 </div>
                 <div className="text-gray-700 leading-relaxed">{story.text}</div>
               </div>

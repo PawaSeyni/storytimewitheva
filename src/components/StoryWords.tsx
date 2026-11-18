@@ -11,9 +11,9 @@ import { Link } from './LocalizedLink';
  * (?book=<id>), so the games play THIS book's words. Renders nothing for a book without words.
  */
 const TRANSLATIONS = {
-  en: { heading: 'Story words', sub: 'Eight words and three sentences from this book, in English, Spanish and French. Play them:', flashcards: 'Flashcards', matching: 'Memory match', spelling: 'Spelling bee', sentences: 'Sentence builder', worksheet: 'Printable worksheet', quiz: 'Pixel’s quiz', puzzles: 'Word puzzles' },
-  es: { heading: 'Palabras del cuento', sub: 'Ocho palabras y tres frases de este libro, en español, inglés y francés. Juega con ellas:', flashcards: 'Tarjetas', matching: 'Memoria', spelling: 'Deletreo', sentences: 'Frases', worksheet: 'Ficha para imprimir', quiz: 'Quiz de Pixel', puzzles: 'Rompecabezas' },
-  fr: { heading: 'Les mots de l’histoire', sub: 'Huit mots et trois phrases de ce livre, en français, anglais et espagnol. Joue avec eux :', flashcards: 'Cartes', matching: 'Memory', spelling: 'Épellation', sentences: 'Phrases', worksheet: 'Fiche à imprimer', quiz: 'Quiz de Pixel', puzzles: 'Jeux de mots' },
+  en: { heading: 'Story words', sub: 'Eight words and three sentences from this book, in English, Spanish and French. Play them:', flashcards: 'Flashcards', matching: 'Memory match', spelling: 'Spelling bee', sentences: 'Sentence builder', worksheet: 'Printable worksheet', quiz: 'Pixel’s quiz', puzzles: 'Word puzzles', storyBuilder: 'Story builder' },
+  es: { heading: 'Palabras del cuento', sub: 'Ocho palabras y tres frases de este libro, en español, inglés y francés. Juega con ellas:', flashcards: 'Tarjetas', matching: 'Memoria', spelling: 'Deletreo', sentences: 'Frases', worksheet: 'Ficha para imprimir', quiz: 'Quiz de Pixel', puzzles: 'Rompecabezas', storyBuilder: 'Crea una historia' },
+  fr: { heading: 'Les mots de l’histoire', sub: 'Huit mots et trois phrases de ce livre, en français, anglais et espagnol. Joue avec eux :', flashcards: 'Cartes', matching: 'Memory', spelling: 'Épellation', sentences: 'Phrases', worksheet: 'Fiche à imprimer', quiz: 'Quiz de Pixel', puzzles: 'Jeux de mots', storyBuilder: 'Crée une histoire' },
 };
 
 const WORD_GAMES = [
@@ -75,6 +75,14 @@ export default function StoryWords({ bookId }: { bookId: string }) {
           data-story-puzzles
         >
           <span aria-hidden>🧩</span>{t.puzzles}
+        </Link>
+        <Link
+          to={withSourceBook('/activities/story-builder', bookId)}
+          onClick={() => track('Continue Journey', { placement: 'detail', destination: 'activity', activity: 'story-builder', reason: 'story-words', book: bookId })}
+          className="inline-flex items-center gap-2 rounded-full border-2 border-amber-300 text-amber-800 font-semibold px-4 py-2 hover:bg-amber-50 transition-colors"
+          data-story-builder
+        >
+          <span aria-hidden>✍️</span>{t.storyBuilder}
         </Link>
       </div>
     </section>

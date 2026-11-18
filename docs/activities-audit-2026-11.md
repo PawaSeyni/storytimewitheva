@@ -262,7 +262,7 @@ On every book page, the Story words strip offers 6 more activities in that book'
 
 | Priority | Item | Needs | Effort | Why now |
 |---|---|---|---|---|
-| **P0** | **First funnel report:** book page → activity click-through by book, completions by activity and source book, signups by magnet (including the 20 kits). **Email half done** (`docs/analytics/REPORT_2026-11-18-signups.md`): 16 active site signups, non-English posts convert best, zero kit signups because nothing links to them. **Plausible half still open.** | Plausible export or access | S | 11 passes shipped with no data on what children actually use. This decides what gets built next. |
+| **P0** | **First funnel report:** book page → activity click-through by book, completions by activity and source book, signups by magnet (including the 20 kits). **Done:** email half in `docs/analytics/REPORT_2026-11-18-signups.md`, traffic half in `docs/analytics/REPORT_2026-11-18-funnel.md`. About 640 visitors in six months, 58% from one August paid Pinterest campaign (5-second visits, about 1% signup); organic French and Spanish posts converted at 20-40%; 22 book-page visitors; activities barely visited because traffic is low, not because of the activities. | — | S | 11 passes shipped with no data on what children actually use. This decides what gets built next. |
 | **P0** | **Point traffic at the 20 kits.** **Drafted in pass 15:** 60 pins (EN/ES/FR per book, ids P-078 to P-137, tracked links) in `docs/marketing/KIT_PINS_2026-11.md`, awaiting the owner's tick per pin. | Owner approval of copy; pin art from existing covers | S–M | The kits get no visitors until something links to them |
 | ~~**P1**~~ | ~~**One activity of their own for *Sparrow*, *Butterfly Effect* and *Sanding Block*.**~~ **Done in pass 12.** Ideas from their descriptions: *Small Noticer* (spot what the big animals miss), *Kindness Chain* (each kind act leads to the next; a paper chain to print), *Rough to Smooth* (patient strokes that smooth a plank, with a practice card) | — | M (3 Studio pages) | They're the three B books; this gives 20/20 books an activity of their own |
 | ~~**P1**~~ | ~~**Book mode for the two most-linked generic activities**~~ **Done in pass 13.** | — | S–M | 12 book links became book-aware |
@@ -531,3 +531,28 @@ Five pieces of work were run side by side, each in its own copy of the repo, the
 - **Size:** the entry bundle is 116 KB gz (budget warn 125, fail 140), up from 110, from the five unit packs' offer copy in the signup form.
 - **Tests:** `tests/funnel/book-resources.test.mjs`, `tests/funnel/story-dice.test.mjs`, `tests/funnel/classroom-units.test.mjs`, `tests/seo/classroom-units.test.mjs`, and new book-page checks in `tests/seo/a11y.test.mjs`. 284 unit tests, 435 prerendered routes, 395 SEO tests.
 - **For the owner to read:** the unit titles, descriptions and 25 teacher notes are new copy in three languages; the pins need a tick per pin.
+
+### Pass 16: the traffic half of the funnel report
+
+`docs/analytics/REPORT_2026-11-18-funnel.md`, from a Plausible export of the whole site history (21 May to 18 November 2026). With the signups report, this closes the P0 "first funnel report".
+- **About 640 visitors in six months.** 374 (58%) came from one paid Pinterest campaign in August; they stayed about 5 seconds and signed up at about 1%. Since September the site draws 15 to 35 visitors a week.
+- **Organic French and Spanish posts converted at 20-40%** (P-032, FB-025, P-012), against about 1% for the paid pins. A third of all visitors are in Spanish-speaking countries.
+- **The signup leak is form view → form start (4%);** once someone starts typing, 94% finish.
+- **Only 22 people have opened a book page, and the activities have had almost no visitors.** That is a traffic problem, not an activity problem. The exception is **Story Builder** (25 visitors, mostly from Google, about 2 minutes on the page), so it should be kept and given a book mode.
+- **Google's one door is the follow-up activities guide** (64 entries, 85-88% leave from it).
+- **10 client TypeErrors,** 9 on the homepage. The event records no message, so the cause needs engineering follow-up.
+
+**Updated next steps:** post the kit pins organically, leading with Spanish and French (do not boost yet); find the homepage TypeError; give the follow-up activities guide a next step (classroom units, kits); give Story Builder a book mode.
+
+### Pass 17: acting on the funnel report
+
+Three fixes from `docs/analytics/REPORT_2026-11-18-funnel.md`, built in parallel and merged.
+- **The client errors, partly found.**
+  - The one on an activity page was real. When a page's code file fails to load (after a deploy removes the old files, or on a flaky in-app connection), the page went blank with "Failed to fetch dynamically imported module". It now **reloads once to recover**, guarded to at most once every 5 minutes and never when session storage is blocked (`src/lib/chunkRecovery.ts`).
+  - Two crash paths for embedded browsers were closed: speech on a WebView whose `speechSynthesis` is not an event target, and a missing IntersectionObserver.
+  - The nine homepage errors could not be reproduced from the site's code; the likeliest source is scripts the Pinterest in-app browser injects. **`Client Error` now records a redacted `message`, the script file name and line:col**, so the next ones can be traced.
+- **A next step on every parent guide.** Google sends almost all its search visitors to the follow-up activities guide, and most left from it. All eight guides now show "Try it with a book" twice: a compact block about 40% of the way down, and a fuller one at the end with 3-4 book covers, the free printable and the five classroom units. Clicks are tracked as `Continue Journey {placement: guide}`.
+- **Story Builder book mode.** The activity people find through search now opens in a book's mode from every book page (new "✍️ Story builder" link): the book's character, setting and problem preselected, its story words as a word bank, and a back link. It is now an `anyBook` activity. Two generic characters that could be mistaken for catalog books were renamed: a clever fox (too close to Russet) is now an otter, and a fairy named Luna (*The Cloud Collector*'s Luna) is now Clover.
+- **Tracker rows** for the owner's master tracker: `docs/marketing/tracker-punch-list-2026-11-18.csv` (17 to-dos) and `docs/marketing/tracker-pinterest-pins-2026-11-18.csv` (the 60 kit pins).
+- **Size:** total JavaScript is 462 KB, just over the 460 KB warning (fail 480), from this month's new pages. Entry bundle 117 KB (warn 125). A trimming pass, or a decision on the total budget, is due before the next new activity.
+

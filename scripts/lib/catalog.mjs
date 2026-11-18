@@ -247,6 +247,13 @@ export async function loadPreloadable() {
   return preloadableCache;
 }
 
+let compatCache = null;
+/** Guards for partially-shipped browser APIs and chunk-load errors (src/lib/compat.ts), browser-free. */
+export async function loadCompat() {
+  if (!compatCache) compatCache = await loadModule(path.join(ROOT, 'src', 'lib', 'compat.ts'));
+  return compatCache;
+}
+
 let bodiesCache = null;
 /** The parent-guide bodies from src/data/guides/<lang>.json: articleBody(slug, lang) (affiliate parts kept as
  *  {affiliate, text}), ARTICLE_BODY_SLUGS. No esbuild needed: the text is JSON, not code (DA-03). */

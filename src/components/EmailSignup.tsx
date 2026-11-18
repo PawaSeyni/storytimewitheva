@@ -718,7 +718,9 @@ export default function EmailSignup({ magnet: magnetSlug, placement = 'home' }: 
   // "Form Start" on the first interaction with the form. Aggregate, no PII.
   useEffect(() => {
     const el = sectionRef.current;
-    if (!el || firedView.current) return;
+    // A browser without IntersectionObserver skips the impression (Form Start still records
+    // Form View first, below) rather than throwing a ReferenceError on mount.
+    if (!el || firedView.current || typeof IntersectionObserver === 'undefined') return;
     const io = new IntersectionObserver(
       entries => {
         // Fire as soon as the section enters the viewport. A fractional threshold

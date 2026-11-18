@@ -18,7 +18,7 @@ when a property's meaning changes. Reports state the schema version they were bu
 | `Book View` |  | intent | `book` |  |  | product | stable book id |
 | `Recommendation Click` |  | intent | `book`, `placement`, `reason` |  | reason: editorial \| related \| theme \| age \| preference | product | ids and reason tier |
 | `Personalized View` |  | exposure | `placement` |  |  | product | placement only; never the library |
-| `Continue Journey` |  | intent | `placement`, `destination` | `book`, `activity`, `reason`, `resource` |  | product | ids and placement |
+| `Continue Journey` |  | intent | `placement`, `destination` | `book`, `activity`, `reason`, `resource` | placement: detail \| card \| activity \| signup-success \| classroom-unit \| guide; destination: book \| books \| activity \| resource \| catalog \| classroom-unit \| classroom \| printable | product | ids and placement |
 | `Search` |  | intent | `language`, `filter`, `results` |  |  | product | filter and count; NEVER the query text |
 | `Purchase CTA View` | purchase_cta_impression | exposure | `book`, `placement`, `edition` |  | placement: detail; edition: en \| es \| fr | growth | once per book page view when the Buy control is viewable |
 | `Purchase Click` | purchase_cta_clicked / retailer_click | intent | `book`, `destination`, `placement`, `edition` |  | destination: amazon; placement: detail \| card; edition: en \| es \| fr | growth | outbound click is the conversion PROXY; no retailer purchase data exists (S5 open decision) |
@@ -41,7 +41,7 @@ when a property's meaning changes. Reports state the schema version they were bu
 | `Journey Step` |  | intent | `journey`, `activity`, `status` |  | status: done \| undone | product | journey id, step index, state |
 | `Journey Complete` |  | outcome | `journey` |  |  | product | journey id |
 | `Journey Saved` |  | intent | `journey`, `status` |  | status: added \| removed | product | journey id |
-| `Client Error` |  | diagnostic | `kind`, `route` |  |  | engineering | error class and route pattern only |
+| `Client Error` |  | diagnostic | `kind`, `route` | `message`, `source`, `line` |  | engineering | error class, route pattern and a redacted message (no URLs, emails, quoted strings, numbers over 4 digits or query; 120 chars), script file name and line:col |
 
 ## Funnels (derived, `src/analytics/funnels.ts`)
 
