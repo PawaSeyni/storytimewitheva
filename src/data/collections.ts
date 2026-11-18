@@ -161,7 +161,9 @@ export const collections: CollectionRecord[] = [
     publishState: 'published',
     // Featured activities: referenced by the most member books (validated: each must be
     // related to at least one book in the collection). Editorial choice within that set.
-    activityIds: ['adventure-journal', 'bingo', 'bookmark-designer'],
+    // Bingo left the 8-9 books' pages in the activities re-audit passes (2026-11); Craft
+    // Corner is linked by three of them.
+    activityIds: ['adventure-journal', 'craft-corner', 'bookmark-designer'],
   },
 
   // ---- Educator collections (S7-007): explicit membership, own copy, classroom framing ----

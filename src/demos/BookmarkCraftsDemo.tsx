@@ -6,6 +6,9 @@ import { Input } from '@/components/ui/input';
 import { Shuffle, Save, Download } from 'lucide-react';
 import { useLanguage, useTranslation, type Language } from '../lib/language';
 import { useToast } from '../lib/toast';
+import { useBooks } from '../data/books';
+import { bookQuotes } from '../data/bookQuotes.data';
+import { useSourceBook } from '../lib/sourceBook';
 
 type Item = { emoji: string; name: string };
 
@@ -354,12 +357,19 @@ export default function BookmarkCraftsDemo() {
 
   const animals = ANIMALS_BY_LANG[language] ?? ANIMALS_BY_LANG.en;
   const countries = COUNTRIES_BY_LANG[language] ?? COUNTRIES_BY_LANG.en;
+  // Opened from a book page (?book=<id>): that book's own line starts on the bookmark and
+  // joins the quotes "Surprise me" picks from (re-audit 2026-11-18).
+  const sourceBook = useSourceBook('bookmark-designer');
+  const books = useBooks();
+  const fromBook = sourceBook ? books.find((b) => b.id === sourceBook) : undefined;
+  const bookLine = sourceBook ? bookQuotes[sourceBook]?.[language] : undefined;
+  const quotes = bookLine ? [bookLine, ...t.quotes] : t.quotes;
 
   const [selectedAnimal, setSelectedAnimal] = useState<Item>(animals[0]);
   const [selectedCountry, setSelectedCountry] = useState<Item>(countries[0]);
   const [selectedColor, setSelectedColor] = useState(COLORS[0]);
   const [selectedPatternKey, setSelectedPatternKey] = useState<PatternKey>('none');
-  const [bookmarkText, setBookmarkText] = useState('');
+  const [bookmarkText, setBookmarkText] = useState(() => bookLine ?? '');
 
   const currentAnimal = animals.find(a => a.emoji === selectedAnimal.emoji) ?? animals[0];
   const currentCountry = countries.find(c => c.emoji === selectedCountry.emoji) ?? countries[0];
@@ -387,7 +397,7 @@ export default function BookmarkCraftsDemo() {
     setSelectedCountry(countries[Math.floor(Math.random() * countries.length)]);
     setSelectedColor(COLORS[Math.floor(Math.random() * COLORS.length)]);
     setSelectedPatternKey(PATTERN_KEYS[Math.floor(Math.random() * PATTERN_KEYS.length)]);
-    setBookmarkText(t.quotes[Math.floor(Math.random() * t.quotes.length)]);
+    setBookmarkText(quotes[Math.floor(Math.random() * quotes.length)]);
   };
 
   // Canvas-based PNG download — 600×2100 px (2"×7" at 300 DPI, standard bookmark size)
@@ -592,6 +602,17 @@ export default function BookmarkCraftsDemo() {
           {/* Text input */}
           <div className="bg-linear-to-r from-pink-200 to-rose-200 rounded-2xl p-4 sm:p-6 border-4 border-rose-300">
             <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3">{t.addText}</h3>
+            {fromBook && bookLine && (
+              <button
+                type="button"
+                onClick={() => setBookmarkText(bookLine)}
+                aria-pressed={bookmarkText === bookLine}
+                data-book-line={fromBook.id}
+                className={`mb-3 inline-flex max-w-full items-center gap-2 rounded-full border-2 px-3 py-1.5 text-left text-sm font-semibold transition-colors focus:outline-hidden focus-visible:ring-2 focus-visible:ring-rose-500 ${bookmarkText === bookLine ? 'border-rose-500 bg-white text-rose-800' : 'border-rose-300 bg-rose-50 text-rose-800 hover:bg-white'}`}
+              >
+                <span aria-hidden>📖</span><span className="truncate">{fromBook.title}: “{bookLine}”</span>
+              </button>
+            )}
             <Input
               value={bookmarkText}
               onChange={(e) => setBookmarkText(e.target.value)}

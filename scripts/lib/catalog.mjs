@@ -22,6 +22,7 @@ const ACTIVITIES = path.join(ROOT, 'src', 'data', 'activities.data.ts');
 const BOOK_VOCAB = path.join(ROOT, 'src', 'data', 'bookVocab.data.ts');
 const BOOK_SENTENCES = path.join(ROOT, 'src', 'data', 'bookSentences.data.ts');
 const BOOK_HEROES = path.join(ROOT, 'src', 'data', 'bookHeroes.data.ts');
+const BOOK_QUOTES = path.join(ROOT, 'src', 'data', 'bookQuotes.data.ts');
 const JOURNEY = path.join(ROOT, 'src', 'lib', 'journey.ts');
 const JOURNEYS = path.join(ROOT, 'src', 'data', 'journeys.ts');
 const COLLECTIONS = path.join(ROOT, 'src', 'data', 'collections.ts');
@@ -152,6 +153,13 @@ let packsCache = null;
 export async function loadLearningPacks() {
   if (!packsCache) packsCache = await loadModule(LEARNING_PACKS);
   return packsCache;
+}
+
+let quotesCache = null;
+/** One bookmark line per book (Bookmark Designer book mode). */
+export async function loadBookQuotes() {
+  if (!quotesCache) quotesCache = await loadModule(BOOK_QUOTES);
+  return quotesCache;
 }
 
 let heroesCache = null;
