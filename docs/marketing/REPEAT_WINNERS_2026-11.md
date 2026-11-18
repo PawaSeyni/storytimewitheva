@@ -19,7 +19,7 @@ The two posts that produced repeat signups were organic and non-English, and the
 - **Links** follow the campaign URL convention: `https://storytimewitheva.com/<es|fr>/free/<magnet>/?utm_source=<pinterest|facebook>&utm_medium=social&utm_campaign=<flashcards|bundle>_<lang>&utm_content=<id>`. Every link is the `/free/` landing page (form + analytics), never a PDF.
 - **What is promised** is only what the landing page delivers (`src/components/EmailSignup.tsx`): the flashcards are 30 print-and-cut cards (animals, colours, numbers) with English, Spanish and French on every card; the bundle is 5 printables (starter kit, flashcards, bedtime chart, parent's guide, follow-up activities). The bundle copy here does not say "all in three languages": the campaign's lead-magnet table lists the 20-page starter kit as EN and ES only, although the landing page's bullet says "English, Spanish and French throughout". **Owner check:** if the starter kit has no French edition, that landing-page bullet should be corrected.
 - No em dashes; at most three emoji on a pin; gender-neutral Spanish and French where the reader or child is addressed.
-- **Ids are provisional.** The highest ids in this repo are P-137 (the kit pins draft) and FB-025. The master tracker is the system of record: before scheduling, take `Pinterest_Pins` max + 1 and `FB_Group_Posts` max + 1, and renumber these in order. The FB ids below start at FB-047 on the assumption that the tracker's 46 Facebook posts use FB-001 to FB-046; confirm that first.
+- **Ids (confirmed 18 November 2026):** the five pins are P-111, P-116, P-121, P-126 and P-131, inside the renumbered range P-111 to P-175 that the owner set against the master tracker (P-078 to P-110 were already taken). FB-047 to FB-050 did not collide and keep their ids.
 - **Pace:** these 5 pins fit inside the documented cadence (about 5 a week) only if they replace kit pins in the same week. The posting plan (`KIT_PINS_POSTING_PLAN_2026-11.md`) opens each of weeks 1 to 5 with one of them, inside 5 pins a week.
 
 ## Pre-flight (each post, before it goes out)
@@ -34,41 +34,41 @@ The two posts that produced repeat signups were organic and non-English, and the
 
 Images: reuse the **P-032 layout** (French flashcards) for the flashcards pins, with the overlay text below, and `public/pins/pin_15_full_bundle.png` (the five-resource bundle) as the base for the bundle pins. Fallback for both: the landing page previews `public/previews/bilingual-flashcards.webp` and `public/previews/bilingual-bundle.webp`, laid out at 1000 × 1500 px.
 
-### [ ] P-138 · FR · flashcards · board: Ressources Bilingues (Français)
+### [ ] P-111 · FR · flashcards · board: Ressources Bilingues (Français)
 
 - **Overlay:** 30 cartes en 3 langues · gratuit à imprimer
 - **Title:** 30 cartes trilingues gratuites à imprimer : animaux, couleurs, chiffres
 - **Description:** Des cartes à imprimer et découper pour apprendre les animaux, les couleurs et les chiffres en français, en anglais et en espagnol. Les trois langues sont sur chaque carte. Dix minutes de ciseaux, des mois de jeux : mémory, devinettes, tri par couleur. Envoyées gratuitement par e-mail. #CartesÉducatives #Bilinguisme #ImprimableGratuit #ApprendreEnJouant
-- **Link:** `https://storytimewitheva.com/fr/free/bilingual-flashcards/?utm_source=pinterest&utm_medium=social&utm_campaign=flashcards_fr&utm_content=P-138`
+- **Link:** `https://storytimewitheva.com/fr/free/bilingual-flashcards/?utm_source=pinterest&utm_medium=social&utm_campaign=flashcards_fr&utm_content=P-111`
 
-### [ ] P-139 · FR · flashcards · board: Ressources Bilingues (Français)
+### [ ] P-121 · FR · flashcards · board: Ressources Bilingues (Français)
 
 Angle: the teacher and classroom use that made P-012 the best click-through rate among organic pins.
 - **Overlay:** Pour la classe ou la maison · 30 cartes FR · EN · ES
 - **Title:** Cartes de vocabulaire trilingues pour la classe ou la maison, gratuites
 - **Description:** Animaux, couleurs et chiffres en français, anglais et espagnol, sur 30 cartes à imprimer. Pratiques en petits groupes, en coin langues ou à la maison avec un enfant qui grandit avec deux ou trois langues. Gratuit, reçu par e-mail. #EnseignantsFLE #ClasseBilingue #Vocabulaire #ImprimableGratuit
-- **Link:** `https://storytimewitheva.com/fr/free/bilingual-flashcards/?utm_source=pinterest&utm_medium=social&utm_campaign=flashcards_fr&utm_content=P-139`
+- **Link:** `https://storytimewitheva.com/fr/free/bilingual-flashcards/?utm_source=pinterest&utm_medium=social&utm_campaign=flashcards_fr&utm_content=P-121`
 
-### [ ] P-140 · ES · flashcards · board: Recursos Bilingües (Español)
+### [ ] P-116 · ES · flashcards · board: Recursos Bilingües (Español)
 
 - **Overlay:** 30 tarjetas en 3 idiomas · gratis para imprimir
 - **Title:** 30 tarjetas trilingües gratis: animales, colores y números
 - **Description:** Tarjetas para imprimir y recortar con animales, colores y números en español, inglés y francés. Los tres idiomas en cada tarjeta. Diez minutos con tijeras y meses de juegos: memoria, adivinanzas, ordenar por colores. Gratis, por correo. #TarjetasEducativas #CrianzaBilingüe #ImprimiblesGratis #AprenderJugando
-- **Link:** `https://storytimewitheva.com/es/free/bilingual-flashcards/?utm_source=pinterest&utm_medium=social&utm_campaign=flashcards_es&utm_content=P-140`
+- **Link:** `https://storytimewitheva.com/es/free/bilingual-flashcards/?utm_source=pinterest&utm_medium=social&utm_campaign=flashcards_es&utm_content=P-116`
 
-### [ ] P-141 · ES · bundle · board: Recursos Bilingües (Español)
+### [ ] P-126 · ES · bundle · board: Recursos Bilingües (Español)
 
 - **Overlay:** 5 imprimibles bilingües · gratis
 - **Title:** Paquete bilingüe gratis: 5 imprimibles para leer y aprender en casa
 - **Description:** Cinco recursos en un solo envío: un kit de inicio de 20 páginas, 30 tarjetas en tres idiomas, una tabla de rutina para dormir, una guía para criar un lector bilingüe y 5 actividades para después del cuento. Para imprimir las veces que quieras. #CrianzaBilingüe #ImprimiblesGratis #NiñosBilingües #LecturaEnCasa
-- **Link:** `https://storytimewitheva.com/es/free/bilingual-bundle/?utm_source=pinterest&utm_medium=social&utm_campaign=bundle_es&utm_content=P-141`
+- **Link:** `https://storytimewitheva.com/es/free/bilingual-bundle/?utm_source=pinterest&utm_medium=social&utm_campaign=bundle_es&utm_content=P-126`
 
-### [ ] P-142 · FR · bundle · board: Ressources Bilingues (Français)
+### [ ] P-131 · FR · bundle · board: Ressources Bilingues (Français)
 
 - **Overlay:** 5 ressources bilingues · gratuites
 - **Title:** Pack bilingue gratuit : 5 ressources à imprimer pour lire à la maison
 - **Description:** Cinq documents en un seul envoi : un kit de démarrage de 20 pages, 30 cartes en trois langues, un tableau de la routine du soir, un guide pour élever un lecteur bilingue et 5 activités pour après l'histoire. À imprimer autant de fois que vous voulez. #Bilinguisme #ImprimableGratuit #EnfantsBilingues #LectureÀLaMaison
-- **Link:** `https://storytimewitheva.com/fr/free/bilingual-bundle/?utm_source=pinterest&utm_medium=social&utm_campaign=bundle_fr&utm_content=P-142`
+- **Link:** `https://storytimewitheva.com/fr/free/bilingual-bundle/?utm_source=pinterest&utm_medium=social&utm_campaign=bundle_fr&utm_content=P-131`
 
 ---
 

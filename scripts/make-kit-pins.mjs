@@ -1,5 +1,7 @@
-// Renders the Pinterest images for the kit pins (P-078 to P-137) and the repeat-winner pins
-// (P-138 to P-142) listed in docs/marketing/tracker-pinterest-pins-2026-11-18.csv.
+// Renders the Pinterest images for the 60 kit pins and the 5 repeat-winner pins listed in
+// docs/marketing/tracker-pinterest-pins-2026-11-18.csv: P-111 to P-175, numbered in posting-date
+// order (renumbered 2026-11-18; P-078 to P-110 belong to earlier pins in the master tracker).
+// Repeat-winner pins: P-111, P-116, P-121, P-126, P-131.
 //   node scripts/make-kit-pins.mjs [P-088 ...]
 // Output: public/pins/<id>_kit_<book>_<lang>.jpg (or <id>_lm_<magnet>_<lang>.jpg), 1000 x 1500,
 // in the layout of the existing book pins (P-055 to P-077): cream background, blue pill, the
@@ -68,7 +70,7 @@ const OFFERS = {
     },
   },
 };
-const P139 = { fr: 'Pour la classe ou la maison' }; // P-139's own overlay line
+const P121 = { fr: 'Pour la classe ou la maison' }; // P-121's own overlay line (classroom angle; was P-139)
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 // Inlined as data URIs: a page set with setContent cannot load file:// URLs.
@@ -134,7 +136,7 @@ for (const p of pins) {
   } else {
     const slug = p['Lead magnet (slug)']; const o = OFFERS[slug];
     if (!o || !o.headline[lang]) { skipped.push(`${id}: no offer layout for ${slug} ${lang}`); continue; }
-    html = page({ pill: T.lmPill[lang], imageUrl: fileUrl(o.image), imageShape: 'contain', title: o.headline[lang], lead: id === 'P-139' ? P139[lang] : '', items: o.items[lang], footLine: T.sent[lang] });
+    html = page({ pill: T.lmPill[lang], imageUrl: fileUrl(o.image), imageShape: 'contain', title: o.headline[lang], lead: id === 'P-121' ? P121[lang] : '', items: o.items[lang], footLine: T.sent[lang] });
     out = `pins/${id}_lm_${slug}_${lang}.jpg`;
   }
   await page1.setContent(html, { waitUntil: 'load' });
