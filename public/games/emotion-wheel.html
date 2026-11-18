@@ -40,6 +40,9 @@
         journalIntro: 'Your answers will appear here as you explore each emotion.',
         journalEmpty: 'No entries yet... start exploring the wheel! 💛',
         defaultResponse: 'I explored this feeling!',
+        bookBanner: 'Feelings in',
+        bookReady: 'How did {hero} feel in the story? Tap a feeling on the wheel, then tell a grown-up when.',
+        bookAsk: 'Do you think {hero} felt this way in the story? When? And you:',
       },
       es: {
         title: 'La rueda de emociones de Eva',
@@ -61,6 +64,9 @@
         journalIntro: 'Tus respuestas aparecerán aquí a medida que explores cada emoción.',
         journalEmpty: 'Aún no hay anotaciones... ¡empieza a explorar la rueda! 💛',
         defaultResponse: '¡Exploré este sentimiento!',
+        bookBanner: 'Sentimientos en',
+        bookReady: '¿Cómo se sintió {hero} en el cuento? Toca un sentimiento en la rueda y cuéntale a un adulto cuándo.',
+        bookAsk: '¿Crees que {hero} se sintió así en el cuento? ¿Cuándo? Y tú:',
       },
       fr: {
         title: "La roue des émotions d'Eva",
@@ -82,10 +88,16 @@
         journalIntro: 'Tes réponses apparaîtront ici au fur et à mesure que tu explores chaque émotion.',
         journalEmpty: 'Aucune entrée pour le moment... commence à explorer la roue ! 💛',
         defaultResponse: "J'ai exploré ce sentiment !",
+        bookBanner: 'Les sentiments dans',
+        bookReady: 'Que ressentait {hero} dans l’histoire ? Touche un sentiment sur la roue, puis raconte à un adulte à quel moment.',
+        bookAsk: 'Penses-tu que {hero} a ressenti cela dans l’histoire ? À quel moment ? Et toi :',
       },
     };
   </script>
   <script src="/games/i18n.js"></script>
+<!-- STE_WHEEL_BOOKS: injected by scripts/patch-games.mjs from src/data/bookHeroes.data.ts -->
+<script>window.STE_WHEEL_BOOKS = {"diegos-brave-leap":{"title":{"en":"Diego's Brave Leap","es":"El salto valiente de Diego","fr":"Le saut courageux de Diego"},"hero":{"en":"Diego","es":"Diego","fr":"Diego"}},"butterfly-effect":{"title":{"en":"The Butterfly Effect","es":"El efecto mariposa","fr":"L'effet papillon"},"hero":{"en":"the people in the story","es":"las personas del cuento","fr":"les personnages de l’histoire"}},"crooked-little-apple-tree":{"title":{"en":"The Crooked Little Apple Tree","es":"El pequeño manzano torcido","fr":"Le petit pommier tordu"},"hero":{"en":"the crooked little apple tree","es":"el pequeño manzano torcido","fr":"le petit pommier tordu"}},"true-beauty-meadowbrook":{"title":{"en":"The True Beauty of Meadowbrook","es":"La verdadera belleza de Meadowbrook","fr":"La vraie beauté de Meadowbrook"},"hero":{"en":"the quiet girl","es":"la niña tranquila","fr":"la fille discrète"}},"pawa-rainbow-cloud":{"title":{"en":"Pawa and the Little Rainbow Cloud","es":"Pawa y la pequeña nube arcoíris","fr":"Pawa et le petit nuage arc-en-ciel"},"hero":{"en":"Cirro","es":"Cirro","fr":"Cirro"}}};</script>
+
   <style>
     @font-face{font-family:'Lexend';src:url('/games/lexend.woff2') format('woff2');font-weight:100 900;font-display:swap;}
     * { font-family: 'Lexend', 'Segoe UI', system-ui, sans-serif; }
@@ -208,6 +220,7 @@
       <div class="text-5xl mb-2">💛</div>
       <h1 data-i18n="title" class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Eva's Feelings Wheel</h1>
       <p data-i18n="subtitle" class="text-gray-500 text-base">Explore emotions: how do you feel today?</p>
+      <p id="wheelBookBanner" class="hidden"></p>
       <div class="w-20 h-1 bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400 mx-auto mt-4 rounded-full"></div>
     </div>
 
@@ -399,6 +412,27 @@
     let journalEntries = {};
     let currentEmotion = null;
 
+    // Book mode (re-audit 2026-11-18): opened from a book page with ?book=<id>, the wheel asks
+    // how THAT book's character felt. Data is baked by scripts/patch-games.mjs for the books
+    // that link the wheel; any other id leaves the game exactly as before.
+    const wheelBook = (function () {
+      var all = window.STE_WHEEL_BOOKS || {};
+      var src = null; try { src = new URLSearchParams(window.location.search).get('book'); } catch (e) { /* ignore */ }
+      if (!src || !Object.prototype.hasOwnProperty.call(all, src)) return null;
+      var L = window.GAME_LANG || 'en';
+      return { id: src, title: all[src].title[L] || all[src].title.en, hero: all[src].hero[L] || all[src].hero.en };
+    })();
+    if (wheelBook) {
+      var banner = document.getElementById('wheelBookBanner');
+      banner.textContent = '📖 ' + window.t('bookBanner') + ' ' + wheelBook.title;
+      banner.className = 'mt-3 inline-flex items-center gap-2 rounded-full bg-purple-100 text-purple-800 text-sm font-bold px-4 py-1.5';
+      var ready = document.querySelector('[data-i18n="readyText"]');
+      if (ready) {
+        ready.removeAttribute('data-i18n'); // i18n.js would overwrite the book prompt on DOMContentLoaded
+        ready.textContent = window.t('bookReady').replace('{hero}', wheelBook.hero);
+      }
+    }
+
     // ─── BUILD SVG WHEEL ────────────────────────────────────────────────────────
     function buildWheel() {
       const svg = document.getElementById('wheelSvg');
@@ -496,7 +530,9 @@
       document.getElementById('activeName').className = `text-xl font-extrabold ${em.textColor}`;
       document.getElementById('activeNameEs').textContent = `${em.nameEs} · ${em.nameFr}`;
       document.getElementById('activeStory').textContent = em.story;
-      document.getElementById('activeQuestion').textContent = em.question;
+      document.getElementById('activeQuestion').textContent = wheelBook
+        ? window.t('bookAsk').replace('{hero}', wheelBook.hero) + ((window.GAME_LANG || 'en') === 'en' ? ' ' + em.question : '')
+        : em.question;
       document.getElementById('freeResponse').value = journalEntries[em.id]?.response || '';
 
       // Response options

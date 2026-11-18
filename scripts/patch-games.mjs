@@ -12,7 +12,7 @@
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadCatalog, loadJourney, loadBookVocab, loadBookSentences, loadActivities } from './lib/catalog.mjs';
+import { loadCatalog, loadJourney, loadBookVocab, loadBookSentences, loadActivities, loadBookHeroes } from './lib/catalog.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const GAMES_DIR = path.resolve(__dirname, '..', 'public', 'games');
@@ -40,6 +40,7 @@ const bookTitles = new Map(books.map((b) => [b.id, b.title]));
 // rule (sourceBookFor), so the baked map and the app agree.
 const { bookVocab } = await loadBookVocab();
 const { bookSentences } = await loadBookSentences();
+const { bookHeroes } = await loadBookHeroes();
 const { activities } = await loadActivities();
 const anyBook = new Set(activities.filter((a) => a.anyBook).map((a) => a.slug));
 const WORD_GAMES = activities.filter((a) => a.game && a.anyBook).map((a) => a.slug);
@@ -132,6 +133,17 @@ await writeFile(
 );
 const vocabSnippet = () =>
   `\n<!-- ${VOCAB_MARKER}: injected by scripts/patch-games.mjs (data in /games/book-vocab.js) -->\n<script src="/games/book-vocab.js"></script>\n<script src="/games/book-words.js"></script>\n`;
+
+// 6. Emotion Wheel book mode (re-audit 2026-11-18): who each referring book is about, so the
+//    wheel can ask "How did Diego feel in the story?". Only books that link the wheel AND
+//    have a hero entry are baked; titles come from the catalog.
+const HEROES_MARKER = 'STE_WHEEL_BOOKS';
+const wheelBooksSnippet = () => {
+  const data = Object.fromEntries(
+    books.filter((b) => (b.relatedActivityIds ?? []).includes('emotion-wheel') && bookHeroes[b.id]).map((b) => [b.id, { title: b.title, hero: bookHeroes[b.id] }]),
+  );
+  return `\n<!-- ${HEROES_MARKER}: injected by scripts/patch-games.mjs from src/data/bookHeroes.data.ts -->\n<script>window.STE_WHEEL_BOOKS = ${JSON.stringify(data)};</script>\n`;
+};
 
 const syncSnippet = (slug) => `
 <!-- ${MARKER}: injected by scripts/patch-games.mjs -->
@@ -236,6 +248,13 @@ for (const file of files) {
     const I18N_TAG = '<script src="/games/i18n.js"></script>';
     if (!html.includes(I18N_TAG)) throw new Error(`${file}: i18n.js tag not found`);
     html = html.replace(I18N_TAG, `${I18N_TAG}${vocabSnippet()}`);
+  }
+  // 6. Emotion Wheel: per-book heroes, right after i18n.js.
+  html = html.replace(new RegExp(`\\n*<!-- ${HEROES_MARKER}[\\s\\S]*?</script>\\n*`), '\n');
+  if (slug === 'emotion-wheel') {
+    const I18N_TAG = '<script src="/games/i18n.js"></script>';
+    if (!html.includes(I18N_TAG)) throw new Error('emotion-wheel.html: i18n.js tag not found');
+    html = html.replace(I18N_TAG, `${I18N_TAG}${wheelBooksSnippet()}`);
   }
   // 4. Story Map data, right after i18n.js so it exists before the game script runs.
   if (slug === 'story-map') {

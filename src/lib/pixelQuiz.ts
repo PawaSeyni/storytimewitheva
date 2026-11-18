@@ -3,6 +3,7 @@
 import { books as CATALOG } from '../data/books.data';
 import { bookVocab, type VocabWord } from '../data/bookVocab.data';
 import type { Language } from './language';
+import { seeded } from './seeded';
 
 /** Which of the book's eight words are asked: spread across the list. */
 const ASKED = [0, 2, 4, 6];
@@ -16,18 +17,6 @@ const DISTRACTORS = new Set([
   'paint', 'palace', 'pencil', 'recipe', 'robot', 'saw', 'school', 'sheep', 'sparrow', 'toast', 'tower',
   'turtle', 'wolf',
 ]);
-
-/** A small seeded random generator, so a book always gets the same pictures in the same places
- *  (stable between the server-rendered page and the browser, and between replays). */
-function seeded(seed: string) {
-  let h = 2166136261;
-  for (let i = 0; i < seed.length; i++) h = Math.imul(h ^ seed.charCodeAt(i), 16777619);
-  return () => {
-    h = Math.imul(h ^ (h >>> 15), 2246822507);
-    h = Math.imul(h ^ (h >>> 13), 3266489909);
-    return ((h ^= h >>> 16) >>> 0) / 4294967296;
-  };
-}
 
 export interface QuizRound { answer: VocabWord; choices: VocabWord[] }
 

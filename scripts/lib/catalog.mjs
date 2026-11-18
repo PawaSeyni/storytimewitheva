@@ -21,6 +21,7 @@ const RELATED = path.join(ROOT, 'src', 'data', 'relatedBooks.ts');
 const ACTIVITIES = path.join(ROOT, 'src', 'data', 'activities.data.ts');
 const BOOK_VOCAB = path.join(ROOT, 'src', 'data', 'bookVocab.data.ts');
 const BOOK_SENTENCES = path.join(ROOT, 'src', 'data', 'bookSentences.data.ts');
+const BOOK_HEROES = path.join(ROOT, 'src', 'data', 'bookHeroes.data.ts');
 const JOURNEY = path.join(ROOT, 'src', 'lib', 'journey.ts');
 const JOURNEYS = path.join(ROOT, 'src', 'data', 'journeys.ts');
 const COLLECTIONS = path.join(ROOT, 'src', 'data', 'collections.ts');
@@ -151,6 +152,13 @@ let packsCache = null;
 export async function loadLearningPacks() {
   if (!packsCache) packsCache = await loadModule(LEARNING_PACKS);
   return packsCache;
+}
+
+let heroesCache = null;
+/** Who each book is about, in its description's words (Emotion Wheel book mode). */
+export async function loadBookHeroes() {
+  if (!heroesCache) heroesCache = await loadModule(BOOK_HEROES);
+  return heroesCache;
 }
 
 let companionsCache = null;
