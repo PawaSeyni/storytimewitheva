@@ -656,4 +656,15 @@ export const activities: Activity[] = [
     desc: { en: 'Sand a rough plank smooth one patient stroke at a time, then choose a skill to grow slowly and print a seven-day practice card.', es: 'Lija una tabla áspera hasta dejarla suave, un movimiento paciente cada vez; luego elige una habilidad que harás crecer despacio e imprime una tarjeta de práctica de siete días.', fr: 'Ponce une planche rugueuse jusqu’à ce qu’elle soit lisse, un geste patient à la fois, puis choisis un savoir-faire à faire grandir doucement et imprime une carte d’entraînement de sept jours.' },
     category: { en: 'Patience', es: 'Paciencia', fr: 'Patience' },
   },
+  // ── Collection Story Dice (activities audit 2026-11, §5c item 3): three dice whose faces all
+  // come from the twenty books (src/data/storyDice.data.ts). Not tied to one book, so neither
+  // bookSpecific nor anyBook.
+  {
+    slug: 'collection-story-dice',
+    emoji: '🎲',
+    ages: '5-9',
+    title: { en: 'Collection Story Dice', es: 'Dados de cuentos de la colección', fr: 'Dés à histoires de la collection' },
+    desc: { en: 'Roll a character, a setting and a problem from the twenty books of the collection, then tell, write or draw a story that mixes them and print your story-starter card.', es: 'Lanza un personaje, un lugar y un problema sacados de los veinte libros de la colección; luego cuenta, escribe o dibuja un cuento que los mezcle e imprime tu tarjeta para empezar.', fr: 'Lance un personnage, un lieu et un problème tirés des vingt livres de la collection, puis raconte, écris ou dessine une histoire qui les mélange et imprime ta carte de départ.' },
+    category: { en: 'Creativity', es: 'Creatividad', fr: 'Créativité' },
+  },
 ];

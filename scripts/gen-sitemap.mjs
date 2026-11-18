@@ -61,6 +61,7 @@ const staticPages = [
   ['/activities/small-noticer', 'monthly', '0.7'],
   ['/activities/kindness-chain', 'monthly', '0.7'],
   ['/activities/rough-to-smooth', 'monthly', '0.7'],
+  ['/activities/collection-story-dice', 'monthly', '0.7'],
   ['/resources', 'monthly', '0.6'],
   ['/about', 'monthly', '0.6'],
   ['/contact', 'monthly', '0.5'],

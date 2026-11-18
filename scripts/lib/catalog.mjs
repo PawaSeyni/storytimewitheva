@@ -22,6 +22,7 @@ const ACTIVITIES = path.join(ROOT, 'src', 'data', 'activities.data.ts');
 const BOOK_VOCAB = path.join(ROOT, 'src', 'data', 'bookVocab.data.ts');
 const BOOK_SENTENCES = path.join(ROOT, 'src', 'data', 'bookSentences.data.ts');
 const BOOK_HEROES = path.join(ROOT, 'src', 'data', 'bookHeroes.data.ts');
+const STORY_DICE = path.join(ROOT, 'src', 'data', 'storyDice.data.ts');
 const JOURNEY = path.join(ROOT, 'src', 'lib', 'journey.ts');
 const JOURNEYS = path.join(ROOT, 'src', 'data', 'journeys.ts');
 const COLLECTIONS = path.join(ROOT, 'src', 'data', 'collections.ts');
@@ -159,6 +160,13 @@ let heroesCache = null;
 export async function loadBookHeroes() {
   if (!heroesCache) heroesCache = await loadModule(BOOK_HEROES);
   return heroesCache;
+}
+
+let storyDiceCache = null;
+/** Story dice faces per book (src/data/storyDice.data.ts): character, setting, problem. */
+export async function loadStoryDice() {
+  if (!storyDiceCache) storyDiceCache = await loadModule(STORY_DICE);
+  return storyDiceCache;
 }
 
 let companionsCache = null;
