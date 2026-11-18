@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BookMarked, BookOpen, CheckCircle2 } from 'lucide-react';
+import { StatusIcon } from './StatusIcons';
 import {
   loadLibrary,
   getStatus,
@@ -73,9 +73,10 @@ export default function BookStatusButton({ bookId, compact = false }: BookStatus
     : 'inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold rounded-full transition-all border';
   const icon = compact ? 'w-3.5 h-3.5' : 'w-4 h-4';
 
+  // Icons come from the shared sprite (StatusIcons.tsx): with three buttons on every card,
+  // inline lucide markup alone was ~25 KB of the catalog page's HTML.
   const buttons: {
     value: LibraryStatus;
-    Icon: typeof CheckCircle2;
     on: string;
     off: string;
     ariaOn: string;
@@ -84,19 +85,19 @@ export default function BookStatusButton({ bookId, compact = false }: BookStatus
     idle: string;
   }[] = [
     {
-      value: 'read', Icon: CheckCircle2, on: t.read, off: t.markRead,
+      value: 'read', on: t.read, off: t.markRead,
       ariaOn: t.ariaMarkAsNotRead, ariaOff: t.ariaMarkAsRead,
       active: 'bg-green-500 border-green-500 text-white shadow-xs',
       idle: 'bg-white border-green-300 text-green-700 hover:bg-green-50',
     },
     {
-      value: 'reading', Icon: BookOpen, on: t.reading, off: t.markReading,
+      value: 'reading', on: t.reading, off: t.markReading,
       ariaOn: t.ariaMarkAsNotReading, ariaOff: t.ariaMarkAsReading,
       active: 'bg-amber-500 border-amber-500 text-white shadow-xs',
       idle: 'bg-white border-amber-300 text-amber-700 hover:bg-amber-50',
     },
     {
-      value: 'want-to-read', Icon: BookMarked, on: t.onList, off: t.wantToRead,
+      value: 'want-to-read', on: t.onList, off: t.wantToRead,
       ariaOn: t.ariaRemoveFromWant, ariaOff: t.ariaAddToWant,
       active: 'bg-blue-500 border-blue-500 text-white shadow-xs',
       idle: 'bg-white border-blue-300 text-blue-700 hover:bg-blue-50',
@@ -121,7 +122,7 @@ export default function BookStatusButton({ bookId, compact = false }: BookStatus
             title={active ? b.ariaOn : b.ariaOff}
             className={`${base} ${active ? b.active : b.idle}`}
           >
-            <b.Icon className={icon} />
+            <StatusIcon name={b.value} className={icon} />
             {active ? b.on : b.off}
           </button>
         );
