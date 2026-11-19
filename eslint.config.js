@@ -19,10 +19,21 @@ export default defineConfig([
       globals: globals.browser,
     },
     rules: {
-      // Provider files (language.tsx, toast.tsx) and Pixel.tsx legitimately export
-      // their hooks/constants alongside the component. This only affects dev HMR
-      // granularity, not correctness, so keep it advisory rather than blocking.
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      // Provider files (language.tsx, toast.tsx), Pixel.tsx and a few components legitimately
+      // export their hooks/helpers alongside the component. This only affects dev HMR
+      // granularity, not correctness. The known exports are named below so the rule stays
+      // useful: a NEW mixed export still warns. (2026-11-19, SW-028)
+      'react-refresh/only-export-components': ['warn', {
+        allowConstantExport: true,
+        allowExportNames: [
+          'useLanguage', 'useTranslation', 'LANGUAGE_LABELS', 'splitLangFromPath', 'localizePath', 'LOCALES', // lib/language.tsx
+          'useToast', // lib/toast.tsx
+          'usePixelEnabled', // components/Pixel.tsx
+          'breadcrumbSchema', // components/Breadcrumbs.tsx (JSON-LD for the same crumbs)
+          'hasLeadMagnetRequest', 'isKnownMagnet', 'magnetCopy', // components/EmailSignup.tsx (the magnet registry)
+          'SHARED_RESOURCE_IDS', // components/ResourceStrip.tsx
+        ],
+      }],
     },
   },
 ])
