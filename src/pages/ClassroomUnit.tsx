@@ -18,7 +18,7 @@ import { resources } from '../data/resources';
 import { classroomUnitById, unitAgeRange, unitStepHref, unitPackSlug, unitPackItems } from '../data/classroomUnits';
 import { unitDays, unitVocab } from '../data/classroomUnitPlans';
 import { THEMES } from '../data/taxonomy';
-import { isAmazonCover, sizedCover } from '../lib/covers';
+import { sizedCover } from '../lib/covers';
 import { useLanguage, useTranslation } from '../lib/language';
 import { track } from '../lib/analytics';
 
@@ -74,7 +74,7 @@ export default function ClassroomUnit() {
   const [from, to] = unitAgeRange(unit).split('-');
   const bookOf = (id: string) => books.find((b) => b.id === id);
   const activityOf = (slug: string) => activities.find((a) => a.slug === slug);
-  const cover = (src: string, w: number) => (isAmazonCover(src) ? sizedCover(src, w) : src);
+  const cover = (src: string, w: number) => sizedCover(src, w);
   const unitBookList = unit.bookIds.map(bookOf).filter((b) => b !== undefined);
   const packItems = unitPackItems(unit, language);
   const others = Object.values(classroomUnitById).filter((u) => u.id !== unit.id);

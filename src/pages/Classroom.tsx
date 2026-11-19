@@ -5,7 +5,7 @@ import Seo from '../components/Seo';
 import JsonLd from '../components/JsonLd';
 import Breadcrumbs, { breadcrumbSchema } from '../components/Breadcrumbs';
 import { publishedClassroomUnits, unitAgeRange, unitBooks } from '../data/classroomUnits';
-import { isAmazonCover, sizedCover } from '../lib/covers';
+import { sizedCover } from '../lib/covers';
 import { useLanguage, useTranslation } from '../lib/language';
 
 const SITE_URL = 'https://storytimewitheva.com';
@@ -69,7 +69,7 @@ export default function Classroom() {
                   <ul className="flex gap-2 mb-4" aria-hidden>
                     {books.map((b) => {
                       const src = b.editions[language]?.cover ?? b.editions.en.cover ?? '';
-                      return <li key={b.id}><img src={isAmazonCover(src) ? sizedCover(src, 160) : src} alt="" width={56} height={56} loading="lazy" className="w-14 h-14 rounded-lg object-cover" /></li>;
+                      return <li key={b.id}><img src={sizedCover(src, 160)} alt="" width={56} height={56} loading="lazy" className="w-14 h-14 rounded-lg object-cover" /></li>;
                     })}
                   </ul>
                   <span className="text-sm font-semibold text-emerald-700">{t.open} →</span>

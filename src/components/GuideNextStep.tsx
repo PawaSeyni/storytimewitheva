@@ -3,7 +3,7 @@ import { useBooks, type LocalizedBook } from '../data/books';
 import { resources, resourcePath, type Resource } from '../data/resources';
 import { booksByResourceId, booksByThemeId } from '../data/contentIndex';
 import { publishedClassroomUnits, unitAgeRange, unitBooks, type ClassroomUnit } from '../data/classroomUnits';
-import { isAmazonCover, sizedCover } from '../lib/covers';
+import { sizedCover } from '../lib/covers';
 import { track } from '../lib/analytics';
 import { useLanguage, useTranslation } from '../lib/language';
 
@@ -84,7 +84,7 @@ function guideUnits(guide: Resource): ClassroomUnit[] {
 }
 
 function cover(src: string, width: number) {
-  return isAmazonCover(src) ? sizedCover(src, width) : src;
+  return sizedCover(src, width);
 }
 
 export default function GuideNextStep({ slug, variant }: { slug: string; variant: 'compact' | 'full' }) {

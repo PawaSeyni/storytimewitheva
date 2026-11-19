@@ -3,7 +3,7 @@ import { Link } from './LocalizedLink';
 import { useBooks } from '../data/books';
 import { loadLibrary, continueReadingId, recentlyExploredIds, onLibraryChange } from '../lib/personalLibrary';
 import { useTranslation } from '../lib/language';
-import { isAmazonCover, sizedCover } from '../lib/covers';
+import { sizedCover } from '../lib/covers';
 
 // S6-003 + S6-006. Renders ONLY when reliable local state exists, so a first-time
 // visitor's page is complete without it rather than showing an empty personalized shell.
@@ -46,7 +46,7 @@ export default function ContinueReading({ excludeBookId }: { excludeBookId?: str
             className="flex items-center gap-4 bg-white rounded-2xl shadow-md hover:shadow-xl border border-gray-50 p-4 transition-all"
           >
             <img
-              src={isAmazonCover(current.coverImage) ? sizedCover(current.coverImage, 160) : current.coverImage}
+              src={sizedCover(current.coverImage, 160)}
               alt=""
               width={80}
               height={80}
@@ -69,7 +69,7 @@ export default function ContinueReading({ excludeBookId }: { excludeBookId?: str
               <li key={b.id}>
                 <Link to={`/books/${b.id}`} className="block group">
                   <img
-                    src={isAmazonCover(b.coverImage) ? sizedCover(b.coverImage, 320) : b.coverImage}
+                    src={sizedCover(b.coverImage, 320)}
                     alt=""
                     width={300}
                     height={300}
