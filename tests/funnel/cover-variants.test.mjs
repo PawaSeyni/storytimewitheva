@@ -3,7 +3,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { execFileSync } from 'node:child_process';
 import { build } from 'esbuild';
 import { loadCatalog } from '../../scripts/lib/catalog.mjs';
 
@@ -19,9 +18,26 @@ test('every local cover file has a fresh 400 px copy (scripts/make-cover-variant
     if (e.cover?.startsWith('/covers/')) assert.ok(existsSync(new URL(`../../public/covers/400${e.cover.slice('/covers'.length)}`, import.meta.url)), `no 400 px copy for ${e.cover}`);
   }
 });
-test('the variant script agrees: nothing missing, stale or orphaned', () => {
-  const r = execFileSync('python3', [new URL('../../scripts/make-cover-variants.py', import.meta.url).pathname, '--check'], { encoding: 'utf8' });
-  assert.match(r, /all present/);
+// Pure Node (CI has no Python imaging library): read each WebP's size from its header.
+function webpSize(buf) {
+  if (buf.toString('ascii', 0, 4) !== 'RIFF' || buf.toString('ascii', 8, 12) !== 'WEBP') return null;
+  const chunk = buf.toString('ascii', 12, 16);
+  if (chunk === 'VP8 ') return [buf.readUInt16LE(26) & 0x3fff, buf.readUInt16LE(28) & 0x3fff];
+  if (chunk === 'VP8L') { const b = buf.readUInt32LE(21); return [(b & 0x3fff) + 1, ((b >> 14) & 0x3fff) + 1]; }
+  if (chunk === 'VP8X') return [buf.readUIntLE(24, 3) + 1, buf.readUIntLE(27, 3) + 1];
+  return null;
+}
+
+test('each 400 px copy is a 400 x 400 WebP smaller than its original, with no orphans', () => {
+  const dir = new URL('../../public/covers/', import.meta.url);
+  const originals = new Set(readdirSync(dir).filter((f) => f.endsWith('.webp')));
+  const copies = readdirSync(new URL('400/', dir)).filter((f) => f.endsWith('.webp'));
+  assert.deepEqual(copies.filter((f) => !originals.has(f)), [], 'orphaned 400 px copies');
+  for (const f of copies) {
+    const small = readFileSync(new URL(`400/${f}`, dir));
+    assert.deepEqual(webpSize(small), [400, 400], `${f} is not 400 x 400`);
+    assert.ok(small.length < readFileSync(new URL(f, dir)).length, `${f}: copy is not smaller than the original`);
+  }
 });
 
 test('sizedCover serves the 400 px copy for small local displays, the original above 400', () => {
