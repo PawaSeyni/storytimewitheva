@@ -287,7 +287,7 @@ export const books: Book[] = [
       fr: "L'architecte Victor Mercer conçoit la tour la plus haute jamais imaginée. Une seule jeune ingénieure lève une main qu'il ne voit jamais. Quand la poussière retombe, Victor apprend à concevoir avec des questions plutôt qu'avec des certitudes.",
     },
     seoDescription: {
-      en: "A picture book about humility and listening for ages 5–9. An architect designs the tallest tower ever, and ignores the one engineer with a question: a young woman on his team.",
+      en: "A picture book about humility and listening for ages 5–9: an architect builds the tallest tower ever and ignores the one engineer with a question.",
       es: "Un álbum sobre la humildad y saber escuchar, de 5 a 9 años. Un arquitecto diseña la torre más alta e ignora a la única ingeniera del equipo que tiene una duda.",
       fr: "Un album sur l'humilité et l'écoute, de 5 à 9 ans. Un architecte conçoit la plus haute tour du monde et ignore la seule ingénieure qui pose une question.",
     },

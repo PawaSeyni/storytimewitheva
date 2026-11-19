@@ -221,6 +221,13 @@ export async function loadFirstTouch() {
   return firstTouchCache;
 }
 
+let metaDescCache = null;
+/** Meta description fitting (SW-026): fitDescription, META_DESCRIPTION_MAX. */
+export async function loadMetaDescription() {
+  if (!metaDescCache) metaDescCache = await loadModule(path.join(ROOT, 'src', 'lib', 'metaDescription.ts'));
+  return metaDescCache;
+}
+
 let localesCache = null;
 /** The locale registry (S8-019): codes, prefixes, labels, Intl/OG locales, path helpers. */
 export async function loadLocales() {

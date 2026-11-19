@@ -13,19 +13,19 @@ const TRANSLATIONS = {
   en: {
     home: 'Home', resources: 'Parent Resources', heading: 'Classroom units',
     intro: 'Five themed weeks for teachers, built from the Eva Gallo Collection: two or three read-alouds, their Studio activities, the story words and discussion prompts, and a day-by-day plan. Every unit is open to read; sign up on a unit page for its printable pack.',
-    seo: 'Five themed classroom units for teachers: kindness, patience, courage, feelings and curiosity. Each has two or three picture books, a five-day plan, activities, vocabulary and discussion prompts.',
+    seo: 'Five classroom units on kindness, patience, courage, feelings and curiosity, each with two or three picture books, a five-day plan and activities.',
     ages: 'Ages', books: 'books', days: '5 days', open: 'Open the unit',
   },
   es: {
     home: 'Inicio', resources: 'Recursos para padres', heading: 'Unidades para el aula',
     intro: 'Cinco semanas temáticas para docentes, creadas a partir de la Colección Eva Gallo: dos o tres lecturas en voz alta, sus actividades del Estudio, las palabras del cuento, las preguntas para conversar y un plan día a día. Todas las unidades se pueden leer libremente; en la página de cada unidad puedes registrarte para recibir su paquete imprimible.',
-    seo: 'Cinco unidades temáticas para el aula: bondad, paciencia, valentía, emociones y curiosidad. Cada una con dos o tres libros ilustrados, un plan de cinco días, actividades, vocabulario y preguntas para conversar.',
+    seo: 'Cinco unidades para el aula sobre bondad, paciencia, valentía, emociones y curiosidad, con dos o tres libros, un plan de cinco días y actividades.',
     ages: 'Edades', books: 'libros', days: '5 días', open: 'Abrir la unidad',
   },
   fr: {
     home: 'Accueil', resources: 'Ressources pour parents', heading: 'Unités pour la classe',
     intro: 'Cinq semaines thématiques pour les enseignants, construites à partir de la Collection Eva Gallo : deux ou trois lectures à voix haute, leurs activités du Studio, les mots de l’histoire, les questions de discussion et un plan jour par jour. Chaque unité se lit librement ; sur la page d’une unité, inscrivez-vous pour recevoir son pack à imprimer.',
-    seo: 'Cinq unités thématiques pour la classe : bonté, patience, courage, émotions et curiosité. Chacune avec deux ou trois albums, un plan de cinq jours, des activités, du vocabulaire et des questions de discussion.',
+    seo: 'Cinq unités pour la classe sur la bonté, la patience, le courage, les émotions et la curiosité, avec des albums, un plan sur cinq jours et des activités.',
     ages: 'Âges', books: 'livres', days: '5 jours', open: 'Ouvrir l’unité',
   },
 };

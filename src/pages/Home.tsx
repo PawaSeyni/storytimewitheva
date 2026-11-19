@@ -69,7 +69,7 @@ const LANGUAGE_CARDS = [
 const TRANSLATIONS = {
   en: {
     seoTitle: 'Story Time with Eva: Multicultural Picture Books for Kids',
-    seoDesc: 'The Eva Gallo Collection: picture books for children ages 3–9 about quiet wonder, nighttime magic, and morning homecoming. Read with us and explore free activities.',
+    seoDesc: 'The Eva Gallo Collection: picture books for ages 3–9 about quiet wonder and nighttime magic, with free activities for every book.',
     // Hero
     heroHeadline: 'Magical Stories for Curious Young Minds',
     heroSupport: 'Read the book. Play the free activity.',
@@ -119,7 +119,7 @@ const TRANSLATIONS = {
   },
   es: {
     seoTitle: 'Story Time with Eva: libros ilustrados multiculturales',
-    seoDesc: 'La Colección Eva Gallo — libros ilustrados para niños de 3 a 9 años sobre asombro tranquilo, magia nocturna y el regreso a casa. Lee con nosotros y descubre actividades gratuitas.',
+    seoDesc: 'La Colección Eva Gallo: libros ilustrados de 3 a 9 años sobre el asombro tranquilo y la magia nocturna, con actividades gratis para cada libro.',
     heroHeadline: 'Historias mágicas para mentes jóvenes y curiosas',
     heroSupport: 'Lee el libro. Juega la actividad gratis.',
     heroImageAlt: 'Eva leyendo un cuento antes de dormir con sus nietos',
@@ -163,7 +163,7 @@ const TRANSLATIONS = {
   },
   fr: {
     seoTitle: 'Story Time with Eva : albums illustrés multiculturels',
-    seoDesc: 'La Collection Eva Gallo — des albums pour enfants de 3 à 9 ans sur l\'émerveillement tranquille, la magie nocturne et le retour à la maison. Lisez avec nous et explorez des activités gratuites.',
+    seoDesc: 'La Collection Eva Gallo : des albums de 3 à 9 ans sur l\'émerveillement tranquille et la magie de la nuit, avec des activités gratuites pour chaque livre.',
     heroHeadline: 'Des histoires magiques pour les jeunes esprits curieux',
     heroSupport: 'Lisez le livre. Jouez à l\'activité gratuite.',
     heroImageAlt: 'Eva lisant un album du soir avec ses petits-enfants',
