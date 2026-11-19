@@ -9,7 +9,6 @@ import { loadCatalog } from '../../scripts/lib/catalog.mjs';
 const { books } = await loadCatalog();
 const html = readFileSync('public/games/rhyme-singalong.html', 'utf8');
 const block = html.slice(html.indexOf('const songs = ['), html.indexOf('];', html.indexOf('const songs = [')) + 2);
-// eslint-disable-next-line no-new-func
 const songs = new Function(`${block}; return songs;`)();
 
 test('book songs — every book that links the sing-along has its own song', () => {
