@@ -30,9 +30,25 @@ jobs:
       # merge commit), and the shared Netlify team does the same thing silently
       # when its credits run out. So the wait now has a recovery step: fire the
       # build hook once, wait again, and only then fail.
-      - name: Wait for production to serve this commit (push only, unless the commit skips Netlify)
+      # Only the commit TITLE may opt out of the deploy check. On 2026-11-18 five squash merges
+      # carried "[skip netlify]" deep in their body (copied from old branch commits): Netlify skipped
+      # them and this workflow skipped its check too, so nobody noticed. Now an inherited marker in
+      # the body still gets checked; if Netlify skipped the build, the wait fails and the build hook
+      # below recovers the deploy.
+      - name: Decide whether this commit opts out of Netlify (title line only)
+        id: optout
+        if: github.event_name == 'push'
+        env: { MSG: '${{ github.event.head_commit.message }}' }
+        run: |
+          title=$(printf '%s\n' "$MSG" | head -n 1)
+          if printf '%s' "$title" | grep -qiF '[skip netlify]'; then echo "skip=true" >> "$GITHUB_OUTPUT"; else echo "skip=false" >> "$GITHUB_OUTPUT"; fi
+          if [ "$(printf '%s' "$MSG" | grep -ciF '[skip netlify]')" != "0" ] && ! printf '%s' "$title" | grep -qiF '[skip netlify]'; then
+            echo "::warning::'[skip netlify]' appears in the commit body, not the title. Netlify may have skipped this build; checking production anyway."
+          fi
+
+      - name: Wait for production to serve this commit (push only, unless the commit title skips Netlify)
         id: first
-        if: github.event_name == 'push' && !contains(github.event.head_commit.message, '[skip netlify]')
+        if: github.event_name == 'push' && steps.optout.outputs.skip != 'true'
         run: |
           for i in $(seq 1 32); do   # 32 x 15s = 8 minutes
             live=$(curl -s https://storytimewitheva.com/version.json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{console.log(JSON.parse(s).commit||'')}catch{console.log('')}})")
@@ -63,7 +79,7 @@ jobs:
 
       - name: Verify deploy chain
         run: npm run verify:deploy -- ${{ github.sha }}
-        if: github.event_name == 'push' && !contains(github.event.head_commit.message, '[skip netlify]')
+        if: github.event_name == 'push' && steps.optout.outputs.skip != 'true'
       - run: npx playwright install --with-deps chromium
       - name: Production smoke (routes, delivery, ad destinations)
         run: npm run test:smoke

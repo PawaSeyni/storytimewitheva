@@ -17,7 +17,7 @@
 // reports the new image id so you can regenerate the .webp:
 //
 //   curl -s -o /tmp/c.jpg "https://m.media-amazon.com/images/I/<id>._SL1000_.jpg"
-//   cwebp -q 82 -resize 700 700 /tmp/c.jpg -o src/assets/covers/<slug>.webp
+//   cwebp -q 75 -resize 700 700 /tmp/c.jpg -o src/assets/covers/<slug>.webp
 
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -138,7 +138,7 @@ if (manual.length) {
     console.log(`  ${m.id}: id ${m.newId}`);
     console.log(
       `    curl -s -o /tmp/c.jpg "https://m.media-amazon.com/images/I/${encodeURIComponent(m.newId)}._SL1000_.jpg" && ` +
-        `cwebp -q 82 -resize 700 700 /tmp/c.jpg -o src/assets/covers/${m.id}.webp`,
+        `cwebp -q 75 -resize 700 700 /tmp/c.jpg -o src/assets/covers/${m.id}.webp`,
     );
   }
 }

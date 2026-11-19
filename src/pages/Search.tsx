@@ -9,7 +9,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Link } from '../components/LocalizedLink';
 import Seo from '../components/Seo';
 import { useBooks } from '../data/books';
-import { isAmazonCover, sizedCover } from '../lib/covers';
+import { sizedCover } from '../lib/covers';
 import { useTranslation, useLanguage } from '../lib/language';
 import { gameUrl } from '../lib/gameUrl';
 import { buildSearchIndex, searchRecords, SEARCH_TYPES, typeLabel, type SearchType } from '../lib/searchIndex';
@@ -173,7 +173,7 @@ export default function Search() {
                         <Link to={r.route} className="card group flex flex-col h-full">
                           <div className="bg-gray-100 aspect-square overflow-hidden">
                             <img
-                              src={isAmazonCover(b.coverImage) ? sizedCover(b.coverImage, 300) : b.coverImage}
+                              src={sizedCover(b.coverImage, 300)}
                               alt={b.title}
                               loading="lazy"
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform"

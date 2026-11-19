@@ -13,10 +13,10 @@ import { loadLibrary, onLibraryChange, setStatus, booksWithStatus } from '../lib
 import { track } from '../lib/analytics';
 import { StudioFrame, Panel, Printable, StudioActions, LineInput } from './studio/StudioFrame';
 import { nb } from './studio/worksheetText';
-import { isAmazonCover, sizedCover } from '../lib/covers';
+import { sizedCover } from '../lib/covers';
 
 /** Small cover: Amazon CDN covers are requested at thumbnail size, local ones as they are. */
-const thumb = (src: string) => (isAmazonCover(src) ? sizedCover(src, 160) : src);
+const thumb = (src: string) => (sizedCover(src, 160));
 
 const TRANSLATIONS = {
   en: {

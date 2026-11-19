@@ -56,7 +56,7 @@ const TRANSLATIONS = {
       {
         heading: 'Analytics',
         body: [
-          'We use Plausible Analytics to understand which pages are popular and which steps of our free-printable signup people use. Plausible is privacy-friendly: it uses no cookies, does not track you across sites, and collects only aggregate, anonymous statistics — never your email, your name, or any personal detail. It does not identify you personally.',
+          'We use Plausible Analytics to understand which pages are popular and which steps of our free-printable signup people use. Plausible is privacy-friendly: it uses no cookies, does not track you across sites, and collects only aggregate, anonymous statistics. It never records your email, your name or any personal detail. It does not identify you personally.',
           'If you subscribe for a free printable, we also share a one-way hashed (irreversible) version of your email address with Pinterest, solely to measure whether one of our Pinterest ads led to your signup. This happens on our server and sets no cookies; we share only that hash, and no IP address, browsing activity, or other identifier. Pinterest never receives your readable email. It applies only to adults who sign up and never involves any child\'s information. To opt your address out, email contact@storytimewitheva.com.',
         ],
       },

@@ -99,7 +99,7 @@ export default function Collection() {
         id={collectionId}
         title={title}
         intro={record?.description?.[language] ?? theme.descriptions[language]}
-        seoTitle={`${title} — ${t.seoTheme} ${title.toLowerCase()}`}
+        seoTitle={`${title}: ${t.seoTheme} ${title.toLowerCase()}`}
         books={inCollection}
         browseOthersHeading={t.browseThemes}
         others={others}
@@ -115,7 +115,7 @@ export default function Collection() {
       id={collectionId}
       title={title}
       intro={record?.description?.[language] ?? band.descriptions[language]}
-      seoTitle={`${title} — ${t.seoAge} ${title.toLowerCase()}`}
+      seoTitle={`${title}: ${t.seoAge} ${title.toLowerCase()}`}
       books={inCollection}
       browseOthersHeading={t.browseAges}
       others={others}

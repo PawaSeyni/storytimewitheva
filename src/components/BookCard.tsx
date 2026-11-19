@@ -5,7 +5,7 @@ import { useActivity } from '../data/activities';
 import { gameUrl } from '../lib/gameUrl';
 import BookStatusButton from './BookStatusButton';
 import ReadAloudButton from './ReadAloudButton';
-import { isAmazonCover, sizedCover } from '../lib/covers';
+import { sizedCover, coverSrcSet } from '../lib/covers';
 import { useLanguage, useTranslation } from '../lib/language';
 import { track } from '../lib/analytics';
 
@@ -35,17 +35,15 @@ export default function BookCard({ book, priority = false, onSelect }: BookCardP
   // Narration text for the read-aloud button — title, subtitle, and blurb.
   const narration = [book.title, book.subtitle, book.description].filter(Boolean).join('. ');
 
-  const amazonCover = isAmazonCover(book.coverImage);
-  const cardSrcSet = amazonCover
-    ? `${sizedCover(book.coverImage, 330)} 330w, ${sizedCover(book.coverImage, 660)} 660w`
-    : undefined;
+  // Amazon covers resize on demand; local covers offer their 400 px copy and the 700 px original.
+  const cardSrcSet = coverSrcSet(book.coverImage);
   const href = `/books/${book.id}`;
 
   return (
     <div className="card group relative flex flex-col">
       <Link to={href} onClick={onSelect} className="block relative bg-gray-100 aspect-square overflow-hidden">
         <img
-          src={amazonCover ? sizedCover(book.coverImage, 400) : book.coverImage}
+          src={sizedCover(book.coverImage, 400)}
           srcSet={cardSrcSet}
           sizes="(min-width: 1024px) 300px, (min-width: 640px) 45vw, 90vw"
           alt={`${book.title}, ${t.coverAlt}`}

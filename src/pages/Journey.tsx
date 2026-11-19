@@ -21,7 +21,7 @@ import { THEMES, AGE_BANDS } from '../data/taxonomy';
 import { loadProgress, toggleStep, onJourneyChange, nextIncompleteStepId } from '../lib/journeyProgress';
 import { loadLibrary, isJourneySaved, toggleSavedJourney, onLibraryChange } from '../lib/personalLibrary';
 import { gameUrl } from '../lib/gameUrl';
-import { isAmazonCover, sizedCover } from '../lib/covers';
+import { sizedCover } from '../lib/covers';
 import { useLanguage, useTranslation } from '../lib/language';
 import { track } from '../lib/analytics';
 
@@ -116,7 +116,7 @@ export default function Journey() {
 
   return (
     <main>
-      <Seo title={`${title} — ${t.seoPrefix}`} description={intro} path={path} />
+      <Seo title={`${title}: ${t.seoPrefix}`} description={intro} path={path} />
       <JsonLd id={`journey-${journey.id}`} data={schema} />
 
       <section className="bg-linear-to-b from-amber-50 to-white py-12 px-4">
@@ -179,7 +179,7 @@ export default function Journey() {
 
                 {book && (
                   <Link to={`/books/${book.id}`} className="flex items-center gap-4 group">
-                    <img src={isAmazonCover(book.coverImage) ? sizedCover(book.coverImage, 160) : book.coverImage} alt="" width={72} height={72} loading="lazy" className="w-18 h-18 rounded-xl object-cover shrink-0" />
+                    <img src={sizedCover(book.coverImage, 160)} alt="" width={72} height={72} loading="lazy" className="w-18 h-18 rounded-xl object-cover shrink-0" />
                     <span>
                       <span className="block font-bold text-gray-800 group-hover:text-purple-700">{book.title}</span>
                       <span className="block text-sm text-gray-500 line-clamp-2">{book.description}</span>

@@ -597,3 +597,14 @@ P-078 to P-110 already belonged to published or planned pins in the owner's mast
 ### Pass 23: five merges that never deployed
 
 Production stayed on #273 (`453bf90`) while #274 to #278 merged. Those squash merges used GitHub's default message, which lists every commit on the long-lived work branch, and two old commits in that list say `[skip netlify]`. Netlify skips any build whose message contains that marker, and the post-deploy workflow skips its "wait for production" check on the same marker, so the gap was not flagged. **Fix:** this merge carries a short message of its own, so Netlify builds main (which already holds #274 to #278). **From now on** every squash merge passes an explicit commit message.
+
+### Pass 24: three fixes from the site audit
+
+From `docs/SITE_AUDIT_2026-11-18.md` §6.
+- **SW-023, lighter covers.** Two changes, measured on `/books/` against the live site:
+  - The 57 covers (700 px) were re-encoded at WebP quality 75: 5.8 to 4.4 MB, visually the same. `scripts/refresh-covers.mjs` now uses the same setting so a refresh doesn't undo it.
+  - Every cover has a 400 px copy (`public/covers/400/`, `scripts/make-cover-variants.py`). `sizedCover()` serves it for displays up to 400 px (the guides' book strips, classroom units, Continue Reading, search, journeys), and `BookCard` gives local covers a `srcset` (400w and 700w).
+  - Result on `/books/`: **phone about 2.0 to 1.35 MB** of covers (phones have 2 to 3 device pixels per CSS pixel, so cards rightly keep the 700 px file; the saving there is the re-encode), **desktop 1.27 MB to 0.16 MB**. Page image total 7.7 MB, under the 8 MB warning.
+- **SW-024, deploy check.** `post-deploy.yml` lets only the commit **title** opt out of the production check. A `[skip netlify]` copied into a squash merge's body now triggers a warning and the normal wait, so a build Netlify skipped is caught and recovered through the build hook.
+- **SW-025, em dashes.** The English privacy page no longer has one, and `tests/seo/copy-style.test.mjs` fails the build if an em dash appears in the visible copy, title or description of any indexable English page.
+- **SW-021** (signup attribution) is live and verified on production.
