@@ -608,3 +608,7 @@ From `docs/SITE_AUDIT_2026-11-18.md` §6.
 - **SW-024, deploy check.** `post-deploy.yml` lets only the commit **title** opt out of the production check. A `[skip netlify]` copied into a squash merge's body now triggers a warning and the normal wait, so a build Netlify skipped is caught and recovered through the build hook.
 - **SW-025, em dashes.** The English privacy page no longer has one, and `tests/seo/copy-style.test.mjs` fails the build if an em dash appears in the visible copy, title or description of any indexable English page.
 - **SW-021** (signup attribution) is live and verified on production.
+
+### Pass 25: meta descriptions that fit (SW-026)
+
+125 indexable pages (32 EN, 44 ES, 49 FR) had descriptions over 160 characters. `Seo` now fits every description through `src/lib/metaDescription.ts` (whole sentences up to 155 characters; a word-boundary cut with an ellipsis when the first sentence alone is too long, 34 pages), so the visible copy that most descriptions are built from stays whole. Ten descriptions written for search (home, privacy, classroom in three languages, and *The Tower That Touched the Sky*) were rewritten by hand to keep their point. A built-page test now fails any indexable page over 160 characters. Before and after for every page: `docs/seo/META_DESCRIPTIONS_2026-11-19.md` (ES/FR for owner review).

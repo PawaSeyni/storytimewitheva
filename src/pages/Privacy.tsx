@@ -21,7 +21,7 @@ const TRANSLATIONS = {
   en: {
     seoTitle: 'Privacy Policy',
     seoDesc:
-      'How Story Time with Eva handles your information. We are directed to parents and guardians, use privacy-friendly analytics, and never knowingly collect personal information from children.',
+      'How Story Time with Eva handles your information: a site for parents and guardians, cookie-free analytics, and nothing knowingly collected from children.',
     title: 'Privacy Policy',
     updated: 'Last updated: June 2026',
     intro:
@@ -89,7 +89,7 @@ const TRANSLATIONS = {
   es: {
     seoTitle: 'Política de privacidad',
     seoDesc:
-      'Cómo Story Time with Eva trata tu información. Está dirigido a padres y tutores, usa analíticas respetuosas con la privacidad y nunca recopila datos personales de niños a sabiendas.',
+      'Cómo trata Story Time with Eva tu información: un sitio para familias y tutores, analíticas sin cookies y ningún dato de menores recopilado a sabiendas.',
     title: 'Política de privacidad',
     updated: 'Última actualización: junio de 2026',
     intro:
@@ -157,7 +157,7 @@ const TRANSLATIONS = {
   fr: {
     seoTitle: 'Politique de confidentialité',
     seoDesc:
-      'Comment Story Time with Eva traite vos informations. Le site s\'adresse aux parents et tuteurs, utilise des analyses respectueuses de la vie privée et ne collecte jamais sciemment de données personnelles d\'enfants.',
+      'Comment Story Time with Eva traite vos informations : un site pour les familles, des statistiques sans cookies, aucune donnée d\'enfant collectée sciemment.',
     title: 'Politique de confidentialité',
     updated: 'Dernière mise à jour : juin 2026',
     intro:

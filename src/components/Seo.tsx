@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { localizePath, useLanguage } from '../lib/language';
 import { hreflangFor, ogLocale } from '../lib/locales';
 import { useHead } from '../lib/head';
+import { fitDescription } from '../lib/metaDescription';
 
 const SITE_URL = 'https://storytimewitheva.com';
 const SITE_NAME = 'Story Time with Eva';
@@ -59,7 +60,8 @@ export default function Seo({ title, description, image = DEFAULT_IMAGE, imageWi
 
   useHead({
     title: fullTitle,
-    description,
+    // Fitted to a search result's length; the page's visible text is unchanged (SW-026).
+    description: fitDescription(description),
     image,
     imageWidth: resolvedWidth,
     imageHeight: resolvedHeight,
