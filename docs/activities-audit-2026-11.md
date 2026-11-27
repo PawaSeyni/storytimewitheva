@@ -612,3 +612,10 @@ From `docs/SITE_AUDIT_2026-11-18.md` §6.
 ### Pass 25: meta descriptions that fit (SW-026)
 
 125 indexable pages (32 EN, 44 ES, 49 FR) had descriptions over 160 characters. `Seo` now fits every description through `src/lib/metaDescription.ts` (whole sentences up to 155 characters; a word-boundary cut with an ellipsis when the first sentence alone is too long, 34 pages), so the visible copy that most descriptions are built from stays whole. Ten descriptions written for search (home, privacy, classroom in three languages, and *The Tower That Touched the Sky*) were rewritten by hand to keep their point. A built-page test now fails any indexable page over 160 characters. Before and after for every page: `docs/seo/META_DESCRIPTIONS_2026-11-19.md` (ES/FR for owner review).
+
+### Pass 26: English covers match KDP again
+
+All 20 English covers had been redesigned on KDP (brighter art and new title lettering; *The Fig Tree's Secret* and *Russet the Fox* keep their scenes with reworked titles), and the site still showed the previous art. The current main image of each paperback was read from its Amazon page by ASIN (1000 × 1000) and saved as `public/covers/<book>-en.webp` (700 px, WebP q75, 25 to 75 KB each, lighter than before), with fresh 400 px copies.
+- *A Little Boat's Big Wish* now has a local cover instead of a stale Amazon image id; it gets a printable spot, and its three pins (P-154 ES, P-155 FR, P-175 EN, which all use the English cover) now have images (SW-003 closed).
+- The 19 English kit pins (P-156 to P-174) were re-rendered with the new covers. Spanish and French covers and pins are unchanged.
+- The printable spots were recropped from the new covers by `scripts/make-spots.py`, which keeps one crop box per book so the next cover change is a re-run.
