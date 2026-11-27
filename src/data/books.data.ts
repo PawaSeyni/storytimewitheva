@@ -883,7 +883,7 @@ export const books: Book[] = [
       } },
     ],
     editions: {
-      en: { asin: '1997027070', cover: 'https://m.media-amazon.com/images/I/71Zjj22p5sL.jpg' },
+      en: { asin: '1997027070', cover: '/covers/little-boats-big-wish-en.webp' },
     },
     title: {
       en: "A Little Boat's Big Wish",

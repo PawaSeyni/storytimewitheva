@@ -5,7 +5,7 @@
 ## How the order was chosen
 
 - **Spanish and French first.** The two posts that produced repeat signups were French (P-032) and Spanish (FB-025), and a third of visitors are in Spanish-speaking countries. All 40 ES and FR kit pins go out before the 20 EN ones.
-- **Books people already open go first:** *The Adventures of Maya's Shadow* (8 book-page visitors), *The Day the Colors Got Mixed Up* (5) and *The Little Mapmaker* (3), then the catalog order. *A Little Boat's Big Wish* goes last because it has no local cover yet (its pins need an image before they can be made).
+- **Books people already open go first:** *The Adventures of Maya's Shadow* (8 book-page visitors), *The Day the Colors Got Mixed Up* (5) and *The Little Mapmaker* (3), then the catalog order. *A Little Boat's Big Wish* goes last; its local cover was added on 27 November 2026 (from the current KDP cover), so its three pins now have images.
 - **5 pins a week**, the top of the documented cadence (README rule 3 is 1 a week; anything above about 5 a week needs the owner's sign-off). 65 pins take 13 weeks. Weeks 1 to 5 each open with one repeat-winner pin.
 - **One pin a day, Monday to Friday.** Same book in ES and FR on consecutive days is fine; they go to different boards.
 - **Organic only.** Do not boost any of these until the mid-December report shows which kits convert.
@@ -253,7 +253,7 @@ Kit page: `/free/fig-trees-secret-companion/` · `/es/free/fig-trees-secret-comp
 
 Kit page: `/free/little-boats-big-wish-companion/` · `/es/free/little-boats-big-wish-companion/` · `/fr/free/little-boats-big-wish-companion/` · campaign `kit_little-boats-big-wish`
 
-- [ ] **P-154 ES**: image ⚠︎ remote image, needs a local cover · link checked · posted · logged
-- [ ] **P-155 FR**: image ⚠︎ remote image, needs a local cover · link checked · posted · logged
-- [ ] **P-175 EN**: image ⚠︎ remote image, needs a local cover · link checked · posted · logged
+- [ ] **P-154 ES**: image `/pins/` (rendered 2026-11-27 from the KDP cover) · link checked · posted · logged
+- [ ] **P-155 FR**: image `/pins/` (rendered 2026-11-27 from the KDP cover) · link checked · posted · logged
+- [ ] **P-175 EN**: image `/pins/` (rendered 2026-11-27 from the KDP cover) · link checked · posted · logged
 
